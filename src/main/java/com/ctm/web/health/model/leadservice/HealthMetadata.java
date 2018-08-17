@@ -23,6 +23,7 @@ public class HealthMetadata extends LeadMetadata {
     private String rebateTier;
     private String gender;
     private String partnerGender;
+    private String optinLeadCopy;
 
     private HealthMetadata() {
     }
@@ -37,7 +38,8 @@ public class HealthMetadata extends LeadMetadata {
                           final String dependants,
                           final String rebateTier,
                           final String gender,
-                          final String partnerGender) {
+                          final String partnerGender,
+                          final String optinLeadCopy) {
         this.situation = situation;
         this.lookingTo = lookingTo;
         this.hasPrivateHealthInsurance = hasPrivateHealthInsurance;
@@ -49,6 +51,7 @@ public class HealthMetadata extends LeadMetadata {
         this.rebateTier = rebateTier;
         this.gender = gender;
         this.partnerGender = partnerGender;
+        this.optinLeadCopy = optinLeadCopy;
     }
 
     @Override
@@ -75,6 +78,8 @@ public class HealthMetadata extends LeadMetadata {
         builder.append(gender);
         builder.append(",");
         builder.append(partnerGender);
+        builder.append(",");
+        builder.append(optinLeadCopy);
 
         return builder.toString();
     }
@@ -93,6 +98,7 @@ public class HealthMetadata extends LeadMetadata {
                 ", rebateTier=" + rebateTier +
                 ", gender=" + gender +
                 ", partnerGender=" + partnerGender +
+                ", optinLeadCopy=" + optinLeadCopy +
                 '}';
     }
 }

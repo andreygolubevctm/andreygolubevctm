@@ -1,6 +1,12 @@
 (function ($, undefined) {
 
-    var meerkat = window.meerkat;
+    var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
+        moduleEvents = {
+            healthDependants: {
+                DEPENDANTS_RENDERED: 'DEPENDANTS_RENDERED'
+            }
+        };
 
     var $dependantsTemplateWrapper,
         dependantTemplate,
@@ -283,6 +289,8 @@
         applyDateEvents();
         updateNonTextFieldsValues();
         meerkat.modules.datepicker.initModule();
+
+        meerkat.messaging.publish(moduleEvents.healthDependants.DEPENDANTS_RENDERED);
     }
 
     /**
@@ -348,6 +356,8 @@
             if (doAnimate) {
                 animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants()));
             }
+
+            meerkat.messaging.publish(moduleEvents.healthDependants.DEPENDANTS_RENDERED);
         }
     }
 
@@ -544,7 +554,6 @@
             "VIC": "Victorian High Schools",
             "VICT": "VIC TAFE",
             "VU": "Victoria University",
-            "VUT": "Victoria University of Technology",
             "WA": "Western Australia-High Schools",
             "WAT": "WA TAFE"
         },
@@ -564,6 +573,7 @@
 
     meerkat.modules.register("healthDependants", {
         initHealthDependants: initHealthDependants,
+        events: moduleEvents,
         resetConfig: resetConfig,
         getConfig: getConfig,
         updateConfig: updateConfig,

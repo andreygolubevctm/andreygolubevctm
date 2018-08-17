@@ -5,24 +5,25 @@
     <parent>
         <groupId>com.ctm.pom</groupId>
         <artifactId>uber-pom</artifactId>
-        <version>1.6.0</version>
+        <version>1.18.0</version>
     </parent>
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.80.0-SNAPSHOT</version>
+    <version>1.120.0-SNAPSHOT</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
 
     <properties>
         <!-- CTM -->
-        <common-logging.version>1.5.0-RC1</common-logging.version>
+        <common-logging.version>1.13.0-RC1</common-logging.version>
         <common-interfaces.version>1.15.0-RC1</common-interfaces.version>
         <http-client.version>1.3.0-RC1</http-client.version>
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
         <life-common.version>1.1.0-RC1</life-common.version>
         <reward-model.version>1.9.0</reward-model.version>
+        <health-common.version>1.11.1-RC2</health-common.version>
 
         <!-- 3rd party -->
         <guava.version>18.0</guava.version>
@@ -208,6 +209,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.12</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>cglib</groupId>
@@ -355,6 +362,12 @@
             <artifactId>cxf-rt-ws-security</artifactId>
             <version>${cxf.version}</version>
         </dependency>
+        <dependency>
+            <groupId>junit-addons</groupId>
+            <artifactId>junit-addons</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -386,6 +399,12 @@
             <groupId>com.ctm.validator</groupId>
             <artifactId>contact-validator-model</artifactId>
             <version>${contact-validator-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ctm.health</groupId>
+            <artifactId>health-common</artifactId>
+            <version>${health-common.version}</version>
         </dependency>
 
         <!-- Other 3rd Party -->
@@ -504,7 +523,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.6.3</version>
+            <version>1.11.2</version>
         </dependency>
 
         <dependency>
@@ -811,7 +830,7 @@
         <profile>
             <id>embedded-tomcat7-run</id>
             <properties>
-                <cargo.maven.containerUrl>http://nexusctm.budgetdirect.com.au/content/repositories/central/org/apache/tomcat/tomcat/${tomcat.version}/tomcat-${tomcat.version}.zip</cargo.maven.containerUrl>
+                <cargo.maven.containerUrl>https://nexus.comparethemarket.com.au/repository/maven-central/org/apache/tomcat/tomcat/${tomcat.version}/tomcat-${tomcat.version}.zip</cargo.maven.containerUrl>
                 <javaagent.args></javaagent.args>
                 <!--<cargo.maven.containerId>tomcat7x</cargo.maven.containerId> defined in developer-properties profile -->
                 <!--<javaagent.args>-javaagent:${project.build.directory}/embedded_jars/springloaded.jar -noverify</javaagent.args>-->
@@ -951,16 +970,6 @@
                                     <nxi.db.username>${nxi.db.username}</nxi.db.username>
                                     <nxi.db.password>${nxi.db.password}</nxi.db.password>
 
-                                    <https.proxyHost>192.168.1.115</https.proxyHost>
-                                    <https.proxyPort>8080</https.proxyPort>
-                                    <https.proxyUser>ittest</https.proxyUser>
-                                    <https.proxyPassword>1tt3st</https.proxyPassword>
-
-                                    <http.proxyHost>192.168.1.115</http.proxyHost>
-                                    <http.proxyPort>8080</http.proxyPort>
-                                    <http.proxyUser>ittest</http.proxyUser>
-                                    <http.proxyPassword>1tt3st</http.proxyPassword>
-                                    <http.nonProxyHosts>*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1</http.nonProxyHosts>
                                 </systemProperties>
                             </container>
 
@@ -1111,7 +1120,7 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                            <classifier>${branch.classifier}</classifier>
+                            <classifier>${feature.classifier}</classifier>
                             <mainClass>com.ctm.web.core.Application</mainClass>
                         </configuration>
                     </execution>
@@ -1119,7 +1128,7 @@
                 <configuration>
                     <addResources>false</addResources>
                     <jvmArguments>
-                        -Dhttps.proxyHost=192.168.1.115 -Dhttps.proxyPort=8080 -Dhttp.proxyHost=192.168.1.115 -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts="*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1" -Dhttps.proxyUser=ittest -Dhttps.proxyPassword=1tt3st -Dspring.datasource.username=${nxi.db.username} -Dspring.datasource.password=${nxi.db.password} -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+                        -Dspring.datasource.username=${nxi.db.username} -Dspring.datasource.password=${nxi.db.password} -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
                     </jvmArguments>
                 </configuration>
             </plugin>

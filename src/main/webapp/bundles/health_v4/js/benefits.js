@@ -179,7 +179,7 @@
         // toggle the quick select data in the hospital container
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect() {
             var target = $(this).attr('href'),
-                limitedSelected = target === '.limited-pane';
+                limitedSelected = target === '#limited-pane';
 
             // Check the input so it remains a green tick.
             $elements.limitedCoverIcon.prop('checked', true);
@@ -194,21 +194,20 @@
 
     function _setCoverTypeField() {
         // set the hidden field
-        var hasHospitalCover = $elements.hiddenHospitalCover.val() === 'Y',
-            hasExtrasCover = $elements.hiddenExtraCover.val() === 'Y',
-            isLimited = meerkat.modules.benefits.getHospitalType() === 'limited',
+        var isLimited = meerkat.modules.benefits.getHospitalType() === 'limited',
             coverType = 'C',
-            hospitalCount = hasHospitalCover ? meerkat.modules.benefitsModel.getHospitalCount() : 0,
-            extrasCount = hasExtrasCover ? meerkat.modules.benefitsModel.getExtrasCount() : 0;
+            hospitalCount = meerkat.modules.benefitsSwitch.isHospitalOn() ? meerkat.modules.benefitsModel.getHospitalCount() : 0,
+            extrasCount = meerkat.modules.benefitsSwitch.isExtrasOn() ? meerkat.modules.benefitsModel.getExtrasCount() : 0,
+            extrasOnButNoExtrasSelected = meerkat.modules.benefitsSwitch.isExtrasOn() && extrasCount === 0;
 
-        // C = extras AND (hospital OR limited)
-        if (extrasCount > 0 && (hospitalCount > 0 || isLimited)) {
+        // C = extras AND (hospital OR limited) OR (hospital AND extrasSwitchOn AND no extras)
+        if ((extrasCount > 0 && (hospitalCount > 0 || isLimited)) || (hospitalCount > 0 && extrasOnButNoExtrasSelected)) {
             coverType = 'C';
             // H = No extras, and Hospital benefits OR limited
         } else if (extrasCount === 0 && (hospitalCount > 0 || isLimited)) {
             coverType = 'H';
             // E = extras only
-        } else if (extrasCount > 0) {
+        } else if (extrasCount > 0 || (hospitalCount === 0 && extrasOnButNoExtrasSelected)) {
             coverType = 'E';
         }
 

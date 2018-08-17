@@ -3,12 +3,21 @@
 //
 
 #journeyEngineContainer {
-	min-height: 500px;
+	min-height: 550px;
 	// Relative required to contain the journeyEngineLoader
 	position: relative;
 
 	@media print {
 		min-height: 0;
+	}
+
+	&.iframeURLActive {
+		#journeyEngineLoading {
+			padding-top: 0;
+			.loading-logo {
+				display: none;
+			}
+		}
 	}
 }
 
@@ -31,9 +40,13 @@
 	font-size: 1.4em;
 	opacity: 0;
 
-
 	width:100%;
 
+	#loading-footer {
+		margin-top: 20px;
+    font-weight: 400;
+    font-size: 14px;
+  }
 	@media (@xs-only) {
 		left:0;
 	}
@@ -48,7 +61,83 @@
 		width: (@container-lg - @grid-gutter-width);
 	}
 
+	iframe {
+		width: 300px;
+		height: 320px;
+
+		@media (@md) {
+			width: 400px;
+			height: 400px;
+		}
+	}
 }
+
+.additionalWaitMsgActive {
+	#additionalWaitMessage {
+		text-align: left;
+		.results-loading-additional-text {
+			padding-top: 50px;
+			margin-left: auto;
+			margin-right: auto;
+			max-width: 400px;
+			text-align: left;
+
+			h2{
+				margin-bottom: 15px;
+				span.breaklineAtPosition {
+					float: left;
+				}
+				&+div {
+					clear: both;
+				}
+			}
+
+			.round-standalone {
+				vertical-align: top;
+				margin-top: 6px;
+			}
+
+			.loading-page-icon-bullet-text{
+				font-size: 18px;
+				padding-top: 9px;
+				padding-bottom: 9px;
+				margin-left: 20px;
+				display: inline-block;
+				width: 75%;
+				vertical-align: top;
+			}
+
+		}
+	}
+
+}
+
+@media (max-width: @screen-xs-max) {
+	#journeyEngineContainer.additionalWaitMsgActive {
+
+		.journeyEngineLoader {
+			padding-top: 0;
+
+			& .loading-logo {
+				width: 43px;
+				height: 32px;
+				background-size: contain;
+			}
+
+			p.message {
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+
+			& .results-loading-additional-text {
+				padding-top: 0px;
+				padding-left: 25px;
+				padding-right: 25px;
+			}
+		}
+	}
+}
+
 // Show indicator while journey engine is initialising
 body.jeinit .journeyEngineLoader {
 	display: block;

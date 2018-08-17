@@ -28,7 +28,16 @@ var healthFunds_HCF = {
 
         <%--allow weekend selection from the datepicker--%>
         meerkat.modules.healthFunds.setPayments({ 'min':2, 'max':29, 'weekends':true, 'countFrom':'today', 'maxDay':27 });
-        healthFunds_HCF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: true,
+            coverStartRange: {
+                min: 0,
+                max: 90
+            },
+            renderPaymentDaysCb: healthFunds_HCF.renderPaymentDay
+        });
 
         var healthFundText = "By joining HCF, you authorise HCF to contact your previous fund in order to obtain a clearance certificate. This will mean that, where applicable, you don’t need to re-serve any hospital waiting periods you served with your previous fund.";
         $('#clientMemberID').parent().after('<span class="hcf-clearance-certificate">' + healthFundText + '</span>');

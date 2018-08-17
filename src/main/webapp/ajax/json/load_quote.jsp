@@ -5,6 +5,7 @@
 
 <session:new verticalCode="${fn:toUpperCase(param.vertical)}" forceNew="true" authenticated="true" />
 <jsp:useBean id="verticalSettings" class="com.ctm.web.core.model.settings.VerticalSettings" scope="page" />
+<jsp:useBean id="tranDao" class="com.ctm.web.core.transaction.dao.TransactionDetailsDao" scope="request" />
 
 <%--
 	load_quote.jsp
@@ -190,7 +191,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 									<c:set var="textVal">
 										<c:choose>
 											<c:when test="${fn:contains(row.textValue,'Please choose')}"></c:when>
-											<c:otherwise>${row.textValue}</c:otherwise>
+											<c:otherwise>${tranDao.decryptBlacklistFields(requestedTransaction, not empty isOperator, row.xpath, row.textValue)}</c:otherwise>
 										</c:choose>
 									</c:set>
 								<c:choose>
@@ -252,13 +253,27 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES (HEALTH)--%>
 						<c:when test="${param.action=='amend' && param.vertical=='health' && data.health.privacyoptin!='Y'}">
 							<core_v1:transaction touch="L" noResponse="true" />
-							<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+							<c:choose>
+								<c:when test="${not empty param.brandCode and (fn:toLowerCase(param.brandCode) eq 'wfdd' or fn:toLowerCase(param.brandCode) eq 'bddd')}">
+									<destUrl>${pageName}?action=start-again&amp;brandCode=${param.brandCode}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+								</c:when>
+								<c:otherwise>
+									<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+								</c:otherwise>
+							</c:choose>
 						</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
 							<core_v1:transaction touch="L" noResponse="true" />
-							<destUrl>${pageName}?action=${param.action}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+							<c:choose>
+								<c:when test="${not empty param.brandCode and (fn:toLowerCase(param.brandCode) eq 'wfdd' or fn:toLowerCase(param.brandCode) eq 'bddd')}">
+									<destUrl>${pageName}?action=${param.action}&amp;brandCode=${param.brandCode}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+								</c:when>
+								<c:otherwise>
+									<destUrl>${pageName}?action=${param.action}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+								</c:otherwise>
+							</c:choose>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>

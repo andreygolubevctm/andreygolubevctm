@@ -9,6 +9,7 @@ var ResultsModel = {
 	hasValidationErrors : false,
 	currentProduct: false,
 	selectedProduct: false,
+	pinnedProduct: false,
 	filters: [],
 	availablePartners: [],
 
@@ -241,7 +242,6 @@ var ResultsModel = {
 		Results.model.currentProduct = false;
 		Results.settings.frequency = 'annual';
 		Results.model.filters = [];
-
 	},
 
 	flush: function(){
@@ -250,6 +250,8 @@ var ResultsModel = {
 		Results.model.returnedProducts = [];
 		Results.model.sortedProducts = [];
 		Results.model.filteredProducts = [];
+		Results.model.customFilteredProducts = [];
+		Results.model.popularProducts = [];
 
 		Results.view.flush();
 
@@ -344,7 +346,7 @@ var ResultsModel = {
 						// sort the products by cover level first and if need be, sort by price
 						Results.model.sortedProducts = Results.model.sortedProducts.sort(function(a, b) {
 							if ((typeof a !== 'undefined' && typeof b !== 'undefined') && (a.available === 'Y' && b.available === 'Y')) {
-								return a.info.coverLevel.localeCompare(b.info.coverLevel) || a[priceNode] - b[priceNode];
+								return (a[priceNode] - b[priceNode]);
 							}
 
 							return 0;
@@ -485,6 +487,10 @@ var ResultsModel = {
 
 			Results.pagination.gotoStart(true);
 
+			var config = Results.settings.rankings;
+			if(_.isObject(config) && config.hasOwnProperty("resultsSortedModelToUse") && !_.isUndefined(Results.model[config.resultsSortedModelToUse]) && _.isArray(Results.model[config.resultsSortedModelToUse])) {
+				Results.model[config.resultsSortedModelToUse] = Results.model[config.resultsSortedModelToUse].sort(sortByMethod);
+			}
 		}
 
 	},
@@ -648,46 +654,50 @@ var ResultsModel = {
 
 	filter: function( renderView, doNotGoToStart ){
 
-		var initialProducts = Results.model.sortedProducts.slice();
-		var finalProducts = [];
+		var getFilteredProducts = function(products) {
 
-		var valid, value;
+			var filteredProducts=[], valid, value;
 
-		$.each( initialProducts, function( productIndex, product ){
+			$.each(products, function (productIndex, product) {
 
-			valid = true;
+				valid = true;
 
-			$.each( Results.model.filters, function( filterIndex, filter ){
+				$.each(Results.model.filters, function (filterIndex, filter) {
 
-				value = Object.byString( product, filter.path );
+					value = Object.byString(product, filter.path);
 
-				if( typeof value !== "undefined"){
-					switch( filter.condition ){
-						case "value":
-							valid = Results.model.filterByValue( value, filter.options );
-							break;
-						case "range":
-							valid = Results.model.filterByRange( value, filter.options );
-							break;
-						default:
-							console.log("The filter condition type seems to be erroneous");
-							break;
+					if (typeof value !== "undefined") {
+						switch (filter.condition) {
+							case "value":
+								valid = Results.model.filterByValue(value, filter.options);
+								break;
+							case "range":
+								valid = Results.model.filterByRange(value, filter.options);
+								break;
+							default:
+								console.log("The filter condition type seems to be erroneous");
+								break;
+						}
 					}
-				}
 
-				if (!valid) {
-					return false;
+					if (!valid) {
+						return false;
+					}
+
+				});
+
+				if (valid) {
+					filteredProducts.push(product);
 				}
 
 			});
 
-			if( valid ){
-				finalProducts.push(product);
-			}
+			return filteredProducts;
+		};
 
-		});
 
-		Results.model.filteredProducts = finalProducts;
+		var initialProducts = Results.model.sortedProducts.slice();
+		Results.model.filteredProducts = getFilteredProducts(initialProducts);
 
 		if( typeof Compare !== "undefined" ) Compare.applyFilters();
 
@@ -702,7 +712,147 @@ var ResultsModel = {
 			}
 
 		}
+
+		var config = Results.settings.rankings;
+		if(_.isObject(config) && config.hasOwnProperty("resultsFilteredModelToUse") && !_.isUndefined(Results.model[config.resultsFilteredModelToUse]) && _.isArray(Results.model[config.resultsFilteredModelToUse])) {
+			initialProducts = Results.model[config.resultsFilteredModelToUse];
+			Results.model[config.resultsFilteredModelToUse] = getFilteredProducts(initialProducts);
+		}
+
 	},
+
+    filterUsingExcess: function( renderView, doNotGoToStart ){
+
+        var initialProducts = Results.model.sortedProducts.slice();
+        var finalProducts = [];
+
+        var valid, value;
+
+        $.each( initialProducts, function( productIndex, product ){
+
+            valid = true;
+
+            $.each( Results.model.filters, function( filterIndex, filter ){
+
+                value = Object.byString( product, filter.path );
+
+                if( typeof value !== "undefined"){
+                    switch( filter.condition ){
+                        case "value":
+                            valid = Results.model.filterByValue( value, filter.options );
+                            break;
+                        case "range":
+                            valid = Results.model.filterByRange( value, filter.options );
+                            break;
+                        default:
+                            console.log("The filter condition type seems to be erroneous");
+                            break;
+                    }
+                }
+
+                if (!valid) {
+                    return false;
+                }
+
+            });
+
+            if( valid ) {
+                $.each(product.benefits, function (index, benefit) {
+                    if (benefit.type == 'EXCESS' && benefit.value <= Results.model.travelFilters.EXCESS) {
+                        finalProducts.push(product);
+                    }
+                });
+            }
+
+        });
+
+        Results.model.filteredProducts = finalProducts;
+
+        if( typeof Compare !== "undefined" ) Compare.applyFilters();
+
+        if( renderView !== false ) {
+            if(Results.getFilteredResults().length === 0){
+                Results.view.showNoFilteredResults();
+                $(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
+            }else{
+                Results.view.filter();
+                if (doNotGoToStart === true) { return; }
+                Results.pagination.gotoStart(true);
+            }
+
+        }
+    },
+
+    travelResultFilter: function (renderView, doNotGoToStart, matchAllFilters) {
+        var initialProducts = Results.model.sortedProducts.slice();
+        var finalProducts = [];
+        var _filters = {
+            EXCESS: 0,
+            LUGGAGE: 0,
+            CXDFEE: 0,
+            MEDICAL: 0
+        };
+        var _modelFilters = Results.model.travelFilters;
+
+        $.each(initialProducts, function (productIndex, product) {
+            if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
+                $.each(product.benefits, function (index, benefit) {
+                    switch (benefit.type) {
+                        case 'EXCESS':
+                            _filters.EXCESS = benefit.value;
+                            break;
+                        case 'LUGGAGE':
+                            _filters.LUGGAGE = benefit.value;
+                            break;
+                        case 'CXDFEE':
+                            _filters.CXDFEE = benefit.value;
+                            break;
+                        case 'MEDICAL':
+                            _filters.MEDICAL = benefit.value;
+                            break;
+                    }
+                });
+
+				if (matchAllFilters) {
+                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+						((_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
+                        (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
+                        (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
+                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
+                        finalProducts.push(product);
+                    }
+				} else {
+                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+						((_filters.LUGGAGE >= _modelFilters.LUGGAGE) ||
+                        (_filters.CXDFEE >= _modelFilters.CXDFEE) ||
+                        (_filters.MEDICAL >= _modelFilters.MEDICAL)) &&
+                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1)) {
+                        finalProducts.push(product);
+                    }
+				}
+
+            }
+        });
+
+        Results.model.filteredProducts = finalProducts;
+        Results.model.travelFilteredProductsCount = finalProducts.length;
+
+        if (typeof Compare !== "undefined") Compare.applyFilters();
+
+        if (renderView !== false) {
+            if (Results.getFilteredResults().length === 0) {
+                Results.view.showNoFilteredResults();
+                $(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
+            } else {
+                Results.view.filter();
+                if (doNotGoToStart === true) {
+                    return;
+                }
+                Results.pagination.gotoStart(true);
+            }
+
+        }
+    },
 
 	filterByValue: function(value, options){
 
@@ -726,7 +876,6 @@ var ResultsModel = {
 
 		}
 	},
-
 	filterByRange: function( value, options ){
 
 		if( !options || typeof(options) == "undefined" ){
@@ -781,10 +930,18 @@ var ResultsModel = {
 		Results.model.selectedProduct = false;
 	},
 
-	getResult: function( identifierPathName, value, returnIndex ){
+	setPinnedProduct: function( product ) {
+		return Results.model.pinnedProduct = product;
+	},
 
+	removePinnedProduct: function() {
+		Results.model.pinnedProduct = false;
+	},
+
+	getResult: function( identifierPathName, value, returnIndex ){
 		var result = false;
 		var resultIndex = false;
+
 		$.each( Results.model.returnedProducts, function(index, product){
 			var productValue = Object.byString( product, Object.byString( Results.settings.paths, identifierPathName ) );
 			if( productValue == value ){
@@ -796,8 +953,10 @@ var ResultsModel = {
 
 		if( returnIndex ){
 			return resultIndex;
-		} else {
+		} else if (result) {
 			return result;
+		} else if (Results.getPinnedProduct().productId === value) {
+			return Results.getPinnedProduct();
 		}
 
 	},

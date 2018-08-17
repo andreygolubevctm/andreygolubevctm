@@ -143,11 +143,22 @@
 			<c:otherwise>false</c:otherwise>
 		</c:choose>
 	</c:set>
+
+	<%-- Check and list funds who have special discount functionality required --%>
+	<jsp:useBean id="providerService" class="com.ctm.web.core.provider.services.ProviderService"/>
+	<c:set var="providerPropertyId" value="discountActive" />
+	<c:set var="AUFDiscount" value="${providerService.getProperty(pageContext.request, 1, providerPropertyId)}"/>
+
+	<jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
+	<c:set var="previousTransactionId" value="${data['current/previousTransactionId']}" />
+	<c:set var="hasTouchF" value="${touchService.touchCheck(previousTransactionId, 'F')}" scope="request"  />
+	<competition:africaCompSettings />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	<c:if test="${not empty callCentre}">
 		contactType: "<c:out value="${data['health/simples/contactType']}"/>",
 		isContactTypeTrialCampaign: ${isContactTypeTrialCampaign},
+		styleCodeId: "<c:out value="${pageSettings.getBrandId()}"/>",
 	</c:if>
 	gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
 	<core_v2:affiliateSettings />
@@ -287,5 +298,10 @@
 	ccOpeningHoursText : "<content:get key="ccHoursText" />",
 	situationHealthCvr: "<c:out value="${data['health/situation/healthCvr']}"/>",
 	hasPrimaryCover: "<c:out value="${data['health/healthCover/primary/cover']}"/>",
-	hasPartnerCover: "<c:out value="${data['health/healthCover/partner/cover']}"/>"
+	hasPartnerCover: "<c:out value="${data['health/healthCover/partner/cover']}"/>",
+	hasTouchF: ${hasTouchF},
+	fundDiscounts : {
+		AUF : "${AUFDiscount}"
+	},
+	africaComp: <c:out value="${africaComp}" />
 }

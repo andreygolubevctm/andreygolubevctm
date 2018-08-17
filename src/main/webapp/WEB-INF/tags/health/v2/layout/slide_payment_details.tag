@@ -19,10 +19,21 @@
 
 				<simples:dialogue id="38" vertical="health" mandatory="true" className="simples-dialog-inbound" />
 				<simples:dialogue id="40" vertical="health" mandatory="true" className="simples-dialog-inbound" />
+				<simples:dialogue id="94" vertical="health" mandatory="true" className="simples-dialog-referral" />
+				<simples:dialogue id="95" vertical="health" mandatory="true" className="simples-dialog-referral" />
 
 				<health_v2:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
 				<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 				<health_v2:whats-next />
+
+				<simples:dialogue id="107" vertical="health" />
+
+				<competition:africaCompSettings />
+				<c:if test="${africaComp}">
+					<simples:dialogue id="108" vertical="health" />
+				</c:if>
+
+				<health_v1:fund_timezone_message_modal />
 
 				<c:if test="${callCentre and not empty worryFreePromo and worryFreePromo eq '35'}">
 					<div class="simples-dialogue row-content  optionalDialogue">

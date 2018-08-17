@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.leadService.model.LeadStatus.INBOUND_CALL;
+import static com.ctm.web.core.leadService.model.LeadStatus.RETURN_CLI;
+import static java.util.Arrays.asList;
 
 public abstract class LeadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LeadService.class);
@@ -66,9 +68,13 @@ public abstract class LeadService {
      * Restfully sends the collected lead data to the CtM API endpoint.
      * Normally leads will not be processed when triggered by call centre. The exception is for INBOUND_CALL leads.
      *    (if customer calls us, we need to knock out any of their leads that might be outbounded)
+     *
+     * ######  THIS METHOD IS EXPLICITLY DESIGNED FOR HEALTH LEADS!!! DO NOT USE THIS FOR ANY OTHER VERTICALS  #####
+     *
      */
-    public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus) {
-        if (!SessionUtils.isCallCentre(request.getSession()) || INBOUND_CALL.name().equals(transactionStatus)) {
+    public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus, final String brand) {
+        final LeadStatus leadStatus = LeadStatus.valueOf(transactionStatus);
+        if (!SessionUtils.isCallCentre(request.getSession()) || asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)) {
             try {
                 ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId);
 
@@ -83,7 +89,7 @@ public abstract class LeadService {
                     leadData.setTransactionId(data.getLong("current/transactionId"));
                     leadData.setBrandCode(data.getString("current/brandCode"));
 
-                    leadData.setStatus(LeadStatus.valueOf(transactionStatus));
+                    leadData.setStatus(leadStatus);
 
                     leadData.setClientIP(ipAddressHandler.getIPAddress(request));
 

@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 import static com.ctm.web.simples.services.TransactionService.writeTransactionDetail;
 import static java.util.Optional.ofNullable;
@@ -106,6 +107,8 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
                     .payload(quoteRequest)
                     .build();
 
+            LOGGER.info("Attempting to call clientQuotesV2.post (HealthResponseV2)  {} {} {}", kv("url", properties.getServiceUrl()+"/quote"), kv("timeout", properties.getTimeout()), kv("request", request.getPayload().toString()));
+
             final HealthResponseV2 healthResponse = clientQuotesV2.post(RestSettings.<RatesheetOutgoingRequest<HealthQuoteRequest>>builder()
                     .request(request)
                     .jsonHeaders()
@@ -117,7 +120,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
                     .doOnError(this::logHttpClientError)
                     .observeOn(Schedulers.io()).toBlocking().single();
 
-            final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent);
+            final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent, brand.getCode());
 
             final boolean isShowAll = "Y".equals(data.getQuote().getShowAll()); //showAll = true means they're looking at quotes and the healthResponse.getPayload.getQuotes will contain all the quote entries
             if (!isShowAll) { //showAll = false means they're paying and the healthResponse.getPayload.getQuotes will only contain one entry- the one they're paying for

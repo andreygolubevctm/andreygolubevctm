@@ -2,6 +2,7 @@ package com.ctm.web.car.router;
 
 import com.ctm.web.car.model.CarProduct;
 import com.ctm.web.car.model.form.CarRequest;
+import com.ctm.web.car.model.request.propensityscore.Response;
 import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.car.services.CarQuoteService;
 import com.ctm.web.car.services.CarVehicleSelectionService;
@@ -15,7 +16,11 @@ import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.email.EmailUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,8 +38,14 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 @RequestMapping("/rest/car")
 public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteController.class);
+    public static final int NUM_RESULTS = 10;
     @Autowired
     private CarQuoteService carService;
+    @Autowired
+    private EmailUtils emailUtils;
+
+    private static final String RANK_PRODUCT_ID = "rank.productId";
 
     @Autowired
     public CarQuoteController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
@@ -42,8 +53,8 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     }
 
     @RequestMapping(value = "/quote/get.json",
-            method= RequestMethod.POST,
-            consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
+            method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultsWrapper getCarQuote(@Valid final CarRequest data, HttpServletRequest request) throws Exception {
 
@@ -65,7 +76,7 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     }
 
     @RequestMapping(value = "/more_info/get.json",
-            method= RequestMethod.GET,
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public CarProduct moreInfo(@RequestParam("code") String productId, HttpServletRequest request) throws DaoException {
 
@@ -77,5 +88,28 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
 
         Date applicationDate = ApplicationService.getApplicationDate(request);
         return CarVehicleSelectionService.getCarProduct(applicationDate, productId, brand.getId());
+    }
+
+    /**
+     * Request mapping to retrieve, and persist propensity score for a particular transaction.
+     * propensity score is purchase probability score, that will be used by lead service, and dialer service to prioritize leads.
+     *
+     * @param request
+     */
+    @RequestMapping(value = "/propensityScore.json",
+            method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Response storePropensityScore(HttpServletRequest request, @RequestParam(value = "transactionId") final Long transactionId){
+        try {
+            this.carService.retrieveAndStoreCarQuotePropensityScore(emailUtils.buildParameterList(request, RANK_PRODUCT_ID, NUM_RESULTS), transactionId);
+        }catch (IllegalArgumentException e){
+            return new Response(HttpStatus.CONFLICT, "Propensity score already exists for transaction, and product");
+        } catch (Exception e){
+            LOGGER.error("Exception when trying to save propensity score. {}", e.getMessage());
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong. That's all we know");
+        }
+        return new Response(HttpStatus.OK, "Success");
     }
 }

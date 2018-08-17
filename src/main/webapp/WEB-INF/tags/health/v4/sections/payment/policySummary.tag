@@ -10,7 +10,7 @@
 <%-- Setup variables needed for dual pricing --%>
 <health_v1:dual_pricing_settings />
 
-<div class="sidebar-box<c:if test="${isDualPriceActive eq true}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
+<div class="sidebar-box<c:if test="${isDualPriceActive eq true}"> hasDualPricing</c:if> policySummary-sidebar">
 <c:if test="${isDualPriceActive eq false}">
     <div class="policySummaryContainer ${className}">
         <c:choose>
@@ -23,17 +23,7 @@
                 <div class="policySummaryTemplateHolder productSummary horizontal hidden-md hidden-lg"></div>
             </c:when>
             <c:otherwise>
-                <c:set var="policySummaryTitle">
-                    <c:choose>
-                        <c:when test="${priceBreakdownTest}">
-                            Your Chosen Policy
-                        </c:when>
-                        <c:otherwise>
-                            Your quote details
-                        </c:otherwise>
-                    </c:choose>
-                </c:set>
-                <h1 class="hidden-xs">${policySummaryTitle}</h1>
+                <h1 class="hidden-xs">Your Chosen Policy</h1>
                 <div class="policySummaryTemplateHolder productSummary horizontal"></div>
             </c:otherwise>
         </c:choose>
@@ -74,7 +64,7 @@
 
         </p>
         <div class="footer">
-            <a href="javascript:;" class="open-more-info" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>view more info</a>
+            <a href="javascript:;" class="open-more-info hidden" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>view more info</a>
         </div>
     </div>
 

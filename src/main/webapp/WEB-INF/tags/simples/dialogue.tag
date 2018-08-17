@@ -28,8 +28,8 @@
 			SELECT text FROM ctm.dialogue
 			WHERE dialogueID = ?
 			AND (styleCodeId = ? OR styleCodeId = 0)
-			GROUP BY dialogueId
 			ORDER BY dialogueId, styleCodeId DESC
+			LIMIT 1
 			<sql:param value="${id}" />
 			<sql:param value="${styleCodeId}" />
 		</sql:query>
@@ -57,7 +57,7 @@
 						className="checkbox-custom simples_dialogue-checkbox-${id}"
 						title="${dialogueText}" />
 
-					</div>
+				</div>
 			</c:when>
 			<c:otherwise>
 				${dialogueText}

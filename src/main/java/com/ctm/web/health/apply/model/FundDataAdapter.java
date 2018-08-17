@@ -6,6 +6,7 @@ import com.ctm.web.health.apply.model.request.fundData.Declaration;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
 import com.ctm.web.health.apply.model.request.fundData.ProductId;
 import com.ctm.web.health.apply.model.request.fundData.Provider;
+import com.ctm.web.health.apply.model.request.fundData.HeardAbout;
 import com.ctm.web.health.apply.model.request.fundData.benefits.Benefits;
 import com.ctm.web.health.apply.model.request.fundData.membership.*;
 import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.*;
@@ -38,7 +39,16 @@ public class FundDataAdapter {
                         .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null),
                 createBenefits(quote),
-                createMembership(quote));
+                createMembership(quote),
+                createHeardAbout(quote));
+    }
+
+    protected static HeardAbout createHeardAbout(Optional<HealthQuote> quote) {
+        // Check WFD
+        Optional<HeardAbout> heardAbout = quote.map(HealthQuote::getApplication)
+                .map(Application::getWfd)
+                .map(FundDataAdapter::createHeardAbout);
+        return heardAbout.orElse(null);
     }
 
     protected static Membership createMembership(Optional<HealthQuote> quote) {
@@ -62,6 +72,13 @@ public class FundDataAdapter {
         if (!membership.isPresent()) {
             membership = quote.map(HealthQuote::getApplication)
                     .map(Application::getWfd)
+                    .map(FundDataAdapter::createMembership);
+        }
+
+        // Check for Hif
+        if (!membership.isPresent()) {
+            membership = quote.map(HealthQuote::getApplication)
+                    .map(Application::getHif)
                     .map(FundDataAdapter::createMembership);
         }
 
@@ -254,7 +271,7 @@ public class FundDataAdapter {
                             .orElse(null),
                     cbh.map(Cbh::getPartneremployee)
                             .map(SameGroupMember::valueOf)
-                            .orElse(null));
+                            .orElse(null),null);
         } else {
             return null;
         }
@@ -268,7 +285,7 @@ public class FundDataAdapter {
                             .map(Relationship::toString)
                             .map(RelationshipToPrimary::new)
                             .orElse(null),
-                    null);
+                    null, null);
         } else {
             return null;
         }
@@ -296,9 +313,46 @@ public class FundDataAdapter {
                     wfd.map(Wfd::getPartnerrel)
                             .map(RelationshipToPrimary::new)
                             .orElse(null),
+                    null, null);
+        } else {
+            return null;
+        }
+    }
+
+    protected static Membership createMembership(Hif theHif) {
+        Optional<Hif> hif = Optional.ofNullable(theHif);
+        if (hif.isPresent()) {
+            return new Membership(
+                    null,
+                    null,
+                    null,
+                    null,
+                    createPartnerDetailsHIF(hif),
+                    null,
                     null);
         } else {
             return null;
         }
+    }
+
+    private static PartnerDetails createPartnerDetailsHIF(Optional<Hif> hif) {
+        if (hif.isPresent()) {
+            return new PartnerDetails(
+                    hif.map(Hif::getPartnerrel)
+                            .map(RelationshipToPrimary::new)
+                            .orElse(null),
+                    null,
+                    hif.map(Hif::getPartnerAuthorityLevel)
+                            .orElse(null));
+        } else {
+            return null;
+        }
+    }
+
+    protected static HeardAbout createHeardAbout(Wfd theWfd) {
+        return Optional.ofNullable(theWfd)
+                .map(Wfd::getHeardAbout)
+                .map(HeardAbout::new)
+                .orElse(null);
     }
 }

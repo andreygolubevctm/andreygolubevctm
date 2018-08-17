@@ -126,7 +126,6 @@ var healthFunds_AHM = {
     list += '<option value="VIC">Victorian High Schools</option>';
     list += '<option value="VICT">VIC TAFE</option>';
     list += '<option value="VU">Victoria University</option>';
-    list += '<option value="VUT">Victoria University of Technology</option>';
     list += '<option value="WA">Western Australia-High Schools</option>';
     list += '<option value="WAT">WA TAFE</option>';
     list += '</select>';
@@ -167,7 +166,6 @@ var healthFunds_AHM = {
           'weekends':true,
           'maxDay' : 28
       });
-    healthFunds_AHM.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
     healthFunds_AHM.$paymentType.on('change.AHM', function populateFuturePaymentDaysPaymentType(){
       healthFunds_AHM.populateFuturePaymentDays();
@@ -195,12 +193,15 @@ var healthFunds_AHM = {
        "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
     });
 
-    <%--calendar for start cover--%>
-    if(_.has(meerkat.modules,'healthCoverStartDate')) {
-    	meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 28);
-    } else {
-	    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
-    }
+    <%--fund offset check--%>
+    meerkat.modules.healthFundTimeOffset.onInitialise({
+        weekends: true,
+        coverStartRange: {
+            min: 0,
+            max: 28
+        },
+        renderPaymentDaysCb: healthFunds_AHM.populateFuturePaymentDays
+    });
   },
   populateFuturePaymentDays: function() {
     if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){

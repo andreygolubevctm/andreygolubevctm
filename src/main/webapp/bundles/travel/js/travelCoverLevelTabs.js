@@ -22,7 +22,7 @@
 		disableAnimationsBetweenTabs : true,
 		showCount : true,
 		filter : function() {
-			Results.filterBy("coverLevel", "value", {
+			Results.filterByExcess("coverLevel", "value", {
 				"equals" : "C"
 			}, true);
 		}
@@ -32,7 +32,7 @@
 		defaultTab : false,
 		showCount : true,
 		filter : function() {
-			Results.filterBy("coverLevel", "value", {
+			Results.filterByExcess("coverLevel", "value", {
 				"equals" : "M"
 			}, true);
 
@@ -43,49 +43,83 @@
 		showCount : true,
 		defaultTab : false,
 		filter : function() {
-			Results.filterBy("coverLevel", "value", {
+			Results.filterByExcess("coverLevel", "value", {
 					"equals": "B"
 				}, true);
 			}
 		}],
-		annualMultiTripTabs = [{
-			label: "International <span class='hidden-xs'>Cover</span>",
-			rankingFilter: "I",
-			defaultTab: true,
-			showCount: true,
-			filter: function() {
-				Results.filterBy("coverLevel", "value", {
-					"equals": "I"
-				}, true);
-			}
-		},
-		{
-			label: "Domestic <span class='hidden-xs'>Cover</span>",
-			rankingFilter: "D",
-			defaultTab: false,
-			showCount: true,
-			filter: function() {
-				Results.filterBy("coverLevel", "value", {
-					"equals": "D"
-				}, true);
-			}
-		}],
+		intAnnualMultiTripTabs = [{
+            label : "Comprehensive <span class='hidden-xs'>Cover</span>",
+            rankingFilter : "CI",
+            defaultTab : true,
+            disableAnimationsBetweenTabs : true,
+            showCount : true,
+            filter : function() {
+                Results.filterByExcess("coverLevel", "value", {
+                    "equals" : "CI"
+                }, true);
+            }
+        }, {
+            label : "Mid Range <span class='hidden-xs'>Cover</span>",
+            rankingFilter : "MI",
+            defaultTab : false,
+            showCount : true,
+            filter : function() {
+                Results.filterByExcess("coverLevel", "value", {
+                    "equals" : "MI"
+                }, true);
+
+            }
+        }, {
+            label : "Basic <span class='hidden-xs'>Cover</span>",
+            rankingFilter : "BI",
+            showCount : true,
+            defaultTab : false,
+            filter : function() {
+                Results.filterByExcess("coverLevel", "value", {
+                    "equals": "BI"
+                }, true);
+            }
+        }],
+		domesticANNUALmultiTripTabs = [{
+            label: "Domestic <span class='hidden-xs'>Cover</span>",
+            rankingFilter: "D",
+            defaultTab: true,
+            showCount: true,
+            filter: function() {
+                Results.filterByExcess("coverLevel", "value", {
+                    "equals": "D"
+                }, true);
+            }
+        }],
 		$policyType,
 		initialised = false;
 
 
-	function initTravelCoverLevelTabs() {
-		if(!initialised) {
+	function initTravelCoverLevelTabs(isAmtDomestic, reInit) {
+		if(!initialised || reInit) {
 			initialised = true;
 
 			var options = {
 				enabled: true,
 				tabCount: 3,
-				activeTabSet: getActiveTabSet(),
+				activeTabSet: getActiveTabSet(isAmtDomestic),
 				hasMultipleTabTypes: true,
-				verticalMapping: tabMapping()
+				verticalMapping: tabMapping(),
+				callback: function () {
+                    var destination = $('#travel_destination').val();
+                    // hide filters for mobile, tablet & AMT
+                    if (isAMT() || destination === 'AUS') {
+                        $('.clt-trip-filter').hide();
+                        $('.mobile-cover-type').show();
+                    } else {
+                        $('.clt-trip-filter').show();
+                    }
+                    // show amt filter if in AMT journey
+                    $('.amt-filter').toggle(isAMT());
+                }
 			};
-			meerkat.modules.coverLevelTabs.initCoverLevelTabs(options);
+			meerkat.modules.coverLevelTabs.initCoverLevelTabs(options, reInit);
 
 			meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
 				if (eventObject.activeTab == "D") {
@@ -104,51 +138,30 @@
 			C: 'Comprehensive',
 			M: 'Mid Range',
 			B: 'Basic',
-			I: 'International',
+			CI: 'Comprehensive',
+            MI: 'Mid Range',
+            BI: 'Basic',
 			D: 'Domestic'
 		};
 	}
 
+    /**
+	 * Check if the journey is AMT or SingleTrip
+     * @returns {Boolean}
+     */
+	function isAMT() {
+        return $('input[name=travel_policyType]:checked').val() === 'A';
+    }
+
 	/**
 	 * Retrieve the tab object to use based on specific criteria
 	 */
-	function getActiveTabSet() {
-		switch ($('input[name=travel_policyType]:checked').val()) {
-		case 'A':
-			return annualMultiTripTabs;
-		case 'S':
-			return singleTripTabs;
-		}
-	}
+	function getActiveTabSet(isAmtDomestic) {
+	    if (isAMT()) {
+	        return isAmtDomestic ? domesticANNUALmultiTripTabs : intAnnualMultiTripTabs;
+        }
 
-	/** HELPER METHODS FOR COVER LEVEL TAB TESTS **/
-
-	function setDefaultCoverLevelTab(tab) {
-		if(!_.isEmpty(tab) && _.isString(tab)) {
-			tab = tab.toUpperCase();
-			var tab_obj = null;
-			if(_.indexOf(['C','M','B'], tab) >= 0) {
-				tab_obj = singleTripTabs;
-			} else if (_.indexOf(['I','D'], tab) >= 0) {
-				tab_obj = annualMultiTripTabs;
-			}
-			if(!_.isNull(tab_obj)) {
-				for(var i=0; i<tab_obj.length; i++) {
-					tab_obj[i].defaultTab = false;
-					if(tab_obj[i].rankingFilter === tab) {
-						tab_obj[i].defaultTab = true;
-					}
-				}
-			}
-		}
-	}
-
-	function setDefaultSingleCoverLevelTab(tab) {
-		setDefaultCoverLevelTab(tab);
-	}
-
-	function setDefaultMultiCoverLevelTab(tab) {
-		setDefaultCoverLevelTab(tab);
+        return singleTripTabs;
 	}
 
 	function getCurrentCoverLevelTab() {
@@ -164,7 +177,7 @@
 	 */
 	function updateSettings() {
 		if(meerkat.modules.coverLevelTabs.isEnabled()) {
-			meerkat.modules.coverLevelTabs.resetView(getActiveTabSet());
+			meerkat.modules.coverLevelTabs.resetView(getActiveTabSet(meerkat.modules.travel.isAmtDomesticOnLoadJourney()));
 		}
 	}
 
@@ -172,8 +185,6 @@
 		initTravelCoverLevelTabs : initTravelCoverLevelTabs,
 		events : events,
 		updateSettings : updateSettings,
-		setDefaultSingleCoverLevelTab : setDefaultSingleCoverLevelTab,
-		setDefaultMultiCoverLevelTab : setDefaultMultiCoverLevelTab,
 		getCurrentCoverLevelTab : getCurrentCoverLevelTab
 	});
 

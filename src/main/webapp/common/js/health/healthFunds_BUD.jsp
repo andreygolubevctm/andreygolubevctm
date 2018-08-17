@@ -40,9 +40,6 @@ var healthFunds_BUD = {
 			healthFunds_BUD.updateMessage();
 		});
 
-		<%--allow weekend selection from the datepicker--%>
-		healthFunds_BUD.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
-
 		<%-- change age of dependants and school --%>
 		meerkat.modules.healthDependants.updateConfig({school: false});
 		meerkat.modules.healthDependants.setMaxAge(25);
@@ -58,12 +55,14 @@ var healthFunds_BUD = {
 		meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
 		meerkat.modules.healthCreditCard.render();
 
-		<%-- calendar for start cover --%>
-		if(_.has(meerkat.modules,'healthCoverStartDate')) {
-			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
-		} else {
-			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
-		}
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: true,
+            coverStartRange: {
+                min: 0,
+                max: 30
+            }
+        });
 
 		<%-- Unset the refund optin radio buttons --%>
 		healthFunds_BUD.$claimsAccountOptin.find("input:checked").each(function(){
@@ -100,6 +99,7 @@ var healthFunds_BUD = {
 		messageField.text(messageText);
 	},
 	unset: function(){
+
         meerkat.modules.healthFunds._reset();
 
 		<%-- dependant definition off --%>

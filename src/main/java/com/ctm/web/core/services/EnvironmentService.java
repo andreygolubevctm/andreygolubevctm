@@ -123,11 +123,29 @@ public class EnvironmentService {
 	 * Developers should NEVER specific a brand code param on an environment controlled by the F5 gateway!
 	 */
 	public static boolean needsManuallyAddedBrandCodeParam() throws EnvironmentException {
-		return getEnvironment() == Environment.LOCALHOST || 
-				getEnvironment() == Environment.NXI || 
-				getEnvironment() == Environment.NXS || 
+		return getEnvironment() == Environment.LOCALHOST ||
+				getEnvironment() == Environment.NXI ||
+				getEnvironment() == Environment.NXS ||
 				getEnvironment() == Environment.NXQ;
+	}
+
+	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode, String verticalCode) throws EnvironmentException {
+
+		if ( brandCode != null && verticalCode != null &&  (brandCode.equalsIgnoreCase("wfdd") || brandCode.equalsIgnoreCase("bddd")) && ( verticalCode.equalsIgnoreCase("HEALTH") || verticalCode.equalsIgnoreCase("SIMPLES"))) {
+			return true;
 		}
+
+		return needsManuallyAddedBrandCodeParam();
+	}
+
+	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode) throws EnvironmentException {
+
+		if (brandCode != null && (brandCode.equalsIgnoreCase("wfdd") || brandCode.equalsIgnoreCase("bddd"))) {
+			return true;
+		}
+
+		return needsManuallyAddedBrandCodeParam();
+	}
 
 	/**
 	 * Load the WAR's manifest.mf file, collect the Identifier property.

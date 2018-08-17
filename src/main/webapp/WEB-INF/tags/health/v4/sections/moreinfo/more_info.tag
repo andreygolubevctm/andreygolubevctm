@@ -55,6 +55,10 @@
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
 	{{ var product = Results.getSelectedProduct(); }}
 	{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
+
+	<%-- Get the HTML header for mobile --%>
+	{{ var headerMobileHtml = meerkat.modules.healthMoreInfo.getAffixedMobileHeaderData(); }}
+
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
 			<c:when test="${isDualPriceActive eq true}">hidden-xs</c:when>
@@ -64,6 +68,9 @@
 	<c:set var="variantClassName">
 		<c:if test="${moreinfo_splittest_default eq false}">more-info-content-variant</c:if>
 	</c:set>
+
+	{{= headerMobileHtml }}
+
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
@@ -258,6 +265,12 @@
 					</div>
 				</div>
                 <reward:campaign_tile_container_xs />
+
+				<div class="row">
+					<div class="col-sm-4 col-sm-push-4">
+						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+					</div>
+				</div>
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
@@ -265,7 +278,11 @@
 					<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
 				</div>
 
+				<ad_containers:sidebar_top />
+
                 <reward:campaign_tile_container />
+
+				<health_v4:price_promise step="results/moreinfo" />
 
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
                     <h3>Switching is simple!</h3>
@@ -277,12 +294,7 @@
                     </ul>
                 </div>
 
-                <div class="sidebar-widget sidebar-widget-padded">
-                    <h3>What is the Benefit Limitation Period?</h3>
-                    <p>If your policy has benefit limitation periods, you will only be entitled to restricted benefits (as described above) for a set time. For example, you may decide to take out a policy that only pays restricted benefits for Heart surgery for the first two years membership of the policy. After two years membership, you would then normally be entitled to full benefits for Heart surgery.</p>
-                    <p>
-                        Where a waiting period already applies for a particular condition or treatment, funds may begin the benefit limitation period from the end of the normal waiting period.</p>
-                </div>
+				<ad_containers:sidebar_bottom />
 
             </div>
 		</div>

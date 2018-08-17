@@ -25,13 +25,15 @@
 
 		<c:if test="${isDualPriceActive eq true}">
 			<div class="alert alert-info">
-				Remember: Premiums will rise from <span class="pricingDate"></span>. You <b>must</b> select a cover start date <b>before <span class="pricingDate"></span></b> to be eligible for the lower rate.
+				Remember: Premiums will rise from 1st April. You <b>must</b> select a cover start date <b>before <span class="pricingDateText"></span></b> and a payment start date <b>before <span class="dropDeadDateText"></span></b> to be eligible for the lower rate
 			</div>
 		</c:if>
 
 		<div class="fundWarning alert alert-danger">
 				<%-- insert fund warning data --%>
 		</div>
+
+		<simples:dialogue id="110" vertical="health" className="red" />
 
 		<health_v2:calendar xpath="${xpath}" />
 
@@ -48,7 +50,7 @@
 		</form_v3:row>
 
 		<c:if test="${isDualPriceActive eq true}">
-			<div class="hidden frequencyWarning definition alert alert-info"></div>
+			<div class="hidden frequencyWarning simples-dialogue mandatory"></div>
 		</c:if>
 
 		<c:set var="fieldXpath" value="${xpath}/claims" />
@@ -56,8 +58,9 @@
 			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims"/>
 		</form_v3:row>
 
-		<simples:dialogue id="79" vertical="health" className="hidden" />
-		<simples:dialogue id="80" vertical="health" className="hidden" />
+		<simples:dialogue id="105" vertical="health" className="hidden simples-affiliate-dialogue" />
+
+		<health_v2:price_promise_check xpath="health/price_promise" />
 
 		<health_v2:vouchers xpath="health/voucher" />
 

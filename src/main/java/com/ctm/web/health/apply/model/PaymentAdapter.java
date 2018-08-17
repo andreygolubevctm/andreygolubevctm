@@ -29,7 +29,7 @@ import static java.util.Arrays.asList;
 
 public class PaymentAdapter {
 
-    private static final List<String> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK = asList("BUD", "FRA", "GMH", "AHM", "QTU", "NIB");
+    private static final List<String> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK = asList("BUD", "CUA", "FRA", "GMH", "AHM", "QTU", "NIB", "MYO", "HIF", "WFD");
 
 
     public static Payment createPayment(Optional<HealthQuote> quote) {

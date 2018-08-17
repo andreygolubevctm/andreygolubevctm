@@ -50,12 +50,13 @@ public class HealthConfirmationService {
                     StringUtils.removeStart(dataBucket.getString("confirmation/health"), "<![CDATA["),
                     "]]>");
             String frequency = Frequency.findByDescription(data.getQuote().getPayment().getDetails().getFrequency()).getCode();
-            String next = getContent(request, providerName, "NXT");
-            String about = getContent(request, providerName, "ABT");
+            String next = getContent(request, providerName, dataBucket.getString("current/brandCode"),"NXT");
+            String about = getContent(request, providerName, dataBucket.getString("current/brandCode"),"ABT");
             String firstName = data.getQuote().getApplication().getPrimary().getFirstname();
             String surname = data.getQuote().getApplication().getPrimary().getSurname();
             String paymentType =  data.getQuote().getPayment().getDetails().getType();
             ProviderInfo providerInfo = providerContentService.getProviderInfo(request, providerName);
+            String voucherValue = dataBucket.getString("health/voucher/value");
             final ConfirmationData confirmationData = ConfirmationData.newConfirmationData()
                     .about(about)
                     .transID(data.getTransactionId().toString())
@@ -67,6 +68,7 @@ public class HealthConfirmationService {
                     .policyNo(response.getProductId())
                     .paymentType(paymentType)
                     .redemptionId(Optional.ofNullable((String) dataBucket.get(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID)).orElse(""))
+                    .voucherValue(Optional.ofNullable(voucherValue).orElse(""))
                     .build();
 
             Confirmation confirmation = new Confirmation();
@@ -80,8 +82,8 @@ public class HealthConfirmationService {
         }
     }
 
-    private String getContent(HttpServletRequest request, String providerName, String key) throws ConfigSettingException, DaoException {
+    private String getContent(HttpServletRequest request, String providerName,  String styleCode, String key) throws ConfigSettingException, DaoException {
         return providerContentService.getProviderContentText(request,
-                providerName, key);
+                providerName, styleCode, key);
     }
 }

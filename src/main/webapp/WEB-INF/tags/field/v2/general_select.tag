@@ -14,6 +14,7 @@
 <%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
 <%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 <%@ attribute name="additionalLabelAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
+<%@ attribute name="excludeCodes" required="false"	rtexprvalue="true"	 description="Exclude Codes is used to exclude items with a matching code. Format: code1,code2" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>
@@ -42,11 +43,19 @@
     <c:set var="additionalAttributes" value='${additionalAttributes}  data-disable-error-container="true" '/>
 </c:if>
 
+<c:if test="${empty excludeCodes}">
+    <c:set var="excludeCodes" value=""/>
+</c:if>
+
 <%-- HTML --%>
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <sql:query var="result">
-    SELECT code, description FROM aggregator.general WHERE type = ? AND (status IS NULL OR status != 0) ORDER BY orderSeq
+    SELECT code, description FROM aggregator.general WHERE type = ? AND (status IS NULL OR status != 0)
+    <c:if test="${not empty excludeCodes}">
+        AND code NOT IN (${excludeCodes})
+    </c:if>
+    ORDER BY orderSeq
 <sql:param>${type}</sql:param>
 </sql:query>
 

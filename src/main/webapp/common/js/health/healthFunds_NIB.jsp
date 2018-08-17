@@ -22,7 +22,7 @@ var healthFunds_NIB = {
         meerkat.modules.healthFunds.showHowToSendInfo('NIB', true);
 
         <%-- Previous funds --%>
-        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr({'maxlength': '10', 'data-rule-digits': true, 'data-msg-digits': 'Letters not allowed'});
             
         <%-- Partner authority--%>
         meerkat.modules.healthFunds._partner_authority(true);
@@ -35,12 +35,15 @@ var healthFunds_NIB = {
 
         meerkat.modules.healthFunds._previousfund_authority(true);
 
-        <%--calendar for start cover--%>
-	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
-		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
-        } else {
-		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
-	    }
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: true,
+            coverStartRange: {
+                min: 0,
+                max: 29
+            },
+            renderPaymentDaysCb: healthFunds_NIB.renderPaymentDays
+        });
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
@@ -109,7 +112,7 @@ var healthFunds_NIB = {
                  calendar on the application step, due to the cover start date being moved to the application step. --%>
             <%--healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');--%>
         } else {
-            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27});
+            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'effectiveDate', 'maxDay' : 27});
             <%-- Redundant code, due to the fact that rules are getting triggered on the payment step for cover start date
                  calendar on the application step, due to the cover start date being moved to the application step. --%>
             <%--healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');--%>
@@ -152,6 +155,9 @@ var healthFunds_NIB = {
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();
         meerkat.modules.healthCreditCard.render();
+
+        <%-- Previous fund details --%>
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength').removeAttr('data-rule-digits').removeAttr('data-msg-digits');
 
         <%-- Medicare Fields --%>
         healthFunds_NIB.$medicareFirstname.add(healthFunds_NIB.$medicareLastname).removeAttr('maxlength').removeAttr('data-rule-personNameLtd').attr('data-rule-personName','true');

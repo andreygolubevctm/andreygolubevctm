@@ -71,6 +71,11 @@ ${newPage.init(pageContext.request, pageSettings)}
 	</c:choose>
 </c:set>
 
+<%-- Capture brandCode provided in the URL --%>
+<c:set var="urlStyleCodeId">
+	<c:if test="${not empty param.brandCode and (fn:toLowerCase(param.brandCode) eq 'wfdd' or fn:toLowerCase(param.brandCode) eq 'bddd')}">${fn:toLowerCase(param.brandCode)}</c:if>
+</c:set>
+
 <!DOCTYPE html>
 <go:html>
 <head>
@@ -155,17 +160,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 			<div class="dynamicTopHeaderContent">
 				<content:get key="topHeaderContent" />
-					<c:if test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest(), 'minimumSupportedBrowsers') eq false}">
-						<div class="top-bar">
-							<a href="http://browsehappy.com/" target="_blank" class="hidden-xs">
-								Please be aware that any issues you experience on our site could be due to the browser you are using. You may be able to fix these issues by updating your browser.
-							</a>
-							<span class="icon icon-cross unsupported-browser-close hidden-lg hidden-md hidden-sm" id="js-close-unsupported-browser"></span>
-							<span class="visible-xs">
-								Please be aware that any issues you experience on our site could be due to the browser you are using. You may be able to fix these issues by <a href="http://browsehappy.com/" target="_blank" class="hidden-lg hidden-md hidden-sm">updating your browser.</a>
-							</span>
-						</div>
-					</c:if>
 				<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
 				<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
 					<content:get key="competitionApplicationTopHeaderContent" />
@@ -310,6 +304,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 						title: '${title} - ${pageSettings.getSetting("windowTitle")}',
 						name: '${pageSettings.getSetting("brandName")}',
 						vertical: '${pageSettings.getVerticalCode()}',
+						urlStyleCodeId: "${urlStyleCodeId}",
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
 						minifiedFileString: '${pageSettings.getSetting('minifiedFileString')}',
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,

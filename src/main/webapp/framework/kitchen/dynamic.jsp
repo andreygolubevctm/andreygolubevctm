@@ -370,6 +370,18 @@
 		<field_v2:array_radio style="group" items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadioGroup" xpath="${xpath}/new/arrayRadioGroup" title="array_radio_group" required="true" />
 	</form_v2:row>
 
+	<form_v2:row label="array_radio (horizontal)">
+		<field_v2:array_radio style="horizontal" items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadioHorizontal" xpath="${xpath}/new/arrayRadioHorizontal" title="array_radio_horizontal" required="true" />
+	</form_v2:row>
+
+	<form_v2:row label="array_radio (vertical)">
+		<field_v2:array_radio style="vertical" items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadioVertical" xpath="${xpath}/new/arrayRadioVertical" title="array_radio_vertical" required="true" />
+	</form_v2:row>
+
+	<form_v2:row label="array_radio (group-tile)">
+		<field_v2:array_radio style="group-tile" items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadioGroupTile" xpath="${xpath}/new/arrayRadioGroupTile" title="array_radio_group_tile" required="true" />
+	</form_v2:row>
+
 	<form_v2:row label="bsb_number" helpId="1">
 		<field_v2:bsb_number xpath="${xpath}/new/bsb" title="bsb number" required="true" />
 	</form_v2:row>

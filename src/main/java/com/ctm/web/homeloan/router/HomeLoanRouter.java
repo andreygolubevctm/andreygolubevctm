@@ -120,14 +120,8 @@ public class HomeLoanRouter extends HttpServlet {
 
 			try {
 				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.HOMELOAN.getCode());
-
 				json = service.scheduledLeadGenerator(request);
-
-				if (!json.has("flexOutboundLeads") || json.getJSONArray("flexOutboundLeads").length() == 0) {
-					throw new DaoException("HomeLoan scheduledLeadGenerator returned an empty JSON object");
-				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				LOGGER.error("HomeLoan scheduledLeadGenerator failed", e);
 
 				Error error = new Error();

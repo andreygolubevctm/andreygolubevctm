@@ -1,6 +1,10 @@
 package com.ctm.web.core.model;
 
-public class Unsubscribe {
+import java.io.Serializable;
+
+public class Unsubscribe implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String vertical;
 	private EmailMaster emailDetails = new EmailMaster();

@@ -61,8 +61,6 @@
             _limit -= meerkat.modules.healthFunds.getPayments().min;
         }
 
-
-
         var _html = '<option value="">Please choose...</option>';
 
         // The loop to create the payment days

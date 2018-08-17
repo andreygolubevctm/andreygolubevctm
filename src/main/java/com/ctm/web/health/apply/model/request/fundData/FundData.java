@@ -31,14 +31,19 @@ public class FundData {
 
     private final Membership membership;
 
+	@JsonSerialize(using = TypeSerializer.class)
+	private final HeardAbout heardAbout;
+
     public FundData(final Provider provider, final ProductId product, final Declaration declaration,
-                    final LocalDate startDate, final Benefits benefits, final Membership membership) {
+                    final LocalDate startDate, final Benefits benefits, final Membership membership,
+                    final HeardAbout heardAbout) {
         this.provider = provider;
         this.product = product;
         this.declaration = declaration;
         this.startDate = startDate;
         this.benefits = benefits;
         this.membership = membership;
+        this.heardAbout = heardAbout;
     }
 
     public Provider getProvider() {
@@ -63,5 +68,9 @@ public class FundData {
 
     public Membership getMembership() {
         return membership;
+    }
+
+    public HeardAbout getHeardAbout() {
+        return heardAbout;
     }
 }

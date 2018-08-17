@@ -217,7 +217,7 @@
                         // continue to next step...
                         _.delay(function () {
                             processStep(index + 1, callback);
-                        },200);
+                        }, 300);
 
                     });
                 }catch(e){
@@ -832,27 +832,26 @@
         return meerkat.modules.form.getSerializedData( $("#mainform") );
     }
 
-    function loadingShow(message, showInstantly) {
-        message = message || 'Please wait...';
-        showInstantly = showInstantly || false;
-
+    function loadingShow(message, showInstantly, footerMessage) {
+        var messageText = message || 'Please wait...';
         var $ele = $('#journeyEngineLoading');
+        
+        if (footerMessage) {
+          $ele.append('<div id="loading-footer"><span>' + footerMessage + '</span></div>');
+        }
 
-        if($ele.attr('data-active') !== '1'){
+        if ($ele.attr('data-active') !== '1'){
             $ele.attr('data-active', '1');
-
-            $ele.find('.message').attr('data-oldtext', $ele.find('.message').text()).text(message);
-
+            $ele.find('.message').attr('data-oldtext', $ele.find('.message').text()).text(messageText);
             $ele.addClass('displayBlock');
-            if(showInstantly){
+            if (showInstantly){
                 $ele.addClass('opacity1');
-            }else{
+            } else {
                 _.defer(function(){
                     $ele.addClass('opacity1');
                 });
             }
         }
-
     }
 
     function loadingHide() {
@@ -870,6 +869,7 @@
                 $ele.find('.message').text( $ele.find('.message').attr('data-oldtext') );
             }
         },speed);
+        $('#loading-footer').remove();
     }
 
     function updateCurrentStepHiddenField( step ){

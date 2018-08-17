@@ -10,9 +10,12 @@ public class PartnerDetails {
 
     private SameGroupMember sameGroupMember;
 
-    public PartnerDetails(RelationshipToPrimary relationshipToPrimary, SameGroupMember sameGroupMember) {
+    private String partnerAuthorityLevel;
+
+    public PartnerDetails(RelationshipToPrimary relationshipToPrimary, SameGroupMember sameGroupMember, String partnerAuthorityLevel) {
         this.relationshipToPrimary = relationshipToPrimary;
         this.sameGroupMember = sameGroupMember;
+        this.partnerAuthorityLevel = partnerAuthorityLevel;
     }
 
     public RelationshipToPrimary getRelationshipToPrimary() {
@@ -22,4 +25,9 @@ public class PartnerDetails {
     public SameGroupMember getSameGroupMember() {
         return sameGroupMember;
     }
+
+    public String getPartnerAuthorityLevel() {
+        return partnerAuthorityLevel;
+    }
+
 }

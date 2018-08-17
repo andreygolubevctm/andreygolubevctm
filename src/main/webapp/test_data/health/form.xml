@@ -6,12 +6,12 @@
 	<contactDetails>
 		<name>Guybrush</name>
 		<contactNumber>
-			<mobileinput>0404 040 000</mobileinput>
-			<mobile>0404040000</mobile>
+			<mobileinput>0444 258 369</mobileinput>
+			<mobile>0444258369</mobile>
 			<otherinput>(07) 3333 4444</otherinput>
 			<other>0733334444</other>
 		</contactNumber>
-		<flexiContactNumber>0404 123 123</flexiContactNumber>
+		<flexiContactNumber>0444258369</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
 		<postcode>4000</postcode>
 		<optInEmail>Y</optInEmail>
@@ -119,7 +119,7 @@
 		<primary>
 			<title>MR</title>
 			<firstname>Lechuck</firstname>
-			<middleName>Middle</middleName>
+			<middleName></middleName>
 			<surname>O'User-User</surname>
 			<dob>25/01/1967</dob>
 			<gender>M</gender>
@@ -127,7 +127,7 @@
 		<partner>
 			<title>MRS</title>
 			<firstname>Elayne</firstname>
-			<middleName>Middlepa</middleName>
+			<middleName></middleName>
 			<surname>O'User-User</surname>
 			<dob>31/12/1979</dob>
 			<gender>F</gender>
@@ -285,8 +285,8 @@
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant12>
 		</dependants>
-		<mobileinput>(0404) 000 000</mobileinput>
-		<mobile>0404000000</mobile>
+		<mobileinput>(0444) 258 369</mobileinput>
+		<mobile>0444258369</mobile>
 	</application>
 	<declaration>Y</declaration>
 	<simples>
@@ -300,9 +300,7 @@
 		<dialogue-checkbox-45>Y</dialogue-checkbox-45>
 		<dialogue-checkbox-51>Y</dialogue-checkbox-51>
 		<dialogue-checkbox-54>Y</dialogue-checkbox-54>
-		<dialogue-checkbox-62a>Y</dialogue-checkbox-62a>
-		<dialogue-checkbox-62b>Y</dialogue-checkbox-62b>
-		<dialogue-checkbox-62c>Y</dialogue-checkbox-62c>
+		<dialogue-checkbox-62>Y</dialogue-checkbox-62>
 		<dialogue-checkbox-33>Y</dialogue-checkbox-33>
 		<dialogue-checkbox-58>Y</dialogue-checkbox-58>
 		<dialogue-checkbox-30>Y</dialogue-checkbox-30>

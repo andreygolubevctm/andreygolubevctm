@@ -8,7 +8,7 @@
             WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
         },
         stateSubmitInProgress = false,
-        $submitBtns = $('.slide-control-submit-application, #paymentDetailsForm + .row .journeyNavButton');
+        $submitBtns = $('.slide-control-submit-application, #paymentDetailsForm .journeyNavButton');
 
     function initHealthSubmitApplication() {
         _applyEventListeners();
@@ -47,10 +47,10 @@
             if (valid) {
                 if(meerkat.site.environmentCode.toLowerCase() === 'pro' && meerkat.modules.performanceProfiling.amILocal()) {
                 	if(confirm("WARNING: PLEASE BE AWARE THAT YOU ARE IN PRODUCTION. DO NOT SUBMIT A PRODUCTION JOIN UNLESS REQUIRED. OK to submit sale, CANCEL to cancel")) {
-		                _submitApplication();
+                        meerkat.modules.healthFundTimeOffset.checkBeforeSubmit(_submitApplication);
 	                }
                 } else {
-	                _submitApplication();
+	                meerkat.modules.healthFundTimeOffset.checkBeforeSubmit(_submitApplication);
                 }
             }
         });
@@ -65,6 +65,9 @@
         stateSubmitInProgress = true;
 
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
+
+        // Update popular products purchased xpath
+        meerkat.modules.healthPopularProducts.updatePurchased();
 
         try {
 

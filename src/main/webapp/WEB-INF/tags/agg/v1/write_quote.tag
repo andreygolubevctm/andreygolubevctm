@@ -451,17 +451,23 @@
 	<c:choose>
 		<%-- If transaction is Failed/Pending (F), only call centre can edit the transaction --%>
 		<c:when test="${confirmationQuery.rows[0]['editable'] == 'F'}">
-			${leadService.sendLead(4, data, pageContext.getRequest(), 'PENDING')}
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'PENDING', brand )}
 		</c:when>
 		<c:when test="${confirmationQuery.rows[0]['editable'] == 'C'}">
-			${leadService.sendLead(4, data, pageContext.getRequest(), 'SOLD')}
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'SOLD', brand)}
 		</c:when>
 		<c:when test="${not empty data['health/simples/contactType'] && data['health/simples/contactType'] == 'inbound'}">
 			<%-- Consultant has flagged this transaction as an inbound call --%>
-			${leadService.sendLead(4, data, pageContext.getRequest(), 'INBOUND_CALL')}
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'INBOUND_CALL', brand)}
 		</c:when>
+		<%--
+		<c:when test="${not empty data['health/simples/contactType'] && data['health/simples/contactType'] == 'cli'}">
+			< % - - Consultant has flagged this transaction as an return cli - - % >
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'RETURN_CLI', brand)}
+		</c:when>
+		--%>
 		<c:otherwise>
-			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN')}
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN', brand)}
 		</c:otherwise>
 	</c:choose>
 </c:if>
@@ -572,7 +578,7 @@
 							<sql:param>pendingID</sql:param>
 							<sql:param>${pendingID}</sql:param>
 						</sql:update>
-				</c:if>
+					</c:if>
 				</c:if>
 				<%-- END STICKY CONTENT --%>
 
@@ -589,92 +595,101 @@
 				<c:choose>
 					<%-- Only proceed if the transforms above have been successful --%>
 					<c:when test="${not empty dataXpaths}">
-				<c:set var="counter" value="0" />
-				<c:forEach items="${dataXpaths.split('#~#')}" var="xpathAndVal" varStatus="status" >
-					<c:set var="xpath" value="${fn:substringBefore(xpathAndVal,'=')}" />
-					<c:set var="xpath" value="${fn:substringAfter(xpath,'/')}" />
-					<c:set var="rowVal" value="${fn:substringAfter(xpathAndVal,'=')}" />
-					<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
+						<c:set var="counter" value="0" />
+						<c:forEach items="${dataXpaths.split('#~#')}" var="xpathAndVal" varStatus="status" >
+							<c:set var="xpath" value="${fn:substringBefore(xpathAndVal,'=')}" />
+							<c:set var="xpath" value="${fn:substringAfter(xpath,'/')}" />
+							<c:set var="rowVal" value="${fn:substringAfter(xpathAndVal,'=')}" />
+							<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
 
-					<%-- Cap the value to a certain length so we don't get database errors --%>
-					<c:if test="${fn:length(rowVal) > 900}"><c:set var="rowVal" value="${fn:substring(rowVal, 0, 900)}" /></c:if>
+							<%-- Cap the value to a certain length so we don't get database errors --%>
+							<c:if test="${fn:length(rowVal) > 900}"><c:set var="rowVal" value="${fn:substring(rowVal, 0, 900)}" /></c:if>
 
-					<c:choose>
+							<c:choose>
 
-						<%-- Ignore empty values first and foremost --%>
-						<c:when test="${empty fn:trim(rowVal)}"></c:when>
+								<%-- Ignore empty values first and foremost --%>
+								<c:when test="${empty fn:trim(rowVal)}"></c:when>
 
-						<%-- Ignore if field is blacklisted --%>
-						<c:when test="${tranDao.isBlacklisted(xpath) eq true}"></c:when>
-						<%-- Ignore if no privacy optin and is privacy optin dependant --%>
-						<c:when test="${hasPrivacyOptin eq false and tranDao.isPersonallyIdentifiableInfo(xpath) eq true}"></c:when>
+								<%-- Ignore if field is blacklisted --%>
+								<c:when test="${tranDao.isBlacklisted(xpath) eq true}"></c:when>
+								<%-- Ignore if no privacy optin and is privacy optin dependant --%>
+								<c:when test="${hasPrivacyOptin eq false and tranDao.isPersonallyIdentifiableInfo(xpath) eq true}"></c:when>
 
-						<%-- Misc other fields/values to ignore --%>
-						<c:when test="${fn:startsWith(rowVal, 'Please choose')}"></c:when>
-						<c:when test="${fn:startsWith(rowVal, 'ignoreme')}"></c:when>
-	<c:when test="${xpath=='/operatorid'}"></c:when>
-						<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(item.value,'json')}"></c:when>
-						<c:when test="${fn:contains(rootPath,'frontend') and xpath == '/'}"></c:when>
-						<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(xpath,'sendConfirm')}"></c:when>
+								<%-- Misc other fields/values to ignore --%>
+								<c:when test="${fn:startsWith(rowVal, 'Please choose')}"></c:when>
+								<c:when test="${fn:startsWith(rowVal, 'ignoreme')}"></c:when>
+								<c:when test="${xpath=='/operatorid'}"></c:when>
+								<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(item.value,'json')}"></c:when>
+								<c:when test="${fn:contains(rootPath,'frontend') and xpath == '/'}"></c:when>
+								<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(xpath,'sendConfirm')}"></c:when>
 
-						<%-- Otherwise we're good to write --%>
-	<c:otherwise>
-								
-							<c:set var="counter" value="${counter + 1}" />
+								<%-- Otherwise we're good to write --%>
+								<c:otherwise>
+									<c:set var="counter" value="${counter + 1}" />
+									${go:appendString(insertSQLSB ,prefix)}
+									<c:set var="prefix" value="," />
+									${go:appendString(insertSQLSB , '(')}
+									${go:appendString(insertSQLSB , transactionId)}
+									${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
+
+									<%-- To avoid truncation errors we'll limit textValue to 1000 chars but will add an error log entry so can track --%>
+									<c:set var="textValue" value="${tranDao.encryptBlacklistFields(transactionId, xpath, rowVal)}" />
+									<c:if test="${fn:length(textValue) > 1000}">
+										<c:set var="errorStr" value="Data Truncated - xpath (${xpath}) has textValue longer than 1000 chars: ${textValue}" />
+										${logger.error(errorStr)}
+										<c:set var="textValue" value="${fn:substring(textValue,0,1000)}" />
+									</c:if>
+
+									<c:set var="ignore">
+										${insertParams.add(counter)};
+										${insertParams.add(xpath)};
+										${insertParams.add(textValue)};
+									</c:set>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:if test="${not empty authenticatedData['login/user/uid']}">
+							<c:set var="operatorIdXpath" value="${rootPath}/operatorId" />
 							${go:appendString(insertSQLSB ,prefix)}
-							<c:set var="prefix" value="," />
 							${go:appendString(insertSQLSB , '(')}
 							${go:appendString(insertSQLSB , transactionId)}
 							${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
-									
+							<c:set var="counter" value="${counter + 1}" />
 							<c:set var="ignore">
 								${insertParams.add(counter)};
-								${insertParams.add(xpath)};
-								${insertParams.add(rowVal)};
+								${insertParams.add(operatorIdXpath)};
+								${insertParams.add(authenticatedData.login.user.uid)};
 							</c:set>
-	</c:otherwise>
-	</c:choose>
-</c:forEach>
-				<c:if test="${not empty authenticatedData['login/user/uid']}">
-					<c:set var="operatorIdXpath" value="${rootPath}/operatorId" />
-					${go:appendString(insertSQLSB ,prefix)}
-					${go:appendString(insertSQLSB , '(')}
-					${go:appendString(insertSQLSB , transactionId)}
-					${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
-					<c:set var="counter" value="${counter + 1}" />
-					<c:set var="ignore">
-						${insertParams.add(counter)};
-						${insertParams.add(operatorIdXpath)};
-						${insertParams.add(authenticatedData.login.user.uid)};
-					</c:set>
-				</c:if>
-				${go:appendString(insertSQLSB ,'ON DUPLICATE KEY UPDATE xpath=VALUES(xpath), textValue=VALUES(textValue), dateValue=VALUES(dateValue); ')}
-				<%--
-					300 and up is the range for custom entered data that doesn't come from params
-				--%>
-				<c:if test="${insertParams.size() > 0}">
-					<sql:update sql="${insertSQLSB.toString()}">
-						<c:forEach var="item" items="${insertParams}">
-							<sql:param value="${item}" />
-						</c:forEach>
-					</sql:update>
-	<sql:update>
-						DELETE FROM aggregator.transaction_details
-						WHERE transactionId = ${transactionId}
-							AND sequenceNo > ${counter}
-							AND sequenceNo < 300;
-	</sql:update>
-					<%--
-					See JIRA CTMIT-721 for the below logic
-					--%>
-					<c:if test="${rootPath eq 'health'}">
-						<sql:update>
-							DELETE FROM aggregator.transaction_details
-							WHERE transactionId = ${transactionId}
-							AND sequenceNo > 299;
-						</sql:update>
-					</c:if>
-				</c:if>
+						</c:if>
+						${go:appendString(insertSQLSB ,'ON DUPLICATE KEY UPDATE xpath=VALUES(xpath), textValue=VALUES(textValue), dateValue=VALUES(dateValue); ')}
+						<%--
+							300 and up is the range for custom entered data that doesn't come from params
+						--%>
+						<c:if test="${insertParams.size() > 0}">
+							<sql:update sql="${insertSQLSB.toString()}">
+								<c:forEach var="item" items="${insertParams}">
+									<sql:param value="${item}" />
+								</c:forEach>
+							</sql:update>
+							<c:choose>
+								<c:when test="${rootPath eq 'health'}">
+									<sql:update>
+										DELETE FROM aggregator.transaction_details
+										WHERE transactionId = ${transactionId}
+										AND sequenceNo > ${counter};
+									</sql:update>
+								</c:when>
+								<c:otherwise>
+									<sql:update>
+										DELETE FROM aggregator.transaction_details
+
+															WHERE transactionId = ${transactionId}
+										AND sequenceNo > ${counter}
+										AND sequenceNo < 300;
+									</sql:update>
+								</c:otherwise>
+							</c:choose>
+						</c:if>
 					</c:when>
 					<c:otherwise>
 						${logger.error('WRITE_QUOTE FAILED.', error)}

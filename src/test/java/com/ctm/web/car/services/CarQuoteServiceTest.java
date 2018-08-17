@@ -2,27 +2,46 @@ package com.ctm.web.car.services;
 
 import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.car.model.form.CarRequest;
+import com.ctm.web.car.model.request.propensityscore.*;
 import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.core.dao.ProviderFilterDao;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.web.go.Data;
+import com.ctm.web.simples.services.TransactionDetailService;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static com.ctm.web.car.services.CarQuoteService.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CarQuoteServiceTest {
 
-    private CarQuoteService service;
+    private static final Long TRANSACTION_ID = 1L;
+    private static final LocalDate FROM_DATE = LocalDate.parse("27/11/2017", DateTimeFormatter.ofPattern(DD_MM_YYYY));
+    public static final String QUOTE_TYPE_OF_COVER = "quote/typeOfCover";
+    public static final String COVER_TYPE_TPPD = "TPPD";
 
+    private CarQuoteService service;
     @Mock
     private CarRequest carRequest;
     @Mock
@@ -33,11 +52,19 @@ public class CarQuoteServiceTest {
     private ServiceConfigurationServiceBean serviceConfigurationServiceBean;
     @Mock
     private SessionDataServiceBean sessionDataServiceBean;
+    @Mock
+    private TransactionDetailService transactionDetailService;
+    @Mock
+    private RestTemplate restTemplate;
 
     @Before
     public void setup() {
         initMocks(this);
-        service = new CarQuoteService(providerFilterDao, serviceConfigurationServiceBean, sessionDataServiceBean);
+        service = new CarQuoteService(providerFilterDao, serviceConfigurationServiceBean, sessionDataServiceBean, transactionDetailService, restTemplate);
+        ReflectionTestUtils.setField(service, "dataRobotUrl", "http://test.com");
+        ReflectionTestUtils.setField(service, "dataRobotUsername", "test@test.com");
+        ReflectionTestUtils.setField(service, "dataRobotApiToken", "xyz");
+
     }
 
     @Test
@@ -88,5 +115,352 @@ public class CarQuoteServiceTest {
         final List<ResultProperty> resultProperties = service.getResultProperties(carRequest, carResults);
         assertFalse(resultProperties.isEmpty());
         assertEquals(14, resultProperties.size());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_with200Response() throws Exception {
+        // Given
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(getTransactionDetails(false, false));
+
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(get200Response(true), HttpStatus.OK);
+        ArgumentCaptor<HttpEntity> argumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+        when(restTemplate.postForEntity(anyObject(), argumentCaptor.capture(), any())).thenReturn(responseEntity);
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        List<CarQuotePropensityScoreRequest> requestList = (List<CarQuotePropensityScoreRequest>) argumentCaptor.getValue().getBody();
+        CarQuotePropensityScoreRequest carQuotePropensityScoreRequest = requestList.iterator().next();
+        assertEquals(1, carQuotePropensityScoreRequest.getRankPosition().intValue());
+        assertEquals("y", carQuotePropensityScoreRequest.getPhoneFlag());
+        assertEquals("y", carQuotePropensityScoreRequest.getEmailFlag());
+        assertEquals(DeviceType.DESKTOP.getName(), carQuotePropensityScoreRequest.getDeviceType());
+
+        assertFalse(resultProperties.isEmpty());
+        assertEquals("0.45", resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_with200Response_NoScore() throws Exception {
+        // Given
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(getTransactionDetails(false, false));
+
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(get200Response(false), HttpStatus.OK);
+        ArgumentCaptor<HttpEntity> argumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+        when(restTemplate.postForEntity(anyObject(), argumentCaptor.capture(), any())).thenReturn(responseEntity);
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals(null, resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_noResponse() throws Exception {
+        // Given (valid request, but no response from data robot)
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(getTransactionDetails(false, false));
+
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(null, HttpStatus.OK);
+        when(restTemplate.postForEntity(anyObject(), anyObject(), any())).thenReturn(responseEntity);
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals(null, resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_with400Response() throws Exception {
+        // Given (valid request, but no response from data robot)
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(getTransactionDetails(false, false));
+
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(get400Response(), HttpStatus.BAD_REQUEST);
+        when(restTemplate.postForEntity(anyObject(), anyObject(), any())).thenReturn(responseEntity);
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals(null, resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_emptyTransactionDetails() throws Exception {
+        // Given
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(getTransactionDetails(true, false));
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals("", resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_invalidTransactionDetails_nullDate() throws Exception {
+        // Given
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        Data transactionDetails = getTransactionDetails(true, false);
+        transactionDetails.put(QUOTE_VEHICLE_BODY, "4SED");
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(transactionDetails);
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals("", resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_partialTransactionDetails() throws Exception {
+        // Given
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        Data transactionDetails = getTransactionDetails(false, true);
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(transactionDetails);
+
+
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(get200Response(true), HttpStatus.OK);
+        ArgumentCaptor<HttpEntity> argumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+        when(restTemplate.postForEntity(anyObject(), argumentCaptor.capture(), any())).thenReturn(responseEntity);
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        List<CarQuotePropensityScoreRequest> requestList = (List<CarQuotePropensityScoreRequest>) argumentCaptor.getValue().getBody();
+        CarQuotePropensityScoreRequest carQuotePropensityScoreRequest = requestList.iterator().next();
+        assertEquals(1, carQuotePropensityScoreRequest.getRankPosition().intValue());
+        assertEquals("y", carQuotePropensityScoreRequest.getPhoneFlag());
+        assertEquals("y", carQuotePropensityScoreRequest.getEmailFlag());
+        assertEquals(DeviceType.DESKTOP.getName(), carQuotePropensityScoreRequest.getDeviceType());
+
+        assertFalse(resultProperties.isEmpty());
+        assertEquals("0.45", resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void givenEmptyProductRankList_whenRetrieveAndStoreCarQuotePropensityScore_ThenDoNothing() throws Exception {
+        // Given
+        final List<String> productIdsOrderedByRank = Mockito.mock(List.class);
+        // When
+        service.retrieveAndStoreCarQuotePropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+        //Then
+        verify(productIdsOrderedByRank, times(1)).get(0);
+    }
+
+    @Test
+    public void givenComprehensiveCoverType_whenRetrieveAndStoreCarQuotePropensityScore_ThenDataRobotIsCalled() throws Exception {
+        verifyDataRobotCalls(COVER_TYPE_COMPREHENSIVE, 1);
+    }
+
+    @Test
+    public void givenNonComprehensiveCoverType_whenRetrieveAndStoreCarQuotePropensityScore_ThenDataRobotIsNotCalled() throws Exception {
+        verifyDataRobotCalls(COVER_TYPE_TPPD, 0);
+    }
+
+    @Test
+    public void givenNullCoverType_whenRetrieveAndStoreCarQuotePropensityScore_ThenDataRobotIsNotCalled() throws Exception {
+        verifyDataRobotCalls(null, 0);
+    }
+
+    /**
+     * verifies data robot is called or not based on cover type in transaction_details.
+     *
+     * @param coverType
+     * @param timesCalled
+     * @throws DaoException
+     */
+    private void verifyDataRobotCalls(final String coverType, final int timesCalled) throws DaoException {
+        // Given
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+
+        final Data transactionDetails = getTransactionDetails(false, false);
+        transactionDetails.put(QUOTE_TYPE_OF_COVER, coverType);
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(transactionDetails);
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        verify(restTemplate, times(timesCalled)).postForEntity(anyObject(), anyObject(), any());
+    }
+
+    private DataRobotCarQuotePropensityScoreResponse get200Response(final boolean withPropensityScore) {
+        DataRobotCarQuotePropensityScoreResponse response = new DataRobotCarQuotePropensityScoreResponse();
+        response.setCode(200);
+        if(!withPropensityScore) return response;
+
+        ClassProbability classProbability = new ClassProbability();
+        classProbability.setOne(0.45);
+
+        Prediction prediction = new Prediction();
+        prediction.setClassProbabilities(classProbability);
+        List<Prediction> predictions = Arrays.asList(prediction);
+        response.setPredictions(predictions);
+        return response;
+    }
+
+    private DataRobotCarQuotePropensityScoreResponse get400Response() {
+        DataRobotCarQuotePropensityScoreResponse response = new DataRobotCarQuotePropensityScoreResponse();
+        response.setStatus("Bad JSON Format");
+        response.setCode(400);
+        response.setVersion("v1");
+        return response;
+    }
+
+    private Data getTransactionDetails(final boolean returnEmptyData, final boolean partialData) {
+        Data transactionDetailsInXmlData = new Data();
+        if(returnEmptyData) return transactionDetailsInXmlData;
+
+        transactionDetailsInXmlData.put(QUOTE_DRIVERS_REGULAR_DOB, "05/05/1979");
+        transactionDetailsInXmlData.put(QUOTE_CONTACT_EMAIL, "test@gmail.com");
+        transactionDetailsInXmlData.put(QUOTE_OPTIONS_COMMENCEMENT_DATE, "20/11/2017");
+        transactionDetailsInXmlData.put(QUOTE_CONTACT_PHONE, "0000000");
+        transactionDetailsInXmlData.put(QUOTE_CONTACT_PHONEINPUT, "");
+        transactionDetailsInXmlData.put(QUOTE_CLIENT_USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_BODY, "4SED");
+        transactionDetailsInXmlData.put(QUOTE_TYPE_OF_COVER, COVER_TYPE_COMPREHENSIVE);
+
+        if(partialData) return transactionDetailsInXmlData;
+        transactionDetailsInXmlData.put(QUOTE_DRIVERS_REGULAR_CLAIMS, "N");
+        transactionDetailsInXmlData.put(QUOTE_DRIVERS_REGULAR_NCD, "5");
+        transactionDetailsInXmlData.put(QUOTE_DRIVERS_REGULAR_EMPLOYMENT_STATUS, "E");
+        transactionDetailsInXmlData.put(QUOTE_RISK_ADDRESS_STATE, "QLD");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_COLOUR, "Black");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_FINANCE, "HP");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_ANNUAL_KILOMETRES, "10000");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_USE, "02");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_MARKET_VALUE, "5000");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_FACTORY_OPTIONS, "Y");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_MAKE_DES, "Mazda");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_DAMAGE, "N");
+        return transactionDetailsInXmlData;
+    }
+
+    @Test
+    public void GivenValidUsernamePassword_WhenGetHeaderValue_ThenReturnValidBasicAuthHeaderValue() {
+        //Given
+        //When
+        final String response = service.getDataRobotBasicAuthHeaderValue();
+        //Then
+        assertEquals("Basic dGVzdEB0ZXN0LmNvbTp4eXo=", response);
+    }
+
+    @Test
+    public void GivenValidVehicleBody_whendBuildVehicleBody_ThenReturnStringWithStripedDigitsAndLowerCase() {
+        //Given
+        //When
+        final String response = service.buildVehicleBody("4SED");
+        //Then
+        assertEquals("sed", response);
+    }
+
+    @Test
+    public void GivenNullVehicleBody_whendBuildVehicleBody_ThenReturnNull() {
+        //Given
+        //When
+        final String response = service.buildVehicleBody(null);
+        //Then
+        assertEquals(null, response);
+    }
+
+    @Test
+    public void yearsBetween() throws Exception {
+        //Given
+        //When
+        final Long age = service.yearsBetween(FROM_DATE, "05/05/1979");
+        //Then
+        assertEquals(38, age.longValue());
+    }
+
+    @Test
+    public void yearsBetween_null(){
+        //Given
+        //When
+        final Long age = service.yearsBetween(FROM_DATE, null);
+        //Then
+        assertEquals(null, age);
+    }
+
+    @Test
+    public void yearsBetween_whitespace(){
+        //Given
+        //When
+        final Long age = service.yearsBetween(FROM_DATE, " ");
+        //Then
+        assertEquals(null, age);
+    }
+
+    @Test
+    public void daysBetween() throws Exception {
+        //Given
+        //when
+        Long days = service.daysBetween(FROM_DATE, "20/11/2017");
+        //then
+        assertEquals(7, days.longValue());
+    }
+
+    @Test
+    public void daysBetween_null(){
+        //Given
+        //when
+        Long days = service.daysBetween(FROM_DATE, null);
+        //then
+        assertEquals(null, days);
+    }
+
+    @Test
+    public void daysBetween_whitespace(){
+        //Given
+        //when
+        Long days = service.daysBetween(FROM_DATE, " ");
+        //then
+        assertEquals(null, days);
+    }
+
+    @Test
+    public void buildEmailFlag() throws Exception {
+        //Given
+        //When
+        String emailFlag = service.buildEmailFlag("test@gmail.com");
+        //Then
+        assertEquals("y", emailFlag);
+    }
+
+    @Test
+    public void buildEmailFlag_null() throws Exception {
+        //Given
+        //When
+        String emailFlag = service.buildEmailFlag(null);
+        //Then
+        assertEquals("n", emailFlag);
+    }
+
+    @Test
+    public void buildPhoneFlag() {
+        //Given
+        //when
+        String phoneFlag = service.buildPhoneFlag("0000", "1111");
+        //Then
+        assertEquals("y", phoneFlag);
+    }
+
+    @Test
+    public void buildPhoneFlag_null() {
+        //Given
+        //when
+        String phoneFlag = service.buildPhoneFlag(" ", null);
+        //Then
+        assertEquals("n", phoneFlag);
     }
 }

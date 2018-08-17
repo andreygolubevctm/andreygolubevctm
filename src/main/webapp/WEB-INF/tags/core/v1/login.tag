@@ -54,11 +54,17 @@
 					<c:set var="securityDescLevel" value="Supervisor" />
 				</c:if>
 
+				<c:set var="editAdminMenuAuth" value="N" />
+				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-EDIT-ADMIN-MENU')}">
+					<c:set var="editAdminMenuAuth" value="Y" />
+				</c:if>
+
 				<!-- Restricting 'browsertest' accessing simples in production environment. -->
 				<c:if test="${userId == 'browsertest' and com.ctm.web.core.services.EnvironmentService.getEnvironmentAsString() == 'PRO'}">
 					<c:set var="callCentre" value="N" />
 					<c:set var="supervisor" value="N" />
 					<c:set var="IT" value="N" />
+					<c:set var="editAdminMenuAuth" value="N" />
 					<c:set var="securityDescGroup" value="Unknown" />
 				</c:if>
 
@@ -75,6 +81,13 @@
 					<c:catch var="extensionError">
 						<c:set var="extension" value="${phoneService.getExtensionByAgentId(pageSettings, sessionScope.userDetails['postalCode'])}" />
 					</c:catch>
+				</c:if>
+
+				<c:set var="simplesChatUserGroup" value="N" />
+				<c:set var="simplesChatUser"><content:get key="simplesChatUser" suppKey="${userId}"/></c:set>
+
+				<c:if test="${not empty simplesChatUser and simplesChatUser eq 'simplesChatUser'}">
+					<c:set var="simplesChatUserGroup" value="Y" />
 				</c:if>
 
 				<c:set var="userXML">
@@ -109,6 +122,8 @@
                         <ccRewardsGroup>${ccRewardsGroup}</ccRewardsGroup>
 						<IT>${IT}</IT>
 						<supervisor>${supervisor}</supervisor>
+						<editAdminMenuAuth>${editAdminMenuAuth}</editAdminMenuAuth>
+						<simplesChatGroup>${simplesChatUserGroup}</simplesChatGroup>
 					</security>
 				</c:set>
 				<go:setData dataVar="authenticatedData" xpath="login" xml="${securityXML}" />

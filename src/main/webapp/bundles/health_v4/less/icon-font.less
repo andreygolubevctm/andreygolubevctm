@@ -18,6 +18,15 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  &.round-standalone {
+    vertical-align: middle;
+    color: @btn-benefit-category-active-color;
+    background-color: @health-benefits-icon-more-border-color;
+    border-radius: 18px;
+    font-size: 25px;
+    padding: 5px;
+  }
+
   // When an icon is inside an anchor/link inherit the line height so it's positioned correctly.
   a &,
   button & {
@@ -236,6 +245,27 @@
   &.HLTicon-ambulance {
     &:before {
       content: "\e933";
+    }
+  }
+
+
+
+
+  &.HLTicon-vert-health {
+    &:before {
+      content: "\e93e";
+    }
+  }
+
+  &.HLTicon-aus {
+    &:before {
+      content: "\e93f";
+    }
+  }
+
+  &.HLTicon-callcentre {
+    &:before {
+      content: "\e940";
     }
   }
 

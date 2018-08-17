@@ -15,8 +15,8 @@
 <jsp:useBean id="resultsService" class="com.ctm.web.core.services.ResultsService" scope="request" />
 <c:set var="providerCode" value="brandCode" /> <%-- prefer to use providerCode which makes more sense than brandCode --%>
 <c:if test="${param.vertical eq 'travel'}"><c:set var="providerCode" value="providerCode" /></c:if>
-<c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }" />
 <c:set var="providerCode" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, providerCode),'%26','&') }" />
+<c:set var="quoteUrl" value="${fn:replace(resultsService.getQuoteUrl(transactionId, productId, 'quoteUrl', providerCode, param.vertical),'%26','&') }" />
 
 <c:set var="verticalBrandCode" value="${pageSettings.getBrandCode()}" />
 <c:set var="trackingEnabled" value="${contentService.getContentValue(pageContext.getRequest(), 'trackingEnabled', verticalBrandCode, param.vertical)}" />
@@ -39,16 +39,17 @@
 		<script>
 			<%-- In case we want to turn off looped URI Decoding --%>
 			window.useLoopedTransferringURIDecoding = ${pageSettings.getSetting("useLoopedTransferringURIDecoding")};
-			
 
 			<%-- Mock results objects because same reason as above --%>
 			window.ResultsModel = { moduleEvents: { WEBAPP_LOCK: 'WEBAPP_LOCK' } };
 			window.ResultsView = { moduleEvents: { RESULTS_TOGGLE_MODE: 'RESULTS_TOGGLE_MODE' } };
 
 			var returnedResult = {
-                <c:forEach items="${resultsService.getResultsPropertiesForTransactionId(transactionId, productId)}" var="result" varStatus="status">
-                	"${result.property}":"${result.value}" <c:if test="${!status.last}">,</c:if>
-                </c:forEach>
+				<c:forEach items="${resultsService.getResultsPropertiesForTransactionId(transactionId, productId)}" var="result" varStatus="status">
+					<c:if test="${result.property != 'leadfeedinfo' && result.property != 'discountOffer'}">
+						"${result.property}":"${result.value}" <c:if test="${!status.last}">,</c:if>
+					</c:if>
+				</c:forEach>
             };
 		</script>
 

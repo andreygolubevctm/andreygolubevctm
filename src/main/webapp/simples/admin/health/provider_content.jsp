@@ -5,6 +5,7 @@
 
 <jsp:useBean id="providerDao" class="com.ctm.web.core.dao.ProviderDao" scope="page" />
 <jsp:useBean id="providerContentDao" class="com.ctm.web.health.dao.ProviderContentDao" scope="page" />
+<jsp:useBean id="brandsDao" class="com.ctm.web.core.dao.BrandsDao" scope="page" />
 
 <c:set var="providers" value="${providerDao.getProviders('HEALTH', 0, true)}" />
 <c:set var="providerContentTypes" value="${providerContentDao.fetchProviderContentTypes()}" />
@@ -36,10 +37,16 @@
                 <span>Type</span>
               </a>
             </li>
-            <li class="col-lg-5">
+            <li class="col-lg-4">
               <a href="javascript:;">
                 <span class="icon"></span>
                 <span>Text</span>
+              </a>
+            </li>
+            <li class="col-lg-4">
+              <a href="javascript:;">
+                <span class="icon"></span>
+                <span>Brand Code</span>
               </a>
             </li>
             <li class="col-lg-2">
@@ -107,6 +114,14 @@
     </c:forEach>
   ];
   var providerContentTypeCode = '${param.contentType}';
+
+  var brands = [
+      { value: '-1', text: "Select a Brand" },
+      <c:set var="brands" value="${brandsDao.getBrands()}" />
+      <c:forEach items="${brands}" var="brand">
+      { value: ${brand.getId()}, text: "${brand.getName()}" },
+      </c:forEach>
+  ];
 </script>
 
 <script class="crud-modal-template" type="text/html">
@@ -136,6 +151,14 @@
     </div>
     <div class="form-group col-sm-4">
       <div class="row">
+        <div class="form-group col-sm-12">
+          <label>Brand</label>
+          <select name="styleCodeId" class="form-control" {{= data.modalAction === "edit" ? "disabled" : "" }}>
+          {{ for(var i in brands) { }}
+          <option value="{{= brands[i].value }}" {{= brands[i].value !== "" && data.styleCodeId === brands[i].value ? "selected" : "" }}>{{= brands[i].text }}</option>
+          {{ } }}
+          </select>
+        </div>
         <div class="form-group col-sm-12">
           <label>Provider</label>
           <select name="providerId" class="form-control">
@@ -176,8 +199,11 @@
     <div class="col-lg-1">
       {{= data.providerContentTypeCode }}
     </div>
-    <div class="col-lg-5">
+    <div class="col-lg-4">
       {{= data.providerContentText }}
+    </div>
+    <div class="col-lg-1">
+      {{= data.styleCode }}
     </div>
     <div class="col-lg-2">
       {{= new Date(data.effectiveStart).toLocaleDateString('en-GB') }}

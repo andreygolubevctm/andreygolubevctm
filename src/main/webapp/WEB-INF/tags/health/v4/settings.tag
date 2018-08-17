@@ -111,10 +111,18 @@
 
 <c:set var="openingHoursTimeZone"><content:get key="openingHoursTimeZone" /></c:set>
 
+<%-- Check and list funds who have special discount functionality required --%>
+<jsp:useBean id="providerService" class="com.ctm.web.core.provider.services.ProviderService"/>
+<c:set var="providerPropertyId" value="discountActive" />
+<c:set var="AUFDiscount" value="${providerService.getProperty(pageContext.request, 1, providerPropertyId)}"/>
+
 <competition:octoberCompSettings />
+<competition:africaCompSettings />
 <health_v1:dual_pricing_settings />
 <health_v4:pyrr_campaign_settings />
 <agg_v1:remember_me_settings vertical="health" />
+<agg_v1:popular_products_settings vertical="health" />
+<health_v4:price_promise_settings />
 {
 	octoberComp: <c:out value="${octoberComp}" />,
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
@@ -200,5 +208,16 @@
 	</c:if>
 	,openingHoursTimeZone : '${openingHoursTimeZone}',
 	isRememberMe: ${isRememberMe},
-	splitTest16: ${taxableIncomeSplitTest}
+	splitTest16: ${taxableIncomeSplitTest},
+	showPopularProducts: ${showPopularProducts},
+	pricePromiseHeights: {
+		xs: '${pricePromiseXSHeight}',
+		sm: '${pricePromiseSMHeight}',
+		md: '${pricePromiseMDHeight}',
+		lg: '${pricePromiseLGHeight}'
+	},
+	fundDiscounts : {
+		AUF : "${AUFDiscount}"
+	},
+	africaComp: <c:out value="${africaComp}" />
 }

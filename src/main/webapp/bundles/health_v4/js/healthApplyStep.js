@@ -5,12 +5,14 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         $elements = {},
-        $unitElements;
+        $unitElements,
+        _postalNonStdStreetRegexRule;
 
     function init(){
         $(document).ready(function () {
             $elements = {
-                paymentMedicareColour: $("#health_payment_medicare_colour"),
+                primaryFirstname: $('#health_application_primary_firstname'),
+                paymentMedicareColour: $('input[name=health_payment_medicare_colour]'),
                 paymentMedicareCover: $("#health_payment_medicare_cover"),
                 medicareYellowMessage: $("#health_medicareDetails_yellowCardMessage"),
                 genderToggle: $('.person-gender-toggle input[type=radio]'),
@@ -23,7 +25,6 @@
                 healthSituationState: $('#health_situation_state'),
                 healthProductHospitalClass: $('#health_application_productClassification_hospital'),
                 healthProductExtrasClass: $('#health_application_productClassification_extras')
-
             };
 
             $unitElements = {
@@ -35,6 +36,8 @@
                 appPostalUnitType: $('#health_application_postal_unitType'),
                 appPostalNonStdStreet: $('#health_application_postal_nonStdStreet')
             };
+
+            _postalNonStdStreetRegexRule = $unitElements.appPostalNonStdStreet.attr('data-rule-regex');
         });
     }
 
@@ -73,7 +76,7 @@
         $elements.paymentMedicareColour
             .addRule('medicareCardColour')
             .on('change', function() {
-                var value = $(this).val();
+                var value = $elements.paymentMedicareColour.filter(':checked').val();
                 // set hidden Medicare cover value
                 $elements.paymentMedicareCover.val(value === 'none' ? 'N' : 'Y');
 
@@ -81,6 +84,10 @@
                 $elements.medicareYellowMessage.toggleClass('hidden', value !== 'yellow');
             })
             .trigger('change');
+
+        if ($elements.paymentMedicareColour.is(":checked")) {
+            $('input[name=health_payment_medicare_colour][value=' + $elements.paymentMedicareColour.val() + ']').attr('checked', 'checked').trigger('change');
+        }
 
         $(document.body).on('change', '.selectContainerTitle select', function onTitleChange() {
             var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
@@ -99,7 +106,7 @@
 
         $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
             _changeStreetNoLabel(this.value);
-            _toggleStreetRules(this.value);
+            _toggleRegexValidation(this.value);
         });
 
         $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
@@ -169,15 +176,12 @@
         }
     }
 
-    function _toggleStreetRules(unitType) {
+    function _toggleRegexValidation(unitType) {
         if (unitType === 'PO') {
-            $unitElements.appPostalNonStdStreet
-                .removeRule('regex')
-                .removeRule('validAddress');
+            $unitElements.appPostalNonStdStreet.removeRule('regex');
+            $unitElements.appPostalNonStdStreet.blur();
         } else {
-            $unitElements.appPostalNonStdStreet
-                .addRule('regex', '[a-zA-Z0-9 ]+')
-                .addRule('validAddress', 'health_application_postal');
+            $unitElements.appPostalNonStdStreet.addRule('regex', _postalNonStdStreetRegexRule);
         }
     }
 
@@ -240,11 +244,16 @@
         $elements.healthProductExtrasClass.val(returnVal);
     }
 
+    function getPrimaryFirstname() {
+        return $elements.primaryFirstname.val();
+    }
+
     meerkat.modules.register('healthApplyStep', {
         init: init,
         onBeforeEnter: onBeforeEnter,
         onInitialise: onInitialise,
-        testStatesParity: testStatesParity
+        testStatesParity: testStatesParity,
+        getPrimaryFirstname: getPrimaryFirstname
     });
 
 })(jQuery);

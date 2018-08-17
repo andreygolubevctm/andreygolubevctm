@@ -5,6 +5,9 @@ import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
 import com.ctm.web.homeloan.model.HomeLoanContact;
 import com.ctm.web.homeloan.model.HomeLoanModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -125,5 +128,14 @@ public class HomeLoanServiceTest {
 		// verify service.submitOpportunity was called once
 		verify(opportunityService, times(1)).submitOpportunity(request, model);
 
+	}
+
+	@Test
+	public void givenNoUnconfirmedTranscations_thenResponseHasValidKey() throws DaoException {
+		when(homeloanUnconfirmedLeadsDao.getUnconfirmedTransactionIds()).thenReturn(new ArrayList<HomeLoanModel>());
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		JSONObject json = service.scheduledLeadGenerator(request);
+		//confirm response has key flexOutboundLeads
+		Assert.assertTrue(json.has("flexOutboundLeads"));
 	}
 }

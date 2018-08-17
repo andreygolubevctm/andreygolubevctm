@@ -70,7 +70,7 @@ public class PageSettingsTest {
 
     @Test
     public void testGetContextFolderDevBranch() throws ConfigSettingException {
-        String branchContext = "ctm-HLT-1234/";
+        String branchContext = "ctm/";
         setContextPathSettingCTM();
         // Feature branch in dev
         PowerMockito.when(EnvironmentService.needsManuallyAddedBrandCodeParam()).thenReturn(true);

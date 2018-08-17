@@ -58,6 +58,10 @@ public class HealthQuote {
 
     private String applyDiscounts;
 
+    private String popularProducts;
+
+    private String rewardsSchemeFirst;
+
     public Application getApplication() {
         return application;
     }
@@ -282,4 +286,19 @@ public class HealthQuote {
         this.applyDiscounts = applyDiscounts;
     }
 
+    public String getPopularProducts() {
+        return popularProducts;
+    }
+
+    public void setPopularProducts(String popularProducts) {
+        this.popularProducts = popularProducts;
+    }
+
+    public String getRewardsSchemeFirst() {
+        return rewardsSchemeFirst;
+    }
+
+    public void setRewardsSchemeFirst(String rewardsSchemeFirst) {
+        this.rewardsSchemeFirst = rewardsSchemeFirst;
+    }
 }

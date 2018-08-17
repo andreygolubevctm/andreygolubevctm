@@ -40,16 +40,13 @@ var healthFunds_FRA = {
             healthFunds_FRA.updateMessage();
         });
 
-        <%--allow weekend selection from the datepicker--%>
-        healthFunds_FRA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
-
         <%--change age of dependants and school--%>
         meerkat.modules.healthDependants.updateConfig({school:false});
         meerkat.modules.healthDependants.setMaxAge(25);
 
         <%--credit card & bank account frequency & day frequency--%>
-        meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
-        meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+        meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+        meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 
         <%--claims account--%>
         meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
@@ -58,12 +55,14 @@ var healthFunds_FRA = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
-        <%--calendar for start cover--%>
-	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
-		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
-	    } else {
-		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
-	    }
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: true,
+            coverStartRange: {
+                min: 0,
+                max: 30
+            }
+        });
 
         <%-- Unset the refund optin radio buttons --%>
         healthFunds_FRA .$claimsAccountOptin.find("input:checked").each(function(){

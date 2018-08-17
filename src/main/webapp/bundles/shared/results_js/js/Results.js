@@ -27,6 +27,13 @@ var Results = {
 		Results.view = ResultsView;
 		Results.model = ResultsModel;
 		Results.pagination = ResultsPagination;
+        Results.model.travelFilters = {
+            EXCESS: 200,
+            LUGGAGE: 5000,
+            CXDFEE: 20000,
+            MEDICAL: 20000000,
+			PROVIDERS: []
+        };
 
 		var settings = {
 			url: "ajax/json/results.jsp", // where to get results from
@@ -220,6 +227,10 @@ var Results = {
 				 *    By default it will occur on RESULTS_DATA_READY and RESULTS_SORTED but can be overridden
 				 *    by providing your own list.
 				 * b] forceIdNumeric will force the productId to be trimmed of any non-numeric characters (for health)
+				 * c] resultsSortedModelToUse provide a string reference to an alternate list of sorted products (Results.model["resultsSortedModelToUse"])
+				 *    to be used for calculating/returning the ranking data.
+				 * d] resultsFilteredModelToUse provide a string reference to an alternate list of filtered products (Results.model["resultsFilteredModelToUse"])
+				 *    to be used for calculating/returning the ranking data.
 
 				paths : {
 					rank_productId : "productId",
@@ -236,6 +247,10 @@ var Results = {
 
 				forceIdNumeric : boolean
 
+				resultsSortedModelToUse : string
+
+				resultsFilteredModelToUse : string
+
 				*/
 				filterUnavailableProducts: true
 			},
@@ -243,6 +258,9 @@ var Results = {
 			incrementTransactionId : true,
 			balanceCurrentPageRowsHeightOnly: {
 				mobile: false
+			},
+			popularProducts: {
+				enabled: false
 			}
 		};
 		$.extend(true, settings, userSettings);
@@ -360,6 +378,15 @@ var Results = {
 			console.log("This filter could not find the path to the property it should be filtered by: filterBy= filterBy=", filterBy, "| condition=", condition, "| options=", options);
 		}
 	},
+
+    filterByExcess: function( filterBy, condition, options, renderView, doNotGoToStart ){
+        if( typeof Object.byString( Results.settings.paths, filterBy ) !== "undefined" ){
+            Results.model.addFilter( filterBy, condition, options );
+            Results.model.filterUsingExcess(renderView, doNotGoToStart);
+        } else {
+            console.log("This filter could not find the path to the property it should be filtered by: filterBy= filterBy=", filterBy, "| condition=", condition, "| options=", options);
+        }
+    },
 
 	unfilterBy: function( filterBy, condition, renderView ){
 
@@ -577,6 +604,8 @@ var Results = {
         }
         product.isPinned = 'Y';
 
+        Results.setPinnedProduct(product);
+
         // Must copy the element before filtering or it gets unnecessary classes etc.
         Results.$pinnedResultRow = $('.result_' + pinnedProductId).clone(true);
 
@@ -602,16 +631,13 @@ var Results = {
 	},
 
 	unpinProduct: function(pinnedProductId) {
-        if (!pinnedProductId) {
+        if (!pinnedProductId || (pinnedProductId && !Results.getPinnedProduct())) {
             return;
         }
 
         var product = Results.model.getResult("productId", pinnedProductId);
-        if (!product) {
-            return;
-        }
 
-        if(Results.$pinnedResultRow) {
+        if (Results.$pinnedResultRow) {
             Results.$pinnedResultRow.remove();
             Results.$pinnedResultRow = null;
         }
@@ -619,7 +645,22 @@ var Results = {
         $(Results.settings.elements.resultsOverflow).removeAttr('style');
         Results.unfilterBy('isPinned', "value", true);
         product.isPinned = 'N';
+        Results.removePinnedProduct();
         $(Results.settings.elements.resultsOverflow).removeClass('product-pinned');
         Results.pagination.hasPinnedProduct = false;
+
+
+	},
+
+	setPinnedProduct: function(product) {
+		Results.model.setPinnedProduct(product);
+	},
+
+    getPinnedProduct: function() {
+        return Results.model.pinnedProduct;
+    },
+
+    removePinnedProduct: function() {
+        Results.model.removePinnedProduct();
 	}
 };

@@ -15,7 +15,7 @@
 			isMobile = meerkat.modules.performanceProfiling.isMobile();
 			var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
 
-			setActive(true);
+			setActive(!meerkat.site.isCallCentreUser);
 
 			if (meerkat.site.callbackPopup.timeoutStepEnabled) {
 				steps = meerkat.site.callbackPopup.steps.split(',');
@@ -90,11 +90,16 @@
 
 	function showModal() {
 		if(isActive && !isModalOpen && !isMobile) {
-			setModalState(true);
-			
-			var htmlTemplate = _.template($('#callback-popup').html());
-	        $('body').append(htmlTemplate());
-			$('#health-callback-popup').addClass(meerkat.site.callbackPopup.position);
+
+            setModalState(false);
+
+            if ($('#callback-popup').html()) {
+                setModalState(true);
+                var htmlTemplate = _.template($('#callback-popup').html());
+                $('body').append(htmlTemplate());
+                $('#health-callback-popup').addClass(meerkat.site.callbackPopup.position);
+            }
+
 		}
 	}
 
@@ -115,7 +120,7 @@
 
 	function trigger(){
 		if(_.indexOf(['localhost','nxi','nxq'], meerkat.site.environment.toLowerCase()) !== -1) {
-			isActive = true;
+			isActive = !meerkat.site.isCallCentreUser;
 			displayCallBackModal();
 		}
 	}

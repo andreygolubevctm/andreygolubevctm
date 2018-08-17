@@ -249,7 +249,7 @@
                 },
                 events: {
                     update: function () {
-                        populateSelectedBenefits();
+                    	populateSelectedBenefits();
                     }
                 }
             },
@@ -288,8 +288,6 @@
                         Results.unfilterBy('productId', "value", false);
                         Results.settings.incrementTransactionId = true;
                         meerkat.modules.healthResults.get();
-
-                        meerkat.modules.simplesBindings.toggleLimitedCoverDialogue();
                     },100);
                 }
             }
@@ -362,6 +360,7 @@
                     $sidebar.find('.filter-remove.hospital').addClass('hidden');
                     $sidebar.find('.need-no-extras').removeClass('hidden').slideDown();
                 });
+	            resetExtrasCoverLevel();
                 coverType = 'H';
             }
             meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
@@ -414,6 +413,10 @@
 
     function toggleBenefitsLink($benefitsList) {
         $benefitsList.find('.filter-toggle-all').toggle($benefitsList.find('input[type="checkbox"]:checked').length !== $benefitsList.find('input[type="checkbox"]').length);
+    }
+
+	function resetExtrasCoverLevel(){
+	    $('#' + model.extrasCoverLevel.name).find('option').prop('selected',null).end().find('option:first').prop('selected',true).end().trigger('change');
     }
 
     function eventSubscriptions() {

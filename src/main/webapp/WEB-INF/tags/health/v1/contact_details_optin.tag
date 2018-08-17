@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Your Details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="financialYearUtils" class="com.ctm.web.health.utils.FinancialYearUtils" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
@@ -13,6 +14,9 @@
 
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
+
+<%-- Calculate the year for continuous cover - changes on 1st July each year --%>
+<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
 <%-- Vars for competition --%>
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
@@ -122,13 +126,45 @@
                 <field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
             </form_v3:row>
 
+            <%-- Medicare card question --%>
+            <c:if test="${callCentre}">
+                <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/cover" />
+                <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                <c:set var="medicareQuestionLabel"><content:get key="medicareQuestionLabel" /></c:set>
+                <c:set var="nzMedicareRules"><content:get key="nzMedicareRules" /></c:set>
+                <form_v3:row label="${medicareQuestionLabel}" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
+                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                                          title="your Medicare card cover" required="true" className="health-medicare_details-card"
+                                          id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='${ovcScripting}'" />
+                    <div class="nz-medicare-rules">
+                        <a href="javascript:void;" data-copy-on="Hide NZ medicare rules" data-copy-off="Show NZ medicare rules"><!-- empty --></a>
+                        <div class="copy">${nzMedicareRules}</div>
+                    </div>
+                </form_v3:row>
+                <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/internationalstudent" />
+                <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                <c:set var="internationalStudentY"><content:get key="healthInternationalStudentY" /></c:set>
+                <c:set var="internationalStudentN"><content:get key="healthInternationalStudentN" /></c:set>
+                <form_v3:row label="Are you an international student studying here in Australia?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_internationalstudent text-danger hidden">
+                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                                          title="Are you an international student studying here in Australia?" required="true" className="health-international_student"
+                                          id="${name}_ovc_international_student" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes=' '" />
+                    <div class="healthInternationalStudentMsg1 hidden">
+                        <div>${internationalStudentY}</div>
+                    </div>
+                    <div class="healthInternationalStudentMsg2 hidden">
+                        <div>${internationalStudentN}</div>
+                    </div>
+                </form_v3:row>
+            </c:if>
+
             <c:set var="fieldXpath" value="${xpath}/primary/cover" />
             <form_v3:row label="Do you currently hold private Hospital insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/healthCoverLoading" />
-            <form_v3:row label="Have you had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group text-danger" helpId="239">
+            <form_v3:row label="Have you had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group text-danger"  helpId="239" additionalHelpAttributes="data-content-replace='{{year}},${continuousCoverYear}'">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your health cover loading" required="true" id="${name}_health_cover_loading" className="loading"/>
             </form_v3:row>
 
@@ -157,7 +193,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/healthCoverLoading" />
-            <form_v3:row label="Has your partner had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group text-danger" helpId="239">
+            <form_v3:row label="Has your partner had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group text-danger" helpId="239" additionalHelpAttributes="data-content-replace='{{year}},${continuousCoverYear}'">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading"/>
             </form_v3:row>
 
@@ -175,16 +211,11 @@
         <simples:dialogue id="26" vertical="health" mandatory="true" />
 
         <form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
-            <c:set var="fieldXpath" value="${xpath}/rebate" />
             <c:set var="mandatory" value=""/>
 
             <c:if test="${callCentre}">
                 <c:set var="mandatory" value=" text-danger"/>
             </c:if>
-
-            <form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate${mandatory}">
-                <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap"/>
-            </form_v3:row>
 
             <c:if test="${callCentre}">
                 <c:set var="fieldXpath" value="${xpath}/incomeBasedOn" />
@@ -194,12 +225,12 @@
             </c:if>
 
             <c:set var="fieldXpath" value="${xpath}/dependants" />
-            <form_v3:row label="How many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
+            <form_v3:row label="This is based on your taxable income and number of dependants, so can I confirm, how many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants ${mandatory}">
                 <field_v2:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/income" />
-            <form_v3:row label="To receive the correct rebate, please select your expected annual income?" fieldXpath="${fieldXpath}" id="${name}_tier">
+            <form_v3:row label="To receive the correct rebate, please select your expected annual income?" fieldXpath="${fieldXpath}" id="${name}_tier" className="${mandatory}">
                 <field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income"/>
                 <span class="fieldrow_legend" id="${name}_incomeMessage"></span>
                 <c:set var="income_label_xpath" value="${xpath}/incomelabel" />
@@ -208,6 +239,15 @@
                     If you earn under $90,000 (or $180,000 total, for couples or families) in any financial year, you won’t be liable to pay the Medicare Levy Surcharge in that financial year. For help or further information call us on ${callCentreNumber}.
                 </div>
                 <input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
+            </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/rebate" />
+            <form_v3:row label="Do you want to claim the Government Rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate hidden">
+                <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="Do you want to claim the Government Rebate?" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap" additionalAttributes=" data-attach='true'"/>
+            </form_v3:row>
+
+            <form_v3:row label="&nbsp;" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate health_cover_details_rebate_chkbx">
+                <field_v2:checkbox xpath="${fieldXpath}/dontApplyRebate" value="N" id="${name}_health_cover_rebate_dontApplyRebate" title="Tick here if your customer doesn't want to claim the Government Rebate." required="false" label="Tick here if your customer doesn't want to claim the Government Rebate." className="rebate btn-group-wrap" customAttribute=" data-attach='true'"/>
             </form_v3:row>
 
         </form_v3:fieldset>

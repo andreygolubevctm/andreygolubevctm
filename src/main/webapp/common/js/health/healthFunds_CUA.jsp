@@ -96,17 +96,18 @@ set: function () {
 			<%--change age of dependants and school --%>
 			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-	meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge': 23, 'schoolMaxAge': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
-
+			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge': 23, 'schoolMaxAge': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
 		</c:if>
 
-		<%--calendar for start cover--%>
-		if(_.has(meerkat.modules,'healthCoverStartDate')) {
-			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 90);
-		} else {
-			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 90);
-		}
-		healthFunds_CUA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+		<%--fund offset check--%>
+		meerkat.modules.healthFundTimeOffset.onInitialise({
+			weekends: true,
+			coverStartRange: {
+				min: 0,
+				max: 90
+			},
+            renderPaymentDaysCb: healthFunds_CUA.renderPaymentDays
+		});
 
 		dob_health_application_primary_dob.ageMax = 99;
 		dob_health_application_partner_dob.ageMax = 99;

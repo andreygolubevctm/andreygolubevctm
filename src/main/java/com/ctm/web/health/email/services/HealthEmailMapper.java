@@ -6,7 +6,7 @@ import com.ctm.web.health.model.form.*;
 import java.util.Optional;
 
 
-class HealthEmailMapper {
+public class HealthEmailMapper {
 
     public static String getFirstName(EmailMaster emailDetails, Optional<HealthRequest> data) {
         return data.map(HealthRequest::getQuote)

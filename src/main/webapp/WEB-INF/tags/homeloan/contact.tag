@@ -17,16 +17,24 @@
 	<content:get key="websiteTermsUrlConfig"/>
 </c:set>
 
+<c:choose>
+	<c:when test="${africaComp}">
+		<c:set var="optInText"><content:get key="africaCompOptInText" /></c:set>
+		<agg_v1:safari_promo_terms_link />
+		<c:set var="optInText" value="${fn:replace(optInText, '%winSafariPromoTermsPlaceHolder%', winSafariPromoTermsPlaceHolder)}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="optInText"><content:get key="optInText" /></c:set>
+	</c:otherwise>
+</c:choose>
+
 <c:set var="websiteTermConfigPlaceHolder">${pageSettings.getSetting(websiteTermConfigToUse)}</c:set>
 <c:set var="privacyStmtPlaceHolder"><form_v1:link_privacy_statement /></c:set>
 <c:set var="creditGuidePlaceHolder"	value="/static/legal/CreditGuide.pdf" />
 
-<c:set var="optInText" value="${fn:replace
-									(fn:replace(
-										fn:replace(optInText,
-											'%creditGuidePlaceHolder%', creditGuidePlaceHolder),
-											'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
-											'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder)}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%creditGuidePlaceHolder%', creditGuidePlaceHolder)}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%privacyStmtPlaceHolder%', privacyStmtPlaceHolder)}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder)}" />
 
 <%-- HTML --%>
 <div id="${name}-selection" class="${name}">
@@ -53,6 +61,8 @@
 										required="${true}"
 										labelName="your contact number"/>
 		</form_v2:row>
+
+		<ad_containers:custom customId="contact-details" />
 
 		<form_v2:row label="" className="email-optin-row clear closer">
 			<%-- Mandatory agreement to OptIn to email  --%>

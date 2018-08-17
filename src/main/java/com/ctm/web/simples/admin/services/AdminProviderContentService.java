@@ -76,7 +76,7 @@ public class AdminProviderContentService implements CrudService {
         try {
             if(request.getParameter("providerContentId")==null)
                 return null;
-            return providerContentDao.fetchSingleProviderContent(Integer.parseInt(request.getParameter("providerContentId")));
+            return providerContentDao.fetchSingleProviderContent(Integer.parseInt(request.getParameter("providerContentId")), Integer.parseInt(request.getParameter("styleCodeId")));
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }

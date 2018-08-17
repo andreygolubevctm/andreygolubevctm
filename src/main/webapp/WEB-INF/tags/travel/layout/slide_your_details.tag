@@ -50,19 +50,19 @@
 			<layout_v1:slide_content>
 				<%-- PROVIDER TESTING --%>
 				<agg_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" displayFullWidth="true" />
-
+				<field_v1:hidden xpath="travel/lastCoverTabLevel" />
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_v2:fieldset legend="Your Cover" id="yourcoverfs">
 					<travel:your_cover />
 				</form_v2:fieldset>
 
 				<%-- COUNTRY SECTION --%>
-				<form_v2:fieldset showHelpText="true" legend="Where are you going?"
+				<form_v2:fieldset showHelpText="true" legend="What countries are you going to?"
 													className="travel_details_destinations" id="destinationsfs">
 
 						<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService"
 												 scope="page"/>
-
+											 
 						<travel:destinations />
 
 						<core_v1:select_tags
@@ -72,6 +72,7 @@
 										xpath="travel/destinations"
 										xpathhidden="travel/destination"
 										label="Your selected Countries"
+                                        additionalAttributes="autocomplete='no'"
 										title="Where are you travelling?"
 										validationErrorPlacementSelector=".travel_details_destinations"
 										helpId="213"
@@ -81,11 +82,13 @@
 				</form_v2:fieldset>
 
 				<%-- DATES AND TRAVELLERS SECTION --%>
-				<form_v2:fieldset legend="Dates &amp; Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
-					<field_v2:date_range xpath="travel/dates" required="true" labelFrom="When do you leave?" labelTo="When do you return?" titleFrom="departure" titleTo="return" minDateFrom="${now_Date}" maxDateFrom="${nowPlusYear_Date}" minDateTo="${now_Date}" maxDateTo="${nowPlusYear_Date}" offsetText="up to 1 year" helpIdFrom="214" helpIdTo="215" />
-
+				<form_v2:fieldset legend="Dates" className="travel_details_datesTravellers" id="travelDatePicker">
+					<travel:date_picker xpath="travel" /> 
+				</form_v2:fieldset>
+				 
+				<form_v2:fieldset legend="Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
 					<form_v2:row label="Who's travelling?" className="smallWidth" helpId="216">
-						<field_v2:array_radio items="S=Single,C=Couple,F=Family,G=Group" xpath="travel/party" title="who is travelling" required="true" className="thinner_input travel_party roundedCheckboxIcons" />
+						<field_v2:array_radio items="S=Single,SF=Single parent family,C=Couple,F=Family,G=Group" xpath="travel/party" title="who is travelling" required="true" className="thinner_input travel_party roundedCheckboxIcons" />
 					</form_v2:row>
 
 					<travel:travellers />
@@ -105,6 +108,11 @@
 						Your&nbsp;
 					</c:if>
 				</c:set>
+
+				<%-- TRIP TYPE SECTION --%>
+				<form_v2:fieldset legend="Trip type" id="triptype">
+					<travel:trip_type />
+				</form_v2:fieldset>
 
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_v2:fieldset legend="${fieldSetHeading}Contact Details" id="contactDetails">

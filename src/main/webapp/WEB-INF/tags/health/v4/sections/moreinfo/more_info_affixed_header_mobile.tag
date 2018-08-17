@@ -12,7 +12,7 @@
 <health_v1:dual_pricing_settings />
 
 <script id="moreInfoAffixedHeaderMobileTemplate" type="text/html">
-	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
+	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if> visible-xs">
 		<div class="row dockedHdr dockedHeaderLarge">
 			<div class="col-xs-6">
 				<div class="logo-header hidden-slim">
@@ -29,27 +29,37 @@
 				{{= renderedPyrrCampaign }}
 			{{ } }}
 			<div class="col-xs-12 text-center dockedHeaderBottom <c:if test="${callCentreOpen eq true}">callCentreOpen</c:if>">
+				<health_v4_moreinfo:more_info_mobile_elements />
 				<c:choose>
 					<c:when test="${callCentreOpen eq true}">
-						<a href="tel:{{= '${callCentreNumber}'.replace(/\s/g, '') }}" target="_blank" class="btn btn-cta btn-more-info-call-now" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />> <span class="icon-phone" />&nbsp;Call&nbsp;${callCentreNumber}</a>
-						<div class="col-xs-6">
-							<div class="quote-reference-number hidden-large">
-								<h3>Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></h3>
-							</div>
-							<div class="getPrintableBrochures hidden-slim">
-								<a href="javascript:;" class="getPrintableBrochures">Email brochures</a>
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<a href="javascript:;" class="btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online&nbsp;<span class="icon-arrow-right" /></a>
-						</div>
+						<c:set var="continueOnlineAsCTA" scope="request"><content:get key="continueOnlineAsCTA"/></c:set>
+						<c:choose>
+							<c:when test="${continueOnlineAsCTA eq 'Y'}">
+								${continueOnlineCTAHtml}
+								<div class="col-xs-6">
+									${quoteRefHtml}
+									${emailBrochuresHtml}
+								</div>
+								<div class="col-xs-6">
+									${callNowALinkHtml}
+								</div>
+							</c:when>
+							<c:otherwise>
+								${callNowCTAHtml}
+								<div class="col-xs-6">
+									${quoteRefHtml}
+									${emailBrochuresHtml}
+								</div>
+								<div class="col-xs-6">
+									${continueOnlineALinkHtml}
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</c:when>
 					<c:otherwise>
-						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
-						<div class="quote-reference-number hidden-large">
-							<h3>Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></h3>
-						</div>
-						<a href="javascript:;" class="getPrintableBrochures hidden-slim">Email brochures</a>
+						${continueOnlineCTAHtml}
+						${quoteRefHtml}
+						${emailBrochuresHtml}
 					</c:otherwise>
 				</c:choose>
 			</div>

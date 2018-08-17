@@ -6,6 +6,8 @@
 	<content:get key="emailPlaceHolder"/>
 </c:set>
 
+<c:set var="brand" value="${pageSettings.getBrandCode()}" />
+
 <%-- Setup variables needed for dual pricing --%>
 <health_v1:dual_pricing_settings />
 <health_v1:pyrr_campaign_settings />
@@ -120,7 +122,7 @@
 							{{ } else { }}
 							<p class="promoHeading">Great choice!</p>
 							<p class="noPromoText">This policy covers all of the things that you said were important to you.
-								Also, because health insurance prices are regulated, you’re paying no more through us than if you went directly to {{= info.providerName }}.</p>
+								<span>Also, because health insurance prices are regulated, you’re paying no more through us than if you went directly to {{= info.providerName }}.</span></p>
 							{{ }  }}
 						</div>
                         <c:if test="${empty callCentre or not callCentre}">
@@ -179,7 +181,17 @@
 			</c:choose>
 
 			<div class="col-xs-12">
-				<simples:dialogue id="76" vertical="health" mandatory="true" />
+				<simples:dialogue id="99" vertical="health" />
+			</div>
+
+			<c:if test="${brand eq 'ctm'}">
+				<div class="col-xs-12">
+					<simples:dialogue id="100" vertical="health" />
+				</div>
+			</c:if>
+
+			<div class="col-xs-12">
+				<simples:dialogue id="84" vertical="health" />
 			</div>
 
 			<div class="policyBrochures col-xs-12">
@@ -211,18 +223,40 @@
 						{{ } }}
 					</div>
 
+					<div class="row">
+						<div class="col-xs-12">
+							<textarea rows="10" id="selectedProductUrlTextArea" class="col-xs-12 hidden addTopMargin" aria-invalid="false"></textarea>
+						</div>
+					</div>
+
+					<div class="row hidden copy-append-offer-row addTopMargin">
+						<div class="col-xs-6">
+							<a href="javascript:;" class="btn btn-save btn-copy-selected-product-url" <field_v1:analytics_attr analVal="Copy Product Link button" quoteChar="\"" />>Copy Link</a>
+						</div>
+						<div class="col-xs-6">
+							<field_v2:checkbox className="checkbox-custom pull-right hidden"
+											   xpath="health/sendBrochures/appendOffer" required="false"
+											   value="Y" label="true"
+											   title="Append Offer" />
+						</div>
+					</div>
+
 				</div>
 
 				<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
 
 					<div class="row formInput">
 						<div class="col-sm-7 col-xs-12">
-							<field_v2:email xpath="emailAddress"  required="true"
+							<field_v2:email xpath="emailAddress"  required="false"
 											className="sendBrochureEmailAddress"
 											placeHolder="${emailPlaceHolder}" />
 						</div>
 						<div class="col-sm-5 hidden-xs">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure btn-block" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+						</div>
+
+						<div class="col-sm-5 hidden-xs">
+							<a href="javascript:;" class="btn btn-save disabled btn-get-selected-product-url btn-block addTopMargin" <field_v1:analytics_attr analVal="Get Product Link button" quoteChar="\"" />>Get Product Link</a>
 						</div>
 					</div>
 					<div class="row row-content formInput optInMarketingRow">
@@ -239,7 +273,7 @@
 							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
 						</div>
 					</div>
-					<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
+					<div class="row row-content moreInfoEmailBrochuresSuccess hidden addTopMargin">
 						<div class="col-xs-12">
 							<div class="success alert alert-success">
 								Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
@@ -281,7 +315,8 @@
 					{{ if(!_.isEmpty(obj.accident) && obj.accident.covered === 'Y') { }}
 					{{= obj.accident.overrideDetails }}</p>
 					{{ }else{ }}
-					-
+						<strong>Covered: No</strong><br>
+						{{= obj.accident.overrideDetails }}</p>
 					{{ } }}
 				{{ } }}
 				{{ if(hospitalCover.inclusions.length > 0) { }}
@@ -290,7 +325,7 @@
 					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
 					<%-- if limited hospital cover and has inclusions START --%>
 
-						<h5 class="text-danger">You will be covered for the following services only</h5>
+                <h5 class="text-danger">You will be covered for the following services only <span class="icon-tick text-success">&nbsp;</span></h5>
 
 						<ul class="exclusions inclusions">
 						{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
@@ -308,7 +343,7 @@
 					{{ } else { }}
 					<%-- else regular hospital cover and has inclusions START --%>
 
-						<h5>You will be covered for the following services</h5>
+                        <h5>Inclusions <span class="icon-tick text-success">&nbsp;</span></h5>
 
 						<ul class="exclusions inclusions">
 							{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
@@ -323,7 +358,15 @@
 				{{ } }}
 
 				{{ if(hospitalCover.restrictions.length > 0) { }}
-					<h5>You will have restricted cover for the following services</h5>
+                <h5>Restrictions <span class="icon-tick restrictions-icon">&nbsp;</span><div class="inline-block"><field_v2:checkbox
+						xpath="health/simples/restrictions/verified"
+						value="Y"
+						required="true"
+						label=""
+						errorMsg="Please confirm all restrictions have been read to the client"
+						className="checkbox-custom simples_dialogue-checkbox-restrictions-verified"
+						title="Please confirm all restrictions have been read to the client" /></div>
+				</h5>
 					<ul class="exclusions restrictions">
 						{{ _.each(hospitalCover.restrictions, function(restriction){ }}
 							<li class="simplesMoreInfoRestrictions"><span>{{= restriction.name }}</span></li>
@@ -342,18 +385,20 @@
 				{{ if(hospitalCover.exclusions.length > 0) { }}
 					<%-- has exclusions START --%>
 
-					<h5>You will not be covered for the following services</h5>
+                <h5>Exclusions <span class="icon-cross text-danger">&nbsp;</span><div class="inline-block"><field_v2:checkbox
+						xpath="health/simples/exclusions/verified"
+						value="Y"
+						required="true"
+						label=""
+						errorMsg="Please confirm all exclusions have been read to the client"
+						className="checkbox-custom simples_dialogue-checkbox-exclusions-verified"
+						title="Please confirm all exclusions have been read to the client" /></div>
+				</h5>
 
 					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
 						<%-- if limited hospital cover and has exclusions START --%>
-
-							{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
-								{{ _.each(custom.info.exclusions.cover.split('|'), function(exclusionsFrmRateSheet){ }}
-									<p class="text-danger exclusion fromRatesheet"><span>{{= exclusionsFrmRateSheet }}</span></p>
-								{{ }) }}
-							{{ } }}
-
-						<%-- if limited hospital cover and has exclusions END --%>
+                            <span class="text-danger">All other services not listed as included or restricted are excluded.</span>
+                        <%-- if limited hospital cover and has exclusions END --%>
 					{{ } else { }}
 						<%-- else regular hospital cover and has exclusions START --%>
 

@@ -10,6 +10,7 @@ import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailServiceHandler;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.leadService.services.LeadService;
 import com.ctm.web.core.model.Touch;
@@ -24,6 +25,7 @@ import com.ctm.web.core.services.TouchService;
 import com.ctm.web.core.services.TransactionAccessService;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.transaction.model.TransactionDetail;
+import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
@@ -40,6 +42,7 @@ import com.ctm.web.health.model.results.ResponseError;
 import com.ctm.web.health.services.HealthApplyService;
 import com.ctm.web.health.services.HealthConfirmationService;
 import com.ctm.web.health.services.HealthLeadService;
+import com.ctm.web.health.validation.HealthApplicationValidation;
 import com.ctm.web.reward.services.RewardCampaignService;
 import com.ctm.web.reward.services.RewardService;
 import com.ctm.web.simples.services.TransactionService;
@@ -131,6 +134,10 @@ public class HealthApplicationController extends CommonQuoteRouter {
             }
         }
 
+        List<SchemaValidationError> validationErrors = HealthApplicationValidation.validateCoverType(data);
+        if(!validationErrors.isEmpty()) {
+            throw new RouterException(data.getTransactionId(), validationErrors);
+        }
         final Vertical.VerticalType vertical = HEALTH;
         final boolean isCallCentre = "true".equals(request.getSession().getAttribute("callCentre")); //TODO should this be isOperatorLoggedIn() ??
         final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
@@ -169,6 +176,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
             request.setAttribute("applicationResponse", applyResponse);
             request.setAttribute("requestData", data);
             request.setAttribute("confirmationId", confirmationId);
+            request.setAttribute("providerQuoteId", response.getProductId());
 
             // Record Confirmation touch
             recordTouch(request, data, productId, Touch.TouchType.SOLD);
@@ -232,7 +240,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
             sendEmail(request, data, vertical, brand, dataBucket);
 
-            leadService.sendLead(4, dataBucket, request, "SOLD");
+            leadService.sendLead(4, dataBucket, request, "SOLD", brand.getCode());
 
             // Check outcome was ok --%>
             LOGGER.info("Transaction has been set to confirmed. {},{}", kv("transactionId", data.getTransactionId()), kv("confirmationID", confirmationId));
@@ -281,7 +289,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                 recordTouch(request, data, productId, Touch.TouchType.FAIL);
             }
 
-            leadService.sendLead(4, getDataBucket(request, data.getTransactionId()), request, "PENDING");
+            leadService.sendLead(4, getDataBucket(request, data.getTransactionId()), request, "PENDING",brand.getCode());
         }
 
         LOGGER.debug("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
@@ -366,7 +374,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                         .orElseThrow(() -> new NotFoundException("Email not found")));
     }
 
-    private void writePolicyNoToTransactionDetails(@FormParam("") HealthRequest data, HealthApplicationResponse response) {
+    private void writePolicyNoToTransactionDetails(@FormParam("") com.ctm.web.health.model.form.HealthRequest data, HealthApplicationResponse response) {
         try {
             transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -2, "health/policyNo", response.getProductId());
         } catch (Exception e) {

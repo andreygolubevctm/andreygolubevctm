@@ -49,7 +49,9 @@
     <jsp:invoke fragment="sidebarColumnLeft"/>
 </c:set>
 <c:set var="sidebarColumnRight">
+    <ad_containers:sidebar_top />
     <jsp:invoke fragment="sidebarColumnRight"/>
+    <ad_containers:sidebar_bottom />
 </c:set>
 <c:set var="resultsErrorMessage">
     <jsp:invoke fragment="resultsErrorMessage"/>
@@ -114,7 +116,7 @@
     </div>
     <%-- Currently applied on Health V4 --%>
     <c:if test="${not empty sidebarColumnRight}">
-        <div class="hidden-xs hidden-sm col-md-3" id="results-sidebar">
+        <div class="col-md-3" id="results-sidebar">
                 ${sidebarColumnRight}
         </div>
     </c:if>

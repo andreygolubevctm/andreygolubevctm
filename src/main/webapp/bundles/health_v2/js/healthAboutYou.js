@@ -234,9 +234,21 @@
 	}
 
 	function toggleRebateDialogue() {
+
+		var isCallCentre = meerkat.site.isCallCentreUser;
+		var isWebChat = false;
+		if (isCallCentre) {
+			var callType = $(':input[name="health_simples_contactTypeRadio"] option').is(':selected') ? $(':input[name="health_simples_contactTypeRadio"]').val() : null;
+			isWebChat = !_.isEmpty(callType) && callType === 'webchat';
+		}
+
 		// apply rebate
 		if ($healthCoverRebate.find('input:checked"]').val() === 'Y') {
-			$rebateDialogue.removeClass('hidden');
+			if (!isWebChat) {
+                $rebateDialogue.removeClass('hidden');
+            } else {
+				$rebateDialogue.addClass('hidden');
+			}
 		}
 		// no rebate
 		else {

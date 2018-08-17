@@ -18,6 +18,7 @@
 <%@ attribute name="phoneType"				required="false" rtexprvalue="true"	 description="'Flexi'|'Mobile'|'LandLine' Phone Type for Validation" %>
 <%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
 <%@ attribute name="requireOnePlusNumber"	required="false" rtexprvalue="true"	 description="true|false if two fields, require at least one" %>
+<%@ attribute name="checkMobileBlacklist"   required="false" rtexprvalue="true" description="Boolean as to validate mobile against blacklist" %>
 
 <c:if test="${callCentre}">
 	<c:set var="required" value="${false}" />
@@ -51,7 +52,10 @@
 		<c:if test="${empty placeHolder}">
 			<c:set var="placeHolder">04xx xxx xxx</c:set>
 		</c:if>
-		<c:set var="additionalAttributes"> data-rule-validate${phoneType}TelNo='true' data-msg-validate${phoneType}TelNo='Please enter the ${labelText} in the format 04xx xxx xxx for mobile' ${additionalAttributes}</c:set>
+		<c:set var="blacklistRules">
+			<c:if test="${not empty checkMobileBlacklist and checkMobileBlacklist eq true}">data-rule-validate${phoneType}TelNoWithBlacklist='true' data-msg-validate${phoneType}TelNoWithBlacklist='This ${labelText} appears to be invalid, please enter a valid ${labelText}' </c:if>
+		</c:set>
+		<c:set var="additionalAttributes"> data-rule-validate${phoneType}TelNo='true' data-msg-validate${phoneType}TelNo='Please enter the ${labelText} in the format 04xx xxx xxx for mobile' ${blacklistRules} ${additionalAttributes}</c:set>
 		<c:set var="allowMobile" value="true"/>
 		<c:set var="allowLandLine" value="false"/>
 	</c:when>

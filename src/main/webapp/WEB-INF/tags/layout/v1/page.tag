@@ -12,6 +12,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
 <%@ attribute required="false" name="bundleFileName" description="Pass in alternate bundle file name" %>
 <%@ attribute required="false" name="displayNavigationBar" description="Whether to display the navigation bar" %>
+<%@ attribute name="ignorePageHeader" required="false" rtexprvalue="true" description="Pass true/false to remove the page header bar" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -72,6 +73,12 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<c:otherwise>callcentreclosed</c:otherwise>
 	</c:choose>
 </c:set>
+
+<%-- Capture brandCode provided in the URL --%>
+<c:set var="urlStyleCodeId">
+	<c:if test="${not empty param.brandCode and (fn:toLowerCase(param.brandCode) eq 'wfdd' or fn:toLowerCase(param.brandCode) eq 'bddd')}">${fn:toLowerCase(param.brandCode)}</c:if>
+</c:set>
+
 <!DOCTYPE html>
 <go:html>
 <head>
@@ -149,23 +156,13 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 	<div class="navMenu-row">
 	<!-- body content -->
+		<c:if test="${empty ignorePageHeader or (not empty ignorePageHeader and ignorePageHeader eq false)}">
 		<header class="header-wrap">
 
 			<div class="header-top dropdown-interactive-base navMenu-row-fixed">
 
 			<div class="dynamicTopHeaderContent">
 				<content:get key="topHeaderContent" />
-					<c:if test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest(), 'minimumSupportedBrowsers') eq false}">
-						<div class="top-bar">
-							<a href="http://browsehappy.com/" target="_blank" class="hidden-xs">
-								Please be aware that any issues you experience on our site could be due to the browser you are using. You may be able to fix these issues by updating your browser.
-							</a>
-							<span class="icon icon-cross unsupported-browser-close hidden-lg hidden-md hidden-sm" id="js-close-unsupported-browser"></span>
-							<span class="visible-xs">
-								Please be aware that any issues you experience on our site could be due to the browser you are using. You may be able to fix these issues by <a href="http://browsehappy.com/" target="_blank" class="hidden-lg hidden-md hidden-sm">updating your browser.</a>
-							</span>
-						</div>
-					</c:if>
 				<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
 				<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
 					<content:get key="competitionApplicationTopHeaderContent" />
@@ -176,7 +173,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 						<content:get key="premiumIncreaseContent" />
 					</c:if>
 
-					<coupon:banner />
+				<ad_containers:main_top />
+				<coupon:banner />
 			</div>
 
 				<div class="container">
@@ -205,16 +203,49 @@ ${newPage.init(pageContext.request, pageSettings)}
 								</c:when>
 								<c:otherwise>
 									<%-- Show only if it's not health OR it's health and the call back functionality is disabled --%>
-									<c:if test="${ pageSettings.getVerticalCode() ne 'health' or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">
+									<c:if test="${ (pageSettings.getVerticalCode() ne 'health' and pageSettings.getVerticalCode() ne 'travel') or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">
 										<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
 											<span class="sr-only">Toggle Navigation</span>
 											<span class="icon icon-reorder"></span>
 										</button>
 									</c:if>
+									<c:if test="${pageSettings.getVerticalCode() eq 'travel'}">
+										<div class="navbar__travel-filters">
+											<a class="edit-details-travel-mobile" href="javascript:;">Edit details</a>
+											<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
+
+											<div class="row navbar-mobile coverLevelTabs visible-xs hidden-sm hidden-md hidden-lg">
+												<div class="col-xs-5 clt-trip-filter mobile-cover-type">
+													<div class="dropdown cover-type-mobile-active">
+														<a type="button" id="coverTypeDropdownBtn"
+														   data-toggle="dropdown" aria-haspopup="true"
+														   aria-expanded="false">
+															<span class="mobile-active-cover-type"></span>
+															<i class="icon icon-angle-down"></i>
+														</a>
+														<div class="dropdown-menu dropdown-menu-excess-filter dropdown-menu-mobile-cover-types"
+															 aria-labelledby="coverTypeDropdownBtn">
+															<div class="mobile-cover-types"></div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xs-7 clt-trip-filter amt-filter">
+													<travel_results_filter_types:amt_filter />
+												</div>
+												<div class="col-xs-2 clt-trip-filter">
+													<travel_results_filter_types:more_filters/>
+												</div>
+												<div class="col-xs-4 clt-trip-filter">
+													<travel_results_filter_types:excess_filter/>
+												</div>
+											</div>
+										</div>
+									</c:if>
 								</c:otherwise>
 							</c:choose>
 
 							<c:if test="${pageSettings.getVerticalCode() eq 'health' and pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}">
+								<health_v4:opening_text />
 								<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
 								<a class="navbar-toggle wide phone collapsed" data-toggle="dialog"
 									data-content="#view_all_hours_cb"
@@ -222,7 +253,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 									data-title="Request a Call" data-cache="true"
 									${analyticsAttr}>
 									<span class="icon icon-phone" ${analyticsAttr}></span>
-									<span ${analyticsAttr}>Talk to our experts</span>
+									<span ${analyticsAttr}>${mobileOpenText}</span>
 								</a>
 							</c:if>
 
@@ -245,7 +276,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 						<jsp:invoke fragment="header" />
 					</div>
-
 				</div>
 				<jsp:invoke fragment="progress_bar" />
 				<c:if test="${displayNavigationBar eq true}">
@@ -267,7 +297,7 @@ ${newPage.init(pageContext.request, pageSettings)}
         <jsp:invoke fragment="xs_results_pagination" />
 
 		</header>
-
+		</c:if>
 			<%--  Supertag --%>
 			<c:if test="${superTagEnabled eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
 				<agg_v2:supertag />
@@ -352,6 +382,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 						title: '${title} - ${pageSettings.getSetting("windowTitle")}',
 						name: '${pageSettings.getSetting("brandName")}',
 						vertical: '${pageSettings.getVerticalCode()}',
+						urlStyleCodeId: "${urlStyleCodeId}",
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
                         minifiedFileString: '${pageSettings.getSetting('minifiedFileString')}',
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,

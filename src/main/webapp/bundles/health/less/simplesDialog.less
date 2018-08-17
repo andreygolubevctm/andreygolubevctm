@@ -11,6 +11,10 @@
 	}
 	&.yellow {
 		.alert-warning;
+
+		&.mandatory{
+			.alert-warning;
+		}
 	}
 	&.red, &.mandatory {
 		.alert-danger;
@@ -48,6 +52,12 @@
 		font-size: @font-size-base;
 		line-height: @line-height-computed;
 		padding-top: 0;
+	}
+
+	&.simples-affiliate-dialogue {
+		h3 {
+			text-transform: uppercase;
+		}
 	}
 }
 
@@ -92,6 +102,11 @@
 			#pageContent {
 				background-color: indianred;
 			}
+			&.trial {
+				#pageContent {
+					background-color: #c18eda;
+				}
+			}
 		}
 
 		.simples-dialog-inbound {
@@ -113,7 +128,7 @@
 		}
 	}
 
-	#healthAboutYou {
+	#health_situation_cover_wrapper {
 		 .nz-medicare-rules {
 			 a {
 				 display: block;
@@ -125,4 +140,31 @@
 			 }
 		 }
 	 }
+
+	.simples-dialog-referral {
+		display:none;
+	}
+
+	#collapseDialogue62 {
+		margin-top: 10px;
+	}
+
+	&.moreInfoVisible {
+		.simples-dialogue-96,
+		.simples-dialogue-76,
+		.simples-dialogue-109 {
+			display: none;
+		}
+
+		.simples-dialogue-99 {
+			p {
+				font-size: 14px;
+			}
+
+			ul {
+				list-style: disc;
+				padding-left: 40px;
+			}
+		}
+	}
 }

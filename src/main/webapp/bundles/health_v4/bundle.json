@@ -50,6 +50,11 @@
     "shared/reward",
     "shared/bootstrapSwitch",
     "shared/affiliateProperties",
-    "shared/competition"
+    "shared/competition",
+    "shared/mobileFiltersMenu",
+    "shared/healthFundTimeOffset",
+    "shared/healthPriceBreakdown",
+    "shared/marketingContent",
+    "shared/bannerPlacement"
   ]
 }

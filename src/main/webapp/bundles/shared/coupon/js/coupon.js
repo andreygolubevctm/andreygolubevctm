@@ -9,11 +9,13 @@
 	var events = {
 		coupon: {
 			COUPON_LOADED : "COUPON_LOADED",
-            PADDING_TOP_CHANGED : "PADDING_TOP_CHANGED"
+            PADDING_TOP_CHANGED : "PADDING_TOP_CHANGED",
+            COUPON_RENDER_AFTER_ADS: "COUPON_RENDER_AFTER_ADS"
 		}
 	};
 
 	var $couponIdField,
+        $couponViewedField,
 		$couponCodeField,
 		$couponOptinField,
 		$couponOptinGroup,
@@ -25,7 +27,9 @@
         isPreload = false,
 		isCouponValidAndSubmitted = false,
         subscriptionHandles = {},
-		defaultResultsDockedTop = 147; // Hard coded in: health_v4\less\results\resultsHeaderBar.less applied to ".result"
+		defaultResultsDockedTop = 147, // Hard coded in: health_v4\less\results\resultsHeaderBar.less applied to ".result"
+		forceFilter = true, // Set to true to allow filter on coupons email campaigns
+		renderAfterAds = false;
 
 	function init() {
 
@@ -36,6 +40,7 @@
 			if (isAvailable === true) {
 				$couponIdField = $('.coupon-id-field'),
 				$couponCodeField = $('.coupon-code-field'),
+				$couponViewedField = $('.coupon-viewed-field'),
 				$couponOptinField = $('.coupon-optin-field').find('input'),
 				$couponOptinGroup = $('.coupon-optin-group'),
 				$couponErrorContainer = $('.coupon-error-container'),
@@ -74,6 +79,13 @@
 			dealWithAddedCouponHeight();
 		});
 
+        meerkat.messaging.subscribe(events.coupon.COUPON_RENDER_AFTER_ADS, function() {
+            renderAfterAds = true;
+            loadCoupon('filter', null, function successCallBack() {
+                renderCouponBanner();
+            });
+        });
+
 		$(document).on('headerAffixed', function() {
 			dealWithAddedCouponHeight();
 		});
@@ -96,7 +108,7 @@
 	}
 
 	function loadCoupon(type, dataParam, successCallBack) {
-		if (isAvailable !== true) return;
+		if (isAvailable !== true && meerkat.site.isCallCentreUser !== true) return;
 		if (!type) return;
 
 		var url = '',
@@ -109,15 +121,26 @@
 				url = 'coupon/id/get.json';
 				data.couponId = dataParam;
 				break;
+            case "simplesCouponLoad":
+                url = 'coupon/id/get.json';
+                data.couponId = dataParam;
+                data.showCouponSeen = 1;
+            	break;
 			case "filter":
-				// if already have a coupon (most likely from email campaign or vdn prefill), do not filter
-				if (isCurrentCouponValid() === true && isPreload === true) {
-					if (typeof successCallBack === 'function') {
-						successCallBack();
-					}
-					return;
+				if (!forceFilter) {
+                    // if already have a coupon (most likely from email campaign or vdn prefill), do not filter
+                    if (isCurrentCouponValid() === true && isPreload === true) {
+                        if (typeof successCallBack === 'function') {
+                            successCallBack();
+                        }
+                        return;
+                    }
+                }
+
+                if (isPreload) {
+					data.couponId = meerkat.site.couponId;
 				}
-                isPreload = false;
+
 				url = 'coupon/filter.json';
 				break;
 			default:
@@ -134,7 +157,9 @@
 		})
 		.done(function onSuccess(json) {
 			setCurrentCoupon(json);
-			populateFields();
+			if (type !== 'simplesCouponLoad') {
+				populateFields();
+            }
 			meerkat.messaging.publish(events.coupon.COUPON_LOADED);
 			if (typeof successCallBack === 'function') {
 				successCallBack();
@@ -175,8 +200,9 @@
 		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentBanner')) {
             $('#contactForm').find('.quoteSnapshot').hide();
             $('.callCentreHelp').hide();
-			$('.coupon-banner-container').html(currentCoupon.contentBanner);
-            $('.coupon-tile-container').html(currentCoupon.contentTile);
+
+            _renderCoupon();
+
             $('body').addClass('couponShown');
 
             meerkat.modules.healthMoreInfo.dynamicPyrrBanner();
@@ -188,11 +214,36 @@
             $('.coupon-banner-container, .coupon-tile-container').html('');
             $('body').removeClass('couponShown');
 
+            _unRenderCoupon();
         }
 
 		dealWithAddedCouponHeight();
 
 	}
+
+	function _renderCoupon() {
+		var hasPromo = $('.ad-main-top[data-id=ad-main-top]:visible').children().length === 1,
+			$bannerTop = $('.coupon-banner-container'),
+			$bannerTile = meerkat.modules.deviceMediaState.get() === 'xs' ? $('.coupon-tile-xs .coupon-tile-container') : $('.journeyEngineSlide.active').find('.coupon-tile-container'),
+			$banner = hasPromo ? $bannerTile : $bannerTop,
+			content = hasPromo ? currentCoupon['contentTile'] : currentCoupon['contentBanner'];
+
+		$banner.html(content);
+
+		if (hasPromo) {
+			_unRenderCoupon('top');
+		}
+	}
+
+    function _unRenderCoupon(placement) {
+        var hasPromo = $('.ad-main-top[data-id=ad-main-top]:visible').children().length === 1,
+			$bannerTop = $('.coupon-banner-container'),
+            $bannerTile = $('.journeyEngineSlide.active').find('.coupon-tile-container'),
+			$banner = !_.isUndefined(placement) ? (placement === 'top' ? $bannerTop : $bannerTile) :
+            	(hasPromo ? $bannerTile : $bannerTop);
+
+        $banner.empty();
+    }
 
 	function dealWithAddedCouponHeight() {
 		// If we have a visible coupon.
@@ -339,9 +390,14 @@
 		if (isCurrentCouponValid() === true && currentCoupon.canPrePopulate === true) {
 			$couponIdField.val(currentCoupon.couponId);
 			$couponCodeField.val(currentCoupon.couponCode);
+            $couponViewedField.val(currentCoupon.couponId);
 		} else {
-            $couponIdField.val('');
-            $couponCodeField.val('');
+            if ($couponIdField) {
+                $couponIdField.val('');
+            }
+            if ($couponCodeField) {
+                $couponCodeField.val('');
+            }
         }
 	}
 
@@ -375,6 +431,15 @@
 		currentCoupon = coupon;
 	}
 
+	function getCouponViewedId() {
+        $couponViewedField = $couponViewedField || $('.coupon-viewed-field');
+        return $couponViewedField.length === 1 && $couponViewedField.val() !== '' ? $couponViewedField.val() : null;
+	}
+
+	function doRenderAfterAds() {
+		return renderAfterAds;
+	}
+
 	meerkat.modules.register("coupon", {
 		init: init,
 		events: events,
@@ -383,7 +448,9 @@
 		validateCouponCode: validateCouponCode,
 		renderCouponBanner: renderCouponBanner,
         triggerPopup: triggerPopup,
-        dealWithAddedCouponHeight: dealWithAddedCouponHeight
+        dealWithAddedCouponHeight: dealWithAddedCouponHeight,
+        getCouponViewedId: getCouponViewedId,
+        doRenderAfterAds: doRenderAfterAds
 	});
 
 })(jQuery);

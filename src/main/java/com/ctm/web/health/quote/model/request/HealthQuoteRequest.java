@@ -14,6 +14,8 @@ import java.util.List;
 public class HealthQuoteRequest
 {
 
+    private boolean isSimples;
+
     private String state;
 
     private Membership membership;
@@ -41,6 +43,10 @@ public class HealthQuoteRequest
 
     private Boolean partnerHealthCover;
 
+    private Integer age;
+
+    private String familyType;
+
     /**
      * Use rebates
      */
@@ -52,6 +58,14 @@ public class HealthQuoteRequest
     private Boolean includeSummary;
 
     private List<PaymentType> paymentTypes;
+
+    public boolean getIsSimples() {
+        return isSimples;
+    }
+
+    public void setIsSimples(boolean isSimples) {
+        this.isSimples = isSimples;
+    }
 
     public String getState() {
         return state;
@@ -188,4 +202,22 @@ public class HealthQuoteRequest
     public void setPartnerHealthCover(Boolean partnerHealthCover) {
         this.partnerHealthCover = partnerHealthCover;
     }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getFamilyType() {
+        return familyType;
+    }
+
+    public void setFamilyType(String familyType) {
+        this.familyType = familyType;
+    }
+
+
 }

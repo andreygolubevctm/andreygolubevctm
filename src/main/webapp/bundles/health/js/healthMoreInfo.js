@@ -95,6 +95,17 @@
             });
         });
 
+        $(document.body).on("mouseenter focusin", ".btn-email-brochure", function emailBtnClick(event) {
+            $("#emailAddress").toggleClass("email", true).attr('aria-required', true).attr("required", "required");
+            $("#health_simples_restrictions_verified, #health_simples_exclusions_verified").removeAttr('aria-required').removeAttr("required");
+
+        });
+
+        $(document.body).on("mouseenter focusin", ".btn-more-info-apply", function applyBtnClick(event) {
+            $("#emailAddress").toggleClass("email", false).removeAttr('aria-required').removeAttr("required");
+            $("#health_simples_restrictions_verified, #health_simples_exclusions_verified").attr('aria-required', true).attr("required", "required");
+        });
+
     }
 
     function onApplySuccess() {
@@ -172,6 +183,9 @@
         }
 
         meerkat.modules.simplesBindings.toggleMoreInfoDialogue();
+
+        var showReadNowChecks =  (($('#health_simples_notifyInclusionsExclusionsVia').val() === 'READNOW' ? true : false ) && !meerkat.modules.simplesBindings.webChatInProgress() );
+        $('.simples_dialogue-checkbox-restrictions-verified, .simples_dialogue-checkbox-exclusions-verified').toggleClass('hidden', !showReadNowChecks);
     }
 
     function onAfterShowTemplate() {
@@ -191,6 +205,8 @@
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
+
+        meerkat.modules.simplesBindings.toggleLimitedCoverDialogue();
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -259,39 +275,41 @@
         var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
         var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
 
+        var emailBrochuresProductData = [
+            {name: "hospitalPDSUrl", value: product.promo.hospitalPDF},
+            {name: "extrasPDSUrl", value: product.promo.extrasPDF},
+            {name: "provider", value: product.info.provider},
+            {name: "providerName", value: product.info.providerName},
+            {name: "productName", value: product.info.productTitle},
+            {name: "productId", value: product.productId},
+            {name: "productCode", value: product.info.productCode},
+            {name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext},
+            {name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing},
+            // Additional information
+            {name: "healthSituation", value: situation},
+            {name: "primaryCurrentPHI", value: currentPHI},
+            {name: "coverType", value: product.info.ProductType},
+            {name: "benefitCodes", value: benefitCodes.join(',')},
+            {name: "specialOffer", value: specialOffer.specialOffer},
+            {name: "specialOfferTerms", value: specialOffer.specialOfferTerms},
+            {name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission},
+            {name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson},
+            {name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy},
+            {name: "coPayment", value: excessesAndCoPayment.coPayment}
+        ];
+
         meerkat.modules.emailBrochures.setup({
             emailInput: emailBrochuresElement.find('.sendBrochureEmailAddress'),
             submitButton: emailBrochuresElement.find('.btn-email-brochure'),
             form: form,
             marketing: emailBrochuresElement.find('.optInMarketing'),
 	        emailHistoryInput: $('#health_brochureEmailHistory'),
-            productData: [
-                {name: "hospitalPDSUrl", value: product.promo.hospitalPDF},
-                {name: "extrasPDSUrl", value: product.promo.extrasPDF},
-                {name: "provider", value: product.info.provider},
-                {name: "providerName", value: product.info.providerName},
-                {name: "productName", value: product.info.productTitle},
-                {name: "productId", value: product.productId},
-                {name: "productCode", value: product.info.productCode},
-                {name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext},
-                {name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing},
-                // Additional information
-                {name: "healthSituation", value: situation},
-                {name: "primaryCurrentPHI", value: currentPHI},
-                {name: "coverType", value: product.info.ProductType},
-                {name: "benefitCodes", value: benefitCodes.join(',')},
-                {name: "specialOffer", value: specialOffer.specialOffer},
-                {name: "specialOfferTerms", value: specialOffer.specialOfferTerms},
-                {name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission},
-                {name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson},
-                {name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy},
-                {name: "coPayment", value: excessesAndCoPayment.coPayment}
-            ],
+            productData: emailBrochuresProductData,
             product: product,
             identifier: "SEND_BROCHURES" + product.productId,
             emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
                 if (result.success) {
-                    parent.find('.formInput').hide();
+                    settings.submitButton.addClass("invisible");
                     parent.find('.moreInfoEmailBrochuresSuccess').removeClass("hidden");
                     meerkat.modules.emailBrochures.tearDown(settings);
                     meerkat.modules.healthResults.setSelectedProduct(product);
@@ -307,6 +325,71 @@
                 }
             }
         });
+
+        meerkat.modules.emailBrochures.setup({
+            emailInput: emailBrochuresElement.find('.sendBrochureEmailAddress'),
+            submitButton: emailBrochuresElement.find('.btn-get-selected-product-url'),
+            submitUrl : "productBrochures/get/link.json",
+            form: form,
+            marketing: emailBrochuresElement.find('.optInMarketing'),
+            emailHistoryInput: $('#health_brochureEmailHistory'),
+            productData: emailBrochuresProductData,
+            product: product,
+            identifier: "GET_SELECTED_PRODUCT" + product.productId,
+            emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
+                if (result.success) {
+                    var $theUrlTextArea = $('#selectedProductUrlTextArea'),
+                        $copyAppendOffRow = $('.copy-append-offer-row'),
+                        $copyBtn = $('.btn-copy-selected-product-url'),
+                        $appendOffer = $('#health_sendBrochures_appendOffer'),
+                        $contactType = $('#health_simples_contactType').val();
+
+                    settings.submitButton.addClass("hidden");
+                    $theUrlTextArea.add($copyAppendOffRow).removeClass("hidden");
+                    $theUrlTextArea.html(result.message);
+
+                    $appendOffer.parent().toggleClass('hidden', $contactType !== 'webchat');
+
+                    $copyBtn.click(function(){
+                        $theUrlTextArea.select();
+
+                        // Copy to clipboard functionality is supported by the following browsers:
+                        // IE10+ (although this document indicates some support was there from IE5.5+).
+                        // Google Chrome 43+ (~April 2015)
+                        // Mozilla Firefox 41+ (~September 2015)
+                        // Opera 29+ (based on Chromium 42, ~April 2015)
+
+                        try {
+                            var successful = document.execCommand('copy');
+                            var msg = successful ? 'successful' : 'unsuccessful';
+                            //console.log('Copying text command was ' + msg);
+                        } catch (err) {
+                            //console.log('Oops, unable to copy');
+                        }
+                    });
+
+                    $appendOffer.on('change', function() {
+                        $theUrlTextArea.html(
+                            result.message + ($contactType === 'webchat' && $appendOffer.is(':checked') ? '&amp;couponid=149' : '')
+                        );
+                    });
+
+                    meerkat.modules.emailBrochures.tearDown(settings);
+
+                    meerkat.modules.healthResults.setSelectedProduct(product);
+                } else {
+                    meerkat.modules.errorHandling.error({
+                        errorLevel: 'warning',
+                        message: 'Oops! Something seems to have gone wrong. Please try again by re-entering your email address or ' +
+                        'alternatively contact our call centre on <span class=\"callCentreHelpNumber\">' + meerkat.site.content.callCentreHelpNumber + '</span> and they\'ll be able to assist you further.',
+                        page: 'healthMoreInfo.js:onSendBrochuresCallback',
+                        description: result.message,
+                        data: product
+                    });
+                }
+            }
+        });
+
     }
 
     /**
@@ -389,8 +472,8 @@
         product.aboutFund = '<p>Apologies. This information did not download successfully.</p>';
         product.whatHappensNext = '<p>Apologies. This information did not download successfully.</p>';
         product.warningAlert = '';
-        product.dropDeadDate = '31/3/2016';
-        product.dropDeadDateFormatted = '31st March 2016';
+        product.dropDeadDate = '1/4/2018';
+        product.dropDeadDateFormatted = 'April 1st';
 
         // Get the "about fund", "what happens next" and warningAlert info
         return $.when(
@@ -412,6 +495,7 @@
         var data = {};
         data.providerId = product.info.providerId;
         data.providerContentTypeCode = providerContentTypeCode;
+        data.styleCode = meerkat.site.tracking.brandCode;
 
         if(typeof data.providerId === 'undefined' ||  data.providerId === '') {
             meerkat.modules.errorHandling.error({

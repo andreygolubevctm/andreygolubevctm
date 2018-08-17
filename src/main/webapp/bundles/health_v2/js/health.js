@@ -331,9 +331,6 @@
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 if (event.isForward) {
-
-                    if (meerkat.site.isCallCentreUser) meerkat.modules.simplesBindings.updateSimplesMedicareCoverQuestionPosition();
-
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
                         // coupon logic, filter for user, then render banner
@@ -502,9 +499,9 @@
                     meerkat.modules.healthMedicare.updateMedicareLabel();
 
                     var product = meerkat.modules.healthResults.getSelectedProduct();
-                    var mustShowList = ["GMHBA", "Frank", "Budget Direct", "Bupa", "HIF", "QCHF", "Navy Health", "HBF", "TUH"];
+                    var mustShowList = ["gmhba", "frank", "budget direct", "bupa", "hif", "qchf", "navy health", "tuh", "nib"];
 
-                    if (!meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
+	                if (!meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName.toLowerCase(), mustShowList) == -1) {
                         $("#health_payment_medicare-selection > .nestedGroup").hide().attr("style", "display:none !important");
                     } else {
                         $("#health_payment_medicare-selection > .nestedGroup").removeAttr("style");
@@ -543,6 +540,7 @@
                     var data = {};
                     data.providerId = selectedProduct.info.providerId;
                     data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
+                    data.styleCode = meerkat.site.tracking.brandCode;
 
                     meerkat.modules.comms.get({
                         url: "health/provider/content/get.json",
@@ -907,6 +905,15 @@
         if (!postData.primary_dob.match(dateRegex)) return false;
         if (coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
+	    postData.commencementDate = null;
+	    var commencementDate = $('#health_payment_details_start');
+	    var searchDate = $('#health_searchDate');
+	    if(commencementDate.length && !_.isEmpty(commencementDate.val())) {
+		    postData.commencementDate = commencementDate.val();
+	    } else if (searchDate.length && !_.isEmpty(searchDate.val())) {
+		    postData.commencementDate = searchDate.val();
+	    }
+
         return meerkat.modules.comms.post({
             url: "ajax/json/health_rebate.jsp",
             data: postData,
@@ -1034,6 +1041,7 @@
 
             // Push in values from 1st slide only when have been beyond it
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
+
                 var contactType = null;
                 var contactTypeTrial = '';
                 if ($('#health_simples_contactType_inbound').is(':checked')) {
@@ -1045,6 +1053,8 @@
                 } else if ($('#health_simples_contactType_trialcampaign').is(':checked')) {
                     contactType = 'outbound';
                     contactTypeTrial = 'Trial Campaign';
+				} else if ($('#health_simples_contactType_chat').is(':checked')) {
+					contactType = 'webchat';
                 }
 
                 $.extend(response, {

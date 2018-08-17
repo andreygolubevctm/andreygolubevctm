@@ -11,8 +11,8 @@
 	FROM aggregator.help
 	WHERE id = ?
 		AND (styleCodeId = ? OR stylecodeid = 0)
-	GROUP BY id
 	ORDER BY id, styleCodeId desc
+	LIMIT 1
 	<sql:param>${param.id}</sql:param>
 	<sql:param>${styleCodeId}</sql:param>
 </sql:query>

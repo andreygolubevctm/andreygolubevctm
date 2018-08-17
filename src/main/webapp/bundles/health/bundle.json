@@ -1,6 +1,8 @@
 {
   "brandCodes": [
-    "ctm"
+    "ctm",
+    "wfdd",
+    "bddd"
   ],
   "dependencies": [
     "shared/journeyEngine/v2",
@@ -49,6 +51,8 @@
     "shared/reward",
     "shared/affiliateProperties",
     "shared/fields",
-    "shared/competition"
+    "shared/competition",
+    "shared/healthFundTimeOffset",
+    "shared/healthPriceBreakdown"
   ]
 }

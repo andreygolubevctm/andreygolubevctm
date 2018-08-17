@@ -64,7 +64,11 @@ public class SessionDataServiceBean {
 	 * @param request
 	 */
 	public SessionData getSessionDataFromSession(HttpServletRequest request) {
-		return getSessionDataFromSession(request, true);
+		try {
+			return getSessionDataFromSession(request, true);
+		} finally {
+			SessionData.markSessionForCommit(request);
+		}
 	}
 
 	/**
@@ -81,8 +85,11 @@ public class SessionDataServiceBean {
 		if(sessionData != null && touchSession && !sessionData.getTransactionSessionData().isEmpty()) {
 			sessionData.setLastSessionTouch(new Date());
 		}
-
-		return sessionData;
+		try {
+			return sessionData;
+		} finally {
+			SessionData.markSessionForCommit(request);
+		}
 	}
 
 	/**
@@ -207,10 +214,12 @@ public class SessionDataServiceBean {
 
 		data.setLastSessionTouch(new Date());
 
+		String dataBucketBrand = (String) data.get("current/brandCode");
+		String dataBucketVerticalCode = (String) data.get("current/verticalCode");
+
 		// If localhost or NXI, the URL writing is not in place, therefore we have fall back logic...
-		if (!EnvironmentService.needsManuallyAddedBrandCodeParam()) {
+		if (!EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(dataBucketBrand, dataBucketVerticalCode)) {
 			// Extra safety check, verify the brand code on the transaction object with the current brand code for this session.
-			String dataBucketBrand = (String) data.get("current/brandCode");
 			String applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
 
 			if (dataBucketBrand != null && !dataBucketBrand.equals("") && applicationBrand != null && !dataBucketBrand.equalsIgnoreCase(applicationBrand)) {
@@ -220,7 +229,6 @@ public class SessionDataServiceBean {
 		}
 
 		// Set the vertical code on the request scope so settings can be loaded correctly.
-		String dataBucketVerticalCode = (String) data.get("current/verticalCode");
 		ApplicationService.setVerticalCodeOnRequest(request, dataBucketVerticalCode);
 
 		return data;

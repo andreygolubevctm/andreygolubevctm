@@ -119,6 +119,9 @@
 			var validEmailAddress = true;
 			if (settings.form !== null && settings.form.length > 0) {
 				validEmailAddress = settings.emailInput.valid();
+				if (validEmailAddress) {
+					$('#emailAddress-error').remove();
+				}
 			}
 			var hasChanged = settings.lastEmailChecked != settings.emailInput.val();
 			if(validEmailAddress && hasChanged) {

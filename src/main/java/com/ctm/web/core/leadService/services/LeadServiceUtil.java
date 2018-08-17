@@ -1,6 +1,8 @@
 package com.ctm.web.core.leadService.services;
 
 import com.ctm.web.core.leadService.model.CliReturnRequest;
+import com.ctm.web.health.simples.model.DelayLeadRequest;
+import com.ctm.web.health.simples.model.DelayLeadResponse;
 import com.ctm.web.core.leadService.model.LeadOutcome;
 import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.model.LeadResponse;
@@ -74,5 +76,16 @@ public class LeadServiceUtil {
         HttpEntity<CliReturnRequest> entity = new HttpEntity<>(request, headers);
 
         return restTemplate.postForEntity(URI.create(url), entity, LeadOutcome.class);
+    }
+
+    public static ListenableFuture<ResponseEntity<DelayLeadResponse>> sendDelayLeadRequest(final DelayLeadRequest request, final String url) {
+        LOGGER.info("Sending request to LeadService {}", request);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        HttpEntity<DelayLeadRequest> entity = new HttpEntity<>(request, headers);
+
+        return restTemplate.postForEntity(URI.create(url), entity, DelayLeadResponse.class);
     }
 }

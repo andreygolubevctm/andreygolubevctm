@@ -136,7 +136,6 @@ public class TouchDao {
 		touches.add(touch);
 	}
 
-
 	public ArrayList<Touch> getTouchesForRootId(long transactionId) throws DaoException {
 		List<Long> transactionIds = new ArrayList<Long>();
 		transactionIds.add(transactionId);
@@ -150,7 +149,7 @@ public class TouchDao {
 
 		String sql = " SELECT" +
 				" 	DISTINCT t.touchId, t.transaction_id, t.dateTime, t.operator_id, t.type,  " +
-				"     tp.productCode, pm.shortTitle as productName, pp.providerCode, pp.name as providerName" +
+				"     tp.productCode, pm.LongTitle as productName,  pp.providerCode, pp.name as providerName " +
 				" FROM" +
 				" 	(SELECT " +
 				" 		DISTINCT t.id as touchId, t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
@@ -328,6 +327,23 @@ public class TouchDao {
 				rs = stmt.getGeneratedKeys();
 				if (rs != null && rs.next()) {
 					touch.getTouchCommentProperty().setId(rs.getLong(1));
+				}
+			}
+
+			if (touch.getTouchLifebrokerProperty() != null) {
+				stmt = dbSource.getConnection().prepareStatement(
+						"INSERT INTO ctm.touches_lifebroker (touchesId, clientReference) " +
+								"VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS
+				);
+
+				stmt.setLong(1, touch.getId());
+				stmt.setString(2, touch.getTouchLifebrokerProperty().getClientReference());
+
+				stmt.executeUpdate();
+				// Update the comment model with the insert ID
+				rs = stmt.getGeneratedKeys();
+				if (rs != null && rs.next()) {
+					touch.getTouchLifebrokerProperty().setId(rs.getLong(1));
 				}
 			}
 		} catch (SQLException | NamingException e) {

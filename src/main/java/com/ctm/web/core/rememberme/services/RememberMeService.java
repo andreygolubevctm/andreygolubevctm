@@ -4,6 +4,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.session.SessionData;
+
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.GeneralSecurityException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -75,7 +78,7 @@ public class RememberMeService {
     }
 
     private static void addCookie(HttpServletResponse response, final Long transactionId, final String cookieName) throws GeneralSecurityException {
-        final Cookie cookie = new Cookie(cookieName, StringEncryption.encrypt(SECRET_KEY, transactionId.toString()));
+        final Cookie cookie = new Cookie(cookieName, StringEncryption.encrypt(SECRET_KEY, transactionId.toString()+":"+LocalDateTime.now().toString()));
         cookie.setMaxAge(MAX_AGE); // 30 days
         cookie.setPath("/");
         cookie.setHttpOnly(true);
@@ -85,10 +88,9 @@ public class RememberMeService {
     }
 
     private static void setCookieDomain(final Cookie cookie) {
-        switch (EnvironmentService.getEnvironment()) {
-            case PRO:
-                cookie.setDomain("secure.comparethemarket.com.au");
-                break;
+		LOGGER.info("RememberMeService - setCookieDomain - Environment: " + EnvironmentService.getEnvironment().name());
+        if (EnvironmentService.getEnvironment() ==  EnvironmentService.Environment.PRO) {
+			cookie.setDomain("secure.comparethemarket.com.au");
         }
     }
 
@@ -101,12 +103,9 @@ public class RememberMeService {
      * except LOCALHOST and NXI
      */
     private static void setCookieSecure(final Cookie cookie) {
-        switch (EnvironmentService.getEnvironment()) {
-            case LOCALHOST:
-            case NXI:
-                break;
-            default:
-                cookie.setSecure(true);
+    	LOGGER.info("RememberMeService - setCookieSecure - Environment: " + EnvironmentService.getEnvironment().name());
+        if (EnvironmentService.getEnvironment() != EnvironmentService.Environment.LOCALHOST) {
+			cookie.setSecure(true);
         }
     }
 
@@ -128,6 +127,72 @@ public class RememberMeService {
         return false;
     }
 
+
+    /**
+     * Used in health_quote_v2.jsp
+     */
+    @SuppressWarnings("unused")
+    public Boolean hasUserVisitedInLast30Minutes(final HttpServletRequest request,
+                                                final String vertical) throws DaoException, ConfigSettingException, GeneralSecurityException {
+        try {
+            if (isRememberMeEnabled(request, vertical)) {
+                Cookie cookie = getRememberMeCookie(request, vertical);
+                LOGGER.info("getRememberMeCookie(): {}", kv("cookie", cookie));
+                if (cookie != null && !cookie.getValue().isEmpty()) {
+                    String cookieValue = StringEncryption.decrypt(SECRET_KEY, cookie.getValue());
+                    String transactionId = getTransactionIdFromCookie(vertical, request).orElse(null);
+                    if(cookieValue.indexOf(":") > 0){
+
+                        String createdTime = cookieValue.substring(cookieValue.indexOf(":")+1,cookieValue.length());
+                        LocalDateTime dateTime = LocalDateTime.parse(createdTime);
+
+                        Long createdEpochTime = dateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+                        Long currentEpochTime =  LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
+                        if(currentEpochTime - createdEpochTime < 1800) {
+
+                            loadSessionData(request,vertical,transactionId,getTransactionDetails(transactionId));
+                            LOGGER.info("session is within 30minutes");
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+
+                }
+
+            }
+        } catch (GeneralSecurityException e) {
+            LOGGER.error("Error retrieving cookie for remember me {}", kv("vertical", vertical), e);
+        }
+        LOGGER.info("isRememberMeEnabled(): {}", isRememberMeEnabled(request, vertical));
+        return false;
+    }
+
+
+    /**
+     * Used in health_quote_v2.jsp
+     */
+    @SuppressWarnings("unused")
+    public String retrieveTransactionId(final HttpServletRequest request,
+                                                 final String vertical) throws DaoException, ConfigSettingException, GeneralSecurityException {
+        try {
+            if (isRememberMeEnabled(request, vertical)) {
+                Cookie cookie = getRememberMeCookie(request, vertical);
+                if (cookie != null && !cookie.getValue().isEmpty()) {
+                    String cookieValue = StringEncryption.decrypt(SECRET_KEY, cookie.getValue());
+                    String transactionId = getTransactionIdFromCookie(vertical, request).orElse(null);
+                    return getTransactionIdFromCookie(vertical, request).orElse(null);
+                }
+
+            }
+        } catch (GeneralSecurityException e) {
+            LOGGER.error("Error retrieving cookie for remember me {}", kv("vertical", vertical), e);
+        }
+
+        return "";
+    }
+
     private Cookie getRememberMeCookie(final HttpServletRequest request,
                                        final String vertical) throws GeneralSecurityException {
         final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
@@ -144,7 +209,11 @@ public class RememberMeService {
     public Optional<String> getTransactionIdFromCookie(final String vertical, final HttpServletRequest request) throws GeneralSecurityException {
         final Cookie cookie = getRememberMeCookie(request, vertical);
         if (cookie !=null && !cookie.getValue().isEmpty()) {
-            return Optional.ofNullable(StringEncryption.decrypt(SECRET_KEY, cookie.getValue()));
+            String value = StringEncryption.decrypt(SECRET_KEY, cookie.getValue());
+            if(value.indexOf(":") > 0) {
+                return Optional.ofNullable(value.substring(0, value.indexOf(":")));
+            } else
+                return Optional.ofNullable(value);
         }
         return Optional.empty();
     }
@@ -193,13 +262,14 @@ public class RememberMeService {
         TransactionDetail healthCvr = transactionDetails.stream().
                 filter(transactionDetail -> transactionDetail.getXPath().equals("health/situation/healthCvr")).findFirst().orElse(null);
 
-        TransactionDetail location = transactionDetails.stream().
-                filter(transactionDetail -> transactionDetail.getXPath().equals("health/situation/location")).findFirst().orElse(null);
+        TransactionDetail postcode = transactionDetails.stream().
+                filter(transactionDetail -> transactionDetail.getXPath().equals("health/situation/postcode")).findFirst().orElse(null);
 
         if(request.getParameter("cover") == null  && request.getParameter("health_location") == null )
             return true;
-        else if ((healthCvr != null && healthCvr.getTextValue().equals(request.getParameter("cover")))
-                && (location != null && location.getTextValue().contains(request.getParameter("health_location")))) {
+        else if ((healthCvr != null && (request.getParameter("cover").isEmpty() || request.getParameter("cover").startsWith("Choose")
+                || healthCvr.getTextValue().equals(request.getParameter("cover"))))
+                && (postcode != null && (request.getParameter("health_location").isEmpty() || request.getParameter("health_location").contains(postcode.getTextValue())))) {
             return true;
         } else
             return false;
@@ -264,8 +334,14 @@ public class RememberMeService {
 
     public Boolean removeAttemptsSessionAttribute(final HttpServletRequest request, final String vertical) {
         HttpSession session = request.getSession();
+        LOGGER.info("RememberMe Service removeAttemptsSessionAttribute(): {}", kv("session", session));
         if (session != null) {
-            session.removeAttribute(getAttemptsSessionAttributeName(vertical));
+            String attemptsSessionAttributeName = getAttemptsSessionAttributeName(vertical);
+            Object expectedRemoveAttemptsSessionVar = session.getAttribute(attemptsSessionAttributeName);
+            if (expectedRemoveAttemptsSessionVar == null) {
+                LOGGER.info("Expected session var {} is null", attemptsSessionAttributeName);
+            }
+            session.removeAttribute(attemptsSessionAttributeName);
             return true;
         }
         return false;
@@ -302,6 +378,7 @@ public class RememberMeService {
             data.put("current/transactionId", transactionId);
             data.put("rootId", transactionId);
             sessionData.addTransactionData(data);
+            SessionData.markSessionForCommit(request);
         }
     }
 
@@ -325,15 +402,19 @@ public class RememberMeService {
         } catch (DaoException | SessionException e) {
             LOGGER.error("Error getting data for transactionId {}", kv("transactionId", transactionId), e);
             throw new RuntimeException(e);
+        } finally {
+            SessionData.markSessionForCommit(request);
         }
     }
 
     public Boolean deleteCookie(final String vertical, final HttpServletResponse response) throws GeneralSecurityException {
         final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
+        LOGGER.info("RememberMe Service deleteCookie: {}", kv("cookieName", cookieName));
         if (cookieName != null) {
             final Cookie cookie = new Cookie(cookieName, "");
             cookie.setMaxAge(0);
             cookie.setPath("/");
+			setCookieDomain(cookie);
             response.addCookie(cookie);
             return true;
         }

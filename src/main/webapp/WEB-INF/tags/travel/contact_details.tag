@@ -40,18 +40,41 @@
 	</form_v2:row>
 </c:if>
 
-<form_v2:row className="travel-contact-details-optin-sgroup">
-	<%-- Mandatory agreement to privacy policy --%>
-	<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
-	<c:set var="optinCopy">
-		I understand and accept the <a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>, <a href="${pageSettings.getSetting('fsgUrl')}" target="_blank">Financial Services Guide</a> and <form_v1:link_privacy_statement />. I agree that ${brandedName} may contact me about the services it provides.
-	</c:set>
+<ad_containers:custom customId="contact-details" />
+
+ <c:set var="websiteTermConfigToUse">
+	 <content:get key="websiteTermsUrlConfig"/>
+ </c:set>
+
+<c:choose>
+	<c:when test="${africaComp}">
+		<c:set var="optInText"><content:get key="africaCompOptInText" /></c:set>
+		<agg_v1:safari_promo_terms_link />
+		<c:set var="optInText" value="${fn:replace(optInText, '%winSafariPromoTermsPlaceHolder%', winSafariPromoTermsPlaceHolder)}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="optInText"><content:get key="optInText" /></c:set>
+	</c:otherwise>
+</c:choose>
+
+<c:set var="websiteTermConfigPlaceHolder">${pageSettings.getSetting(websiteTermConfigToUse)}</c:set>
+<c:set var="fsgPlaceHolder">${pageSettings.getSetting('fsgUrl')}</c:set>
+<c:set var="privacyStmtPlaceHolder"><form_v1:link_privacy_statement /></c:set>
+<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
+
+<c:set var="optInText" value="${fn:replace(optInText, '%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder)}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%privacyStmtPlaceHolder%', privacyStmtPlaceHolder)}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder)}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%brandedName%', brandedName)}" />
+
+
+ <form_v2:row className="travel-contact-details-optin-sgroup">
 	<field_v2:checkbox
 			xpath="travel/marketing"
 			value="Y"
 			required="true"
 			label="true"
-			title="${optinCopy}"
+			title="${optInText}"
 			errorMsg="Please agree to the Terms &amp; Conditions" />
 	<field_v1:hidden
 		xpath="travel/privacyoptin"

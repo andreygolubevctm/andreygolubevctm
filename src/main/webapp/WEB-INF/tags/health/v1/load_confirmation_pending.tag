@@ -167,6 +167,9 @@
 				<c:when test="${row.xpath == 'health/rebateAmt'}">
 					<c:set var="rebateAmount"><c:out value="${go:formatCurrency(row.textValue, true, true)}" /></c:set>
 				</c:when>
+				<c:when test="${row.xpath == 'health/voucher/value'}">
+					<c:set var="voucherValue" value="${row.textValue}" />
+				</c:when>
 			</c:choose>
 		</c:forEach>
 
@@ -238,6 +241,7 @@
 				<whatsNext></whatsNext>
 				<about></about>
 				<redemptionId><c:out value="${redemptionId}" /></redemptionId>
+				<voucherValue><c:out value="${voucherValue}" /></voucherValue>
 			</data>
 		</c:set>
 

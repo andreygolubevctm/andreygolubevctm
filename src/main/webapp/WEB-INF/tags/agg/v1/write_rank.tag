@@ -19,7 +19,6 @@
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
 <c:set var="calcSequence" value="${prefix}${calcSequenceSUFF}" />
-
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
 <c:if test="${empty transactionId}">
@@ -203,14 +202,8 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="${pageSettings.getVerticalCode() == 'health'}">
-		<c:catch var ="marketingSendEmailException">
-			<jsp:forward page="/spring/marketing-automation/sendEmail.json" />
-		</c:catch>
-
-		<c:if test = "${marketingSendEmailException != null}">
-			${logger.error('Marketing automation sendEmail exception caught: {} {}', log:kv('exception', marketingSendEmailException))}
-		</c:if>
+	<c:if test="${pageSettings.getVerticalCode() == 'health' || pageSettings.getVerticalCode() == 'car' || pageSettings.getVerticalCode() == 'travel'}">
+		<jsp:forward page="/spring/marketing-automation/sendEmail.json" />
 	</c:if>
 
 

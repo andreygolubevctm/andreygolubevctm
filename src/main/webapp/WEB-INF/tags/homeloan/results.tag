@@ -303,8 +303,10 @@
 	{{ if (obj.lender === 'Firefighters Mutual Bank') img = 'FIREFIGHTERS'; }}
 	{{ if (obj.lender === 'Heritage Bank') img = 'HERITAGE'; }}
 	{{ if (obj.lender === 'HomeStart Finance') img = 'HOMESTART'; }}
+	{{ if (obj.lender === 'Homeloans') img = 'HOMELOANS'; }}
 	{{ if (obj.lender === 'Homeside Lending') img = 'HOMESIDE'; }}
-	{{ if (obj.lender === 'ING Direct') img = 'ING'; }}
+	{{ if (obj.lender === 'ING') img = 'ING'; }}
+	{{ if (obj.lender === 'IMB') img = 'IMB'; }}
 	{{ if (obj.lender === 'Keystart') img = 'KEY'; }}
 	{{ if (obj.lender === 'La Trobe Financial') img = 'LATROBE'; }}
 	{{ if (obj.lender === 'Liberty Financial') img = 'LIBERTY'; }}
@@ -318,7 +320,7 @@
 	{{ if (obj.lender === 'National Australia Bank') img = 'NAB'; }}
 	{{ if (obj.lender === 'Newcastle Permanent') img = 'NP'; }}
 	{{ if (obj.lender === 'P&N Bank') img = 'PN'; }}
-	{{ if (obj.lender === 'Pepper Homeloans') img = 'PEPPER'; }}
+	{{ if (obj.lender === 'Pepper Money') img = 'PEPPER'; }}
 	{{ if (obj.lender === 'QBANK') img = 'QBANK'; }}
 	{{ if (obj.lender === 'QPCU') img = 'QPCU'; }}
 	{{ if (obj.lender === 'St George Bank') img = 'GEORGE'; }}
@@ -327,8 +329,10 @@
 	{{ if (obj.lender === 'The Rock') img = 'ROCK'; }}
 	{{ if (obj.lender === 'The Rock Building Society Limited') img = 'ROCK'; }}
 	{{ if (obj.lender === 'UniBank') img = 'UNIBANK'; }}
+	{{ if (obj.lender === 'Virgin Money') img = 'VIRG'; }}
 	{{ if (obj.lender === 'Westpac') img = 'WESTPAC'; }}
 	{{ if (obj.lender === 'Wide Bay Australia') img = 'WIDE'; }}
+
 
 
 	<div class="companyLogo logo_{{= img }} noshrink"></div>

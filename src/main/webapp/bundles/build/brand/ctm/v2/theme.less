@@ -377,7 +377,7 @@ ul.themed {
 
 .text-bold {
   font-weight: normal;
-  font-family: @font-family-theme-bold;
+  font-family: @font-family-theme-semibold;
 }
 
 .text-italic {
@@ -818,19 +818,19 @@ a {
 
   @media only screen and (min-width: @screen-sm-min) {
     width: 216px;
-    height: 38px;
-    margin: 14px 0 10px 0;
-    background-size: 216px 38px;
-    .highResImg('../graphics/logo-sm.png'; '../graphics/logo-sm@2x.png'; 216px; 38px; ~"");
+    height: 28px;
+    margin: 24px 0 10px 0;
+    background-size: 216px 28px;
+    .highResImg('../graphics/logo-sm.png'; '../graphics/logo-sm@2x.png'; 216px; 28px; ~"");
   }
 
   //Scale up override for MD & LG logo and retina support
   @media (min-width: @screen-md-min) {
-    width: 278px;
-    height: 49px;
+    width: 273px;
+    height: 35px;
     margin: 24px 0 18px 0;
-    background-size: 278px 49px;
-    .highResImg('../graphics/logo.png'; '../graphics/logo@2x.png'; 278px; 49px; ~"");
+    background-size: 273px 35px;
+    .highResImg('../graphics/logo.png'; '../graphics/logo@2x.png'; 273px; 35px; ~"");
   }
 
   @media print {
@@ -1185,6 +1185,35 @@ select.text-placeholder-color {
   }
 }
 
+.btn-tile.medicare,
+.btn-group.medicare {
+  .btn {
+    &.btn-form-inverse {
+      &:first-child {
+        border-right-width: 1px;
+      }
+      .medicare-img-style{
+        width: 200px;
+        height: 128px;
+        margin-left: 2px;
+        background: no-repeat 2.5px 0px;
+      }
+      .medicare_green{
+        background-image: url("../../../../assets/brand/ctm/graphics/health/medicare/green_xs.png");
+      }
+      .medicare_blue{
+        background-image: url("../../../../assets/brand/ctm/graphics/health/medicare/blue_interim_xs.png");
+      }
+      .medicare_yellow{
+        background-image: url("../../../../assets/brand/ctm/graphics/health/medicare/green_yellow_reciprocal_xs.png");
+      }
+      .medicare_none{
+        background-image: url("../../../../assets/brand/ctm/graphics/health/medicare/none_xs.png");
+      }
+    }
+  }
+}
+
 // CTM Overrides for On/off switch ('bootstrap-switch' plugin) in framework/jquery/plugins/bootstrap-switch-2.0.0.min.js
 .switch-wrapper {
   &.right {
@@ -1193,7 +1222,8 @@ select.text-placeholder-color {
 }
 
 #benefitsForm,
-#resultsForm {
+#resultsForm,
+.mobile-filters-menu {
   .has-switch {
     border: none;
     border-radius: 13px;
@@ -1339,6 +1369,7 @@ select.text-placeholder-color {
 input[type=text],
 input[type=password],
 input[type=email],
+input[type=tel],
 select {
   + .spinner {
     float: right;

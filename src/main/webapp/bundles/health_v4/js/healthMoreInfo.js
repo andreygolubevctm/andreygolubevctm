@@ -39,7 +39,7 @@
                             $(eventObject.currentTarget).closest('.modal').modal('hide');
                         }
                     },
-                    showCloseBtn: false,
+                    showCloseBtn: true,
                     onClose: function () {
                         onBeforeHideTemplate();
                         meerkat.modules.moreInfo.close();
@@ -90,7 +90,8 @@
         });
 
         $(document.body).off('click.emailBrochures').on('click.emailBrochures', '.getPrintableBrochures', function () {
-            var product = Results.getSelectedProduct(),
+            var product = !_.isUndefined($(this).attr('data-productId')) ?
+                    Results.setSelectedProduct($(this).attr('data-productId')) : Results.getSelectedProduct(),
                 brochureTemplate = meerkat.modules.templateCache.getTemplate($('#emailBrochuresTemplate'));
 
             // init the validation
@@ -106,13 +107,20 @@
                     onOpen: function (modalId) {
                         if (meerkat.site.emailBrochures.enabled) {
                             // initialise send brochure email button functionality
-                            initialiseBrochureEmailForm(Results.getSelectedProduct(), $('#' + modalId), $('#emailBrochuresForm'));
+                            initialiseBrochureEmailForm(product, $('#' + modalId), $('#emailBrochuresForm'));
                             populateBrochureEmail();
                         }
                     }
                 };
 
             var callbackModalId = meerkat.modules.dialogs.show(modalOptions);
+        });
+
+        $(document).on('click', '.about-this-fund', function() {
+            meerkat.modules.dialogs.show({
+                title: 'About the fund',
+                htmlContent: Results.getSelectedProduct().aboutFund
+            });
         });
     }
 
@@ -191,25 +199,19 @@
         if (meerkat.modules.deviceMediaState.get() != 'xs' && currStep != 'apply' && currStep != 'payment') {
             meerkat.modules.moreInfo.showTemplate($bridgingContainer);
         } else {
-
-            // grab the affixed template
-            var updatedSettings = {
-                modalOptions: {
-                    htmlHeaderContent: _getAffixedMobileHeaderData()
-                }
-            };
-            meerkat.modules.moreInfo.updateSettings(updatedSettings);
             meerkat.modules.moreInfo.showModal();
-
         }
         meerkat.modules.address.appendToHash('moreinfo');
     }
 
     function _getAffixedMobileHeaderData() {
+        if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
+
         var headerTemplate = meerkat.modules.templateCache.getTemplate($('#moreInfoAffixedHeaderMobileTemplate')),
             obj = Results.getSelectedProduct();
 
         if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
+            obj._selectedFrequency = Results.getFrequency();
             obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
         } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
             obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false);
@@ -244,14 +246,21 @@
         _setTabs();
 
         // HLT-4339: AUF discount override
-        if (product.info.FundCode === 'AUF') {
+        if (product.info.FundCode === 'AUF' && meerkat.modules.healthResultsTemplate.fundDiscountExists(product.info.FundCode)) {
             $('.productExtraInfo .discountText').text(meerkat.modules.healthResultsTemplate.getDiscountText(product));
         }
+
+        if (!_.has(product, 'aboutFund')) {
+            $('.about-this-fund-row').hide();
+        }
+
+        meerkat.modules.healthPricePromise.updateIframeSrc();
+        meerkat.modules.healthPricePromise.applyHeight();
     }
 
     function _setupDualPricing(product) {
         if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) {
-            $('.april-pricing').addClass('april-pricing-done');
+            // $('.april-pricing').addClass('april-pricing-done');
             $('.current-pricing').addClass('current-pricing-done');
 
             var productPremium = product.altPremium,
@@ -261,7 +270,7 @@
 
             // update the dropdeaddate. Tried in _getAffixedMobileHeaderData but that returns undefined
             if (!_.isUndefined($elements.applyBy)) {
-                $elements.applyBy.text('Apply by ' + product.dropDeadDateFormatted);
+                $elements.applyBy.text('Must Apply by ' + product.dropDeadDateFormatted);
             }
         }
     }
@@ -295,7 +304,7 @@
     function onBeforeShowModal(jsonResult, dialogId) {
         var $dialog = $('#' + dialogId);
         moreInfoDialogId = dialogId;
-        $dialog.find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
+        $dialog.find('.modal-body').children().wrapAll("<form class='healthMoreInfoModel'></form>");
 
         // Move dual-pricing panel
         $('.more-info-content .moreInfoRightColumn > .dualPricing').insertAfter($('.more-info-content .moreInfoMainDetails'));
@@ -355,54 +364,38 @@
     }
 
     function _trackScroll() {
-        var startTopOffset = $elements.moreInfoContainer.offset().top,
-            startHeaderHeight = $elements.modalHeader.height(),
-            calculatedHeight = startTopOffset;
+        var $dockedHdr = $('.dockedHdr'),
+            dockedHeaderLargeHeight = $dockedHdr.filter('.dockedHeaderLarge').outerHeight(),
+            dockedHeaderBottomHeight = $dockedHdr.find('.dockedHeaderBottom').outerHeight(),
+            $clonedDockedHdr = $dockedHdr.clone(true),
+            $moreInfoContent = $('.more-info-content'),
+            contentTop = 0,
+            isDocked = null;
+
+        // clone the header to prepend and affix it
+        $clonedDockedHdr
+            .hide()
+            .addClass('cloned-docked-header dockedHeaderSlim')
+            .removeClass('dockedHeaderLarge')
+            .prependTo('.modal-content');
 
         $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function () {
-
-            var currentTopOffset = $elements.moreInfoContainer.offset().top;
-            var currentTopOffsetLtCalcHght = currentTopOffset < calculatedHeight;
-            var currentTopOffsetGtOrEqlToCalcHght = currentTopOffset >= calculatedHeight;
-
-            if (calculatedHeight === startTopOffset) {
-                // need to get the newly calculated height since we hide some data
-                calculatedHeight = startTopOffset - (startHeaderHeight - $elements.modalHeader.height());
+            // if the the content position is at or pass top position; set dock to true
+            if (!isDocked && $moreInfoContent.position().top <= dockedHeaderBottomHeight) {
+                isDocked = true;
+            // else if the content position is going down pass the position when it was at top; set dock to false
+            } else if (isDocked && $moreInfoContent.position().top > contentTop) {
+                isDocked = false;
+            // else just return
+            } else {
+                return;
             }
 
-            $elements.modalHeader.find('.lhcText').toggleClass('hidden', currentTopOffsetLtCalcHght);
-            $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', currentTopOffsetLtCalcHght);
-            $elements.modalHeader.find('.productTitleText').toggleClass('hidden', currentTopOffsetLtCalcHght);
-
-            $elements.modalHeader.find('.dockedHdr')
-                .toggleClass('dockedHeaderSlim', currentTopOffsetLtCalcHght)
-                .toggleClass('dockedHeaderLarge', currentTopOffsetGtOrEqlToCalcHght);
-
-            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderSlim', currentTopOffsetLtCalcHght);
-
-            if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
-                $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', currentTopOffsetLtCalcHght);
-
-            }
-
-            if (meerkat.modules.healthDualPricing.isDualPricingActive() && meerkat.modules.deviceMediaState.get() === 'xs') {
-                $elements.modalHeader.find('.april-container').toggleClass('hidden', currentTopOffsetLtCalcHght);
-                $elements.currentPricingContainer
-                    .toggleClass('col-xs-12', currentTopOffsetLtCalcHght)
-                    .toggleClass('col-xs-6', currentTopOffsetGtOrEqlToCalcHght);
-
-                $elements.pricingContainer
-                    .toggleClass('col-xs-6', currentTopOffsetLtCalcHght)
-                    .toggleClass('col-xs-12', currentTopOffsetGtOrEqlToCalcHght);
-
-
-                $elements.currentPricingDetails.toggleClass('hidden', currentTopOffsetLtCalcHght);
-                $elements.modalHeader.find('.current-pricing').toggleClass('no-background', currentTopOffsetLtCalcHght);
-            }
-
-            if(moreInfoDialogId && meerkat.modules.deviceMediaState.get() === 'xs') {
-                meerkat.modules.dialogs.resizeDialog(moreInfoDialogId);
-            }
+            $clonedDockedHdr.toggle(isDocked);
+            $dockedHdr.toggle(!isDocked);
+            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderSlim', isDocked);
+            $moreInfoContent.css({ 'paddingTop': isDocked ? dockedHeaderLargeHeight : 0 });
+            contentTop = isDocked ? $moreInfoContent.position().top : 0;
         });
     }
 
@@ -592,6 +585,7 @@
         var data = {};
         data.providerId = product.info.providerId;
         data.providerContentTypeCode = providerContentTypeCode;
+        data.styleCode = meerkat.site.tracking.brandCode;
 
         if (typeof data.providerId === 'undefined' || data.providerId === '') {
             meerkat.modules.errorHandling.error({
@@ -713,7 +707,8 @@
         retrieveExternalCopy: retrieveExternalCopy,
         applyEventListeners: applyEventListeners,
         hasPublicHospital: hasPublicHospital,
-        dynamicPyrrBanner: dynamicPyrrBanner
+        dynamicPyrrBanner: dynamicPyrrBanner,
+        getAffixedMobileHeaderData: _getAffixedMobileHeaderData
     });
 
 })(jQuery);

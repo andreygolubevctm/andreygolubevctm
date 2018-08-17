@@ -4,6 +4,8 @@ public class Promotion {
 
     private SpecialOffer specialOffer;
 
+    private SpecialOffer awardScheme;
+
     private String providerPhoneNumber;
 
     private String hospitalPDF;
@@ -50,5 +52,13 @@ public class Promotion {
 
     public void setDiscountDescription(String discountDescription) {
         this.discountDescription = discountDescription;
+    }
+
+    public SpecialOffer getAwardScheme() {
+        return awardScheme;
+    }
+
+    public void setAwardScheme(SpecialOffer awardScheme) {
+        this.awardScheme = awardScheme;
     }
 }

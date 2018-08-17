@@ -63,9 +63,37 @@
   padding-top: 10px;
   @media (@md) {
     font-size: 20px;
-    padding-top: 30px;
+    padding-top: 17px;
   }
+  @media (@lg) {
+    padding-top: 23px;
+  }
+  .call-opening-text {
+    color: @theme-dark;
+    line-height: 31px;
 
+    @media (@sm-md-only) {
+      font-size: 18px;
+    }
+
+    @media (@lg) {
+      line-height: 38px;
+    }
+  }
+  .callCentreNumber-container {
+    color: @theme-secondary;
+    display: inline-block;
+    font-size: 24px;
+    .icon-phone {
+      margin-top: 4px;
+    }
+    a {
+      color: @theme-secondary;
+    }
+    @media (@lg) {
+      font-size: 30px;
+    }
+  }
 }
 .journeyEngineSlide {
   .callCentreNumberSection {

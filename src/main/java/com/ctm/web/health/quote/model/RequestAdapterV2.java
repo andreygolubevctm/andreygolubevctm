@@ -1,11 +1,14 @@
 package com.ctm.web.health.quote.model;
 
 import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.quote.model.request.*;
+import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,9 @@ public class RequestAdapterV2 {
     public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples, final boolean isGiftCardActive) {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
+
+		quoteRequest.setIsSimples(isSimples);
+
         Filters filters = new Filters();
         quoteRequest.setFilters(filters);
 
@@ -95,6 +101,7 @@ public class RequestAdapterV2 {
         addCompareResultsFilter(filters, quote);
         addIncludeProductIfNotFound(filters, quote, isSimples, isDirectApplication);
         addCappingLimitFilter(filters, quote);
+        addProductCappingLimitFilter(filters, quote);
 
         addSearchDateFilter(quoteRequest, quote, isShowAll);
 
@@ -103,6 +110,10 @@ public class RequestAdapterV2 {
         addAlternatePricingFilter(alternatePricingContent, quoteRequest);
 
         addRebateFilter(quoteRequest, quote);
+
+        addPopularProductsFilter(filters, quote);
+
+        addLimitToRewardsSchemeFilter(filters, quote);
 
         quoteRequest.setIncludeSummary(isSimples);
 
@@ -120,8 +131,26 @@ public class RequestAdapterV2 {
         }else {
             quoteRequest.setPartnerHealthCover(null);
         }
+        addPrimaryAge(quoteRequest, cover);
+        addFamilyType(quoteRequest, situation);
 
         return quoteRequest;
+    }
+
+    protected static void addPrimaryAge(HealthQuoteRequest quoteRequest, HealthCover healthCover) {
+        try {
+            if (healthCover != null && healthCover.getPrimary() != null) {
+                quoteRequest.setAge(DateUtils.getAgeFromDOBStr(healthCover.getPrimary().getDob()));
+            }
+        } catch (Exception exception) {
+            LOGGER.error("Cannot cover date of birth to age: " + healthCover.getPrimary().getDob());
+        }
+    }
+
+    protected static void addFamilyType(HealthQuoteRequest quoteRequest, Situation situation) {
+            if (situation != null) {
+                quoteRequest.setFamilyType(situation.getHealthCvr());
+            }
     }
 
     protected static void addRebateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {
@@ -164,6 +193,14 @@ public class RequestAdapterV2 {
             filters.setCappingLimitFilter(CappingLimit.SOFT);
         } else {
             filters.setCappingLimitFilter(CappingLimit.HARD);
+        }
+    }
+
+    protected static void addProductCappingLimitFilter(Filters filters, HealthQuote quote) {
+        if (toBoolean(quote.getOnResultsPage())) {
+            filters.setProductCappingLimitFilter(ProductCappingLimitCategory.SOFT);
+        } else {
+            filters.setProductCappingLimitFilter(ProductCappingLimitCategory.HARD);
         }
     }
 
@@ -418,5 +455,15 @@ public class RequestAdapterV2 {
         } else {
             filters.setApplyDiscounts(false);
         }
+    }
+
+    protected static void addPopularProductsFilter(Filters filters, final HealthQuote quote) {
+        boolean isPopularProducts = Optional.ofNullable(quote.getPopularProducts()).map(BooleanUtils::toBoolean).orElse(false);
+        filters.setPopularProducts(isPopularProducts);
+    }
+
+    protected static void addLimitToRewardsSchemeFilter(Filters filters, final HealthQuote quote) {
+        Boolean applyRewardsSchemeFilter = Optional.ofNullable(quote.getRewardsSchemeFirst()).map(BooleanUtils::toBoolean).orElse(false);
+        filters.setLimitToProvidersWithRewardsSchemeFilter(applyRewardsSchemeFilter);
     }
 }

@@ -1,6 +1,7 @@
 package com.ctm.web.health.apply.model;
 
 import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
+import com.ctm.web.health.apply.model.request.application.Emigrate;
 import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
 import com.ctm.web.health.apply.model.request.application.situation.Situation;
 import com.ctm.web.health.model.form.*;
@@ -43,7 +44,7 @@ public class ApplicationGroupAdapterTest {
         verify(application, times(1)).getPartner();
         verify(application, times(1)).getDependants();
         verify(healthQuote, times(1)).getSituation();
-        verify(hif, times(1)).getEmigrate();
+        //verify(hif, times(1)).getEmigrate();
         verify(qch, times(1)).getEmigrate();
         verify(govtRebateDeclaration, times(1)).getApplicantCovered();
         verify(govtRebateDeclaration, times(1)).getDeclarationDate();
@@ -54,7 +55,7 @@ public class ApplicationGroupAdapterTest {
 
     @Test
     public void testCreateApplicantEmpty() throws Exception {
-        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Emigrate.Y);
         assertNull(applicant);
     }
 
@@ -79,7 +80,7 @@ public class ApplicationGroupAdapterTest {
         final Integer certifiedAge = 1;
         final Insured insured = mock(Insured.class);
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
-                Optional.of(certifiedAge), Optional.of(insured));
+                Optional.of(certifiedAge), Optional.of(insured),Emigrate.Y);
         assertNotNull(applicant);
         assertNotNull(applicant.getHealthCover());
         assertNull(applicant.getPreviousFund());
@@ -98,7 +99,7 @@ public class ApplicationGroupAdapterTest {
     public void testCreateApplicantEmptyExceptPerson() throws Exception {
         final Person person = mock(Person.class);
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.empty(),
-                Optional.empty(), Optional.empty());
+                Optional.empty(), Optional.empty(), Emigrate.Y);
         assertNotNull(applicant);
         assertNull(applicant.getHealthCover());
         assertNull(applicant.getPreviousFund());

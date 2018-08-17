@@ -21,6 +21,10 @@
     "shared/leavePageWarning",
     "shared/showMoreQuotesPrompt",
     "shared/resultsRankings",
-    "shared/phgSalesTracking"
+    "shared/phgSalesTracking",
+    "shared/radioButton",
+    "shared/rangeSlider",
+    "shared/flatpickr",
+    "shared/mobileFiltersMenu"
   ]
 }

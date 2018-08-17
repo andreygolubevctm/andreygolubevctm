@@ -4,19 +4,17 @@
 
 <health_v4_contact:page_settings />
 
-<layout_v3:slide formId="contactForm" nextLabel="Get Prices">
+<layout_v3:slide formId="contactForm">
 
     <layout_v3:slide_content>
-        <form_v3:fieldset_columns sideHidden="true">
+        <form_v3:fieldset_columns nextLabel="Get Prices" sideHidden="true">
 
-             <jsp:attribute name="rightColumn">
-              <competition:snapshot vertical="health" />
-               <health_v4:cta_panel />
-               <reward:campaign_tile_container />
-               <c:if test="${octoberComp eq false}">
-                 <health_v4_content:snapshot/>
-               </c:if>
-             </jsp:attribute>
+            <jsp:attribute name="rightColumn">
+                <competition:snapshot vertical="health" />
+                <health_v4:cta_panel />
+                <reward:campaign_tile_container />
+                <health_v4:price_promise step="contact" />
+            </jsp:attribute>
 
             <jsp:body>
 
@@ -47,6 +45,7 @@
                     <field_v1:hidden xpath="${xpath}/skippedContact" defaultValue="N" />
                     <health_v4_contact:skip_contact_details_modal xpath="${xpath}" />
 
+                    <ad_containers:custom customId="contact-details"/>
                 </form_v4:fieldset>
 
                 <health_v4_contact:testimonial />

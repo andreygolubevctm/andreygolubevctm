@@ -83,12 +83,14 @@ Process:
 		meerkat.modules.dialogs.close(modalId);
 	}
 
-	function setTypeFromControl() {
+	function setTypeFromControl(onSetup) {
 		var type = 'cc';
 		if(typeof settings.getSelectedPaymentMethod === 'function') {
 			type = settings.getSelectedPaymentMethod();
 		}
-		if (_type !== type) {
+		if ( (_type !== type && onSetup !== true) ||
+			 ( (!_.has(meerkat.site, 'hasTouchF') || _.has(meerkat.site, 'hasTouchF') && meerkat.site.hasTouchF === false) && onSetup === true) ) {
+
 			resetRegistered();
 		}
 		if ((type == 'cc' && settings.handledType.credit) || (type == 'ba' && settings.handledType.bank)) {
@@ -103,16 +105,19 @@ Process:
 	}
 
 	function showSuccessPanel(){
+		meerkat.logging.debug("paymentGateway: showSuccessPanel");
 		$success.slideDown();
 		$fail.slideUp();
 	}
 
 	function showFailPanel(){
+		meerkat.logging.debug("paymentGateway: showFailPanel");
 		$success.slideUp();
 		$fail.slideDown();
 	}
 
 	function hideStatusesPanels(){
+		meerkat.logging.debug("paymentGateway: hideStatusesPanels");
 		$success.slideUp();
 		$fail.slideUp();
 	}
@@ -199,6 +204,8 @@ Process:
 		$name = $('#' + settings.name + '_name');
 		settings.paymentEngine.setup(settings);
 
+		enable();
+
 		$('body').addClass(settings.name + '-active');
 
 		// Hook into: (replacement) "update premium" button to determine which panels to display
@@ -210,7 +217,7 @@ Process:
 		successEventHandlerId = meerkat.messaging.subscribe(moduleEvents.SUCCESS, success);
 		failEventHandlerId = meerkat.messaging.subscribe(moduleEvents.FAIL, fail);
 
-		setTypeFromControl();
+		setTypeFromControl(true);
 	}
 
 	// MODAL
@@ -231,11 +238,25 @@ Process:
 		});
 	}
 
+	function disable() {
+       if (settings.paymentEngine !== null && !_.isUndefined(settings.paymentEngine.disable)) {
+           settings.paymentEngine.disable();
+       }
+    }
+
+   function enable() {
+       if (settings.paymentEngine !== null && !_.isUndefined(settings.paymentEngine.enable)) {
+           settings.paymentEngine.enable();
+       }
+   }
+
 	meerkat.modules.register("paymentGateway", {
 		init: init,
 		events: events,
 		reset: reset,
-		setup : setup
+		setup : setup,
+		disable: disable,
+		enable: enable
 	});
 
 })(jQuery);

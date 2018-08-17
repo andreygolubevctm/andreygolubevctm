@@ -21,6 +21,7 @@
 <%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 <%@ attribute name="disableRowHack" 		required="false" 	rtexprvalue="true"    	 description="Disable the row-hack class" %>
 <%@ attribute name="analyticsPrefix" 		required="false" 	rtexprvalue="true"    	 description="The prefix applied to the data analytics label" %>
+<%@ attribute name="showCalendarOnXS" 		required="false" 	rtexprvalue="true"    	 description="Show the calendar date picker on xs devices" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -144,26 +145,33 @@
 		The datepicker module code is datepicker.js in core.
 	--%>
 	<c:when test="${mode eq 'separated'}">
-		<c:set var="yearCols" value="col-sm-5 col-md-4" />
+		<c:set var="yearCols" value=" col-sm-5 col-md-4" />
 		<c:if test="${disableRowHack eq true}">
-			<c:set var="yearCols" value="col-sm-3" />
+			<c:set var="yearCols" value=" col-sm-3" />
+		</c:if>
+
+		<c:set var="xsCols" value="col-xs-4" />
+		<c:set var="calXSCols" value="hidden-xs" />
+		<c:if test="${showCalendarOnXS eq true}">
+			<c:set var="xsCols" value="col-xs-3" />
+			<c:set var="calXSCols" value="col-xs-3" />
 		</c:if>
 
 		<div class="dateinput_container" data-provide="dateinput">
 			<div class="row dateinput-tripleField withDatePicker">
-				<div class="col-xs-4 col-sm-3 ">
+				<div class="${xsCols} col-sm-3 ">
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Day" quoteChar="\"" /></c:set>
 					<field_v2:input type="text" size="2" className="dateinput-day dontSubmit ${className}"  xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="${required}" requiredMessage="Please enter the day" additionalAttributes=" data-rule-range='1,31' data-msg-range='Day must be between 1 and 31.' ${analyticsAttr}" />
 				</div>
-				<div class="col-xs-4 col-sm-3 <c:if test="${not disableRowHack eq true}"> row-hack</c:if>"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
+				<div class="${xsCols} col-sm-3 <c:if test="${not disableRowHack eq true}"> row-hack</c:if>"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Month" quoteChar="\"" /></c:set>
 					<field_v2:input size="2" type="text" className="dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="${required}" requiredMessage="Please enter the month" additionalAttributes=" data-rule-range='1,12' data-msg-range='Month must be between 1 and 12.' ${analyticsAttr}" />
 				</div>
-				<div class="col-xs-4 ${yearCols}">
+				<div class="${xsCols} ${yearCols}">
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Year" quoteChar="\"" /></c:set>
 					<field_v2:input size="4" type="text" className="dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="${required}" requiredMessage="Please enter the year" additionalAttributes=" data-rule-range='1000,9999' data-msg-range='Year must be four numbers e.g. 2014.' ${analyticsAttr}" />
 				</div>
-				<div class="hidden-xs col-sm-3 <c:if test="${not disableRowHack eq true}"> row-hack</c:if>"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
+				<div class="${calXSCols} col-sm-3 <c:if test="${not disableRowHack eq true}"> row-hack</c:if>"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Calendar" quoteChar="\"" /></c:set>
 					<button tabindex="-1" id="${name}_button" type="button" class="input-group-addon-button date form-control" ${analyticsAttr}>
 						<i class="icon-calendar" ${analyticsAttr}></i>

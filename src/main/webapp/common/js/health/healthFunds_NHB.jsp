@@ -228,13 +228,15 @@
               <%-- How to send information. Second argument = validation required --%>
               meerkat.modules.healthFunds.showHowToSendInfo('Navy Health', true);
 
-              <%-- Calendar for start cover --%>
-              if(_.has(meerkat.modules,'healthCoverStartDate')) {
-                  meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 28);
-              } else {
-	              meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
-              }
-              healthFunds_NHB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
+              <%--fund offset check--%>
+              meerkat.modules.healthFundTimeOffset.onInitialise({
+                weekends: false,
+                coverStartRange: {
+                  min: 0,
+                  max: 28
+                },
+                renderPaymentDaysCb: healthFunds_NHB.renderPaymentDays
+              });
 
               <%-- Payments --%>
               meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });

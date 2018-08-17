@@ -10,7 +10,7 @@
 	};
 	var $component, //Stores the jQuery object for the component group
 	previousBreakpoint,
-	best_price_count = 5, price_log_count = 10,
+	best_price_count = 10, price_log_count = 10,
 	needToBuildFeatures = false,
 	initialised = false;
 
@@ -134,23 +134,84 @@
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.travelResults.initResults(); '+e.message, e);
 		}
 	}
-	/**
-	 * Pre-filter the results object to add another parameter. This will be unnecessary when the field comes back from Java.
-	 */
-	function massageResultsObject(products) {
+	 
+	 function getDestinationsValue(isAus, isComprehensive) {
+		 if (isAus) {
+			 return 0;
+		 } else if (isComprehensive) {
+			 return 20000000;
+		 }
+		 return 10000000;
+	 }
 
-		var policyType = meerkat.modules.travel.getVerticalFilter(),
-			destinations = $('#travel_destination').val(),
-			isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
+	 function getCoverLevel(tripInfo, isAus) {
+		 var excessValue = tripInfo.excessValue <= Results.model.travelFilters.EXCESS;
+		 var medicalValue = tripInfo.medicalValue;
+		 var cxdfeeValue = tripInfo.cxdfeeValue;
+		 var luggageValue = tripInfo.luggageValue;
+		
+		 var compCancelValue = isAus ? 10000 : 20000;
+		 var isComprehensive = excessValue && cxdfeeValue >= compCancelValue && luggageValue >= 5000;
+		 var isMidRange = excessValue && cxdfeeValue >= 5000 && luggageValue >= 2500;
+		 var isBase = cxdfeeValue < 5000 || luggageValue < 2500;
+		 var destinationsValue = getDestinationsValue(isAus, isComprehensive);
+		 var level;
+		 
+		 if (isComprehensive && medicalValue >= destinationsValue) {
+			 level = 'C';
+			 meerkat.modules.coverLevelTabs.incrementCount(level);
+			 return level;
+		 } else if (isMidRange && medicalValue >= destinationsValue) {
+			 level = 'M';
+			 meerkat.modules.coverLevelTabs.incrementCount(level);
+			 return level;
+		 } else if (isBase || (medicalValue < destinationsValue))  {
+			 level = 'B';
+			 if (excessValue) {
+					meerkat.modules.coverLevelTabs.incrementCount(level);
+			 }
+			 return level;
+		 }
+	 }
+	 
+	 function getCoverLevelForMultiTrip(tripInfo, result) {
+		 var level;
+
+		 if (_.isBoolean(result.isDomestic) ) {
+			 level = result.isDomestic === true ? 'D' : getCoverLevel(tripInfo, false) + 'I';
+			 meerkat.modules.coverLevelTabs.incrementCount(level);
+			 return level;
+		 }
+
+     if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
+			 	 level = getCoverLevel(tripInfo, false) + 'I';
+         meerkat.modules.coverLevelTabs.incrementCount(level);
+         return level;
+     }
+
+     level = 'D';
+     meerkat.modules.coverLevelTabs.incrementCount(level);
+     return level;
+	 }
+	 
+	/**
+	* Pre-filter the results object to add another parameter. This will be unnecessary when the field comes back from Java.
+	*/
+	function massageResultsObject(products) {
+		var policyType = meerkat.modules.travel.getVerticalFilter();
+		var isAus = $('#travel_destination').val() === 'AUS';
+		var isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
+		var isCruise = meerkat.modules.tripType.get().cruise.active;
+
 		_.each(products, function massageJson(result, index) {
-			if(result.available == 'Y') {
+			if (result.available == 'Y') {
 
 				if (typeof result.info !== 'object') {
 					return;
 				}
 				var obj = result.info;
 				// Add provider property (for tracking purposes)
-				if(_.isUndefined(result.provider) || _.isEmpty(result.provider)) {
+				if (_.isUndefined(result.provider) || _.isEmpty(result.provider)) {
 					result.provider = result.service;
 				}
 				// TRV-667: replace any non digit words with $0 e.g. Optional Extra
@@ -158,54 +219,23 @@
 					obj.luggage = "$0";
 				}
 				// TRV-769 Set value and text to $0 for quotes for JUST Australia.
-				if (destinations == 'AUS') {
-					obj.medicalValue = 0;
-					obj.medical = "N/A";
-				}
+				// added the policyType check because it was causing a bug
+				// the bus is caused by the user selecting Aus for single trip then selecting AMT
+				// BTW not a huge fan of this, the backend should of probably handled setting the medicalValue to 0
+				//CTM-204 added the test for non cruise trip Types
+				// ie do not override medicalValues when cruise trip type is selected
+				 if (isAus && policyType == 'Single Trip' && !isCruise) {
+				 	obj.medicalValue = 0;
+				 	obj.medical = "N/A";
+				 }
 				if (isCoverLevelTabsEnabled === true) {
-
 					if (policyType == 'Single Trip') {
-
-						/**
-						 * Currently ignore medical if destination country is JUST AU.
-						 */
-						var medical = 5000000;
-						if (destinations == "AUS") {
-							medical = 0;
-						}
-
-						if (obj.excessValue <= 250 && obj.medicalValue >= medical
-							&& obj.cxdfeeValue >= 7500 && obj.luggageValue >= 7500) {
-							obj.coverLevel = 'C';
-							meerkat.modules.coverLevelTabs.incrementCount("C");
-						} else if (obj.excessValue <= 250 && obj.medicalValue >= medical
-							&& obj.cxdfeeValue >= 2500
-							&& obj.luggageValue >= 2500) {
-							obj.coverLevel = 'M';
-							meerkat.modules.coverLevelTabs.incrementCount("M");
-						} else  {
-							obj.coverLevel = 'B';
-							meerkat.modules.coverLevelTabs.incrementCount("B");
-						}
+						obj.coverLevel = getCoverLevel(obj, isAus);
 					} else {
-						if (_.isBoolean(result.isDomestic) ) {
-							var level = result.isDomestic === true ? "D" : "I";
-							obj.coverLevel = level;
-							meerkat.modules.coverLevelTabs.incrementCount(level);
-						} else  {
-							if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
-								obj.coverLevel = 'I';
-								meerkat.modules.coverLevelTabs.incrementCount("I");
-							} else {
-								obj.coverLevel = 'D';
-								meerkat.modules.coverLevelTabs.incrementCount("D");
-							}
-						}
+						obj.coverLevel = getCoverLevelForMultiTrip(obj, result);
 					}
 				}
 			}
-
-
 		});
 		return products;
 	}

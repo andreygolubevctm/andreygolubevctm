@@ -8,9 +8,11 @@ import org.springframework.util.NumberUtils;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Nullable;
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -22,7 +24,9 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
  * @version 1.0
  */
 
-public class Data extends XmlNode implements Comparable<Data> {
+public class Data extends XmlNode implements Comparable<Data>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -324,5 +328,21 @@ public class Data extends XmlNode implements Comparable<Data> {
 		return value;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Data)) return false;
+		if (!super.equals(o)) return false;
+		Data data = (Data) o;
+		return getXml == data.getXml &&
+				Objects.equals(getLastSessionTouch(), data.getLastSessionTouch()) &&
+				Objects.equals(mode, data.mode);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(super.hashCode(), getLastSessionTouch(), mode, getXml);
+	}
 }
 

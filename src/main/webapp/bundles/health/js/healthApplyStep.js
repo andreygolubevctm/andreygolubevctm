@@ -10,7 +10,8 @@
         $medicareYellowMessage,
         $unitElements,
         $personName,
-        $primaryName;
+        $primaryName,
+        _postalNonStdStreetRegexRule;
 
     function init(){
         $(document).ready(function () {
@@ -40,23 +41,12 @@
                 }
             };
 
+            _postalNonStdStreetRegexRule = $unitElements.appPostalNonStdStreet.attr('data-rule-regex');
         });
     }
 
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
     function onBeforeEnter(){
-        // Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
-        var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
-        var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
-
-        $paymentDetailsStart
-            .removeRule('earliestDateEUR')
-            .removeRule('latestDateEUR')
-            .addRule('earliestDateEUR', min, 'Please enter a date on or after ' + min)
-            .addRule('latestDateEUR', max, 'Please enter a date on or before ' + max)
-            .datepicker('setStartDate', min)
-            .datepicker('setEndDate', max);
-
         // validate at least 1 contact number is entered
         $('#health_application_mobileinput').addRule('requireOneContactNumber', true, 'Please include at least one phone number');
 
@@ -94,7 +84,7 @@
 
         $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
             _changeStreetNoLabel(this.value);
-            _toggleStreetRules(this.value);
+            _toggleRegexValidation(this.value);
         });
 
         $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
@@ -156,15 +146,12 @@
         }
     }
 
-    function _toggleStreetRules(unitType) {
+    function _toggleRegexValidation(unitType) {
         if (unitType === 'PO') {
-            $unitElements.appPostalNonStdStreet
-                .removeRule('regex')
-                .removeRule('validAddress');
+            $unitElements.appPostalNonStdStreet.removeRule('regex');
+            $unitElements.appPostalNonStdStreet.blur();
         } else {
-            $unitElements.appPostalNonStdStreet
-                .addRule('regex', '[a-zA-Z0-9 ]+')
-                .addRule('validAddress', 'health_application_postal');
+            $unitElements.appPostalNonStdStreet.addRule('regex', _postalNonStdStreetRegexRule);
         }
     }
 

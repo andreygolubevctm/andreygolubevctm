@@ -47,6 +47,10 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 <c:set var="loadAction" value="${fn:toLowerCase(param.action)}" />
 <c:set var="loadType" value="${fn:toLowerCase(param.type)}" />
 
+<c:set var="forcedBrandCode">
+    <c:if test="${not empty param.brandCode}">${param.brandCode}</c:if>
+</c:set>
+
 <c:set var="xpathQuoteType">
 	<c:choose>
 		<c:when test="${quoteType eq 'car'}">quote</c:when>
@@ -131,6 +135,10 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 					<c:if test="${not empty param.productCode}">&amp;productCode=<c:out value="${param.productCode}" escapeXml="false"/></c:if>
 				</c:set>
 
+				<c:set var="coupon">
+					<c:if test="${not empty param.couponid}">&amp;couponid=<c:out value="${param.couponid}" escapeXml="false"/></c:if>
+				</c:set>
+
 				<c:set var="result">
 					<result>
 						<c:choose>
@@ -141,17 +149,22 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								<core_v1:transaction touch="L" noResponse="true" />
 								<c:choose>
 									<c:when test="${not empty param.productId and param.productId != '' and not empty param.productTitle and param.productTitle != ''}">
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}${jParam}${productCode}</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}${jParam}${productCode}${coupon}</destUrl>
 									</c:when>
 									<c:otherwise>
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}${jParam}${trackingParams}${productCode}</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}${jParam}${trackingParams}${productCode}${coupon}</destUrl>
 									</c:otherwise>
 								</c:choose>
 							</c:when>
 
 						<%-- AMEND QUOTE --%>
+						<c:when test="${(loadAction eq 'amend' || loadAction eq 'start-again') and (forcedBrandCode eq 'wfdd' or forcedBrandCode eq 'bddd')}">
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrlForcedBrandCode(quoteType, loadAction, data.current.transactionId, jParam, trackingParams, forcedBrandCode)}</destUrl>
+						</c:when>
+
+						<%-- AMEND QUOTE --%>
 						<c:when test="${loadAction eq 'amend' || loadAction eq 'start-again'}">
-								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType, loadAction, data.current.transactionId, jParam, trackingParams)}</destUrl>
+						        <destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType, loadAction, data.current.transactionId, jParam, trackingParams)}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>

@@ -130,6 +130,20 @@
                 }
             });
 	}
+
+    /**
+     * Appends modal content to mainForm of body
+     */
+	dataCRUD.prototype.appendToMainForm = function() {
+        var model,
+            modalHTML;
+
+        model = new crudModel.dbModel(this.models.db);
+        var modalHTMLTemplate = _.template(this.views.modal, { variable: "data" });
+        modalHTML = modalHTMLTemplate(model);
+
+        $('#mainform').append(modalHTML);
+	};
 	
 	/**
 	 * Opens a modal for creating or editing a record
@@ -255,8 +269,15 @@
 				
 				that.sortRenderResults();
 			};
-		
-		return this.promise("getAllRecords", data, onSuccess, "get");
+
+		var crudAction = "getAllRecords";
+
+		if (_.has(data,"crudAction")) {
+			crudAction = data.crudAction;
+			delete data.crudAction;
+		}
+
+		return this.promise(crudAction, data, onSuccess, "get");
 	};
 	
 	/**
@@ -370,6 +391,7 @@
 
 		switch(action) {
 			case "getAllRecords":
+			case "getSummary":
             case "find":
 				loadingText = "Fetching Records";
 				break;
@@ -416,6 +438,7 @@
         }
 
 		return meerkat.modules.comms[method](ajaxSettings);
+
 	};
 	
 	function _handleErrorObject(error) {
@@ -457,6 +480,8 @@
 				meerkat.modules.errorHandling.error(errorObject);
 			}
 		}
+
+        _hideLoading();
 	}
 	
 	meerkat.modules.register('crud', {

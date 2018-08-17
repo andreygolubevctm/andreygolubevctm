@@ -1,0 +1,132 @@
+// Journey campagin style
+.campaign-tile-container {
+  .image-tile {
+    height: 400px;
+    background-repeat: no-repeat;
+    background-position: center top;
+
+    @media (@md-only) {
+      height: 360px;
+      background-size: contain;
+    }
+
+    @media (@sm-only) {
+      height: 320px;
+    }
+  }
+
+  .aleks-1 {
+    background-image: url("../graphics/reward/toy/aleks-1-lg.png"); // banner 220x360px
+  }
+  .aleks-2 {
+    background-image: url("../graphics/reward/toy/aleks-2-lg.png");
+  }
+  .aleks-3 {
+    background-image: url("../graphics/reward/toy/aleks-1-lg.png");
+  }
+  .aleks-4 {
+    background-image: url("../graphics/reward/toy/aleks-2-lg.png");
+  }
+  .sergei-1 {
+    background-image: url("../graphics/reward/toy/sergei-1-lg.png");
+  }
+  .sergei-2 {
+    background-image: url("../graphics/reward/toy/sergei-2-lg.png");
+  }
+  .sergei-3 {
+    background-image: url("../graphics/reward/toy/sergei-1-lg.png");
+  }
+  .sergei-4 {
+    background-image: url("../graphics/reward/toy/sergei-2-lg.png");
+  }
+  .aleks-1-sm {
+    background-image: url("../graphics/reward/toy/aleks-1-sm.png"); // banner 140x300px
+  }
+  .aleks-2-sm {
+    background-image: url("../graphics/reward/toy/aleks-2-sm.png");
+  }
+  .aleks-3-sm {
+    background-image: url("../graphics/reward/toy/aleks-1-sm.png");
+  }
+  .aleks-4-sm {
+    background-image: url("../graphics/reward/toy/aleks-2-sm.png");
+  }
+  .sergei-1-sm {
+    background-image: url("../graphics/reward/toy/sergei-1-sm.png");
+  }
+  .sergei-2-sm {
+    background-image: url("../graphics/reward/toy/sergei-2-sm.png");
+  }
+  .sergei-3-sm {
+    background-image: url("../graphics/reward/toy/sergei-1-sm.png");
+  }
+  .sergei-4-sm {
+    background-image: url("../graphics/reward/toy/sergei-2-sm.png");
+  }
+}
+
+// Form styles
+.redemptionForm {
+  .rewardType {
+    .btn-tile {
+      label {
+        width: 182px;
+        height: 182px;
+        border-color: @theme-tertiary;
+        border-width: 1px;
+
+        @media (@xs-only) {
+          width: 140px;
+          height: 140px;
+        }
+
+        &:before {
+          content: "";
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center top;
+          display: block;
+          height: 100%;
+        }
+
+        &.active {
+          border-color: @theme-secondary;
+          border-width: 5px;
+        }
+
+        &.aleks:before {
+          background-image: url("../graphics/reward/toy/aleks-form.jpg");
+        }
+        &.sergei:before {
+          background-image: url("../graphics/reward/toy/sergei-form.jpg");
+        }
+      }
+    }
+  }
+  .text-right .btn {
+    display: inline-block;
+  }
+  .divider {
+    width: 80%;
+  }
+  .toy-subtitle {
+    margin-bottom: 20px;
+  }
+  label.error {
+    color: #ef425e;
+  }
+  .crud-save-entry:focus,
+  .crud-save-entry:active {
+    background-color: #0db14b;
+  }
+}
+.redemption-back-container {
+  margin: 15px 0;
+  padding: 0;
+}
+.redemption-cross-sell {
+  clear: both;
+}
+.redemption-subtitle {
+  margin: 0 0 20px 0;
+}
