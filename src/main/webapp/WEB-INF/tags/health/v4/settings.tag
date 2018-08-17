@@ -208,7 +208,6 @@
 	</c:if>
 	,openingHoursTimeZone : '${openingHoursTimeZone}',
 	isRememberMe: ${isRememberMe},
-	splitTest16: ${taxableIncomeSplitTest},
 	showPopularProducts: ${showPopularProducts},
 	pricePromiseHeights: {
 		xs: '${pricePromiseXSHeight}',

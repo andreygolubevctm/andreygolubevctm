@@ -15,12 +15,9 @@
             WEBAPP_LOCK: 'WEBAPP_LOCK',
             WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
         },
-        steps = null,
-        _splitTest16Active;
+        steps = null;
 
     function initHealth() {
-
-        setSplitTest16Active();
 
         $(document).ready(function () {
 
@@ -848,21 +845,11 @@
         }
     }
 
-
-    function getSplitTest16Active() {
-        return _splitTest16Active;
-    }
-
-    function setSplitTest16Active() {
-        _splitTest16Active = meerkat.site.splitTest16;
-    }
-
     meerkat.modules.register("health", {
         init: initHealth,
         events: moduleEvents,
         initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject,
-        getSplitTest16Active: getSplitTest16Active
+        getTrackingFieldsObject: getTrackingFieldsObject
     });
 
 

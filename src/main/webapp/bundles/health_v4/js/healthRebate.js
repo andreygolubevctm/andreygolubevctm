@@ -25,8 +25,7 @@
         ],
         _selectetedRebateLabelText = '',
         _selectetedRebateTierLabelText = '',
-        $elements = {},
-        splitTest16Active;
+        $elements = {};
 
     function init() {
         _setupFields();
@@ -47,8 +46,6 @@
     }
 
     function _setupFields() {
-        /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
-        splitTest16Active = meerkat.modules.health.getSplitTest16Active();
 
         $elements = {
             situationSelect: $('input[name=health_situation_healthCvr]'),
@@ -118,18 +115,12 @@
             cover = meerkat.modules.healthChoices.returnCoverCode(),
             rebateTierText;
 
-        /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
-        if (splitTest16Active) {
-            if ($elements.incomeSelect.filter(':checked').length === 0) {
-                rebateTierText = '';
-                selectedIncome = '';
-            } else {
-                rebateTierText = rebateTiers[$elements.incomeSelect.filter(':checked').val()];
-                selectedIncome =  'earning ' + $("label[for="+$elements.incomeSelect.filter(':checked').attr("id")+"]").text();
-            }
+        if ($elements.incomeSelect.filter(':checked').length === 0) {
+            rebateTierText = '';
+            selectedIncome = '';
         } else {
-            rebateTierText = $elements.incomeSelect.val() === '' ? '' :rebateTiers[$elements.incomeSelect.val()];
-            selectedIncome = $elements.incomeSelect.prop('selectedIndex') === 0 ? '' : 'earning ' + $elements.incomeSelect.find(':selected').text();
+            rebateTierText = rebateTiers[$elements.incomeSelect.filter(':checked').val()];
+            selectedIncome =  'earning ' + $("label[for="+$elements.incomeSelect.filter(':checked').attr("id")+"]").text();
         }
 
         if (cover !== '') {
@@ -179,16 +170,10 @@
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(forceRebate, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
 
-                /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
-                if (splitTest16Active) {
-                    if ($elements.incomeSelect.filter(':checked').length > 0) {
-                        $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
-                    }
-                } else {
-                    if ($elements.incomeSelect.prop('selectedIndex') > 0) {
-                        $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
-                    }
+                if ($elements.incomeSelect.filter(':checked').length > 0) {
+                    $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
                 }
+
                 rebate = rates.rebate;
             } else {
                 $elements.rebateLegend.html('');

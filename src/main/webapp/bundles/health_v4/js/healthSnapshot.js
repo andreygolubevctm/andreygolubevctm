@@ -11,8 +11,7 @@
         },
         moduleEvents = events.healthSnapshot,
 
-        $elements = {},
-        splitTest16Active;
+        $elements = {};
 
     function initHealthSnapshot() {
         _setupFields();
@@ -21,9 +20,6 @@
     }
 
     function _setupFields() {
-
-        /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
-        splitTest16Active = meerkat.modules.health.getSplitTest16Active();
 
         $elements = {
             quoteSnapshot: $('.quoteSnapshot'),
@@ -203,16 +199,9 @@
             primaryBorn = $elements.primary.dob.val(),
             partnerBorn = $elements.partner.dob.val(),
             rebateText = _fetchRebateText(),
-            rebateSubText,
+            rebateSubText = _fetchRebateSubText($elements.income.filter(':checked').val()),
             hospital = _fetchBenefits(true),
             extras = _fetchBenefits();
-
-        /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
-        if (splitTest16Active) {
-            rebateSubText = _fetchRebateSubText($elements.income.filter(':checked').val());
-        } else {
-            rebateSubText = _fetchRebateSubText($elements.income.val());
-        }
 
         return {
             livingIn: _.isEmpty(livingIn) ? false : livingIn,
