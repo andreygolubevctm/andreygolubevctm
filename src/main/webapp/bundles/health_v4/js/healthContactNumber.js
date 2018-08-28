@@ -48,7 +48,7 @@
         });
 
         $elements.inputs.on(dynamicChangeEvent, function onInputsEventTrigger() {
-            $elements.flexiNumber.val($(this).valid() ? $(this).val().replace(/ /g,'') : '');
+            $elements.flexiNumber.val($(this).valid() ? meerkat.modules.phoneFormat.cleanNumber($(this).val()) : "");
         });
     }
 
