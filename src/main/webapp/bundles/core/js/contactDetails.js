@@ -349,14 +349,13 @@
 		}
 
 		for ( var i = fieldDetails.index+1; i < fields[fieldDetails.type].length; i++ ){
-
 			var laterFieldDetails = $.extend( fields[fieldDetails.type][i], {type: fieldDetails.type} );
 			var $fieldElement = getInputField( laterFieldDetails );
 
 			if(fieldDetails.type.indexOf("flexiPhone") >= 0 && typeof laterFieldDetails.$otherField !== "undefined") {
 				var flexiNumber = updatedElementValue.replace(/\D/g, "");
 				var $elementToChange;
-				if (flexiNumber.match(/^(04|614|6104)/g)) { // Mobile
+				if (flexiNumber.match(/^(04|61)/g)) { // Match mobile or landline/mobile prefixed with 61
 					$fieldElement.val(meerkat.modules.phoneFormat.cleanNumber(updatedElementValue));
 					laterFieldDetails.$otherField.val("");
 					$elementToChange = $fieldElement;
@@ -401,9 +400,14 @@
 					}
 				}
 
+				if(_.indexOf(["mobile","otherPhone"], fieldDetails.type) !== -1) {
+					// Force populate these - don't relay on triggers
+					// This is a dirty hack to resolve issue with health application fields not updating correctly
+					laterFieldDetails.$field.val(meerkat.modules.phoneFormat.cleanNumber($fieldElement.val()));
+				}
 				// if the later field has both a hidden field and aninput field
 				// let's trigger change, blur and focusout events on the input field to run the required logic to fill the hidden fields
-				if( typeof laterFieldDetails.$fieldInput !== "undefined" ){
+				else if( typeof laterFieldDetails.$fieldInput !== "undefined" ){
 					$fieldElement.trigger("change").trigger("blur").trigger("focusout");
 				}
 
