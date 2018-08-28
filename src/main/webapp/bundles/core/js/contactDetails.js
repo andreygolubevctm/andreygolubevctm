@@ -355,7 +355,7 @@
 			if(fieldDetails.type.indexOf("flexiPhone") >= 0 && typeof laterFieldDetails.$otherField !== "undefined") {
 				var flexiNumber = updatedElementValue.replace(/\D/g, "");
 				var $elementToChange;
-				if (flexiNumber.match(/^(04|61|610)/g)) { // Mobile
+				if (flexiNumber.match(/^(04|61)/g)) { // Match mobile or landline/mobile prefixed with 61
 					$fieldElement.val(meerkat.modules.phoneFormat.cleanNumber(updatedElementValue));
 					laterFieldDetails.$otherField.val("");
 					$elementToChange = $fieldElement;
