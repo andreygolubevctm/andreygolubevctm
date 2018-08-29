@@ -110,7 +110,7 @@ public abstract class LeadService {
                 LOGGER.error("Error sending lead request {}", kv("data", data), e);
             }
         } else {
-			LOGGER.info("[lead ignored] Lead ignored because: {} {} {}", kv("Is Consultant",SessionUtils.isCallCentre(request.getSession())), kv("Call Type Inbound or CLI", asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)), kv("data", data));
+			LOGGER.info("[lead ignored] Lead failed initial sanity checks: {} {} {}", kv("Is Consultant",SessionUtils.isCallCentre(request.getSession())), kv("Call Type Inbound or CLI", asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)), kv("data", data));
 		}
     }
 
