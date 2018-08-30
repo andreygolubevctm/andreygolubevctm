@@ -90,7 +90,7 @@
     function getContactBy(contactNumber) {
         var contactBy = false;
 	    if (contactNumber.length > 0) {
-		    contactBy = contactNumber.match(/^(04|614|6104)/g) ? 'mobile' : 'other';
+		    contactBy = contactNumber.replace(/\D/g, "").match(/^(04|614|6104)/g) ? 'mobile' : 'other';
 	    }
 	    return contactBy;
     }
