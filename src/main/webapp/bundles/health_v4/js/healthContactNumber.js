@@ -74,10 +74,11 @@
     }
 
     function insertContactNumber($contactNumberContainer, contactNumber) {
-        var contactBy = getContactBy(contactNumber);
+    	var contactBy = getContactBy(contactNumber);
         if(contactBy !== false) {
             $contactNumberContainer.attr('data-contact-by', contactBy);
-            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger(dynamicChangeEvent);
+            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber)
+            .trigger("change").trigger("blur").trigger("focusout");
         }
     }
 
@@ -90,7 +91,7 @@
     function getContactBy(contactNumber) {
         var contactBy = false;
 	    if (contactNumber.length > 0) {
-		    contactBy = contactNumber.match(/^(04|614|6104)/g) ? 'mobile' : 'other';
+		    contactBy = contactNumber.replace(/\D/g, "").match(/^(04|614|6104)/g) ? 'mobile' : 'other';
 	    }
 	    return contactBy;
     }
