@@ -31,7 +31,7 @@
 												<backToBase>Y</backToBase>
 												<windowLocks>Y</windowLocks>
 								</securityFeatures>
-								<wallMaterial>Brick</wallMaterial>
+								<wallMaterial>Double Brick</wallMaterial>
 								<numberStoreys>2</numberStoreys>
 								<roofMaterial>Thatch</roofMaterial>
 								<bodyCorp>Y</bodyCorp>
@@ -46,25 +46,17 @@
 				<disclosures>
 								<criminalOffence>N</criminalOffence>
 								<claimNumber>1</claimNumber>
-								<previousInsurance>Y</previousInsurance>
-								<coverLength>4 Years</coverLength>
-								<expiry>05/04/2012</expiry>
-								<insuranceRefusal>N</insuranceRefusal>
 								<claims>Y</claims>
 								<deniedClaim>N</deniedClaim>
-								<insurer>AAMI</insurer>
-								<atCurrentAddress>N</atCurrentAddress>
 				</disclosures>
 				<policyHolder>
 								<title>MR</title>
 								<marketing>N</marketing>
 								<surname>User</surname>
-								<anyoneOlder>Y</anyoneOlder>
 								<oktocall>N</oktocall>
-								<oldestPersonDob>12/05/1945</oldestPersonDob>
 								<dob>05/05/1979</dob>
 								<email>aih.iia.triage@gmail.com</email>
-								<over55>Y</over55>
+								<retired>Y</retired>
 								<phone>0712345678</phone>
 								<firstName>Test</firstName>
 				</policyHolder>

@@ -8,53 +8,30 @@ import java.time.LocalDate;
 public class HomeQuoteRequest {
 
     private String clientIp;
-
     private boolean homeCover;
-
     private boolean contentsCover;
-
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
-
     private Integer homeExcess;
-
     private Integer homeBaseExcess;
-
     private Integer contentsExcess;
-
     private Integer contentsBaseExcess;
-
     private Occupancy occupancy;
-
     private BusinessActivity businessActivity;
-
     private Property property;
-
     private HomeCoverAmounts homeCoverAmounts;
-
     private ContentsCoverAmounts contentsCoverAmounts;
-
     private PolicyHolder mainPolicyHolder;
-
     private PolicyHolder jointPolicyHolder;
-
-    private PolicyHolder oldestPolicyHolder;
-
     private Contact contact;
-
-    private boolean previouslyCovered;
-
-    private PreviousCover previousCover;
-
     private boolean hadClaims;
-
     private Boolean underFinance;
+    private Boolean retiredResident;
+    private LandlordDetails landlordDetails;
 
     public String getClientIp() {
         return clientIp;
     }
-
-    private LandlordDetails landlordDetails;
 
     public LandlordDetails getLandlordDetails() {
         return landlordDetails;
@@ -181,36 +158,12 @@ public class HomeQuoteRequest {
         this.jointPolicyHolder = jointPolicyHolder;
     }
 
-    public PolicyHolder getOldestPolicyHolder() {
-        return oldestPolicyHolder;
-    }
-
-    public void setOldestPolicyHolder(PolicyHolder oldestPolicyHolder) {
-        this.oldestPolicyHolder = oldestPolicyHolder;
-    }
-
     public Contact getContact() {
         return contact;
     }
 
     public void setContact(Contact contact) {
         this.contact = contact;
-    }
-
-    public boolean isPreviouslyCovered() {
-        return previouslyCovered;
-    }
-
-    public void setPreviouslyCovered(boolean previouslyCovered) {
-        this.previouslyCovered = previouslyCovered;
-    }
-
-    public PreviousCover getPreviousCover() {
-        return previousCover;
-    }
-
-    public void setPreviousCover(PreviousCover previousCover) {
-        this.previousCover = previousCover;
     }
 
     public boolean isHadClaims() {
@@ -227,6 +180,14 @@ public class HomeQuoteRequest {
 
     public void setUnderFinance(Boolean underFinance) {
         this.underFinance = underFinance;
+    }
+
+    public Boolean getRetiredResident() {
+        return retiredResident;
+    }
+
+    public void setRetiredResident(final Boolean retiredResident) {
+        this.retiredResident = retiredResident;
     }
 
 }

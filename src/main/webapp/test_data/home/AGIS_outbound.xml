@@ -5,7 +5,7 @@
 	<env:Header />
 	<env:Body>
 		<ns2:request
-			xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/3.0/home_quote">
+			xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/5.0/home_quote">
 			<header>
 				<partnerId>CTM0000100</partnerId>
 				<sourceId>0000000001</sourceId>
@@ -76,9 +76,7 @@
 					<allowMarketing>Y</allowMarketing>
 				</policyHolder>
 				<noOlderResident></noOlderResident>
-				<!-- <olderResident/> -->
 				<personalHistory>
-					<noPreviousPolicy>Y</noPreviousPolicy>
 					<previousClaims>N</previousClaims>
 				</personalHistory>
 				<!-- <marketing> -->

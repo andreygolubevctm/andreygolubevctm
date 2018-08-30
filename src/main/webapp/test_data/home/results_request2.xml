@@ -1,24 +1,18 @@
 <home>
 				<disclosures>
 								<criminalOffence>Y</criminalOffence>
-								<previousInsurance>Y</previousInsurance>
-								<coverLength>4 Years</coverLength>
-								<expiry>05/04/2012</expiry>
 								<refusalYear>2012</refusalYear>
 								<criminalOffenceNumber>2</criminalOffenceNumber>
 								<claims>Y</claims>
 								<deniedClaim>N</deniedClaim>
-								<insurer>AAMI</insurer>
 								<refusalReason>Fraud</refusalReason>
 								<claimNumber>1</claimNumber>
 								<refusalInsurer>ANZ</refusalInsurer>
 								<insuranceRefusal>Y</insuranceRefusal>
-								<atCurrentAddress>N</atCurrentAddress>
 				</disclosures>
 				<policyHolder>
 								<title>MR</title>
 								<surname>User</surname>
-								<anyoneOlder>Y</anyoneOlder>
 								<jointTitle>MRS</jointTitle>
 								<jointFirstName>Test2</jointFirstName>
 								<dob>05/05/1979</dob>
@@ -29,8 +23,7 @@
 								<jointSurname>User2</jointSurname>
 								<email>aih.iia.triage@gmail.com</email>
 								<phone>0712345678</phone>
-								<oldestPersonDob>12/05/1945</oldestPersonDob>
-								<over55>Y</over55>
+								<retired>Y</retired>
 				</policyHolder>
 				<property>
 								<features>
@@ -41,7 +34,7 @@
 												<waterTanks>Y</waterTanks>
 												<airConditionners>Y</airConditionners>
 								</features>
-								<wallMaterial>Brick</wallMaterial>
+								<wallMaterial>Double Brick</wallMaterial>
 								<address>
 												<nonStd>Y</nonStd>
 												<type>R</type>
