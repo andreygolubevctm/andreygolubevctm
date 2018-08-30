@@ -74,10 +74,11 @@
     }
 
     function insertContactNumber($contactNumberContainer, contactNumber) {
-        var contactBy = getContactBy(contactNumber);
+    	var contactBy = getContactBy(contactNumber);
         if(contactBy !== false) {
             $contactNumberContainer.attr('data-contact-by', contactBy);
-            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger(dynamicChangeEvent);
+            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber)
+            .trigger("change").trigger("blur").trigger("focusout");
         }
     }
 
