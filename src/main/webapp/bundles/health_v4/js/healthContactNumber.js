@@ -131,7 +131,7 @@
 	function getPhone(){
 		var mobile = $elements.phone.application.mobile.val();
 		if(_.isEmpty(mobile)) {
-			var other = $elements.phone.appliction.other.val();
+			var other = $elements.phone.application.other.val();
 			if(_.isEmpty(other)) {
 				mobile = $elements.phone.quote.mobile.val();
 				if(_.isEmpty(mobile)) {
