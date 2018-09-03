@@ -164,15 +164,11 @@
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="E"/> <!-- Employed - Full Time -->
 			<xsd:enumeration value="P"/> <!-- Employed - Part Time -->
-			<xsd:enumeration value="U"/> <!-- Unemployed -->
 			<xsd:enumeration value="S"/> <!-- Self-Employed -->
-			<xsd:enumeration value="H"/> <!-- House Wife/Husband -->
-			<xsd:enumeration value="F"/> <!-- Full/Part Time Education -->
 			<xsd:enumeration value="R"/> <!-- Retired -->
-			<xsd:enumeration value="N"/> <!-- Unemployed - Disability/Illness -->
-			<xsd:enumeration value="M"/> <!-- Unemployed - Pension -->
-			<xsd:enumeration value="C"/> <!-- Carer -->
-			<xsd:enumeration value="A"/> <!-- Sole Parent -->
+			<xsd:enumeration value="H"/> <!-- Home duties -->
+			<xsd:enumeration value="F"/> <!-- Student -->
+			<xsd:enumeration value="U"/> <!-- Unemployed -->
 		</xsd:restriction>
 	</xsd:simpleType>
 
