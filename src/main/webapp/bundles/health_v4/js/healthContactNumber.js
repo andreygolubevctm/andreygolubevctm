@@ -21,6 +21,9 @@
 		            onSwitchClicked($that);
 		        });
 	        }
+	        if(!meerkat.site.isNewQuote) {
+		        sanitisedExistingPhoneNumbers();
+	        }
         }
     }
 
@@ -48,7 +51,7 @@
         });
 
         $elements.inputs.on(dynamicChangeEvent, function onInputsEventTrigger() {
-            $elements.flexiNumber.val($(this).valid() ? $(this).val().replace(/ /g,'') : '');
+            $elements.flexiNumber.val($(this).valid() ? meerkat.modules.phoneFormat.cleanNumber($(this).val()) : "");
         });
     }
 
@@ -72,12 +75,42 @@
 	    var $redundantInput = $contactNumber.find('#health_contactDetails_contactNumber_' + deselectedField);
 	    $redundantInput.val('');
     }
+    
+    function sanitisedExistingPhoneNumbers() {
+	    var phones = {
+			    flexi : $elements.flexiNumber.val(),
+			    quote : {
+				    mobile : $elements.phone.quote.mobile.val(),
+				    other : $elements.phone.quote.other.val()
+			    },
+			    application : {
+				    mobile : $elements.phone.application.mobile.val(),
+				    other : $elements.phone.application.other.val()
+			    }
+	    };
+	    if(!_.isEmpty(phones.flexi) && phones.flexi.replace(/\D/g, "").match(/^61/g)) {
+		    $elements.flexiNumber.val(meerkat.modules.phoneFormat.cleanNumber(phones.flexi));
+	    }
+	    if(!_.isEmpty(phones.quote.mobile) && phones.quote.mobile.replace(/\D/g, "").match(/^61/g)) {
+		    $elements.phone.quote.mobile.val(meerkat.modules.phoneFormat.cleanNumber(phones.quote.mobile));
+	    }
+	    if(!_.isEmpty(phones.quote.other) && phones.quote.other.replace(/\D/g, "").match(/^61/g)) {
+		    $elements.phone.quote.other.val(meerkat.modules.phoneFormat.cleanNumber(phones.quote.other));
+	    }
+	    if(!_.isEmpty(phones.application.mobile) && phones.application.mobile.replace(/\D/g, "").match(/^61/g)) {
+		    $elements.phone.application.mobile.val(meerkat.modules.phoneFormat.cleanNumber(phones.application.mobile));
+	    }
+	    if(!_.isEmpty(phones.application.other) && phones.application.other.replace(/\D/g, "").match(/^61/g)) {
+		    $elements.phone.application.other.val(meerkat.modules.phoneFormat.cleanNumber(phones.application.other));
+	    }
+    }
 
     function insertContactNumber($contactNumberContainer, contactNumber) {
-        var contactBy = getContactBy(contactNumber);
+    	var contactBy = getContactBy(contactNumber);
         if(contactBy !== false) {
             $contactNumberContainer.attr('data-contact-by', contactBy);
-            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger(dynamicChangeEvent);
+            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber)
+            .trigger("change").trigger("blur").trigger("focusout");
         }
     }
 
@@ -90,7 +123,7 @@
     function getContactBy(contactNumber) {
         var contactBy = false;
 	    if (contactNumber.length > 0) {
-		    contactBy = contactNumber.match(/^(04|614|6104)/g) ? 'mobile' : 'other';
+		    contactBy = contactNumber.replace(/\D/g, "").match(/^(04|614|6104)/g) ? 'mobile' : 'other';
 	    }
 	    return contactBy;
     }

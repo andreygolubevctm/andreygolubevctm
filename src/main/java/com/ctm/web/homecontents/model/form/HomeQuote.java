@@ -139,6 +139,10 @@ public class HomeQuote {
         this.disclosures = disclosures;
     }
 
+    public boolean hasDisclosures() {
+        return this.disclosures != null && this.disclosures instanceof Disclosures;
+    }
+
     public String getFsg() {
         return fsg;
     }
