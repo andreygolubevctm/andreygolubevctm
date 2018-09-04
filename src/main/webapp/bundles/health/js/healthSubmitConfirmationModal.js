@@ -91,8 +91,7 @@
                     suburb: $('#health_application_address_suburb'),
                     unitShop: $('#health_application_address_unitShop'),
                     streetNum: $('#health_application_address_streetNum'),
-	                streetName: $('#health_application_address_streetName'),
-                    unitType: $('#health_application_address_unitType'),
+	                unitType: $('#health_application_address_unitType'),
                     nonStdStreet: $('#health_application_address_nonStdStreet'),
                     streetSearch: $('#health_application_address_streetSearch'),
                     nonStd: $('#health_application_address_nonStd'),
@@ -105,8 +104,7 @@
                     suburb: $('#health_application_postal_suburb'),
                     unitShop: $('#health_application_postal_unitShop'),
                     streetNum: $('#health_application_postal_streetNum'),
-	                streetName: $('#health_application_postal_streetName'),
-                    unitType: $('#health_application_postal_unitType'),
+	                unitType: $('#health_application_postal_unitType'),
                     nonStdStreet: $('#health_application_postal_nonStdStreet'),
                     streetSearch: $('#health_application_postal_streetSearch'),
                     nonStd: $('#health_application_postal_nonStd'),
@@ -300,8 +298,7 @@
             unitType = $fields.address[returnAddrType].unitType.val(),
             unitNo = $fields.address[returnAddrType].unitShop.val(),
             streetNum = $fields.address[returnAddrType].streetNum.val(),
-	        streetName = $fields.address[returnAddrType].streetName.val(),
-            addrLn1 = '';
+	        addrLn1 = '';
 
         if (isNonStdAddress === 'Y' && unitType !== 'UN') {
             // Add specific prefix if required
