@@ -334,10 +334,6 @@
                 if (streetNum.length > 0) {
                     addrLn1 += streetNum + " ";
                 }
-
-	            if (streetName.length > 0) {
-		            addrLn1 += streetName + " ";
-	            }
             }
 
             if (nonStdStreet.length > 0) {
