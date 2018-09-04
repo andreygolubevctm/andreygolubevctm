@@ -4,6 +4,7 @@ import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.model.ContentSupplement;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
 /**
  * Retrieval and caching of provider flags for leads
  */
+@Component
 public class ActiveProvidersService {
 
     private ArrayList<ContentSupplement> providersContent = null;
