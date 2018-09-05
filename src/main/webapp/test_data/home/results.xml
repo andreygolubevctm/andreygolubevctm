@@ -1,7 +1,7 @@
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<soapenv:Body>
 		<response xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			xsi:schemaLocation="https://ecommerce.disconline.com.au/services/schema/3.0/home_quote.xsd">
+			xsi:schemaLocation="https://ecommerce.disconline.com.au/services/schema/5.0/home_quote.xsd">
 
 			<header>
 				<partnerId>CTM0000100</partnerId>

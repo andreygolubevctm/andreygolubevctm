@@ -104,11 +104,6 @@
 						<div class="col-xs-12">
 							<p class="detail-title">Previous Cover</p>
 							<ul>
-								{{ if(previousCover) { }}
-								<li>Has had home and/or contents insurance in the last 5 years</li>
-								{{ } else { }}
-								<li>Has not had home and/or contents insurance in the last 5 years</li>
-								{{ } }}
 								{{ if(previousClaims) { }}
 								<li>Has made home and/or contents claims in the last 5 years</li>
 								{{ } else { }}
@@ -246,21 +241,6 @@
 							</ul>
 						</div>
 					</div>
-					{{ if(hasOlderResident) { }}
-					<div class="row push-top-15">
-						<div class="col-xs-12">
-							<p class="detail-title">Oldest Resident</p>
-							<ul class="col-2-list">
-								<li><span data-source="#home_policyHolder_oldestPersonDob"></span></li>
-								{{ if(hasRetiredOver55) { }}
-									<li>Retired and Over 55</li>
-								{{ } else { }}
-									<li>Not Retired and Over 55</li>
-								{{ } }}
-							</ul>
-						</div>
-					</div>
-					{{ } }}
 					<div class="row push-top-15">
 						<div class="col-xs-12">
 							<p class="detail-title">Policy Start Date</p>
