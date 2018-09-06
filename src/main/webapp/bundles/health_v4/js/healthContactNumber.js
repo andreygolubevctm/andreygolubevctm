@@ -11,6 +11,7 @@
     function initHealthContactNumber() {
         _setupFields();
         _applyEventListeners();
+	    sanitisedExistingPhoneNumbers();
         // Toggle the visible phone input when quote loaded
 	    var phone = $.trim($elements.flexiNumber.val()).replace(/\D/g,'');
         if(!_.isEmpty(phone)) {
@@ -20,9 +21,6 @@
 		            $that.closest('.contact-number').attr('data-contact-by','mobile');
 		            onSwitchClicked($that);
 		        });
-	        }
-	        if(!meerkat.site.isNewQuote) {
-		        sanitisedExistingPhoneNumbers();
 	        }
         }
     }
