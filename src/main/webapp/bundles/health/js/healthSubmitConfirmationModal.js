@@ -91,6 +91,7 @@
                     suburb: $('#health_application_address_suburb'),
                     unitShop: $('#health_application_address_unitShop'),
                     streetNum: $('#health_application_address_streetNum'),
+	                streetName: $('#health_application_address_streetName'),
 	                unitType: $('#health_application_address_unitType'),
                     nonStdStreet: $('#health_application_address_nonStdStreet'),
                     streetSearch: $('#health_application_address_streetSearch'),
@@ -104,6 +105,7 @@
                     suburb: $('#health_application_postal_suburb'),
                     unitShop: $('#health_application_postal_unitShop'),
                     streetNum: $('#health_application_postal_streetNum'),
+	                streetName: $('#health_application_postal_streetName'),
 	                unitType: $('#health_application_postal_unitType'),
                     nonStdStreet: $('#health_application_postal_nonStdStreet'),
                     streetSearch: $('#health_application_postal_streetSearch'),
@@ -298,6 +300,7 @@
             unitType = $fields.address[returnAddrType].unitType.val(),
             unitNo = $fields.address[returnAddrType].unitShop.val(),
             streetNum = $fields.address[returnAddrType].streetNum.val(),
+	        streetName = $fields.address[returnAddrType].streetName.val(),
 	        addrLn1 = '';
 
         if (isNonStdAddress === 'Y' && unitType !== 'UN') {
@@ -333,8 +336,8 @@
                 }
             }
 
-            if (nonStdStreet.length > 0) {
-                addrLn1 += nonStdStreet + " ";
+            if(streetName.length > 0 || nonStdStreet.length > 0) {
+                addrLn1 += (streetName.length > 0 ? streetName : nonStdStreet) + " ";
             }
         } else {
             if (fullAddress.lastIndexOf(suburb) > 1) {
