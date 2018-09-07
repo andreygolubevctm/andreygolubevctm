@@ -318,7 +318,18 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             validation: {
-                validate: true
+                validate: true,
+                customValidation: function(callback) {
+                    var locationVal = $('#health_situation_location').val();
+                    var $postcodeContainer = $('.health_contact_details_postcode_wrapper');
+                    var $postcodeInput = $postcodeContainer.find('input');
+                    if (locationVal && locationVal.indexOf($postcodeInput.val()) > -1) {
+                        callback(true);
+                    } else {
+                        meerkat.modules.utils.applyErrorMessage('health_situation_postcode', 'Please enter a valid postcode');
+                        callback(false);
+                    }
+                }
             },
             onInitialise: function onContactInit(event) {
                 meerkat.modules.resultsFeatures.fetchStructure('health_v4');

@@ -1,15 +1,5 @@
 (function ($) {
 
-    $.validator.addMethod("validatePostcode",
-        function validate(value) {
-            var regexMatch = value.match(/^(?:(?:[2-8]\d|9[0-7]|0?[28]|0?9(?=09))(?:\d{2}))$/);
-            return regexMatch && regexMatch.length > 0;
-        },
-        function validationMessage() {
-            return 'Please enter a valid postcode.';
-        }
-    );
-
     $.validator.addMethod("locationSelection", function (value, element, param) {
 
         var isValid;
