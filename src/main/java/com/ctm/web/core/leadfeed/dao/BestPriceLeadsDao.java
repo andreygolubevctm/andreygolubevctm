@@ -36,7 +36,7 @@ import java.util.Date;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-public class BestPriceLeadsDao {
+public class BestPriceLeadsDao implements LeadsDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BestPriceLeadsDao.class);
 	private static final CharSequence BUDD = "BUDD";
@@ -373,7 +373,7 @@ public class BestPriceLeadsDao {
 			if(
 				type.equalsIgnoreCase("A") || type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")) {
 				tran.setHasLeadFeed(true);
-				LOGGER.info("[Lead info] Skipping existing lead feed transaction {}", kv("transactionId", transactionId));
+
 			}
 		} catch(SQLException e) {
 			LOGGER.error("[Lead info] Failed to add best price lead feed transaction", e);
