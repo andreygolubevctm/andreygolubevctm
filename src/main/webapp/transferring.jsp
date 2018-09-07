@@ -102,6 +102,12 @@
 								</c:otherwise>
 							</c:choose>
 						</p>
+						
+						<c:if test="${param.vertical eq 'car' || param.vertical eq 'home'}">
+								<span>If you are not automatically redirected to our trusted partners website within 30 seconds, please click </span>
+								<a class="handoverLink" href="${quoteUrl}">here</a>
+						</c:if>
+				
 						<div class="quoteUrl" transactionId="${transactionId}" quoteUrl="${quoteUrl}"></div>
 					</div>
 				</div>
