@@ -145,7 +145,7 @@ public class TravelQuote {
                 return benefit.getText();
             }
         }
-        return "";
+        return "$0";
     }
 
     public BigDecimal getBenefitValue(String type){

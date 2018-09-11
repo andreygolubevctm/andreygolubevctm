@@ -53,7 +53,7 @@
 	{{ logo = logo(obj); }}
     {{ var hasSpecialOffer = !_.isEmpty(obj.offer) && _.isObject(obj.offer) && !_.isEmpty(obj.offer.copy) && !_.isEmpty(obj.offer.terms) }}
 	{{ var isTripType = meerkat.modules.tripType.exists(); }}
-	{{ var isDomesticTravel = meerkat.modules.travelSummaryText.isDomesticTravel() }}
+	{{ var isDomesticTravel = meerkat.modules.travelSummaryText.isDomesticTravel(); }}
 	{{ var tripTypes = meerkat.modules.tripType.get(); }}
 	{{ var tripTypeClass = isTripType ? "trip-type-container" : ""; }}
 	{{ var specialOfferClass = !isTripType && hasSpecialOffer ? "specialOffer" : ""; }}
@@ -94,7 +94,7 @@
 
 					{{ if(isDomesticTravel) { }}
 					<div class="col-sm-2 col-lg-1 medicalAmount">
-						<div><span>{{= obj.info.medical }}</span></div>
+						<div><span>{{= obj.info.rentalVehicle }}</span></div>
 					</div>
 					{{ } else { }}
 					<div class="col-sm-2 col-lg-1 medicalAmount">
