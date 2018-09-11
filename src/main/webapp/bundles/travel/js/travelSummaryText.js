@@ -14,6 +14,7 @@
 		$policytype,
 		$summaryHeader,
 		$selectedTags,
+		isDomestic = false,
 		initialised = false;
 
 	function updateSummaryText() {
@@ -21,6 +22,7 @@
 
 		// Build the summary text based on the entered information.
 		var txt= '<span class="highlight">';
+		var singleTravelDestination = '';
 
 		var adults = $adults.val(),
 		children = $children.val();
@@ -40,15 +42,20 @@
 		}
 
 		// if this is a single trip
-		if ($("input[name=travel_policyType]:checked").val() == 'S')
-		{
+		if ($("input[name=travel_policyType]:checked").val() == 'S') {
 			// in case a user did an AMT quote and now wants a single trip quote
 			$summaryHeader.html('Your quote is based on');
 			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
 
 			// update the country text for single trip
 			if ($selectedTags.children().length == 1) {
-				txt += $selectedTags.find('li:first-child').data("fulltext");
+                singleTravelDestination = $selectedTags.find('li:first-child').data("fulltext");
+				txt += singleTravelDestination;
+
+				if (singleTravelDestination === 'Australia') {
+                    isDomestic = true;
+				}
+
 			} else {
 				txt += "multiple destinations";
 			}
@@ -77,6 +84,10 @@
 		}
 
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
+	}
+
+	function isDomesticTravel() {
+		return isDomestic;
 	}
 
 	function initSummaryText() {
@@ -118,7 +129,8 @@
 	meerkat.modules.register('travelSummaryText', {
 		init: init,
 		initSummaryText: initSummaryText,
-		updateText: updateSummaryText
+		updateText: updateSummaryText,
+		isDomesticTravel: isDomesticTravel
 	});
 
 })(jQuery);
