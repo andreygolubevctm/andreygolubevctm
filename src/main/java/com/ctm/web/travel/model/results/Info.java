@@ -90,7 +90,11 @@ public class Info {
         this.luggageValue = luggageValue;
     }
 
-    public BigDecimal getRentalVehicleValue() { return rentalVehicleValue; }
+    public BigDecimal getRentalVehicleValue() {
+        return rentalVehicleValue;
+    }
 
-    public void setRentalVehicleValue(BigDecimal rentalVehicleValue) { this.rentalVehicleValue = rentalVehicleValue; }
+    public void setRentalVehicleValue(BigDecimal rentalVehicleValue) {
+        this.rentalVehicleValue = rentalVehicleValue;
+    }
 }

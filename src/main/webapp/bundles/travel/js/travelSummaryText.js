@@ -47,21 +47,15 @@
 			// in case a user did an AMT quote and now wants a single trip quote
 			$summaryHeader.html('Your quote is based on');
 			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
+            isDomestic = false;
 
 			// update the country text for single trip
 			if ($selectedTags.children().length == 1) {
                 singleTravelDestination = $selectedTags.find('li:first-child').data("fulltext");
 				txt += singleTravelDestination;
-
-				if (singleTravelDestination === 'Australia') {
-                    isDomestic = true;
-				} else {
-                    isDomestic = false;
-				}
-
+				isDomestic = singleTravelDestination === 'Australia';
 			} else {
 				txt += "multiple destinations";
-                isDomestic = false;
 			}
 
 			// duration calculation
@@ -89,11 +83,8 @@
 
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
 
-        if (isDomestic) {
-            $travel_results_os_medical.html('Rental Vehicle <span class="">Excess</span>');
-        } else {
-            $travel_results_os_medical.html('O.S. Medical <span class="">Excess</span>');
-		}
+        var labelCopy = isDomestic ? 'Rental Vehicle' : 'O.S. Medical';
+        $travel_results_os_medical.html(labelCopy + ' <span class="">Excess</span>');
 	}
 
 	function isDomesticTravel() {
