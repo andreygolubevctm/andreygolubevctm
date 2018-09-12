@@ -55,10 +55,13 @@
 
 				if (singleTravelDestination === 'Australia') {
                     isDomestic = true;
+				} else {
+                    isDomestic = false;
 				}
 
 			} else {
 				txt += "multiple destinations";
+                isDomestic = false;
 			}
 
 			// duration calculation
@@ -87,8 +90,10 @@
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
 
         if (isDomestic) {
-            $travel_results_os_medical.html('Rental Vehicle <span class="">Expenses</span>');
-        }
+            $travel_results_os_medical.html('Rental Vehicle <span class="">Excess</span>');
+        } else {
+            $travel_results_os_medical.html('O.S. Medical <span class="">Excess</span>');
+		}
 	}
 
 	function isDomesticTravel() {
