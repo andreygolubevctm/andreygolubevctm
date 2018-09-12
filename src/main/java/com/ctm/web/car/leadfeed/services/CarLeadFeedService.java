@@ -7,7 +7,7 @@ import com.ctm.web.car.leadfeed.services.REIN.REINCarLeadFeedService;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
-import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
+import com.ctm.web.core.leadfeed.dao.LeadsDao;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.CTMCarLeadFeedRequestMetadata;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
@@ -34,7 +34,7 @@ public class CarLeadFeedService extends LeadFeedService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CarLeadFeedService.class);
 	public static final String COMPREHENSIVE = "COMPREHENSIVE";
 
-	public CarLeadFeedService(BestPriceLeadsDao bestPriceDao) {
+	public CarLeadFeedService(LeadsDao bestPriceDao) {
 		super(bestPriceDao, new ContentService(),
 				new LeadFeedTouchService(new AccessTouchService())
 		);
@@ -113,11 +113,11 @@ public class CarLeadFeedService extends LeadFeedService {
 		final Boolean carCtmLeadsEnabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", leadData.getBrandId(), 0, ServiceConfigurationProperty.Scope.SERVICE));
 		final String ctmLeadsUrl = serviceConfig.getPropertyValueByKey("url", leadData.getBrandId(), 0, ServiceConfigurationProperty.Scope.SERVICE);
 
-		if (carCtmLeadsEnabled && leadType == LeadType.BEST_PRICE && isCarComprehensiveCover(leadData)) {
+		if (carCtmLeadsEnabled && isCarComprehensiveCover(leadData)) {
 			return new CTMCarLeadFeedService(ctmLeadsUrl, new RestTemplate(clientHttpRequestFactory()));
 		}
 
-		if (carCtmLeadsEnabled && leadType == LeadType.BEST_PRICE && !isCarComprehensiveCover(leadData)) {
+		if (carCtmLeadsEnabled && !isCarComprehensiveCover(leadData)) {
 			//Don't send leads to ctm or A&G call center.
 			LOGGER.info("[Lead feed] BUDD BEST_PRICE non-comprehensive car lead feed fond. Not sending to any call centers {}, {}", kv("leadType", leadType), kv("leadData", leadData));
 			return null;
