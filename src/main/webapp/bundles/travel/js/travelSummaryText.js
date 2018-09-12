@@ -14,6 +14,7 @@
 		$policytype,
 		$summaryHeader,
 		$selectedTags,
+        $travel_results_os_medical,
 		isDomestic = false,
 		initialised = false;
 
@@ -84,6 +85,10 @@
 		}
 
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
+
+        if (isDomestic) {
+            $travel_results_os_medical.html('Rental Vehicle <span class="">Expenses</span>');
+        }
 	}
 
 	function isDomesticTravel() {
@@ -103,6 +108,7 @@
 			$policytype = $('#travel_policyType');
 			$summaryHeader = $('.resultsSummaryContainer h5');
 			$selectedTags = $('.selected-tags');
+            $travel_results_os_medical = $('.results-benefits-os-medical');
 
 			applyEventListeners();
 		}
