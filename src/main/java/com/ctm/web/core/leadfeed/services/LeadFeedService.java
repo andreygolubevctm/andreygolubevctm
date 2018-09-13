@@ -3,7 +3,8 @@ package com.ctm.web.core.leadfeed.services;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.leadfeed.dao.LeadsDao;
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.utils.LeadFeed;
@@ -23,7 +24,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public abstract class LeadFeedService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LeadFeedService.class);
-	private final LeadsDao leadsDao;
+	private final BestPriceLeadsDao bestPriceDao;
 	private final ContentService contentService;
 	private final LeadFeed leadFeed;
 	protected Content ignoreBecauseOfField = null;
@@ -31,12 +32,12 @@ public abstract class LeadFeedService {
 
 	protected LeadFeedTouchService leadFeedTouchService;
 
-	public LeadFeedService(LeadsDao leadsDao,
+	public LeadFeedService(BestPriceLeadsDao bestPriceDao,
 						   ContentService contentService,
 						   LeadFeedTouchService leadFeedTouchService) {
 		LeadFeed leadFeed = new LeadFeed( contentService,  leadFeedTouchService);
 		this.leadFeed = leadFeed;
-		this.leadsDao = leadsDao;
+		this.bestPriceDao = bestPriceDao;
 		this.contentService = contentService;
         this.leadFeedTouchService = leadFeedTouchService;
 	}
@@ -132,7 +133,7 @@ public abstract class LeadFeedService {
 		Integer successCount = 0;
 		Integer failureCount = 0;
 		try {
-			ArrayList<LeadFeedData> leads = leadsDao.getLeads(brandCodeId, verticalCode, frequency, serverDate);
+			ArrayList<LeadFeedData> leads = bestPriceDao.getLeads(brandCodeId, verticalCode, frequency, serverDate);
 			if(!leads.isEmpty()) {
 				for (LeadFeedData lead : leads) {
 					try {
