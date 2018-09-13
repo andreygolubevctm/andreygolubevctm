@@ -70,10 +70,6 @@ public class LeadFeedData {
 	//any additional data which is not generic but required by specific lead feed service.
 	private Object metadata;
 
-	private String identifier;
-	private String leadNumber;
-	private String leadType;
-
 	public LeadFeedData(){
 
 	}
@@ -270,15 +266,6 @@ public class LeadFeedData {
 		this.metadata = metadata;
 	}
 
-	public void setIdentifier(String identifier){ this.identifier = identifier; }
-	public String getIdentifier(){ return identifier; }
-
-	public void setLeadNumber(String leadNumber){ this.leadNumber = leadNumber; }
-	public String getLeadNumber(){ return leadNumber; }
-
-	public String getLeadType(){ return leadType; }
-	public void setLeadType(String leadType ){ this.leadType = leadType; }
-
 	@Override
 	public String toString() {
 		return "LeadFeedData{" +
@@ -306,7 +293,6 @@ public class LeadFeedData {
 				", rootId='" + rootId + '\'' +
 				", person='" + person + '\'' +
 				", metadata='" + metadata + '\'' +
-				", leadType='" + leadType + '\'' +
 				'}';
 	}
 }
