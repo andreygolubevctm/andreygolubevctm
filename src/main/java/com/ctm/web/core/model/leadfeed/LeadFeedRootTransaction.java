@@ -9,7 +9,6 @@ public class LeadFeedRootTransaction {
 	private Boolean hasLeadFeed =			false;
 	private String styleCode = null;
 	private String ipAddress = null;
-	private String type = null;
 
 	public LeadFeedRootTransaction(Long rootId) {
 		transactions = new ArrayList<Long>();
@@ -83,24 +82,4 @@ public class LeadFeedRootTransaction {
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
-
-	public String getType(){ return type; }
-
-	public void setType(String type) { this.type = type; }
-
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		LeadFeedRootTransaction that = (LeadFeedRootTransaction) o;
-
-		if (rootId != that.getId()) return false;
-		if (getMinTransactionId() != that.getMinTransactionId()) return false;
-		if (getMaxTransactionId() != that.getMaxTransactionId()) return false;
-		return styleCode == that.getStyleCode();
-
-	}
-
 }

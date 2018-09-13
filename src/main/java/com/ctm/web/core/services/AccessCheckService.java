@@ -42,7 +42,7 @@ public class AccessCheckService {
         latestTouch = new AccessTouch(touch);
         TransactionLock transactionLock = transactionLockDao.getLatest(transactionId);
         boolean isLocked = false;
-        // TransactionsService accessed by non-operator cannot be locked
+        // Transactions accessed by non-operator cannot be locked
         if(transactionLock != null && operatorId != null && !operatorId.isEmpty()) {
             if (!transactionLock.operatorId.equals(operatorId)) {
                 isLocked = true;
