@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +15,6 @@ import java.util.Map;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-@Component
 @Getter
 @Setter
 public class TransactionsService {
