@@ -3,6 +3,8 @@ package com.ctm.web.car.leadfeed.services.CTM;
 import com.ctm.energy.apply.model.request.application.address.State;
 import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.leadService.model.LeadStatus;
+import com.ctm.web.core.leadService.model.LeadType;
+import com.ctm.web.core.leadService.services.LeadService;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.*;
 import com.ctm.web.core.leadfeed.services.AGISLeadFeedService;
@@ -71,16 +73,21 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
         LOGGER.info("[lead feed] Start processing car best price lead.");
 
         //Lead must be car, best price, for BUDD only
-        if (leadType != LeadFeedService.LeadType.BEST_PRICE
-                || !org.apache.commons.lang3.StringUtils.equalsIgnoreCase(leadData.getPartnerBrand(), BUDD)
+        if (!org.apache.commons.lang3.StringUtils.equalsIgnoreCase(leadData.getPartnerBrand(), BUDD)
                 || !org.apache.commons.lang3.StringUtils.equalsIgnoreCase(leadData.getVerticalCode(), CAR)) {
-            LOGGER.error("Unable to process lead feed. Supported lead feeds are: CAR, BEST_PRICE, BUDD (Budget Direct) ONLY. Invalid leadData: {}", getJsonString(leadData));
+            LOGGER.error("Unable to process lead feed. Supported lead feeds are: CAR, BUDD (Budget Direct) ONLY. Invalid leadData: {}", getJsonString(leadData));
             return FAILURE;
         }
 
         CTMCarBestPriceLeadFeedRequest request = null;
         try {
-            request = buildCtmCarBestPriceLeadFeedRequest(leadData);
+            LeadType ctmLeadType = null;
+            if (leadType == LeadFeedService.LeadType.BEST_PRICE) ctmLeadType = LeadType.BEST_PRICE;
+            if (leadType == LeadFeedService.LeadType.CALL_DIRECT) ctmLeadType = LeadType.CALL_DIRECT;
+            if (leadType == LeadFeedService.LeadType.CALL_ME_BACK) ctmLeadType = LeadType.CALL_ME_BACK;
+            if (leadType == LeadFeedService.LeadType.NOSALE_CALL) ctmLeadType = LeadType.ONLINE_HANDOVER;
+            if (leadType == LeadFeedService.LeadType.MORE_INFO) ctmLeadType = LeadType.MORE_INFO;
+            request = buildCtmCarBestPriceLeadFeedRequest(leadData, ctmLeadType);
             validateRequest(request);
         } catch (Exception e) {
             LOGGER.error("[lead feed] Exception while processing lead feed. Reason: {}. Request: {}", e.getLocalizedMessage(), getJsonString(request), e);
@@ -139,7 +146,7 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
      * @return request
      * @throws IllegalArgumentException when leadData is null, has null person, address, metadata.
      */
-    protected CTMCarBestPriceLeadFeedRequest buildCtmCarBestPriceLeadFeedRequest(LeadFeedData leadData) throws IllegalArgumentException {
+    protected CTMCarBestPriceLeadFeedRequest buildCtmCarBestPriceLeadFeedRequest(LeadFeedData leadData, LeadType leadType) throws IllegalArgumentException {
 
         if (leadData == null) {
             throw new IllegalArgumentException("[lead feed] Invalid or Null leadData");
@@ -153,6 +160,7 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
         request.setStatus(LeadStatus.OPEN);
         request.setTransactionId(leadData.getTransactionId());
         request.setVerticalType(VerticalType.findByCode(leadData.getVerticalCode()));
+        request.setLeadType(leadType);
 
         final Person person = leadData.getPerson();
 

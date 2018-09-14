@@ -48,41 +48,47 @@ public class Touch extends AbstractJsonModel {
 
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	public static enum TouchType {
-		BROCHURE ("Brochure sent" , "B"),
-		NEW ("New quote" , "N"),
-		SUBMITTED ("Submit", "P"),
-		PRICE_PRESENTATION ("Price presentation" , "R"),
-		APPLY ("Apply" ,"A"),
-		FAIL ("Join failed" , "F"),
-		SOLD ("Policy sold" , "C"),
-		LOAD ("Load quote" , "L"),
-		RESULTS_SINGLE ("Results single", "Q"),
-		SAVE ("Saved quote" , "S"),
-		GENERAL_HIT ("General hit", "H"),
-		ERROR ("General error", "E"),
-		TRANSFERRING ("Transferring", "T"),
-		LEAD_CALL_ME_BACK("Call me back", "CB"),
-		CALL_DIRECT("Call direct", "CD"),
-		NOSALE_CALL("No Sale Call", "NS"),
-		LEAD_BEST_PRICE("Best price", "BP"),
-		LEAD_BEST_PRICE_DD("Best price DD", "BPDD"),
-		LEAD_FEED("Lead feed", "LF"),
-		CONTACT_DETAILS_COLLECTED("Contact details collected", "CDC"),
-		CALL_FEED ("Call Feed" , "CF"), // Added to a call feed list.
-		EMAIL_GATEWAY ("Email gateway", "EmlGateway"),
-		CRON_ACTIONED("CRON Actioned", "CRON"),
-		CONFIRMATION_VIEWED("Confirmation Page Viewed", "CONF"),
-        MORE_INFO("More Info", "MoreInfo"),
-		REMEMBER_ME("RememberMe","RememberMe"),
-		BP_EMAIL_STARTED("Email sent started", "BPSTART"),
-		BP_EMAIL_END("Email sent started", "BPEND"),
-		SIMPLES_LIFEBROKER_LEAD("Simples Lead to Lifebroker", "SLBL");
+		BROCHURE ("Brochure sent" , "B", ""),
+		NEW ("New quote" , "N", ""),
+		SUBMITTED ("Submit", "P", ""),
+		PRICE_PRESENTATION ("Price presentation" , "R", "'MIR'"),
+		CALL_DIRECT_REQUEST("Call direct requested", "CDR", "'OHR','R','MIR'"),
+		CALL_BACK_REQUEST("Call back requested", "CMR", "'CDR','OHR','R','MIR'"),
+		ONLINE_HANDOVER_REQUEST("Online handover requested", "OHR", "'R','MIR'"),
+		MORE_INFO_REQUEST("More info requested", "MIR", ""),
+		ONLINE_HANDOVER("Online handover", "NPO", ""),
+		APPLY ("Apply" ,"A", ""),
+		FAIL ("Join failed" , "F", ""),
+		SOLD ("Policy sold" , "C", ""),
+		LOAD ("Load quote" , "L", ""),
+		RESULTS_SINGLE ("Results single", "Q", ""),
+		SAVE ("Saved quote" , "S", ""),
+		GENERAL_HIT ("General hit", "H", ""),
+		ERROR ("General error", "E", ""),
+		TRANSFERRING ("Transferring", "T", ""),
+		LEAD_CALL_ME_BACK("Call me back", "CB", ""),
+		CALL_DIRECT("Call direct", "CD", ""),
+		NOSALE_CALL("No Sale Call", "NS", ""),
+		LEAD_BEST_PRICE("Best price", "BP", ""),
+		LEAD_BEST_PRICE_DD("Best price DD", "BPDD", ""),
+		LEAD_FEED("Lead feed", "LF", ""),
+		CONTACT_DETAILS_COLLECTED("Contact details collected", "CDC", ""),
+		CALL_FEED ("Call Feed" , "CF", ""), // Added to a call feed list.
+		EMAIL_GATEWAY ("Email gateway", "EmlGateway", ""),
+		CRON_ACTIONED("CRON Actioned", "CRON", ""),
+		CONFIRMATION_VIEWED("Confirmation Page Viewed", "CONF", ""),
+        MORE_INFO("More Info", "MoreInfo", ""),
+		REMEMBER_ME("RememberMe","RememberMe", ""),
+		BP_EMAIL_STARTED("Email sent started", "BPSTART", ""),
+		BP_EMAIL_END("Email sent started", "BPEND", ""),
+		SIMPLES_LIFEBROKER_LEAD("Simples Lead to Lifebroker", "SLBL", "");
 
-		private final String description, code;
+		private final String description, code, overrides;
 
-		TouchType(String description, String code) {
+		TouchType(String description, String code, String overrides) {
 			this.description = description;
 			this.code = code;
+			this.overrides = overrides;
 		}
 
 		public String getDescription() {
@@ -91,7 +97,7 @@ public class Touch extends AbstractJsonModel {
 		public String getCode() {
 			return code;
 		}
-
+		public String getOVerrides() { return overrides; }
 		/**
 		 * Find a transmission type by its code.
 		 * @param code Code e.g. R

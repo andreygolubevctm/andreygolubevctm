@@ -5,7 +5,8 @@ import com.ctm.web.car.quote.model.request.Filter;
 import com.ctm.web.core.leadfeed.model.Address;
 import com.ctm.web.core.leadfeed.model.CTMCarLeadFeedRequestMetadata;
 import com.ctm.web.core.leadfeed.model.Person;
-import com.jcraft.jsch.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.Valid;
@@ -21,7 +22,7 @@ public class CarQuote {
     public static final int LEAD_FEED_INFO_SIZE_V1 = 4;
     public static final int LEAD_FEED_INFO_SIZE_V2 = 6;
     public static final String YYYY_MM_DD = "yyyy/MM/dd";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarQuote.class);
     private Accs accs;
 
     private String excess;
@@ -297,16 +298,25 @@ public class CarQuote {
      * @param dob string
      * @return dob in LocalDate format or null if unable to parse.
      */
-    private LocalDate buildDob(final String dob) {
-
+    private String buildDob(final String dob) {
+        LocalDate converted;
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if(StringUtils.isBlank(dob)){
             return null;
         }
 
         try {
-            return LocalDate.parse(dob, DateTimeFormatter.ofPattern(YYYY_MM_DD));
+            converted = LocalDate.parse(dob, dateFormat);
+            return converted.format(dateFormat);
         }catch (DateTimeParseException e){
-            return null;
+            LOGGER.info("[CarQuote] dateformat for yyyy-MM-dd failed for {}.", dob);
+            try {
+                 converted = LocalDate.parse(dob, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                 return converted.format(dateFormat);
+            }catch (DateTimeParseException error) {
+                LOGGER.info("[CarQuote] dateformat for dd/MM/yyyy failed for {}.", dob);
+                return null;
+            }
         }
     }
 

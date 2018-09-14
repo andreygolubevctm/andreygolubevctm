@@ -1,6 +1,7 @@
 package com.ctm.web.core.leadfeed.router;
 
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.leadService.model.LeadType;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.model.LeadFeedData.CallType;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -35,7 +37,7 @@ public abstract class LeadFeedRouter extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 
 		response.setContentType("application/json");
-
+        Map<String, String[]> params = request.getParameterMap();
 		try {
 			LeadResponseStatus output = LeadResponseStatus.FAILURE;
 			LeadFeedService service = getLeadFeedService();
@@ -95,14 +97,18 @@ public abstract class LeadFeedRouter extends HttpServlet {
 			String calltype = request.getParameter("phonecallme");
 			if(CallType.CALL_DIRECT.equals(calltype)){
 				lead.setCallType(CallType.CALL_DIRECT);
+				lead.setLeadType(LeadType.CALL_DIRECT);
 			}
 			if(CallType.GET_CALLBACK.equals(calltype)){
 				lead.setCallType(CallType.GET_CALLBACK);
+				lead.setLeadType(LeadType.CALL_ME_BACK);
 			}
 			if(CallType.NOSALE_CALL.equals(calltype)){
 				lead.setCallType(CallType.NOSALE_CALL);
 			}
 		}
+
+
 
 		if (request.getParameter("transactionId") != null) {
 			Long tranId = Long.parseLong(request.getParameter("transactionId"));
