@@ -73,6 +73,21 @@
 	    var $redundantInput = $contactNumber.find('#health_contactDetails_contactNumber_' + deselectedField);
 	    $redundantInput.val('');
     }
+
+    function getPhoneForType(rawPhone, type) {
+    	var phone = meerkat.modules.phoneFormat.cleanNumber(rawPhone);
+    	var phoneType = meerkat.modules.phoneFormat.getPhoneType(phone);
+	    switch(type) {
+		    case "flexi":
+		    	return phoneType !== null ? phone : "";
+		    case "mobile":
+			    return phoneType === 'mobile' ? phone : "";
+		    case "landline":
+			    return phoneType === 'landline' ? phone : "";
+		    default:
+		    	return "";
+	    }
+    }
     
     function sanitisedExistingPhoneNumbers() {
 	    var phones = {
@@ -86,24 +101,33 @@
 				    other : $elements.phone.application.other.val()
 			    }
 	    };
-	    if(!_.isEmpty(phones.flexi) && phones.flexi.replace(/\D/g, "").match(/^61/g)) {
-		    $elements.flexiNumber.val(meerkat.modules.phoneFormat.cleanNumber(phones.flexi));
+	    // //////////////////////////////////////////////////////////////////
+        // This is to resolve cases where invalid numbers remain in a field
+        // even though the validation has failed and user has taken a step
+        // backwards in the journey. Rather than write that invalid value
+        // to the database we'll remove them (but keep the source input
+	    // field unchanged so user still aware number is invalid).
+	    // //////////////////////////////////////////////////////////////////
+	    var phone = "";
+	    if(!_.isEmpty(phones.flexi)) {
+	    	$elements.flexiNumber.val(getPhoneForType(phones.flexi, "flexi"));
 	    }
-	    if(!_.isEmpty(phones.quote.mobile) && phones.quote.mobile.replace(/\D/g, "").match(/^61/g)) {
-		    $elements.phone.quote.mobile.val(meerkat.modules.phoneFormat.cleanNumber(phones.quote.mobile));
+	    if(!_.isEmpty(phones.quote.mobile)) {
+	    	$elements.phone.quote.mobile.val(getPhoneForType(phones.quote.mobile, "mobile"));
 	    }
-	    if(!_.isEmpty(phones.quote.other) && phones.quote.other.replace(/\D/g, "").match(/^61/g)) {
-		    $elements.phone.quote.other.val(meerkat.modules.phoneFormat.cleanNumber(phones.quote.other));
+	    if(!_.isEmpty(phones.quote.other)) {
+		    $elements.phone.quote.other.val(getPhoneForType(phones.quote.mobile, "landline"));
 	    }
-	    if(!_.isEmpty(phones.application.mobile) && phones.application.mobile.replace(/\D/g, "").match(/^61/g)) {
-		    $elements.phone.application.mobile.val(meerkat.modules.phoneFormat.cleanNumber(phones.application.mobile));
+	    if(!_.isEmpty(phones.application.mobile)) {
+		    $elements.phone.application.mobile.val(getPhoneForType(phones.quote.mobile, "mobile"));
 	    }
-	    if(!_.isEmpty(phones.application.other) && phones.application.other.replace(/\D/g, "").match(/^61/g)) {
-		    $elements.phone.application.other.val(meerkat.modules.phoneFormat.cleanNumber(phones.application.other));
+	    if(!_.isEmpty(phones.application.other)) {
+		    $elements.phone.application.other.val(getPhoneForType(phones.quote.mobile, "landline"));
 	    }
     }
 
     function insertContactNumber($contactNumberContainer, contactNumber) {
+    	contactNumber = meerkat.modules.phoneFormat.cleanNumber(contactNumber);
     	var contactBy = getContactBy(contactNumber);
         if(contactBy !== false) {
             $contactNumberContainer.attr('data-contact-by', contactBy);
@@ -119,11 +143,15 @@
     }
 
     function getContactBy(contactNumber) {
-        var contactBy = false;
-	    if (contactNumber.length > 0) {
-		    contactBy = contactNumber.replace(/\D/g, "").match(/^(04|614|6104)/g) ? 'mobile' : 'other';
-	    }
-	    return contactBy;
+        var type = meerkat.modules.phoneFormat.getPhoneType(contactNumber);
+        switch(type) {
+	        case 'mobile':
+	        	return 'mobile';
+	        case 'landline':
+	        	return 'other';
+	        default:
+	        	return false;
+        }
     }
 
 	function getPhone(){
@@ -149,7 +177,8 @@
         init: initHealthContactNumber,
         insertContactNumber: insertContactNumber,
         getContactNumberFromField: getContactNumberFromField,
-	    getPhone: getPhone
+	    getPhone: getPhone,
+	    sanitisedExistingPhoneNumbers: sanitisedExistingPhoneNumbers
     });
 
 })(jQuery);
