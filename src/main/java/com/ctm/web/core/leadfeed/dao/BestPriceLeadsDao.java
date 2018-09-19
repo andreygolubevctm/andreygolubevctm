@@ -399,7 +399,7 @@ public class BestPriceLeadsDao {
 				LOGGER.info("[Lead info] Skipping existing lead feed transaction {}", kv("transactionId", transactionId));
 			}
 			switch(type) {
-				case("CBR"): tran.setType(LeadType.CALL_ME_BACK); break;
+				case("CMR"): tran.setType(LeadType.CALL_ME_BACK); break;
 				case("CDR"): tran.setType(LeadType.CALL_DIRECT); break;
 				case("MIR"): tran.setType(LeadType.MORE_INFO); break;
 				case("OHR"): tran.setType(LeadType.ONLINE_HANDOVER); break;
