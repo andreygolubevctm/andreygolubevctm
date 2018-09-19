@@ -124,10 +124,10 @@
 		number = number.replace(phoneAllowedCharacters,'').replace(/([\s\(\)])/g,'');
 
 		switch(true){
-			case stringStartsWith(number, "04"): // Mobile eg 0412 345 678
+			case stringStartsWith(number, "04") || stringStartsWith(number, "05"): // Mobile eg 0412 345 678
 				number = number.replace(/(\d{7})/, '$1 ').replace(/(\d{4})/, '$1 ');
 				break;
-			case stringStartsWith(number, "+614"): // Mobile eg +61412 345 678
+			case stringStartsWith(number, "+614") || stringStartsWith(number, "+615"): // Mobile eg +61412 345 678
 				number = number.replace(/(\d{8})/, '$1 ').replace(/(\d{5})/, '$1 ');
 				break;
 			case stringStartsWith(number, "+61"): // Landline eg (+617) 1234 5678
@@ -148,7 +148,25 @@
 	}
 
 	function cleanNumber (number){
-		return number.replace('+61', '0').replace(/^61/, '0').replace(/ /g,'').replace('(', '').replace(')', '').replace(/\D/g, "");
+		return number.replace(/^\+61/, '0').replace(/^61/, '0').replace(/\D/g, "").substr(-10);
+	}
+
+	function getPhoneType(number) {
+		var type = null;
+		if(isMobile(number)) {
+			type = "mobile";
+		} else if (isLandline(number)) {
+			type = "landline";
+		}
+		return type;
+	}
+
+	function isMobile(number) {
+		return cleanNumber(number).match("^(04|05)");
+	}
+
+	function isLandline(number) {
+		return cleanNumber(number).match("^0") && !isMobile(number);
 	}
 
 	function applyEventListeners() {
@@ -169,6 +187,9 @@
 		init: init,
 		formatPhoneNumber : formatPhoneNumber,
 		events: moduleEvents,
-		cleanNumber: cleanNumber
+		cleanNumber: cleanNumber,
+		isMobile: isMobile,
+		isLandline: isLandline,
+		getPhoneType: getPhoneType
 	});
 })(jQuery);

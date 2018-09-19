@@ -403,7 +403,14 @@
 				if(_.indexOf(["mobile","otherPhone"], fieldDetails.type) !== -1) {
 					// Force populate these - don't relay on triggers
 					// This is a dirty hack to resolve issue with health application fields not updating correctly
-					laterFieldDetails.$field.val(meerkat.modules.phoneFormat.cleanNumber($fieldElement.val()));
+					var phone = meerkat.modules.phoneFormat.cleanNumber($fieldElement.val());
+					var type = meerkat.modules.phoneFormat.getPhoneType(phone);
+					if(
+						(laterFieldDetails.type === "mobile" && type === 'mobile') ||
+						(laterFieldDetails.type === "otherPhone" && type === 'landline')
+					) {
+						laterFieldDetails.$field.val(phone);
+					}
 				}
 				// if the later field has both a hidden field and aninput field
 				// let's trigger change, blur and focusout events on the input field to run the required logic to fill the hidden fields
