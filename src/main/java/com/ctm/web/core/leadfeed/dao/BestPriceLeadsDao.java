@@ -106,7 +106,7 @@ public class BestPriceLeadsDao {
 						"AND t.transaction_id IS NOT NULL AND t.type IS NOT NULL " +
 						"AND CONCAT_WS(' ', t.date, t.time) <= TIMESTAMP(CURRENT_TIMESTAMP - INTERVAL " +
 								"CASE WHEN t.type = 'R' THEN " + BESTPRICEDELAY + " " +
-								" WHEN t.type = 'CBR' THEN " + CALLBACKDELAY + " " +
+								" WHEN t.type = 'CMR' THEN " + CALLBACKDELAY + " " +
 									"WHEN t.type = 'CDR' THEN " + CALLDIRECTDELAY + " " +
 									"WHEN t.type = 'MIR' THEN " + MOREINFODELAY + " " +
 								"WHEN t.type = 'OHR' THEN " + NPODELAY + " ELSE 0 END" +
