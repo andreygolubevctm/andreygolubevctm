@@ -129,6 +129,16 @@ public class AccessTouchService {
 		return recordTouchDeprecated(touch);
 	}
 
+	public void updateTouch(long transactionId, Touch.TouchType type) {
+		TouchDao touchDao = new TouchDao();
+		try {
+			touchDao.updateTouch(transactionId, type);
+		} catch(DaoException e){
+
+		}
+
+	}
+
 	public Boolean recordTouchWithCommentJSP(long transactionId, String type, String comment) {
 		return recordTouchWithComment(transactionId, type, null, comment);
 	}
