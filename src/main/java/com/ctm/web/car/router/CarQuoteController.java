@@ -86,6 +86,7 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
             throw new RouterException("Expecting productId");
         }
 
+        // record this request as a touch
         Brand brand = ApplicationService.getBrandFromRequest(request);
         Long transactionId = Long.valueOf(request.getParameter("transactionId"));
         String productCode = request.getParameter("code");

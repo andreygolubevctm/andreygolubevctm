@@ -4,7 +4,6 @@ import com.ctm.energy.apply.model.request.application.address.State;
 import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.leadService.model.LeadStatus;
 import com.ctm.web.core.leadService.model.LeadType;
-import com.ctm.web.core.leadService.services.LeadService;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.*;
 import com.ctm.web.core.leadfeed.services.AGISLeadFeedService;
@@ -33,8 +32,7 @@ import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseSta
 
 /**
  * processes car lead feeds, and sends it to `ctm-leads`.
- * <p>
- * Currently only supports BESTPRICE lead feeds.
+ * (http://bitbucket.budgetdirect.com.au/projects/CTMSRV/repos/ctm-leads-project)
  * <p>
  * Reference {@linkplain AGISLeadFeedService}
  */
@@ -61,7 +59,13 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
     /**
      * process car lead.
      * <p>
-     * Currently only supports Car BestPrice leads for BUDD. {@linkplain com.ctm.web.car.leadfeed.services.CarLeadFeedService}
+     * Lead data passed in myst be BUDD and comprehensive cover. The lead type from LeadFeedService will be converted to
+     * a lead type recognised by ctm-leads. The lead data a relevant lead type are converted to a request object
+     * which will be recognised by the ctm-leads service.
+     *
+     * @see this.buildCtmCarBestPriceLeadFeedRequest
+     *
+     * {@linkplain com.ctm.web.car.leadfeed.services.CarLeadFeedService}
      *
      * @param leadType
      * @param leadData
@@ -97,6 +101,11 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
         return sendLeadFeedRequestToCtmLeads(request);
     }
 
+    /**
+     * Send a validly formatted lead request to the ctm-leads service.
+     * @param request
+     * @return
+     */
     protected LeadFeedService.LeadResponseStatus sendLeadFeedRequestToCtmLeads(final CTMCarBestPriceLeadFeedRequest request) {
         LOGGER.info("[lead feed] Sending car lead feed request to ctm-leads: {}", getJsonString(request));
 
@@ -140,7 +149,7 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
     }
 
     /**
-     * Builds a best price lead feed request to be send to `ctm-leads`.
+     * Builds a lead feed request to be send to `ctm-leads`.
      *
      * @param leadData lead feed data to build the request from.
      * @return request

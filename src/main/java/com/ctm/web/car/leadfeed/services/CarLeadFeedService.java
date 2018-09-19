@@ -38,7 +38,9 @@ import java.sql.SQLException;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-
+/**
+ * Process lead feed implementations specific to CAR
+ */
 public class CarLeadFeedService extends LeadFeedService {
 
     public static final String COMPREHENSIVE = "COMPREHENSIVE";
@@ -50,6 +52,11 @@ public class CarLeadFeedService extends LeadFeedService {
         );
     }
 
+    /**
+     * Check service_master and service_properties to see which providers are able to receive leads.
+     * @return
+     * @throws LeadFeedException
+     */
     private static ServiceConfiguration getServiceConfiguration() throws LeadFeedException {
         ServiceConfiguration serviceConfig = null;
         try {
@@ -67,6 +74,22 @@ public class CarLeadFeedService extends LeadFeedService {
         return serviceConfig;
     }
 
+    /**
+     * Based on the partner brand code, choose a leadfeedservice and run the lead process.
+     *
+     * {@linkplain AGISCarLeadFeedService}
+     * {@linkplain REINCarLeadFeedService}
+     * {@linkplain AICarLeadFeedService}
+     *
+     * @see super.processGateway
+     * @see this.getProviderLeadFeedServiceForBudd
+     *
+     * @param leadType
+     * @param leadData
+     * @param touchType
+     * @return
+     * @throws LeadFeedException
+     */
     protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
 
         LeadResponseStatus responseStatus;
@@ -117,18 +140,14 @@ public class CarLeadFeedService extends LeadFeedService {
      * <p>
      * Send the lead to ctm call center (ctm_leads)
      * - if given car lead is for BUDD
-     * - lead type is BEST_PRICE,
      * - and has `comprehensive` car cover,
      * - and `ctm_leads` config is enabled.
      * <p>
      * Don't send the lead to CTM or A&G call center
      * - if given car lead is for BUDD
-     * - lead type is BEST_PRICE,
      * - and has `NON comprehensive` car cover,
      * - and `ctm_leads` config is enabled.
-     * <p>
-     * Send the lead to auto and general call center (A&G)
-     * - all other non BEST_PRICE types of car leads.
+
      *
      * @param leadType lead type.
      * @param leadData lead data.
@@ -179,7 +198,11 @@ public class CarLeadFeedService extends LeadFeedService {
         return factory;
     }
 
-
+    /**
+     * Det additional data for person and metadata details.
+     * @param leadData
+     * @return
+     */
     private LeadFeedData appendLeadConcat(LeadFeedData leadData) {
         LeadFeedData leadDataWithMeta = leadData;
         try {

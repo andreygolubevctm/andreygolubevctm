@@ -363,11 +363,22 @@ public class TouchDao {
         return touch;
     }
 
+    /**
+     * Supercede any previous touch-types defined for this touch-type with this one.
+     * Primarily to allow prioritisation of one touch type over another where the existence of the original touch type
+     * may affect functionality based on the new touch type.
+     *
+     * @see Touch.TouchType
+     *
+     * @param transactionId
+     * @param type
+     * @throws DaoException
+     */
     public void updateTouch(long transactionId, Touch.TouchType type) throws DaoException {
         SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
         try {
-            PreparedStatement stmt = dbSource.getConnection().prepareStatement("UPDATE ctm.touches SET type = '" + type.getCode() + "', date = NOW(), time = NOW() WHERE transaction_id = " + transactionId + " AND type IN ( " + type.getOVerrides() + " )");
+            PreparedStatement stmt = dbSource.getConnection().prepareStatement("UPDATE ctm.touches SET type = '" + type.getCode() + "', date = NOW(), time = NOW() WHERE transaction_id = " + transactionId + " AND type IN ( " + type.getOverrides() + " )");
             stmt.executeUpdate();
         } catch (SQLException | NamingException e) {
             throw new DaoException(e);

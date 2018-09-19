@@ -97,7 +97,7 @@ public class Touch extends AbstractJsonModel {
 		public String getCode() {
 			return code;
 		}
-		public String getOVerrides() { return overrides; }
+		public String getOverrides() { return overrides; }
 		/**
 		 * Find a transmission type by its code.
 		 * @param code Code e.g. R

@@ -38,6 +38,12 @@ import java.util.Date;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+/**
+ * Find any transactions which qualify as leads and create an instance of LeadFeedData for each one.
+ * This in preparation for sending a valid request to ctm-leads.
+ * (http://bitbucket.budgetdirect.com.au/projects/CTMSRV/repos/ctm-leads-project)
+ *
+ */
 public class BestPriceLeadsDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BestPriceLeadsDao.class);
@@ -45,6 +51,15 @@ public class BestPriceLeadsDao {
 
 	private ArrayList<LeadFeedRootTransaction> transactions = null;
 	private ArrayList<LeadFeedData> leads = null;
+
+	/**
+	 * TODO: get this 'orrible mess into some kind of configuration.
+	 */
+	private final Integer CALLBACKDELAY = 0;
+	private final Integer CALLDIRECTDELAY = 15;
+	private final Integer NPODELAY = 30;
+	private final Integer BESTPRICEDELAY = 10;
+	private final Integer MOREINFODELAY = 10;
 
 	/**
 	 * Query the database for leads
@@ -62,14 +77,9 @@ public class BestPriceLeadsDao {
 
 		transactions = new ArrayList<>();
 		leads = new ArrayList<>();
-		Integer CALLBACKDELAY = 0;
-		Integer CALLDIRECTDELAY = 15;
-		Integer NPODELAY = 30;
-		Integer BESTPRICEDELAY = 10;
-		Integer MOREINFODELAY = 10;
+
 
 		Integer minutes_max = (minutes * 2) + 5; // Add 5 minutes to allow for timing issues with running of cron job
-		Integer minutes_min = minutes;
 
 		try{
 
@@ -84,7 +94,7 @@ public class BestPriceLeadsDao {
 					dbSource = new SimpleDatabaseConnection();
 					PreparedStatement stmt;
 
-					/* Source transactions that have progressed through to results page in the last x minutes
+					/* Source transactions that have progressed through to results page or had any of the "lead request" types in the last x minutes depending on the lead request type.
 					 * and/or those with existing leads triggered (which imply results have been seen) */
 					stmt = dbSource.getConnection().prepareStatement(
 						"SELECT h.rootId AS rootId, h.TransactionId AS transactionId, t.type AS type, h.styleCode, h.ipAddress " +
@@ -92,7 +102,7 @@ public class BestPriceLeadsDao {
 						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CBR','CDR','MIR','OHR','A', 'CD', 'BPDD') " +
 						"WHERE h.ProductType = ? AND h.styleCodeId = ? " +
 						// Next line is important as it greatly reduces the size of the recordset and query speed overall
-						"AND t.date >= DATE(CURRENT_DATE - INTERVAL " + minutes_max.toString() + " MINUTE) " +
+						"AND t.date >= DATE(CURRENT_DATE - INTERVAL 40 MINUTE) " +
 						"AND t.transaction_id IS NOT NULL AND t.type IS NOT NULL " +
 						"AND CONCAT_WS(' ', t.date, t.time) <= TIMESTAMP(CURRENT_TIMESTAMP - INTERVAL " +
 								"CASE WHEN t.type = 'R' THEN " + BESTPRICEDELAY + " " +
@@ -308,7 +318,7 @@ public class BestPriceLeadsDao {
 	 * @param metadataJsonString
 	 * @param propensityScore
 	 */
-	public void updateLeadFeedDataWithMetadata(LeadFeedData leadData, String metadataJsonString, final String propensityScore) {
+	private void updateLeadFeedDataWithMetadata(LeadFeedData leadData, String metadataJsonString, final String propensityScore) {
         if(StringUtils.isBlank(metadataJsonString)){
             return;
         }
@@ -335,7 +345,7 @@ public class BestPriceLeadsDao {
 	 * @param leadData
 	 * @param personJsonString
 	 */
-	public void updateLeadFeedDataWithPersonInfo(LeadFeedData leadData, String personJsonString) {
+	private void updateLeadFeedDataWithPersonInfo(LeadFeedData leadData, String personJsonString) {
 
         if (StringUtils.isBlank(personJsonString)) {
             return;

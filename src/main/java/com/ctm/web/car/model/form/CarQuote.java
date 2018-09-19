@@ -293,10 +293,11 @@ public class CarQuote {
     }
 
     /**
-     * parse string with format `yyyy/MM/dd` to LocalDate
+     * Attempt to convert the dob provided from a form to a specific format.
+     * Ensures the dob is consitently saved as yyyy-MM-dd
      *
      * @param dob string
-     * @return dob in LocalDate format or null if unable to parse.
+     * @return dob in yyyy-MM-dd format or null if unable to parse.
      */
     private String buildDob(final String dob) {
         LocalDate converted;
