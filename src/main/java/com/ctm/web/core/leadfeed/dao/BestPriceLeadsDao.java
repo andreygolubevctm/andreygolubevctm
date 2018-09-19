@@ -99,7 +99,7 @@ public class BestPriceLeadsDao {
 					stmt = dbSource.getConnection().prepareStatement(
 						"SELECT h.rootId AS rootId, h.TransactionId AS transactionId, t.type AS type, h.styleCode, h.ipAddress " +
 						"FROM aggregator.transaction_header AS h " +
-						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CBR','CDR','MIR','OHR','A', 'CD', 'BPDD') " +
+						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CMR','CDR','MIR','OHR','A', 'CD', 'BPDD') " +
 						"WHERE h.ProductType = ? AND h.styleCodeId = ? " +
 						// Next line is important as it greatly reduces the size of the recordset and query speed overall
 						"AND t.date >= DATE(CURRENT_DATE - INTERVAL 40 MINUTE) " +
