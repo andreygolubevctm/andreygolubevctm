@@ -198,6 +198,20 @@
 	}
 }
 
+.highResImgContain(@file-1x; @file-2x; @only-screen:~"only screen and") {
+	background-image: url("@{file-1x}");
+	@media
+	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
+	@only-screen (min--moz-device-pixel-ratio: 1.5),
+	@only-screen (-o-min-device-pixel-ratio: 3/2),
+	@only-screen (min-device-pixel-ratio: 1.5),
+	@only-screen (min-resolution: 1.5dppx),
+	@only-screen (min-resolution: 144dpi) {
+		background-image: url("@{file-2x}");
+		background-size: contain;
+	}
+}
+
 .highResImg(@file-1x; @file-2x; @width-1x; @height-1x; @only-screen:~"only screen and") {
 	background-image: url("@{file-1x}");
 	@media
