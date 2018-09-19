@@ -205,8 +205,9 @@ public class CarLeadFeedService extends LeadFeedService {
      */
     private LeadFeedData appendLeadConcat(LeadFeedData leadData) {
         LeadFeedData leadDataWithMeta = leadData;
+        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         try {
-            SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+
             String sql = "SELECT feedinfo.transactionId, leadInfo,propensityScore ,leadNo, provider FROM" +
                     "(SELECT productId, transactionId, `value` as leadInfo FROM aggregator.results_properties WHERE transactionId = " + leadData.getTransactionId() + " AND property = 'leadfeedinfo' ) feedinfo" +
                     " JOIN" +
@@ -254,6 +255,8 @@ public class CarLeadFeedService extends LeadFeedService {
             return leadDataWithMeta;
         } catch (SQLException | NamingException e) {
             LOGGER.error("[leadfeed] Problem when getting lead concat: {}", e.getMessage());
+        } finally {
+            dbSource.closeConnection();
         }
         return leadData;
     }
