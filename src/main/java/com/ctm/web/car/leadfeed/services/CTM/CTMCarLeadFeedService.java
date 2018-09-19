@@ -59,7 +59,7 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
     /**
      * process car lead.
      * <p>
-     * Lead data passed in myst be BUDD and comprehensive cover. The lead type from LeadFeedService will be converted to
+     * Lead data passed in must be BUDD and comprehensive cover. The lead type from LeadFeedService will be converted to
      * a lead type recognised by ctm-leads. The lead data a relevant lead type are converted to a request object
      * which will be recognised by the ctm-leads service.
      *
@@ -86,11 +86,13 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
         CTMCarBestPriceLeadFeedRequest request = null;
         try {
             LeadType ctmLeadType = null;
-            if (leadType == LeadFeedService.LeadType.BEST_PRICE) ctmLeadType = LeadType.BEST_PRICE;
-            if (leadType == LeadFeedService.LeadType.CALL_DIRECT) ctmLeadType = LeadType.CALL_DIRECT;
-            if (leadType == LeadFeedService.LeadType.CALL_ME_BACK) ctmLeadType = LeadType.CALL_ME_BACK;
-            if (leadType == LeadFeedService.LeadType.NOSALE_CALL) ctmLeadType = LeadType.ONLINE_HANDOVER;
-            if (leadType == LeadFeedService.LeadType.MORE_INFO) ctmLeadType = LeadType.MORE_INFO;
+            switch(leadType) {
+                case BEST_PRICE: ctmLeadType = LeadType.BEST_PRICE; break;
+                case CALL_DIRECT: ctmLeadType = LeadType.CALL_DIRECT; break;
+                case CALL_ME_BACK: ctmLeadType = LeadType.CALL_ME_BACK; break;
+                case NOSALE_CALL: ctmLeadType = LeadType.ONLINE_HANDOVER; break;
+                case MORE_INFO: ctmLeadType = LeadType.MORE_INFO; break;
+            }
             request = buildCtmCarBestPriceLeadFeedRequest(leadData, ctmLeadType);
             validateRequest(request);
         } catch (Exception e) {
