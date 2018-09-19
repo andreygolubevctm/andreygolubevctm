@@ -255,7 +255,7 @@ public class CarQuote {
         metadata.setType(CTMCarLeadFeedRequestMetadata.MetadataType.CAR);
         if(options != null) metadata.setAgeRestriction(options.getDriverOption());
         if(regular != null) metadata.setNcdRating(regular.getNcd());
-        if(vehicle != null) metadata.setVehicleDescription(vehicle.getMakeDes());
+        if(vehicle != null) metadata.setVehicleDescription(vehicle.getMakeDes() + " " + vehicle.getModelDes() + " " + vehicle.getYear());
         metadata.setCoverType(typeOfCover);
         //Below values will only be available after results, and ranking
         metadata.setProviderQuoteRef(null);
