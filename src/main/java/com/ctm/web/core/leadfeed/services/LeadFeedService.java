@@ -46,7 +46,8 @@ public abstract class LeadFeedService {
 		CALL_DIRECT("callDirectLeadFeedService"),
 		CALL_ME_BACK("getACallLeadFeedService"),
 		BEST_PRICE("bestPriceLeadFeedService"),
-		NOSALE_CALL("noSaleCallLeadFeedService");
+		NOSALE_CALL("noSaleCallLeadFeedService"),
+		MORE_INFO("moreInfoCallLeadFeedService");
 
 		private final String serviceUrlFlag;
 
@@ -66,6 +67,11 @@ public abstract class LeadFeedService {
 	};
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
+		if(leadData.getPartnerBrand().equalsIgnoreCase("BUDD")){
+			LOGGER.info("Updating lead touches to CDR");
+			leadFeedTouchService.updateTouch(Touch.TouchType.CALL_DIRECT_REQUEST, Long.valueOf(leadData.getTransactionId()));
+			return LeadResponseStatus.SUCCESS;
+		}
 		if(!leadFeed.isTestOnlyLead(leadData)) {
 			if (LeadFeedUtil.isServiceEnabled(LeadType.CALL_DIRECT, leadData)) {
 				return processGateway(LeadType.CALL_DIRECT, leadData, TouchType.CALL_DIRECT);
@@ -77,11 +83,20 @@ public abstract class LeadFeedService {
 	}
 
 	public LeadResponseStatus callMeBack(LeadFeedData leadData) throws LeadFeedException {
+		if(leadData.getPartnerBrand().equalsIgnoreCase("BUDD")){
+			LOGGER.info("Updating lead touches to CMR");
+			leadFeedTouchService.updateTouch(Touch.TouchType.CALL_BACK_REQUEST, Long.valueOf(leadData.getTransactionId()));
+			return LeadResponseStatus.SUCCESS;
+		}
 		return processGateway(LeadType.CALL_ME_BACK, leadData, Touch.TouchType.LEAD_CALL_ME_BACK);
 	}
 
 	public LeadResponseStatus noSaleCall(LeadFeedData leadData) throws LeadFeedException {
-
+		if(leadData.getPartnerBrand().equalsIgnoreCase("BUDD")){
+			LOGGER.info("Updating lead touches to OHR");
+			leadFeedTouchService.updateTouch(TouchType.ONLINE_HANDOVER_REQUEST, Long.valueOf(leadData.getTransactionId()));
+			return LeadResponseStatus.SUCCESS;
+		}
 		Content content = null;
 		try {
 			content = contentService.getContent("noSaleLeadOn", 0, leadData.getVerticalId(), leadData.getEventDate(), false);
@@ -100,12 +115,31 @@ public abstract class LeadFeedService {
 
 	public LeadResponseStatus bestPrice(LeadFeedData leadData) throws LeadFeedException {
 		final TouchType touchType;
+		LeadFeedService.LeadType processType = LeadType.BEST_PRICE;
 		if (leadData.isPartnerReferenceChange()) {
+			processType = LeadType.BEST_PRICE;
 			touchType = TouchType.LEAD_BEST_PRICE_DD;
 		} else {
-			touchType = TouchType.LEAD_BEST_PRICE;
+			switch(leadData.getLeadType()){
+				case CALL_DIRECT:
+					processType = LeadFeedService.LeadType.CALL_DIRECT;
+					touchType = TouchType.CALL_DIRECT; break;
+				case CALL_ME_BACK:
+					processType = LeadType.CALL_ME_BACK;
+					touchType = TouchType.LEAD_CALL_ME_BACK; break;
+				case ONLINE_HANDOVER:
+					processType = LeadType.NOSALE_CALL;
+					touchType = TouchType.NOSALE_CALL; break;
+				case MORE_INFO:
+					processType = LeadType.MORE_INFO;
+					touchType = TouchType.MORE_INFO; break;
+				default:
+					processType = LeadType.BEST_PRICE;
+					touchType = TouchType.LEAD_BEST_PRICE;
+
+			}
 		}
-		return processGateway(LeadType.BEST_PRICE, leadData, touchType);
+		return processGateway(processType, leadData, touchType);
 	}
 
 	/**

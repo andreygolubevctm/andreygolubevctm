@@ -1,5 +1,7 @@
 package com.ctm.web.core.model.leadfeed;
 
+import com.ctm.web.core.leadService.model.LeadType;
+
 import java.util.ArrayList;
 
 public class LeadFeedRootTransaction {
@@ -9,7 +11,7 @@ public class LeadFeedRootTransaction {
 	private Boolean hasLeadFeed =			false;
 	private String styleCode = null;
 	private String ipAddress = null;
-
+	private LeadType type = null;
 	public LeadFeedRootTransaction(Long rootId) {
 		transactions = new ArrayList<Long>();
 		this.rootId = rootId;
@@ -81,5 +83,13 @@ public class LeadFeedRootTransaction {
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
+	}
+
+	public LeadType getType(){
+		return type;
+	}
+
+	public void setType(LeadType type){
+		this.type = type;
 	}
 }

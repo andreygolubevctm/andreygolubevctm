@@ -27,4 +27,14 @@ public class LeadFeedTouchService {
         else
             return touchService.recordTouch(transactionId, touchType.getCode(), Touch.ONLINE_USER);
     }
+
+    public Boolean updateTouch(Touch.TouchType touchType, Long transactionId) {
+        try {
+            touchService.updateTouch(transactionId, touchType);
+        } catch(Exception e){
+            return false;
+        }
+        return true;
+
+    }
 }
