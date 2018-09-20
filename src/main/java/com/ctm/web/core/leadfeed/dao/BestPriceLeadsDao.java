@@ -394,7 +394,7 @@ public class BestPriceLeadsDao {
 			// Flag the root transaction as having existing lead feed if applicable
 			String type = set.getString("type");
 			if(
-				type.equalsIgnoreCase("A") || type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")|| type.equalsIgnoreCase("CD")|| type.equalsIgnoreCase("NPO")|| type.equalsIgnoreCase("MI")) {
+				type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")|| type.equalsIgnoreCase("CD")|| type.equalsIgnoreCase("NPO")|| type.equalsIgnoreCase("moreInfo")) {
 				tran.setHasLeadFeed(true);
 				LOGGER.info("[Lead info] Skipping existing lead feed transaction {}", kv("transactionId", transactionId));
 			}
