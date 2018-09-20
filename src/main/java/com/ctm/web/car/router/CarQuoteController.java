@@ -88,11 +88,6 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
 
         // record this request as a touch
         Brand brand = ApplicationService.getBrandFromRequest(request);
-        Long transactionId = Long.valueOf(request.getParameter("transactionId"));
-        String productCode = request.getParameter("code");
-        AccessTouchService touchService = new AccessTouchService();
-        touchService.updateTouch(transactionId, "MIR");
-        touchService.recordTouchWithProductCode(transactionId, "MIR", Touch.ONLINE_USER, productCode);
 
         Date applicationDate = ApplicationService.getApplicationDate(request);
         return CarVehicleSelectionService.getCarProduct(applicationDate, productId, brand.getId());
