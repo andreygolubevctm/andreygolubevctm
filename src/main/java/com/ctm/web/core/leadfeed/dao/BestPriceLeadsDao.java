@@ -99,7 +99,7 @@ public class BestPriceLeadsDao {
 					stmt = dbSource.getConnection().prepareStatement(
 						"SELECT h.rootId AS rootId, h.TransactionId AS transactionId, t.type AS type, h.styleCode, h.ipAddress " +
 						"FROM aggregator.transaction_header AS h " +
-						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CMR','CDR','MIR','OHR', 'CD', 'BPDD') " +
+						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CMR','CDR','MoreInfo','OHR', 'CD', 'BPDD') " +
 						"WHERE h.ProductType = ? AND h.styleCodeId = ? " +
 						// Next line is important as it greatly reduces the size of the recordset and query speed overall
 						"AND t.date >= DATE(CURRENT_DATE - INTERVAL 40 MINUTE) " +
@@ -108,7 +108,7 @@ public class BestPriceLeadsDao {
 								"CASE WHEN t.type = 'R' THEN " + BESTPRICEDELAY + " " +
 								" WHEN t.type = 'CMR' THEN " + CALLBACKDELAY + " " +
 									"WHEN t.type = 'CDR' THEN " + CALLDIRECTDELAY + " " +
-									"WHEN t.type = 'MIR' THEN " + MOREINFODELAY + " " +
+									"WHEN t.type = 'MoreInfo' THEN " + MOREINFODELAY + " " +
 								"WHEN t.type = 'OHR' THEN " + NPODELAY + " ELSE 0 END" +
 									" MINUTE) " +
 						"AND CONCAT_WS(' ', t.date, t.time) >= TIMESTAMP(CURRENT_TIMESTAMP - INTERVAL 40 MINUTE) " +
@@ -138,7 +138,7 @@ public class BestPriceLeadsDao {
 									"		SELECT TransactionId FROM aggregator.transaction_header " +
 									"		WHERE rootId = '" + tran.getId() + "'" +
 									"	) " +
-									"	AND type IN ('BP','CB','CD','NPO','MoreInfo', 'CD', 'BPDD')" +
+									"	AND type IN ('BP','CB','CD','NPO','MIR', 'CD', 'BPDD')" +
 									") AS existingLeadCount " +
 									"FROM aggregator.ranking_details AS r " +
 									"LEFT JOIN aggregator.results_properties AS p5 " +
@@ -394,14 +394,14 @@ public class BestPriceLeadsDao {
 			// Flag the root transaction as having existing lead feed if applicable
 			String type = set.getString("type");
 			if(
-				type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")|| type.equalsIgnoreCase("CD")|| type.equalsIgnoreCase("NPO")|| type.equalsIgnoreCase("moreInfo")) {
+				type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")|| type.equalsIgnoreCase("CD")|| type.equalsIgnoreCase("NPO")|| type.equalsIgnoreCase("MIR")) {
 				tran.setHasLeadFeed(true);
 				LOGGER.info("[Lead info] Skipping existing lead feed transaction {}", kv("transactionId", transactionId));
 			}
 			switch(type) {
 				case("CMR"): tran.setType(LeadType.CALL_ME_BACK); break;
 				case("CDR"): tran.setType(LeadType.CALL_DIRECT); break;
-				case("MIR"): tran.setType(LeadType.MORE_INFO); break;
+				case("MoreInfo"): tran.setType(LeadType.MORE_INFO); break;
 				case("OHR"): tran.setType(LeadType.ONLINE_HANDOVER); break;
 				default: tran.setType(LeadType.BEST_PRICE); break;
 
