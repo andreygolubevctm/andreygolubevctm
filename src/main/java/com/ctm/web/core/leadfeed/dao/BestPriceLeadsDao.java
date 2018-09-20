@@ -401,7 +401,7 @@ public class BestPriceLeadsDao {
 			switch(type) {
 				case("CMR"): tran.setType(LeadType.CALL_ME_BACK); break;
 				case("CDR"): tran.setType(LeadType.CALL_DIRECT); break;
-				case("MoreInfo"): tran.setType(LeadType.MORE_INFO); break;
+				case("MoreInfo"): if(tran.getType() == null){ tran.setType(LeadType.MORE_INFO); } break;
 				case("OHR"): tran.setType(LeadType.ONLINE_HANDOVER); break;
 				default: tran.setType(LeadType.BEST_PRICE); break;
 
