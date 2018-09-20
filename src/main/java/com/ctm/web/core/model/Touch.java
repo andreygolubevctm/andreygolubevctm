@@ -55,7 +55,7 @@ public class Touch extends AbstractJsonModel {
 		CALL_DIRECT_REQUEST("Call direct requested", "CDR", "'OHR','R','MIR'"),
 		CALL_BACK_REQUEST("Call back requested", "CMR", "'CDR','OHR','R','MIR'"),
 		ONLINE_HANDOVER_REQUEST("Online handover requested", "OHR", "'R','MIR'"),
-		MORE_INFO_REQUEST("More info requested", "MIR", ""),
+		MORE_INFO_REQUEST("More info requested", "MIR", "MoreInfo"),
 		ONLINE_HANDOVER("Online handover", "NPO", ""),
 		APPLY ("Apply" ,"A", ""),
 		FAIL ("Join failed" , "F", ""),
