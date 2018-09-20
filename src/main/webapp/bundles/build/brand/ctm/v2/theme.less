@@ -814,14 +814,14 @@ a {
   }
 
   background-size: 43px 32px;
-  .highResImg('../graphics/logo-dollar-xs.png'; '../graphics/logo-dollar-xs@2x.png'; 43px; 32px);
+  .highResImgContain('../graphics/logo-dollar-xs.png'; '../graphics/logo-dollar-xs@2x.png');
 
   @media only screen and (min-width: @screen-sm-min) {
     width: 216px;
     height: 28px;
     margin: 24px 0 10px 0;
     background-size: 216px 28px;
-    .highResImg('../graphics/logo-sm.png'; '../graphics/logo-sm@2x.png'; 216px; 28px; ~"");
+    .highResImgContain('../graphics/logo-sm.png'; '../graphics/logo-sm@2x.png'; ~"");
   }
 
   //Scale up override for MD & LG logo and retina support
@@ -829,8 +829,8 @@ a {
     width: 273px;
     height: 35px;
     margin: 24px 0 18px 0;
-    background-size: 273px 35px;
-    .highResImg('../graphics/logo.png'; '../graphics/logo@2x.png'; 273px; 35px; ~"");
+    background-size: contain;
+    .highResImgContain('../graphics/logo.png'; '../graphics/logo@2x.png'; ~"");
   }
 
   @media print {
@@ -1426,8 +1426,9 @@ select {
   .loading-logo {
     margin: 0 auto 10px;
     width: 80px;
-    height: 53px;
+    height: 80px;
     background: transparent url(../graphics/loading.png) top left no-repeat;
+    background-size: contain;
   }
   //There's probably a 'sexy' way to get this to work with the right font, but for now I'm just going to do a graphic.
   //.loading-logo:before,

@@ -2,6 +2,7 @@ package com.ctm.web.core.leadfeed.model;
 
 import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.leadService.model.LeadStatus;
+import com.ctm.web.core.leadService.model.LeadType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.validator.constraints.NotBlank;
@@ -35,6 +36,8 @@ public class CTMCarBestPriceLeadFeedRequest implements Serializable {
     private Long transactionId;
     @Nullable
     private Long rootId;
+    @Nullable
+    private LeadType leadType;
 
     public String getBrandCode() {
         return brandCode;
@@ -106,5 +109,13 @@ public class CTMCarBestPriceLeadFeedRequest implements Serializable {
 
     public void setMetadata(CTMCarLeadFeedRequestMetadata metadata) {
         this.metadata = metadata;
+    }
+
+    public void setLeadType(LeadType leadType){
+        this.leadType = leadType;
+    }
+
+    public LeadType getLeadType(){
+        return this.leadType;
     }
 }
