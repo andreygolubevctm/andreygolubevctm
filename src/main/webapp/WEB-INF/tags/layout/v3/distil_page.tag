@@ -69,7 +69,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><%-- 'maximum-scale' will disable zooming but also assists with iOS Viewport Scaling Bug on rotation --%><%-- user-scalable=no--%>
 		<jsp:invoke fragment="head_meta" />
 
-		<link rel="shortcut icon" type="image/x-icon" href="${assetUrl}brand/${brandCode}/graphics/favicon.ico">
+		<link rel="shortcut icon" type="image/x-icon" href="${assetUrl}brand/${brandCode}/graphics/favicon.ico?new">
 
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
