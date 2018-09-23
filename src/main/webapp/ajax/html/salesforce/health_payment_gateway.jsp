@@ -19,7 +19,7 @@
 <head>
     <title>Salesforce Health Payment Gateway</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/favicon.ico?new">
 
     <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/salesforce_health${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 
