@@ -148,7 +148,7 @@
 	}
 
 	function cleanNumber (number){
-		return number.replace(/^\+61/, '0').replace(/^61/, '0').replace(/\D/g, "").substr(-10);
+		return number.replace(/\D/g, "").replace(/^\+61/, '0').replace(/^61/, '0').substr(-10);
 	}
 
 	function getPhoneType(number) {
