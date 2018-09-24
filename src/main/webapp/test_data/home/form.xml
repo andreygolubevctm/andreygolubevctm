@@ -28,8 +28,8 @@
 
 	<property>
 		<propertyType>Freestanding Home</propertyType>
-		<wallMaterial>Brick</wallMaterial>
-		<roofMaterial>Colourbond</roofMaterial>
+		<wallMaterial>Double Brick</wallMaterial>
+		<roofMaterial>Colorbond</roofMaterial>
 
 		<yearBuilt>2000</yearBuilt>
 
@@ -103,17 +103,10 @@
 		<marketing>Y</marketing>
 		<phone>0712345678</phone>
 		<oktocall>Y</oktocall>
-		<anyoneOlder>Y</anyoneOlder>
-		<oldestPersonDob>12/05/1945</oldestPersonDob>
-		<over55>Y</over55>
+		<retired>Y</retired>
 	</policyHolder>
 
 	<disclosures>
-		<previousInsurance>Y</previousInsurance>
-		<atCurrentAddress>Y</atCurrentAddress>
-		<insurer>AAMI</insurer>
-		<expiry>05/04/2014</expiry>
-		<coverLength>4</coverLength>
 		<claims>N</claims>
 	</disclosures>
 

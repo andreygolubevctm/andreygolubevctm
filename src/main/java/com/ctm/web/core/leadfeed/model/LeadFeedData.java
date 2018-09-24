@@ -1,5 +1,8 @@
 package com.ctm.web.core.leadfeed.model;
 
+import com.ctm.web.core.leadService.model.LeadType;
+import com.ctm.web.core.leadfeed.services.LeadFeedService;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +18,10 @@ public class LeadFeedData {
 	public enum CallType {
 		CALL_DIRECT("CallDirect"),
 		GET_CALLBACK("GetaCall"),
-		NOSALE_CALL("NoSaleCall");
+		NOSALE_CALL("NoSaleCall"),
+		ONLINE_HANDOVER("onlineHandover"),
+		MORE_INFO("moreInfo"),
+		BEST_PRICE("bestPrice");
 
 		private String callType;
 
@@ -69,6 +75,7 @@ public class LeadFeedData {
 	private Person person;
 	//any additional data which is not generic but required by specific lead feed service.
 	private Object metadata;
+	private LeadType leadType;
 
 	public LeadFeedData(){
 
@@ -82,7 +89,16 @@ public class LeadFeedData {
 		this.callType = callType;
 	}
 
-	public Date getEventDate() {
+    public LeadType getLeadType() {
+        return leadType;
+    }
+
+    public void setLeadType(LeadType leadType) {
+        this.leadType = leadType;
+    }
+
+
+    public Date getEventDate() {
 		return eventDate;
 	}
 

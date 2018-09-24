@@ -29,7 +29,7 @@
                 <div id="clientMemberID" class="membership">
                     <c:set var="fieldXpath" value="${xpath}/primary/memberID" />
                     <form_v4:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3">
-                        <field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" placeHolder="Membership No." maxlength="10" />
+                        <field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." maxlength="10" />
                     </form_v4:row>
 
                     <c:set var="fieldXpath" value="${xpath}/primary/authority" />
