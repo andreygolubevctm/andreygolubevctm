@@ -62,6 +62,17 @@
       }
     }
 
+    &.wider {
+      .nav > li {
+        .btn-pagination {
+          margin-bottom: 1px;
+          &.active, &:active {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
     .pagination-text-label {
       display: inline-block;
       @media (@sm-only) {
