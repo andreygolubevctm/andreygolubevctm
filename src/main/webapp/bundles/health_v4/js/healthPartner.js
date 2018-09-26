@@ -147,7 +147,7 @@
     }
 
     function getNeverHadPrivateHospital_2() {
-        return $elements.currentlyHaveAnyKindOfCoverPreResults.filter(':checked').val() === 'Y' && $elements.primaryCoverLoading.filter(':checked').val() === 'N' && $elements.primaryEverHadPrivateHospital_2.filter(':checked').val() === 'N';
+        return $elements.currentlyHaveAnyKindOfCoverPreResults.filter(':checked').val() === 'Y' && $elements.partnerCoverLoading.filter(':checked').val() === 'N' && $elements.partnerEverHadPrivateHospital_2.filter(':checked').val() === 'N';
     }
 
     function getHealthPreviousFund() {
