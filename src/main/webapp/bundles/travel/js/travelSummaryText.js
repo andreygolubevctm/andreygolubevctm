@@ -14,6 +14,8 @@
 		$policytype,
 		$summaryHeader,
 		$selectedTags,
+        $travel_results_os_medical,
+		isDomestic = false,
 		initialised = false;
 
 	function updateSummaryText() {
@@ -21,6 +23,7 @@
 
 		// Build the summary text based on the entered information.
 		var txt= '<span class="highlight">';
+		var singleTravelDestination = '';
 
 		var adults = $adults.val(),
 		children = $children.val();
@@ -40,15 +43,17 @@
 		}
 
 		// if this is a single trip
-		if ($("input[name=travel_policyType]:checked").val() == 'S')
-		{
+		if ($("input[name=travel_policyType]:checked").val() == 'S') {
 			// in case a user did an AMT quote and now wants a single trip quote
 			$summaryHeader.html('Your quote is based on');
 			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
+            isDomestic = false;
 
 			// update the country text for single trip
 			if ($selectedTags.children().length == 1) {
-				txt += $selectedTags.find('li:first-child').data("fulltext");
+                singleTravelDestination = $selectedTags.find('li:first-child').data("fulltext");
+				txt += singleTravelDestination;
+				isDomestic = singleTravelDestination === 'Australia';
 			} else {
 				txt += "multiple destinations";
 			}
@@ -77,6 +82,13 @@
 		}
 
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
+
+        var labelCopy = isDomestic ? 'Rental Vehicle' : 'O.S. Medical';
+        $travel_results_os_medical.html(labelCopy + ' <span class="">Excess</span>');
+	}
+
+	function isDomesticTravel() {
+		return isDomestic;
 	}
 
 	function initSummaryText() {
@@ -92,6 +104,7 @@
 			$policytype = $('#travel_policyType');
 			$summaryHeader = $('.resultsSummaryContainer h5');
 			$selectedTags = $('.selected-tags');
+            $travel_results_os_medical = $('.results-benefits-os-medical');
 
 			applyEventListeners();
 		}
@@ -118,7 +131,8 @@
 	meerkat.modules.register('travelSummaryText', {
 		init: init,
 		initSummaryText: initSummaryText,
-		updateText: updateSummaryText
+		updateText: updateSummaryText,
+		isDomesticTravel: isDomesticTravel
 	});
 
 })(jQuery);
