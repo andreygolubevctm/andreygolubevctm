@@ -302,7 +302,7 @@
             Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
             Results.model.sortedProductsAll = Results.model.returnedProducts;
 	        Results.model.filteredProductsAll = Results.model.returnedProducts;
-	        Results.model.returnedProducts = Results.model.returnedProducts.filter(function(product,index){return index < 12;});
+	        Results.model.returnedProducts = Results.model.returnedProducts.filter(function(product,index){if ($(':input[name="health_searchResults"] option').is(':selected') && $(':input[name="health_searchResults"]').val() > 0) {return index < $(':input[name="health_searchResults"]').val();} else {return index < 12;}});
 	        Results.model.availableCounts = Results.model.returnedProducts.length;
 
         });
