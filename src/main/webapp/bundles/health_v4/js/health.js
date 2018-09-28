@@ -423,6 +423,8 @@
                             });
                         }
                     }, 1000);
+
+                    meerkat.modules.healthLHC.resetNewLHC();
                 }
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
@@ -551,7 +553,8 @@
                     // Insert fund into Contact Authority
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-                    meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                    meerkat.modules.healthLHC.onInitialise();
+
                     meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },

@@ -11,9 +11,12 @@ public class HealthCover {
 
     private HealthCoverLoading healthCoverLoading;
 
-    public HealthCover(final Cover healthCover, final HealthCoverLoading healthCoverLoading) {
+    private EverHadCover everHadCover;
+
+    public HealthCover(final Cover healthCover, final HealthCoverLoading healthCoverLoading, final EverHadCover everHadCover) {
         this.healthCover = healthCover;
         this.healthCoverLoading = healthCoverLoading;
+        this.everHadCover = everHadCover;
     }
 
     public Cover getHealthCover() {
@@ -23,4 +26,6 @@ public class HealthCover {
     public HealthCoverLoading getHealthCoverLoading() {
         return healthCoverLoading;
     }
+
+    public EverHadCover getEverHadCover() { return everHadCover; }
 }
