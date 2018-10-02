@@ -302,7 +302,7 @@
             Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
             Results.model.sortedProductsAll = Results.model.returnedProducts;
 	        Results.model.filteredProductsAll = Results.model.returnedProducts;
-	        Results.model.returnedProducts = Results.model.returnedProducts.filter(function(product,index){return index < 12;});
+	        Results.model.returnedProducts = Results.model.returnedProducts.filter(function(product,index){if ($(':input[name="health_searchResults"] option').is(':selected') && $(':input[name="health_searchResults"]').val() > 0) {return index < $(':input[name="health_searchResults"]').val();} else {return index < 12;}});
 	        Results.model.availableCounts = Results.model.returnedProducts.length;
 
         });
@@ -636,7 +636,7 @@
         meerkat.modules.healthRates.loadRates(afterFetchRates);
     }
 
-    // Wrapper around results component, load results data beofore result page
+    // Wrapper around results component, load results data before result page
     function getBeforeResultsPage() {
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
         var afterFetchRates = function() {
@@ -1028,7 +1028,7 @@
             data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
             data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;
             data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
-            data["isPopularProductsSelected"] = $(':input[name=health_popularProducts]').val();
+            data["isPopularProductsSelected"] = $('input[name=health_popularProducts]').val();
         }
         return data;
     }

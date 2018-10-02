@@ -74,7 +74,11 @@ public class RequestAdapterV2 {
             if (quote.getSearchResults() != null) {
                 quoteRequest.setSearchResults(quote.getSearchResults());
             } else {
-                quoteRequest.setSearchResults(12);
+                if (isSimples){
+                    quoteRequest.setSearchResults(18);
+                } else {
+                    quoteRequest.setSearchResults(12);
+                }
             }
             addBoundedExcessFilter(quoteRequest, filters, quote);
             addProductTitleSearchFilter(filters, quote);
