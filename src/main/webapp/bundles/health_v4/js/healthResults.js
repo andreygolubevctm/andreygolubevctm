@@ -636,7 +636,7 @@
         meerkat.modules.healthRates.loadRates(afterFetchRates);
     }
 
-    // Wrapper around results component, load results data before result page
+    // Wrapper around results component, load results data beofore result page
     function getBeforeResultsPage() {
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
         var afterFetchRates = function() {
@@ -1028,7 +1028,7 @@
             data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
             data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;
             data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
-            data["isPopularProductsSelected"] = $('input[name=health_popularProducts]').val();
+            data["isPopularProductsSelected"] = $(':input[name=health_popularProducts]').val();
         }
         return data;
     }

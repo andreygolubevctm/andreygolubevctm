@@ -15,8 +15,6 @@
 <%@ attribute name="helpId" 			required="false"	rtexprvalue="true"	%>
 <%@ attribute name="helpClassName" 		required="false"	rtexprvalue="true"	%>
 <%@ attribute name="helpPosition" 		required="false"	rtexprvalue="true"	%>
-<%@ attribute name="helpTextShowLink" 	required="false"	rtexprvalue="true"	%>
-<%@ attribute name="helpTextLinkText" 	required="false"	rtexprvalue="true"	%>
 <%@ attribute name="customAttribute"	required="false"	rtexprvalue="true" description="Add a custom attribute to the element." %>
 <%@ attribute name="checkBoxClassName" %>
 <%@ attribute name="additionalLabelAttributes"	required="false"	rtexprvalue="true" description="Add attributes to the label element." %>
@@ -76,7 +74,7 @@
 	<label for="${id}" ${additionalLabelAttributes}>
 		<c:if test="${label!=null && not empty label}">${title}</c:if>
 		<c:if test="${not empty helpId}">
-		<field_v2:help_icon helpId="${helpId}" position="${helpPosition}" tooltipClassName="${helpClassName}" additionalAttributes="${additionalHelpAttributes}" showText="${helpTextShowLink}" showTextLabel="${helpTextLinkText}" />
+		<field_v2:help_icon helpId="${helpId}" position="${helpPosition}" tooltipClassName="${helpClassName}" additionalAttributes="${additionalHelpAttributes}" />
 		</c:if>
 	</label>
 </div>
