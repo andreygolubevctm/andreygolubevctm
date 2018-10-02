@@ -44,13 +44,13 @@
 
     function setHealthFundsForPerson(initMode, $healthCover , $continuousCover, $dob, $lhcRow){
 
-        var isAgeLhcApplicable = meerkat.modules.age.isAgeLhcApplicable($dob.val());
+        var lessThan31Or31AndBeforeJuly1 = meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($dob.val());
         var healthCoverValue = $healthCover.find(':checked').val();
         if( healthCoverValue == 'Y' ) {
-            if( isAgeLhcApplicable ) {
-                show(initMode , $continuousCover);
-            } else{
+            if( lessThan31Or31AndBeforeJuly1 ) {
                 hide(initMode , $continuousCover);
+            } else{
+                show(initMode , $continuousCover);
             }
 
         } else {
@@ -63,7 +63,7 @@
             var noContinuousCover = $continuousCover.find(':checked').val() == 'N';
             var noHealthCover = healthCoverValue == 'N';
             // only show LHC override if LHC is being applied to the person
-            if (isAgeLhcApplicable && (noContinuousCover || noHealthCover)) {
+            if (!lessThan31Or31AndBeforeJuly1 && (noContinuousCover || noHealthCover)) {
                 show(initMode , $lhcRow);
             } else {
                 hide(initMode , $lhcRow);

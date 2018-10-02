@@ -11,7 +11,6 @@ import com.ctm.web.health.apply.model.request.application.GovernmentRebate.Gover
 import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
 import com.ctm.web.health.apply.model.request.application.applicant.CertifiedAgeEntry;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.Cover;
-import com.ctm.web.health.apply.model.request.application.applicant.healthCover.EverHadCover;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.HealthCoverLoading;
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.ConfirmCover;
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.MemberId;
@@ -130,9 +129,6 @@ public class ApplicationGroupAdapter {
                                     .orElse(null),
                             Optional.ofNullable(i.getHealthCoverLoading())
                                     .map(HealthCoverLoading::valueOf)
-                                    .orElse(null),
-                            Optional.ofNullable(i.getEverHadCover())
-                                    .map(EverHadCover::valueOf)
                                     .orElse(null)))
                             .orElse(null),
                     createPreviousFund(previousFund),

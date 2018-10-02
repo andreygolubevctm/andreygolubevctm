@@ -1,8 +1,8 @@
 ;(function ($) {
     var meerkat = window.meerkat,
         $resultsPagination,
-        filteredOutResults = [],  // this is used for removing the results when clicking the "x";
-        fundDiscounts = null;
+        filteredOutResults = [],
+        fundDiscounts = null; // this is used for removing the results when clicking the "x";
 
     /**
      * Get the list of available extras.
@@ -163,14 +163,14 @@
         result.frequency = frequency.toLowerCase();
         result.priceText = prem.text ? prem.text : formatCurrency(prem.payableAmount);
         result.priceLhcfreetext = prem.lhcfreetext ? prem.lhcfreetext : formatCurrency(prem.lhcFreeAmount);
-        result.textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing.replace('<span/>', '<br>') : 'price excl ' + formatCurrency(prem.lhcAmount) +
-            'LHC<br>Inc. ' +
+        result.textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing.replace('<span/>', '<br>') : 'excl ' + formatCurrency(prem.lhcAmount) +
+            'LHC<br>inc ' +
             formatCurrency(prem.rebateAmount) + ' Govt Rebate';
         result.textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) +
             ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
         result.hasValidPrice = (prem.value && prem.value > 0) || (prem.text && prem.text.indexOf('$0.') < 0) ||
             (prem.payableAmount && prem.payableAmount > 0);
-        result.lhcFreePriceMode = typeof mode === "undefined" || (mode !== "lhcInc" || prem.lhcfreepricing.indexOf('The premium may be affected by LHC<br/>') === 0 && meerkat.modules.healthLHC.getNewLHC() === null);
+        result.lhcFreePriceMode = typeof mode === "undefined" || mode !== "lhcInc";
         result.discounted = prem.discounted === 'Y';
         result.discountPercentage = prem.discountPercentage;
         return result;
@@ -421,8 +421,8 @@
         	if(!fundDiscountExists(fundCode)) {
 		        discountPercentage = '';
 	        } else {
-		        if (meerkat.modules.healthPrimary.getCurrentlyHaveAnyKindOfCoverPreResults() === 'N' ||
-			        (meerkat.modules.healthChoices.hasPartner() && meerkat.modules.healthPartner.getCurrentlyHaveAnyKindOfCoverPreResults() === 'N')) {
+		        if (meerkat.modules.healthPrimary.getCurrentCover() === 'N' ||
+			        (meerkat.modules.healthChoices.hasPartner() && meerkat.modules.healthPartner.getCurrentCover() === 'N')) {
 			        discountPercentage = '7.5';
 		        } else {
 			        discountPercentage = '4';

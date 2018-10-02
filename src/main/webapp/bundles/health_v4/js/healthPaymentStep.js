@@ -410,10 +410,6 @@
 			lhcText = product.paymentTypePremiums[product.paymentNode][product._selectedFrequency].pricing;
 		}
 
-		if (lhcText.length > 0) {
-			lhcText = "Based on the information you have provided, this "  + lhcText.charAt(0).toLowerCase() + lhcText.slice(1);
-		}
-
 		$paymentMethodLHCText.html(lhcText);
 	}
 

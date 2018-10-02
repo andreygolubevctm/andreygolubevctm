@@ -41,12 +41,6 @@
 					<field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
 				</form_v2:row>
 
-				<%--
-				Please note the purpose of this question is to capture if the user currently has any form of private health cover ('Y' == (Private Hospital || Extras Only), 'N'= (None))
-				this is done for marketing purposes and so that the information can be passed on to the new provider.
-
-				unfortunatly this field is mislabeled and does not map to the field with the same label in the v4 journey
-				--%>
 				<c:set var="fieldXpath" value="${xpath}/primary/cover" />
 				<form_v2:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
 					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>

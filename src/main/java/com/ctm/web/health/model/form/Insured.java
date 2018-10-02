@@ -8,8 +8,6 @@ public class Insured {
 
     private String healthCoverLoading;
 
-    private String everHadCover;
-
     public String getDob() {
         return dob;
     }
@@ -33,10 +31,4 @@ public class Insured {
     public void setHealthCoverLoading(String healthCoverLoading) {
         this.healthCoverLoading = healthCoverLoading;
     }
-
-    public String getEverHadCover() {
-        return everHadCover;
-    }
-
-    public void setEverHadCover(String everHadCover) { this.everHadCover = everHadCover; }
 }
