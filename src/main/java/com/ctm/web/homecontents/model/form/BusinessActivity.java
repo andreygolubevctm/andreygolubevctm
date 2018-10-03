@@ -3,15 +3,10 @@ package com.ctm.web.homecontents.model.form;
 public class BusinessActivity {
 
     private String conducted;
-
     private String businessType;
-
     private String children;
-
     private String registeredDayCare;
-
     private String rooms;
-
     private String employeeAmount;
 
     public String getConducted() {

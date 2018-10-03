@@ -84,34 +84,6 @@ public class LeadFeedServiceTest {
         when(contentService.getContent("ignoreMatchingFormField", brandId, verticalId, date, true)).thenReturn(ignoreMatchingFormFieldContent);
     }
 
-    @Test
-    public void testCallMeBack() throws Exception {
-        LeadFeedData leadData = getLeadFeedData("041111111111111");
-
-        LeadFeedService.LeadResponseStatus outcome = leadFeedService.callMeBack(leadData);
-        assertEquals(LeadFeedService.LeadResponseStatus.SUCCESS, outcome);
-        assertTrue(leadFeedService.isProcessCalled());
-    }
-
-    @Test
-    public void testCallMeBackEmptyNumber() throws Exception {
-        LeadFeedData leadData = getLeadFeedData("");
-
-        LeadFeedService.LeadResponseStatus outcome = leadFeedService.callMeBack(leadData);
-        assertEquals(LeadFeedService.LeadResponseStatus.SUCCESS, outcome);
-        assertFalse(leadFeedService.isProcessCalled());
-    }
-
-    @Test
-    public void testCallMeBackTestNumber() throws Exception {
-        String testPhoneNumber = "0412345678";
-        LeadFeedData leadData = getLeadFeedData(testPhoneNumber);
-        when(ignoreMatchingFormFieldContent.getSupplementaryValueByKey("phone")).thenReturn(testPhoneNumber);
-
-        LeadFeedService.LeadResponseStatus outcome = leadFeedService.callMeBack(leadData);
-        assertEquals(LeadFeedService.LeadResponseStatus.SUCCESS, outcome);
-        assertFalse(leadFeedService.isProcessCalled());
-    }
 
     @Test
     public void testIsTestOnlyLeadEmptyNumber() throws Exception {

@@ -8,12 +8,14 @@ import com.ctm.web.car.services.CarQuoteService;
 import com.ctm.web.car.services.CarVehicleSelectionService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
+import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.email.EmailUtils;
@@ -84,6 +86,7 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
             throw new RouterException("Expecting productId");
         }
 
+        // record this request as a touch
         Brand brand = ApplicationService.getBrandFromRequest(request);
 
         Date applicationDate = ApplicationService.getApplicationDate(request);

@@ -72,22 +72,10 @@ public class RequestAdapter {
             quoteRequest.setJointPolicyHolder(createJointPolicyHolder(quote.getPolicyHolder()));
         }
 
-        if (convertToBoolean(quote.getPolicyHolder().getAnyoneOlder())) {
-            quoteRequest.setOldestPolicyHolder(createOldestPolicyHolder(quote.getPolicyHolder()));
-        }
-
+        quoteRequest.setRetiredResident(convertToOptionalBoolean(quote.getPolicyHolder().getRetired()));
         quoteRequest.setContact(createContact(quote.getPolicyHolder()));
-
-        quoteRequest.setPreviouslyCovered(convertToBoolean(quote.getDisclosures().getPreviousInsurance()));
-
-        if (quoteRequest.isPreviouslyCovered()) {
-            quoteRequest.setPreviousCover(createPreviousCover(quote.getDisclosures()));
-        }
-
-        quoteRequest.setHadClaims(convertToBoolean(quote.getDisclosures().getClaims()));
-
+        quoteRequest.setHadClaims(convertToBoolean(quote.hasDisclosures() ? quote.getDisclosures().getClaims() : "N"));
         quoteRequest.setUnderFinance(convertToOptionalBoolean(quote.isUnderFinance()));
-
         quoteRequest.setClientIp(homeRequest.getClientIpAddress());
 
         com.ctm.web.homecontents.model.form.LandlordDetails landlordDetails = quote.getLandlordDetails();
@@ -97,7 +85,6 @@ public class RequestAdapter {
         }
 
         return quoteRequest;
-
     }
 
     private static LandlordDetails createLandlordDetails(com.ctm.web.homecontents.model.form.LandlordDetails landlordDetails){
@@ -110,27 +97,11 @@ public class RequestAdapter {
         return landlordDetailsProvider;
     }
 
-    private static PreviousCover createPreviousCover(Disclosures disclosures) {
-        PreviousCover previousCover = new PreviousCover();
-        previousCover.setAtCurrentAddress(convertToBoolean(disclosures.getAtCurrentAddress()));
-        previousCover.setInsurer(disclosures.getInsurer());
-        previousCover.setExpiryDate(parseAUSLocalDate(disclosures.getExpiry()));
-        previousCover.setCoverLength(Integer.parseInt(disclosures.getCoverLength()));
-        return previousCover;
-    }
-
     private static Contact createContact(com.ctm.web.homecontents.model.form.PolicyHolder formPolicyHolder) {
         Contact contact = new Contact();
         contact.setEmail(formPolicyHolder.getEmail());
         contact.setPhone(formPolicyHolder.getPhone());
         return contact;
-    }
-
-    private static PolicyHolder createOldestPolicyHolder(com.ctm.web.homecontents.model.form.PolicyHolder formPolicyHolder) {
-        PolicyHolder policyHolder = new PolicyHolder();
-        policyHolder.setDateOfBirth(parseAUSLocalDate(formPolicyHolder.getOldestPersonDob()));
-        policyHolder.setRetried(convertToOptionalBoolean(formPolicyHolder.getOver55()));
-        return policyHolder;
     }
 
     private static PolicyHolder createJointPolicyHolder(com.ctm.web.homecontents.model.form.PolicyHolder formPolicyHolder) {
@@ -200,7 +171,7 @@ public class RequestAdapter {
                     businessActivityWithRoomQuantity.setNumberOfEmployees(Integer.parseInt(formBusinessActivity.getEmployeeAmount()));
                 }
                 businessActivity = businessActivityWithRoomQuantity;
-            } else if ("Day care".equals(formBusinessActivity.getBusinessType())) {
+            } else if ("Day care".equalsIgnoreCase(formBusinessActivity.getBusinessType())) {
                 BusinessActivityWithPersonCapacity businessActivityWithPersonCapacity = new BusinessActivityWithPersonCapacity();
                 businessActivityWithPersonCapacity.setNumberOfOccupants(Integer.parseInt(formBusinessActivity.getChildren()));
                 businessActivityWithPersonCapacity.setRegistered(convertToBoolean(formBusinessActivity.getRegisteredDayCare()));
@@ -316,7 +287,7 @@ public class RequestAdapter {
 
     public static MoreInfoRequest adapt(Brand brand, MoreInfoRequest moreInfoRequest, Optional<LocalDateTime> requestAt) {
         moreInfoRequest.setBrandCode(brand.getCode());
-        requestAt.ifPresent(v -> moreInfoRequest.setRequestAt(v));
+        requestAt.ifPresent(moreInfoRequest::setRequestAt);
         return moreInfoRequest;
     }
 

@@ -23,7 +23,6 @@
 		return {
 			coverType: $('#home_coverType').val(),
 			icon: meerkat.modules.homeSnapshot.getIcon(),
-			landlordInsuranceLast5Years: $('.isLandlord #home_disclosures_previousInsurance_Y')[0].checked,
 			landlordInsuranceClaims: $('.isLandlord #home_disclosures_claims_Y')[0].checked,
 			ownsHome: $('.notLandlord #home_occupancy_ownProperty_Y').is(':checked'),
 			ownsHomeLandlord: $('.isLandlord #home_occupancy_ownProperty_Y').is(':checked'),
@@ -42,9 +41,7 @@
 			jewellery: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_jewelleryentry"),
 			sporting: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_sportingentry"),
 			photography: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_photoentry"),
-			hasOlderResident: $('#home_policyHolder_anyoneOlder_Y').is(':checked'),
-			hasRetiredOver55: $('#home_policyHolder_over55_Y').is(':checked'),
-			previousCover: $('#home_disclosures_previousInsurance_Y').is(':checked'),
+			hasRetiredOver55: $('#home_policyHolder_retired_Y').is(':checked'),
 			previousClaims: $('#home_disclosures_claims_Y').is(':checked')
 		};
 	}

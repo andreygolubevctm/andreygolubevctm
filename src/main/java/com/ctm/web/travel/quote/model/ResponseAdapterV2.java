@@ -186,6 +186,8 @@ public class ResponseAdapterV2 {
                 info.setLuggageValue(travelQuote.getBenefitValue("luggage"));
                 info.setMedical(travelQuote.getBenefit("medical"));
                 info.setMedicalValue(travelQuote.getBenefitValue("medical"));
+                info.setRentalVehicle(travelQuote.getBenefitByLabel("rental vehicle excess"));
+                info.setRentalVehicleValue(travelQuote.getBenefitValueByLabel("rental vehicle excess"));
 
                 result.setInfo(info);
 
