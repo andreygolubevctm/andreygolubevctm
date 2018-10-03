@@ -17,8 +17,6 @@ public class Info {
     private BigDecimal cxdfeeValue;
     private String luggage;
     private BigDecimal luggageValue;
-    private String rentalVehicle;
-    private BigDecimal rentalVehicleValue;
 
     public Info(){
 
@@ -56,10 +54,6 @@ public class Info {
         this.luggage = luggage;
     }
 
-    public String getRentalVehicle() { return rentalVehicle; }
-
-    public void setRentalVehicle(String rentalVehicle) { this.rentalVehicle = rentalVehicle; }
-
     public BigDecimal getExcessValue() {
         return excessValue;
     }
@@ -80,7 +74,9 @@ public class Info {
         return cxdfeeValue;
     }
 
-    public void setCxdfeeValue(BigDecimal cxdfeeValue) { this.cxdfeeValue = cxdfeeValue; }
+    public void setCxdfeeValue(BigDecimal cxdfeeValue) {
+        this.cxdfeeValue = cxdfeeValue;
+    }
 
     public BigDecimal getLuggageValue() {
         return luggageValue;
@@ -88,13 +84,5 @@ public class Info {
 
     public void setLuggageValue(BigDecimal luggageValue) {
         this.luggageValue = luggageValue;
-    }
-
-    public BigDecimal getRentalVehicleValue() {
-        return rentalVehicleValue;
-    }
-
-    public void setRentalVehicleValue(BigDecimal rentalVehicleValue) {
-        this.rentalVehicleValue = rentalVehicleValue;
     }
 }
