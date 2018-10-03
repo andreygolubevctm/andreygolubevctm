@@ -161,17 +161,6 @@ $.validator.addMethod("youngRegularDriversAgeCheck", function (value, element) {
 	return true;
 }, "Youngest driver should not be older than the regular driver.");
 
-//
-// Validates youngest drivers annual kilometers with the car details kilometers per year
-// Youngest cannot exceed the car details kilometers.
-//
-$.validator.addMethod("youngRegularDriversAnnualKilometersCheck", function () {
-
-	var vehicleAnnualKms = parseInt($('#quote_vehicle_annualKilometres').val().replace(/\D/g,''));
-	var youngestAnnualKms = parseInt($('#quote_drivers_young_annualKilometres').val().replace(/\D/g,''));
-
-	return youngestAnnualKms < vehicleAnnualKms;
-}, "The annual kilometres driven by the youngest driver cannot exceed those of the regular driver.");
 
 //
 // Validates the dropdown for mobile commencement date.
