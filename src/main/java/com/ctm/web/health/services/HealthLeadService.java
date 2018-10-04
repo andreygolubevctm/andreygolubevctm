@@ -20,8 +20,11 @@ import java.util.List;
 @Component
 public class HealthLeadService extends LeadService {
 
-    private static final String CHARS_TO_REPLACE_PHONE_NUMBER[] = {"(", ")", " "};
-    private static final String CHARS_TO_REPLACE_WITH_PHONE_NUMBER[] = {"", "", ""};
+    private enum PhoneType {
+        OTHER,
+        MOBILE,
+        LANDLINE;
+    }
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -65,32 +68,36 @@ public class HealthLeadService extends LeadService {
             leadData.getPerson().setEmail(StringUtils.left(data.getString("health/contactDetails/email"), 128));
         }
 
-        if(StringUtils.isNotEmpty(data.getString("health/application/mobile"))) {
-            String mobile = StringUtils.replaceEach(data.getString("health/application/mobile"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
-        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/flexiContactNumber"))) {
-            String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            if(mobile != null && mobile.startsWith("04")) {
-                leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
-            }
-        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/contactNumber/mobile"))) {
+        String mobile = null;
+        String appMobile = getCleanPhone(data.getString("health/application/mobile"));
+        String flexiMobile = getCleanPhone(data.getString("health/contactDetails/flexiContactNumber"));
+        String contactMobile = getCleanPhone(data.getString("health/contactDetails/contactNumber/mobile"));
+        if(appMobile != null && getPhoneType(appMobile).equals(PhoneType.MOBILE)) {
+            mobile = appMobile;
+        } else if (flexiMobile != null && getPhoneType(flexiMobile).equals(PhoneType.MOBILE)) {
+            mobile = flexiMobile;
+        } else if (contactMobile != null && getPhoneType(contactMobile).equals(PhoneType.MOBILE)) {
             // Required because flexi doesn't exist in Simples/V1 journey
-            String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/contactNumber/mobile"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
+            mobile = contactMobile;
+        }
+        if(mobile != null) {
+            leadData.getPerson().setMobile(mobile);
         }
 
-        if(StringUtils.isNotEmpty(data.getString("health/application/other"))) {
-            String phone = StringUtils.replaceEach(data.getString("health/application/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            leadData.getPerson().setPhone(StringUtils.left(phone, 10));
-        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/flexiContactNumber"))) {
-            String phone = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            if(phone != null && !phone.startsWith("04")) {
-                leadData.getPerson().setPhone(StringUtils.left(phone, 10));
-            }
-        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/contactNumber/other"))) {
+        String phone = null;
+        String appPhone = getCleanPhone(data.getString("health/application/other"));
+        String flexiPhone = getCleanPhone(data.getString("health/contactDetails/flexiContactNumber"));
+        String contactPhone = getCleanPhone(data.getString("health/contactDetails/contactNumber/other"));
+        if(appPhone != null && getPhoneType(appPhone).equals(PhoneType.LANDLINE)) {
+            phone = appPhone;
+        } else if (flexiPhone != null && getPhoneType(flexiPhone).equals(PhoneType.LANDLINE)) {
+            phone = flexiPhone;
+        } else if (contactPhone != null && getPhoneType(contactPhone).equals(PhoneType.LANDLINE)) {
             // Required because flexi doesn't exist in Simples/V1 journey
-            String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/contactNumber/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            leadData.getPerson().setPhone(StringUtils.left(mobile, 10));
+            phone = contactPhone;
+        }
+        if(phone != null) {
+            leadData.getPerson().setPhone(phone);
         }
 
         // Location
@@ -167,5 +174,25 @@ public class HealthLeadService extends LeadService {
         );
         leadData.setMetadata(healthMetadata);
         return leadData;
+    }
+
+    private String getCleanPhone(String phone) {
+        if(StringUtils.isNotEmpty(phone)) {
+            return StringUtils.left(phone.replaceAll("\\D", ""), 10);
+        } else {
+            return null;
+        }
+    }
+
+    private PhoneType getPhoneType(String phone) {
+        PhoneType response = PhoneType.OTHER;
+        if(phone != null) {
+            if (phone.matches("0[45][0-9]{8}")) {
+                return PhoneType.MOBILE;
+            } else if (phone.matches("0[0-9]{9}")) {
+                return PhoneType.LANDLINE;
+            }
+        }
+        return response;
     }
 }

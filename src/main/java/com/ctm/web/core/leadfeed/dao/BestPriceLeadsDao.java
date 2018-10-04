@@ -10,9 +10,11 @@ import com.ctm.web.core.dao.VerticalsDao;
 import com.ctm.web.core.exceptions.DaoException;
 
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.leadService.model.LeadType;
 import com.ctm.web.core.leadfeed.model.CTMCarLeadFeedRequestMetadata;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.model.Person;
+import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.leadfeed.LeadFeedRootTransaction;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
@@ -36,6 +38,12 @@ import java.util.Date;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+/**
+ * Find any transactions which qualify as leads and create an instance of LeadFeedData for each one.
+ * This in preparation for sending a valid request to ctm-leads.
+ * (http://bitbucket.budgetdirect.com.au/projects/CTMSRV/repos/ctm-leads-project)
+ *
+ */
 public class BestPriceLeadsDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BestPriceLeadsDao.class);
@@ -43,6 +51,15 @@ public class BestPriceLeadsDao {
 
 	private ArrayList<LeadFeedRootTransaction> transactions = null;
 	private ArrayList<LeadFeedData> leads = null;
+
+	/**
+	 * TODO: get this 'orrible mess into some kind of configuration.
+	 */
+	private final Integer CALLBACKDELAY = 0;
+	private final Integer CALLDIRECTDELAY = 15;
+	private final Integer NPODELAY = 30;
+	private final Integer BESTPRICEDELAY = 10;
+	private final Integer MOREINFODELAY = 10;
 
 	/**
 	 * Query the database for leads
@@ -61,8 +78,8 @@ public class BestPriceLeadsDao {
 		transactions = new ArrayList<>();
 		leads = new ArrayList<>();
 
+
 		Integer minutes_max = (minutes * 2) + 5; // Add 5 minutes to allow for timing issues with running of cron job
-		Integer minutes_min = minutes;
 
 		try{
 
@@ -77,18 +94,24 @@ public class BestPriceLeadsDao {
 					dbSource = new SimpleDatabaseConnection();
 					PreparedStatement stmt;
 
-					/* Source transactions that have progressed through to results page in the last x minutes
+					/* Source transactions that have progressed through to results page or had any of the "lead request" types in the last x minutes depending on the lead request type.
 					 * and/or those with existing leads triggered (which imply results have been seen) */
 					stmt = dbSource.getConnection().prepareStatement(
 						"SELECT h.rootId AS rootId, h.TransactionId AS transactionId, t.type AS type, h.styleCode, h.ipAddress " +
 						"FROM aggregator.transaction_header AS h " +
-						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CB','A', 'CD', 'BPDD') " +
+						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CMR','CDR','MoreInfo','OHR', 'CD', 'BPDD') " +
 						"WHERE h.ProductType = ? AND h.styleCodeId = ? " +
 						// Next line is important as it greatly reduces the size of the recordset and query speed overall
-						"AND t.date >= DATE(CURRENT_DATE - INTERVAL " + minutes_max.toString() + " MINUTE) " +
+						"AND t.date >= DATE(CURRENT_DATE - INTERVAL 40 MINUTE) " +
 						"AND t.transaction_id IS NOT NULL AND t.type IS NOT NULL " +
-						"AND CONCAT_WS(' ', t.date, t.time) >= TIMESTAMP(CURRENT_TIMESTAMP - INTERVAL " + minutes_max.toString() + " MINUTE) " +
-						"AND CONCAT_WS(' ', t.date, t.time) <= TIMESTAMP(CURRENT_TIMESTAMP - INTERVAL " + minutes_min.toString() + " MINUTE) " +
+						"AND CONCAT_WS(' ', t.date, t.time) <= TIMESTAMP(CURRENT_TIMESTAMP - INTERVAL " +
+								"CASE WHEN t.type = 'R' THEN " + BESTPRICEDELAY + " " +
+								" WHEN t.type = 'CMR' THEN " + CALLBACKDELAY + " " +
+									"WHEN t.type = 'CDR' THEN " + CALLDIRECTDELAY + " " +
+									"WHEN t.type = 'MoreInfo' THEN " + MOREINFODELAY + " " +
+								"WHEN t.type = 'OHR' THEN " + NPODELAY + " ELSE 0 END" +
+									" MINUTE) " +
+						"AND CONCAT_WS(' ', t.date, t.time) >= TIMESTAMP(CURRENT_TIMESTAMP - INTERVAL 40 MINUTE) " +
 						"ORDER BY RootId ASC, transactionId ASC, t.date ASC, t.time ASC;"
 					);
 					stmt.setString(1, verticalCode);
@@ -115,7 +138,7 @@ public class BestPriceLeadsDao {
 									"		SELECT TransactionId FROM aggregator.transaction_header " +
 									"		WHERE rootId = '" + tran.getId() + "'" +
 									"	) " +
-									"	AND type IN ('BP','CB','A', 'CD', 'BPDD')" +
+									"	AND type IN ('BP','CB','CD','NPO','MIR', 'CD', 'BPDD')" +
 									") AS existingLeadCount " +
 									"FROM aggregator.ranking_details AS r " +
 									"LEFT JOIN aggregator.results_properties AS p5 " +
@@ -169,8 +192,8 @@ public class BestPriceLeadsDao {
 												String fullName = leadConcat[0];
 												String state = leadConcat[3];
 												String brandCode = resultSet.getString("brandCode");
-
 												leadData = new LeadFeedData();
+												leadData.setLeadType(tran.getType());
 												leadData.setEventDate(serverDate);
 												leadData.setPartnerBrand(brandCode);
 												leadData.setTransactionId(transactionId);
@@ -371,9 +394,17 @@ public class BestPriceLeadsDao {
 			// Flag the root transaction as having existing lead feed if applicable
 			String type = set.getString("type");
 			if(
-				type.equalsIgnoreCase("A") || type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")) {
+				type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")|| type.equalsIgnoreCase("CD")|| type.equalsIgnoreCase("NPO")|| type.equalsIgnoreCase("MIR")) {
 				tran.setHasLeadFeed(true);
 				LOGGER.info("[Lead info] Skipping existing lead feed transaction {}", kv("transactionId", transactionId));
+			}
+			switch(type) {
+				case("CMR"): tran.setType(LeadType.CALL_ME_BACK); break;
+				case("CDR"): tran.setType(LeadType.CALL_DIRECT); break;
+				case("MoreInfo"): if(tran.getType() == null){ tran.setType(LeadType.MORE_INFO); } break;
+				case("OHR"): tran.setType(LeadType.ONLINE_HANDOVER); break;
+				default: tran.setType(LeadType.BEST_PRICE); break;
+
 			}
 		} catch(SQLException e) {
 			LOGGER.error("[Lead info] Failed to add best price lead feed transaction", e);

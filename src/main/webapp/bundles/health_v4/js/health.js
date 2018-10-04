@@ -348,6 +348,9 @@
                     meerkat.modules.healthPostcode.validate();
                 }
             },
+            onBeforeLeave: function beforeLeaveContactStep(event) {
+                meerkat.modules.healthContactNumber.sanitisedExistingPhoneNumbers();
+            },
             onAfterLeave: function leaveContactStep(event) {
 
             }

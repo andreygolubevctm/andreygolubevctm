@@ -217,8 +217,8 @@
 												<xsl:when test="property/wallMaterial='Cladding'"><real:MainConstructionMaterial>A</real:MainConstructionMaterial></xsl:when>
 												<xsl:when test="property/wallMaterial='Besser Block/Cement'"><real:MainConstructionMaterial>C</real:MainConstructionMaterial></xsl:when>
 												<xsl:when test="property/wallMaterial='Brick Veneer'"><real:MainConstructionMaterial>V</real:MainConstructionMaterial></xsl:when>
-												<xsl:when test="property/wallMaterial='Brick'"><real:MainConstructionMaterial>D</real:MainConstructionMaterial></xsl:when>
-												<xsl:when test="property/wallMaterial='Fibro'"><real:MainConstructionMaterial>F</real:MainConstructionMaterial></xsl:when>
+												<xsl:when test="property/wallMaterial='Double Brick'"><real:MainConstructionMaterial>D</real:MainConstructionMaterial></xsl:when>
+												<xsl:when test="property/wallMaterial='Non-asbestos Fibro'"><real:MainConstructionMaterial>F</real:MainConstructionMaterial></xsl:when>
 												<xsl:when test="property/wallMaterial='Stone'"><real:MainConstructionMaterial>S</real:MainConstructionMaterial></xsl:when>
 												<xsl:when test="property/wallMaterial='Weatherboard'"><real:MainConstructionMaterial>T</real:MainConstructionMaterial></xsl:when>
 												<xsl:otherwise><real:MainConstructionMaterial i:nil="true"/></xsl:otherwise>
@@ -249,7 +249,7 @@
 											<xsl:choose>
 												<xsl:when test="property/roofMaterial='Cement Tiles'"><real:MainRoofMaterial>C</real:MainRoofMaterial></xsl:when>
 												<xsl:when test="property/roofMaterial='Clay/Terracotta Tiles'"><real:MainRoofMaterial>C</real:MainRoofMaterial></xsl:when>
-												<xsl:when test="property/roofMaterial='Colourbond'"><real:MainRoofMaterial>A</real:MainRoofMaterial></xsl:when>
+												<xsl:when test="property/roofMaterial='Colorbond'"><real:MainRoofMaterial>A</real:MainRoofMaterial></xsl:when>
 												<xsl:when test="property/roofMaterial='Slate'"><real:MainRoofMaterial>B</real:MainRoofMaterial></xsl:when>
 												<xsl:otherwise><real:MainRoofMaterial i:nil="true"/></xsl:otherwise>
 											</xsl:choose>

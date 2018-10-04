@@ -11,6 +11,7 @@
     function initHealthContactNumber() {
         _setupFields();
         _applyEventListeners();
+	    sanitisedExistingPhoneNumbers();
         // Toggle the visible phone input when quote loaded
 	    var phone = $.trim($elements.flexiNumber.val()).replace(/\D/g,'');
         if(!_.isEmpty(phone)) {
@@ -48,7 +49,7 @@
         });
 
         $elements.inputs.on(dynamicChangeEvent, function onInputsEventTrigger() {
-            $elements.flexiNumber.val($(this).valid() ? $(this).val().replace(/ /g,'') : '');
+            $elements.flexiNumber.val($(this).valid() ? meerkat.modules.phoneFormat.cleanNumber($(this).val()) : "");
         });
     }
 
@@ -73,11 +74,65 @@
 	    $redundantInput.val('');
     }
 
+    function getPhoneForType(rawPhone, type) {
+    	var phone = meerkat.modules.phoneFormat.cleanNumber(rawPhone);
+    	var phoneType = meerkat.modules.phoneFormat.getPhoneType(phone);
+	    switch(type) {
+		    case "flexi":
+		    	return phoneType !== null ? phone : "";
+		    case "mobile":
+			    return phoneType === 'mobile' ? phone : "";
+		    case "landline":
+			    return phoneType === 'landline' ? phone : "";
+		    default:
+		    	return "";
+	    }
+    }
+    
+    function sanitisedExistingPhoneNumbers() {
+	    var phones = {
+			    flexi : $elements.flexiNumber.val(),
+			    quote : {
+				    mobile : $elements.phone.quote.mobile.val(),
+				    other : $elements.phone.quote.other.val()
+			    },
+			    application : {
+				    mobile : $elements.phone.application.mobile.val(),
+				    other : $elements.phone.application.other.val()
+			    }
+	    };
+	    // //////////////////////////////////////////////////////////////////
+        // This is to resolve cases where invalid numbers remain in a field
+        // even though the validation has failed and user has taken a step
+        // backwards in the journey. Rather than write that invalid value
+        // to the database we'll remove them (but keep the source input
+	    // field unchanged so user still aware number is invalid).
+	    // //////////////////////////////////////////////////////////////////
+	    var phone = "";
+	    if(!_.isEmpty(phones.flexi)) {
+	    	$elements.flexiNumber.val(getPhoneForType(phones.flexi, "flexi"));
+	    }
+	    if(!_.isEmpty(phones.quote.mobile)) {
+	    	$elements.phone.quote.mobile.val(getPhoneForType(phones.quote.mobile, "mobile"));
+	    }
+	    if(!_.isEmpty(phones.quote.other)) {
+		    $elements.phone.quote.other.val(getPhoneForType(phones.quote.other, "landline"));
+	    }
+	    if(!_.isEmpty(phones.application.mobile)) {
+		    $elements.phone.application.mobile.val(getPhoneForType(phones.quote.mobile, "mobile"));
+	    }
+	    if(!_.isEmpty(phones.application.other)) {
+		    $elements.phone.application.other.val(getPhoneForType(phones.quote.other, "landline"));
+	    }
+    }
+
     function insertContactNumber($contactNumberContainer, contactNumber) {
-        var contactBy = getContactBy(contactNumber);
+    	contactNumber = meerkat.modules.phoneFormat.cleanNumber(contactNumber);
+    	var contactBy = getContactBy(contactNumber);
         if(contactBy !== false) {
             $contactNumberContainer.attr('data-contact-by', contactBy);
-            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger(dynamicChangeEvent);
+            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber)
+            .trigger("change").trigger("blur").trigger("focusout");
         }
     }
 
@@ -88,17 +143,21 @@
     }
 
     function getContactBy(contactNumber) {
-        var contactBy = false;
-	    if (contactNumber.length > 0) {
-		    contactBy = contactNumber.match(/^(04|614|6104)/g) ? 'mobile' : 'other';
-	    }
-	    return contactBy;
+        var type = meerkat.modules.phoneFormat.getPhoneType(contactNumber);
+        switch(type) {
+	        case 'mobile':
+	        	return 'mobile';
+	        case 'landline':
+	        	return 'other';
+	        default:
+	        	return false;
+        }
     }
 
 	function getPhone(){
 		var mobile = $elements.phone.application.mobile.val();
 		if(_.isEmpty(mobile)) {
-			var other = $elements.phone.appliction.other.val();
+			var other = $elements.phone.application.other.val();
 			if(_.isEmpty(other)) {
 				mobile = $elements.phone.quote.mobile.val();
 				if(_.isEmpty(mobile)) {
@@ -118,7 +177,8 @@
         init: initHealthContactNumber,
         insertContactNumber: insertContactNumber,
         getContactNumberFromField: getContactNumberFromField,
-	    getPhone: getPhone
+	    getPhone: getPhone,
+	    sanitisedExistingPhoneNumbers: sanitisedExistingPhoneNumbers
     });
 
 })(jQuery);
