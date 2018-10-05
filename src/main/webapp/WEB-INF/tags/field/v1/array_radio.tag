@@ -9,11 +9,16 @@
 <%@ attribute name="id" 		required="false" rtexprvalue="true"	 description="id of the surround div" %>
 <%@ attribute name="title" 		required="true"  rtexprvalue="true"	 description="title of the radio buttons" %>
 <%@ attribute name="items" 		required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
+<%@ attribute name="delims"			required="false"  rtexprvalue="true" description="Appoints a new delimiter set, i.e. ||" %>
 <%@ attribute name="defaultValue" 	required="false"  rtexprvalue="true"  description="default value to be checked" %>
 <%@ attribute name="helpId" 	required="false" rtexprvalue="true"  description="The rows help id (if non provided, help is not shown)" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+
+<c:if test="${empty delims}">
+	<c:set var="delims" value="," />
+</c:if>
 
 <c:if test="${required}">
 	<c:set var="requiredAttribute" value=' required="required" ' />
@@ -27,7 +32,7 @@
 </c:if>
 <div>
 <div class="${className} radio_buttons" id="${id}">
-	<c:forTokens items="${items}" delims="," var="radio" varStatus="status">
+	<c:forTokens items="${items}" delims="${delims}" var="radio" varStatus="status">
 		<c:set var="val" value="${fn:substringBefore(radio,'=')}" />
 		<c:set var="des" value="${fn:substringAfter(radio,'=')}" />
 		<c:set var="id" value="${name}_${val}" />
