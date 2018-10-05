@@ -202,7 +202,18 @@
 		return Math.floor(seconds) + " seconds";
 	}
 
+	function applyErrorMessage(id, message) {
+		var $container = $('#' + id).parent().parent();
+		if (!$container.hasClass('has-error')) {
+			$container.addClass('has-error');
+			$container.removeClass('has-success');
+			var template = '<div class="error-field"><label id=' + id + '-error" class="has-error" for="' + id + '">' + message + '</label></div>';
+			$container.prepend(template);
+		}
+	}
+
 	meerkat.modules.register('utils', {
+		applyErrorMessage: applyErrorMessage,
 		slugify: slugify,
 		scrollPageTo: scrollPageTo,
 		getUTCToday: UTCToday,
