@@ -46,6 +46,7 @@
     }
 
     function _setupFields() {
+
         $elements = {
             situationSelect: $('input[name=health_situation_healthCvr]'),
             applyRebate: $('input[name="health_healthCover_rebate"]'),
@@ -56,7 +57,7 @@
                 single: $('#health_healthCover_income_field_row .control-label span[data-situation=single]'),
                 hasPartner: $('#health_healthCover_income_field_row .control-label span[data-situation=hasPartner]')
             },
-            incomeSelect: $('#health_healthCover_income'),
+            incomeSelect: $(':input[name="health_healthCover_income"]'),
             rebateLabel: $('#rebateLabel'),
             rebateLabelText: $('#rebateLabel span'),
             rebateLegend: $('#health_healthCover_tier_row_legend'),
@@ -108,11 +109,19 @@
 
     function updateSelectedRebateLabel() {
         // on first load, select the dropdown value and set it as a text label
-        var selectedIncome = $elements.incomeSelect.prop('selectedIndex') === 0 ? '' : 'earning ' + $elements.incomeSelect.find(':selected').text(),
+        var selectedIncome,
             completeText = '',
             dependantsText = "including any adjustments for your " + $elements.dependentsSelect.val() + " dependants",
             cover = meerkat.modules.healthChoices.returnCoverCode(),
-            rebateTierText = $elements.incomeSelect.val() === '' ? '' :rebateTiers[$elements.incomeSelect.val()];
+            rebateTierText;
+
+        if ($elements.incomeSelect.filter(':checked').length === 0) {
+            rebateTierText = '';
+            selectedIncome = '';
+        } else {
+            rebateTierText = rebateTiers[$elements.incomeSelect.filter(':checked').val()];
+            selectedIncome =  'earning ' + $("label[for="+$elements.incomeSelect.filter(':checked').attr("id")+"]").text();
+        }
 
         if (cover !== '') {
             var statusText = '';
@@ -160,9 +169,11 @@
     function setRebate(forceRebate) {
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(forceRebate, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
-                if ($elements.incomeSelect.prop('selectedIndex') > 0) {
+
+                if ($elements.incomeSelect.filter(':checked').length > 0) {
                     $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
                 }
+
                 rebate = rates.rebate;
             } else {
                 $elements.rebateLegend.html('');
