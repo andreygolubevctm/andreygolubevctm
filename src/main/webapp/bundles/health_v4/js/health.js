@@ -9,13 +9,12 @@
         log = meerkat.logging.info;
 
     var moduleEvents = {
-            health: {
-                SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
-            },
-            WEBAPP_LOCK: 'WEBAPP_LOCK',
-            WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+        health: {
+            SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
         },
-        steps = null;
+        WEBAPP_LOCK: 'WEBAPP_LOCK',
+        WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+    }, steps = null;
 
     function initHealth() {
 

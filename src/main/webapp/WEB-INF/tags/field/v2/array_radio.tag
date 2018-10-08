@@ -10,7 +10,6 @@
 <%@ attribute name="id" 		required="false" rtexprvalue="true"	 description="id of the surround div" %>
 <%@ attribute name="title" 		required="true"  rtexprvalue="true"	 description="title of the radio buttons" %>
 <%@ attribute name="items" 		required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
-<%@ attribute name="delims"			required="false"  rtexprvalue="true" description="Appoints a new delimiter set, i.e. ||" %>
 <%@ attribute name="defaultValue" 	required="false"  rtexprvalue="true"  description="default value to be checked" %>
 <%@ attribute name="helpId" 	required="false" rtexprvalue="true"  description="The rows help id (if non provided, help is not shown)" %>
 <%@ attribute name="style"  	required="false" rtexprvalue="true"  description="Options: 'inline' = standard inline floating; 'group' = grouped together like buttons" %>
@@ -18,17 +17,12 @@
 <%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
 <%@ attribute name="additionalLabelAttributes"  	required="false" rtexprvalue="true"  description="Additional attributes specifically for the label element" %>
 <%@ attribute name="wrapCopyInSpan" required="false" rtexprvalue="true" description="Flag to wrap text inside label with span tags" %>
-<%@ attribute name="outerWrapperClassName" 	required="false" rtexprvalue="true"	 description="Another additional css class attribute for the span that wraps the input and label" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <c:if test="${not empty id}">
 	<c:set var="id" value=' id="${id}"' />
-</c:if>
-
-<c:if test="${empty delims}">
-	<c:set var="delims" value="," />
 </c:if>
 
 <c:if test="${required}">
@@ -67,10 +61,6 @@
 		<c:set var="classVar" value="btn btn-form-inverse-pill ${classLabel}" />
 		<c:set var="className" value='btn-group btn-group-justified ${className}" data-toggle="radio' />
 	</c:when>
-	<c:when test="${style == 'radio-as-checkbox'}">
-		<c:set var="classVar" value="radio-as-checkbox ${classLabel}" />
-	</c:when>
-
 	<c:otherwise>
 		<c:set var="classVar" value="btn btn-form-inverse ${classLabel}" />
 		<c:set var="className" value='btn-group btn-group-justified ${className}" data-toggle="radio' />
@@ -92,7 +82,7 @@
 
 <%-- HTML --%>
 <div class="${className}" ${id}>
-	<c:forTokens items="${items}" delims="${delims}" var="radio" varStatus="status">
+	<c:forTokens items="${items}" delims="," var="radio" varStatus="status">
 		<c:set var="val" value="${fn:substringBefore(radio,'=')}" />
 		<c:set var="des" value="${fn:substringAfter(radio,'=')}" />
 		<c:set var="id" value="${name}_${val}" />
@@ -115,21 +105,9 @@
 					<c:if test="${wrapCopyInSpan}"><c:out value="</span>" escapeXml="false" /></c:if>
 				</label>
 			</c:when>
-			<c:when test="${style == 'radio-as-checkbox'}">
-				<div class="${outerWrapperClassName} ${active}">
-					<div class="checkbox">
-						<input type="radio" name="${name}" id="${id}" class="checkbox-custom checkbox" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
-						<label for="${id}" class="${classVar} ${active}" ${additionalLabelAttributes}>
-							<c:if test="${wrapCopyInSpan}"><c:out value="<span>" escapeXml="false" /></c:if>
-							<c:out value="${des}" escapeXml="false" />
-							<c:if test="${wrapCopyInSpan}"><c:out value="</span>" escapeXml="false" /></c:if>
-						</label>
-					</div>
-				</div>
-			</c:when>
 			<%-- FOR NORMAL OR INLINE --%>
 			<c:otherwise>
-				<div class="${classVar} ${active} ${outerWrapperClassName}">
+				<div class="${classVar} ${active}">
 					<label ${additionalLabelAttributes}>
 						<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
 						<c:if test="${wrapCopyInSpan}"><c:out value="<span>" escapeXml="false" /></c:if>
