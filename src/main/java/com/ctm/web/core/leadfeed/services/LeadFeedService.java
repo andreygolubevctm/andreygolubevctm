@@ -117,9 +117,11 @@ public abstract class LeadFeedService {
 		final TouchType touchType;
 		LeadFeedService.LeadType processType = LeadType.BEST_PRICE;
 		if (leadData.isPartnerReferenceChange()) {
+			LOGGER.info("[Lead feed] Setting to Best Price lead type due to partner ref change.");
 			processType = LeadType.BEST_PRICE;
 			touchType = TouchType.LEAD_BEST_PRICE_DD;
 		} else {
+			LOGGER.info("[Lead feed] transposing {}", leadData.getLeadType());
 			switch(leadData.getLeadType()){
 				case CALL_DIRECT:
 					processType = LeadFeedService.LeadType.CALL_DIRECT;
@@ -132,7 +134,7 @@ public abstract class LeadFeedService {
 					touchType = TouchType.NOSALE_CALL; break;
 				case MORE_INFO:
 					processType = LeadType.MORE_INFO;
-					touchType = TouchType.MORE_INFO; break;
+					touchType = TouchType.MORE_INFO_REQUEST; break;
 				default:
 					processType = LeadType.BEST_PRICE;
 					touchType = TouchType.LEAD_BEST_PRICE;
