@@ -52,7 +52,7 @@
 
             <c:set var="fieldXpath" value="${xpath}/income" />
             <form_v4:row fieldXpath="${fieldXpath}" label="What is the estimated taxable income for your household for the financial year 1st July ${financialYearStart} to 30 June ${financialYearEnd}?" id="${name}_tier">
-                <field_v2:array_select xpath="${fieldXpath}"  title="Please enter your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_dependants_details_income"/>
+                <field_v2:array_radio xpath="${fieldXpath}"  title="Please enter your household income" required="true" items="0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" style="radio-as-checkbox" wrapCopyInSpan="true" outerWrapperClassName="col-xs-12 col-sm-6" className="income health_dependants_details_income radio-as-checkbox"/>
                 <span class="fieldrow_legend" id="${name}_incomeMessage"></span>
             </form_v4:row>
         </div>
