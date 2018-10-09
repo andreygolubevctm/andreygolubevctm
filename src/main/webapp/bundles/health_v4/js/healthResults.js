@@ -319,12 +319,14 @@
             if (generalInfo.pricesHaveChanged) {
                 meerkat.modules.dialogs.show({
                     title: "Just a quick note",
+	                className: "health-results-changed-modal",
                     htmlContent: $('#quick-note').html(),
                     buttons: [{
                         label: "Show latest results",
                         className: "btn btn-next",
                         closeWindow: true
-                    }]
+                    }],
+                    forceShowFooter: true
                 });
                 $("input[name='health_retrieve_savedResults']").val("N");
             }
@@ -430,12 +432,14 @@
 
                     meerkat.modules.dialogs.show({
                         title: "Just a quick note",
+                        className: "health-results-changed-modal",
                         htmlContent: htmlContent,
                         buttons: [{
                             label: "Show latest results",
                             className: "btn btn-next",
                             closeWindow: true
-                        }]
+                        }],
+                        forceShowFooter: true
                     });
                 }
 
