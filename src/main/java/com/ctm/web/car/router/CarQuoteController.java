@@ -116,12 +116,4 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
         }
         return new Response(HttpStatus.OK, "Success");
     }
-
-    @RequestMapping(
-            value = "test",
-            method = RequestMethod.GET
-    )
-    public void sentryTest(){
-        throw new InvalidRequestException("Test Sentry Error");
-    }
 }
