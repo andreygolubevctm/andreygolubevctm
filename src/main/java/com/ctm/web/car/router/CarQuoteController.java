@@ -1,5 +1,6 @@
 package com.ctm.web.car.router;
 
+import com.ctm.common.exception.InvalidRequestException;
 import com.ctm.web.car.model.CarProduct;
 import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.request.propensityscore.Response;
@@ -114,5 +115,13 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
             return new Response(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong. That's all we know");
         }
         return new Response(HttpStatus.OK, "Success");
+    }
+
+    @RequestMapping(
+            value = "test",
+            method = RequestMethod.GET
+    )
+    public void sentryTest(){
+        throw new InvalidRequestException("Test Sentry Error");
     }
 }
