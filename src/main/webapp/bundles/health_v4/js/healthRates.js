@@ -15,6 +15,7 @@
     }
 
     function _setupFields() {
+
         $elements = {
             income: $('select[name="health_healthCover_income"]'),
             rebate: $('input[name="health_healthCover_rebate"]'),
@@ -78,7 +79,7 @@
         _.defer(function(){
             var postData = {
                 dependants: $elements.dependants.val(),
-                income: $elements.income.val() || 0,
+                income: ($elements.income.filter(':checked').val() || 0),
                 rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),
                 primary_loading: '',
@@ -116,7 +117,7 @@
         _.defer(function() {
             var postData = {
                 dependants: $elements.dependants.val(),
-                income: $elements.income.val() || 0,
+                income: ($elements.income.filter(':checked').val() || 0),
                 rebate_choice: $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),
                 primary_loading: '',
