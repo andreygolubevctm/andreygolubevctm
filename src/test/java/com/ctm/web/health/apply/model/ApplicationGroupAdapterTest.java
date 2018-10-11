@@ -3,6 +3,7 @@ package com.ctm.web.health.apply.model;
 import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
 import com.ctm.web.health.apply.model.request.application.Emigrate;
 import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
+import com.ctm.web.health.apply.model.request.application.applicant.healthCover.EverHadCover;
 import com.ctm.web.health.apply.model.request.application.situation.Situation;
 import com.ctm.web.health.model.form.*;
 import org.junit.Test;
@@ -79,11 +80,16 @@ public class ApplicationGroupAdapterTest {
         final Fund previousFund = mock(Fund.class);
         final Integer certifiedAge = 1;
         final Insured insured = mock(Insured.class);
+
+        when(insured.getEverHadCover()).thenReturn("Y");
+
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
                 Optional.of(certifiedAge), Optional.of(insured),Emigrate.Y);
         assertNotNull(applicant);
+        assertEquals(applicant.getHealthCover().getEverHadCover(), EverHadCover.Y);
         assertNotNull(applicant.getHealthCover());
         assertNull(applicant.getPreviousFund());
+
         assertNotNull(applicant.getCertifiedAgeEntry());
         verify(person, times(1)).getTitle();
         verify(person, times(1)).getFirstname();
@@ -92,6 +98,7 @@ public class ApplicationGroupAdapterTest {
         verify(person, times(1)).getDob();
         verify(insured, times(1)).getCover();
         verify(insured, times(1)).getHealthCoverLoading();
+        verify(insured, times(1)).getEverHadCover();
         verify(person, times(1)).getAuthority();
     }
 
