@@ -537,7 +537,7 @@
 							<sql:param>${transactionId}</sql:param>
 							<sql:param>-4</sql:param>
 							<sql:param>useragent</sql:param>
-							<sql:param>${fn:substring(useragent, 0, 1000)}</sql:param>
+							<sql:param>${useragent}</sql:param>
 						</sql:update>
 					</c:if>
 					<c:if test="${not empty trigger}">
@@ -553,6 +553,7 @@
 						</sql:update>
 					</c:if>
 					<c:if test="${not empty triggerreason}">
+						<c:if test="${fn:length(triggerreason) > 900}"><c:set var="triggerreason" value="${fn:substring(triggerreason, 0, 900)}" /></c:if>
 						<sql:update>
 							INSERT INTO aggregator.transaction_details
 							(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
@@ -561,7 +562,7 @@
 							<sql:param>${transactionId}</sql:param>
 							<sql:param>-6</sql:param>
 							<sql:param>fatalerrorreason</sql:param>
-							<sql:param>${fn:substring(triggerreason, 0, 1000)}</sql:param>
+							<sql:param>${triggerreason}</sql:param>
 						</sql:update>
 					</c:if>
 					<c:if test="${not empty pendingID}">
@@ -600,7 +601,7 @@
 							<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
 
 							<%-- Cap the value to a certain length so we don't get database errors --%>
-							<c:if test="${fn:length(rowVal) > 1000}"><c:set var="rowVal" value="${fn:substring(rowVal, 0, 1000)}" /></c:if>
+							<c:if test="${fn:length(rowVal) > 900}"><c:set var="rowVal" value="${fn:substring(rowVal, 0, 900)}" /></c:if>
 
 							<c:choose>
 
