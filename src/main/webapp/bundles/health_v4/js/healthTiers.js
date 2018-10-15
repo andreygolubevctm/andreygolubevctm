@@ -150,7 +150,7 @@ Handling of the rebate tiers based off situation
     }
 
     function getIncome() {
-    	return $income.val();
+    	return $income.filter(':checked').val();
 	}
 
 	meerkat.modules.register("healthTiers", {
