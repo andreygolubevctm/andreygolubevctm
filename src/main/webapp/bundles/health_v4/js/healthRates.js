@@ -17,7 +17,7 @@
     function _setupFields() {
 
         $elements = {
-            income: $('select[name="health_healthCover_income"]'),
+            income: $(':input[name="health_healthCover_income"]'),
             rebate: $('input[name="health_healthCover_rebate"]'),
             primaryDob: $('#health_healthCover_primary_dob'),
             primaryAppDob: $('#health_application_primary_dob'),
