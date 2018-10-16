@@ -65,6 +65,7 @@
             closeOnHashChange: false,
             openOnHashChange: true,
             fullHeight: false, // By default, a modal shorter than the viewport will be centred. Set to true to vertically fill the viewport.
+            forceShowFooter: false,
             templates: {
                 dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>' +
                 '<div class="modal-dialog {{= className }}">' +
@@ -109,7 +110,7 @@
                 '{{= htmlContent }}' +
                 '</div>' +
                 '{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}' +
-                '<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">' +
+                '<div class="modal-footer {{ if(buttons.length > 1 || forceShowFooter === true ){ }} mustShow {{ } }}">' +
                 '{{ _.each(buttons, function(button, iterator) { }}' +
                 '<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>' +
                 '{{ }); }}' +

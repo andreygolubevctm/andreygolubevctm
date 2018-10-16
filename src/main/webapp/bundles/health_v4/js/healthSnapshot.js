@@ -20,13 +20,14 @@
     }
 
     function _setupFields() {
+
         $elements = {
             quoteSnapshot: $('.quoteSnapshot'),
             livingIn: $('.quoteSnapshot .living-in'),
             livingInSpan: $('.quoteSnapshot .living-in .snapshot-items span'),
             state: $('#health_situation_state'),
             cover: $('input[name=health_situation_healthCvr]'),
-            income: $('#health_healthCover_income'),
+            income: $(':input[name="health_healthCover_income"]') ,
             toggleList: $('.toggle-snapshot-list'),
             bornLabels: $('.quoteSnapshot .born-labels'),
             addPartnerDob: $('.add-partner-dob'),
@@ -198,7 +199,7 @@
             primaryBorn = $elements.primary.dob.val(),
             partnerBorn = $elements.partner.dob.val(),
             rebateText = _fetchRebateText(),
-            rebateSubText = _fetchRebateSubText($elements.income.val()),
+            rebateSubText = _fetchRebateSubText($elements.income.filter(':checked').val()),
             hospital = _fetchBenefits(true),
             extras = _fetchBenefits();
 

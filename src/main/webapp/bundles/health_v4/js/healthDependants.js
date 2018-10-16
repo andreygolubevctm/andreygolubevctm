@@ -104,7 +104,9 @@
         $(document).ready(function () {
             $elements = {
                 dependantsRow: $('#health_healthCover_dependants_field_row'),
-                dependants: $('select[name=health_healthCover_dependants]')
+                dependants: $('select[name=health_healthCover_dependants]'),
+                aboutYouIncomeInput: $(':input[name="health_healthCover_income"]'),
+                applicationDependantsIncomeInput: $(':input[name="health_application_dependants_income"]')
             };
 
             aboutYouApplyEventListeners();
@@ -170,9 +172,12 @@
                 addNewDependant(true);
             });
 
-        // Sync income tier value (which can be changed if you change the number of dependants you have).
-        $('#health_application_dependants_income').on('change', function syncIncomeTierValues() {
-            $('.health_cover_details_income').val($(this).val());
+        // Sync income tier value (which changes with the number of dependants you have).
+        $(':input[name="health_application_dependants_income"]').on('change', function syncIncomeTierValues() {
+            var selectedVal = $elements.applicationDependantsIncomeInput.filter(':checked').val();
+            if (! _.isUndefined(selectedVal)) {
+                $elements.aboutYouIncomeInput.filter('[value="'+ selectedVal +'"]').prop('checked', true).trigger('change');
+            }
         });
     }
 
@@ -395,13 +400,24 @@
             // Refresh the dependants on the situation step. Only reset it to a smaller number if
             $depCount.val(depCount).trigger('change');
             // Refresh rebate tiers on apply step.
-            $applyPageIncomeTierMenu.find('select').html($('#health_healthCover_income').html());
+
+            // the following gets the labels used by $elements.aboutYouIncomeInput and apply them to the respective labels for $elements.applicationDependantsIncomeInput
+            // it builds something like this:   $applyPageIncomeTierMenu.find('label[for="health_application_dependants_income_0"]').html($('label[for="health_healthCover_income_0"]').html());
+            var dependantsIncomeInputName = "health_application_dependants_income";
+            var healthCoverIncomeInputName = "health_healthCover_income";
+            $applyPageIncomeTierMenu.find(':input[name="health_application_dependants_income"]').each(function() {
+                var tierNumber = this.value;
+                $applyPageIncomeTierMenu.find('label[for="' + dependantsIncomeInputName + '_' + tierNumber + '"]').html($('label[for="' + healthCoverIncomeInputName + '_' + tierNumber + '"]').html());
+            });
+
             $('#health_application_dependants_incomeMessage').text('this includes an adjustment for your dependants');
 
             // Hide if the dependant count is the same.
             if(depCount == originalDepCount) {
                 $applyPageIncomeTierMenu.slideUp();
             } else {
+                // always force user to choose a tier as the thresholds change when adding/removing dependants
+                $(':input[name="health_application_dependants_income"]').prop('checked', false).trigger('change');
                 $applyPageIncomeTierMenu.slideDown();
             }
         } else {

@@ -9,6 +9,7 @@
 <%@ attribute name="smRowOverride" required="false" rtexprvalue="true" description="Override the SM value" %>
 <%@ attribute name="isNestedField" required="false" rtexprvalue="true" description="Toggle to automatically set some styling values for the nested fields eg name_group.tag" %>
 <%@ attribute name="isNestedStyleGroup" required="false" rtexprvalue="true" description="Toggle to remove the col-xs-12 class. If not removed breaks the nesting design introduced to health" %>
+<%@ attribute name="rowContentClass" required="false" rtexprvalue="true" description="additional css class attribute" %>
 
 <%-- Attributes to pass through --%>
 <%@ attribute name="fieldXpath" required="false" rtexprvalue="true" description="The xpath of the field the label needs to point to" %>
@@ -60,7 +61,7 @@
         </c:if>
     </c:if>
     <%-- Row Input --%>
-    <div class="col-xs-12 col-sm-<c:out value="${inputWidthSm}" /> <c:out value="${inputClass}" /> <c:out value="${inputOffsetSm}" /> row-content">
+    <div class="col-xs-12 col-sm-<c:out value="${inputWidthSm}" /> <c:out value="${inputClass}" /> <c:out value="${inputOffsetSm}" /> <c:out value="${rowContentClass}" /> row-content">
         <jsp:doBody />
     </div>
 </div>

@@ -9,12 +9,13 @@
         log = meerkat.logging.info;
 
     var moduleEvents = {
-        health: {
-            SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
+            health: {
+                SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
+            },
+            WEBAPP_LOCK: 'WEBAPP_LOCK',
+            WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
         },
-        WEBAPP_LOCK: 'WEBAPP_LOCK',
-        WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
-    }, steps = null;
+        steps = null;
 
     function initHealth() {
 
@@ -423,6 +424,8 @@
                             });
                         }
                     }, 1000);
+
+                    meerkat.modules.healthLHC.resetNewLHC();
                 }
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
@@ -551,7 +554,8 @@
                     // Insert fund into Contact Authority
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-                    meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                    meerkat.modules.healthLHC.onInitialise();
+
                     meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
