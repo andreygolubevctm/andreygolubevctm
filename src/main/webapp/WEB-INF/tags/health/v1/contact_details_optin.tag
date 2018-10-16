@@ -126,8 +126,6 @@
                 <field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
             </form_v3:row>
 
-
-
             <%-- Medicare card question --%>
             <c:if test="${callCentre}">
                 <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/cover" />
