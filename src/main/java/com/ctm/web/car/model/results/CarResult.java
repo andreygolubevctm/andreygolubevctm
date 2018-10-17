@@ -30,6 +30,8 @@ public class CarResult extends Result {
 
     private String excess;
 
+    private String glassExcess;
+
     private Contact contact;
 
     private Price price;
@@ -189,6 +191,10 @@ public class CarResult extends Result {
     public void setExcess(String excess) {
         this.excess = excess;
     }
+
+    public String getGlassExcess() { return glassExcess; }
+
+    public void setGlassExcess(String glassExcess) { this.glassExcess = glassExcess; }
 
     public List<AdditionalExcess> getAdditionalExcesses() {
         return additionalExcesses;
