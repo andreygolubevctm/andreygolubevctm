@@ -110,8 +110,18 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 					sendProductBrochureEmail(request, emailAddress,transactionId);
 				}
 				break;
+			default:
+				break;
+		}
+		return "";
+	}
+
+	@Override
+	public String send(HttpServletRequest request, String emailAddress,
+					   long transactionId, long productId) throws SendEmailException {
+		switch (emailMode) {
 			case APP:
-				return sendApplicationEmail(request, emailAddress, transactionId);
+				return sendApplicationEmail(request, emailAddress, transactionId, productId);
 			default:
 				break;
 		}
@@ -142,7 +152,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 	@Override
-	public String sendApplicationEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
+	public String sendApplicationEmail(HttpServletRequest request, String emailAddress, long transactionId, long productId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(ApplicationEmailHandler.MAILING_NAME_KEY);
 		try {
@@ -152,7 +162,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, getOperatorFromRequest(request),  ipAddressHandler.getIPAddress(request));
 			if(!isTestEmailAddress) {
-				EmailResponse response = marketingAutomationEmailService.sendEventEmail(buildApplicationEmailModel(emailDetails, transactionId, request));
+				EmailResponse response = marketingAutomationEmailService.sendEventEmail(buildApplicationEmailModel(emailDetails, transactionId, productId, request));
 				if(!response.getSuccess()){
 					LOGGER.info("An error occurred sending the Health application confirmation email via the marketing automation service - Reason: {}", response.getMessage());
 					return "0";
@@ -261,14 +271,14 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		return emailModel;
 	}
 
-	private EmailEventRequest buildApplicationEmailModel(EmailMaster emailDetails, long transactionId, HttpServletRequest request) throws SendEmailException {
+	private EmailEventRequest buildApplicationEmailModel(EmailMaster emailDetails, long transactionId, long productId, HttpServletRequest request) throws SendEmailException {
 
 		Optional<HealthRequest> data = Optional.ofNullable((HealthRequest) request.getAttribute("requestData"));
 		final Data dataBucket;
 		final JSONObject productJSON;
 		try {
 			dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(transactionId), true);
-			final String productSelected = new HealthSelectedProductService().getProductXML(transactionId);
+			final String productSelected = new HealthSelectedProductService().getProductXML(transactionId, productId);
 			productJSON = new JSONObject(productSelected);
 		} catch (DaoException | JSONException | SessionException e) {
 			throw new SendEmailException("Failed to buildApplicationEmailModel", e);

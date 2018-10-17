@@ -50,7 +50,7 @@ public class HealthConfirmationService {
         try {
             LocalDate startDate = LocalDate.parse(data.getQuote().getPayment().getDetails().getStart(), AUS_FORMAT);
             String providerName = data.getQuote().getApplication().getProviderName();
-            final String productSelected = selectedProductService.getProductXML(data.getTransactionId());
+            final String productSelected = selectedProductService.getProductXML(data.getTransactionId(), Long.parseLong(data.getQuote().getApplication().getProductId()));
             String frequency = Frequency.findByDescription(data.getQuote().getPayment().getDetails().getFrequency()).getCode();
             String next = getContent(request, providerName, dataBucket.getString("current/brandCode"),"NXT");
             String about = getContent(request, providerName, dataBucket.getString("current/brandCode"),"ABT");

@@ -144,6 +144,7 @@ public class HealthQuoteController extends CommonQuoteRouter {
             if (!isShowAll) {
                 HealthSelectedProductService selectedProductService = new HealthSelectedProductService(
                         data.getTransactionId(),
+                        Long.parseLong(data.getHealth().getApplication().getProductId()),
                         ObjectMapperUtil.getObjectMapper().writeValueAsString(results)
                 );
             }

@@ -49,6 +49,12 @@ public abstract class EmailServiceHandler {
 	public abstract String send(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException;
 
+	public String send(HttpServletRequest request, String emailAddress,
+		   	long transactionId, long productId) throws SendEmailException {
+		return null;
+	}
+
+
 	public static boolean isTestEmailAddress(String emailAddress){
 		return testEmails.contains(emailAddress);
 	}

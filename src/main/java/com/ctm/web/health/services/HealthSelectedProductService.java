@@ -15,16 +15,16 @@ public class HealthSelectedProductService {
         this.selectedProductDao = new HealthSelectedProductDao();
     }
 
-	public HealthSelectedProductService(final long transactionId, final String productXML) throws DaoException {
+	public HealthSelectedProductService(final long transactionId, final long productId, final String productXML) throws DaoException {
 		this.selectedProductDao = new HealthSelectedProductDao();
-		setProductXML(transactionId, productXML);
+		setProductXML(transactionId, productId, productXML);
 	}
 
-    public String getProductXML(final long transactionId) throws DaoException {
-        return selectedProductDao.getSelectedProduct(transactionId);
+    public String getProductXML(final long transactionId, final long productId) throws DaoException {
+        return selectedProductDao.getSelectedProduct(transactionId, productId);
     }
 
-    public void setProductXML(final long transactionId, final String productXML) throws DaoException {
-        selectedProductDao.addSelectedProduct(transactionId, productXML);
+    public void setProductXML(final long transactionId, final long productId, final String productXML) throws DaoException {
+        selectedProductDao.addSelectedProduct(transactionId, productId, productXML);
     }
 }

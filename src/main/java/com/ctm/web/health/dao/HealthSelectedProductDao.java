@@ -22,21 +22,22 @@ public class HealthSelectedProductDao {
 	public HealthSelectedProductDao() {}
 
 
-    public HealthSelectedProductDao(long transactionId, String productXML) throws DaoException {
-    	addSelectedProduct(transactionId, productXML);
+    public HealthSelectedProductDao(final long transactionId, final long productId, final String productXML) throws DaoException {
+    	addSelectedProduct(transactionId, productId, productXML);
     }
 
-    public void addSelectedProduct(long transactionId, String productXML) throws DaoException {
+    public void addSelectedProduct(final long transactionId, final long productId, final String productXML) throws DaoException {
 
         final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         PreparedStatement stmt = null;
 
         try {
             stmt = dbSource.getConnection().prepareStatement(
-            "INSERT INTO ctm.health_selected_product (transactionId, productXML) VALUES (?,?); "
+            "INSERT INTO ctm.health_selected_product (transactionId, productId, productXML) VALUES (?,?,?); "
             );
             stmt.setLong(1, transactionId);
-            stmt.setString(4, productXML);
+            stmt.setLong(2, productId);
+            stmt.setString(3, productXML);
 
             stmt.executeUpdate();
         } catch (NamingException | SQLException e) {
@@ -53,7 +54,7 @@ public class HealthSelectedProductDao {
         }
     }
 
-    public String getSelectedProduct(final long transactionId) throws DaoException {
+    public String getSelectedProduct(final long transactionId, final long productId) throws DaoException {
 
         final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         PreparedStatement stmt = null;
@@ -63,10 +64,11 @@ public class HealthSelectedProductDao {
             stmt = dbSource.getConnection().prepareStatement(
                     "SELECT productXML " +
                             "FROM ctm.health_selected_product " +
-                            "WHERE transactionId=? " +
+                            "WHERE transactionId=? AND productId=? " +
                             "ORDER BY created DESC LIMIT 1"
             );
             stmt.setLong(1, transactionId);
+            stmt.setLong(2, productId);
             final ResultSet results = stmt.executeQuery();
             while (results.next()) {
                 productXML = results.getString("productXML");

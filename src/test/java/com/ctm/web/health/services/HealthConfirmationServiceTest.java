@@ -67,6 +67,7 @@ public class HealthConfirmationServiceTest {
         String policyNo = "policyNo";
         data.getQuote().getApplication().getPrimary().setFirstname(expectedFirstName);
         data.getQuote().getApplication().getPrimary().setSurname(expectedLastName);
+        data.getQuote().getApplication().setProductId("1234567");
         HealthApplicationResponse response = new HealthApplicationResponse();
         response.productId = policyNo;
         String confirmationId = "123456";

@@ -351,7 +351,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
             EmailServiceFactory emailServiceFactory = applicationContext.getBean(EmailServiceFactory.class);
             final EmailServiceHandler emailServiceHandler = emailServiceFactory.newInstance(getPageSettingsByCode(brand, vertical),
                     EmailMode.APP, dataBucket);
-            confirmationEmailCode = emailServiceHandler.send(request, email, data.getTransactionId());
+            confirmationEmailCode = emailServiceHandler.send(request, email, data.getTransactionId(), Long.parseLong(data.getHealth().getApplication().getProductId()));
         } catch (SendEmailException se) {
             confirmationEmailCode = "0";
         }
