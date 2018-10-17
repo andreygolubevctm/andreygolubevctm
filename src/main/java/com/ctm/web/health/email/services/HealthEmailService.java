@@ -39,6 +39,7 @@ import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.model.request.HealthEmailBrochureRequest;
 import com.ctm.web.health.quote.model.ResponseAdapterV2;
 import com.ctm.web.health.services.ProviderContentService;
+import com.ctm.web.health.services.HealthSelectedProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -267,12 +268,9 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		final JSONObject productJSON;
 		try {
 			dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(transactionId), true);
-			final String productSelected = StringUtils.removeEnd(
-					StringUtils.removeStart(dataBucket.getString("confirmation/health"), "<![CDATA["),
-					"]]>");
-
+			final String productSelected = new HealthSelectedProductService().getProductXML(transactionId);
 			productJSON = new JSONObject(productSelected);
-		} catch (DaoException | SessionException |JSONException e) {
+		} catch (DaoException | JSONException | SessionException e) {
 			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
 		}
 

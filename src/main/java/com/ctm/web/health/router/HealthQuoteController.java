@@ -20,7 +20,6 @@ import com.ctm.web.core.services.tracking.TrackingKeyService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.HealthQuoteResult;
@@ -28,6 +27,7 @@ import com.ctm.web.health.model.results.InfoHealth;
 import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.services.HealthQuoteEndpointService;
 import com.ctm.web.health.services.HealthQuoteService;
+import com.ctm.web.health.services.HealthSelectedProductService;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,17 +142,10 @@ public class HealthQuoteController extends CommonQuoteRouter {
             info.setPricesHaveChanged(quotes.isHasPriceChanged());
 
             if (!isShowAll) {
-
-                if (dataBucket.hasChild("confirmation")) {
-                    dataBucket.removeChild("confirmation");
-                }
-
-                XmlNode confirmation = new XmlNode("confirmation");
-                dataBucket.addChild(confirmation);
-                XmlNode details = new XmlNode("health");
-                confirmation.addChild(details);
-
-                details.setText("<![CDATA[" + ObjectMapperUtil.getObjectMapper().writeValueAsString(results) + "]]>");
+                HealthSelectedProductService selectedProductService = new HealthSelectedProductService(
+                        data.getTransactionId(),
+                        ObjectMapperUtil.getObjectMapper().writeValueAsString(results)
+                );
             }
 
             // create resultsWrapper with the token

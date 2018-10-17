@@ -28,6 +28,8 @@ public class HealthConfirmationServiceTest {
     @Mock
     private ConfirmationService confirmationService;
     @Mock
+    private HealthSelectedProductService selectedProductService;
+    @Mock
     private HttpServletRequest request;
     private HealthRequest data;
     private String providerName = "TEST";
@@ -35,7 +37,7 @@ public class HealthConfirmationServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        healthConfirmationService = new HealthConfirmationService( providerContentService,  confirmationService);
+        healthConfirmationService = new HealthConfirmationService( providerContentService,  confirmationService, selectedProductService );
          data = new HealthRequest();
         data.setTransactionId(10000L);
         HealthQuote health = new HealthQuote();

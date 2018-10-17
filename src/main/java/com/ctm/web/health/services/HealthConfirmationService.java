@@ -9,9 +9,11 @@ import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.apply.model.request.payment.details.Frequency;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
+import com.ctm.web.health.dao.HealthSelectedProductDao;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
 import com.ctm.web.health.router.ConfirmationData;
+import com.ctm.web.health.services.HealthSelectedProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,11 +36,13 @@ public class HealthConfirmationService {
 
     private final ProviderContentService providerContentService;
     private final ConfirmationService confirmationService;
+    private final HealthSelectedProductService selectedProductService;
 
     @Autowired
-    public HealthConfirmationService(ProviderContentService providerContentService, ConfirmationService confirmationService) {
+    public HealthConfirmationService(ProviderContentService providerContentService, ConfirmationService confirmationService, HealthSelectedProductService selectedProductService) {
         this.providerContentService = providerContentService;
         this.confirmationService = confirmationService;
+        this.selectedProductService = selectedProductService;
     }
 
     public void createAndSaveConfirmation(HttpServletRequest request, HealthRequest data, HealthApplicationResponse response,
@@ -46,9 +50,7 @@ public class HealthConfirmationService {
         try {
             LocalDate startDate = LocalDate.parse(data.getQuote().getPayment().getDetails().getStart(), AUS_FORMAT);
             String providerName = data.getQuote().getApplication().getProviderName();
-            final String productSelected = StringUtils.removeEnd(
-                    StringUtils.removeStart(dataBucket.getString("confirmation/health"), "<![CDATA["),
-                    "]]>");
+            final String productSelected = selectedProductService.getProductXML(data.getTransactionId());
             String frequency = Frequency.findByDescription(data.getQuote().getPayment().getDetails().getFrequency()).getCode();
             String next = getContent(request, providerName, dataBucket.getString("current/brandCode"),"NXT");
             String about = getContent(request, providerName, dataBucket.getString("current/brandCode"),"ABT");
@@ -61,10 +63,12 @@ public class HealthConfirmationService {
                     .about(about)
                     .transID(data.getTransactionId().toString())
                     .startDate(startDate)
-                    .frequency(frequency).firstName(firstName)
+                    .frequency(frequency)
+                    .firstName(firstName)
                     .lastName(surname)
                     .providerInfo(providerInfo)
-                    .whatsNext(next).product(productSelected)
+                    .whatsNext(next)
+                    .product(productSelected)
                     .policyNo(response.getProductId())
                     .paymentType(paymentType)
                     .redemptionId(Optional.ofNullable((String) dataBucket.get(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID)).orElse(""))
