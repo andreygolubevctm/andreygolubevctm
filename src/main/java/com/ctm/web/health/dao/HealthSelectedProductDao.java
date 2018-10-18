@@ -13,7 +13,6 @@ import java.sql.SQLException;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-@Repository
 public class HealthSelectedProductDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthSelectedProductDao.class);
