@@ -4,7 +4,9 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.dao.HealthSelectedProductDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HealthSelectedProductService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthSelectedProductService.class);
