@@ -1,5 +1,6 @@
 package com.ctm.web.core.leadService.model;
 
+import com.ctm.web.core.model.settings.Vertical;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.ZonedDateTime;
@@ -117,7 +118,9 @@ public class LeadRequest {
         builder.append(",");
         builder.append(rootId);
         builder.append(",");
-        builder.append(transactionId);
+        if(!verticalType.equalsIgnoreCase(Vertical.VerticalType.HEALTH.getCode())){
+            builder.append(transactionId);
+        }
         builder.append(",");
         builder.append(brandCode);
         builder.append(",");
@@ -125,7 +128,11 @@ public class LeadRequest {
         builder.append(",");
         builder.append(clientIP);
         builder.append(",");
-        builder.append(person.getValues());
+        if(verticalType.equalsIgnoreCase(Vertical.VerticalType.HEALTH.getCode())){
+            builder.append(person.getHealthChecksum());
+        } else {
+             builder.append(person.getValues());
+        }
         builder.append(",");
         builder.append(status);
         builder.append(",");

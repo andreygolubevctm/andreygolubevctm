@@ -2,6 +2,8 @@ package com.ctm.web.core.leadService.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.StringJoiner;
+
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Address {
     private String state;
@@ -41,6 +43,12 @@ public class Address {
         builder.append(postcode);
 
         return builder.toString();
+    }
+
+    public String getHealthCheckSum(){
+        StringJoiner sj = new StringJoiner(",");
+        sj.add(state);
+        return sj.toString();
     }
 
     @Override

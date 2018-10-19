@@ -3,6 +3,7 @@ package com.ctm.web.core.leadService.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
+import java.util.StringJoiner;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Person {
@@ -87,6 +88,15 @@ public class Person {
         builder.append(address.getValues());
 
         return builder.toString();
+    }
+
+    public String getHealthChecksum(){
+        StringJoiner sj = new StringJoiner(",");
+        sj.add(firstName);
+        sj.add(mobile);
+        sj.add(phone);
+        sj.add(address.getHealthCheckSum());
+        return sj.toString();
     }
 
     @Override
