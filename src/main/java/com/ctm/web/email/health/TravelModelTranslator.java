@@ -60,31 +60,33 @@ public class TravelModelTranslator implements EmailTranslator {
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
         String emailAddress = getEmail(data);
         LOGGER.info("emailAddress retrieved from SessionData is: {}", emailAddress);
-        EmailMaster emailDetails = new EmailMaster();
-        emailDetails.setEmailAddress(emailAddress);
-        emailDetails.setSource("QUOTE");
-        EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(
-                pageSettings, data, Vertical.VerticalType.TRAVEL, new TravelEmailDetailMappings());
-        Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
-        emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
+        if(emailAddress != null){
+            EmailMaster emailDetails = new EmailMaster();
+            emailDetails.setEmailAddress(emailAddress);
+            emailDetails.setSource("QUOTE");
+            EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(
+                    pageSettings, data, Vertical.VerticalType.TRAVEL, new TravelEmailDetailMappings());
+            Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
+            emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE", ipAddressHandler.getIPAddress(request));
 
-        EmailUrlService emailUrlService = EmailServiceFactory.createEmailUrlService(pageSettings, Vertical.VerticalType.TRAVEL);
-        Map<String, String> emailParameters = new HashMap<>();
-        emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(transactionId));
-        emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
-        emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, EMAIL_TYPE);
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
-        emailParameters.put(EmailUrlService.VERTICAL, "travel");
-        emailParameters.put(EmailUrlService.TRAVEL_POLICY_TYPE, (String) data.get("travel/policyType"));
-        String applyUrl = emailUrlService.getApplyUrl(emailDetails,emailParameters,null);
+            EmailUrlService emailUrlService = EmailServiceFactory.createEmailUrlService(pageSettings, Vertical.VerticalType.TRAVEL);
+            Map<String, String> emailParameters = new HashMap<>();
+            emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(transactionId));
+            emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+            emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
+            emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, EMAIL_TYPE);
+            emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
+            emailParameters.put(EmailUrlService.VERTICAL, "travel");
+            emailParameters.put(EmailUrlService.TRAVEL_POLICY_TYPE, (String) data.get("travel/policyType"));
+            String applyUrl = emailUrlService.getApplyUrl(emailDetails, emailParameters, null);
 
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
-        String unsubscribeUrl = emailUrlService.getUnsubscribeUrl(emailParameters);
-        List<String> applyUrls = new ArrayList<>();
-        IntStream.range(EmailUtils.START, NUM_RESULTS).forEach(index -> applyUrls.add(applyUrl));
-        emailRequest.setApplyUrls(applyUrls);
-        emailRequest.setUnsubscribeURL(unsubscribeUrl);
+            emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
+            String unsubscribeUrl = emailUrlService.getUnsubscribeUrl(emailParameters);
+            List<String> applyUrls = new ArrayList<>();
+            IntStream.range(EmailUtils.START, NUM_RESULTS).forEach(index -> applyUrls.add(applyUrl));
+            emailRequest.setApplyUrls(applyUrls);
+            emailRequest.setUnsubscribeURL(unsubscribeUrl);
+        }
     }
 
     @Override
