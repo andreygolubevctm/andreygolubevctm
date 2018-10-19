@@ -20,11 +20,6 @@ public class HealthSelectedProductDao {
 
 	public HealthSelectedProductDao() {}
 
-
-    public HealthSelectedProductDao(final long transactionId, final long productId, final String productXML) throws DaoException {
-    	addSelectedProduct(transactionId, productId, productXML);
-    }
-
     public void addSelectedProduct(final long transactionId, final long productId, final String productXML) throws DaoException {
 
         final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
