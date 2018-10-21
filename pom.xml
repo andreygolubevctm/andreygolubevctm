@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.128.0-SNAPSHOT</version>
+    <version>1.129.0-SNAPSHOT</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -62,6 +62,10 @@
         <!-- CTM Test dependencies -->
         <common-test.version>1.6.0</common-test.version>
 
+        <!-- Sentry -->
+        <sentry-logback.version>1.7.10</sentry-logback.version>
+        <logback.version>1.1.5</logback.version>
+
     </properties>
 
     <dependencyManagement>
@@ -73,6 +77,12 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -126,6 +136,13 @@
             <artifactId>tomcat-jdbc</artifactId>
             <version>${tomcat.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Sentry -->
+        <dependency>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry-logback</artifactId>
+            <version>${sentry-logback.version}</version>
         </dependency>
 
         <!-- Test libraries -->
