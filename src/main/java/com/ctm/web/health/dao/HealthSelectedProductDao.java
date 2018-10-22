@@ -17,7 +17,6 @@ public class HealthSelectedProductDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthSelectedProductDao.class);
 
-
 	public HealthSelectedProductDao() {}
 
     public void addSelectedProduct(final long transactionId, final long productId, final String productXML) throws DaoException {
@@ -59,7 +58,7 @@ public class HealthSelectedProductDao {
                     "SELECT productXML " +
                             "FROM ctm.health_selected_product " +
                             "WHERE transactionId=? AND productId=? " +
-                            "ORDER BY created DESC LIMIT 1"
+                            "ORDER BY created DESC LIMIT 1;"
             );
             stmt.setLong(1, transactionId);
             stmt.setLong(2, productId);

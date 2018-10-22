@@ -155,7 +155,7 @@ public class HealthQuoteController extends CommonQuoteRouter {
 				try {
                     HealthSelectedProductService selectedProductService = new HealthSelectedProductService(tranId, prodId, xml);
                 } catch(DaoException e) {
-                    LOGGER.debug("Failed to write selected product to db {} {} {} {}", kv("error", e.getMessage()), kv("transactiponId", tranId), kv("productId", prodId), kv("productData", xml));
+                    LOGGER.error("Failed to write selected product to db {} {} {} {}", kv("error", e.getMessage()), kv("transactiponId", tranId), kv("productId", prodId), kv("productData", xml));
                 }
             }
 
