@@ -119,6 +119,13 @@
 		<appender-ref ref="SIFT" />
 	</appender>
 
+	<!-- Configure the Sentry appender, overriding the logging threshold to the ERROR level -->
+	<appender name="SENTRY" class="io.sentry.logback.SentryAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+	</appender>
+
 	<logger name="com.ctm.web.core.logging.XMLOutputWriter" additivity="false">
 		<appender-ref ref="ASYNC" />
 	</logger>
@@ -150,5 +157,6 @@
 				<appender-ref ref="FILE" />
 			</else>
 		</if>
+		<appender-ref ref="SENTRY" />
 	</root>
 </configuration>
