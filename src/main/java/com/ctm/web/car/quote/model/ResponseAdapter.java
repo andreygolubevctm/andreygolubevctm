@@ -41,8 +41,7 @@ public class ResponseAdapter {
                 result.setDiscountOffer(carQuote.getDiscountOffer());
                 result.setDiscountOfferTerms(carQuote.getDiscountOfferTerms());
                 result.setAvailableOnline(carQuote.isAvailableOnline());
-                result.setExcess(carQuote.getExcess());
-                result.setGlassExcess(carQuote.getGlassExcess());
+                result.setExcesses(new Excess(carQuote.getExcess(), carQuote.getGlassExcess()));
                 result.setDisclaimer(carQuote.getDisclaimer());
                 result.setInclusions(carQuote.getInclusions());
                 result.setBenefits(carQuote.getBenefits());
@@ -103,9 +102,9 @@ public class ResponseAdapter {
         return features;
     }
 
-    private static List<AdditionalExcess> createAdditionalExcesses(
-            List<com.ctm.web.car.quote.model.response.AdditionalExcess> quoteAdditionalExcesses) {
+    private static List<AdditionalExcess> createAdditionalExcesses(List<com.ctm.web.car.quote.model.response.AdditionalExcess> quoteAdditionalExcesses) {
         if (quoteAdditionalExcesses == null) return Collections.emptyList();
+
         List<AdditionalExcess> excesses = new ArrayList<>();
         for (com.ctm.web.car.quote.model.response.AdditionalExcess quoteAdditionalExcess : quoteAdditionalExcesses) {
             AdditionalExcess excess = new AdditionalExcess();

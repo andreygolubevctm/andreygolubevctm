@@ -176,9 +176,9 @@
 						<div id="car-additional-excess-conditions">
 							<h5>Excesses</h5>
 							<ul>
-								<li>Basic \${{= excess }}</li>
+								<li>Basic Excess \${{= excess }}</li>
 								{{ if(glassExcess != null && typeof glassExcess != 'undefined') { }}
-								<li>Glass \${{= glassExcess }}</li>
+								<li>Glass Excess \${{= glassExcess }}</li>
 								{{ } }}
 								{{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
 								<p class="additional-excesses-title push-top-10">Additional Excesses</p>

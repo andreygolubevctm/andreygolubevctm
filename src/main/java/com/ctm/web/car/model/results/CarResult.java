@@ -28,16 +28,15 @@ public class CarResult extends Result {
     @JsonSerialize(using = SpecialConditionsSerializer.class)
     private List<String> specialConditions;
 
-    private String excess;
+    @JsonSerialize(using = ExcessSerializer.class)
+    private Excess excesses;
 
-    private String glassExcess;
+    @JsonSerialize(using = AdditionalExcessesSerializer.class)
+    private List<AdditionalExcess> additionalExcesses;
 
     private Contact contact;
 
     private Price price;
-
-    @JsonSerialize(using = AdditionalExcessesSerializer.class)
-    private List<AdditionalExcess> additionalExcesses;
 
     @JsonSerialize(using = FeaturesSerializer.class)
     private List<Feature> features;
@@ -184,20 +183,38 @@ public class CarResult extends Result {
         this.specialConditions = specialConditions;
     }
 
+    public Excess getExcesses() {
+        return this.excesses;
+    }
+
+    public void setExcesses(Excess excesses) {
+        this.excesses = excesses;
+    }
+
     public String getExcess() {
-        return excess;
+        return this.excesses.getBasicExcess();
     }
 
     public void setExcess(String excess) {
-        this.excess = excess;
+        if(this.excesses == null) {
+            this.excesses = new Excess();
+        }
+
+        this.excesses.setBasicExcess(excess);
     }
 
-    public String getGlassExcess() { return glassExcess; }
+    public String getGlassExcess() { return this.excesses.getGlassExcess(); }
 
-    public void setGlassExcess(String glassExcess) { this.glassExcess = glassExcess; }
+    public void setGlassExcess(String glassExcess) {
+        if(this.excesses == null) {
+            this.excesses = new Excess();
+        }
+
+        this.excesses.setGlassExcess(glassExcess);
+    }
 
     public List<AdditionalExcess> getAdditionalExcesses() {
-        return additionalExcesses;
+        return this.additionalExcesses;
     }
 
     public void setAdditionalExcesses(List<AdditionalExcess> additionalExcesses) {

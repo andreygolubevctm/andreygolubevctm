@@ -35,8 +35,7 @@ public class ResponseAdapterV2 {
                 result.setDiscountOffer(carQuote.getDiscountOffer());
                 result.setDiscountOfferTerms(carQuote.getDiscountOfferTerms());
                 result.setAvailableOnline(carQuote.isAvailableOnline());
-                result.setExcess(carQuote.getExcess());
-                result.setGlassExcess(carQuote.getGlassExcess());
+                result.setExcesses(new Excess(carQuote.getExcess(), carQuote.getGlassExcess()));
                 result.setDisclaimer(carQuote.getDisclaimer());
                 result.setInclusions(carQuote.getInclusions());
                 result.setBenefits(carQuote.getBenefits());
