@@ -319,14 +319,14 @@
 		var encryptedOrderLineId = "${redemptionId}";
 
 		<%--
-			add product info contained in session on the page if:
-			- there is any
-			data.confirmation.health is set in the session when saving an order
+			add selected product object if it exists (stored in database)
 		--%>
-
-		<c:if test="${not empty data.confirmation.health}">
-			<c:set var="sessionProduct" value="${fn:replace( fn:replace( data.confirmation.health, '<![CDATA[', ''), ']]>', '' ) }" />
-			var sessionProduct = ${sessionProduct};
+		<jsp:useBean id="selectedProductService" class="com.ctm.web.health.services.HealthSelectedProductService" scope="request" />
+		<c:if test="${not empty transactionId}">
+			<c:set var="selectedProduct" value="${selectedProductService.getProductXMLViaBean(transactionId)}" />
+			<c:if test="${not empty selectedProduct}">
+				var sessionProduct = ${selectedProduct};
+			</c:if>
 		</c:if>
 
 		<c:if test="${not empty transactionId && status eq 'OK'}">

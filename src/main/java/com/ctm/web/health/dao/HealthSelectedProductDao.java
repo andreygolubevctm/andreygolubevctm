@@ -13,6 +13,15 @@ import java.sql.SQLException;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+/**
+ * Class provides methods to store and retrieve selected product data from the database.
+ *
+ * Simply appending records to the table is intentional as it is significantly more efficient
+ * than updating records given the large size of the product XML being written. The data only
+ * needs to be held temporarily so an external task will truncate the rows so that only records
+ * from the last 24hrs are retained.
+ */
+
 public class HealthSelectedProductDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthSelectedProductDao.class);
