@@ -537,7 +537,7 @@
 							<sql:param>${transactionId}</sql:param>
 							<sql:param>-4</sql:param>
 							<sql:param>useragent</sql:param>
-							<sql:param>${fn:substring(useragent, 0, 1000)}</sql:param>
+							<sql:param>${fn:substring(useragent, 0, 999)}</sql:param>
 						</sql:update>
 					</c:if>
 					<c:if test="${not empty trigger}">
@@ -561,7 +561,7 @@
 							<sql:param>${transactionId}</sql:param>
 							<sql:param>-6</sql:param>
 							<sql:param>fatalerrorreason</sql:param>
-							<sql:param>${fn:substring(triggerreason, 0, 1000)}</sql:param>
+							<sql:param>${fn:substring(triggerreason, 0, 999)}</sql:param>
 						</sql:update>
 					</c:if>
 					<c:if test="${not empty pendingID}">
@@ -600,7 +600,10 @@
 							<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
 
 							<%-- Cap the value to a certain length so we don't get database errors --%>
-							<c:if test="${fn:length(rowVal) > 1000}"><c:set var="rowVal" value="${fn:substring(rowVal, 0, 1000)}" /></c:if>
+							<c:if test="${fn:length(rowVal) > 1000}">
+								<c:set var="errorStr" value="Data Truncated - xpath (${xpath}) has textValue longer than 1000 chars: ${rowVal}" />
+								<c:set var="rowVal" value="${fn:substring(rowVal, 0, 999)}" />
+							</c:if>
 
 							<c:choose>
 
@@ -634,7 +637,7 @@
 									<c:if test="${fn:length(textValue) > 1000}">
 										<c:set var="errorStr" value="Data Truncated - xpath (${xpath}) has textValue longer than 1000 chars: ${textValue}" />
 										${logger.error(errorStr)}
-										<c:set var="textValue" value="${fn:substring(textValue,0,1000)}" />
+										<c:set var="textValue" value="${fn:substring(textValue,0,999)}" />
 									</c:if>
 
 									<c:set var="ignore">
