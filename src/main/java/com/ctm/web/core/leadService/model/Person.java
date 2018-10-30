@@ -90,6 +90,11 @@ public class Person {
         return builder.toString();
     }
 
+    /**
+     * Person checksum used for health leads
+     *
+     * @return
+     */
     public String getHealthChecksum(){
         StringJoiner sj = new StringJoiner(",");
         sj.add(firstName);

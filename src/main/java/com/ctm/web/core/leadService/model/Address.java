@@ -45,6 +45,12 @@ public class Address {
         return builder.toString();
     }
 
+    /**
+     * Address checksum used for health leads - currently only interested in state, however have used StringJoiner
+     * should other properties be required in future
+     *
+     * @return
+     */
     public String getHealthCheckSum(){
         StringJoiner sj = new StringJoiner(",");
         sj.add(state);
