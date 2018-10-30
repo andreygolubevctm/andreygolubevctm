@@ -112,6 +112,9 @@
                             _showResults(res);
                         }
                     } else {
+                        $elements.location.val('');
+                        $elements.location.valid();
+
                         _clearResults();
                     }
                 },
