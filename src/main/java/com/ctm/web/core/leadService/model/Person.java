@@ -70,25 +70,6 @@ public class Person {
         return address;
     }
 
-    public String getValues() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(firstName);
-        builder.append(",");
-        builder.append(email);
-        builder.append(",");
-        builder.append(lastName);
-        builder.append(",");
-        builder.append(mobile);
-        builder.append(",");
-        builder.append(phone);
-        builder.append(",");
-        builder.append(dob);
-        builder.append(",");
-        builder.append(address.getValues());
-
-        return builder.toString();
-    }
-
     @Override
     public String toString() {
         return "Person{" +
