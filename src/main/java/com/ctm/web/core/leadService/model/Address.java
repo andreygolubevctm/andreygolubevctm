@@ -2,8 +2,6 @@ package com.ctm.web.core.leadService.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.StringJoiner;
-
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Address {
     private String state;
@@ -32,29 +30,6 @@ public class Address {
 
     public String getPostcode() {
         return postcode;
-    }
-
-    public String getValues() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(state);
-        builder.append(",");
-        builder.append(suburb);
-        builder.append(",");
-        builder.append(postcode);
-
-        return builder.toString();
-    }
-
-    /**
-     * Address checksum used for health leads - currently only interested in state, however have used StringJoiner
-     * should other properties be required in future
-     *
-     * @return
-     */
-    public String getHealthCheckSum(){
-        StringJoiner sj = new StringJoiner(",");
-        sj.add(state);
-        return sj.toString();
     }
 
     @Override

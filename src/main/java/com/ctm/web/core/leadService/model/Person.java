@@ -3,7 +3,6 @@ package com.ctm.web.core.leadService.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
-import java.util.StringJoiner;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Person {
@@ -69,39 +68,6 @@ public class Person {
 
     public Address getAddress() {
         return address;
-    }
-
-    public String getValues() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(firstName);
-        builder.append(",");
-        builder.append(email);
-        builder.append(",");
-        builder.append(lastName);
-        builder.append(",");
-        builder.append(mobile);
-        builder.append(",");
-        builder.append(phone);
-        builder.append(",");
-        builder.append(dob);
-        builder.append(",");
-        builder.append(address.getValues());
-
-        return builder.toString();
-    }
-
-    /**
-     * Person checksum used for health leads
-     *
-     * @return
-     */
-    public String getHealthChecksum(){
-        StringJoiner sj = new StringJoiner(",");
-        sj.add(firstName);
-        sj.add(mobile);
-        sj.add(phone);
-        sj.add(address.getHealthCheckSum());
-        return sj.toString();
     }
 
     @Override
