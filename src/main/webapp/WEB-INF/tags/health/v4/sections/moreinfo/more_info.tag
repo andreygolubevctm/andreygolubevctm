@@ -83,7 +83,7 @@
 					<div class="row">
 						{{ if(typeof hospitalCover !== 'undefined') { }}
 						<div class="benefitsColumn">
-							<div class="col-sm-6 col-xs-12 HospitalBenefits">
+							<div class="col-sm-12 col-xs-12 HospitalBenefits">
 								<!-- Hospital Benefits Heading + Brochure -->
 								<div class="row">
 									<div class="col-xs-12">
@@ -217,7 +217,7 @@
 						{{ } }}
 						{{ if(typeof extrasCover !== 'undefined') { }}
 						<div class="benefitsColumn">
-							<div class="col-sm-6 col-xs-12 ExtrasBenefits">
+							<div class="col-sm-12 col-xs-12 ExtrasBenefits">
 								<!-- Extras Benefits Heading + Brochure -->
 								<div class="row row-eq-height">
 									{{ if(typeof extrasCover !== 'undefined') { }}
