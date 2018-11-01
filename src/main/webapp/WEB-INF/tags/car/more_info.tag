@@ -173,15 +173,21 @@
 						{{ }  else { }}
 							{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
 						{{ } }}
-						{{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
 						<div id="car-additional-excess-conditions">
-							<h5>Additional Excess</h5>
+							<h5>Excesses</h5>
 							<ul>
-								{{ for(var i = 0; i < additionalExcesses.list.length; i++) { }}
-								<li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}
+								<li>Basic Excess \${{= excess }}</li>
+								{{ if(glassExcess != null && typeof glassExcess != 'undefined') { }}
+								<li>Glass Excess \${{= glassExcess }}</li>
+								{{ } }}
+								{{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
+								<p class="additional-excesses-title push-top-10">Additional Excesses</p>
+									{{ for(var i = 0; i < additionalExcesses.list.length; i++) { }}
+									<li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}
+								{{ } }}
 							</ul>
 						</div>
-						{{ } }}
+
 						<h5>Optional Extras</h5>
 						<div id="extras"></div>
 						<div class="hidden-md hidden-lg">{{= PdsDisclaimerHtml }}</div>

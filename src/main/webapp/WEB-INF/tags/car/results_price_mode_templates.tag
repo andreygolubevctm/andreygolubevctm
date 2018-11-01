@@ -9,7 +9,7 @@
             <div class="excessTitle">Excess</div>
         </div>
 
-        <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}">Additional Excesses Applicable</a>
+        <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}">View all excesses</a>
     </div>
 </core_v1:js_template>
 
@@ -49,13 +49,13 @@
 
 <!-- Compare view from quick price view. -->
 <core_v1:js_template id="compare-basket-price-template">
-	
+
 	{{ var template = $("#compare-basket-price-item-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var comparedItems = htmlTemplate(obj); }}
 
 	<ul class="nav navbar-nav">
-		
+
 		{{= comparedItems }}
 		{{ for(var i = 3; i > comparedResultsCount; i--) { }}
 			<li class="compare-item-placeholder">
