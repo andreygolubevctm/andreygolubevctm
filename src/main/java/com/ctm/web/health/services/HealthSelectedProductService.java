@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 /**
  * Class provides public accessors/modifiers to store product data in the database. Previously
  * this data had been stored in the user's session object.
@@ -18,14 +20,14 @@ public class HealthSelectedProductService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthSelectedProductService.class);
 
-    private final HealthSelectedProductDao selectedProductDao;
+    @Resource
+	private HealthSelectedProductDao selectedProductDao;
 
     public HealthSelectedProductService() {
         this.selectedProductDao = new HealthSelectedProductDao();
     }
 
 	public HealthSelectedProductService(final long transactionId, final long productId, final String productXML) throws DaoException {
-		this.selectedProductDao = new HealthSelectedProductDao();
 		setProductXML(transactionId, productId, productXML);
 	}
 

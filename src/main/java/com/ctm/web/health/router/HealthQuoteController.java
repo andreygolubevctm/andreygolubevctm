@@ -29,6 +29,7 @@ import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.services.HealthQuoteEndpointService;
 import com.ctm.web.health.services.HealthQuoteService;
 import com.ctm.web.health.services.HealthSelectedProductService;
+import com.ctm.web.health.utils.HealthRequestParser;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -55,7 +56,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 @RequestMapping("/rest/health")
 public class HealthQuoteController extends CommonQuoteRouter {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HealthSelectedProductService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthQuoteController.class);
 
     private Vertical.VerticalType verticalType = Vertical.VerticalType.HEALTH;
 
@@ -150,12 +151,12 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
             if (!isShowAll) {
                 long tranId = data.getTransactionId();
-                long prodId = Long.parseLong(data.getHealth().getApplication().getProductId().replaceAll("\\D", ""));
+                long prodId = HealthRequestParser.getProductIdFromHealthRequest(data);
                 String xml = ObjectMapperUtil.getObjectMapper().writeValueAsString(results);
 				try {
                     HealthSelectedProductService selectedProductService = new HealthSelectedProductService(tranId, prodId, xml);
                 } catch(DaoException e) {
-                    LOGGER.error("Failed to write selected product to db {} {} {} {}", kv("error", e.getMessage()), kv("transactiponId", tranId), kv("productId", prodId), kv("productData", xml));
+                    LOGGER.error("Failed to write selected product to db {} {} {} {}", kv("error", e.getMessage()), kv("transactiponId", tranId), kv("productId", prodId), kv("productData", xml), e);
                 }
             }
 
@@ -195,5 +196,4 @@ public class HealthQuoteController extends CommonQuoteRouter {
             throw new RouterException(request.getTransactionId(), healthQuoteEndpointService.getValidationErrors());
         }
     }
-
 }

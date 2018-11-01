@@ -43,6 +43,7 @@ import com.ctm.web.health.services.HealthApplyService;
 import com.ctm.web.health.services.HealthConfirmationService;
 import com.ctm.web.health.services.HealthLeadService;
 import com.ctm.web.health.validation.HealthApplicationValidation;
+import com.ctm.web.health.utils.HealthRequestParser;
 import com.ctm.web.reward.services.RewardCampaignService;
 import com.ctm.web.reward.services.RewardService;
 import com.ctm.web.simples.services.TransactionService;
@@ -351,7 +352,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
             EmailServiceFactory emailServiceFactory = applicationContext.getBean(EmailServiceFactory.class);
             final EmailServiceHandler emailServiceHandler = emailServiceFactory.newInstance(getPageSettingsByCode(brand, vertical),
                     EmailMode.APP, dataBucket);
-            confirmationEmailCode = emailServiceHandler.send(request, email, data.getTransactionId(), Long.parseLong(data.getHealth().getApplication().getProductId().replaceAll("\\D", "")));
+            confirmationEmailCode = emailServiceHandler.send(request, email, data.getTransactionId(), HealthRequestParser.getProductIdFromHealthRequest(data));
         } catch (SendEmailException se) {
             confirmationEmailCode = "0";
         }
@@ -374,7 +375,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                         .orElseThrow(() -> new NotFoundException("Email not found")));
     }
 
-    private void writePolicyNoToTransactionDetails(@FormParam("") com.ctm.web.health.model.form.HealthRequest data, HealthApplicationResponse response) {
+    private void writePolicyNoToTransactionDetails(@FormParam("") HealthRequest data, HealthApplicationResponse response) {
         try {
             transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -2, "health/policyNo", response.getProductId());
         } catch (Exception e) {
