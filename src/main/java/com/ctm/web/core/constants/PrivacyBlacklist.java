@@ -30,7 +30,8 @@ public final class PrivacyBlacklist {
 			"claim/number",
 			"gateway/number",
 			"gateway/nab/cardNumber",
-			"credit/ipp/tokenisation"
+			"credit/ipp/tokenisation",
+			"voucher/authorisationcode"
 	};
 
 	/**
