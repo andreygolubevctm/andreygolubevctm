@@ -100,12 +100,10 @@ public class MarketingAutomationEmailService {
 
     protected static boolean attemptEmailDistribution(EmailRequest emailRequest){
         final VerticalType verticalType = getVerticalType(emailRequest.getVertical());
-        if(VerticalType.TRAVEL ==  verticalType){
-            if(StringUtils.isNotBlank(emailRequest.getEmailAddress())){
+        if(StringUtils.isNotBlank(emailRequest.getEmailAddress())){
+            if(VerticalType.HEALTH != verticalType || !emailRequest.isPopularProductsSelected()) {
                 return true;
             }
-        } else if(VerticalType.HEALTH != verticalType || !emailRequest.isPopularProductsSelected()) {
-            return true;
         }
         return false;
     }
