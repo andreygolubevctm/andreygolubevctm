@@ -55,8 +55,18 @@
                             <health_v4_aboutyou:dob xpath="${xpath}" />
                             <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
                             <health_v4_aboutyou:current_health_fund xpath="${xpath}" />
+                            <health_v4_aboutyou:partner_dob xpath="${xpath}" />
+                            <health_v4_aboutyou:partner_cover xpath="${xpath}" />
+
+                            <div id="health_insurance_preferences_additional_partner_fields">
+                                <health_v4_aboutyou:partner_current_fund xpath="${xpath}" />
+                            </div>
+
+
                             <health_v4_aboutyou:applyrebate xpath="${xpath}" />
                             <health_v4_aboutyou:optin xpath="${xpath}" />
+
+
                         </form_v4:fieldset>
 
                     </jsp:body>

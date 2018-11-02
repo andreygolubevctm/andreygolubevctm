@@ -17,16 +17,6 @@
                 <form_v4:fieldset
                         legend=""
                         className="benefitsContainer">
-                    <!-- TODO: update the fields with the newer fields -->
-                    <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
-                    <div class="fieldrow healthCoverPartnerHeading"><h3>We have a few additional questions about you and your partner</h3></div>
-                    <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
-                    <health_v4_insuranceprefs:partner_dob xpath="${xpath}" />
-                    <health_v4_insuranceprefs:partner_cover xpath="${xpath}" />
-
-                    <div id="health_insurance_preferences_additional_partner_fields">
-                        <health_v4_insuranceprefs:partner_current_fund xpath="${xpath}" />
-                    </div>
 
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/benefits" />
                     <health_v4_insuranceprefs:benefits xpath="${xpath}" />
