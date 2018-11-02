@@ -3,6 +3,7 @@ package com.ctm.web.health.router;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.dao.GeneralDao;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.resultsData.NoResults;
 import com.ctm.web.core.model.resultsData.NoResultsObj;
@@ -20,7 +21,6 @@ import com.ctm.web.core.services.tracking.TrackingKeyService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.HealthQuoteResult;
@@ -28,8 +28,12 @@ import com.ctm.web.health.model.results.InfoHealth;
 import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.services.HealthQuoteEndpointService;
 import com.ctm.web.health.services.HealthQuoteService;
+import com.ctm.web.health.services.HealthSelectedProductService;
+import com.ctm.web.health.utils.HealthRequestParser;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,10 +49,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
+
 @Api(basePath = "/rest/health", value = "Health Quote")
 @RestController
 @RequestMapping("/rest/health")
 public class HealthQuoteController extends CommonQuoteRouter {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthQuoteController.class);
 
     private Vertical.VerticalType verticalType = Vertical.VerticalType.HEALTH;
 
@@ -142,17 +150,14 @@ public class HealthQuoteController extends CommonQuoteRouter {
             info.setPricesHaveChanged(quotes.isHasPriceChanged());
 
             if (!isShowAll) {
-
-                if (dataBucket.hasChild("confirmation")) {
-                    dataBucket.removeChild("confirmation");
+                long tranId = data.getTransactionId();
+                long prodId = HealthRequestParser.getProductIdFromHealthRequest(data);
+                String xml = ObjectMapperUtil.getObjectMapper().writeValueAsString(results);
+				try {
+                    HealthSelectedProductService selectedProductService = new HealthSelectedProductService(tranId, prodId, xml);
+                } catch(DaoException e) {
+                    LOGGER.error("Failed to write selected product to db {} {} {} {}", kv("error", e.getMessage()), kv("transactiponId", tranId), kv("productId", prodId), kv("productData", xml), e);
                 }
-
-                XmlNode confirmation = new XmlNode("confirmation");
-                dataBucket.addChild(confirmation);
-                XmlNode details = new XmlNode("health");
-                confirmation.addChild(details);
-
-                details.setText("<![CDATA[" + ObjectMapperUtil.getObjectMapper().writeValueAsString(results) + "]]>");
             }
 
             // create resultsWrapper with the token
@@ -170,6 +175,7 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
         results.setInfo(info);
         results.setResult(Collections.singletonList(noResults));
+
 
         // create resultsWrapper with the token
         return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), results);
@@ -190,5 +196,4 @@ public class HealthQuoteController extends CommonQuoteRouter {
             throw new RouterException(request.getTransactionId(), healthQuoteEndpointService.getValidationErrors());
         }
     }
-
 }

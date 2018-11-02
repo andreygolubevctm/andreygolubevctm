@@ -1,8 +1,11 @@
 package com.ctm.web.core.leadService.model;
 
+import com.ctm.web.core.model.settings.Vertical;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
+import java.util.StringJoiner;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LeadRequest {
@@ -117,7 +120,9 @@ public class LeadRequest {
         builder.append(",");
         builder.append(rootId);
         builder.append(",");
-        builder.append(transactionId);
+        if(!Vertical.VerticalType.HEALTH.getCode().equalsIgnoreCase(verticalType)){
+            builder.append(transactionId);
+        }
         builder.append(",");
         builder.append(brandCode);
         builder.append(",");
@@ -125,7 +130,7 @@ public class LeadRequest {
         builder.append(",");
         builder.append(clientIP);
         builder.append(",");
-        builder.append(person.getValues());
+        builder.append(getPersonChecksum(verticalType, person));
         builder.append(",");
         builder.append(status);
         builder.append(",");
@@ -139,6 +144,22 @@ public class LeadRequest {
         builder.append(",");
         builder.append(campaignId);
         return builder.toString();
+    }
+
+    private String getPersonChecksum(String verticalType, Person person){
+        StringJoiner sj = new StringJoiner(",");
+        sj.add(person.getFirstName());
+        sj.add(person.getMobile());
+        sj.add(person.getPhone());
+        sj.add(person.getAddress().getState());
+        if(!Vertical.VerticalType.HEALTH.getCode().equalsIgnoreCase(verticalType)){
+            sj.add(person.getEmail());
+            sj.add(person.getLastName());
+            sj.add(Optional.ofNullable(person.getDob()).map(Object::toString).orElse(""));
+            sj.add(person.getAddress().getSuburb());
+            sj.add(person.getAddress().getPostcode());
+        }
+        return sj.toString();
     }
 
     @Override

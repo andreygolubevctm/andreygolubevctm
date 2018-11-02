@@ -35,6 +35,8 @@ public class CarQuote {
 
     private String excess;
 
+    private String glassExcess;
+
     private Contact contact;
 
     private Price price;
@@ -210,6 +212,10 @@ public class CarQuote {
     public void setExcess(String excess) {
         this.excess = excess;
     }
+
+    public String getGlassExcess() { return glassExcess; }
+
+    public void setGlassExcess(String glassExcess) { this.glassExcess = glassExcess; }
 
     public List<AdditionalExcess> getAdditionalExcesses() {
         return additionalExcesses;
