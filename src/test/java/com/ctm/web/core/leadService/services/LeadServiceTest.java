@@ -5,11 +5,14 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.leadService.model.LeadMetadata;
 import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.model.LeadStatus;
+import com.ctm.web.core.leadfeed.model.CTMCarLeadFeedRequestMetadata;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.health.model.leadservice.HealthMetadata;
+import junitx.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,12 +22,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
@@ -142,5 +147,39 @@ public class LeadServiceTest {
 
         assertEquals(LeadStatus.RETURN_CLI, ((LeadRequest)arguments.get(0)).getStatus());
 
+    }
+
+    @Test
+    public void givenHealthLead_thenLeadRequestIsPopulatedCorrectly(){
+        LeadRequest leadRequest = buildLeadRequest("HEALTH");
+        String data = leadRequest.getValues();
+        Assert.assertEquals("TEST,1111111,,ctm,HEALTH,1.0.0.0,Joe,0400000000,0400000001,QLD,null,test,false,xs,null,null,null,null", data);
+        //confirm lastname is excluded from checksum
+        assertTrue(!data.contains("Bloggs"));
+        //confirm checksum does not include postcode or suburb
+        assertTrue(!data.contains("4066"));
+        assertTrue(!data.contains("Toowong"));
+        //confirm screensize is included in checksum
+        assertTrue(data.contains("xs"));
+    }
+
+    private LeadRequest buildLeadRequest(String verticalType){
+        LeadRequest leadRequest = new LeadRequest();
+        leadRequest.setVerticalType(verticalType);
+        leadRequest.setTransactionId(1111111L);
+        leadRequest.setSource("TEST");
+        leadRequest.setBrandCode("ctm");
+        leadRequest.setClientIP("1.0.0.0");
+        leadRequest.setRootId(1111111L);
+        leadRequest.getPerson().setFirstName("Joe");
+        leadRequest.getPerson().setLastName("Bloggs");
+        leadRequest.getPerson().setMobile("0400000000");
+        leadRequest.getPerson().setPhone("0400000001");
+        leadRequest.getPerson().setDob(LocalDate.now());
+        leadRequest.getPerson().getAddress().setState("QLD");
+        leadRequest.getPerson().getAddress().setPostcode("4066");
+        leadRequest.getPerson().getAddress().setSuburb("Toowong");
+        leadRequest.setMetadata(new HealthMetadata("test", false, "xs"));
+        return leadRequest;
     }
 }

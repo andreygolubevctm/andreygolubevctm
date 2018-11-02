@@ -41,6 +41,39 @@
     </div>
 </core_v1:js_template>
 
+<core_v1:js_template id="title-download-special-template-pds">
+    {{ var productTitle = !_.isUndefined(obj.productName) ? obj.productName : 'Unknown product name'; }}
+    {{ var priceDisclaimer = (!_.isUndefined(obj.price.priceDisclaimer) && !_.isNull(obj.price.priceDisclaimer) && obj.price.priceDisclaimer.length > 0) ? obj.price.priceDisclaimer : ''; }}
+
+    <div class="title-download-special-container">
+        <h2 class="productTitle">{{= productTitle }}</h2>
+        {{ if (priceDisclaimer.length > 0) { }}
+        <a class="small priceDisclaimer" href="javascript:;">{{= priceDisclaimer }}</a>
+        <div class="priceDisclaimer-content hidden"><p class="priceDisclaimer-para">{{= obj.disclaimer }}</p></div>
+        {{ } }}
+
+        <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}">More Info </a>
+
+        {{ if (obj.productDisclosures != null) { }}
+        {{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false) { }}
+        <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS</a>
+        {{ } else { }}
+        <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS A </a>
+        <a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS B</a>
+        {{ if(obj.productDisclosures.hasOwnProperty('pdsc')) { }}
+        <a href="{{= obj.productDisclosures.pdsc.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS C</a>
+        {{ } }}
+        {{ } }}
+        {{ } }}
+
+        {{ if (obj.specialConditions != null && typeof obj.specialConditions !== 'undefined' && obj.specialConditions.description != null && typeof obj.specialConditions.description !== 'undefined' &&  obj.specialConditions.description.length > 0) { }}
+        <p class="specialConditions">
+            <small>Special conditions: {{= obj.specialConditions.description }}</small>
+        </p>
+        {{ } }}
+    </div>
+</core_v1:js_template>
+
 <core_v1:js_template id="call-action-buttons-price-template">
     {{ var template = $("#call-direct-button-template").html(); }}
     {{ var htmlTemplate = _.template(template); }}

@@ -32,17 +32,6 @@ public class Address {
         return postcode;
     }
 
-    public String getValues() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(state);
-        builder.append(",");
-        builder.append(suburb);
-        builder.append(",");
-        builder.append(postcode);
-
-        return builder.toString();
-    }
-
     @Override
     public String toString() {
         return "Address{" +
