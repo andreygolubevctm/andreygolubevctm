@@ -103,6 +103,7 @@ public class MarketingAutomationEmailServiceTest {
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setVertical(HEALTH);
         emailRequest.setPopularProductsSelected(false);
+        emailRequest.setEmailAddress("preload.testing@comparethemarket.com.au");
         Assert.assertTrue(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
     }
 
@@ -110,6 +111,7 @@ public class MarketingAutomationEmailServiceTest {
     public void givenCarEmail_thenAttemptEmailDistributionIsTrue(){
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setVertical(CAR);
+        emailRequest.setEmailAddress("preload.testing@comparethemarket.com.au");
         Assert.assertTrue(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
     }
 
