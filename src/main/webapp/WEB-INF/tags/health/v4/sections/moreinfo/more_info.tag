@@ -57,7 +57,7 @@
 	{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
 
 	<%-- Get the HTML header for mobile --%>
-	{{ var headerMobileHtml = meerkat.modules.healthMoreInfo.getAffixedMobileHeaderData(); }}
+	{{ var headerMobileHtml = meerkat.modules.healthMoreInfo.getAffixedMobileHeaderData(); }}1
 
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
@@ -150,39 +150,24 @@
 									{{ } }}
 								</div>
 
-								<div class="row hospitalTabContainer">
-									<div class="col-xs-12 moreInfoHospitalTab">
-										<ul class="nav nav-tabs">
-											<li>
-												<a href="javascript:;" data-target=".hospitalCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
-											</li>
-											<li>
-												<a href="javascript:;" data-target=".hospitalNotCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-
-								<!-- Inclusions / Exclusions -->
-								<div class="row tab-content">
-									<div class="col-xs-12 tab-pane hospitalCoveredPane">
+								<div class="row">
+									<div class="col-xs-12 tab-pane">
 										{{ product.structureIndex = 4; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
-								        {{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
-										<div class="row HLTicon-hospital benefitRow">
-											<div class="benefitContent">
-											<div class="col-xs-12 benefitTitle">
-												<p>Public Hospital</p>
+										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										<div class="row benefitRow benefitRowHeader">
+											<div class="col-xs-7 benefitHeaderTitle">
+												Hospital cover benefits
+											</div>
+											<div class="col-xs-2 benefitHeaderTitle">
+												Inclusion
+											</div>
+											<div class="col-xs-3 benefitHeaderTitle">
+												Waiting period
 											</div>
 										</div>
-										</div>
-								        {{ } }}
-										{{= benefitTemplate(product) }}
-									</div>
-									<div class="col-xs-12 tab-pane hospitalNotCoveredPane">
-										{{ product.showNotCoveredBenefits = true; }}
-										{{ product.ignoreLimits = true; }}
+										{{ } }}
 										{{= benefitTemplate(product) }}
 									</div>
 								</div>
