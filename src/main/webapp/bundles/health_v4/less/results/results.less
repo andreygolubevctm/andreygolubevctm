@@ -68,18 +68,58 @@
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding: 0;
 
+  .smaller-text {
+    font-size: 12px;
+  }
+
+  .dark-grey-text {
+    color: #666666;
+  }
+
+  @media (max-width: @screen-sm-max) {
+    .results-page-sidebar-header {
+      display: none;
+    }
+  }
+  @media (min-width: @screen-md) {
+    .results-page-sidebar-header {
+      display: block;
+      margin-bottom: -15px;
+      padding: 6px 6px 6px 15px;
+      background-color: #DDDDDD;
+      font-weight: 900;
+      position: relative;
+      z-index: -1;
+    }
+  }
+
+
   .results-sidebar-inner {
     border: 1px solid @results-border-color;
     border-left-color: @gray;
     margin-bottom: 15px;
+
+    &.grey-border {
+      border-color: #A1A1A1;
+    }
   }
 
   .results-legend {
     padding: 15px;
 
+    &.grey-border {
+      border-color: #A1A1A1;
+    }
+
     @media (@xs-sm-only) {
       border: none;
       margin-bottom: 0;
+    }
+
+    @media (min-width: @screen-md) {
+      .results-page-sidebar-header {
+        margin: -15px -15.5px 10px -15px;
+      }
     }
 
     .results-legend-row {
@@ -96,7 +136,7 @@
 
         &.icon-restricted {
           margin-top: 0;
-          margin-right: 6px;
+          margin-right: 4px;
           margin-left: 1px;
           &:before {
             .icon-r();
@@ -108,6 +148,14 @@
             color: @theme-accent-3;
           }
         }
+      }
+    }
+
+    .results-legend-restricted-help {
+      padding-left: 18.25px;
+
+      p:last-child {
+        margin-bottom: 0px;
       }
     }
   }
