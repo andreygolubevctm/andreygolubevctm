@@ -14,10 +14,16 @@
     </jsp:attribute>
 
     <jsp:attribute name="sidebarColumnRight">
-        <div class="hidden-xs hidden-sm results-sidebar-inner">
+        <div class="hidden-xs hidden-sm results-sidebar-inner grey-border">
+            <div class="results-page-sidebar-header smaller-text">Optional Filters</div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-awards-scheme"></div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="hidden-xs hidden-sm results-sidebar-inner grey-border">
             <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
         </div>
