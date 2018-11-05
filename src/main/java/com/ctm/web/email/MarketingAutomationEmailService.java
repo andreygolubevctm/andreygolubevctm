@@ -12,6 +12,7 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.email.EmailUtils;
 import com.ctm.web.email.health.CarModelTranslator;
 import com.ctm.web.email.health.HealthModelTranslator;
 import com.ctm.web.email.health.TravelModelTranslator;
@@ -100,7 +101,11 @@ public class MarketingAutomationEmailService {
 
     protected static boolean attemptEmailDistribution(EmailRequest emailRequest){
         final VerticalType verticalType = getVerticalType(emailRequest.getVertical());
-        if(StringUtils.isNotBlank(emailRequest.getEmailAddress())){
+        String email = emailRequest.getEmailAddress();
+        if(
+            StringUtils.isNotBlank(email) &&
+            EmailUtils.isValidEmailAddress(email)
+        ){
             if(VerticalType.HEALTH != verticalType || !emailRequest.isPopularProductsSelected()) {
                 return true;
             }

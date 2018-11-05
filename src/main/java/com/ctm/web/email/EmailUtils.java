@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.AddressException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,5 +116,16 @@ public class EmailUtils {
             premiumList.add(ANNUAL_ONLINE_PREMIUM);
         });
         return premiumList;
+    }
+
+    public static boolean isValidEmailAddress(String email) {
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException e) {
+            result = false;
+        }
+        return result;
     }
 }
