@@ -91,6 +91,14 @@ public class MarketingAutomationEmailServiceTest {
     }
 
     @Test
+    public void givenTravelEmailWithInvalidEmailAddress_thenAttemptEmailDistributionIsFalse(){
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setVertical(TRAVEL);
+        emailRequest.setEmailAddress("test@comparethenmarket.comau");
+        Assert.assertFalse(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
+    }
+
+    @Test
     public void givenHealthEmailWithPopularProductSelected_thenAttemptEmailDistributionIsFalse(){
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setVertical(HEALTH);

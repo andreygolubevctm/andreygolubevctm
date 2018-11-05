@@ -11,10 +11,9 @@ import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.AddressException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,13 +118,13 @@ public class EmailUtils {
     }
 
     public static boolean isValidEmailAddress(String email) {
-        boolean result = true;
-        try {
-            InternetAddress emailAddr = new InternetAddress(email);
-            emailAddr.validate();
-        } catch (AddressException e) {
-            result = false;
-        }
-        return result;
+		// Get an EmailValidator
+		EmailValidator validator = EmailValidator.getInstance();
+
+		// Validate specified String containing an email address
+		if (!validator.isValid(email)) {
+			return false;
+		}
+		return true;
     }
 }
