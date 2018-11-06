@@ -47,12 +47,16 @@
                 defaultValue: '4',
                 events: {
                     init: function (filterObject) {
-                        var $filterExcess = $('.health-filter-excess'),
-                            $slider = $filterExcess.find('.slider-control');
+                        var $filterExcess = $('.health-filter-excess');
+                        var $filterDropdown = $filterExcess.find('select');
 
-                        meerkat.modules.sliders.initSlider($slider);
-                        $slider.find('.slider')
-                            .val($(filterObject.defaultValueSourceSelector).val())
+                        if ($('#health_excess').val().length > 0) {
+                            $filterDropdown.val($('#health_excess').val()).trigger("change");
+                        } else {
+                            $filterDropdown.val(filterObject.defaultValue).trigger("change");
+                        }
+
+                        $filterDropdown
                             .on('change', function (event) {
                                 meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, event);
                             });
@@ -61,11 +65,9 @@
                         setFilterByExcess();
                     },
                     update: function (filterObject) {
-                        var $filterExcess = $('.health-filter-excess'),
-                            $slider = $filterExcess.find('.slider-control .slider');
-
-                        $(filterObject.defaultValueSourceSelector).val($slider.val().replace('.00', ''));
-
+                        var $filterExcess = $('.health-filter-excess');
+                        var value = $('select[name=' + filterObject.name + ']').val();
+                        $(filterObject.defaultValueSourceSelector).val(value);
                         toggleFilterByContainer($('.filter-excess'), false);
                         toggleFilter($filterExcess, false);
                         setFilterByExcess();
@@ -474,7 +476,7 @@
     }
 
     function setFilterByExcess() {
-        $('.filter-by-excess').text($('.health-filter-excess .selection').text());
+        $('.filter-by-excess').text( $('.health-filter-excess').find('select').children('option:selected').text() );
     }
 
     function setFilterByBrands() {
