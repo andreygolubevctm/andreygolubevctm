@@ -48,29 +48,32 @@
                 events: {
                     init: function (filterObject) {
                         var $filterExcess = $('.health-filter-excess');
-                        var $filterDropdown = $filterExcess.find('select');
+                        var $excessRadioButtonGroup = $('input[name=' + filterObject.name + ']');
 
                         if ($('#health_excess').val().length > 0) {
-                            $filterDropdown.val($('#health_excess').val()).trigger("change");
+                            $('input[name="' + filterObject.name + '"][value="' + $('#health_excess').val() + '"]').prop('checked', true);
                         } else {
-                            $filterDropdown.val(filterObject.defaultValue).trigger("change");
+                            $('input[name="' + filterObject.name + '"][value="' + filterObject.defaultValue + '"]').prop('checked', true);
                         }
 
-                        $filterDropdown
+                        $excessRadioButtonGroup
                             .on('change', function (event) {
                                 meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, event);
                             });
 
                         toggleFilter($filterExcess);
-                        setFilterByExcess();
+                        setFilterByExcess( filterObject.name );
+
+                        // this line is to counteract an inline style being dynamically created that is adding display:block;
+                        $( filterObject.defaultValueSourceSelector + '_container' ).css("display","inline-block");
                     },
                     update: function (filterObject) {
                         var $filterExcess = $('.health-filter-excess');
-                        var value = $('select[name=' + filterObject.name + ']').val();
+                        var value = $('input[name="' + filterObject.name + '"]:checked').val();
                         $(filterObject.defaultValueSourceSelector).val(value);
                         toggleFilterByContainer($('.filter-excess'), false);
                         toggleFilter($filterExcess, false);
-                        setFilterByExcess();
+                        setFilterByExcess( filterObject.name );
                     }
                 }
             },
@@ -475,8 +478,9 @@
             .parent().find('.filter-toggle').text(filterToggleText);
     }
 
-    function setFilterByExcess() {
-        $('.filter-by-excess').text( $('.health-filter-excess').find('select').children('option:selected').text() );
+    function setFilterByExcess( excessRadioBtnGroupName) {
+        var checkedRadioBtnId = $(':input[name="' + excessRadioBtnGroupName +'"]').filter(':checked').attr('id');
+        $('.filter-by-excess').text( $('label[for="'+ checkedRadioBtnId +'"]').text() );
     }
 
     function setFilterByBrands() {

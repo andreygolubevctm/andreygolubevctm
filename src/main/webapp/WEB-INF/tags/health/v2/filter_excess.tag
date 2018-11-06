@@ -9,20 +9,16 @@
 <%-- VARIABLES --%>
 <c:if test="${not empty xpath}">
 	<c:set var="idAttribute" value='id="${go:nameFromXpath(xpath)}_${name}_container"' />
-	<c:set var="selectFieldName" value="${go:nameFromXpath(xpath)}_filterBar_${name}" />
+	<c:set var="radioGroupName" value="${go:nameFromXpath(xpath)}_filterBar_${name}" />
 	<c:set var="hiddenFieldName" value="${go:nameFromXpath(xpath)}_${name}" />
 </c:if>
 
 <%-- HTML --%>
 <div ${idAttribute} class="health-filter-excess">
-	<select name="${selectFieldName}" class="form-control">
-		<c:set var="excessOptions" value="1=No Excess,2=$1 - $250,3=$251 - $500,4=ALL" />
-		<c:forTokens items="${excessOptions}" delims="," var="excessOption">
-			<c:set var="val" value="${fn:substringBefore(excessOption,'=')}" />
-			<c:set var="des" value="${fn:substringAfter(excessOption,'=')}" />
-			<option value="${val}">${des}</option>
-		</c:forTokens>
-	</select>
+	<field_v2:array_radio xpath="${radioGroupName}" title="your insurance excess amount" required="true" items="1=No Excess||2=$1 - $250||3=$251 - $500||4=ALL" delims="||" style="radio-as-checkbox" wrapCopyInSpan="true" outerWrapperClassName="col-xs-12 col-sm-12 col-md-12 col-lg-12 vertical" className="${radioGroupName} radio-as-checkbox" additionalAttributes="${analyticsAttr} data-attach=true" />
+	<%-- This can be used if you want to display the checkboxes in a grid layout --%>
+	<%--
+	<field_v2:array_radio xpath="${radioGroupName}" title="your insurance excess amount" required="true" items="1=No Excess||2=$1 - $250||3=$251 - $500||4=ALL" delims="||" style="radio-as-checkbox" wrapCopyInSpan="true" outerWrapperClassName="col-xs-12 col-sm-6" className="${radioGroupName} radio-as-checkbox" additionalAttributes="${analyticsAttr} data-attach=true" />
+	--%>
 	<input name="${hiddenFieldName}" value="" type="hidden">
-
 </div>
