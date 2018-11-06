@@ -57,7 +57,7 @@
 	{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
 
 	<%-- Get the HTML header for mobile --%>
-	{{ var headerMobileHtml = meerkat.modules.healthMoreInfo.getAffixedMobileHeaderData(); }}1
+	{{ var headerMobileHtml = meerkat.modules.healthMoreInfo.getAffixedMobileHeaderData(); }}
 
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
@@ -151,7 +151,7 @@
 								</div>
 
 								<div class="row">
-									<div class="col-xs-12 tab-pane">
+									<div class="col-xs-12 tab-pane benefitTable">
 										{{ product.structureIndex = 4; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
