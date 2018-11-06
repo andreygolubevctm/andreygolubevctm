@@ -1,6 +1,5 @@
-package com.ctm.web.email.health;
+package com.ctm.web.email.travel;
 
-import com.ctm.interfaces.common.config.types.ProviderCode;
 import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.web.core.dao.RankingDetailsDao;
@@ -14,7 +13,6 @@ import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
@@ -24,7 +22,6 @@ import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailTranslator;
 import com.ctm.web.email.EmailUtils;
 import com.ctm.web.email.OptIn;
-import com.ctm.web.email.travel.TravelEmailModel;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
 import org.slf4j.Logger;
