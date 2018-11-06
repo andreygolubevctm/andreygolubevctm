@@ -302,7 +302,24 @@
             Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
             Results.model.sortedProductsAll = Results.model.returnedProducts;
 	        Results.model.filteredProductsAll = Results.model.returnedProducts;
-	        Results.model.returnedProducts = Results.model.returnedProducts.filter(function(product,index){return index < 12;});
+
+	        if(meerkat.site.loadProductCode) {
+	            var product = Results.model.returnedProducts.find(function(product) {
+                    return product.info.productCode === meerkat.site.loadProductCode;
+                });
+
+	            Results.model.returnedProducts.splice(Results.model.returnedProducts.indexOf(product),1);
+	            Results.model.returnedProducts.unshift(product);
+	        }
+
+	        var numSearchResults = 12;
+
+	        var customResultsNum = $(':input[name="health_searchResults"]').val();
+            if ($(':input[name="health_searchResults"] option').is(':selected') && customResultsNum > 0) {
+                numSearchResults = customResultsNum;
+            }
+
+	        Results.model.returnedProducts = Results.model.returnedProducts.filter(function(product,index){return index < numSearchResults;});
 	        Results.model.availableCounts = Results.model.returnedProducts.length;
 
         });
