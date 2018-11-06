@@ -231,6 +231,7 @@
                     init: function (filterObject) {
                         meerkat.modules.benefitsSwitch.initHospitalFilters();
                         toggleFiltersBenefitSelection('hospital', meerkat.modules.benefitsSwitch.isHospitalOn());
+                        $('#health_benefits_filters_HospitalSwitch').parent().parent().addClass( "toggle-switch-right" ).toggleClass('hidden', false);
                     },
                     update: function (filterObject) {
                         var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
@@ -239,7 +240,6 @@
 
                         _.defer(function() {
                             setFilterByHospitalBenefits();
-                            meerkat.modules.benefitsSwitch.toggleFiltersSwitch('hospital', true);
                         });
                     }
                 }
@@ -443,10 +443,9 @@
             hospitalType = meerkat.modules.benefits.getHospitalType(),
             hospitalCount = meerkat.modules.benefitsModel.getHospitalCount(),
             benefitString = '',
-            filterToggleText = 'Change';
+            filterToggleText = '<span class="icon expander large-bold right"></span>';
         if (coverType === 'E' || hospitalCount === 0) {
             benefitString = 'No Hospital';
-            filterToggleText = 'Add Hospital';
         } else {
             var plural = hospitalCount > 1 ? 's' : '';
             benefitString = hospitalCount + ' Benefit' + plural + ' selected';
@@ -459,7 +458,6 @@
             // Update the active tab for hospital filter to limited if applicable
             if (hospitalType === 'limited') {
                 benefitString = '';
-                filterToggleText = 'Change';
                 $('.results-filters-benefits .health-filter-hospital-benefits li').find('a').each(function () {
                     var $that = $(this);
                     var isLimited = $that.attr('href').search(/limited/) !== -1;
@@ -469,9 +467,8 @@
                 });
             }
         }
-        var benefitCount = '<div>' + benefitString + '</div>';
-        $('.filter-by-hospital-benefits').html(coverTypeLabel + benefitCount)
-            .parent().find('.filter-toggle').text(filterToggleText);
+        $('.filter-by-hospital-benefits').html(coverTypeLabel)
+            .parent().find('.filter-toggle').html('<span class="extras-filter-toggle-text small">' + benefitString + '</span> '+ filterToggleText);
     }
 
     function setFilterByExcess( excessRadioBtnGroupName) {
