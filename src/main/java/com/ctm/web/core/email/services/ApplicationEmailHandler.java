@@ -9,6 +9,6 @@ public interface ApplicationEmailHandler {
     String MAILING_NAME_KEY  = "sendAppMailingName";
 
     String sendApplicationEmail(HttpServletRequest request, String emailAddress,
-                                  long transactionId) throws SendEmailException;
+                                  long transactionId, long productId) throws SendEmailException;
 
 }

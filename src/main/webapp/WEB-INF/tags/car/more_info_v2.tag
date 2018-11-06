@@ -253,7 +253,7 @@
                     {{ } }}
                     {{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
                     <div id="car-additional-excess-conditions">
-                        <h5>Additional Excess</h5>
+                        <h5>Excesses</h5>
                         <ul>
                             {{ for(var i = 0; i < additionalExcesses.list.length; i++) { }}
                             <li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}

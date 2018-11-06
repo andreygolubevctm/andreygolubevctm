@@ -101,7 +101,7 @@
 	{{ var offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 	{{ var priceDisclaimer = (!_.isUndefined(obj.price.priceDisclaimer) && !_.isNull(obj.price.priceDisclaimer) && obj.price.priceDisclaimer.length > 0) ? obj.price.priceDisclaimer : ''; }}
 
-	{{ var template = $("#title-download-special-template").html(); }}
+	{{ var template = $("#title-download-special-template-pds").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var titleDownloadSpecialTemplate = htmlTemplate(obj); }}
 

@@ -49,6 +49,17 @@ public abstract class EmailServiceHandler {
 	public abstract String send(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException;
 
+	/**
+	 * This 2nd send method is overloaded (extra productId param) and is overridden
+	 * in HealthEmailService. It has not been declared as abstract as it's presently
+	 * unique to health and is not needed anywhere else that implements this class.
+	 */
+	public String send(HttpServletRequest request, String emailAddress,
+		   	long transactionId, long productId) throws SendEmailException {
+		return null;
+	}
+
+
 	public static boolean isTestEmailAddress(String emailAddress){
 		return testEmails.contains(emailAddress);
 	}
