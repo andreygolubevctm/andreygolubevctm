@@ -37,9 +37,4 @@
         </c:choose>
     </div>
     <health_v4_moreinfo:more_info_product_extra_info />
-
-    <%--<div class="col-xs-12 printableBrochuresLink">--%>
-        <%--<a href="javascript:;" class="btn btn-secondary btn-sm btn-block narrowMarginTop getPrintableBrochures">Email myself brochures</a>--%>
-    <%--</div>--%>
-
 </div>
