@@ -16,9 +16,5 @@
 <%-- HTML --%>
 <div ${idAttribute} class="health-filter-excess">
 	<field_v2:array_radio xpath="${radioGroupName}" title="your insurance excess amount" required="true" items="1=No Excess||2=$1 - $250||3=$251 - $500||4=ALL" delims="||" style="radio-as-checkbox" wrapCopyInSpan="true" outerWrapperClassName="col-xs-12 col-sm-12 col-md-12 col-lg-12 vertical" className="${radioGroupName} radio-as-checkbox" additionalAttributes="${analyticsAttr} data-attach=true" />
-	<%-- This can be used if you want to display the checkboxes in a grid layout --%>
-	<%--
-	<field_v2:array_radio xpath="${radioGroupName}" title="your insurance excess amount" required="true" items="1=No Excess||2=$1 - $250||3=$251 - $500||4=ALL" delims="||" style="radio-as-checkbox" wrapCopyInSpan="true" outerWrapperClassName="col-xs-12 col-sm-6" className="${radioGroupName} radio-as-checkbox" additionalAttributes="${analyticsAttr} data-attach=true" />
-	--%>
 	<input name="${hiddenFieldName}" value="" type="hidden">
 </div>

@@ -41,12 +41,12 @@
     </div>
     <div class="separator-container bottom-separator bottom-separator-widget-padding">
         <div class="filter filter-extras-benefits" data-filter-serverside="true">
-            <div class="filter-sub-heading">Extras</div>
+            <div class="filter-sub-heading black-text">Extras</div>
             <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
             <health_v4:benefits_switch_extras_message />
             <div class="filter-by-container">
                 <span class="filter-by-extras-benefits small"></span>
-                <a href="javascript:;" class="filter-toggle small" data-filter="extras-benefits" <field_v1:analytics_attr analVal="extras benefits filter" quoteChar="\"" />>Change</a>
+                <a href="javascript:;" class="filter-toggle small full-width counter-header-margin" data-filter="extras-benefits" <field_v1:analytics_attr analVal="extras benefits filter" quoteChar="\"" />>Change</a>
             </div>
 
             <div class="benefits-list health-filter-extras-benefits">

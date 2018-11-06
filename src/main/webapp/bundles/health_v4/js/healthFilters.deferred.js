@@ -252,6 +252,7 @@
                     init: function (filterObject) {
                         meerkat.modules.benefitsSwitch.initExtrasFilters();
                         toggleFiltersBenefitSelection('extras', meerkat.modules.benefitsSwitch.isExtrasOn());
+                        $('#health_benefits_filters_ExtrasSwitch').parent().parent().addClass( "toggle-switch-right" ).toggleClass('hidden', false);
                     },
                     update: function (filterObject) {
                         var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
@@ -260,7 +261,6 @@
 
                         _.defer(function() {
                             setFilterByExtrasBenefits();
-                            meerkat.modules.benefitsSwitch.toggleFiltersSwitch('extras', true);
                         });
                     }
                 }
@@ -390,8 +390,6 @@
 
             toggleFilterByContainer($('.filter-' + filter));
             toggleFilter($('.health-filter-' + filter), true);
-
-            meerkat.modules.benefitsSwitch.toggleFiltersSwitch(filter.replace('-benefits', ''), false);
         });
 
         $(document).on('shown.bs.tab', '.health-filter-hospital-benefits a[data-toggle="tab"]', function (e) {
@@ -430,16 +428,14 @@
         var coverType = meerkat.modules.healthChoices.getCoverType(),
             extrasCount = meerkat.modules.benefitsModel.getExtrasCount(),
             benefitString = '',
-            filterToggleText = 'Change';
+            filterToggleText = '<span class="icon expander large-bold right"></span>';
         if (coverType === 'H' || extrasCount === 0) {
             benefitString = 'No Extras';
-            filterToggleText = 'Add Extras';
         } else {
             var plural = extrasCount > 1 ? 's' : '';
             benefitString = extrasCount + ' Extra' + plural + ' selected';
         }
-        $('.filter-by-extras-benefits').html(benefitString)
-            .parent().find('.filter-toggle').text(filterToggleText);
+        $('.filter-by-extras-benefits').parent().find('.filter-toggle').html('<span class="extras-filter-toggle-text small">' + benefitString + '</span> '+ filterToggleText);
     }
 
     function setFilterByHospitalBenefits() {
