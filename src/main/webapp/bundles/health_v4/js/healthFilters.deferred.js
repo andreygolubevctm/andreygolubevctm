@@ -366,7 +366,6 @@
         });
     }
 
-
     function applyEventListeners() {
         $(document).on('change', 'input[name=health_filterBar_frequency]', function (e) {
             var frequency = $(this).val();
