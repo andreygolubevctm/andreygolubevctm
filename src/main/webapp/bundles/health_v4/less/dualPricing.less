@@ -125,6 +125,10 @@
   }
 }
 
+.rateRiseDisclaimer {
+  text-align: center;
+}
+
 .premium-rising-tag {
   background-color: @theme-accent-3;
   color: #fff;
@@ -236,6 +240,11 @@ body[data-step="results"]:not(.moreInfoVisible) {
           vertical-align: super;
         }
 
+        .asterisk {
+          font-size: 10px;
+          vertical-align: super;
+        }
+
         .cents {
           font-size: 14px;
           vertical-align: super;
@@ -343,10 +352,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
   .dual-pricing-container {
     display: block;
     align-items: initial;
-
-    @media (@lg) {
-      margin-left: 100px;
-    }
 
     // xs-only
     .april-container {
