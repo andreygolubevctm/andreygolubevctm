@@ -122,6 +122,16 @@
                 htmlContent: Results.getSelectedProduct().aboutFund
             });
         });
+
+        $(window).scroll(function() {
+            var $moreInfoAffixedContainer = $('#moreInfoAffixedContainer');
+            var top = 155;
+            if ($(window).scrollTop() >= top) {
+                $moreInfoAffixedContainer.addClass('topFix');
+            } else {
+                $moreInfoAffixedContainer.removeClass('topFix');
+            }
+        });
     }
 
     function _setTabs() {

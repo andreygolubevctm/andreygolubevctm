@@ -6,10 +6,16 @@
 <!-- Product Summary. Logo, price, LHC etc... -->
 <div class="row priceRow productSummary hidden-xs">
     <div class="col-xs-12">
+
         {{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
             {{= renderedPyrrCampaign }}
         {{ } }}
-        <h2 class="noTopMargin productName hidden-xs">{{= info.productTitle }}</h2>
+        <div class="col-xs-10">
+            <h2 class="noTopMargin productName hidden-xs">{{= info.productTitle }}</h2>
+        </div>
+        <div class="affix col-sm-2 moreInfoAffixedContainer" id="moreInfoAffixedContainer">
+            <health_v4_moreinfo:more_info_product_widget />
+        </div>
     </div>
     <div class="col-xs-12 about-this-fund-row">
         <div class="fundDescription">
