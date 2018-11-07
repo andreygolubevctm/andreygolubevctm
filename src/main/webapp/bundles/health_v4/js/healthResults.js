@@ -129,6 +129,8 @@
         var frequencyValue = $('#health_filter_frequency').val();
         frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
 
+        $(':input[name=health_productCode]').val(meerkat.site.loadProductCode);
+
         try {
 
             var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
@@ -302,15 +304,6 @@
             Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
             Results.model.sortedProductsAll = Results.model.returnedProducts;
 	        Results.model.filteredProductsAll = Results.model.returnedProducts;
-
-	        if(meerkat.site.loadProductCode) {
-	            var product = Results.model.returnedProducts.find(function(product) {
-                    return product.info.productCode === meerkat.site.loadProductCode;
-                });
-
-	            Results.model.returnedProducts.splice(Results.model.returnedProducts.indexOf(product),1);
-	            Results.model.returnedProducts.unshift(product);
-	        }
 
 	        var numSearchResults = 12;
 

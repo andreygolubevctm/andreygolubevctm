@@ -74,7 +74,11 @@ public class RequestAdapterV2 {
             if (quote.getSearchResults() != null) {
                 quoteRequest.setSearchResults(quote.getSearchResults());
             } else {
-                quoteRequest.setSearchResults(18);
+                if(isSimples){
+                    quoteRequest.setSearchResults(18);
+                }else{
+                    quoteRequest.setSearchResults(12);
+                }
             }
             addBoundedExcessFilter(quoteRequest, filters, quote);
             addProductTitleSearchFilter(filters, quote);
@@ -133,6 +137,10 @@ public class RequestAdapterV2 {
         }
         addPrimaryAge(quoteRequest, cover);
         addFamilyType(quoteRequest, situation);
+
+        if(request.getHealth().getProductCode() != null && !request.getHealth().getProductCode().isEmpty()) {
+            quoteRequest.setProductCode(request.getHealth().getProductCode());
+        }
 
         return quoteRequest;
     }
