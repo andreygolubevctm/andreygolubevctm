@@ -15,7 +15,7 @@
 
     <jsp:attribute name="sidebarColumnRight">
         <div class="hidden-xs hidden-sm results-sidebar-inner grey-border">
-            <div class="results-page-sidebar-header smaller-text">Optional Filters</div>
+            <div class="results-page-sidebar-header smaller-text">Features</div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-awards-scheme"></div>
