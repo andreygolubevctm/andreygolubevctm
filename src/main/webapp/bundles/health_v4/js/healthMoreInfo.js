@@ -125,8 +125,8 @@
 
         $(window).scroll(function() {
             var $moreInfoAffixedContainer = $('#moreInfoAffixedContainer');
-            var top = 155;
-            if ($(window).scrollTop() >= top) {
+            var top = 150;
+            if ($(window).scrollTop() > top) {
                 $moreInfoAffixedContainer.addClass('topFix');
             } else {
                 $moreInfoAffixedContainer.removeClass('topFix');
