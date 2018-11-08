@@ -1,4 +1,4 @@
-package com.ctm.web.email.health;
+package com.ctm.web.email.car;
 
 import com.ctm.web.car.email.CarEmailDetailMappings;
 import com.ctm.web.core.email.services.EmailDetailsService;
@@ -16,7 +16,7 @@ import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailTranslator;
 import com.ctm.web.email.EmailUtils;
 import com.ctm.web.email.OptIn;
-import com.ctm.web.email.car.CarEmailModel;
+import com.ctm.web.email.health.EmailParameters;
 import com.ctm.web.factory.EmailServiceFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
