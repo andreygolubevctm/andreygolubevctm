@@ -22,7 +22,7 @@
 		<c:set var="rootPathData">quote</c:set>
 	</c:when>
 	<c:otherwise>
-<c:set var="rootPathData">${rootPath}</c:set>
+		<c:set var="rootPathData">${rootPath}</c:set>
 	</c:otherwise>
 </c:choose>
 
@@ -31,8 +31,8 @@
 		<go:setData dataVar="data" xml="${dataObject}" />
 	</c:when>
 	<c:otherwise>
-<security:populateDataFromParams rootPath="save" />
-<security:populateDataFromParams rootPath="saved" />
+		<security:populateDataFromParams rootPath="save" />
+		<security:populateDataFromParams rootPath="saved" />
 	</c:otherwise>
 </c:choose>
 
@@ -115,7 +115,7 @@
 				<c:otherwise>${data['utilities/resultsDisplayed/email']}</c:otherwise>
 			</c:choose>
 		</c:set>
-		
+
 		<c:set var="firstName">${data['utilities/application/details/firstName']}</c:set>
 
 		<c:set var="lastName">${data['utilities/application/details/lastName']}</c:set>
@@ -126,7 +126,7 @@
 
 		<c:set var="step1Email" value="${data['utilities/resultsDisplayed/email']}"/>
 		<c:set var="step3Email" value="${data['utilities/application/details/email']}"/>
-				
+
 		<c:set var="optinMarketing">
 			<c:choose>
 				<c:when test="${emailAddress eq step1Email}">
@@ -216,11 +216,11 @@
 			<c:if test="${not empty data['health/application/email'] and data['health/contactDetails/email'] ne data['health/application/email']}">${data['health/application/email']}</c:if>
 		</c:set>
 		<c:set var="app_optinEmailAddress">
-				<c:choose>
+			<c:choose>
 				<c:when test="${empty data['health/application/optInEmail']}">N</c:when>
 				<c:otherwise>${data['health/application/optInEmail']}</c:otherwise>
-				</c:choose>
-			</c:set>
+			</c:choose>
+		</c:set>
 
 		<%-- Application Secondary Email - contains the previous email that was opted in via the application (we don't want it opted out) --%>
 		<c:set var="app_emailAddressSecondary">
@@ -242,11 +242,11 @@
 			<c:if test="${not empty data['health/application/mobile'] and data['health/application/mobile'] ne data['health/contactDetails/contactNumber/mobile']}">${data['health/application/mobile']}</c:if>
 		</c:set>
 		<c:set var="app_okToCall">
-				<c:choose>
+			<c:choose>
 				<c:when test="${empty data['health/application/call']}">N</c:when>
 				<c:otherwise>${data['health/application/call']}</c:otherwise>
-				</c:choose>
-			</c:set>
+			</c:choose>
+		</c:set>
 
 		<%-- Assign firstname/lastname - use questionset otherwise application values --%>
 		<c:set var="firstName" value="${data['health/contactDetails/name']}" />
@@ -391,17 +391,17 @@
 <c:if test="${confirmationResult == ''}">
 	<c:choose>
 		<c:when test="${hasPrivacyOptin eq true and rootPath ne 'health' and not empty emailAddress}">
-	<%-- Add/Update the user record in email_master --%>
-	<c:catch var="error">
-		<agg_v1:write_email
-			brand="${brand}"
-			vertical="${rootPath}"
-			source="${source}"
-			emailAddress="${emailAddress}"
-			firstName="${firstName}"
-			lastName="${lastName}"
-			items="${optinMarketing}${optinPhone}" />
-	</c:catch>
+			<%-- Add/Update the user record in email_master --%>
+			<c:catch var="error">
+				<agg_v1:write_email
+						brand="${brand}"
+						vertical="${rootPath}"
+						source="${source}"
+						emailAddress="${emailAddress}"
+						firstName="${firstName}"
+						lastName="${lastName}"
+						items="${optinMarketing}${optinPhone}" />
+			</c:catch>
 		</c:when>
 		<c:when test="${hasPrivacyOptin eq true and rootPath eq 'health'}">
 			<jsp:useBean id="userDetails" class="com.ctm.web.health.model.request.UserDetails" scope="page" />
@@ -423,7 +423,7 @@
 			${userDetails.application.setPhoneMobile(app_phoneMobile)}
 			${userDetails.application.setOkToCall(app_okToCall)}
 			<health_v1:write_optins
-				userDetails = "${userDetails}"
+					userDetails = "${userDetails}"
 			/>
 		</c:when>
 		<c:otherwise><%-- ignore --%></c:otherwise>
@@ -487,7 +487,7 @@
 </c:if>
 
 <c:choose>
-<%-- Do not write quote if this quote is already confirmed/finished --%>
+	<%-- Do not write quote if this quote is already confirmed/finished --%>
 	<c:when test="${confirmationResult == '' && transactionId.matches('^[0-9]+$') }">
 		<c:catch var="error">
 			<sql:transaction>
@@ -537,7 +537,7 @@
 							<sql:param>${transactionId}</sql:param>
 							<sql:param>-4</sql:param>
 							<sql:param>useragent</sql:param>
-							<sql:param>${useragent}</sql:param>
+							<sql:param>${fn:substring(useragent, 0, 999)}</sql:param>
 						</sql:update>
 					</c:if>
 					<c:if test="${not empty trigger}">
@@ -553,7 +553,6 @@
 						</sql:update>
 					</c:if>
 					<c:if test="${not empty triggerreason}">
-						<c:if test="${fn:length(triggerreason) > 900}"><c:set var="triggerreason" value="${fn:substring(triggerreason, 0, 900)}" /></c:if>
 						<sql:update>
 							INSERT INTO aggregator.transaction_details
 							(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
@@ -562,7 +561,7 @@
 							<sql:param>${transactionId}</sql:param>
 							<sql:param>-6</sql:param>
 							<sql:param>fatalerrorreason</sql:param>
-							<sql:param>${triggerreason}</sql:param>
+							<sql:param>${fn:substring(triggerreason, 0, 999)}</sql:param>
 						</sql:update>
 					</c:if>
 					<c:if test="${not empty pendingID}">
@@ -583,10 +582,10 @@
 				<c:import url="/WEB-INF/xslt/toxpaths.xsl" var="toXpathXSL" />
 				<c:set var="dataXpaths">
 					<c:if test="${not empty data and not empty data[rootPathData]}">
-					<x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data[rootPathData])}"/>
-					<c:if test="${data['save'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['save'])}"/></c:if>
-					<c:if test="${data['saved'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['saved'])}"/></c:if>
-					<c:if test="${data['reminder'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['reminder'])}"/></c:if>
+						<x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data[rootPathData])}"/>
+						<c:if test="${data['save'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['save'])}"/></c:if>
+						<c:if test="${data['saved'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['saved'])}"/></c:if>
+						<c:if test="${data['reminder'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['reminder'])}"/></c:if>
 					</c:if>
 				</c:set>
 
@@ -601,7 +600,10 @@
 							<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
 
 							<%-- Cap the value to a certain length so we don't get database errors --%>
-							<c:if test="${fn:length(rowVal) > 900}"><c:set var="rowVal" value="${fn:substring(rowVal, 0, 900)}" /></c:if>
+							<c:if test="${fn:length(rowVal) > 1000}">
+								<c:set var="errorStr" value="Data Truncated - xpath (${xpath}) has textValue longer than 1000 chars: ${rowVal}" />
+								<c:set var="rowVal" value="${fn:substring(rowVal, 0, 999)}" />
+							</c:if>
 
 							<c:choose>
 
@@ -635,7 +637,7 @@
 									<c:if test="${fn:length(textValue) > 1000}">
 										<c:set var="errorStr" value="Data Truncated - xpath (${xpath}) has textValue longer than 1000 chars: ${textValue}" />
 										${logger.error(errorStr)}
-										<c:set var="textValue" value="${fn:substring(textValue,0,1000)}" />
+										<c:set var="textValue" value="${fn:substring(textValue,0,999)}" />
 									</c:if>
 
 									<c:set var="ignore">
@@ -681,7 +683,7 @@
 									<sql:update>
 										DELETE FROM aggregator.transaction_details
 
-															WHERE transactionId = ${transactionId}
+										WHERE transactionId = ${transactionId}
 										AND sequenceNo > ${counter}
 										AND sequenceNo < 300;
 									</sql:update>

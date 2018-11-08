@@ -68,7 +68,7 @@ public class MarketingAutomationEmailService {
         emailTranslator.setUrls(request, emailRequest, data, verticalCode);
         emailRequest.setVertical(verticalCode);
 
-        if (VerticalType.HEALTH != VerticalType.fromValue(verticalCode) || !emailRequest.isPopularProductsSelected()) {
+        if (attemptEmailDistribution(emailRequest)) {
             emailClient.send(emailRequest);
         }
     }
@@ -96,6 +96,16 @@ public class MarketingAutomationEmailService {
             return false;
         }
         return true;
+    }
+
+    protected static boolean attemptEmailDistribution(EmailRequest emailRequest){
+        final VerticalType verticalType = getVerticalType(emailRequest.getVertical());
+        if(StringUtils.isNotBlank(emailRequest.getEmailAddress())){
+            if(VerticalType.HEALTH != verticalType || !emailRequest.isPopularProductsSelected()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static VerticalType getVerticalType(final String verticalCode) {

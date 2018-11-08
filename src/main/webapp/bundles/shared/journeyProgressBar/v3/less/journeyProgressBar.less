@@ -25,6 +25,11 @@
 
     li {
       white-space: nowrap;
+      
+      @media(min-width: @screen-md) {
+        counter-increment: section;
+      }
+
       text-align: center;
       line-height: @journeyProgressBar-lineheight;
       display: inline-block;
@@ -47,6 +52,17 @@
       }
     }
 
+    :not(.end) {
+      a, div {
+        &:before {
+          @media (min-width: @screen-md) {
+            content: counters(section, ".") "\A";
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+
     a, div {
       color: @journeyProgressBar-color;
       text-decoration: none;
@@ -57,6 +73,7 @@
       left: 8px;
       right: @journeyProgressBar-horizontal-push;
       height: 21px;
+
       &:before {
         border: @journeyProgressBar-border-size @journeyProgressBar-border-style;
         font-size: 20px;
@@ -75,6 +92,13 @@
         color: @journeyProgressBar-color;
         background-color: #ffffff;
         box-sizing: border-box;
+
+        @media(min-width: @screen-md) {
+          font-size: 12px;
+          margin-top: 4px;
+          padding: 5px 8px 7px 17px;
+        }
+
       }
     }
     a {
@@ -89,6 +113,18 @@
         border-bottom: @journeyProgressBar-border-size @journeyProgressBar-border-style;
         &:before {
           color: @journeyProgressBar-separator-color-complete;
+
+          @media(min-width: @screen-md) {
+            content: "\e931";
+            font-family: 'framework_font';
+            padding: 6px;
+            padding-left: 16px;
+            border-color: @journeyProgressBar-border-color-complete;
+            background-color: @journeyProgressBar-border-color-complete;
+            color: #ffffff;
+            font-size: 12px;
+          }
+
         }
       }
       &.end {

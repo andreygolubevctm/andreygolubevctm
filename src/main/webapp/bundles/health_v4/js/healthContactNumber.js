@@ -116,13 +116,13 @@
 	    	$elements.phone.quote.mobile.val(getPhoneForType(phones.quote.mobile, "mobile"));
 	    }
 	    if(!_.isEmpty(phones.quote.other)) {
-		    $elements.phone.quote.other.val(getPhoneForType(phones.quote.mobile, "landline"));
+		    $elements.phone.quote.other.val(getPhoneForType(phones.quote.other, "landline"));
 	    }
 	    if(!_.isEmpty(phones.application.mobile)) {
 		    $elements.phone.application.mobile.val(getPhoneForType(phones.quote.mobile, "mobile"));
 	    }
 	    if(!_.isEmpty(phones.application.other)) {
-		    $elements.phone.application.other.val(getPhoneForType(phones.quote.mobile, "landline"));
+		    $elements.phone.application.other.val(getPhoneForType(phones.quote.other, "landline"));
 	    }
     }
 

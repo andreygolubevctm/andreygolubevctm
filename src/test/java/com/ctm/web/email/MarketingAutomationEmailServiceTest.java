@@ -18,6 +18,8 @@ public class MarketingAutomationEmailServiceTest {
 
 
     public static final String CAR = "car";
+    public static final String TRAVEL = "travel";
+    public static final String HEALTH = "health";
     public static final String TEST = "test";
     public static final long TRANSACTION_ID = 111l;
     public static final String ADDRESS = "Springfield";
@@ -71,6 +73,46 @@ public class MarketingAutomationEmailServiceTest {
     @Test
     public void givenInvalidEmailEventVertical_whenValidateRequest_thenReturnFalse() {
         testValidateRequest(CAR, getBrand().getCode(), TRANSACTION_ID, false, MarketingAutomationEmailService.VALID_EMAIL_EVENT_VERTICAL_LIST);
+    }
+
+    @Test
+    public void givenTravelEmailWithEmailAddress_thenAttemptEmailDistributionIsTrue(){
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setVertical(TRAVEL);
+        emailRequest.setEmailAddress("test@comparethenmarket.com.au");
+        Assert.assertTrue(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
+    }
+
+    @Test
+    public void givenTravelEmailWithOutEmailAddress_thenAttemptEmailDistributionIsFalse(){
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setVertical(TRAVEL);
+        Assert.assertFalse(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
+    }
+
+    @Test
+    public void givenHealthEmailWithPopularProductSelected_thenAttemptEmailDistributionIsFalse(){
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setVertical(HEALTH);
+        emailRequest.setPopularProductsSelected(true);
+        Assert.assertFalse(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
+    }
+
+    @Test
+    public void givenHealthEmailWithOutPopularProductSelected_thenAttemptEmailDistributionIsTrue(){
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setVertical(HEALTH);
+        emailRequest.setPopularProductsSelected(false);
+        emailRequest.setEmailAddress("preload.testing@comparethemarket.com.au");
+        Assert.assertTrue(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
+    }
+
+    @Test
+    public void givenCarEmail_thenAttemptEmailDistributionIsTrue(){
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setVertical(CAR);
+        emailRequest.setEmailAddress("preload.testing@comparethemarket.com.au");
+        Assert.assertTrue(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
     }
 
     private static void testValidateRequest(final String verticalCode, final String brandCode, final Long transactionId, final boolean isValid, final List<VerticalType> validVerticalList) {

@@ -814,14 +814,14 @@ a {
   }
 
   background-size: 43px 32px;
-  .highResImgContain('../graphics/logo-dollar-xs.png'; '../graphics/logo-dollar-xs@2x.png');
+  .highResImgContain('../graphics/logo-dollar-xs.png?new'; '../graphics/logo-dollar-xs@2x.png?new');
 
   @media only screen and (min-width: @screen-sm-min) {
     width: 216px;
     height: 28px;
     margin: 24px 0 10px 0;
     background-size: 216px 28px;
-    .highResImgContain('../graphics/logo-sm.png'; '../graphics/logo-sm@2x.png'; ~"");
+    .highResImgContain('../graphics/logo-sm.png?new'; '../graphics/logo-sm@2x.png?new'; ~"");
   }
 
   //Scale up override for MD & LG logo and retina support
@@ -830,7 +830,7 @@ a {
     height: 35px;
     margin: 24px 0 18px 0;
     background-size: contain;
-    .highResImgContain('../graphics/logo.png'; '../graphics/logo@2x.png'; ~"");
+    .highResImgContain('../graphics/logo.png?new'; '../graphics/logo@2x.png?new'; ~"");
   }
 
   @media print {
@@ -1097,6 +1097,10 @@ select.text-placeholder-color {
   // &:after {
   // 	content: ')'
   // }
+}
+
+.fieldrow_legend.lhcText {
+  color: @gray-darker;
 }
 
 // Hide radio elements in a button group otherwise if the buttons wrapped, the radio would be exposed.
@@ -1427,7 +1431,7 @@ select {
     margin: 0 auto 10px;
     width: 80px;
     height: 80px;
-    background: transparent url(../graphics/loading.png) top left no-repeat;
+    background: transparent url(../graphics/loading.png?new) top left no-repeat;
     background-size: contain;
   }
   //There's probably a 'sexy' way to get this to work with the right font, but for now I'm just going to do a graphic.

@@ -28,7 +28,7 @@
 
         $primaryDob = $('#health_application_primary_dob');
         $partnerDob = $('#health_application_partner_dob');
-        $dependantsIncome = $('#health_application_dependants_income');
+        $dependantsIncome = $(':input[name="health_application_dependants_income"]');
 
         $hiddenFields = {
             applicantCovered: $('#health_application_govtRebateDeclaration_applicantCovered'),
@@ -132,7 +132,7 @@
             },
             rebate: {
                 currentPercentage: $('#health_rebate'),  //need to confirm if it is the rebate or the rebateChangeover field
-                tier: $('#health_healthCover_income'),
+                tier: $(':input[name="health_healthCover_income"]'),
                 tierIncomeBracket: $('#health_healthCover_incomelabel')
             },
             partner: {
@@ -321,7 +321,7 @@
             mobileNumber = $fields.primary.mobileNumber.val(),
             otherNumber = $fields.primary.otherNumber.val(),
             daytimePhoneNumber = mobileNumber ? mobileNumber : otherNumber,
-            rebateTier = _getRebateTier($fields.rebate.tier.val()),
+            rebateTier = _getRebateTier($fields.rebate.tier.filter(':checked').val()),
             rebatePercent = rebateTier + ' - ' + $fields.rebate.currentPercentage.val() + '%',
             rebateTierTable = getRebateTableData('current'),
             fundName = _funds[Results.getSelectedProduct().info.FundCode],

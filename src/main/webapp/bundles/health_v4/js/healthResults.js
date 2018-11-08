@@ -319,12 +319,14 @@
             if (generalInfo.pricesHaveChanged) {
                 meerkat.modules.dialogs.show({
                     title: "Just a quick note",
+	                className: "health-results-changed-modal",
                     htmlContent: $('#quick-note').html(),
                     buttons: [{
                         label: "Show latest results",
                         className: "btn btn-next",
                         closeWindow: true
-                    }]
+                    }],
+                    forceShowFooter: true
                 });
                 $("input[name='health_retrieve_savedResults']").val("N");
             }
@@ -430,12 +432,14 @@
 
                     meerkat.modules.dialogs.show({
                         title: "Just a quick note",
+                        className: "health-results-changed-modal",
                         htmlContent: htmlContent,
                         buttons: [{
                             label: "Show latest results",
                             className: "btn btn-next",
                             closeWindow: true
-                        }]
+                        }],
+                        forceShowFooter: true
                     });
                 }
 
@@ -636,7 +640,7 @@
         meerkat.modules.healthRates.loadRates(afterFetchRates);
     }
 
-    // Wrapper around results component, load results data beofore result page
+    // Wrapper around results component, load results data before result page
     function getBeforeResultsPage() {
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
         var afterFetchRates = function() {
@@ -1028,7 +1032,7 @@
             data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
             data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;
             data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
-            data["isPopularProductsSelected"] = $(':input[name=health_popularProducts]').val();
+            data["isPopularProductsSelected"] = $('input[name=health_popularProducts]').val();
         }
         return data;
     }

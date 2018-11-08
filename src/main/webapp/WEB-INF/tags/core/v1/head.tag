@@ -91,7 +91,7 @@
 		</c:when>
 		<c:otherwise>
 			<%-- The normal CTM based head inclusions --%>
-	<link rel="shortcut icon" type="image/x-icon" href="common/images/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="common/images/favicon.ico?new">
 
 	<go:style marker="css-href" href='common/reset.css'></go:style>
 	<go:style marker="css-href" href='common/base.css'></go:style>
