@@ -8,11 +8,11 @@
 
     <div class="separator-container bottom-separator">
         <div class="filter filter-hospital-benefits" data-filter-serverside="true">
-            <div class="filter-sub-heading">Hospital</div>
+            <div class="filter-sub-heading black-text">Hospital</div>
             <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
             <div class="filter-by-container">
                 <div class="filter-by-hospital-benefits small"></div>
-                <a href="javascript:;" class="filter-toggle small" data-filter="hospital-benefits" <field_v1:analytics_attr analVal="hospital benefits filter" quoteChar="\"" />>Change</a>
+                <a href="javascript:;" class="filter-toggle small full-width " data-filter="hospital-benefits" <field_v1:analytics_attr analVal="hospital benefits filter" quoteChar="\"" />>Change</a>
             </div>
 
             <ul class="nav nav-tabs health-filter-hospital-benefits">
