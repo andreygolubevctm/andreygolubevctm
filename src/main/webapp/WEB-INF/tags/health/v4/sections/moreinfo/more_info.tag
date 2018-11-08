@@ -157,18 +157,31 @@
 										{{ product.ignoreLimits = false; }}
 										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-7 benefitHeaderTitle">
+											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
 												Hospital cover benefits
 											</div>
-											<div class="col-xs-2 benefitHeaderTitle">
+											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
 												Inclusion
 											</div>
-											<div class="col-xs-3 benefitHeaderTitle">
+											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
 												Waiting period
 											</div>
 										</div>
 										{{ } }}
-										{{= benefitTemplate(product) }}
+										{{ _.each(product.custom.reform.tab1.benefits, function(benefit){ }}
+										<div class="row benefitRow">
+											<div class="col-xs-7 newBenefitRow benefitRowTitle">
+												{{= benefit.name }}
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitRowTitle">
+												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+											</div>
+											<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
+												{{= benefit.WaitingPeriod}}
+											</div>
+										</div>
+										{{ }) }}
+
 									</div>
 								</div>
 

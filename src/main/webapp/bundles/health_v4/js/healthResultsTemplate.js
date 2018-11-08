@@ -104,6 +104,7 @@
      * @param ft
      * @returns {*}
      */
+
     function getItem(obj, ft) {
         //NOTE: Not sure if we need to extend the feature object each time to clone it.
         // If you don't, the last row's data ends up on Features.getPageStructure. Is that a problem? Not sure...
