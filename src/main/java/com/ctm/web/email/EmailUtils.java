@@ -28,6 +28,8 @@ import java.util.stream.IntStream;
 @Component
 public class EmailUtils {
 
+    private static final EmailValidator emailValidator = EmailValidator.getInstance();
+
     /**
      * Function to strip HTML from a given string, maintaining white space. If a string is null, an empty String will be returned.
      */
@@ -118,11 +120,8 @@ public class EmailUtils {
     }
 
     public static boolean isValidEmailAddress(String email) {
-		// Get an EmailValidator
-		EmailValidator validator = EmailValidator.getInstance();
-
 		// Validate specified String containing an email address
-		if (!validator.isValid(email)) {
+		if (!emailValidator.isValid(email)) {
 			return false;
 		}
 		return true;
