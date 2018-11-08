@@ -84,4 +84,14 @@ public class EmailUtilsTest {
         assertThat(EmailUtils.bigDecimalOrZero.apply("3.14"), equalTo(BigDecimal.valueOf(3.14)));
     }
 
+    @Test
+    public void whenEmailIsValid_thenValidationPasses() {
+        assertThat(true, equalTo(EmailUtils.isValidEmailAddress("test.email@comparethemarket.com.au")));
+    }
+
+    @Test
+    public void whenEmailIsInValid_thenValidationFails() {
+		assertThat(false, equalTo(EmailUtils.isValidEmailAddress("test.email@comparethemarket.comau")));
+    }
+
 }
