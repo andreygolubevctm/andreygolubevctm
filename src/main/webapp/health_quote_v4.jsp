@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<script type="text/javascript" async="" src="https://widget.intercom.io/widget/d29h2i1h"></script>
+
+
 <%-- Setup New Health Session --%>
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils" />
 <session:new verticalCode="HEALTH" authenticated="true" />
@@ -170,6 +171,8 @@
                 <c:if test="${callCentre}">
                     <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
                 </c:if>
+                <script type="text/javascript" async="false" src="https://widget.intercom.io/widget/d29h2i1h"></script>
+                <script async="false" src="./bundles/health_v4/intercom.js"></script>
             </jsp:attribute>
 
             <jsp:attribute name="vertical_settings">
@@ -209,13 +212,6 @@
                         <coupon:promo_tile />
                     </div>
                 </div>
-
-                <%-- custom intercom launcher. --%>
-                <a class="intercom-launcher" id="intercom-element" href="mailto:d29h2i1h@incoming.intercom.io">
-                    <div class="intercom-icon-close"></div>
-                    <div class="intercom-icon-open"></div>
-                    <span class="intercom-unread-count"></span>
-                </a>
 
                 <health_v4:dual_pricing_templates />
                 <c:if test="${isPyrrActive eq true}">

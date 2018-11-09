@@ -3,61 +3,6 @@
  */
 ;(function ($, undefined) {
 
-    //Setup Intercom and render our own intercom launcher
-    // This was done following this guide http://blog.learningspaces.io/customizing-the-intercom-launcher/
-    if(window.Intercom) {
-        window.intercomSettings = {
-            app_id: 'd29h2i1h',
-            custom_launcher_selector: '.intercom-launcher',
-            hide_default_launcher: true
-        };
-
-        window.Intercom('update');
-
-        // Register callbacks
-        window.Intercom('onShow', function() {
-            var launcher = document.querySelector('.intercom-launcher');
-            launcher.classList.add('intercom-open');
-            }
-        );
-
-        window.Intercom('onHide', function() {
-            var launcher = document.querySelector('.intercom-launcher');
-            launcher.classList.remove('intercom-open');
-            }
-        );
-
-        window.Intercom('onUnreadCountChange', function(count) {
-            var launcher = document.querySelector('.intercom-launcher');
-            var unreadCount = launcher.querySelector('.intercom-unread-count');
-
-            unreadCount.textContent = count;
-        if (count) {
-            unreadCount.classList.add('active');
-        } else {
-            unreadCount.classList.remove('active');
-        }
-    });
-
-// Wait for Intercom to boot (max 30 seconds)
-        var timeout = setTimeout(function() { clearInterval(interval); }, 30000);
-        var interval = setInterval(function() {
-            var launcher = document.querySelector('.intercom-launcher');
-
-            if (window.Intercom.booted) {
-            // Add class to show the launcher
-            launcher.classList.add('intercom-booted');
-
-            clearInterval(interval);
-            clearTimeout(timeout);
-        }
-    }, 100);
-    }else{
-        $('#intercom-element').hide();
-    }
-    //End of Intercom setup
-
-
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
