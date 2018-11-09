@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
 <%-- Setup New Health Session --%>
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils" />
 <session:new verticalCode="HEALTH" authenticated="true" />
