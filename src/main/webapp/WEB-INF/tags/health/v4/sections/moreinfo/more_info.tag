@@ -255,7 +255,7 @@
 											{{ if (typeof benefit === 'object') { }}
 											<div class="row benefitRow">
 												<div class="col-xs-5 newBenefitRow benefitRowTitle">
-													{{= key }}
+													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
 												</div>
 												<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
 													{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
