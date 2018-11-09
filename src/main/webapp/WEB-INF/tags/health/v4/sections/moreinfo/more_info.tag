@@ -231,30 +231,45 @@
 								</div>
 
 								<div class="row">
-									<div class="col-xs-12 moreInfoExtrasTab">
-										<ul class="nav nav-tabs">
-											<li>
-												<a href="javascript:;" data-target=".extrasCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
-											</li>
-											<li>
-												<a href="javascript:;" data-target=".extrasNotCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-
-								<!-- Inclusions / Exclusions -->
-								<div class="row tab-content">
-									<div class="col-xs-12 tab-pane extrasCoveredPane">
+									<div class="col-xs-12 tab-pane benefitTable">
 										{{ product.structureIndex = 5; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
-										{{= benefitTemplate(product) }}
-									</div>
-									<div class="col-xs-12 tab-pane extrasNotCoveredPane">
-										{{ product.showNotCoveredBenefits = true; }}
-										{{ product.ignoreLimits = true; }}
-										{{= benefitTemplate(product) }}
+										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										<div class="row benefitRow benefitRowHeader">
+											<div class="col-xs-5 newBenefitRow benefitHeaderTitle">
+												Extras services
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+												Annual limit
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+												Inclusion
+											</div>
+											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
+												Waiting period
+											</div>
+										</div>
+										{{ } }}
+										{{ _.each(product.extras, function(benefit, key){ }}
+											{{ if (typeof benefit === 'object') { }}
+											<div class="row benefitRow">
+												<div class="col-xs-5 newBenefitRow benefitRowTitle">
+													{{= key }}
+												</div>
+												<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
+													{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+												</div>
+												<div class="col-xs-2 newBenefitRow benefitRowTitle">
+													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+												</div>
+												<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
+													{{= benefit.waitingPeriod.substring(0, 20) }}
+												</div>
+											</div>
+											{{ } }}
+										{{ }) }}
+
 									</div>
 								</div>
 							</div>
