@@ -6,7 +6,7 @@
 
     var journeyEngineSlidesContainer = document.getElementById('journeyEngineSlidesContainer')
 
-    var healthInsurance =  document.getElementsByClassName('health-insurance').item(0);
+    var healthInsurance =  document.getElementsByClassName('health-insurance')[0];
 
     var hasElement = false;
 
