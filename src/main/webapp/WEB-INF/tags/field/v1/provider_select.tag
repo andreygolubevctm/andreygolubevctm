@@ -67,6 +67,7 @@
 				'${cat}' <c:if test="${!status.last}">,</c:if>
 			</c:forTokens>
 			) )
+      and a.Status NOT IN ('X','N')
 			ORDER BY a.Name;
 		</c:otherwise>
 	</c:choose>
