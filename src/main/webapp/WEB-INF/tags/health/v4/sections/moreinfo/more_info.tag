@@ -110,11 +110,13 @@
 								<div class="row excessCoPayment">
 									<div class="col-xs-6 excessInfo">
 										<div class="row">
-											<div class="col-xs-6 ">
-												<h3>Excess</h3>
+											<div class="col-xs-8">
+												<h3>Excess</h3><br/><br/>
+												<p>{{= hospital.inclusions.excess }}</p>
 											</div>
-											<div class="col-xs-6">
-												{{= hospital.inclusions.excess }}
+											<div class="col-xs-4">
+												<span class="dollarValue">{{= hospital.inclusions.excesses.perAdmission.replace('$', '') }}</span><br/>
+												<span class="valueUnit">per admission</span>
 											</div>
 										</div>
 									</div>
@@ -122,11 +124,20 @@
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
 									<div class="col-xs-6">
 										<div class="row">
-											<div class="col-xs-6 limitTitleLG">
-												<h3>Co-Payment</h3>
+											<div class="col-xs-8">
+												<h3>Co-payments</h3><br/><br/>
+												<p>{{= hospital.inclusions.copayment }}</p>
 											</div>
-											<div class="col-xs-6">
-												{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
+											<div class="col-xs-4">
+												{{ if (hospital.inclusions.copayments.type == 'shared') { }}
+													<span class="dollarValue">{{= hospital.inclusions.copayments.shared }}</span><br/>
+													<span class="valueUnit">per day/night</span>
+												{{ } }}
+
+												{{ if (hospital.inclusions.copayments.type == 'private') { }}
+													<span class="dollarValue">{{= hospital.inclusions.copayments.private }}</span><br/>
+													<span class="valueUnit">per day/night</span>
+												{{ } }}
 											</div>
 										</div>
 									</div>

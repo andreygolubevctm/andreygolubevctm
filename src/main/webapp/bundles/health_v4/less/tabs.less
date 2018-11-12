@@ -89,7 +89,22 @@
     padding: 10px 0;
 
     .excessInfo {
-      border-right: 1px solid @gray-light;
+      border-right: 1px solid @gray;
+    }
+
+    .dollarValue {
+      font-size: 31px;
+
+      &::before {
+        content: '$';
+        font-size: 15px;
+        position: relative;
+        top: -10px;
+      }
+    }
+
+    .valueUnit {
+      font-size: 12px;
     }
   }
 
