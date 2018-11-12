@@ -644,7 +644,7 @@
 									</c:set>
 
 									<%-- CTM-809 - remove after monitoring period --%>
-									<c:if test="${fn:startsWith(xpath, 'fuel')}">
+									<c:if test="${rootPath eq 'fuel'}">
 										<c:set var="fuelSQLParams"><c:if test="${not empty fuelSQLParams}">,</c:if>${xpath}=${textValue}</c:set>
 									</c:if>
 									<%-- END CTM-809 --%>
