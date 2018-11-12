@@ -54,27 +54,53 @@
 
 .reformHospitalTabs {
   overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
+  color: @gray-base;
 
   button {
+    width: 200px;
     background-color: inherit;
     float: left;
-    border: none;
+    border: 1px solid @gray-light;
     outline: none;
     cursor: pointer;
     padding: 14px 16px;
     transition: 0.3s;
     font-size: 17px;
+    margin-right: 10px;
 
     &.active {
-      background-color: #ccc;
+      background-color: @gray-base;
+      color: @white;
     }
   }
 }
 
 .benefitTable {
   border: 1px solid @gray-light;
+}
+
+.HospitalBenefits {
+  .heading-brochure {
+    margin-top: 60px;
+  }
+
+  .excessCoPayment {
+    margin-bottom: 40px;
+    padding: 10px 0;
+
+    .excessInfo {
+      border-right: 1px solid @gray-light;
+    }
+  }
+
+  h2 {
+    font-size: 28px;
+    color: @gray-base;
+  }
+
+  h3 {
+    color: @gray-base;
+  }
 }
 
 .benefitRow {

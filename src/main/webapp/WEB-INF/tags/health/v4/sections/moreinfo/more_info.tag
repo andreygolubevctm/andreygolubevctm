@@ -92,14 +92,14 @@
 								<div class="row">
 									<div class="col-xs-12">
 										{{ if(typeof hospitalCover !== 'undefined') { }}
-										<div class="row row-eq-height">
+										<div class="row row-eq-height heading-brochure">
 											<div class="col-xs-6">
 											{{ } }}
 										<h2>Hospital</h2>
 										{{ if(typeof hospitalCover !== 'undefined') { }}
 											</div>
 											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }} text-right">
-												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-secondary btn-sm btn-block download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View brochure</a>
+												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View hospital brochure</a>
 											</div>
 										</div>
 										{{ } }}
@@ -107,50 +107,29 @@
 								</div>
 
 								<!-- Hospital Benefits -->
-								<div class="row">
-									<div class="col-xs-12 addBottomMargin">
-										<h3>Excess</h3>
-										{{= hospital.inclusions.excess }}
+								<div class="row excessCoPayment">
+									<div class="col-xs-6 excessInfo">
+										<div class="row">
+											<div class="col-xs-6 ">
+												<h3>Excess</h3>
+											</div>
+											<div class="col-xs-6">
+												{{= hospital.inclusions.excess }}
+											</div>
+										</div>
 									</div>
 
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-6 limitTitleLG">
-											Co-Payment/ % Hospital Contribution
+									<div class="col-xs-6">
+										<div class="row">
+											<div class="col-xs-6 limitTitleLG">
+												<h3>Co-Payment</h3>
+											</div>
+											<div class="col-xs-6">
+												{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
+											</div>
 										</div>
-										<div class="col-xs-6">
-											{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
-										</div><div class="clearfix"></div>
-										<div class="col-xs-6 limitTitleLG addTopMargin">
-											Excess Waivers
-										</div>
-										<div class="col-xs-6 addTopMargin">
-											{{= hospital.inclusions.waivers == '-' ? 'None' : hospital.inclusions.waivers }}
-										</div><div class="clearfix"></div>
-									{{ } }}
-
-									<div class="col-xs-12">
-										<h3>Waiting Periods</h3>
 									</div>
-
-									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-6 limitTitleLG">
-											Pre-existing conditions
-										</div>
-										<div class="col-xs-6">
-											{{= hospital.inclusions.waitingPeriods.PreExisting }}
-										</div><div class="clearfix"></div>
-										<div class="col-xs-6 limitTitleLG addTopMargin">
-											All other conditions
-										</div>
-										<div class="col-xs-6 addTopMargin">
-											{{= hospital.inclusions.waitingPeriods.Other }}
-										</div><div class="clearfix"></div>
-									{{ } }}
-
-									{{ if(typeof hospitalCover !== 'undefined') { }}
-										<div class="col-xs-12 secondaryBrochureLink addTopMargin">
-											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
-										</div>
 									{{ } }}
 								</div>
 
