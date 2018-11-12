@@ -122,6 +122,20 @@
                 htmlContent: Results.getSelectedProduct().aboutFund
             });
         });
+
+        $(document).on('click', '.postAprilReformLink', function () {
+            $('.preAprilReformLink').removeClass('active');
+            $(this).addClass('active');
+            $('.preAprilReformContent').hide();
+            $('.postAprilReformContent').show();
+        });
+
+        $(document).on('click', '.preAprilReformLink', function () {
+            $('.postAprilReformLink').removeClass('active');
+            $(this).addClass('active');
+            $('.preAprilReformContent').show();
+            $('.postAprilReformContent').hide();
+        });
     }
 
     function _setTabs() {

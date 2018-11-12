@@ -85,6 +85,10 @@
 						<div class="benefitsColumn">
 							<div class="col-sm-12 col-xs-12 HospitalBenefits">
 								<!-- Hospital Benefits Heading + Brochure -->
+								<div class="reformHospitalTabs">
+									<button type="button" class="reformHospitalTabLink preAprilReformLink active">Covered now</button>
+									<button type="button" class="reformHospitalTabLink postAprilReformLink">Covered from April 1</button>
+								</div>
 								<div class="row">
 									<div class="col-xs-12">
 										{{ if(typeof hospitalCover !== 'undefined') { }}
@@ -150,7 +154,7 @@
 									{{ } }}
 								</div>
 
-								<div class="row">
+								<div class="row preAprilReformContent">
 									<div class="col-xs-12 tab-pane benefitTable">
 										{{ product.structureIndex = 4; }}
 										{{ product.showNotCoveredBenefits = false; }}
@@ -181,9 +185,42 @@
 											</div>
 										</div>
 										{{ }) }}
-
 									</div>
 								</div>
+
+								{{ if (product.custom.reform.tab2.benefits.length > 0) { }}
+								<div class="row postAprilReformContent">
+									<div class="col-xs-12 tab-pane benefitTable">
+										{{ product.structureIndex = 4; }}
+										{{ product.showNotCoveredBenefits = false; }}
+										{{ product.ignoreLimits = false; }}
+										<div class="row benefitRow benefitRowHeader">
+											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
+												Hospital cover benefits
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+												Inclusion
+											</div>
+											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
+												Waiting period
+											</div>
+										</div>
+										{{ _.each(product.custom.reform.tab2.benefits, function(benefit){ }}
+										<div class="row benefitRow">
+											<div class="col-xs-7 newBenefitRow benefitRowTitle">
+												{{= benefit.name }}
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitRowTitle">
+												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+											</div>
+											<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
+												{{= benefit.WaitingPeriod}}
+											</div>
+										</div>
+										{{ }) }}
+									</div>
+								</div>
+								{{ } }}
 
 								<!-- Restricted Benefits -->
 								{{ if (hospitalCover.restrictions.length > 0) { }}

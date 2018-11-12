@@ -44,6 +44,35 @@
   }
 }
 
+.preAprilReformContent {
+  display: block;
+}
+
+.postAprilReformContent {
+  display: none;
+}
+
+.reformHospitalTabs {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+
+  button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+
+    &.active {
+      background-color: #ccc;
+    }
+  }
+}
+
 .benefitTable {
   border: 1px solid @gray-light;
 }
