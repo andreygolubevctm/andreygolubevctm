@@ -11,6 +11,7 @@ import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -26,6 +27,8 @@ import java.util.stream.IntStream;
  */
 @Component
 public class EmailUtils {
+
+    private static final EmailValidator emailValidator = EmailValidator.getInstance();
 
     /**
      * Function to strip HTML from a given string, maintaining white space. If a string is null, an empty String will be returned.
@@ -114,5 +117,13 @@ public class EmailUtils {
             premiumList.add(ANNUAL_ONLINE_PREMIUM);
         });
         return premiumList;
+    }
+
+    public static boolean isValidEmailAddress(String email) {
+		// Validate specified String containing an email address
+		if (!emailValidator.isValid(email)) {
+			return false;
+		}
+		return true;
     }
 }

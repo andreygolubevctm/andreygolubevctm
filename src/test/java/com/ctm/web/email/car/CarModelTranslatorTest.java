@@ -1,4 +1,4 @@
-package com.ctm.web.email.health;
+package com.ctm.web.email.car;
 
 import com.ctm.web.core.email.services.token.EmailTokenService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
@@ -9,6 +9,7 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailUtils;
+import com.ctm.web.email.car.CarModelTranslator;
 import org.junit.Test;
 import org.mockito.Mockito;
 
