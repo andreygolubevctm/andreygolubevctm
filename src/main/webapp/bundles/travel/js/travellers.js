@@ -61,13 +61,48 @@
 		if (items > state.travellers) {
 			_removeExcess();
 		} else if (state.travellers > items) {
+			_addAgeChangeEvent(1);
 			for(var i = items; state.travellers > i; i++) {
 				container.append(getTemplate(i + 1));
+				_addAgeChangeEvent(i + 1);
 			}
 		}
+
+        _focusNextAgeInput();
 		_changeValidation();
 		_renderAddBtn();
 		_updateNumber(state.travellers);
+	}
+
+	function _addAgeChangeEvent(index) {
+		var templateName = "travellers-age-" + index;
+        $('[name="' + templateName + '"]').keyup(function(event) {
+            _changeAge(event);
+        });
+	}
+
+    function _changeAge(event) {
+        var index = parseInt(event.target.name.split('travellers-age-')[1]);
+        //we need to check to see if another input element exists
+        if(index && event.target.value.length >= 2) {
+            _focusNextAgeInput();
+        }
+    }
+
+	function _focusNextAgeInput() {
+        var items = state.travellers + state.addedFields;
+        var foundInput = false;
+		for(var i = 0; i < items; i++) {
+
+            var inputName = "travellers-age-" + (i + 1);
+            var input = $('[name="' + inputName + '"]');
+
+            if(!foundInput && input && input.val().length === 0) {
+                input.focus();
+            	foundInput = true;
+            	break;
+			}
+		}
 	}
 
 	function _renderAddBtn() {
@@ -134,13 +169,17 @@
 	function _add(e, value) {
 		var number = state.travellers + state.addedFields;
 		if (number < max) {
-			$elements.container.append(getTemplate(number + 1, true, value));
+			var index = number + 1;
+			$elements.container.append(getTemplate(index, true, value));
+			_addAgeChangeEvent(index);
 			setState({ addedFields: state.addedFields + 1 }, _updateNumber);
 			if (number === max - 1) {
 				_disableBtn();
 			}
 		}
-	}
+
+        _focusNextAgeInput();
+    }
 
 	function _remove(e) {
 		$(e.target).closest('.age-item').remove();
