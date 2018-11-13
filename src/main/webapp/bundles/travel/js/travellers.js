@@ -248,6 +248,7 @@
 		$(document).on('click', '.icon-exit', _remove);
 		$(document).on('change', '.age-item input', _removeValidationError);
 		$elements.travelParty.on('change', _travelPartyChange);
+		$elements.travelParty.on('click', _focusNextAgeInput);
 	}
 
 	function init() {
