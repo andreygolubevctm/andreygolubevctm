@@ -495,9 +495,14 @@ body{
 		.health_payment_credit-details_paymentDay_group,
 		.health_payment_bank-details_day-group,
 		.health-bank_claim_details,
-  		.health_bank-details_claims_group{
+		#clientMemberID .clientMemberID,
+		#partnerMemberID .partnerMemberID,
+  		.health_bank-details_claims_group,
+		.membership h5 {
 			display:none !important;
 		}
+		.membership #clientMemberID .fieldrow_label,
+		.membership #partnerMemberID .fieldrow_label,
 		.health_payment_credit-details_policyDay-group label,
 		.health_payment_bank-details_policyDay-group label {
 			visibility:hidden !important;
