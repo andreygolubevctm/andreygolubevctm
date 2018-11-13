@@ -175,7 +175,6 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 							</div>
 						</div>
-						<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
 					</div>
 				</c:otherwise>
 			</c:choose>
