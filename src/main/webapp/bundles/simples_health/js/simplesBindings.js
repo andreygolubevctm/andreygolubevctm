@@ -41,7 +41,6 @@
         $applicantWrappers = {},
         currentFamilyType = null,
         $limitedCoverHidden,
-        $moreInfoDialogue,
         $dialogue111,
         $dialogue112,
         $dialogue21,
@@ -104,7 +103,6 @@
             $dialogue26 = $('.simples-dialogue-26');
             $dialogue36 = $('.simples-dialogue-36');
             $dialogue37 = $('.simples-dialogue-37');
-            $moreInfoDialogue = $('.simples-dialogue-76');
             $nzMedicareRules = $('#health_situation_cover_wrapper .nz-medicare-rules');
             $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
             $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
@@ -446,7 +444,6 @@
         $dialogue21.toggle(!isWebChat);
         $dialogue26.toggleClass('hidden', isWebChat);
         $dialogue37.toggleClass('hidden', isWebChat);
-        $moreInfoDialogue.toggleClass('hidden', isWebChat);
         $dialogue109.toggleClass('hidden', isWebChat);
         $healthSituationMedicare.toggleClass('hidden', isWebChat);
         $healthCvrDtlsIncomeBasedOn.toggleClass('hidden', isWebChat);
@@ -526,9 +523,7 @@
     }
 
     function toggleMoreInfoDialogue() {
-        if (webChatInProgress()) {
-            $moreInfoDialogue.toggleClass('hidden', true);
-        } else {
+        if (!webChatInProgress()) {
             toggleResultsMandatoryDialogue();
         }
     }
@@ -561,7 +556,6 @@
     function toggleResultsMandatoryDialogue() {
         // needs to be deferred, when retrieving limited cover quote
         _.defer(function() {
-            $moreInfoDialogue.toggleClass('hidden', $limitedCoverHidden.val() === 'Y');
             $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
         });
     }
