@@ -71,7 +71,7 @@
 	</c:set>
 	<c:set var="moreInfoTopLeftColumnWidth">
 		<c:choose>
-			<c:when test="${isDualPriceActive eq true}">col-md-7</c:when>
+			<c:when test="${isDualPriceActive eq true}">col-md-9</c:when>
 			<c:otherwise>col-sm-8</c:otherwise>
 		</c:choose>
 	</c:set>
@@ -160,10 +160,10 @@
 			</div>
 			<c:choose>
 				<c:when test="${isDualPriceActive eq true}">
-					<div class="col-md-5 hidden-xs moreInfoTopRightColumn">
+					<div class="col-md-3 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 							<div class="insureNow">
-								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now ></a>
 							</div>
 					</div>
 				</c:when>
