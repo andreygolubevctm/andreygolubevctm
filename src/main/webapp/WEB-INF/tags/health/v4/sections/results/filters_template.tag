@@ -8,13 +8,12 @@
 
     <div class="separator-container bottom-separator top-separator-widget-padding">
         <div class="filter-excess filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
-            <div class="filter-sub-heading">Hospital Excess</div>
+            <div class="filter-sub-heading black-text">Hospital Excess per person</div>
             <div class="filter-by-container">
-                <span class="filter-by-excess small"></span>
-                <a href="javascript:;" class="filter-toggle small" data-filter="excess" <field_v1:analytics_attr analVal="excess filter" quoteChar="\"" />>Change</a>
+                <a href="javascript:;" class="filter-toggle small full-width counter-header-margin" data-filter="excess" <field_v1:analytics_attr analVal="excess filter" quoteChar="\"" />><span class="filter-by-excess small"></span> <span class="icon expander large-bold right"></span></a>
             </div>
 
-            <health_v1:filter_excess useDefaultOutputField="true" />
+            <health_v2:filter_excess xpath="${pageSettings.getVerticalCode()}" name="excess" />
         </div>
     </div>
 
