@@ -101,8 +101,10 @@
 /* Moreinfo Page */
 .moreInfoVisible[data-step="results"] {
   .more-info-content {
-    background-color: @white;
+    background-color: #ffffff;
     margin-top: 53px;
+    padding-left: 0;
+    padding-right: 0;
     .hasDualPricing {
       h1.productName {
         padding-top: 20px;
@@ -155,6 +157,10 @@
             border-radius: 5px;
           }
 
+          .frequency {
+            text-align: left;
+          }
+
           .applyBy {
             color: @dual-pricing-light-gray;
           }
@@ -167,7 +173,6 @@
         // halve all the font sizes for april pricing
         .april-pricing {
           @media (@sm) {
-            border-left: 1px solid @dual-pricing-border-colour;
             padding-left: 20px;
             margin-left: 20px;
           }
@@ -178,15 +183,11 @@
             margin-top: 20px;
           }
 
+          .frequency {
+            text-align: left;
+          }
+
           .frequencyAmount {
-            font-size: 40px;
-            color: @dual-pricing-light-gray;
-
-            .dollarSign {
-              font-size: 18px;
-            }
-
-            .frequencyTitle,
             .deadline {
               display: none;
             }
@@ -200,10 +201,6 @@
             line-height: 25px;
             text-align: center;
             border-radius: 5px;
-          }
-
-          .cents {
-            font-size: 15px;
           }
         }
       }
@@ -232,7 +229,7 @@
           }
 
           .frequencyAmount {
-            color: @dual-pricing-light-gray;
+            color: #333333;
             @media (@xs-only) {
               color: @dual-pricing-dark-font-colour;
             }
