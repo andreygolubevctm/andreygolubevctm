@@ -24,7 +24,8 @@
         <div class="clearfix"></div>
 
         <div class="hidden-xs hidden-sm results-sidebar-inner grey-border">
-            <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
+            <div class="results-page-sidebar-header smaller-text">Filter my preferences</div>
+            <div class="sidebar-widget sidebar-widget-padded results-filters-benefits results-filters"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
         </div>
 
