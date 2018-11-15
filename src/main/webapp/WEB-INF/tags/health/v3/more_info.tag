@@ -285,7 +285,11 @@
 
 		</div>
 
-		<div class="fieldset-card row cover-card ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
+		<div class="simplesMoreInfoReformTabs row">
+			<button class="simplesMoreInfoTabLink active" type="button">Health brochures before *date*</button>
+			<button class="simplesMoreInfoTabLink" type="button">Health brochures after *date*</button>
+		</div>
+		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 
 			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
 			<div class="col-xs-12 col-md-6 aboutTheFund">
