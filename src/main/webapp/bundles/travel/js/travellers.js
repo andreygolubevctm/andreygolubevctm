@@ -57,12 +57,12 @@
 
 	function _renderCheckboxes() {
 		var container = $('.age-container');
-		var items = container.children().length;
-		if (items > state.travellers) {
+		var numberOfChildren = container.children().length;
+		if (numberOfChildren > state.travellers) {
 			_removeExcess();
-		} else if (state.travellers > items) {
+		} else if (state.travellers > numberOfChildren) {
 			_addAgeChangeEvent(1);
-			for(var i = items; state.travellers > i; i++) {
+			for(var i = numberOfChildren; state.travellers > i; i++) {
 				container.append(getTemplate(i + 1));
 				_addAgeChangeEvent(i + 1);
 			}
@@ -91,15 +91,13 @@
 
 	function _focusNextAgeInput() {
         var items = state.travellers + state.addedFields;
-        var foundInput = false;
 		for(var i = 0; i < items; i++) {
 
             var inputName = "travellers-age-" + (i + 1);
             var input = $('[name="' + inputName + '"]');
 
-            if(!foundInput && input && input.val().length === 0) {
+            if(input && input.val().length === 0) {
                 input.focus();
-            	foundInput = true;
             	break;
 			}
 		}
