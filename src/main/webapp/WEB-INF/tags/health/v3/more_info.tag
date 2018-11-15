@@ -7,6 +7,7 @@
 </c:set>
 
 <c:set var="brand" value="${pageSettings.getBrandCode()}" />
+<c:set var="simplesHealthReformMessaging" scope="request"><content:get key="simplesHealthReformMessaging" /></c:set>
 
 <%-- Setup variables needed for dual pricing --%>
 <health_v1:dual_pricing_settings />
@@ -22,6 +23,9 @@
 		</div>
 		<div class="col-xs-12 col-sm-4 col-md-5 col-lg-6">
 			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+			<c:if test="${simplesHealthReformMessaging eq 'active'}">
+				
+			</c:if>
 		</div>
 	</div>
 
