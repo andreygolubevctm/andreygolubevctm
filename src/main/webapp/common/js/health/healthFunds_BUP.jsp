@@ -145,10 +145,9 @@ var healthFunds_BUP = {
 
 
 		<%-- Authority Fund Name --%>
+		meerkat.modules.healthFunds._previousfund_authority(true);
 		$('#health_previousfund_primary_authority').setRequired(true, 'Bupa requires authorisation to contact your previous fund');
 		$('#health_previousfund_partner_authority').setRequired(true, 'Bupa requires authorisation to contact your partner\'s previous fund');
-		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(false).attr('maxlength', '10');
-		meerkat.modules.healthFunds._previousfund_authority(true);
 		healthFunds_BUP.$primaryMiddleName.setRequired(false);
 		healthFunds_BUP.$partnerMiddleName.setRequired(false);
 
@@ -255,7 +254,6 @@ var healthFunds_BUP = {
 		<%-- Authority Fund Name --%>
         meerkat.modules.healthFunds._previousfund_authority(false);
 		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
-		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(true).removeAttr('maxlength');
 
 		<%-- Dependants --%>
         meerkat.modules.healthFunds._dependants(false);
