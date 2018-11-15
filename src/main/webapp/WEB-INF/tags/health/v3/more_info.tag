@@ -286,25 +286,10 @@
 		</div>
 
 		<div class="simplesMoreInfoReformTabs row">
-			<button class="simplesMoreInfoTabLink active" type="button">Health brochures before *date*</button>
-			<button class="simplesMoreInfoTabLink" type="button">Health brochures after *date*</button>
+			<button class="simplesMoreInfoTabLink simplesMoreInfoBeforeTab active" type="button">Health brochures before *date*</button>
+			<button class="simplesMoreInfoTabLink simplesMoreInfoAfterTab" type="button">Health brochures after *date*</button>
 		</div>
-		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
-
-			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
-			<div class="col-xs-12 col-md-6 aboutTheFund">
-				<h2>About {{= info.productTitle }}</h2>
-				{{= aboutFund }}
-			</div>
-			</c:if>
-
-			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
-			<div class="col-xs-12 col-md-6 whatsNext">
-				<h2>Next Steps</h2>
-				{{= whatHappensNext }}
-			</div>
-			</c:if>
-
+		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoBeforeContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6 hospitalCover">
@@ -322,151 +307,41 @@
 						{{= obj.accident.overrideDetails }}</p>
 					{{ } }}
 				{{ } }}
-				{{ if(hospitalCover.inclusions.length > 0) { }}
-					<%-- has inclusions START --%>
-
-					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
-					<%-- if limited hospital cover and has inclusions START --%>
-
-                <h5 class="text-danger">You will be covered for the following services only <span class="icon-tick text-success">&nbsp;</span></h5>
-
-						<ul class="exclusions inclusions">
-						{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
-							<li class="simplesMoreInfoInclusions text-danger"><span>{{= inclusion.name }}</span></li>
-						{{ }) }}
-
-						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.inclusions && custom.info.inclusions.cover) { }}
-							{{ _.each(custom.info.inclusions.cover.split('|'), function(inclusionsFrmRateSheet){ }}
-								<li class="simplesMoreInfoInclusions text-danger fromRatesheet"><span>{{= inclusionsFrmRateSheet }}</span></li>
-							{{ }) }}
-						{{ } }}
-						</ul>
-
-					<%-- if limited hospital cover and has inclusions END --%>
-					{{ } else { }}
-					<%-- else regular hospital cover and has inclusions START --%>
-
-                        <h5>Inclusions <span class="icon-tick text-success">&nbsp;</span></h5>
-
-						<ul class="exclusions inclusions">
-							{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
-								<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
-							{{ }) }}
-						</ul>
-
-					<%-- else regular hospital cover and has inclusions END --%>
-					{{ } }}
-
-					<%-- has inclusions END --%>
-				{{ } }}
-
-				{{ if(hospitalCover.restrictions.length > 0) { }}
-                <h5>Restrictions <span class="icon-tick restrictions-icon">&nbsp;</span><div class="inline-block"><field_v2:checkbox
-						xpath="health/simples/restrictions/verified"
-						value="Y"
-						required="true"
-						label=""
-						errorMsg="Please confirm all restrictions have been read to the client"
-						className="checkbox-custom simples_dialogue-checkbox-restrictions-verified"
-						title="Please confirm all restrictions have been read to the client" /></div>
-				</h5>
-					<ul class="exclusions restrictions">
-						{{ _.each(hospitalCover.restrictions, function(restriction){ }}
-							<li class="simplesMoreInfoRestrictions"><span>{{= restriction.name }}</span></li>
-						{{ }) }}
-
-						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.restrictions && custom.info.restrictions.cover) { }}
-							{{ _.each(custom.info.restrictions.cover.split('|'), function(restrictionsFrmRateSheet){ }}
-								<li class="simplesMoreInfoRestrictions fromRatesheet"><span>{{= restrictionsFrmRateSheet }}</span></li>
-							{{ }) }}
-						{{ } }}
-
-					</ul>
-					<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
-				{{ } }}
-
-				{{ if(hospitalCover.exclusions.length > 0) { }}
-					<%-- has exclusions START --%>
-
-                <h5>Exclusions <span class="icon-cross text-danger">&nbsp;</span><div class="inline-block"><field_v2:checkbox
-						xpath="health/simples/exclusions/verified"
-						value="Y"
-						required="true"
-						label=""
-						errorMsg="Please confirm all exclusions have been read to the client"
-						className="checkbox-custom simples_dialogue-checkbox-exclusions-verified"
-						title="Please confirm all exclusions have been read to the client" /></div>
-				</h5>
-
-					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
-						<%-- if limited hospital cover and has exclusions START --%>
-                            <span class="text-danger">All other services not listed as included or restricted are excluded.</span>
-                        <%-- if limited hospital cover and has exclusions END --%>
-					{{ } else { }}
-						<%-- else regular hospital cover and has exclusions START --%>
-
-						<ul class="exclusions">
-							{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
-								<li>{{= exclusion.name }}</li>
-							{{ }) }}
-
-							{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
-								{{ _.each(custom.info.exclusions.cover.split('|'), function(exclusionsFrmRateSheet){ }}
-									<li class="fromRatesheet"><span>{{= exclusionsFrmRateSheet }}</span></li>
-								{{ }) }}
-							{{ } }}
-						</ul>
-
-						<%-- else regular hospital cover and has exclusions END --%>
-					{{ } }}
-					<content:get key="hospitalExclusionsDisclaimer"/>
-
-					<%-- has exclusions END --%>
-				{{ } }}
 			</div>
 			{{ } }}
 			</c:if>
 
 			<c:if test="${moreinfolayout_splittest_default eq true}">
-			{{ if(typeof extrasCover !== 'undefined') { }}
-			<div class="col-xs-12 col-md-6 extrasCover">
-            <c:choose>
-                <c:when test="${callCentre}">
-                <h2>Extras cover</h2>
-                <p>Please refer to the Policy Brochure or the previous page</p>
-                </c:when>
-                <c:otherwise>
-                {{ if (custom.info && custom.info.content && custom.info.content.moreInfo && custom.info.content.moreInfo.extras) { }}
-                <h2>{{= custom.info.content.moreInfo.extras.label}}</h2>
-                <p>{{= custom.info.content.moreInfo.extras.text}}</p>
-                {{ } else { }}
-				<h2>Extras cover</h2>
-				<p>Please note that the below amounts are individual limits for each benefit. Group limits may apply to restrict these individual limits, meaning that the more you claim on one benefit, the less you might be able to claim on another benefit in the same group. Please refer to the Policy Brochure or the previous page for details.</p>
-				<table class="extrasTable table table-bordered table-striped">
-					<thead>
-						<tr>
-							<th>&nbsp;</th>
-							<th>PER PERSON</th>
-							<th>PER POLICY</th>
-							<th>WAITING PERIOD</th>
-						</tr>
-					</thead>
-					<tbody>
-						{{ _.each(extrasCover.inclusions, function(inclusion){ }}
-							<tr>
-								<th>{{= inclusion.name }}</th>
-								<td>{{= inclusion.benefitLimits.perPerson }}</td>
-								<td>{{= inclusion.benefitLimits.perPolicy }}</td>
-								<td>{{= inclusion.waitingPeriod }}</td>
-							</tr>
-						{{ }) }}
-					</tbody>
-				</table>
-				{{ } }}
-                </c:otherwise>
-            </c:choose>
-			</div>
-			{{ } }}
+				<div class="col-xs-12 col-md-6 extrasCover">
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+						<h5>Inclusions</h5>
+						<ul>
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'Y') { }}
+									<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+								{{ } }}
+							{{ }) }}
+						</ul>
+
+						<h5>Restrictions</h5>
+						<ul>
+							{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'R') { }}
+									<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+								{{ } }}
+							{{ }) }}
+						</ul>
+
+						<h5>Exclusions</h5>
+						<ul>
+							{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'N') { }}
+									<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+								{{ } }}
+							{{ }) }}
+						</ul>
+					{{ } }}
+				</div>
 			</c:if>
 
             <c:if test="${empty callCentre or not callCentre}">
@@ -474,6 +349,68 @@
                     <reward:campaign_tile_container_xs />
                 </div>
             </c:if>
+		</div>
+
+		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoAfterContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
+			<c:if test="${moreinfolayout_splittest_default eq true}">
+				{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
+				<div class="col-xs-12 col-md-6 hospitalCover">
+					{{ if(typeof hospital.inclusions !== 'undefined') { }}
+					<h2>Hospital cover</h2>
+					<p><strong>Hospital Excess:</strong><br>{{= hospital.inclusions.excess }}</p>
+					<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
+					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
+
+					<p><strong>Accident Override:</strong><br>
+						{{ if(!_.isEmpty(obj.accident) && obj.accident.covered === 'Y') { }}
+						{{= obj.accident.overrideDetails }}</p>
+					{{ }else{ }}
+					<strong>Covered: No</strong><br>
+					{{= obj.accident.overrideDetails }}</p>
+					{{ } }}
+					{{ } }}
+				</div>
+				{{ } }}
+			</c:if>
+
+			<c:if test="${moreinfolayout_splittest_default eq true}">
+				<div class="col-xs-12 col-md-6 extrasCover">
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					<h5>Inclusions</h5>
+					<ul>
+						{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+						{{ if (benefit.covered === 'Y') { }}
+						<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+						{{ } }}
+						{{ }) }}
+					</ul>
+
+					<h5>Restrictions</h5>
+					<ul>
+						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
+						{{ if (benefit.covered === 'R') { }}
+						<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+						{{ } }}
+						{{ }) }}
+					</ul>
+
+					<h5>Exclusions</h5>
+					<ul>
+						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
+						{{ if (benefit.covered === 'N') { }}
+						<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+						{{ } }}
+						{{ }) }}
+					</ul>
+					{{ } }}
+				</div>
+			</c:if>
+
+			<c:if test="${empty callCentre or not callCentre}">
+				<div class="col-xs-12">
+					<reward:campaign_tile_container_xs />
+				</div>
+			</c:if>
 		</div>
 
 		<div class="hidden-xs hiddenInMoreDetails">

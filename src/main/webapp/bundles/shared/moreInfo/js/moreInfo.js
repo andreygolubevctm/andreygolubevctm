@@ -142,6 +142,20 @@
             });
         });
 
+        $(document.body).on('click', '.simplesMoreInfoBeforeTab', function () {
+            $('.simplesMoreInfoAfterTab').removeClass('active');
+            $(this).addClass('active');
+            $('.simplesMoreInfoBeforeContent').show();
+            $('.simplesMoreInfoAfterContent').hide();
+        });
+
+        $(document.body).on('click', '.simplesMoreInfoAfterTab', function () {
+            $('.simplesMoreInfoBeforeTab').removeClass('active');
+            $(this).addClass('active');
+            $('.simplesMoreInfoBeforeContent').hide();
+            $('.simplesMoreInfoAfterContent').show();
+        });
+
     }
 
     function eventSubscriptions() {
