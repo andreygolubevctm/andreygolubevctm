@@ -20,8 +20,8 @@
     <div class="col-xs-12">
         <c:choose>
             <c:when test="${!isDualPriceActive eq true}">
-            <div class="row hidden-xs moreInfoPricing">
-                <div class="moreInfoPriceWrapper singlePriceWrapper">
+            <div class="row hidden-xs moreInfoPricingSingle">
+                <div class="moreInfoPriceWrapper">
                     <div class="moreInfoPriceContainer">
                         <div class="moreInfoPriceHeading">NOW</div>
                         <div class="moreInfoPrice">
