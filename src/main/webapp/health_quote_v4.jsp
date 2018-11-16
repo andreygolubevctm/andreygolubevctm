@@ -170,8 +170,6 @@
                 <c:if test="${callCentre}">
                     <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
                 </c:if>
-                <script type="text/javascript" async="false" src="https://widget.intercom.io/widget/d29h2i1h"></script>
-                <script async="false" src="./bundles/health_v4/intercom.js"></script>
             </jsp:attribute>
 
             <jsp:attribute name="vertical_settings">
