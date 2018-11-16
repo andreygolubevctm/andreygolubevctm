@@ -322,7 +322,7 @@
 						<ul>
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'Y') { }}
-									<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 								{{ } }}
 							{{ }) }}
 						</ul>
@@ -331,7 +331,7 @@
 						<ul>
 							{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'R') { }}
-									<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 								{{ } }}
 							{{ }) }}
 						</ul>
@@ -340,7 +340,7 @@
 						<ul>
 							{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'N') { }}
-									<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 								{{ } }}
 							{{ }) }}
 						</ul>
@@ -384,7 +384,7 @@
 					<ul>
 						{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 						{{ if (benefit.covered === 'Y') { }}
-						<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+						<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 						{{ } }}
 						{{ }) }}
 					</ul>
@@ -393,7 +393,7 @@
 					<ul>
 						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
 						{{ if (benefit.covered === 'R') { }}
-						<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+						<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 						{{ } }}
 						{{ }) }}
 					</ul>
@@ -402,7 +402,7 @@
 					<ul>
 						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
 						{{ if (benefit.covered === 'N') { }}
-						<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+						<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 						{{ } }}
 						{{ }) }}
 					</ul>
