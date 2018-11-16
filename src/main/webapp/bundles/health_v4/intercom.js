@@ -1,5 +1,7 @@
 /**
- * Description: Health Intercom setup
+ * Description: Intercom custom icon.
+ * This will inject the Intercom element into any vertical (however it is currently fitlered to only be applied in health)
+ * This will be injected via Google Tag Manager and any updates here will also need to be applied in GTM with the help of the CTM GTM Manager (Eraj)
  */
 
 /*library*/
@@ -17,6 +19,9 @@
     }
     window.Intercom('update');
 
+    addCustomIntercom();
+
+function addCustomIntercom() {
     var intercomElement = createIntercomElement();
     injectCss();
     document.body.appendChild(intercomElement);
@@ -183,3 +188,4 @@
         }
         document.getElementsByTagName("head")[0].appendChild(css);
     }
+}
