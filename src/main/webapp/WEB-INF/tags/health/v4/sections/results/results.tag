@@ -123,6 +123,7 @@
         <input type="hidden" name="health_showAll" value="Y" />
         <input type="hidden" name="health_onResultsPage" value="Y" />
         <input type="hidden" name="health_incrementTransactionId" value="Y" />
+        <input type="hidden" name="health_productCode" value="" />
 
         <c:if test="${!callCentre && data['health/journey/stage'] == 'results'}">
             <c:choose>
