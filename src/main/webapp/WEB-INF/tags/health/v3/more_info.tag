@@ -23,9 +23,6 @@
 		</div>
 		<div class="col-xs-12 col-sm-4 col-md-5 col-lg-6">
 			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
-			<c:if test="${simplesHealthReformMessaging eq 'active'}">
-				
-			</c:if>
 		</div>
 	</div>
 
@@ -169,6 +166,9 @@
 							<div class="insureNow">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now ></a>
 							</div>
+							<c:if test="${simplesHealthReformMessaging eq 'active'}">
+								<img class="simplesMoreInfoTierLogo" src="./assets/graphics/logos/health/tiers/Basic_govclass.svg" height="42" />
+							</c:if>
 					</div>
 				</c:when>
 				<c:otherwise>
@@ -176,7 +176,10 @@
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 						<div class="row">
 							<div class="col-xs-12">
-								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now ></a>
+								<c:if test="${simplesHealthReformMessaging eq 'active'}">
+									<img class="simplesMoreInfoTierLogo" src="./assets/graphics/logos/health/tiers/Basic_govclass.svg" height="42" />
+								</c:if>
 							</div>
 						</div>
 					</div>
