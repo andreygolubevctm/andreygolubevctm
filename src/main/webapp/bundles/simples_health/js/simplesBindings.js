@@ -41,9 +41,6 @@
         $applicantWrappers = {},
         currentFamilyType = null,
         $limitedCoverHidden,
-        $moreInfoDialogue,
-        $moreInfoDialogueRadio,
-        $notifyInclusionsExclusionsVia,
         $dialogue111,
         $dialogue112,
         $dialogue21,
@@ -106,9 +103,6 @@
             $dialogue26 = $('.simples-dialogue-26');
             $dialogue36 = $('.simples-dialogue-36');
             $dialogue37 = $('.simples-dialogue-37');
-            $moreInfoDialogue = $('.simples-dialogue-76');
-            $moreInfoDialogueRadio = $('input[name=health_simples_dialogue-radio-76]');
-            $notifyInclusionsExclusionsVia = $('#health_simples_notifyInclusionsExclusionsVia');
             $nzMedicareRules = $('#health_situation_cover_wrapper .nz-medicare-rules');
             $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
             $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
@@ -231,21 +225,6 @@
         $healthInternationalStudentField.on('change', function(){
             _toggleInternationalStudentFieldMsg();
         });
-
-        $moreInfoDialogueRadio
-            .on('change', function() {
-                var value = $moreInfoDialogueRadio.filter(':checked').val();
-
-                $notifyInclusionsExclusionsVia.val(value);
-
-                if (!_.isUndefined(value) && value.length > 0) {
-                    var isReadNow = value === 'READNOW';
-                    $dialogue111.toggleClass('hidden', !isReadNow);
-                    $dialogue112.toggleClass('hidden', isReadNow);
-                }
-
-            })
-            .trigger('change');
     }
 
     function openBridgingPage(e) {
@@ -257,12 +236,6 @@
                 i++;
             }
         });
-
-        if ($('#resultsForm .simples-dialogue-76').not('.hidden').length === 1) {
-            if (_.isUndefined($moreInfoDialogueRadio.filter(':checked').val())) {
-                i++;
-            }
-        }
 
         needsValidation = i !== 0;
 
@@ -471,7 +444,6 @@
         $dialogue21.toggle(!isWebChat);
         $dialogue26.toggleClass('hidden', isWebChat);
         $dialogue37.toggleClass('hidden', isWebChat);
-        $moreInfoDialogue.toggleClass('hidden', isWebChat);
         $dialogue109.toggleClass('hidden', isWebChat);
         $healthSituationMedicare.toggleClass('hidden', isWebChat);
         $healthCvrDtlsIncomeBasedOn.toggleClass('hidden', isWebChat);
@@ -551,9 +523,7 @@
     }
 
     function toggleMoreInfoDialogue() {
-        if (webChatInProgress()) {
-            $moreInfoDialogue.toggleClass('hidden', true);
-        } else {
+        if (!webChatInProgress()) {
             toggleResultsMandatoryDialogue();
         }
     }
@@ -586,7 +556,6 @@
     function toggleResultsMandatoryDialogue() {
         // needs to be deferred, when retrieving limited cover quote
         _.defer(function() {
-            $moreInfoDialogue.toggleClass('hidden', $limitedCoverHidden.val() === 'Y');
             $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
         });
     }
