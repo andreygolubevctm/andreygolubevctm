@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 249.242 51">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2, .cls-5 {
+        fill: #333;
+      }
+
+      .cls-2 {
+        font-size: 14px;
+      }
+
+      .cls-2, .cls-4 {
+        font-family: SourceSansPro-Regular, Source Sans Pro;
+      }
+
+      .cls-3, .cls-6 {
+        font-family: SourceSansPro-SemiBold, Source Sans Pro;
+        font-weight: 600;
+      }
+
+      .cls-4 {
+        font-weight: 400;
+      }
+
+      .cls-6 {
+        fill: #fff;
+        font-size: 24px;
+      }
+
+      .cls-7, .cls-8 {
+        stroke: none;
+      }
+
+      .cls-8 {
+        fill: #999;
+      }
+    </style>
+  </defs>
+  <g id="Group_8969" data-name="Group 8969" transform="translate(-1190 -965)">
+    <g id="Group_8711" data-name="Group 8711" transform="translate(1209.242 965)">
+      <g id="Path_4119" data-name="Path 4119" class="cls-1" transform="translate(0)">
+        <path class="cls-7" d="M0,0H230V51H0Z"/>
+        <path class="cls-8" d="M 0.9999847412109375 1 L 0.9999847412109375 50 L 229 50 L 229 1 L 44.83731079101562 1 L 0.9999847412109375 1 M -1.52587890625e-05 0 L 44.83731079101562 0 L 230 0 L 230 51 L -1.52587890625e-05 51 L -1.52587890625e-05 0 Z"/>
+      </g>
+    </g>
+    <text id="Government_classification_BASIC_from_April_1" data-name="Government classification
+BASIC from April 1" class="cls-2" transform="translate(1245 972)"><tspan x="0" y="14">Government classification</tspan><tspan class="cls-3"><tspan x="0" y="32">BASIC </tspan><tspan class="cls-4" y="32">from April 1</tspan></tspan></text>
+    <g id="Group_8712" data-name="Group 8712" transform="translate(1190 971)">
+      <circle id="Ellipse_2035" data-name="Ellipse 2035" class="cls-5" cx="20" cy="20" r="20"/>
+      <text id="Ba" class="cls-6" transform="translate(7 4)"><tspan x="0" y="24">Ba</tspan></text>
+    </g>
+  </g>
+</svg>
