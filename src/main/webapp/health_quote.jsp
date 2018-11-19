@@ -34,7 +34,17 @@
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
         <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" scope="request" />
 
-        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health')}" scope="request"  />
+        <c:set var="comparisonMode" scope="request"><content:get key="comparisonMode" /></c:set>
+
+        <c:choose>
+            <c:when test="${comparisonMode eq 'PHIO'}">
+                <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health')}" scope="request"  />
+            </c:when>
+            <c:otherwise>
+                <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health2018')}" scope="request"  />
+
+            </c:otherwise>
+        </c:choose>
 
         <%--TODO: turn this on and off either in a settings file or in the database --%>
         <c:set var="showReducedHoursMessage" value="false" />
