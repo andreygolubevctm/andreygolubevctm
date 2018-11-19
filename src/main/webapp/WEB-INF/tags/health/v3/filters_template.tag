@@ -67,44 +67,6 @@
             </div>
         </div>
     </div>
-    <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
-        <div class="col-xs-12">
-            <div class="sidebar-subtitle-container">
-                <span class="helper-text"><a href="javascript:;" data-content="helpid:542" data-toggle="dialog" data-title="Hospital Cover Information" data-dialog-hash-id="hospitalCover" tabindex="-1" data-cache="true" <field_v1:analytics_attr analVal="filter help modal coverLevel" quoteChar="\"" />>Help ?</a></span>
-                <span class="heading-text">Hospital cover level</span>
-            </div>
-            <div class="filter-cover-level select">
-                <span class=" input-group-addon">
-                    <i class="icon-sort"></i>
-                </span>
-                <select class="form-control array_select " id="health_filterBar_coverLevel" name="health_filterBar_coverLevel" data-msg-required="Please choose " <field_v1:analytics_attr analVal="filter benefit category" quoteChar="\"" />>
-                    {{ _.each(model.coverLevel.values, function(object) { }}
-                    {{ var selected = object.selected ? ' selected="selected"' : ''; }}
-                    <option id="health_filterBar_coverLevel_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
-                    {{ }) }}
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <c:if test="${not empty callCentre}">
-        <div class="row filter need-extras" data-filter-serverside="true">
-            <div class="col-xs-12">
-                <div class="sidebar-subtitle-container">
-                    <span class="heading-text">Extras cover level</span>
-                </div>
-                <div class="filter-extrascoverlevel select">
-                    <span class="input-group-addon"><i class="icon-sort"></i></span>
-                    <select id="health_filterBar_extrasCoverLevel" name="health_filterBar_extrasCoverLevel" class="form-control array-select">
-                        {{ _.each(model.extrasCoverLevel.values, function(object) { }}
-                        {{ var selected = object.selected ? ' selected="selected"' : ''; }}
-                        <option id="health_filterBar_extrasCoverLevel_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
-                        {{ }) }}
-                    </select>
-                </div>
-            </div>
-        </div>
-    </c:if>
 
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
