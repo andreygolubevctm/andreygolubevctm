@@ -86,8 +86,6 @@
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1"></div>
                             <div class="yourSelectionsHospital">
                                 <h5>Your selected benefits</h5>
-                                <a href="javascript:;" class="restrictedBenefit hidden" data-content="helpid:543" data-toggle="dialog" data-title="" data-dialog-hash-id="hospitalCover" tabindex="-1"
-                                   data-cache="true" <field_v1:analytics_attr analVal="view restricted {{= info.provider}}" quoteChar="\"" />># restricted benefit</a>
                             </div>
                         </div>
                         {{ if(info.situationFilter == 'Y') { }}

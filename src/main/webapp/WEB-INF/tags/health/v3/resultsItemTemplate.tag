@@ -23,7 +23,7 @@
             <div class="content {{= ft.labelInColumnContentClass }}" data-featureId="{{= ft.id }}">
                 <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
                     <div>
-                        <span class="health-icon {{= ft.iconClass }}"></span> {{= ft.safeName }} {{ if(ft.isRestricted) { }}<sup title="Restricted">#</sup>{{ } }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
+                        <span class="health-icon {{= ft.iconClass }}"></span> {{= ft.safeName }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
                     </div>
                     <div class="benefit-container">
                     {{ if(ft.isRestricted) { }}
