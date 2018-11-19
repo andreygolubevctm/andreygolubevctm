@@ -82,10 +82,10 @@
                     <h3><span class="health-icon HLTicon-hospital"></span> Hospital Cover</h3>
                     <div class="hospitalSelectionsExcessContainer">
                         <div class="hospitalExcessSectionBorder">
-                            <h5>Excess</h5>
+                            <h5>Hospital excess</h5>
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1"></div>
                             <div class="yourSelectionsHospital">
-                                <h5>Your selections</h5>
+                                <h5>Your selected benefits</h5>
                                 <a href="javascript:;" class="restrictedBenefit hidden" data-content="helpid:543" data-toggle="dialog" data-title="" data-dialog-hash-id="hospitalCover" tabindex="-1"
                                    data-cache="true" <field_v1:analytics_attr analVal="view restricted {{= info.provider}}" quoteChar="\"" />># restricted benefit</a>
                             </div>
@@ -96,7 +96,7 @@
                         <div class="featuresListHospitalSelections" data-feature-index="2"></div>
                         {{ } }}
                     </div>
-                    <h5>Other options</h5>
+                    <h5>Other hospital benefits</h5>
                     <div class="featuresListHospitalOther" data-feature-index="4"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}

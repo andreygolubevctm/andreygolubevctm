@@ -133,7 +133,15 @@
      * @private
      */
     function _getPathValue(obj, ft) {
-        return _hasResult(ft) ? Object.byString(obj, ft.resultPath) : false;
+        if(!_hasResult(ft)) {
+            return false;
+        }
+
+        if(ft.resultPath.length === 1) {
+            return Object.byString(obj, ft.resultPath);
+        }
+
+        return Object.byString(obj, ft.resultPath);
     }
 
     /**
@@ -197,8 +205,8 @@
         // section headers are not displayed anymore but we need the section container
         //if (ft.displayItem) {
         ft.pathValue = _getPathValue(obj, ft);
-        ft.isRestricted = ft.pathValue == "R";
-        ft.isNotCovered = ft.pathValue == "N";
+        ft.isRestricted = ft.pathValue ? ft.pathValue[0] == "R" : false;
+        ft.isNotCovered = ft.pathValue ? ft.pathValue[0] == "N" : false;
         ft.hasChildFeatures = typeof ft.children !== 'undefined' && ft.children.length;
 
         // Additional attributes for category's only.
