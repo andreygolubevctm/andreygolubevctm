@@ -66,6 +66,7 @@ public class MarketingAutomationEmailService {
         emailTranslator.setUrls(request, emailRequest, data, verticalCode);
 
         if (attemptEmailDistribution(emailRequest)) {
+			emailTranslator.setUrls(request, emailRequest, data, verticalCode);
             emailClient.send(emailRequest);
         }
     }
