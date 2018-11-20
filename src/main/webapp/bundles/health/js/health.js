@@ -3,6 +3,7 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		exception = meerkat.logging.exception,
+		simplesCategoryVersion = $('.simples-results-control-container').data('simples-category-version'),
 		moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM',
@@ -341,7 +342,7 @@
 				validate: true
 			},
 			onInitialise: function onContactInit(event){
-				meerkat.modules.resultsFeatures.fetchStructure('health2016');
+				meerkat.modules.resultsFeatures.fetchStructure(simplesCategoryVersion);
 				meerkat.modules.healthLHC.displayLHC();
 
 				$('#contactForm').find(':input').on('change',
@@ -1654,6 +1655,13 @@
 		return $('#health_benefits_covertype').val();
 	}
 
+	  /**
+     * Get the simples category version as per the comparison mode in the content control table ie. health2016/health2018
+     */
+  function getSimplesCategoryVersion() {
+			return simplesCategoryVersion;
+	}
+
 	meerkat.modules.register("health", {
 		init: initHealth,
 		events: moduleEvents,
@@ -1669,8 +1677,10 @@
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
 		hasPartner: hasPartner,
-        enableSubmitApplication: enableSubmitApplication,
-        disableSubmitApplication: disableSubmitApplication
+    enableSubmitApplication: enableSubmitApplication,
+		disableSubmitApplication: disableSubmitApplication,
+		getSimplesCategoryVersion: getSimplesCategoryVersion
+
 	});
 
 })(jQuery);
