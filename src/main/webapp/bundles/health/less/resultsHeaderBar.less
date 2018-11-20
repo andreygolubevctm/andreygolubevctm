@@ -100,13 +100,26 @@
   }
 }
 
+.productTitle {
+  height:2.5em;
+  overflow:hidden;
+  margin-top:10px;
+  text-align:center;
+  font-weight:bold;
+}
+
 .callCentre {
   .resultInsert {
+
+  .results-header-inner-container {
+    margin: 0px 0px 0px 0px;
+  }
 
     .btn.btn-block {
       &.btn-more-info,
       &.btn-download {
-        padding: 5px 15px;
+        padding: 10px 15px;
+        margin-bottom: 10px;
       }
     }
     // only apply a height in results so the rows stay all the same height.
@@ -122,14 +135,9 @@
         height: 195px;
       }
       overflow: hidden;
-
-      .productTitle {
-        height:2.5em;
-        overflow:hidden;
-        margin-top:5px;
-      }
       .price.premium {
         cursor: pointer;
+        margin: 0px 10px;
         .frequencyAmount {
           font-size:38px;
           line-height:1;
@@ -146,6 +154,12 @@
             }
           }
         }
+
+        .frequency {
+          .lhcText {
+          margin-top: 10px;
+        }
+      }
       }
 
       &.compressed {

@@ -44,20 +44,19 @@
         {{ var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount) }}
         <div class="frequency {{=freq}} {{= obj._selectedFrequency === freq.toLowerCase() ? '' : 'displayNone' }}" data-text="{{= priceText }}" data-lhcfreetext="{{= priceLhcfreetext }}">
             {{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
-                        <span class="frequencyAmount">
+                        <div class="frequencyAmount">
                             {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
                             {{ premiumSplit = premiumSplit.split(".") }}
                             <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
-                            <span class="frequencyTitle">
+                            <div class="frequencyTitle">
                                 {{= freq === 'annually' ? 'per year' : '' }}
                                 {{= freq.toLowerCase() === 'halfyearly' ? 'per half year' : '' }}
                                 {{= freq === 'quarterly' ? 'per quarter' : '' }}
                                 {{= freq === 'monthly' ? 'per month' : '' }}
                                 {{= freq === 'fortnightly' ? 'per f/night' : '' }}
                                 {{= freq === 'weekly' ? 'per week' : '' }}
-                            </span>
-                            <div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
-                        </span>
+                            </div>
+                        </div>
             {{ } else { }}
             <div class="frequencyAmount comingSoon">New price not yet released</div>
             {{ } }}
