@@ -75,7 +75,13 @@
                 <span class="heading-text">Hospital excess</span>
             </div>
             <div class="filter-excess">
-                <health_v1:filter_excess useDefaultOutputField="true" />
+                <select class="form-control array_select income health_cover_details_excess has-success" id="health_filterBar_excess" name="health_filterBar_excess" required="required" data-msg-required="Please choose your hospital excess" aria-required="true" aria-invalid="false" data-visible="true">
+                    <option id="health_healthCover_excess_0" value="0">$0</option>
+                    <option id="health_healthCover_excess_1" value="1">$0 - $250</option>
+                    <option id="health_healthCover_excess_2" value="2">$251 - $500</option>
+                    <option id="health_healthCover_excess_3" value="3">$501 - $750</option>
+                    <option id="health_healthCover_excess_4" value="4">$751+</option>
+                </select>
             </div>
         </div>
     </div>
