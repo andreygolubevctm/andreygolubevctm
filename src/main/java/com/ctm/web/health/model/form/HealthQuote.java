@@ -12,6 +12,8 @@ public class HealthQuote {
 
     private Double previousRebate;
 
+    private String productCode;
+
     private Integer loading;
 
     private Integer primaryCAE;
@@ -300,5 +302,13 @@ public class HealthQuote {
 
     public void setRewardsSchemeFirst(String rewardsSchemeFirst) {
         this.rewardsSchemeFirst = rewardsSchemeFirst;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 }
