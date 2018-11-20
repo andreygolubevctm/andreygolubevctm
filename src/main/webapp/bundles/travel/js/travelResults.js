@@ -327,7 +327,7 @@
 					var fromDate = new Date(fromDateElement.value);
 					var todayDate = meerkat.site.serverDate;
 					if (fromDate < todayDate) {
-						// quote is old that's why theirs no results
+						// quote is old that's why there's no results
 						invalidQuoteDueToDate();
 					} else {
 						showNoResults();
