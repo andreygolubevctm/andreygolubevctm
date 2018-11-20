@@ -77,13 +77,7 @@
 				+ '<p>Natural therapies being removed are: Alexander technique, aromatherapy, Bowen therapy, Buteyko, Feldenkrais, herbalism, homeopathy, iridology, kinesiology, naturopathy, Pilates, reflexology, Rolfing, shiatsu, tai chi, and yoga</p>'
 				+ '<p class="text-danger">I\'m happy to include it for you in our search and you\'ll be able to claim on it until April 1st, it will be removed from all policies as part of the industry reforms from that date, with that in mind, would you still like me to take this into account when picking a policy?</p>'
 			);
-            $naturopathCheckbox.change(function() {
-                 if(this.checked) {
-                    $naturopathDialog.insertAfter($naturopathCheckbox.closest('.categoriesCell'));
-                 } else {
-                    $('#naturopathWarningDialog').remove();
-                 }
-            });
+            $naturopathDialog.insertAfter($naturopathCheckbox.closest('.categoriesCell'));
         </go:script>
 
 		<core_v1:js_template id="customise-cover-template">
