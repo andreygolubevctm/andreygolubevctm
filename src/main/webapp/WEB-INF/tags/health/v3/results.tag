@@ -96,14 +96,14 @@
                         <div class="featuresListHospitalSelections" data-feature-index="2"></div>
                         {{ } }}
                     </div>
-                    <h5>Other options</h5>
+                    <h5>Other hospital benefits</h5>
                     <div class="featuresListHospitalOther" data-feature-index="4"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
                     <h3><span class="health-icon HLTicon-extras"></span> Extras Cover</h3>
                     <div class="featuresListExtrasSelections" data-feature-index="3"></div>
-                    <h5>Other options</h5>
+                    <h5>Other extras services</h5>
                     <div class="featuresListExtrasOtherList" data-feature-template="#results-features-extras-template" data-feature-index="5"></div>
                     <div class="featuresListExtrasFullList" data-feature-index="5"></div>
                 </div>
