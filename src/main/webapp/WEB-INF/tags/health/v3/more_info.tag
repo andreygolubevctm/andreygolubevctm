@@ -188,11 +188,26 @@
 			</c:choose>
 		</div>
 
+		{{ if (['A', 'B1', 'B2', 'C'].includes(custom.reform.scripting)) { }}
 		<div class="simplesReformScriptingBox row">
-			{{ if (custom.reform.scripting === 'A') { }}
+			{{ if (['A', 'B1'].includes(custom.reform.scripting)) { }}
 			<p>So with the hospital cover, we have made sure everything you mentioned as important will be covered, like most policies there are some additional services covered as well as services that are excluded or restricted. We will send those across in a welcome pack, I can either read the exclusions and restrictions now or are you happy to just look through those in your own time?</p>
 			{{ } }}
+
+			{{ if (['B2'].includes(custom.reform.scripting)) { }}
+			<p>So with the hospital cover, we have made sure everything mentioned as important will be covered, like most policies there are some services that are excluded or restricted, nothing you’ve mentioned as important, we will send those across in a welcome pack, I can either read them now or are you happy to just look through those in your own time?</p>
+			{{ } }}
+
+			{{ if (['C'].includes(custom.reform.scripting)) { }}
+			<p>So with this hospital policy, everything mentioned as important is covered. This policy will have some changes on {date of change per rate sheet}  to services that you haven’t mentioned as important. We will send those changes across in a welcome pack and I can read these for you now, or keeping in mind that the important services will continue to be covered, are you happy to just look through those in your own time?</p>
+			{{ } }}
+
+			<div class="scriptingOptions">
+				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="health_simples_more_info_reform_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="health_simples_more_info_reform_inclusion_details">Read me inclusion details</label></div>
+				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="health_simples_more_info_reform_welcome_pack" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="health_simples_more_info_reform_welcome_pack">Read in the welcome pack</label></div>
+			</div>
 		</div>
+		{{ } }}
 
 		<div class="simplesMoreInfoReformTabs row">
 			<button class="simplesMoreInfoTabLink simplesMoreInfoBeforeTab active" type="button">Health brochures before *date*</button>
