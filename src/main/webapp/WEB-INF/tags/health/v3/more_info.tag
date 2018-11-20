@@ -159,6 +159,7 @@
 				</div>
 
 			</div>
+			{{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
 			<c:choose>
 				<c:when test="${isDualPriceActive eq true}">
 					<div class="col-md-3 hidden-xs moreInfoTopRightColumn">
@@ -167,7 +168,7 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now ></a>
 							</div>
 							<c:if test="${simplesHealthReformMessaging eq 'active'}">
-								<img class="simplesMoreInfoTierLogo" src="./assets/graphics/logos/health/tiers/Basic_govclass.svg" height="42" />
+								<img class="simplesMoreInfoTierLogo" src="assets/graphics/health_classification/{{= classification.icon}}" height="42" />
 							</c:if>
 					</div>
 				</c:when>
@@ -178,7 +179,7 @@
 							<div class="col-xs-12">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now ></a>
 								<c:if test="${simplesHealthReformMessaging eq 'active'}">
-									<img class="simplesMoreInfoTierLogo" src="./assets/graphics/logos/health/tiers/Basic_govclass.svg" height="42" />
+									<img class="simplesMoreInfoTierLogo" src="assets/graphics/health_classification/{{= classification.icon}}" height="42" />
 								</c:if>
 							</div>
 						</div>
