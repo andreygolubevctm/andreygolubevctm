@@ -12,6 +12,11 @@
   color: @more-info-nextsteps-color;
 }
 
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .btn-close-more-info {
   display:inline-block;
   width: 230px;
@@ -41,9 +46,15 @@
   }
 
   .scriptingOptions {
+    margin-top: 20px;
+    
     .checkbox {
       float: right;
       display: inline-block;
+
+      input + label {
+        line-height: 0.7em;
+      }
 
       input {
         height: 32px;
