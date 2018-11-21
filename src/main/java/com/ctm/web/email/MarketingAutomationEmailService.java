@@ -61,12 +61,12 @@ public class MarketingAutomationEmailService {
 
         EmailRequest emailRequest = getEmailRequest(request, brand.get(), transactionId);
 		emailRequest.setVertical(verticalCode);
+        EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
+        emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
+        emailTranslator.setUrls(request, emailRequest, data, verticalCode);
 
         if (attemptEmailDistribution(emailRequest)) {
-			EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
-			emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
 			emailTranslator.setUrls(request, emailRequest, data, verticalCode);
-
             emailClient.send(emailRequest);
         }
     }

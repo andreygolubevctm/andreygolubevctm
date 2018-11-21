@@ -1,12 +1,25 @@
 .results-pagination {
 
-  &.results-prologue-row {
-    margin-top: 15px;
+  @media (@lg) {
+    &.wider.col-lg-offset-8 {
+      margin-left: 60%;
+    }
+    &.wider.col-lg-4 {
+      width: 40%;
+    }
   }
 
   @media (@sm) {
     &.results-prologue-row {
       font-size: 18px;
+    }
+
+    &.wider.col-lg-offset-8 {
+      margin-left: 50%;
+    }
+
+    &.wider.col-lg-4 {
+      width: 50%;
     }
 
     .navbar-nav {
@@ -45,6 +58,17 @@
         color: @gray-slight-dark;
         &.active {
           color: @theme-secondary;
+        }
+      }
+    }
+
+    &.wider {
+      .nav > li {
+        .btn-pagination {
+          margin-bottom: 1px;
+          &.active, &:active {
+            margin-bottom: 0;
+          }
         }
       }
     }
