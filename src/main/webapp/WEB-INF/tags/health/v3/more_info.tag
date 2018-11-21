@@ -191,7 +191,7 @@
 		{{ if (['A', 'B1', 'B2', 'C'].includes(custom.reform.scripting)) { }}
 		<div class="simplesReformScriptingBox row">
 			<div class="col-sm-1 no-padding">
-				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="health_simples_more_info_reform_top_scripting_box" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="health_simples_more_info_reform_top_scripting_box"></label></div>
+				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-765" id="more_info_scripting_box" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="more_info_scripting_box"></label></div>
 			</div>
 			<div class="col-sm-11 no-padding">
 				{{ if (['A', 'B1'].includes(custom.reform.scripting)) { }}
@@ -208,40 +208,169 @@
 			</div>
 
 			<div class="scriptingOptions">
-				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="health_simples_more_info_reform_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="health_simples_more_info_reform_inclusion_details">Read me inclusion details</label></div>
-				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="health_simples_more_info_reform_welcome_pack" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="health_simples_more_info_reform_welcome_pack">Read in the welcome pack</label></div>
+				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_welcome_pack" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="checkbox_welcome_pack">Read in the welcome pack</label></div>
+				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="checkbox_inclusion_details">Read me inclusion details</label></div>
 			</div>
 		</div>
 		{{ } }}
 
 		<div class="simplesMoreInfoReformTabs row">
-			<button class="simplesMoreInfoTabLink simplesMoreInfoBeforeTab active" type="button">Health brochures before *date*</button>
-			<button class="simplesMoreInfoTabLink simplesMoreInfoAfterTab" type="button">Health brochures after *date*</button>
+			<button class="simplesMoreInfoTabLink simplesMoreInfoBeforeTab active" type="button">Health brochures before {{= custom.reform.changeDate }}</button>
+			<button class="simplesMoreInfoTabLink simplesMoreInfoAfterTab" type="button">Health brochures after {{= custom.reform.changeDate }}</button>
 		</div>
 		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoBeforeContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 
-			{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
 			<div class="simplesReformScriptingBox scriptingFlagContent row">
-				<div class="readInclusionsFlagA">
-					<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="health_simples_more_info_reform_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="health_simples_more_info_reform_scripting_A">Pre script needs to be read</label></div><br/><br/>
-					<span class="clinicalCatInfo">There are 38 clinical categories a policy can cover, out of those this policy does not pay benefits towards
-						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
-							{{ if (benefit.covered === 'N') { }}
-								{{= benefit.name }},
-							{{ } }}
-						{{ }); }}
-						and pays restricted benefits for
-						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
-							{{ if (benefit.covered === 'R') { }}
-								{{= benefit.name }},
-							{{ } }}
-						{{ }); }}
-						every other category is covered.</span><br/><br/>
-					Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
-				</div>
+				{{ if (custom.reform.scripting === 'A') { }}
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					<div class="readInclusionsFlag">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_inclusions_scripting_A">Pre script needs to be read</label></div><br/><br/>
+						<span class="clinicalCatInfo">
+							There are 38 clinical categories a policy can cover, out of those this policy does not pay benefits towards
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'N') { }}
+									{{= benefit.name }},
+								{{ } }}
+							{{ }); }}
+							and pays restricted benefits for
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'R') { }}
+									{{= benefit.name }},
+								{{ } }}
+							{{ }); }}
+							every other category is covered.</span><br/><br/>
+						Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
+					</div>
+					{{ } }}
+
+					<div class="readWelcomeFlag">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_welcome_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_welcome_scripting_A">Pre script needs to be read</label></div><br/><br/>
+						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
+					</div>
+				{{ } }}
+
+				{{ if (custom.reform.scripting === 'B1') { }}
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					<div class="readInclusionsFlag">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_inclusions_scripting_B1">Pre script needs to be read</label></div><br/><br/>
+						<span class="clinicalCatInfo">
+							This policy excludes
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'N') { }}
+									{{= benefit.name }},
+								{{ } }}
+							{{ }); }}
+							and there is restricted cover for
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'R') { }}
+									{{= benefit.name }},
+								{{ } }}
+							{{ }); }}
+							every other category is covered.
+						</span><br/><br/>
+						Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
+
+						<b>What’s the product changing to? (within CTM benefits)</b>
+						<span class="clinicalCatInfo">
+							I can’t tell you exactly what the changes are, but I can tell you everything you’ve mentioned as important will continue to be covered, the only changes may be to services that you haven’t mentioned as important, and the health fund is required to tell you well in advance of any changes.
+						</span><br/><br/>
+
+						<b>What’s the product changing to? (outside of CTM benefits)</b>
+						<span class="clinicalCatInfo">
+							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
+						</span>
+					</div>
+					{{ } }}
+
+					<div class="readWelcomeFlag">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_welcome_scripting_B1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_welcome_scripting_B1">Pre script needs to be read</label></div><br/><br/>
+						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.<br/><br/>
+
+						<b>What’s the product changing to? (within CTM benefits)</b>
+						<span class="clinicalCatInfo">
+							I can’t tell you exactly what the changes are, but I can tell you everything you’ve mentioned as important will continue to be covered, the only changes may be to services that you haven’t mentioned as important, and the health fund is required to tell you well in advance of any changes.
+						</span><br/><br/>
+
+						<b>What’s the product changing to? (outside of CTM benefits)</b>
+						<span class="clinicalCatInfo">
+							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
+						</span>
+					</div>
+				{{ } }}
+
+				{{ if (custom.reform.scripting === 'B2') { }}
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					<div class="readInclusionsFlag">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_inclusions_scripting_B2">Pre script needs to be read</label></div><br/><br/>
+						<span class="clinicalCatInfo">
+							This policy excludes
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'N') { }}
+									{{= benefit.name }},
+								{{ } }}
+							{{ }); }}
+							and there is restricted cover for
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'R') { }}
+									{{= benefit.name }},
+								{{ } }}
+							{{ }); }}
+							every other category is covered.
+						</span><br/><br/>
+						Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
+
+						<b>What’s the product changing to?</b>
+						<span class="clinicalCatInfo">
+							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
+						</span>
+					</div>
+					{{ } }}
+
+					<div class="readWelcomeFlag">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_welcome_scripting_B2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_welcome_scripting_B2">Pre script needs to be read</label></div><br/><br/>
+						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.<br/><br/>
+
+						<b>What’s the product changing to?</b>
+						<span class="clinicalCatInfo">
+							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
+						</span>
+					</div>
+				{{ } }}
+
+				{{ if (custom.reform.scripting === 'C') { }}
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					<div class="readInclusionsFlag">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="before_read_inclusions_scripting_C">Pre script needs to be read</label></div><br/><br/>
+						<span class="clinicalCatInfo">
+							So prior to the changes on {{= custom.reform.changeDate }} this policy excludes
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'N') { }}
+									{{= benefit.name }},
+								{{ } }}
+							{{ }); }}
+							and there is restricted cover for
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'R') { }}
+									{{= benefit.name }},
+								{{ } }}
+							{{ }); }}
+						</span><br/><br/>
+						Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
+
+						<b>What’s the product changing to?</b>
+						<span class="clinicalCatInfo">
+							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
+						</span>
+					</div>
+					{{ } }}
+
+					<div class="readWelcomeFlag">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="before_read_welcome_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="before_read_welcome_scripting_C">Pre script needs to be read</label></div><br/><br/>
+						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
+					</div>
+				{{ } }}
 			</div>
-			{{ } }}
 
 			{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6 hospitalCover">
@@ -277,7 +406,7 @@
 
 						<h5>Restrictions</h5>
 						<ul>
-							{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'R') { }}
 									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 								{{ } }}
@@ -286,7 +415,7 @@
 
 						<h5>Exclusions</h5>
 						<ul>
-							{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
+							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'N') { }}
 									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 								{{ } }}
@@ -305,6 +434,37 @@
 
 		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoAfterContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 			<c:if test="${moreinfolayout_splittest_default eq true}">
+				<div class="simplesReformScriptingBox scriptingFlagContent row">
+
+					{{ if (custom.reform.scripting === 'C') { }}
+						{{ if (custom.reform.tab2 && custom.reform.tab2.benefits.length > 0) { }}
+						<div class="readInclusionsFlag">
+							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="after_read_inclusions_scripting_C">Pre script needs to be read</label></div><br/><br/>
+							<span class="clinicalCatInfo">
+								But the changes on {{= custom.reform.changeDate }} mean your hospital policy will then exclude
+								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+									{{ if (benefit.covered === 'N') { }}
+										{{= benefit.name }},
+									{{ } }}
+								{{ }); }}
+								and have restricted cover for
+								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+									{{ if (benefit.covered === 'R') { }}
+										{{= benefit.name }},
+									{{ } }}
+								{{ }); }}
+								every other category is covered. Does that make sense?
+							</span>
+						</div>
+						{{ } }}
+
+						<div class="readWelcomeFlag">
+							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="after_read_welcome_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="after_read_welcome_scripting_C">Pre script needs to be read</label></div><br/><br/>
+							Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
+						</div>
+					{{ } }}
+
+				</div>
 				{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
 				<div class="col-xs-12 col-md-6 hospitalCover">
 					{{ if(typeof hospital.inclusions !== 'undefined') { }}
@@ -327,10 +487,10 @@
 
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
-					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					{{ if (custom.reform.tab2 && custom.reform.tab2.benefits.length > 0) { }}
 					<h5>Inclusions</h5>
 					<ul>
-						{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
 						{{ if (benefit.covered === 'Y') { }}
 						<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 						{{ } }}
