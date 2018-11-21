@@ -130,27 +130,19 @@ public class HealthApplyService extends CommonRequestServiceV2 {
     }
 
 	private String getCidFromData(HealthRequest data) {
-		Optional<String> trialCampaign = Optional.empty();
-		Optional<HealthQuote> quote = Optional.ofNullable(data.getQuote());
-		if(quote.isPresent()) {
-			Optional<Tracking> tracking = Optional.ofNullable(quote.get().getTracking());
-			if(tracking.isPresent()) {
-				trialCampaign = Optional.ofNullable(tracking.get().getCid());
-			}
-		}
-		return trialCampaign.isPresent() ? trialCampaign.get() : null;
+		return Optional.ofNullable(data)
+				.map(HealthRequest::getQuote)
+				.map(HealthQuote::getTracking)
+				.map(Tracking::getCid)
+				.orElse(null);
 	}
 
 	private String getTrialCampaignFromData(HealthRequest data) {
-		Optional<String> trialCampaign = Optional.empty();
-		Optional<HealthQuote> quote = Optional.ofNullable(data.getQuote());
-		if(quote.isPresent()) {
-			Optional<Simples> simples = Optional.ofNullable(quote.get().getSimples());
-			if(simples.isPresent()) {
-				trialCampaign = Optional.ofNullable(simples.get().getContactTypeRadio());
-			}
-		}
-		return trialCampaign.isPresent() ? trialCampaign.get() : null;
+		return Optional.ofNullable(data)
+				.map(HealthRequest::getQuote)
+				.map(HealthQuote::getSimples)
+				.map(Simples::getContactTypeRadio)
+				.orElse(null);
 	}
 
     @Deprecated
