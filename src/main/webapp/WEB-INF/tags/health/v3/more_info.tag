@@ -434,9 +434,8 @@
 
 		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoAfterContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 			<c:if test="${moreinfolayout_splittest_default eq true}">
+				{{ if (custom.reform.scripting === 'C') { }}
 				<div class="simplesReformScriptingBox scriptingFlagContent row">
-
-					{{ if (custom.reform.scripting === 'C') { }}
 						{{ if (custom.reform.tab2 && custom.reform.tab2.benefits.length > 0) { }}
 						<div class="readInclusionsFlag">
 							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="after_read_inclusions_scripting_C">Pre script needs to be read</label></div><br/><br/>
@@ -462,9 +461,8 @@
 							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="after_read_welcome_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="after_read_welcome_scripting_C">Pre script needs to be read</label></div><br/><br/>
 							Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
 						</div>
-					{{ } }}
-
 				</div>
+				{{ } }}
 				{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
 				<div class="col-xs-12 col-md-6 hospitalCover">
 					{{ if(typeof hospital.inclusions !== 'undefined') { }}
