@@ -9,6 +9,9 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.health.model.form.HealthQuote;
+import com.ctm.web.health.model.form.Simples;
+import com.ctm.web.health.model.form.Tracking;
 import com.ctm.web.core.providers.model.ApplicationOutgoingRequest;
 import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
@@ -21,6 +24,7 @@ import com.ctm.web.health.apply.model.response.HealthApplyResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponsePrev;
 import com.ctm.web.health.apply.model.RequestAdapterV2;
 import com.ctm.web.health.model.form.HealthRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,12 +69,14 @@ public class HealthApplyService extends CommonRequestServiceV2 {
             LOGGER.info("Calling health-apply v2");
 
             String operator = null;
+            String trialCampaign = getTrialCampaignFromData(data);
+            String cid = getCidFromData(data);
             AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(httpServletRequest);
             if (authenticatedSessionData != null) {
                 operator = authenticatedSessionData.getUid();
             }
 
-            LOGGER.debug("Found {} from {}", kv("operator", operator), kv("transactionId", data.getTransactionId()));
+            LOGGER.debug("Found {}, {}, {} from {}", kv("operator", operator), kv("cid", cid), kv("trialCampaign", trialCampaign), kv("transactionId", data.getTransactionId()));
 
             // Version 2
             final ApplicationOutgoingRequest<HealthApplicationRequest> request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
@@ -78,7 +84,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .brandCode(brand.getCode())
                     .requestAt(data.getRequestAt())
                     .providerFilter(data.getQuote().getApplication().getProvider())
-                    .payload(RequestAdapterV2.adapt(data, operator))
+                    .payload(RequestAdapterV2.adapt(data, operator, cid, trialCampaign))
                     .build();
 
             // Getting RootId from the transactionId
@@ -122,6 +128,30 @@ public class HealthApplyService extends CommonRequestServiceV2 {
             return healthApplyResponse;
         }
     }
+
+	private String getCidFromData(HealthRequest data) {
+		Optional<String> trialCampaign = Optional.empty();
+		Optional<HealthQuote> quote = Optional.ofNullable(data.getQuote());
+		if(quote.isPresent()) {
+			Optional<Tracking> tracking = Optional.ofNullable(quote.get().getTracking());
+			if(tracking.isPresent()) {
+				trialCampaign = Optional.ofNullable(tracking.get().getCid());
+			}
+		}
+		return trialCampaign.isPresent() ? trialCampaign.get() : null;
+	}
+
+	private String getTrialCampaignFromData(HealthRequest data) {
+		Optional<String> trialCampaign = Optional.empty();
+		Optional<HealthQuote> quote = Optional.ofNullable(data.getQuote());
+		if(quote.isPresent()) {
+			Optional<Simples> simples = Optional.ofNullable(quote.get().getSimples());
+			if(simples.isPresent()) {
+				trialCampaign = Optional.ofNullable(simples.get().getContactTypeRadio());
+			}
+		}
+		return trialCampaign.isPresent() ? trialCampaign.get() : null;
+	}
 
     @Deprecated
     private com.ctm.web.core.providers.model.Request<HealthApplicationRequest> createRequest(Brand brand, HealthRequest data, HealthApplicationRequest payload) {

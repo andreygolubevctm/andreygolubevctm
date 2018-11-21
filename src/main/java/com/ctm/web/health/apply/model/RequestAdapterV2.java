@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class RequestAdapterV2 {
 
-    public static HealthApplicationRequest adapt(HealthRequest healthRequest, String operator) {
+    public static HealthApplicationRequest adapt(HealthRequest healthRequest, String operator, String cid, String trialCampaign) {
         final Optional<HealthQuote> quote = Optional.ofNullable(healthRequest.getQuote());
         return HealthApplicationRequest.newBuilder()
                 .contactDetails(ContactDetailsAdapter.createContactDetails(quote))
@@ -16,6 +16,8 @@ public class RequestAdapterV2 {
                 .fundData(FundDataAdapter.createFundData(quote))
                 .applicants(ApplicationGroupAdapter.createApplicationGroup(quote))
                 .operator(operator)
+                .cid(cid)
+                .trialCampaign(trialCampaign)
                 .build();
     }
 
