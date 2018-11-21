@@ -156,6 +156,8 @@
             $('.simplesMoreInfoAfterContent').show();
         });
 
+
+
     }
 
     function eventSubscriptions() {

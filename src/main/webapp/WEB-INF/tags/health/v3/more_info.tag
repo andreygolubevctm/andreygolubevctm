@@ -220,6 +220,29 @@
 		</div>
 		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoBeforeContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 			<c:if test="${moreinfolayout_splittest_default eq true}">
+
+			{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+			<div class="simplesReformScriptingBox scriptingFlagContent row">
+				<div class="readInclusionsFlagA">
+					<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="health_simples_more_info_reform_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="health_simples_more_info_reform_scripting_A">Pre script needs to be read</label></div><br/><br/>
+					<span class="clinicalCatInfo">There are 38 clinical categories a policy can cover, out of those this policy does not pay benefits towards
+						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
+							{{ if (benefit.covered === 'N') { }}
+								{{= benefit.name }},
+							{{ } }}
+						{{ }); }}
+						and pays restricted benefits for
+						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
+							{{ if (benefit.covered === 'R') { }}
+								{{= benefit.name }},
+							{{ } }}
+						{{ }); }}
+						every other category is covered.</span><br/><br/>
+					Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
+				</div>
+			</div>
+			{{ } }}
+
 			{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6 hospitalCover">
 				{{ if(typeof hospital.inclusions !== 'undefined') { }}
@@ -258,7 +281,7 @@
 								{{ if (benefit.covered === 'R') { }}
 									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 								{{ } }}
-							{{ }) }}
+							{{ }); }}
 						</ul>
 
 						<h5>Exclusions</h5>
@@ -267,7 +290,7 @@
 								{{ if (benefit.covered === 'N') { }}
 									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
 								{{ } }}
-							{{ }) }}
+							{{ }); }}
 						</ul>
 					{{ } }}
 				</div>

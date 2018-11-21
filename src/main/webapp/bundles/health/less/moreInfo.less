@@ -39,18 +39,37 @@
   border-radius: 10px;
   padding: 20px 30px;
   margin-bottom: 30px;
+  text-align: justify;
 
   p {
     color: #EF5123;
     font-size: 16px;
+    margin-top: 0 !important;
+  }
+
+  .clinicalCatInfo {
+    color: #EF5123 !important;
+  }
+
+  &.scriptingFlagContent {
+    font-size: 16px;
+    .checkbox {
+      input + label {
+        line-height: 0.7em;
+      }
+
+      label {
+        color: #EF5123;
+        font-size: 24px;
+      }
+    }
   }
 
   .scriptingOptions {
-    margin-top: 20px;
-    
     .checkbox {
       float: right;
       display: inline-block;
+      margin-top: 10px;
 
       input + label {
         line-height: 0.7em;
