@@ -761,3 +761,53 @@ ul.benefitsIcons {
             @old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
   }
 }
+
+.ambulanceCoverSection {
+  margin-bottom: 20px;
+}
+
+.benefitTable {
+  border: 1px solid @gray-light;
+}
+
+.benefitRow {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom: 1px solid @gray-lighter;
+
+  .benefitTitle,
+  .limitTitle {
+    padding-left: 0px;
+  }
+
+  &.benefitRowHeader {
+    background-color: @reform-blue;
+    color: @white;
+  }
+
+  .newBenefitRow {
+    padding-left: 10px;
+    font-size: 14px;
+    height: 50px;
+    line-height: 50px;
+    text-align: left;
+
+    &.benefitHeaderTitle {
+      border-left: 1px solid @white;
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.benefitRowTitle {
+      border-left: 1px solid @gray-lighter;
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.align-center {
+      text-align: center;
+    }
+  }
+}
