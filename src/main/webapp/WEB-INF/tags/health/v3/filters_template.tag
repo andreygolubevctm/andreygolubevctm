@@ -76,7 +76,7 @@
             </div>
             <div class="filter-excess">
                 <select class="form-control array_select income health_cover_details_excess has-success" id="health_filterBar_excess" name="health_filterBar_excess" required="required" data-msg-required="Please choose your hospital excess" aria-required="true" aria-invalid="false" data-visible="true">
-                    <! -- The order of these options are important, changing these will also require changes in ResultAdapter2.java
+                    <! -- The order of these options are important, changing these will also require changes in ResultAdapter2.java -->
                     <option id="health_healthCover_excess_1" value="1">$0</option>
                     <option id="health_healthCover_excess_2" value="2">$1 - $250</option>
                     <option id="health_healthCover_excess_3" value="3">$251 - $500</option>
