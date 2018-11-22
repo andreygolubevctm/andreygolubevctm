@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 150.002 85">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #333;
+        font-size: 14px;
+        font-family: SourceSansPro-Regular, Source Sans Pro;
+      }
+
+      .cls-3, .cls-6 {
+        font-family: SourceSansPro-SemiBold, Source Sans Pro;
+        font-weight: 600;
+      }
+
+      .cls-4 {
+        fill: #fec813;
+      }
+
+      .cls-5 {
+        opacity: 0.4;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-6 {
+        fill: #fff;
+        font-size: 23px;
+      }
+
+      .cls-7, .cls-8 {
+        stroke: none;
+      }
+
+      .cls-8 {
+        fill: #999;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.493" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_8959" data-name="Group 8959" transform="translate(-1478 -752)">
+    <g id="Group_8949" data-name="Group 8949" transform="translate(1499.242 752)">
+      <g id="Path_4119" data-name="Path 4119" class="cls-1" transform="translate(0)">
+        <path class="cls-7" d="M0,0H128.76V85H0Z"/>
+        <path class="cls-8" d="M 1 1 L 1 84 L 127.7599945068359 84 L 127.7599945068359 1 L 25.10109710693359 1 L 1 1 M 0 0 L 25.10109710693359 0 L 128.7599945068359 0 L 128.7599945068359 85 L 0 85 L 0 0 Z"/>
+      </g>
+    </g>
+    <text id="Government_classification_GOLD_from_April_1" data-name="Government classification
+GOLD
+from April 1" class="cls-2" transform="translate(1525 757)"><tspan x="0" y="14">Government </tspan><tspan x="0" y="32">classification</tspan><tspan class="cls-3"><tspan x="0" y="50">GOLD</tspan></tspan><tspan x="0" y="68">from April 1</tspan></text>
+    <g id="Group_8947" data-name="Group 8947" transform="translate(1478 775)">
+      <g id="Group_8697" data-name="Group 8697">
+        <circle id="Ellipse_2047" data-name="Ellipse 2047" class="cls-4" cx="20" cy="20" r="20"/>
+      </g>
+      <circle id="Ellipse_2047-2" data-name="Ellipse 2047" class="cls-5" cx="20" cy="20" r="20"/>
+      <text id="G" class="cls-6" transform="translate(19.538 28)"><tspan x="-7.222" y="0">G</tspan></text>
+    </g>
+  </g>
+</svg>

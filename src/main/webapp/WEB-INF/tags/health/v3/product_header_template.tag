@@ -53,18 +53,28 @@
                 {{ } }}
             </div>
 
+            {{ var newName = meerkat.modules.healthResultsTemplate.getNewProductName(obj); }}
+
+            <div class="productTitle">
+                {{= newName }}
+            </div>
+
+            {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
+
+            <div class="results-header-info-container">
+                <div class="results-header-classification">
+                    <img src="assets/graphics/health_classification/{{= classification.icon}}" class="results-header-classification-icon" />
+                </div>
             <a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
-                <div class="more-info-text">View Product<span class="icon icon-arrow-right"></span></div>
+                <div class="more-info-text">Review and Join<span class="icon icon-arrow-right"></span></div>
             </a>
-            {{ var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template")); }}
-            {{= brochureTemplate(obj) }}
 
             {{ var result = meerkat.modules.healthResultsTemplate.getSpecialOffer(obj); }}
 
-            <fieldset class="hide-on-affix result-special-offer {{ if (!result.pathValue) { }}invisible{{ } }}">
-                <legend>Special Offer</legend>
-                {{= result.displayValue }}
-            </fieldset>
+            <div class="hide-on-affix result-special-offer {{ if (!result.pathValue) { }}invisible{{ } }}">
+                Special Offer - {{= result.displayValue }}
+            </div>
+            </div>
         </div>
     </div>
 </div>
