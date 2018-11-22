@@ -559,7 +559,7 @@
 				<div class="row benefitCollapsedContent">
 					<div class="col-xs-8">
 						<div class="row">
-							<div class="col-xs-6">
+							<div class="col-xs-6 extraBenefitSection">
 								<div class="row">
 									<div class="col-xs-12 extraBenefitSubHeading">Claim Benefit:</div>
 									{{ if (benefit.benefits !== undefined) { }}
@@ -578,9 +578,23 @@
 									{{ } }}
 								</div>
 							</div>
-							<div class="col-xs-6">
+							<div class="col-xs-6 extraBenefitSection">
 								<div class="row">
-									<div class="col-xs-12 benefitCollapseContentSubHeading">Claim Benefit:</div>
+									<div class="col-xs-12 extraBenefitSubHeading">Annual Limits:</div>
+									{{ if (benefit.benefits !== undefined) { }}
+									<div class="col-xs-12">
+										{{ _.each(benefit.benefitLimits, function (option, key) { }}
+										<div class="row">
+											<div class="col-xs-9 extraBenefitOption">
+												{{= key.replace(/([A-Z])/g, ' $1').trim().toLowerCase() }}
+											</div>
+											<div class="col-xs-3 extraBenefitOption align-center">
+												{{= option }}
+											</div>
+										</div>
+										{{ }); }}
+									</div>
+									{{ } }}
 								</div>
 							</div>
 						</div>
