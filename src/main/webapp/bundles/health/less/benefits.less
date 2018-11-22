@@ -309,3 +309,49 @@
 		}
 	}
 }
+
+.naturopathWarning {
+	width: 100%;
+	padding: 20px;
+	height: auto;
+	clear: both;
+	margin-bottom: 5px;
+	background-color: #ffefef;
+	border-color: #ff5f5f;
+	border-radius: 5px;
+	position: relative;
+
+	p {
+		color: #ff5f5f;
+
+		&.blackText {
+			color: #000000;
+		}
+	}
+}
+
+.naturopathWarning:after,
+.naturopathWarning:before {
+	bottom: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.naturopathWarning:after {
+	border-color: rgba(255, 239, 239, 0);
+	border-bottom-color: #ffefef;
+	border-width: 19px;
+	left: 90%;
+	margin-left: -19px;
+}
+.naturopathWarning:before {
+	border-color: rgba(255, 239, 239, 0);
+	border-bottom-color: #ffefef;
+	border-width: 20px;
+	left: 90%;
+	margin-left: -20px;
+}
