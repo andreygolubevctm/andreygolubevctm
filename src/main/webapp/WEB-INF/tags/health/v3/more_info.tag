@@ -271,12 +271,12 @@
 						</span><br/><br/>
 						Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
 
-						<b>What’s the product changing to? (within CTM benefits)</b>
+						<b>What’s the product changing to? (within CTM benefits)</b><br/>
 						<span class="clinicalCatInfo">
 							I can’t tell you exactly what the changes are, but I can tell you everything you’ve mentioned as important will continue to be covered, the only changes may be to services that you haven’t mentioned as important, and the health fund is required to tell you well in advance of any changes.
 						</span><br/><br/>
 
-						<b>What’s the product changing to? (outside of CTM benefits)</b>
+						<b>What’s the product changing to? (outside of CTM benefits)</b><br/>
 						<span class="clinicalCatInfo">
 							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
 						</span>
@@ -287,12 +287,12 @@
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_welcome_scripting_B1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_welcome_scripting_B1">Pre script needs to be read</label></div><br/><br/>
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.<br/><br/>
 
-						<b>What’s the product changing to? (within CTM benefits)</b>
+						<b>What’s the product changing to? (within CTM benefits)</b><br/>
 						<span class="clinicalCatInfo">
 							I can’t tell you exactly what the changes are, but I can tell you everything you’ve mentioned as important will continue to be covered, the only changes may be to services that you haven’t mentioned as important, and the health fund is required to tell you well in advance of any changes.
 						</span><br/><br/>
 
-						<b>What’s the product changing to? (outside of CTM benefits)</b>
+						<b>What’s the product changing to? (outside of CTM benefits)</b><br/>
 						<span class="clinicalCatInfo">
 							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
 						</span>
@@ -320,7 +320,7 @@
 						</span><br/><br/>
 						Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
 
-						<b>What’s the product changing to?</b>
+						<b>What’s the product changing to?</b><br/>
 						<span class="clinicalCatInfo">
 							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
 						</span>
@@ -331,7 +331,7 @@
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_welcome_scripting_B2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_welcome_scripting_B2">Pre script needs to be read</label></div><br/><br/>
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.<br/><br/>
 
-						<b>What’s the product changing to?</b>
+						<b>What’s the product changing to?</b><br/>
 						<span class="clinicalCatInfo">
 							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
 						</span>
@@ -358,7 +358,7 @@
 						</span><br/><br/>
 						Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
 
-						<b>What’s the product changing to?</b>
+						<b>What’s the product changing to?</b><br/>
 						<span class="clinicalCatInfo">
 							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
 						</span>
@@ -562,8 +562,8 @@
 				<div class="row collapse benefitCollapsedContent" id="extrasCollapsedContent-{{= key }}">
 					<div class="col-xs-8">
 						<div class="row">
-							<div class="col-xs-6 extraBenefitSection">
-								<div class="row">
+							<div class="col-xs-6">
+								<div class="row extraBenefitSection">
 									<div class="col-xs-12 extraBenefitSubHeading">Claim Benefit:</div>
 									{{ if (benefit.benefits !== undefined) { }}
 									<div class="col-xs-12">
@@ -581,7 +581,7 @@
 									{{ } }}
 								</div>
 							</div>
-							<div class="col-xs-6 extraBenefitSection">
+							<div class="col-xs-6">
 								<div class="row">
 									<div class="col-xs-12 extraBenefitSubHeading">Annual Limits:</div>
 									{{ if (benefit.benefitLimits !== undefined) { }}
