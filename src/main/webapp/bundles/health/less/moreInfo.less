@@ -829,8 +829,8 @@ ul.benefitsIcons {
   }
 }
 
-.ambulanceCoverSection {
-  margin-bottom: 20px;
+.ambulanceCoverSection, .extrasCoverSection {
+  margin: 20px 0;
 }
 
 .benefitTable {
@@ -876,5 +876,26 @@ ul.benefitsIcons {
     &.align-center {
       text-align: center;
     }
+  }
+}
+
+.newBenefitStatus {
+  display: block;
+  top: 30%;
+  position: relative;
+
+  &.benefitStatusIcon_N {
+    background: url('../images/icons/exclude_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_Y {
+    background: url('../images/icons/included_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_R {
+    background: url('../images/icons/restricted_icon.svg') center center no-repeat;
+    height: 30px;
   }
 }

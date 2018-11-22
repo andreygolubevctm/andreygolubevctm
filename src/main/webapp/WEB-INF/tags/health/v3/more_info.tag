@@ -523,6 +523,44 @@
 			</c:if>
 		</div>
 
+		<div class="row extrasCoverSection">
+			<h2 class="text-dark">Extras cover</h2>
+			<div class="col-xs-12 benefitTable">
+				<div class="row benefitRow benefitRowHeader">
+					<div class="col-xs-8 newBenefitRow benefitHeaderTitle">
+						Extras services
+					</div>
+					<div class="col-xs-1 newBenefitRow benefitHeaderTitle align-center">
+						Annual Limit
+					</div>
+					<div class="col-xs-1 newBenefitRow benefitHeaderTitle align-center">
+						Inclusion
+					</div>
+					<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+						Waiting period
+					</div>
+				</div>
+				{{ _.each(extras, function(benefit, key){ }}
+					{{ if (typeof benefit === 'object') { }}
+					<div class="row benefitRow">
+						<div class="col-xs-8 newBenefitRow benefitRowTitle">
+							{{= key.replace(/([A-Z])/g, ' $1').trim() }}
+						</div>
+						<div class="col-xs-1 newBenefitRow benefitRowTitle align-center">
+							{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+						</div>
+						<div class="col-xs-1 newBenefitRow benefitRowTitle">
+							<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+						</div>
+						<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
+							{{= benefit.waitingPeriod.substring(0, 20) }}
+						</div>
+					</div>
+					{{ } }}
+				{{ }) }}
+			</div>
+		</div>
+
 		<div class="row ambulanceCoverSection">
 			<h2 class="text-dark">Ambulance cover</h2>
 			<div class="col-xs-12 benefitTable">
