@@ -187,10 +187,6 @@
 				</c:otherwise>
 			</c:choose>
 
-			<div class="col-xs-12">
-				<simples:dialogue id="99" vertical="health" />
-			</div>
-
 			<c:if test="${brand eq 'ctm'}">
 				<div class="col-xs-12">
 					<simples:dialogue id="100" vertical="health" />
@@ -441,6 +437,10 @@
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<div class="row">
+			<simples:dialogue id="99" vertical="health" />
 		</div>
 
 		<div class="hidden-xs hiddenInMoreDetails">
