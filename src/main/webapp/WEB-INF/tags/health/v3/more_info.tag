@@ -545,6 +545,9 @@
 				<div class="row benefitRow">
 					<div class="col-xs-8 newBenefitRow benefitRowTitle">
 						{{= key.replace(/([A-Z])/g, ' $1').trim() }}
+						<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
+							<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
+						</a>
 					</div>
 					<div class="col-xs-1 newBenefitRow benefitRowTitle align-center">
 						{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
@@ -556,7 +559,7 @@
 						{{= benefit.waitingPeriod.substring(0, 20) }}
 					</div>
 				</div>
-				<div class="row benefitCollapsedContent">
+				<div class="row collapse benefitCollapsedContent" id="extrasCollapsedContent-{{= key }}">
 					<div class="col-xs-8">
 						<div class="row">
 							<div class="col-xs-6 extraBenefitSection">
@@ -581,7 +584,7 @@
 							<div class="col-xs-6 extraBenefitSection">
 								<div class="row">
 									<div class="col-xs-12 extraBenefitSubHeading">Annual Limits:</div>
-									{{ if (benefit.benefits !== undefined) { }}
+									{{ if (benefit.benefitLimits !== undefined) { }}
 									<div class="col-xs-12">
 										{{ _.each(benefit.benefitLimits, function (option, key) { }}
 										<div class="row">

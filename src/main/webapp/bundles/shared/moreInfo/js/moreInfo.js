@@ -169,6 +169,14 @@
                 $('.readInclusionsFlag').hide();
             }
         });
+
+        $(document.body).on('click', '.extrasCollapseContentLink', function () {
+            if ($(this).find('span').hasClass('icon-angle-down')) {
+                $(this).html('<span class="icon-angle-up" title="icon-angle-up"></span>&nbsp;Less details');
+            } else {
+                $(this).html('<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details');
+            }
+        });
     }
 
     function eventSubscriptions() {
