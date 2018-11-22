@@ -47,6 +47,8 @@ public class HealthQuoteRequest
 
     private String familyType;
 
+    private String productCode;
+
     /**
      * Use rebates
      */
@@ -219,5 +221,11 @@ public class HealthQuoteRequest
         this.familyType = familyType;
     }
 
+    public String getProductCode() {
+        return productCode;
+    }
 
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
 }

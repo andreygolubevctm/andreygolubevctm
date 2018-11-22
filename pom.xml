@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.130.0-SNAPSHOT</version>
+    <version>1.131.0-SNAPSHOT</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -24,6 +24,7 @@
         <life-common.version>1.1.0-RC1</life-common.version>
         <reward-model.version>1.9.0</reward-model.version>
         <health-common.version>1.11.1-RC2</health-common.version>
+        <emails-utils.version>1.21.1-RC1</emails-utils.version>
 
         <!-- 3rd party -->
         <guava.version>18.0</guava.version>
@@ -360,11 +361,6 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.1</version>
         </dependency>
-        <dependency>
-            <groupId>commons-validator</groupId>
-            <artifactId>commons-validator</artifactId>
-            <version>1.4.0</version>
-        </dependency>
 
         <!-- cxf -->
 
@@ -427,6 +423,18 @@
             <groupId>com.ctm.health</groupId>
             <artifactId>health-common</artifactId>
             <version>${health-common.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ctm.common</groupId>
+            <artifactId>emails-utils</artifactId>
+            <version>${emails-utils.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-jdbc</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Other 3rd Party -->
