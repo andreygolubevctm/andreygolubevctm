@@ -541,23 +541,54 @@
 					</div>
 				</div>
 				{{ _.each(extras, function(benefit, key){ }}
-					{{ if (typeof benefit === 'object') { }}
-					<div class="row benefitRow">
-						<div class="col-xs-8 newBenefitRow benefitRowTitle">
-							{{= key.replace(/([A-Z])/g, ' $1').trim() }}
-						</div>
-						<div class="col-xs-1 newBenefitRow benefitRowTitle align-center">
-							{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
-						</div>
-						<div class="col-xs-1 newBenefitRow benefitRowTitle">
-							<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
-						</div>
-						<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
-							{{= benefit.waitingPeriod.substring(0, 20) }}
+				{{ if (typeof benefit === 'object') { }}
+				<div class="row benefitRow">
+					<div class="col-xs-8 newBenefitRow benefitRowTitle">
+						{{= key.replace(/([A-Z])/g, ' $1').trim() }}
+					</div>
+					<div class="col-xs-1 newBenefitRow benefitRowTitle align-center">
+						{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+					</div>
+					<div class="col-xs-1 newBenefitRow benefitRowTitle">
+						<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+					</div>
+					<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
+						{{= benefit.waitingPeriod.substring(0, 20) }}
+					</div>
+				</div>
+				<div class="row benefitCollapsedContent">
+					<div class="col-xs-8">
+						<div class="row">
+							<div class="col-xs-6">
+								<div class="row">
+									<div class="col-xs-12 extraBenefitSubHeading">Claim Benefit:</div>
+									{{ if (benefit.benefits !== undefined) { }}
+									<div class="col-xs-12">
+										{{ _.each(benefit.benefits, function (option, key) { }}
+										<div class="row">
+											<div class="col-xs-9 extraBenefitOption">
+												{{= key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim() }}
+											</div>
+											<div class="col-xs-3 extraBenefitOption align-center">
+												{{= option }}
+											</div>
+										</div>
+										{{ }); }}
+									</div>
+									{{ } }}
+								</div>
+							</div>
+							<div class="col-xs-6">
+								<div class="row">
+									<div class="col-xs-12 benefitCollapseContentSubHeading">Claim Benefit:</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					{{ } }}
-				{{ }) }}
+					<div class="col-xs-4">&nbsp;</div>
+				</div>
+				{{ } }}
+				{{ }); }}
 			</div>
 		</div>
 

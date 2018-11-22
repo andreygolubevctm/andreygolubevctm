@@ -830,7 +830,8 @@ ul.benefitsIcons {
 }
 
 .ambulanceCoverSection, .extrasCoverSection {
-  margin: 20px 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .benefitTable {
@@ -855,8 +856,8 @@ ul.benefitsIcons {
   .newBenefitRow {
     padding-left: 10px;
     font-size: 14px;
-    height: 50px;
     line-height: 50px;
+    height: 58px;
     text-align: left;
 
     &.benefitHeaderTitle {
@@ -872,6 +873,28 @@ ul.benefitsIcons {
         border-left: none;
       }
     }
+
+    &.align-center {
+      text-align: center;
+    }
+  }
+}
+
+.benefitCollapsedContent {
+  background-color: #E9EBF5;
+  padding: 21px 30px;
+
+  .extraBenefitSubHeading {
+    height: 30px;
+    padding-left: 0;
+    border-bottom: 1px solid #999999;
+  }
+
+  .extraBenefitOption {
+    height: 35px;
+    line-height: 35px;
+    padding-left: 0;
+    vertical-align: middle;
 
     &.align-center {
       text-align: center;
