@@ -296,7 +296,6 @@
             if (ind % 2 === 0) {
                 container = $('#productSummaryLeft');
             }
-            // $(container).append('<div class="productExtraInfoItem"><div class="extraInfoItemType">' + type + '</div><div class="extraInfoItemText">' + text + '</div></div>');
             $(container).append(
                 $('<div/>', { 'class': 'productExtraInfoItem'}).append(
                     $('<div/>', { 'class': 'extraInfoItemType', 'html': type})
