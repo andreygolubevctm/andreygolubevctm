@@ -74,10 +74,14 @@
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
-				<health_v4_moreinfo:more_info_dual_pricing_header />
+            <div class="moreInfoSummaryContainer">
+                <div class="container">
+                    <div class="moreInfoTopLeftColumn Hospital_container">
+                        <health_v4_moreinfo:more_info_product_summary />
+                    </div>
+                </div>
+            </div>
 			<div class="moreInfoTopLeftColumn Hospital_container">
-				<health_v4_moreinfo:more_info_product_summary />
-                <health_v4_moreinfo:more_info_product_extra_info />
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">
 					<div class="row">
@@ -281,8 +285,6 @@
 				<ad_containers:sidebar_top />
 
                 <reward:campaign_tile_container />
-
-				<health_v4:price_promise step="results/moreinfo" />
 
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
                     <h3>Switching is simple!</h3>
