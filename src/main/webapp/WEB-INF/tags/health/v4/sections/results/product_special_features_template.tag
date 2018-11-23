@@ -11,11 +11,14 @@
     {{      return meerkat.site.fund1800s.phones[code]; }}
     {{  } }}
     {{ } }}
-    <div class="product-special-features features-{{= featureCount }} content isMultiRow" data-featureId="888888">
+    <div class="product-special-features features-1 content isMultiRow" data-featureId="888888">
         {{ if(_.has(meerkat.site,'fund1800s') && meerkat.site.fund1800s.active) { }}
         {{ var phone = getFund1800(obj.info.provider.toLowerCase()); }}
         {{  if(!_.isEmpty(phone)) { }}
         {{      var analVal = "fund1800 " + obj.info.provider; }}
+                <div class="fundCallCentreNumberTitle" >
+                    Need help? Speak to an expert now
+                </div>
                 <div class="fundCallCentreNumber">
                     <h1><a href="tel:{{= phone}}" class="callCentreNumber" data-analytics="{{= analVal}}"><span class="icon icon-phone" data-analytics="{{= analVal}}"></span>{{= phone}}</a></h1>
                 </div>
@@ -33,8 +36,10 @@
     <div class="hidden" id="content{{= obj.id }}-{{= obj.productId}}">{{= obj.text }}</div>
 </core_v1:js_template>
 <core_v1:js_template id="results-product-special-features-inline-template">
+ {{ if(obj.text) { }}
     <div class="feature-item">
-        <span class="icon {{= obj.className }}"></span>
+        <span class="feature-item-offer">OFFER</span>
         <div class="feature-item-text">{{= obj.text }}</div>
     </div>
+    {{ } }}
 </core_v1:js_template>
