@@ -79,6 +79,9 @@
                     <div class="moreInfoTopLeftColumn Hospital_container">
                         <health_v4_moreinfo:more_info_product_summary />
                     </div>
+					<div class="moreInfoTopRightColumn">
+						<health_v4_moreinfo:more_info_product_widget />
+					</div>
                 </div>
             </div>
 			<div class="moreInfoTopLeftColumn Hospital_container">
