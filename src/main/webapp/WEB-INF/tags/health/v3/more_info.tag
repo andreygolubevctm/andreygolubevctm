@@ -525,6 +525,7 @@
 
 		<div class="row extrasCoverSection">
 			<h2 class="text-dark">Extras cover</h2>
+			<h3 class="text-dark">(&nbsp;<img src="assets/brand/ctm/images/icons/selected_extras_fav.svg" width="26" height="26" />&nbsp;selected extras)</h3>
 			<div class="col-xs-12 benefitTable">
 				<div class="row benefitRow benefitRowHeader">
 					<div class="col-xs-8 newBenefitRow benefitHeaderTitle">
@@ -544,6 +545,11 @@
 				{{ if (typeof benefit === 'object') { }}
 				<div class="row benefitRow">
 					<div class="col-xs-8 newBenefitRow benefitRowTitle">
+						{{ _.each(meerkat.modules.healthBenefitsStep.getSelectedBenefits(), function(benefit) { }}
+							{{ if (benefit === key) { }}
+							<span class="selectedExtrasIcon"></span>
+							{{ } }}
+						{{ }); }}
 						{{= key.replace(/([A-Z])/g, ' $1').trim() }}
 						<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
 							<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
@@ -564,7 +570,7 @@
 						<div class="row">
 							<div class="col-xs-6">
 								<div class="row extraBenefitSection">
-									<div class="col-xs-12 extraBenefitSubHeading">Claim Benefit:</div>
+									<div class="col-xs-12 extraBenefitSubHeading"><strong>Claim Benefit:</strong></div>
 									{{ if (benefit.benefits !== undefined) { }}
 									<div class="col-xs-12">
 										{{ _.each(benefit.benefits, function (option, key) { }}
@@ -583,7 +589,7 @@
 							</div>
 							<div class="col-xs-6">
 								<div class="row">
-									<div class="col-xs-12 extraBenefitSubHeading">Annual Limits:</div>
+									<div class="col-xs-12 extraBenefitSubHeading"><strong>Annual Limits:</strong></div>
 									{{ if (benefit.benefitLimits !== undefined) { }}
 									<div class="col-xs-12">
 										{{ _.each(benefit.benefitLimits, function (option, key) { }}
@@ -603,6 +609,15 @@
 						</div>
 					</div>
 					<div class="col-xs-4">&nbsp;</div>
+
+					{{ if (benefit.hasSpecialFeatures) { }}
+					<div class="col-xs-8">
+						<div class="row">
+							<div class="col-xs-12 extraBenefitSubHeading"><strong>Extra info:</strong></div>
+							<div class="col-xs-12 extraBenefitOption">{{= benefit.hasSpecialFeatures }}</div>
+						</div>
+					</div>
+					{{ } }}
 				</div>
 				{{ } }}
 				{{ }); }}

@@ -41,20 +41,20 @@
 }
 
 .simplesReformScriptingBox {
-  background-color: #FACBBD;
+  background-color: #ffefef;
   border-radius: 10px;
   padding: 20px 30px;
   margin-bottom: 30px;
   text-align: justify;
 
   p {
-    color: #EF5123;
+    color: #ff5f5f;
     font-size: 16px;
     margin-top: 0 !important;
   }
 
   .clinicalCatInfo {
-    color: #EF5123 !important;
+    color: #ff5f5f !important;
   }
 
   &.scriptingFlagContent {
@@ -65,7 +65,7 @@
       }
 
       label {
-        color: #EF5123;
+        color: #ff5f5f;
         font-size: 24px;
       }
     }
@@ -89,7 +89,7 @@
       label {
         width: 260px;
         height: 25px;
-        color: #EF5123;
+        color: #ff5f5f;
         font-size: 20px;
       }
     }
@@ -838,6 +838,14 @@ ul.benefitsIcons {
   border: 1px solid @gray-light;
 }
 
+.extrasCoverSection {
+  h2, h3 {
+    float: left;
+    padding-right: 10px;
+    margin-bottom: 20px;
+  }
+}
+
 .benefitRow {
   padding-top: 0;
   padding-bottom: 0;
@@ -851,6 +859,16 @@ ul.benefitsIcons {
   &.benefitRowHeader {
     background-color: @reform-blue;
     color: @white;
+  }
+
+  .selectedExtrasIcon {
+    background: url('../images/icons/selected_extras_fav.svg') center center no-repeat;
+    height: 26px;
+    width: 26px;
+    float: left;
+    position: relative;
+    top: 12px;
+    left: -23px;
   }
 
   .newBenefitRow {

@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <simples:dialogue id="111" className="hidden red" vertical="health" />
+        <%--<simples:dialogue id="111" className="hidden red" vertical="health" />--%>
         <simples:dialogue id="112" className="hidden red" vertical="health" />
 
         <simples:dialogue id="24" className="" vertical="health" />
