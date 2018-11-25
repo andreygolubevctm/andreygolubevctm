@@ -74,7 +74,11 @@ public class RequestAdapterV2 {
             if (quote.getSearchResults() != null) {
                 quoteRequest.setSearchResults(quote.getSearchResults());
             } else {
-                quoteRequest.setSearchResults(12);
+                if(isSimples){
+                    quoteRequest.setSearchResults(18);
+                }else{
+                    quoteRequest.setSearchResults(12);
+                }
             }
             addBoundedExcessFilter(quoteRequest, filters, quote);
             addProductTitleSearchFilter(filters, quote);
@@ -133,6 +137,10 @@ public class RequestAdapterV2 {
         }
         addPrimaryAge(quoteRequest, cover);
         addFamilyType(quoteRequest, situation);
+
+        if(request.getHealth().getProductCode() != null && !request.getHealth().getProductCode().isEmpty()) {
+            quoteRequest.setProductCode(request.getHealth().getProductCode());
+        }
 
         return quoteRequest;
     }
@@ -288,6 +296,14 @@ public class RequestAdapterV2 {
                 case "3":
                     boundedExcessFilter.setExcessMax(500);
                     boundedExcessFilter.setExcessMin(251);
+                    break;
+                case "5":
+                    boundedExcessFilter.setExcessMax(750);
+                    boundedExcessFilter.setExcessMin(501);
+                    break;
+                case "6":
+                    boundedExcessFilter.setExcessMax(99999);
+                    boundedExcessFilter.setExcessMin(751);
                     break;
                 default:
                     boundedExcessFilter.setExcessMax(99999);

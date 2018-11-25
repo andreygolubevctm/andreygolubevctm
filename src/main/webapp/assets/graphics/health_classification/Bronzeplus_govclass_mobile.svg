@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 150 85">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #333;
+        font-size: 14px;
+      }
+
+      .cls-2, .cls-4 {
+        font-family: SourceSansPro-Regular, Source Sans Pro;
+      }
+
+      .cls-3, .cls-7 {
+        font-family: SourceSansPro-SemiBold, Source Sans Pro;
+        font-weight: 600;
+      }
+
+      .cls-4 {
+        font-weight: 400;
+      }
+
+      .cls-5, .cls-9 {
+        fill: #b1560f;
+      }
+
+      .cls-6 {
+        opacity: 0.4;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-7, .cls-8 {
+        fill: #fff;
+      }
+
+      .cls-7, .cls-9 {
+        font-size: 24px;
+      }
+
+      .cls-9 {
+        font-family: SourceSansPro-Bold, Source Sans Pro;
+        font-weight: 700;
+      }
+
+      .cls-10, .cls-11 {
+        stroke: none;
+      }
+
+      .cls-11 {
+        fill: #999;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="1" y1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.488" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_8975" data-name="Group 8975" transform="translate(-1480 -1363)">
+    <g id="Path_4707" data-name="Path 4707" class="cls-1" transform="translate(1508.242 1363)">
+      <path class="cls-10" d="M0,0H121.758V85H0Z"/>
+      <path class="cls-11" d="M 1 1 L 1 84 L 120.7577972412109 84 L 120.7577972412109 1 L 23.73604583740234 1 L 1 1 M 0 0 L 23.73604583740234 0 L 121.7577972412109 0 L 121.7577972412109 85 L 0 85 L 0 0 Z"/>
+    </g>
+    <text id="Government_classification_BRONZE_PLUS_from_April_1" data-name="Government classification
+BRONZE PLUS from April 1" class="cls-2" transform="translate(1539.998 1368)"><tspan x="0" y="14">Government </tspan><tspan x="0" y="32">classification</tspan><tspan class="cls-3"><tspan x="0" y="50">BRONZE PLUS</tspan><tspan class="cls-4" y="50"> </tspan><tspan class="cls-4" x="0" y="68">from April 1</tspan></tspan></text>
+    <g id="Group_8958" data-name="Group 8958" transform="translate(1480 1386)">
+      <path id="Union_118" data-name="Union 118" class="cls-5" d="M21.211,40v-.02C9.409,39.509,0,30.743,0,20S9.409.491,21.211.02V0H32.846C45.087.028,55,8.972,55,20S45.087,39.972,32.846,40H21.211Z" transform="translate(0)"/>
+      <path id="Union_119" data-name="Union 119" class="cls-6" d="M21.1,40v-.025C9.348,39.452,0,30.708,0,20S9.348.548,21.1.025V0H33.789V.02C45.591.491,55,9.257,55,20S45.591,39.509,33.789,39.98V40Z"/>
+      <g id="Group_8726" data-name="Group 8726" transform="translate(11 4)">
+        <text id="B" class="cls-7" transform="translate(7 24)"><tspan x="-7.164" y="0">B</tspan></text>
+        <g id="Group_8741" data-name="Group 8741" transform="translate(18)">
+          <circle id="Ellipse_2078" data-name="Ellipse 2078" class="cls-8" cx="8" cy="8" r="8" transform="translate(0 8)"/>
+          <text id="_" data-name="+" class="cls-9" transform="translate(8 24)"><tspan x="-6.336" y="0">+</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

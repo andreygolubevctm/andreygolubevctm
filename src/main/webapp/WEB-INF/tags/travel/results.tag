@@ -317,6 +317,21 @@
 	<agg_v2:no_quotes id="no-results-content"/>
 </div>
 
+<div class="hidden">
+	<div id="invalid-date">
+		<div class="col-xs-12 modal-invalid-date-content">
+			<h2>Sorry, your previous travel dates are invalid</h2>
+			<p>Please enter your new travel dates.</p>
+		</div>
+		<div class="modal-closebar">
+			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-4">
+			<a href="javascript:;" class="btn btn-block btn-secondary btn-close-dialog">Ok</a>
+		</div>
+	</div>
+</div>
+
 <%-- FETCH ERROR --%>
 <div class="resultsFetchError displayNone">
 	Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later</a>.
