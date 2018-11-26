@@ -320,8 +320,10 @@
 <div class="hidden">
 	<div id="invalid-date">
 		<div class="col-xs-12 modal-invalid-date-content">
-			<h2>Sorry, your previous travel dates are invalid</h2>
-			<p>Please enter your new travel dates.</p>
+			<fieldset>
+				<h2>Sorry, your previous travel dates are invalid</h2>
+				<p>Please enter your new travel dates.</p>
+			</fieldset>
 		</div>
 		<div class="modal-closebar">
 			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
