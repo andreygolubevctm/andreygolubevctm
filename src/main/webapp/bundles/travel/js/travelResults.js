@@ -420,8 +420,7 @@
 	}
 
 	function invalidQuoteDueToDate() {
-		meerkat.modules.journeyEngine.unlockJourney();
-		meerkat.modules.journeyEngine.gotoPath('start');
+		meerkat.modules.address.setHash('start');
 		meerkat.modules.travelDatepicker.reset();
 		showInvalidDateModal();
 	}
