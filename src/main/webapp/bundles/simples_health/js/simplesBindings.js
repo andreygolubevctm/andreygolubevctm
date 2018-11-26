@@ -120,6 +120,7 @@
             initDBDrivenCheckboxes();
             toggleFollowupCallDialog();
 	        toggleReferralCallDialog();
+            initNaturpathyDialog();
 
             applyEventListeners();
             eventSubscriptions();
@@ -127,6 +128,16 @@
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
+    }
+
+    function initNaturpathyDialog() {
+        var $naturopathCheckbox = $('#health_benefits_benefitsExtras_Naturopath');
+        var $naturopathDialog = $('<div class="naturopathWarning" id="naturopathWarningDialog">');
+        $naturopathDialog.html('<p class="blackText">If customer mentions one of the 16 natural therapies being removed from April 1.</p>'
+            + '<p class="blackText">Natural therapies being removed are: Alexander technique, aromatherapy, Bowen therapy, Buteyko, Feldenkrais, herbalism, homeopathy, iridology, kinesiology, naturopathy, Pilates, reflexology, Rolfing, shiatsu, tai chi, and yoga</p>'
+            + '<p>I\'m happy to include it for you in our search and you\'ll be able to claim on it until April 1st, it will be removed from all policies as part of the industry reforms from that date, with that in mind, would you still like me to take this into account when picking a policy?</p>'
+        );
+        $naturopathDialog.insertAfter($naturopathCheckbox.closest('.categoriesCell'));
     }
 
     function populatePrevAssignedRadioBtnGroupValue() {
