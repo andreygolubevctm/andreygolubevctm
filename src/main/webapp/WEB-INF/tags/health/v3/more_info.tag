@@ -370,6 +370,17 @@
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
 					</div>
 				{{ } }}
+
+				{{ if (custom.reform.scripting === 'D') { }}
+					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab1.limited  !== null) { }}
+					<div class="readInclusionsFlag">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1_not_null">Pre script needs to be read</label></div><br/><br/>
+						<span class="clinicalCatInfo">
+							A limited hospital product is one that coves only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
+						</span><br/><br/>
+					</div>
+					{{ } }}
+				{{ } }}
 			</div>
 
 			{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
@@ -394,7 +405,11 @@
 
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
+					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab1.limited  !== null) { }}
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reforms.tab1.limited }}</label></div><br/><br/>
+					{{ } else { }}
 					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+
 						<h5>Inclusions</h5>
 						<ul>
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
@@ -421,6 +436,7 @@
 								{{ } }}
 							{{ }); }}
 						</ul>
+					{{ } }}
 					{{ } }}
 				</div>
 			</c:if>
@@ -463,6 +479,18 @@
 						</div>
 				</div>
 				{{ } }}
+
+				{{ if (custom.reform.scripting === 'D') { }}
+				{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab2.limited  !== null) { }}
+				<div class="readInclusionsFlag">
+					<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_2_not_null">Pre script needs to be read</label></div><br/><br/>
+					<span class="clinicalCatInfo">
+						A limited hospital product is one that coves only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
+					</span><br/><br/>
+				</div>
+				{{ } }}
+				{{ } }}
+
 				{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
 				<div class="col-xs-12 col-md-6 hospitalCover">
 					{{ if(typeof hospital.inclusions !== 'undefined') { }}
@@ -485,6 +513,9 @@
 
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
+					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab2.limited  !== null) { }}
+					<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_2">{{= custom.reforms.tab2.limited }}</label></div><br/><br/>
+					{{ } else { }}
 					{{ if (custom.reform.tab2 && custom.reform.tab2.benefits.length > 0) { }}
 					<h5>Inclusions</h5>
 					<ul>
@@ -512,6 +543,7 @@
 						{{ } }}
 						{{ }) }}
 					</ul>
+					{{ } }}
 					{{ } }}
 				</div>
 			</c:if>
