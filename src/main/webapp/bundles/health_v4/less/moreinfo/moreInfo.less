@@ -73,6 +73,10 @@
       .more-info-affixed-header .lhcText {
         display: none;
       }
+
+      .more-info-affixed-header .rateRiseDisclaimer {
+        display: none;
+      }
     }
   }
 
@@ -154,12 +158,72 @@
   }
 }
 
+.moreInfoPricingSingle {
+  display: flex;
+  justify-content: flex-start;
+  margin: -10px;
+}
+
+.moreInfoPricingDual {
+  display: flex;
+  justify-content: space-between;
+  margin: -10px;
+}
+
+.moreInfoPriceWrapper {
+  flex: 1 0 auto;
+  margin: 10px;
+  min-height: 150px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.moreInfoPriceContainer {
+  border: 1px solid lightgrey;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .moreInfoPriceHeading {
+    line-height: 2;
+    background-color: #074C90;
+    color: white;
+    text-align: center;
+    width: 100%;
+  }
+
+  .moreInfoPrice {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+
+    .frequencyTitle {
+      line-height: 2rem;
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+.moreInfoFrequencyTitle {
+  display: block;
+}
+
+.about-this-fund {
+  line-height: 3rem;
+}
+
+.aboutIcon {
+  height: 1em;
+  width: 1em;
+  margin-right: 4px;
+}
+
 // Bridging page
 .moreInfoDropdown {
-
-  @media (@md) {
-    padding-top: 20px;
-  }
 
   @media (@xs-only) {
     .companyLogo {
@@ -199,6 +263,29 @@
     font-size: 20px;
   }
 
+  .fundDetails {
+    padding-bottom: 10px;
+  }
+
+  .containerTest {
+    overflow-x: hidden;
+  }
+
+  .moreInfoSummaryContainer {
+    background-color: #E9ECF4;
+    width: 100vw; //99.6
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding-bottom: 20px;
+  }
+
+
+  .moreInfoFrequencyTitle {
+    color: green;
+  }
   .productSummary {
 
     .frequency {
@@ -239,11 +326,69 @@
     }
   }
 
-  .productExtraInfo {
-    padding: 10px 30px;
-    border-bottom: 1px solid @gray-lighter;
-    margin-bottom: 20px;
-    color: @gray;
+  .moreInfoProductSummaryRow {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 4rem;
+  }
+
+  .moreInfoProductSummaryColumn {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .productExtraInfoItem {
+    display: flex;
+    padding-top: 25px;
+  }
+
+  .productExtraInfoCol {
+    width: 46.5%;
+    float: left;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: 0 auto;
+    margin-right: 15px;
+  }
+
+  .moreInfoPricePromise {
+    height: auto;
+    width: 97px;
+    flex: 1 0 auto;
+
+    img {
+      height: 100%;
+    }
+  }
+
+  .extraInfoItemType {
+    min-width: 97px;
+    width: 97px;
+    background-color: #1E4D8B;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    height: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .extraInfoItemText {
+    padding-left: 5px;
+  }
+
+  .fundDescription {
+    display: block;
+    display: -webkit-box;
+    max-height: 3rem;
+    height: 100%;
+    margin: 0 auto;
+    line-height: 1.5rem;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .row-eq-height {
@@ -258,6 +403,10 @@
   .leftAlignedLink {
     text-align: left;
     padding-left: 0;
+  }
+
+  .centeredLink {
+    text-align: center;
   }
 
   .heading {
@@ -293,6 +442,10 @@
     }
     .frequencyTitle {
       white-space: nowrap;
+      display: block !important;
+      top: 0 !important;
+      left: 0 !important;
+      padding: 5px 0px 5px 0px;
     }
   }
 
