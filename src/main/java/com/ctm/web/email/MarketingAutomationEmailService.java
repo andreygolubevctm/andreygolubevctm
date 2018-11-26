@@ -12,9 +12,9 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.email.health.CarModelTranslator;
+import com.ctm.web.email.car.CarModelTranslator;
 import com.ctm.web.email.health.HealthModelTranslator;
-import com.ctm.web.email.health.TravelModelTranslator;
+import com.ctm.web.email.travel.TravelModelTranslator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +49,6 @@ public class MarketingAutomationEmailService {
     private TravelModelTranslator travelModelTranslator;
 
     public void sendEmail(HttpServletRequest request) throws DaoException, ConfigSettingException, EmailDetailsException, SendEmailException, GeneralSecurityException {
-        LOGGER.info("Request received");
-
         final Optional<Brand> brand = Optional.ofNullable(ApplicationService.getBrandFromRequest(request));
         final String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
         final Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
@@ -62,23 +60,33 @@ public class MarketingAutomationEmailService {
         final Data data = sessionData.getSessionDataForTransactionId(transactionId);
 
         EmailRequest emailRequest = getEmailRequest(request, brand.get(), transactionId);
-
+		emailRequest.setVertical(verticalCode);
         EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
         emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
         emailTranslator.setUrls(request, emailRequest, data, verticalCode);
-        emailRequest.setVertical(verticalCode);
 
         if (attemptEmailDistribution(emailRequest)) {
+			emailTranslator.setUrls(request, emailRequest, data, verticalCode);
             emailClient.send(emailRequest);
         }
     }
 
     public EmailResponse sendEventEmail(EmailEventRequest emailEventRequest){
-        if (!isValidRequest(emailEventRequest.getVerticalCode(), emailEventRequest.getBrand(), Long.valueOf(emailEventRequest.getTransactionId()), VALID_EMAIL_EVENT_VERTICAL_LIST)) {
-           final EmailResponse response = new EmailResponse();
-           response.setSuccess(false);
-           response.setMessage("Invalid request. Vertical, Brand or transactionId is invalid or unsupported.");
-           return response;
+        boolean invalidRequest = !isValidRequest(emailEventRequest.getVerticalCode(), emailEventRequest.getBrand(), Long.valueOf(emailEventRequest.getTransactionId()), VALID_EMAIL_EVENT_VERTICAL_LIST);
+        boolean attemptEmail = attemptEmailDistribution(emailEventRequest);
+        if (invalidRequest || !attemptEmail) {
+            final EmailResponse response = new EmailResponse();
+            response.setSuccess(false);
+            String invalidRequestMsg = "Invalid request. Vertical, Brand or transactionId is invalid or unsupported";
+            String invalidEmailMsg = "Invalid email address (" + emailEventRequest.getEmailAddress() + ") provided with request";
+            if(!invalidRequest && !attemptEmail) {
+                response.setMessage(invalidRequestMsg + " and " + invalidEmailMsg);
+            } else if(!invalidRequest) {
+                response.setMessage(invalidRequestMsg);
+            } else {
+                response.setMessage(invalidEmailMsg);
+            }
+            return response;
         }
         return emailClient.send(emailEventRequest);
     }
@@ -98,10 +106,15 @@ public class MarketingAutomationEmailService {
         return true;
     }
 
+    protected static boolean attemptEmailDistribution(EmailEventRequest emailEventRequest){
+        String email = emailEventRequest.getEmailAddress();
+        return StringUtils.isNotBlank(email) && EmailUtils.isValidEmailAddress(email);
+    }
+
     protected static boolean attemptEmailDistribution(EmailRequest emailRequest){
-        final VerticalType verticalType = getVerticalType(emailRequest.getVertical());
-        if(StringUtils.isNotBlank(emailRequest.getEmailAddress())){
-            if(VerticalType.HEALTH != verticalType || !emailRequest.isPopularProductsSelected()) {
+        String email = emailRequest.getEmailAddress();
+        if(StringUtils.isNotBlank(email) && EmailUtils.isValidEmailAddress(email)){
+            if(VerticalType.HEALTH != getVerticalType(emailRequest.getVertical()) || !emailRequest.isPopularProductsSelected()) {
                 return true;
             }
         }

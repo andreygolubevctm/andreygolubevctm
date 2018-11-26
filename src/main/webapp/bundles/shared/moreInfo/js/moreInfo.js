@@ -302,7 +302,7 @@
                 ).append(
                     $('<div/>', { 'class': 'extraInfoItemText', 'html': text})
                 )
-            )
+            );
         };
 
         var productHasProperty = function(obj) {

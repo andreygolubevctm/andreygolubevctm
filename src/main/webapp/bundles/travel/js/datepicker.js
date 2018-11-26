@@ -3,7 +3,7 @@
   var departurePicker;
   var returnPicker;
   var currentDate = new Date();
-  var dateDiff = '';
+  var dateDifference = '';
 
   var elements = {
     departure: document.getElementById('departure'),
@@ -83,7 +83,7 @@
           departurePicker.setDate(dates[0], true);
           display.returned.value = formatDate(dates[1]);
           elements.hiddenReturned.value = formatDate(dates[1]);
-          dateDiff = calcDatesDifference(dates);
+          dateDifference = calcDatesDifference(dates);
           setValueToHiddenFields(
             {
               name: 'toDate',
@@ -117,8 +117,8 @@
     return diffDays;
   }
   
-  function getDateDiff() {
-    return dateDiff;
+  function getDateDifference() {
+    return dateDifference;
   }
   
   function removeValidationErrors(target) {
@@ -152,12 +152,18 @@
     var toDate = document.getElementById('travel_dates_toDate');
     var hasValues = toDate.value.length > 0 && fromDate.value.length > 0;
     if (hasValues) {
-      dateDiff = calcDatesDifference([ reverseDateStr(fromDate.value), reverseDateStr(toDate.value) ]);
-      setValueToHiddenFields({name: 'fromDate', dateString: fromDate.value });
-      setValueToHiddenFields({name: 'toDate', dateString: toDate.value });
+      dateDifference = calcDatesDifference([ reverseDateStr(fromDate.value), reverseDateStr(toDate.value) ]);
+      setValueToHiddenFields({ name: 'fromDate', dateString: fromDate.value });
+      setValueToHiddenFields({ name: 'toDate', dateString: toDate.value });
       display.departure.value = fromDate.value;
       display.returned.value = toDate.value;
     }
+  }
+
+  function resetFields() {
+    dateDifference = '';
+    display.departure.value = '';
+    display.returned.value = '';
   }
 
   function init() {
@@ -168,7 +174,8 @@
 
 meerkat.modules.register("travelDatepicker", {
   init: init,
-  getDateDiff: getDateDiff
+  getDateDifference: getDateDifference,
+  reset: resetFields,
 });
 
 })(jQuery);
