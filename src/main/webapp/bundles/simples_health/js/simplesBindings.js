@@ -56,7 +56,22 @@
         $pricePromisePromotionDialogue,
         $affiliatesDialogue,
         $dialogue106,
-        $dialogue109;
+        $dialogue109,
+	    $optin_email,
+        $optin_phone,
+        $optin_privacy,
+        $optin_optin,
+        // List of affiliates who must be ommited from auto optin functionality
+        affiliatesOptinBlacklist = [
+            "trialcampaignFacebook",
+	        "trialcampaignHealthEngine",
+	        "trialcampaignHealthEngineLP",
+	        "trialcampaignJackMedia",
+	        "trialcampaignMicrosite",
+	        "trialcampaignOmnilead",
+	        "trialcampaignOptimise"
+        ]
+    ;
 
     function init() {
         $(document).ready(function () {
@@ -118,6 +133,10 @@
             $dialogue109 = $('.simples-dialogue-109');
             $dialogue111 = $('.simples-dialogue-111');
             $dialogue112 = $('.simples-dialogue-112');
+            $optin_email = $('#health_contactDetails_optInEmail');
+	        $optin_phone = $('#health_contactDetails_call');
+	        $optin_privacy = $('#health_privacyoptin');
+	        $optin_optin = $('#health_contactDetails_optin');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -195,6 +214,7 @@
             toggleReferralCallDialog();
             toggleWebChatDialog();
             toggleAfricaCompDialog();
+            cleanupOptins();
         });
         // Handle callback checkbox 68
         $followupCallCheckbox.on('change', toggleFollowupCallDialog);
@@ -287,6 +307,16 @@
             $simplesMoreInfo.hide();
             $simplesResults.show();
         });
+    }
+
+    // When lead originates from a nominated affiliate source then we cannot
+    // automatically opt them in for anything - all default to N
+    function cleanupOptins() {
+	    var contactType = $healthContactTypeField.val();
+	    if(!_.isUndefined(contactType) && !_.isEmpty(contactType)) {
+	        var optin = _.indexOf(affiliatesOptinBlacklist, contactType) === -1 ? "Y" : "N";
+		    $optin_email.add($optin_phone).add($optin_privacy).add($optin_optin).val(optin);
+        }
     }
 
     // Hide/show simple dialogues when toggle inbound/outbound in simples journey
