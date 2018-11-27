@@ -7,8 +7,6 @@
     <layout_v3:slide_content>
         <simples:dialogue id="83" className="" vertical="health" />
         <simples:dialogue id="109" className="hidden" vertical="health" mandatory="true" />
-
-        <simples:dialogue id="111" className="hidden red" vertical="health" />
         <simples:dialogue id="112" className="hidden red" vertical="health" />
 
         <simples:dialogue id="24" className="" vertical="health" />

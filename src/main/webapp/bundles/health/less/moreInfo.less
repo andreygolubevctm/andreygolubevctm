@@ -12,14 +12,137 @@
   color: @more-info-nextsteps-color;
 }
 
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .btn-close-more-info {
-	display:inline-block;
+  display:inline-block;
+  width: 230px;
+  height: 44px;
+  font-size: 16px;
 }
 
 /* product headers buttons */
 
 .moreInfoVisible #resultsPage {
   margin-bottom: 30px;
+}
+
+.simplesMoreInfoTierLogo {
+  margin: 28px 0;
+}
+
+.readInclusionsFlag,
+.readWelcomeFlag,
+.scriptingFlagContent {
+  display: none;
+}
+
+.simplesReformScriptingBox {
+  background-color: #ffefef;
+  border-radius: 10px;
+  padding: 20px 30px;
+  margin-bottom: 30px;
+  text-align: justify;
+
+  p {
+    color: #ff5f5f;
+    font-size: 16px;
+    margin-top: 0 !important;
+  }
+
+  .clinicalCatInfo {
+    color: #ff5f5f !important;
+  }
+
+  &.scriptingFlagContent {
+    font-size: 16px;
+    .checkbox {
+      input + label {
+        line-height: 0.7em;
+      }
+
+      label {
+        color: #ff5f5f;
+        font-size: 24px;
+      }
+    }
+  }
+
+  .scriptingOptions {
+    .checkbox {
+      float: right;
+      display: inline-block;
+      margin-top: 10px;
+
+      input + label {
+        line-height: 0.7em;
+      }
+
+      input {
+        height: 32px;
+        width: 32px;
+      }
+
+      label {
+        width: 260px;
+        height: 25px;
+        color: #ff5f5f;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.simplesMoreInfoReformTabs {
+  overflow: hidden;
+  background-color: #ffffff;
+
+  .simplesMoreInfoTabLink {
+    background-color: inherit;
+    width: 360px;
+    height: 46px;
+    font-size: 20px;
+    float: left;
+    border: 1px solid #EAE8E8;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &.active {
+      background-color: #E9EBF5;
+      border: none;
+    }
+  }
+}
+
+.simplesMoreInfoHospitalCover {
+  background-color: #E9EBF5 !important;
+  border: none !important;
+  padding: 30px !important;
+
+  h2, h5, p {
+      color: #333333;
+    }
+
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  p {
+    margin-top: 45px;
+  }
+
+  &.simplesMoreInfoBeforeContent {
+    diplay: block;
+  }
+
+  &.simplesMoreInfoAfterContent {
+    display: none;
+  }
 }
 
 // Bridging page
@@ -64,6 +187,15 @@
 
 }
 
+.referenceNo {
+  display: inline-block;
+  float: right;
+  font-size: 20px;
+  line-height: 18px;
+  color: @black;
+  margin-top: 10px;
+}
+
 .more-info-content {
 
   background-color: @main-bg-colour;
@@ -96,6 +228,7 @@
         font-size: 35px;
         padding-top: 40px;
         padding-bottom: 40px;
+        color: #333333;
       }
     }
   }
@@ -237,17 +370,6 @@
     }
   }
 
-  .referenceNo {
-    font-size: 20px;
-    line-height: 18px;
-    color: #555;
-    margin-top: 10px;
-    span {
-      color: #000;
-      font-family: @font-family-theme-bold;
-    }
-  }
-
   p.promoHeading {
     font-size: 20px;
     line-height: 24px;
@@ -263,13 +385,14 @@
 
   .frequency {
     .frequencyAmount {
+      color: #333333;
       @media (@sm) {
         text-align: left;
       }
       // set font sizes
       font-size: 40px;
       @media (@sm) {
-        font-size: 80px;
+        font-size: 50px;
       }
       .dollarSign,
       .cents,
@@ -278,22 +401,22 @@
       }
       @media (@sm) {
         .dollarSign {
-          font-size: 36px;
+          font-size: 23px;
         }
 
         .cents {
-          font-size: 30px;
+          font-size: 23px;
         }
 
         .frequencyTitle {
-          font-size: 20px;
+          font-size: 16px;
         }
       }
       .frequencyTitle {
         @media (@sm) {
           display: inline;
           top: 22px;
-          left: -49px;
+          left: -29px;
         }
       }
 
@@ -321,7 +444,12 @@
   }
 
   .btn-more-info-apply {
-    box-shadow: 1px 2px 0px 0px rgba(0, 0, 0, 0.3);
+    height: 44px;
+    width: 230px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px !important;
+    font-size: 16px;
   }
 
 	.btn {
@@ -698,5 +826,134 @@ ul.benefitsIcons {
             @old-btn-cta-active-bg-color, @old-btn-cta-active-color,
             @old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
             @old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
+  }
+}
+
+.ambulanceCoverSection, .extrasCoverSection {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.benefitTable {
+  border: 1px solid @gray-light;
+}
+
+.extrasCoverSection {
+  h2, h3 {
+    float: left;
+    padding-right: 10px;
+    margin-bottom: 20px;
+  }
+}
+
+.benefitRow {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom: 1px solid @gray-lighter;
+
+  .benefitTitle,
+  .limitTitle {
+    padding-left: 0px;
+  }
+
+  &.benefitRowHeader {
+    background-color: @reform-blue;
+    color: @white;
+  }
+
+  .selectedExtrasIcon {
+    background: url('../images/icons/selected_extras_fav.svg') center center no-repeat;
+    height: 26px;
+    width: 26px;
+    float: left;
+    position: relative;
+    top: 12px;
+    left: -23px;
+  }
+
+  .newBenefitRow {
+    padding-left: 10px;
+    font-size: 14px;
+    line-height: 50px;
+    height: 58px;
+    text-align: left;
+
+    &.benefitHeaderTitle {
+      border-left: 1px solid @white;
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.benefitRowTitle {
+      border-left: 1px solid @gray-lighter;
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.align-center {
+      text-align: center;
+    }
+  }
+}
+
+.extrasCollapseContentLink {
+  float: right;
+  margin-right: 20px;
+  text-decoration: none !important;
+  color: #1C3E94;
+
+  span {
+    vertical-align: top;
+    font-size: 20px;
+  }
+}
+
+.benefitCollapsedContent {
+  background-color: #E9EBF5;
+  padding: 21px 30px;
+
+  .extraBenefitSection {
+    padding-right: 20px;
+  }
+
+  .extraBenefitSubHeading {
+    height: 30px;
+    padding-left: 0;
+    border-bottom: 1px solid #999999;
+  }
+
+  .extraBenefitOption {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 0;
+    vertical-align: middle;
+    font-size: 12px;
+
+    &.align-center {
+      text-align: center;
+    }
+  }
+}
+
+.newBenefitStatus {
+  display: block;
+  top: 30%;
+  position: relative;
+
+  &.benefitStatusIcon_N {
+    background: url('../images/icons/exclude_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_Y {
+    background: url('../images/icons/included_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_R {
+    background: url('../images/icons/restricted_icon.svg') center center no-repeat;
+    height: 30px;
   }
 }
