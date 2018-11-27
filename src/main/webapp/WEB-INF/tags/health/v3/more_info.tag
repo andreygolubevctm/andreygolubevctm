@@ -624,23 +624,112 @@
 			</div>
 		</div>
 
-		<div class="row ambulanceCoverSection">
-			<h2 class="text-dark">Ambulance cover</h2>
-			<div class="col-xs-12 benefitTable">
-				<div class="row benefitRow benefitRowHeader">
-					<div class="col-xs-8 newBenefitRow benefitHeaderTitle">
-						Ambulance service
+        <div class="row ambulanceCoverSection">
+            <h2 class="text-dark">Ambulance cover</h2>
+            <div class="col-xs-12 benefitTable">
+                <div class="row benefitRow benefitRowHeader">
+                    <div class="col-xs-8 newBenefitRow benefitHeaderTitle">
+                        Ambulance service
+                    </div>
+                    <div class="col-xs-4 newBenefitRow benefitHeaderTitle align-center">
+                        Waiting period
+                    </div>
+                </div>
+                <div class="row benefitRow">
+                    <div class="col-xs-8 newBenefitRow benefitRowTitle">
+                        {{= obj.ambulance.otherInformation }}
+                    </div>
+                    <div class="col-xs-4 newBenefitRow benefitRowTitle align-center">
+                        {{= obj.ambulance.waitingPeriod }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<div class="row policyBrochures">
+			<div class="col-xs-12">
+				<h2 class="text-dark">Policy brochures</h2>
+				<p class="text-bold">See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
+			</div>
+
+			<div class="col-xs-12 col-md-6">
+
+				<div class="row">
+					{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
+					<div class="col-xs-12">
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Policy Brochure</a>
 					</div>
-					<div class="col-xs-4 newBenefitRow benefitHeaderTitle align-center">
-						Waiting period
+					{{ } else { }}
+
+					{{ if(typeof hospitalCover !== 'undefined') { }}
+					<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Hospital Policy Brochure</a>
+					</div>
+					{{ } }}
+
+					{{ if(typeof extrasCover !== 'undefined') { }}
+					<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
+						<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
+					</div>
+					{{ } }}
+					{{ } }}
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12">
+						<textarea rows="10" id="selectedProductUrlTextArea" class="col-xs-12 hidden addTopMargin" aria-invalid="false"></textarea>
 					</div>
 				</div>
-				<div class="row benefitRow">
-					<div class="col-xs-8 newBenefitRow benefitRowTitle">
-						{{= obj.ambulance.otherInformation }}
+
+				<div class="row hidden copy-append-offer-row addTopMargin">
+					<div class="col-xs-6">
+						<a href="javascript:;" class="btn btn-save btn-copy-selected-product-url" <field_v1:analytics_attr analVal="Copy Product Link button" quoteChar="\"" />>Copy Link</a>
 					</div>
-					<div class="col-xs-4 newBenefitRow benefitRowTitle align-center">
-						{{= obj.ambulance.waitingPeriod }}
+					<div class="col-xs-6">
+						<field_v2:checkbox className="checkbox-custom pull-right hidden"
+										   xpath="health/sendBrochures/appendOffer" required="false"
+										   value="Y" label="true"
+										   title="Append Offer" />
+					</div>
+				</div>
+
+			</div>
+
+			<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
+
+				<div class="row formInput">
+					<div class="col-sm-7 col-xs-12">
+						<field_v2:email xpath="emailAddress"  required="false"
+										className="sendBrochureEmailAddress"
+										placeHolder="${emailPlaceHolder}" />
+					</div>
+					<div class="col-sm-5 hidden-xs">
+						<a href="javascript:;" class="btn btn-save disabled btn-email-brochure btn-block" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+					</div>
+
+					<div class="col-sm-5 hidden-xs">
+						<a href="javascript:;" class="btn btn-save disabled btn-get-selected-product-url btn-block addTopMargin" <field_v1:analytics_attr analVal="Get Product Link button" quoteChar="\"" />>Get Product Link</a>
+					</div>
+				</div>
+				<div class="row row-content formInput optInMarketingRow">
+					<div class="col-xs-12">
+						<field_v2:checkbox className="optInMarketing checkbox-custom"
+										   xpath="health/sendBrochures/optInMarketing" required="false"
+										   value="Y" label="true"
+										   title="Stay up to date with news and offers direct to your inbox" />
+					</div>
+				</div>
+
+				<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
+					<div class="col-xs-12">
+						<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+					</div>
+				</div>
+				<div class="row row-content moreInfoEmailBrochuresSuccess hidden addTopMargin">
+					<div class="col-xs-12">
+						<div class="success alert alert-success">
+							Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
+						</div>
 					</div>
 				</div>
 			</div>
