@@ -646,6 +646,10 @@
 			</div>
 		</div>
 
+		<div class="row">
+			<simples:dialogue id="99" vertical="health" />
+		</div>
+
 		<div class="hidden-xs hiddenInMoreDetails">
 			{{= callToActionBarHtml }}
 		</div>
