@@ -82,6 +82,11 @@
             value = $(selector).val() || value;
         }
         var now = new Date();
+
+        if(meerkat && meerkat.site && meerkat.site.serverDate) {
+            now = new Date(meerkat.site.serverDate);
+        }
+
         var temp = value.split('/');
         if(String(parseInt(temp[2], 10)).length === 4) {
             var ageValue = Number(age);

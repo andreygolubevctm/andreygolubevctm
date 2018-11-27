@@ -1,24 +1,17 @@
 ;(function($){
 
 	var meerkat = window.meerkat,
-		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info;
-
+		meerkatEvents = meerkat.modules.events;
 		//Stores the jQuery object for the component group
 	var $resultsSummaryPlaceholder,
-		$fromDate,
-		$toDate,
-		$worldwide,
 		$adults,
 		$children,
-		$policytype,
 		$summaryHeader,
 		$selectedTags,
 		initialised = false;
 
 	function updateSummaryText() {
 		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
-
 		// Build the summary text based on the entered information.
 		var txt= '<span class="highlight">';
 
@@ -40,8 +33,7 @@
 		}
 
 		// if this is a single trip
-		if ($("input[name=travel_policyType]:checked").val() == 'S')
-		{
+		if ($("input[name=travel_policyType]:checked").val() == 'S') {
 			// in case a user did an AMT quote and now wants a single trip quote
 			$summaryHeader.html('Your quote is based on');
 			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
@@ -54,7 +46,7 @@
 			}
 
 			// duration calculation
-			var days = meerkat.modules.travelDatepicker.getDateDiff();
+			var days = meerkat.modules.travelDatepicker.getDateDifference();
 			txt += "</span> for <span class='highlight'>"+days+" days</span>";
 		} else {
 			$summaryHeader.html('Your Annual Multi Trip (AMT) quote is based on');
@@ -62,7 +54,7 @@
 			txt+="</span> travelling <span class='highlight "+blockClass+"'>multiple times in one year";
 		}
 
-		if(meerkat.modules.tripType.exists()) {
+		if (meerkat.modules.tripType.exists()) {
 			var triptypes = meerkat.modules.tripType.get();
 			var copy = [];
 			for(var i in triptypes) {
@@ -80,9 +72,8 @@
 	}
 
 	function initSummaryText() {
-		if(!initialised) {
+		if (!initialised) {
 			initialised = true;
-
 			$resultsSummaryPlaceholder = $(".resultsSummaryPlaceholder"),
 			$fromDate = $("#travel_dates_fromDate"),
 			$toDate = $("#travel_dates_toDate"),
