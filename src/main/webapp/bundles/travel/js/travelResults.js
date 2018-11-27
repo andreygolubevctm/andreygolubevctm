@@ -420,10 +420,11 @@
 	}
 
 	function invalidQuoteDueToDate() {
-		meerkat.modules.journeyEngine.unlockJourney();
-		meerkat.modules.journeyEngine.gotoPath('start');
 		meerkat.modules.travelDatepicker.reset();
-		showInvalidDateModal();
+		setTimeout(function() {
+			meerkat.modules.address.setHash('start');
+			showInvalidDateModal();
+		}, 150);
 	}
 
 	function showInvalidDateModal() {
@@ -472,7 +473,8 @@
 		get: get,
 		showNoResults: showNoResults,
 		rankingCallback: rankingCallback,
-		publishExtraTrackingEvents: publishExtraTrackingEvents
+		publishExtraTrackingEvents: publishExtraTrackingEvents,
+		invalidQuoteDueToDate: invalidQuoteDueToDate,
 	});
 
 })(jQuery);
