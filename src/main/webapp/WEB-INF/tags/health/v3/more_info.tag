@@ -646,6 +646,10 @@
             </div>
         </div>
 
+		<div class="row">
+			<simples:dialogue id="99" vertical="health" />
+		</div>
+
 		<div class="row policyBrochures">
 			<div class="col-xs-12">
 				<h2 class="text-dark">Policy brochures</h2>
@@ -692,9 +696,7 @@
 										   title="Append Offer" />
 					</div>
 				</div>
-
 			</div>
-
 			<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
 
 				<div class="row formInput">
@@ -733,10 +735,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="row">
-			<simples:dialogue id="99" vertical="health" />
 		</div>
 
 		<div class="hidden-xs hiddenInMoreDetails">
