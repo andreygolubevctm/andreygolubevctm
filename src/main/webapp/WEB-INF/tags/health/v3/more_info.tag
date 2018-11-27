@@ -230,13 +230,13 @@
 							There are 38 clinical categories a policy can cover, out of those this policy does not pay benefits towards
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'N') { }}
-									{{= benefit.name }},
+									{{= benefit.category }},
 								{{ } }}
 							{{ }); }}
 							and pays restricted benefits for
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'R') { }}
-									{{= benefit.name }},
+									{{= benefit.category }},
 								{{ } }}
 							{{ }); }}
 							every other category is covered.</span><br/><br/>
@@ -258,13 +258,13 @@
 							This policy excludes
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'N') { }}
-									{{= benefit.name }},
+									{{= benefit.category }},
 								{{ } }}
 							{{ }); }}
 							and there is restricted cover for
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'R') { }}
-									{{= benefit.name }},
+									{{= benefit.category }},
 								{{ } }}
 							{{ }); }}
 							every other category is covered.
@@ -307,13 +307,13 @@
 							This policy excludes
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'N') { }}
-									{{= benefit.name }},
+									{{= benefit.category }},
 								{{ } }}
 							{{ }); }}
 							and there is restricted cover for
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'R') { }}
-									{{= benefit.name }},
+									{{= benefit.category }},
 								{{ } }}
 							{{ }); }}
 							every other category is covered.
@@ -346,13 +346,13 @@
 							So prior to the changes on {{= custom.reform.changeDate }} this policy excludes
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'N') { }}
-									{{= benefit.name }},
+									{{= benefit.category }},
 								{{ } }}
 							{{ }); }}
 							and there is restricted cover for
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'R') { }}
-									{{= benefit.name }},
+									{{= benefit.category }},
 								{{ } }}
 							{{ }); }}
 						</span><br/><br/>
@@ -399,7 +399,7 @@
 						<ul>
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'Y') { }}
-									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
+									<li class="simplesMoreInfoInclusions"><span>{{= benefit.category }}</span></li>
 								{{ } }}
 							{{ }) }}
 						</ul>
@@ -408,7 +408,7 @@
 						<ul>
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'R') { }}
-									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
+									<li class="simplesMoreInfoInclusions"><span>{{= benefit.category }}</span></li>
 								{{ } }}
 							{{ }); }}
 						</ul>
@@ -417,7 +417,7 @@
 						<ul>
 							{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 								{{ if (benefit.covered === 'N') { }}
-									<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
+									<li class="simplesMoreInfoInclusions"><span>{{= benefit.category }}</span></li>
 								{{ } }}
 							{{ }); }}
 						</ul>
@@ -443,13 +443,13 @@
 								But the changes on {{= custom.reform.changeDate }} mean your hospital policy will then exclude
 								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 									{{ if (benefit.covered === 'N') { }}
-										{{= benefit.name }},
+										{{= benefit.category }},
 									{{ } }}
 								{{ }); }}
 								and have restricted cover for
 								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
 									{{ if (benefit.covered === 'R') { }}
-										{{= benefit.name }},
+										{{= benefit.category }},
 									{{ } }}
 								{{ }); }}
 								every other category is covered. Does that make sense?
@@ -490,7 +490,7 @@
 					<ul>
 						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
 						{{ if (benefit.covered === 'Y') { }}
-						<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
+						<li class="simplesMoreInfoInclusions"><span>{{= benefit.category }}</span></li>
 						{{ } }}
 						{{ }) }}
 					</ul>
@@ -499,7 +499,7 @@
 					<ul>
 						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
 						{{ if (benefit.covered === 'R') { }}
-						<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
+						<li class="simplesMoreInfoInclusions"><span>{{= benefit.category }}</span></li>
 						{{ } }}
 						{{ }) }}
 					</ul>
@@ -508,7 +508,7 @@
 					<ul>
 						{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
 						{{ if (benefit.covered === 'N') { }}
-						<li class="simplesMoreInfoInclusions"><span>{{= benefit.name }}</span></li>
+						<li class="simplesMoreInfoInclusions"><span>{{= benefit.category }}</span></li>
 						{{ } }}
 						{{ }) }}
 					</ul>
