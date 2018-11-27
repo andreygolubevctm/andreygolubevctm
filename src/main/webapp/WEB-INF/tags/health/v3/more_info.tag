@@ -165,7 +165,7 @@
 					<div class="col-md-3 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 							<div class="insureNow">
-								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now ></a>
+								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 							</div>
 							<c:if test="${simplesHealthReformMessaging eq 'active'}">
 								<img class="simplesMoreInfoTierLogo" src="assets/graphics/health_classification/{{= classification.icon}}" height="42" />
@@ -177,7 +177,7 @@
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 						<div class="row">
 							<div class="col-xs-12">
-								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now ></a>
+								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 								<c:if test="${simplesHealthReformMessaging eq 'active'}">
 									<img class="simplesMoreInfoTierLogo" src="assets/graphics/health_classification/{{= classification.icon}}" height="42" />
 								</c:if>
