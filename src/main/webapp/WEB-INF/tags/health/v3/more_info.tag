@@ -372,7 +372,7 @@
 				{{ } }}
 
 				{{ if (custom.reform.scripting === 'D') { }}
-					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab1.limited  !== null) { }}
+					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null) { }}
 					<div class="readInclusionsFlag">
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1_not_null">Pre script needs to be read</label></div><br/><br/>
 						<span class="clinicalCatInfo">
@@ -405,14 +405,14 @@
 
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
-					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab1.limited  !== null) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reforms.tab1.limited }}</label></div><br/><br/>
+					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null) { }}
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reform.tab1.limited }}</label></div><br/><br/>
 					{{ } else { }}
 					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
-						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab1.limited  === null) { }}
-							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_1_inclusions_checkbox" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required">
+						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  === null) { }}
+							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_1_inclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
 								<label for="limited_cover_scripting_tab_1_inclusions_checkbox">Inclusions</label>
-							</div>
+							</div><br/>
 						{{ } else { }}
 							<h5>Inclusions</h5>
 						{{ } }}
@@ -424,10 +424,10 @@
 							{{ }) }}
 						</ul>
 
-						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab1.limited  === null) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_1_restrictions_checkbox" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required">
-							<label for="limited_cover_scripting_tab_1_restrictions_checkbox">Restrictions</label>
-						</div>
+						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  === null) { }}
+							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-912" id="limited_cover_scripting_tab_1_restrictions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
+								<label for="limited_cover_scripting_tab_1_restrictions_checkbox">Restrictions</label>
+							</div><br/>
 						{{ } else { }}
 							<h5>Restrictions</h5>
 						{{ } }}
@@ -439,10 +439,10 @@
 							{{ }); }}
 						</ul>
 
-						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab1.limited  === null) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_1_exclusions_checkbox" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required">
-							<label for="limited_cover_scripting_tab_1_exclusions_checkbox">Exclusions</label>
-						</div>
+						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  === null) { }}
+							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-913" id="limited_cover_scripting_tab_1_exclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
+								<label for="limited_cover_scripting_tab_1_exclusions_checkbox">Exclusions</label>
+							</div><br/>
 						{{ } else { }}
 							<h5>Exclusions</h5>
 						{{ } }}
@@ -498,7 +498,7 @@
 				{{ } }}
 
 				{{ if (custom.reform.scripting === 'D') { }}
-				{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab2.limited  !== null) { }}
+				{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab2.limited  !== null) { }}
 				<div class="readInclusionsFlag">
 					<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_2_not_null">Pre script needs to be read</label></div><br/><br/>
 					<span class="clinicalCatInfo">
@@ -530,8 +530,10 @@
 
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
-					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reforms.tab2.limited  !== null) { }}
-					<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_2">{{= custom.reforms.tab2.limited }}</label></div><br/><br/>
+					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab2.limited  !== null) { }}
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required">
+							<label for="limited_cover_scripting_tab_2">{{= custom.reform.tab2.limited }}</label>
+						</div><br/>
 					{{ } else { }}
 					{{ if (custom.reform.tab2 && custom.reform.tab2.benefits.length > 0) { }}
 					<h5>Inclusions</h5>
