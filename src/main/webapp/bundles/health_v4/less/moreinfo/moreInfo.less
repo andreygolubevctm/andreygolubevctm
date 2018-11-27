@@ -91,13 +91,20 @@
 
 .moreInfoProductWidget {
   border: 1px solid lightgrey;
-  height: 370px;
-  padding-left: 0px;
-  padding-right: 0px;
   background-color: white;
+  display: flex;
+  flex-direction: column;
+
+  .companyLogo {
+    margin-top: 15px;
+  }
 
   .productWidgetSection {
-    padding-bottom: 10px;
+    margin: 0px 5px 12px 0px;
+
+    .results-header-classification-icon {
+      vertical-align: inherit;
+    }
   }
 
   .flex {
@@ -106,7 +113,7 @@
 
   .productWidgetHeader {
     background-color: #1E4D8B;
-    line-height: 1rem;
+    height: 10px;
   }
 
   .productWidgetName {
@@ -114,16 +121,16 @@
     margin-top: 20px;
   }
 
+  .productWidgetIconWrapper {
+    padding-left: 5px;
+  }
+
   .productWidgetIcon {
-    height: 40px;
+    min-width: 30px;
   }
 
   .row {
     margin-top: 10px;
-  }
-
-  .productWidgetApply {
-    padding: 15px;
   }
 
   .classification {
@@ -133,7 +140,7 @@
   }
 
   .brochureLink {
-    padding-bottom: .5rem;
+    padding-bottom: 1rem;
   }
 }
 
@@ -226,7 +233,7 @@
   flex: 1 0 auto;
   margin: 10px;
   min-height: 150px;
-  width: 100%;
+  width: 45px;
   max-width: 400px;
 }
 
@@ -264,8 +271,10 @@
   display: block;
 }
 
-.about-this-fund {
-  line-height: 3rem;
+.aboutThisFundLink {
+  padding-top: 10px;
+  padding-bottom: 15px;
+  font-size: 12px;
 }
 
 .aboutIcon {
@@ -371,6 +380,7 @@
   h3,
   .productName {
     color: @theme-accent-4;
+
   }
 
   h3 {
@@ -387,12 +397,13 @@
   .moreInfoProductSummaryRow {
     display: flex;
     justify-content: space-between;
-    padding-top: 4rem;
+    padding-top: 20px;
   }
 
   .moreInfoProductSummaryColumn {
     width: 100%;
     max-width: 400px;
+    margin: 10px;
   }
 
   .productExtraInfoItem {
@@ -410,12 +421,8 @@
   }
 
   .moreInfoPricePromise {
-    height: auto;
-    width: 97px;
-    flex: 1 0 auto;
-
-    img {
-      height: 100%;
+    object {
+      margin-top: -20px;
     }
   }
 

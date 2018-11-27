@@ -211,6 +211,44 @@
         return result;
     }
 
+    function getClassification(obj) {
+        var classification = {};
+        classification.icon = getClassificationIcon(obj.custom.reform.tier);
+
+        return classification;
+    }
+
+    function getClassificationIcon(tier) {
+        if(!tier) {
+            return 'unclassified_govclass.svg';
+        }
+
+        if(tier.toLowerCase().indexOf('bronze') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'Bronzeplus_govclass.svg';
+            }else{
+                return 'Bronze_govclass.svg';
+            }
+        }else if(tier.toLowerCase().indexOf('silver') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'Silverplus_govclass.svg';
+            }else{
+                return 'Silver_govclass.svg';
+            }
+        }else if(tier.toLowerCase().indexOf('gold') > -1){
+            return 'Gold_govclass.svg';
+        }else if(tier.toLowerCase().indexOf('basic') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'Basicplus_govclass.svg';
+            }else{
+                return 'Basic_govclass.svg';
+            }
+        }else
+        {
+            return 'unclassified_govclass.svg';
+        }
+    }
+
     /**
      * @returns {number}
      */
@@ -441,6 +479,7 @@
         getExcessPrices: getExcessPrices,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
+        getClassification: getClassification,
         getItem: getItem,
         getExcessItem: getExcessItem,
         postRenderFeatures: postRenderFeatures,

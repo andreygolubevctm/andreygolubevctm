@@ -19,14 +19,14 @@
 		<optin>Y</optin>
 	</contactDetails>
 	<situation>
-		<healthCvr>F</healthCvr>
-		<location>Toowong 4066 QLD</location>
+		<healthCvr>C</healthCvr>
+		<location>Toowong 4000 QLD</location>
 		<state>QLD</state>
 		<suburb>Toowong</suburb>
-		<postcode>4066</postcode>
+		<postcode>4000</postcode>
 		<healthSitu>LC</healthSitu>
 		<cover>Y</cover>
-		<singleProvider></singleProvider>
+		<singleProvider>14</singleProvider>
 		<coverType>C</coverType>
 	</situation>
 	<benefits>
@@ -34,14 +34,10 @@
 		<benefitsExtras>
 			<Hospital>Y</Hospital>
 			<PrHospital>Y</PrHospital>
-            <Cardiac>Y</Cardiac>
-            <Rehabilitation>Y</Rehabilitation>
-            <PlasticNonCosmetic>Y</PlasticNonCosmetic>
-            <Palliative>Y</Palliative>
-			<GeneralHealth>Y</GeneralHealth>
-			<DentalGeneral>Y</DentalGeneral>
+			<DentalGeneral>N</DentalGeneral>
 		</benefitsExtras>
 		<healthSitu>FK</healthSitu>
+		<ExtrasSwitch>N</ExtrasSwitch>
 	</benefits>
 	<healthCover>
 		<income>0</income>
@@ -115,7 +111,7 @@
 		<productId />
 		<productNumber />
 		<productTitle />
-		<provider />
+		<provider>CTM</provider>
 		<primary>
 			<title>MR</title>
 			<firstname>Lechuck</firstname>
@@ -136,7 +132,7 @@
 		<postal>
 			<streetSearch>PO Box 11, Toowong QLD</streetSearch>
 			<state>QLD</state>
-			<postCode>4066</postCode>
+			<postCode>4000</postCode>
 			<nonStdStreet>PO Box</nonStdStreet>
 			<suburbName>Toowong</suburbName>
 			<suburb>7984</suburb>
@@ -148,7 +144,7 @@
 		<address>
 			<streetName>Golding St</streetName>
 			<type>R</type>
-			<postCode>4066</postCode>
+			<postCode>4000</postCode>
 			<state>QLD</state>
 			<houseNoSel>1</houseNoSel>
 			<streetNum>1</streetNum>
@@ -157,7 +153,7 @@
 			<streetId>239459</streetId>
 			<dpId>81907205</dpId>
 			<streetSearch>10 Golding St., Toowong QLD</streetSearch>
-			<fullAddress>10 Golding St.,Toowong QLD 4066</fullAddress>
+			<fullAddress>10 Golding St.,Toowong QLD 4000</fullAddress>
 			<fullAddressLineOne>10 Golding St</fullAddressLineOne>
 		</address>
 

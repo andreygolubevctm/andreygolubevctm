@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <div class="moreInfoProductWidget" id="moreInfoProductWidget">
-    <div class="col-xs-12 productWidgetSection productWidgetHeader">&nbsp;</div>
+    <div class="col-xs-12 productWidgetSection productWidgetHeader"></div>
     <div class="col-xs-12 productWidgetSection flex">
         <div class="companyLogo {{= info.provider }}"></div>
     </div>
@@ -10,19 +10,14 @@
         <h3 class="productWidgetName">{{= info.productTitle }}</h3>
     </div>
     <div class="col-xs-12 productWidgetSection">
-        <div class="col-xs-3">
-            <img src="assets/brand/ctm/images/{{= custom.reform.tier.toLowerCase()}}_classification.svg" class="productWidgetIcon"/>
-        </div>
-        <div class="col-xs-9 classificationSection">
-            <span class="classification">Government classification</span>
-            <span class="classification">{{= custom.reform.tier }} April 1</span>
-        </div>
+        {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
+        <img src="assets/graphics/health_classification/{{= classification.icon}}" class="results-header-classification-icon" />
     </div>
     <div class="col-xs-12 productWidgetSection">
-        <div class="col-xs-3">
+        <div class="col-md-2 col-sm-12 productWidgetIconWrapper">
             <img src="assets/brand/ctm/images/brochure_icon.svg" class="productWidgetIcon"/>
         </div>
-        <div class="col-xs-9">
+        <div class="col-md-10 col-sm-12">
             {{ if (typeof hospitalCover !== 'undefined') { }}
             <div class="brochureLink">
                 <a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View hospital brochure</a>
@@ -39,9 +34,7 @@
         </div>
     </div>
     <div class="col-xs-12 productWidgetSection">
-        <div class="productWidgetApply">
-            <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
-        </div>
+        <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now <span class="icon-angle-right" /></a>
     </div>
     </div>
 </div>

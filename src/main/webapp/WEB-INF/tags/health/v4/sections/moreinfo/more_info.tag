@@ -281,9 +281,6 @@
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
-                <div class="sidebar-widget">
-					<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
-				</div>
 
 				<ad_containers:sidebar_top />
 

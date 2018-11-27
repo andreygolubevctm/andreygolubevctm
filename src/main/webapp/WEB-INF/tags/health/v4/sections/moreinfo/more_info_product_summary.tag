@@ -9,14 +9,14 @@
         {{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
             {{= renderedPyrrCampaign }}
         {{ } }}
-        <div class="col-xs-12">
-            <h2 class="noTopMargin productName hidden-xs">{{= info.productTitle }}</h2>
-        </div>
+        <h2 class="noTopMargin productName hidden-xs">{{= info.productTitle }}</h2>
     </div>
     <div class="col-xs-12 about-this-fund-row">
         <div class="fundDescription">
             {{= product.aboutFund}}
         </div>
+    </div>
+    <div class="col-xs-12 aboutThisFundLink">
         <a href="javascript:;" class="about-this-fund"><img class="aboutIcon" src="assets/brand/ctm/images/icons/down_arrow.svg" />About this fund</a>
     </div>
     <div class="col-xs-12">
