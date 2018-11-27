@@ -267,6 +267,8 @@
 						</div>
 						{{ } }}
 					</div>
+
+					<health_v4_moreinfo:more_info_ambulance_cover />
 				</div>
                 <reward:campaign_tile_container_xs />
 
