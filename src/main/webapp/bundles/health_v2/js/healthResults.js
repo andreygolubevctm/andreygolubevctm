@@ -507,7 +507,7 @@
 
         // For each of the selected benefits
         for (var i = 0; i < selectedBenefitsList.length; i++) {
-            var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefitsList[i], 'shortlistKey');
+            var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefitsList[i], 'id');
             if (putInShortList) {
                 selectedBenefitsStructureObject.children.push($.extend({}, putInShortList));
                 putInShortList.doNotRender = true;

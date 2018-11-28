@@ -33,6 +33,47 @@
         return availableBenefits;
     }
 
+    /**
+     * Get the list of available extras.
+     * @param obj The Result object for that product.
+     * @returns {string}
+     */
+    function getAvailableExtrasAsList(obj) {
+        var feature = Features.getPageStructure(obj.featuresStructureIndexToUse)[0];
+        var availableExtras = [],
+            output = "";
+        _.each(feature.children, function (ft) {
+            if (ft.doNotRender === true) {
+                return;
+            }
+            var hasResult = ft.resultPath !== null && ft.resultPath !== '';
+            var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
+            if (pathValue == "Y") {
+                availableExtras.push(ft);
+            }
+        });
+        if (!availableExtras.length) {
+            //4 = Hospital Cover
+            if(Number.parseInt(obj.featuresStructureIndexToUse) === 4) {
+                $('.featuresListHospitalOtherList, .featuresListHospitalFullList').addClass('hidden');
+            }else{
+                $('.featuresListExtrasOtherList, .featuresListExtrasFullList').addClass('hidden');
+            }
+        } else {
+            _.each(availableExtras, function (ft, i) {
+                var separator = '';
+                if (i == (availableExtras.length - 2)) {
+                    separator = ' and ';
+                } else if (i !== availableExtras.length - 1) {
+                    separator = ', ';
+                }
+                output += ft.safeName + separator;
+            });
+        }
+
+        return output;
+    }
+
     function getPopOverContent(obj, availableBenefits) {
         var output = '';
         _.each(availableBenefits, function (ft) {
@@ -338,6 +379,14 @@
 
     function postRenderFeatures() {
         eventSubscriptions();
+
+        if(numberOfSelectedHospitals() === 0) {
+            $('.featuresListHospitalSelections .children').each(function(){
+                if ($.trim($(this).html()) === '') {
+                    $(this).html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital benefits selected</div></div></div></div>');
+                }
+            });
+        }
     }
 
     function numberOfSelectedExtras() {
@@ -370,6 +419,45 @@
             e.preventDefault();
             Results.unfilterBy('productId', "value", true);
             unhideFilteredProducts();
+        }).off('click', '.featuresListExtrasOtherList').on('click', '.featuresListExtrasOtherList', function () {
+            $('.featuresListExtrasOtherList').addClass('hidden');
+            $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
+            $('.featuresListExtrasFullList').removeClass('hidden');
+            $('.otherExtrasBenefits .coverTitle .featuresViewAll').removeClass('hidden');
+            $('.featuresListExtrasFullList .children').children('.cell .category').each(function(i) { 
+                var element = $(this).first();
+                var selectedBenefits = window.meerkat.modules.healthResults.getSelectedBenefitsList();
+                var isNotCovered = element.context.children[0].children[0].classList.contains('noCover');
+                var featureId = element.context.children[0].children[0].getAttribute('data-featureid');
+                var alreadySelected = selectedBenefits.indexOf(featureId) > -1;
+                if(!$(this).hasClass('hidden') &&  alreadySelected) {
+                    $(this).addClass('hidden');
+                } 
+            });
+        }).off('click', '.featuresListHospitalOtherList').on('click', '.featuresListHospitalOtherList', function () {
+            $('.featuresListHospitalOtherList').addClass('hidden');
+            $('.featuresListHospitalFullList > .collapsed').removeClass('collapsed');
+            $('.featuresListHospitalFullList').removeClass('hidden');
+            $('.otherHospitalBenefits .coverTitle .featuresViewAll').removeClass('hidden');
+
+            $('.featuresListHospitalFullList .children').children('.cell .category').each(function(i) { 
+                var element = $(this).first();
+                var selectedBenefits = window.meerkat.modules.healthResults.getSelectedBenefitsList();
+                var isNotCovered = element.context.children[0].children[0].classList.contains('noCover');
+                var featureId = element.context.children[0].children[0].getAttribute('data-featureid');
+                var alreadySelected = selectedBenefits.indexOf(featureId.toString()) > -1;
+                if(!$(this).hasClass('hidden') && alreadySelected) {
+                    $(this).addClass('hidden');
+                }            
+            });
+        }).off('click', '.otherHospitalBenefits .coverTitle').on('click', '.otherHospitalBenefits .coverTitle', function () {
+            $('.featuresListHospitalOtherList').removeClass('hidden');
+            $('.featuresListHospitalFullList').addClass('hidden');
+            $('.otherHospitalBenefits .coverTitle .featuresViewAll').addClass('hidden');
+        }).off('click', '.otherExtrasBenefits .coverTitle').on('click', '.otherExtrasBenefits .coverTitle', function () {
+            $('.featuresListExtrasOtherList').removeClass('hidden');
+            $('.featuresListExtrasFullList').addClass('hidden');
+            $('.otherExtrasBenefits .coverTitle .featuresViewAll').addClass('hidden');
         });
     }
 
@@ -436,6 +524,7 @@
     meerkat.modules.register('healthResultsTemplate', {
         init: init,
         getAvailableBenefits: getAvailableBenefits,
+        getAvailableExtrasAsList: getAvailableExtrasAsList,
         getPopOverContent: getPopOverContent,
         getPricePremium: getPricePremium,
         getExcessPrices: getExcessPrices,
