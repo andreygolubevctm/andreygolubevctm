@@ -39,6 +39,8 @@
 
 .open-more-info {
   cursor: pointer;
+  margin: 0 auto;
+  width: 100%;
 }
 
 #resultsPage {
@@ -283,12 +285,92 @@
     }
   }
 
+  .btn {
+    white-space: normal !important;
+  }
+
   .results-header-inner-container {
     margin-bottom: 0px;
     padding-bottom: 15px;
 
     .results-header-classification {
       margin: 15px 0px;
+
+  .results-header-classification-icon {
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100px;
+
+    @media (@sm) {
+     height: 60px;
+    }
+
+    &.gov-unclassified {
+      background-image: url('/ctm/assets/graphics/health_classification/unclassified_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('/ctm/assets/graphics/health_classification/unclassified_govclass.svg');
+      }
+    }
+
+    &.gov-bronze-plus {
+      background-image: url('/ctm/assets/graphics/health_classification/Bronzeplus_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('/ctm/assets/graphics/health_classification/Bronzeplus_govclass.svg');
+      }
+    }
+
+    &.gov-bronze {
+      background-image: url('/ctm/assets/graphics/health_classification/Bronze_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('/ctm/assets/graphics/health_classification/Bronze_govclass.svg');
+      }
+    }
+
+    &.gov-silver-plus {
+      background-image: url('/ctm/assets/graphics/health_classification/Silverplus_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('/ctm/assets/graphics/health_classification/Silverplus_govclass.svg');
+      }
+    }
+
+    &.gov-silver {
+      background-image: url('/ctm/assets/graphics/health_classification/Silver_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('/ctm/assets/graphics/health_classification/Silver_govclass.svg');
+      }
+    }
+
+    &.gov-gold {
+      background-image: url('/ctm/assets/graphics/health_classification/Gold_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('/ctm/assets/graphics/health_classification/Gold_govclass.svg');
+      }
+    }
+
+    &.gov-basic-plus {
+      background-image: url('/ctm/assets/graphics/health_classification/Basicplus_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('/ctm/assets/graphics/health_classification/Basicplus_govclass.svg');
+      }
+    }
+
+    &.gov-basic {
+      background-image: url('/ctm/assets/graphics/health_classification/Basic_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('/ctm/assets/graphics/health_classification/Basic_govclass.svg');
+      }
+    }
+  }
+
+      
     }
 
     .lhcText {
@@ -800,8 +882,7 @@
     overflow: visible;;
   }
   .feature-item-text {
-    width: 72%;
-    float: left;
+    width: 100%;
     p {
       margin-bottom: 0;
     }
@@ -813,6 +894,7 @@
       color: white;
       padding: 5px 10px;
       margin-right: 10px;
+      margin-bottom: 5px;
     }
 
     float: left;
