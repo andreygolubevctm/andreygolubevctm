@@ -17,6 +17,15 @@
   }
 }
 
+.hospitalCoverSection, .extrasCoverSection, .ambulanceCoverSection {
+  .health-icon {
+    color: #333333 !important;
+  }
+  h3 {
+    color: #333333;
+  }
+}
+
 .results-header-classification {
   display: flex;
   flex-direction: row;
@@ -247,6 +256,23 @@
         > .labelInColumn {
           .contentInner {
             margin-right: 10px;
+
+            .benefit-container {
+              margin-left: 6px;
+              color: #666666;
+            }
+
+            .restricted-icon {
+              color: #F49E1E;
+              font-weight: bold;
+              font-size: 20px;
+              vertical-align: sub;
+            }
+      
+            .margin-icon {
+              margin-right: 5px;
+            }
+
             @media (@sm) {
               margin-right: 16px;
             }
@@ -281,6 +307,15 @@
               // this makes the expander invisible until its opened.
               color: #EDEDED;
             }
+
+            .benefit-container {
+              margin-left: 6px;
+              color: #666666;
+            }
+
+            .restricted-icon {
+              color: #666666 !important;
+            }
           }
         }
 
@@ -305,6 +340,14 @@
                 border-top: none;
                 border-bottom: 2px solid @dark-blue-stroke;
                 border-right: 1px solid @theme-tertiary;
+
+                .benefit-container {
+                  color: #fff !important;
+                }
+  
+                .health-icon {
+                  color: #fff !important;
+                }
               }
             }
           }
@@ -423,6 +466,7 @@
         border-left: none;
         border-top: none;
         padding: 0 10px;
+        margin-bottom: 20px;
       }
       // Overrides for the excess section:
       .excessDetailContainer {
@@ -467,12 +511,6 @@
             visibility: hidden;
             display: inline-block !important;
           }
-        }
-        @media (@lg) {
-          position: absolute;
-          right: 10px;
-          top: 0px;
-          top: 14px;
         }
       }
     }

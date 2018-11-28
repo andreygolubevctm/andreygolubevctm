@@ -183,9 +183,6 @@
         }
 
         meerkat.modules.simplesBindings.toggleMoreInfoDialogue();
-
-        var showReadNowChecks =  (($('#health_simples_notifyInclusionsExclusionsVia').val() === 'READNOW' ? true : false ) && !meerkat.modules.simplesBindings.webChatInProgress() );
-        $('.simples_dialogue-checkbox-restrictions-verified, .simples_dialogue-checkbox-exclusions-verified').toggleClass('hidden', !showReadNowChecks);
     }
 
     function onAfterShowTemplate() {

@@ -173,19 +173,20 @@
                 defaultValueSourceSelector: '#health_excess',
                 defaultValue: '4',
                 events: {
-                    init: function (filterObject) {
-                        var $slider = $('.health-filter-excess .slider-control');
-                        meerkat.modules.sliders.initSlider($slider);
-                        $slider.find('.slider')
-                            .val($(filterObject.defaultValueSourceSelector).val())
-                            .on('change', function(event){
-                                meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, event);
-                            });
-                    },
-                    update: function (filterObject) {
-                        var $slider = $('.health-filter-excess .slider-control .slider');
-                        $(filterObject.defaultValueSourceSelector).val($slider.val().replace('.00', ''));
-                    }
+                        init: function (filterObject) {
+                            /**
+                             * Copy the element and place it in the filters with a new id etc. (jQuery Clone doesn't copy the value...)
+                             */
+                            var $excessElement = $(filterObject.defaultValueSourceSelector).parent('.select').clone().find('select')
+                                .attr('id', model.hospitalExcess.name).attr('name', model.hospitalExcess.name).val($(filterObject.defaultValueSourceSelector).val());
+    
+                            $('.health_cover_details_excess').attr('id', model.hospitalExcess.name)
+                            .attr('name', model.hospitalExcess.name)
+                            .val($(filterObject.defaultValueSourceSelector).val());
+                        },
+                        update: function (filterObject) {
+                            $(filterObject.defaultValueSourceSelector).val($('select[name=' + filterObject.name + ']').val()).trigger('change');
+                        }
                 }
             },
             "rebate": {
