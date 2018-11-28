@@ -51,7 +51,6 @@
 
   a.dialogPop {
     text-decoration: underline;
-    color: #000000;
     font-family: @font-family-base;
   }
 }
@@ -285,9 +284,18 @@
   }
 
   .results-header-inner-container {
-    border-bottom: 1px solid @results-border-color;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     padding-bottom: 15px;
+
+    .results-header-classification {
+      margin: 15px 0px;
+    }
+
+    .lhcText {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
 
     .btn-more-info {
       @media (@lg) {
@@ -309,13 +317,10 @@
     }
 
     .frequencyAmount {
-      color: @link-color;
-      font-size: 42px;
+      color: @gray-base;
+      font-size: 36px;
       @media(@sm) {
-        font-size: 48px;
-      }
-      .frequencyTitle {
-        display: none;
+        font-size: 36px;
       }
 
       &.comingSoon {
@@ -335,13 +340,13 @@
       min-height: 47px;
     }
     @media (@lg) {
-      .frequencyAmount, .lhcText {
-        float: left;
-        width: 50%;
-        min-height: auto;
+      .frequencyAmount {
+        width: 100%;
+        margin-top: 10px;
       }
 
       .lhcText {
+        min-height: auto;
         padding-bottom: 0;
         text-align: right;
         .small;
@@ -795,13 +800,21 @@
     overflow: visible;;
   }
   .feature-item-text {
-    width: 86%;
+    width: 72%;
     float: left;
     p {
       margin-bottom: 0;
     }
   }
   .feature-item {
+    .feature-item-offer {
+      background-color: @theme-tertiary;
+      float: left;
+      color: white;
+      padding: 5px 10px;
+      margin-right: 10px;
+    }
+
     float: left;
     &.item-popover {
       &:hover {
@@ -834,6 +847,7 @@
 
   &.features-1 .feature-item {
     width: 100%;
+    margin-bottom: 10px;
   }
   &.features-2 .feature-item {
     width: 50%;
@@ -870,12 +884,20 @@
       margin-top:0;
       text-align:center;
       a {
-        color:#0DB14B;
+        color:#1C3F94;
         span {
           margin-top:-1px;
+          color: #555555;
+          margin-right: 5px;
         }
       }
     }
+  }
+
+  .fundCallCentreNumberTitle{
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 5px;
   }
 }
 

@@ -28,24 +28,8 @@
     <div class="frequencyAmount">
         {{ var dollarPriceResult = healthResultsTemplate.getPrice(result); }}
         <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
-        <span class="frequencyTitle">{{= freqObj.label }}</span>
+        <div class="frequencyTitle">{{= freqObj.label }}</div>
     </div>
-
-    {{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
-    <div class="lhcText hide-on-affix">
-        <span>
-            {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
-        </span>
-        {{ if (result.discounted) { }}
-            <span class="discountText">
-                inc {{= discountPercentage }}% Discount
-                <a href="javascript:;" class="discount-tool-tip" data-toggle="popover" data-content="{{= discountText }}">?</a>
-            </span>
-        {{ } }}
-    </div>
-    {{ } else { }}
-        {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, frequency, true) }}
-    {{ } }}
 </div>
 
 {{ }); }}
