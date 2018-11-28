@@ -58,6 +58,7 @@
         $dialogue106,
         $dialogue109,
 	    $optin_email,
+	    $optin_email_app,
         $optin_phone,
         $optin_privacy,
         $optin_optin,
@@ -134,6 +135,7 @@
             $dialogue111 = $('.simples-dialogue-111');
             $dialogue112 = $('.simples-dialogue-112');
             $optin_email = $('#health_contactDetails_optInEmail');
+	        $optin_email_app = $('#health_application_optInEmail');
 	        $optin_phone = $('#health_contactDetails_call');
 	        $optin_privacy = $('#health_privacyoptin');
 	        $optin_optin = $('#health_contactDetails_optin');
@@ -315,7 +317,7 @@
 	    var contactType = $healthContactTypeField.val();
 	    if(!_.isUndefined(contactType) && !_.isEmpty(contactType)) {
 	        var optin = _.indexOf(affiliatesOptinBlacklist, contactType) === -1 ? "Y" : "N";
-		    $optin_email.add($optin_phone).add($optin_privacy).add($optin_optin).val(optin);
+		    $optin_email.add($optin_phone).add($optin_privacy).add($optin_optin).add($optin_email_app).val(optin);
         }
     }
 
