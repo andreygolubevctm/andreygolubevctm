@@ -216,14 +216,17 @@
 
 		<div class="simplesMoreInfoReformTabs row">
 			<button class="simplesMoreInfoTabLink simplesMoreInfoBeforeTab active" type="button">Health brochures before {{= custom.reform.changeDate }}</button>
-			<button class="simplesMoreInfoTabLink simplesMoreInfoAfterTab" type="button">Health brochures after {{= custom.reform.changeDate }}</button>
+
+			{{ if (custom.reform.tab2.benefits && custom.reform.tab2.benefits.length > 0) { }}
+				<button class="simplesMoreInfoTabLink simplesMoreInfoAfterTab" type="button">Health brochures after {{= custom.reform.changeDate }}</button>
+			{{ } }}
 		</div>
 		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoBeforeContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 
 			<div class="simplesReformScriptingBox scriptingFlagContent row">
 				{{ if (custom.reform.scripting === 'A') { }}
-					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
 					<div class="readInclusionsFlag">
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_inclusions_scripting_A">Pre script needs to be read</label></div><br/><br/>
 						<span class="clinicalCatInfo">
@@ -251,7 +254,7 @@
 				{{ } }}
 
 				{{ if (custom.reform.scripting === 'B1') { }}
-					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
 					<div class="readInclusionsFlag">
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_inclusions_scripting_B1">Pre script needs to be read</label></div><br/><br/>
 						<span class="clinicalCatInfo">
@@ -300,7 +303,7 @@
 				{{ } }}
 
 				{{ if (custom.reform.scripting === 'B2') { }}
-					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
 					<div class="readInclusionsFlag">
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_inclusions_scripting_B2">Pre script needs to be read</label></div><br/><br/>
 						<span class="clinicalCatInfo">
@@ -339,7 +342,7 @@
 				{{ } }}
 
 				{{ if (custom.reform.scripting === 'C') { }}
-					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
 					<div class="readInclusionsFlag">
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="before_read_inclusions_scripting_C">Pre script needs to be read</label></div><br/><br/>
 						<span class="clinicalCatInfo">
@@ -408,7 +411,7 @@
 					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null && custom.reform.tab2.limited  !== null) { }}
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reform.tab1.limited }}</label></div><br/><br/>
 					{{ } else { }}
-					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits.length > 0) { }}
+					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  === null) { }}
 							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_1_inclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
 								<label for="limited_cover_scripting_tab_1_inclusions_checkbox">Inclusions</label>
@@ -469,7 +472,7 @@
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				{{ if (custom.reform.scripting === 'C') { }}
 				<div class="simplesReformScriptingBox scriptingFlagContent row">
-						{{ if (custom.reform.tab2 && custom.reform.tab2.benefits.length > 0) { }}
+						{{ if (custom.reform.tab2 && custom.reform.tab2.benefits && custom.reform.tab2.benefits.length > 0) { }}
 						<div class="readInclusionsFlag">
 							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="after_read_inclusions_scripting_C">Pre script needs to be read</label></div><br/><br/>
 							<span class="clinicalCatInfo">
@@ -535,7 +538,7 @@
 							<label for="limited_cover_scripting_tab_2">{{= custom.reform.tab2.limited }}</label>
 						</div><br/>
 					{{ } else { }}
-					{{ if (custom.reform.tab2 && custom.reform.tab2.benefits.length > 0) { }}
+					{{ if (custom.reform.tab2 && custom.reform.tab2.benefits && custom.reform.tab2.benefits.length > 0) { }}
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab2.limited  !== null) { }}
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_2_inclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
 							<label for="limited_cover_scripting_tab_2_inclusions_checkbox">Inclusions</label>
