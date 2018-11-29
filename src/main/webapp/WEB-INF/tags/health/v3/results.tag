@@ -45,7 +45,7 @@
             Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later.</a>
     </jsp:attribute>
     <jsp:attribute name="zeroResultsFoundMessage">
-            No results match your filters. Please try resetting your results by <a href="javascript;" class="reset-filters">clicking here</a>.
+            No results match your filters. Please try resetting your results by <a href="javascript:void(0);" class="reset-filters">clicking here</a>.
     </jsp:attribute>
 
     <jsp:attribute name="quoterefTemplate">
