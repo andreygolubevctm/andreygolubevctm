@@ -620,6 +620,7 @@
 			</c:if>
 		</div>
 
+		{{ if (['c', 'e'].includes(meerkat.modules.healthBenefitsStep.getCoverType())) { }}
 		<div class="row extrasCoverSection">
 			<h2 class="text-dark">Extras cover</h2>
 			<h3 class="text-dark">(&nbsp;<img src="assets/brand/ctm/images/icons/selected_extras_fav.svg" width="26" height="26" />&nbsp;selected extras)</h3>
@@ -720,6 +721,7 @@
 				{{ }); }}
 			</div>
 		</div>
+		{{ } }}
 
         <div class="row ambulanceCoverSection">
             <h2 class="text-dark">Ambulance cover</h2>
