@@ -394,22 +394,24 @@
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
 					</div>
 				{{ } }}
+			</div>
 
-				{{ if (custom.reform.scripting === 'D') { }}
-					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null) { }}
-					<div class="readInclusionsFlag row">
-						<div class="col-sm-1 no-padding">
-							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1_not_null"></label></div>
-						</div>
-						<div class="col-sm-11 no-padding">
+			{{ if (custom.reform.scripting === 'D') { }}
+			<div class="simplesReformScriptingBox row">
+				{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null) { }}
+				<div class="row">
+					<div class="col-sm-1 no-padding">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1_not_null"></label></div>
+					</div>
+					<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
 							A limited hospital product is one that coves only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
 							</span><br/><br/>
-						</div>
 					</div>
-					{{ } }}
+				</div>
 				{{ } }}
 			</div>
+			{{ } }}
 
 			{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6 hospitalCover">
@@ -530,7 +532,7 @@
 
 				{{ if (custom.reform.scripting === 'D') { }}
 				{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited === null && custom.reform.tab2.limited  !== null) { }}
-				<div class="readInclusionsFlag row">
+				<div class="row">
 					<div class="col-sm-1 no-padding">
 						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_2_not_null"></label></div>
 					</div>
