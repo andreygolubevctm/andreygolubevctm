@@ -405,7 +405,7 @@
 			<div class="col-xs-12 col-md-6 hospitalCover">
 				{{ if(typeof hospital.inclusions !== 'undefined') { }}
 				<h2>Hospital cover</h2>
-				<p><strong>Hospital Excess:</strong><br>{{= hospital.inclusions.excess }}</p>
+				<p><strong>Hospital Excess:</strong><br>{{= custom.reform.tab1.excess }}</p>
 				<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
 				<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
 
@@ -537,7 +537,7 @@
 				<div class="col-xs-12 col-md-6 hospitalCover">
 					{{ if(typeof hospital.inclusions !== 'undefined') { }}
 					<h2>Hospital cover</h2>
-					<p><strong>Hospital Excess:</strong><br>{{= hospital.inclusions.excess }}</p>
+					<p><strong>Hospital Excess:</strong><br>{{= custom.reform.tab2.excess }}</p>
 					<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
 					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
 
