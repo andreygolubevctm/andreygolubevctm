@@ -212,10 +212,10 @@
 		{{ } }}
 
 		<div class="simplesMoreInfoReformTabs row">
-			<button class="simplesMoreInfoTabLink simplesMoreInfoBeforeTab active" type="button">Health brochures before {{= custom.reform.changeDate }}</button>
+			<button class="simplesMoreInfoTabLink simplesMoreInfoBeforeTab active" type="button">Cover before {{= custom.reform.changeDate }}</button>
 
 			{{ if (custom.reform.tab2.benefits && custom.reform.tab2.benefits.length > 0) { }}
-				<button class="simplesMoreInfoTabLink simplesMoreInfoAfterTab" type="button">Health brochures after {{= custom.reform.changeDate }}</button>
+				<button class="simplesMoreInfoTabLink simplesMoreInfoAfterTab" type="button">Cover after {{= custom.reform.changeDate }}</button>
 			{{ } }}
 		</div>
 		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoBeforeContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
