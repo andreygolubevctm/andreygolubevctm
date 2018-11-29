@@ -474,6 +474,37 @@
     }
 
     .featuresList {
+      .hospitalCoverSection,
+      .extrasCoverSection, 
+      .ambulanceCoverSection  {
+        .coverTitle {
+          padding: 15px 15px 15px;
+          font-weight: bold;
+          font-size: 16px;
+          color: #333333;
+          border-bottom: 1px solid @gray-light;
+        }
+        h2 {
+          float: left;
+          padding: 0px 10px;
+        }
+        .results-download-brochure {
+          float: right;
+          font-size: @font-size-small;
+          margin-top: 23px;
+          text-decoration: underline;
+        }
+
+        .featuresListHospitalOtherList {
+          padding: 0px 10px;
+        }
+
+        .featuresListExtrasOtherList {
+          padding: 0px 10px;
+          border-bottom: 1px solid @results-border-color;
+        }
+      }
+      
       @media (@lg) {
         .hospitalCoverSection,
         .extrasCoverSection, 
