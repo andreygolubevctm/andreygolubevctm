@@ -341,6 +341,10 @@
 
     }
 
+    function getLimitedCover() {
+        return $limitedCoverHidden.val();
+    }
+
     meerkat.modules.register('healthBenefitsStep', {
         init: init,
         events: events,
@@ -351,7 +355,8 @@
         getSelectedBenefits: getSelectedBenefits,
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
-        getExtraBenefitsModel: getExtraBenefitsModel
+        getExtraBenefitsModel: getExtraBenefitsModel,
+        getLimitedCover: getLimitedCover
     });
 
 })(jQuery);
