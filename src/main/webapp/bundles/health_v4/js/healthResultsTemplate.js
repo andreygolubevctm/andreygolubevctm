@@ -468,9 +468,9 @@
                 var isNotCovered = element.context.children[0].children[0].classList.contains('noCover');
                 var featureId = element.context.children[0].children[0].getAttribute('data-featureid');
                 var alreadySelected = selectedBenefits.indexOf(featureId) > -1;
-                if(!$(this).hasClass('hidden') &&  alreadySelected) {
+                if(!$(this).hasClass('hidden') && alreadySelected) {
                     $(this).addClass('hidden');
-                } 
+                }
             });
         }).off('click', '.featuresListHospitalOtherList').on('click', '.featuresListHospitalOtherList', function () {
             $('.featuresListHospitalOtherList').addClass('hidden');
@@ -486,7 +486,7 @@
                 var alreadySelected = selectedBenefits.indexOf(featureId.toString()) > -1;
                 if(!$(this).hasClass('hidden') && alreadySelected) {
                     $(this).addClass('hidden');
-                }            
+                }
             });
         }).off('click', '.otherHospitalBenefits .coverTitle').on('click', '.otherHospitalBenefits .coverTitle', function () {
             $('.featuresListHospitalOtherList').removeClass('hidden');
