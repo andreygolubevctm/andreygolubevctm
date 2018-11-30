@@ -56,7 +56,7 @@
         <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
         
-        <c:set var="onlineCategoryVersion" value="health2018" />
+        <c:set var="onlineCategoryVersion" value="health_v5" />
 
         <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure(onlineCategoryVersion)}" scope="request" />
 
