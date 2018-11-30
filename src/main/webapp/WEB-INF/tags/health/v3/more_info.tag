@@ -407,12 +407,6 @@
 										{{= benefit.category }},
 									{{ } }}
 								{{ }); }}
-							</span><br/><br/>
-							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
-
-							<b>What’s the product changing to?</b><br/>
-							<span class="clinicalCatInfo">
-								The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
 							</span>
 						</div>
 					</div>
