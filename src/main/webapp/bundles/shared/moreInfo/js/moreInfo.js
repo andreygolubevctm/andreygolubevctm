@@ -157,17 +157,13 @@
         });
 
         $(document.body).on('click', '#checkbox_inclusion_details', function () {
-            if ($(this).is(':checked') && $('#more_info_scripting_box').is(':checked')) {
-                $('.scriptingFlagContent, .readInclusionsFlag').show();
-                $('.readWelcomeFlag').hide();
-            }
+            $('.scriptingFlagContent, .readInclusionsFlag').show();
+            $('.readWelcomeFlag').hide();
         });
 
         $(document.body).on('click', '#checkbox_welcome_pack', function () {
-            if ($(this).is(':checked') && $('#more_info_scripting_box').is(':checked')) {
-                $('.scriptingFlagContent, .readWelcomeFlag').show();
-                $('.readInclusionsFlag').hide();
-            }
+            $('.scriptingFlagContent, .readWelcomeFlag').show();
+            $('.readInclusionsFlag').hide();
         });
 
         $(document.body).on('click', '.extrasCollapseContentLink', function () {
