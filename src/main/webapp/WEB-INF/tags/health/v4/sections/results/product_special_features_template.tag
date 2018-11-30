@@ -38,7 +38,11 @@
 <core_v1:js_template id="results-product-special-features-inline-template">
  {{ if(obj.text) { }}
     <div class="feature-item">
+    {{ if(obj.id === 'restrictedFund') { }}
+        <span class="icon {{= obj.className }}"></span>
+    {{ } else {  }}
         <span class="feature-item-offer">OFFER</span>
+    {{ } }}
         <div class="feature-item-text">{{= obj.text }}</div>
     </div>
     {{ } }}
