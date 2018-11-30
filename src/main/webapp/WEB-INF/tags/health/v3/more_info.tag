@@ -190,7 +190,7 @@
 
 		{{ if (['A', 'B1', 'B2', 'C'].includes(custom.reform.scripting)) { }}
 		<div class="simplesReformScriptingBox row">
-			<div class="col-sm-11 no-padding">
+			<div class="col-sm-12 no-padding">
 				{{ if (['A', 'B1'].includes(custom.reform.scripting)) { }}
 				<p>So with the hospital cover, we have made sure everything you mentioned as important will be covered, like most policies there are some additional services covered as well as services that are excluded or restricted. We will send those across in a welcome pack, I can either read the exclusions and restrictions now or are you happy to just look through those in your own time?</p>
 				{{ } }}
@@ -203,10 +203,26 @@
 				<p>So with this hospital policy, everything mentioned as important is covered. This policy will have some changes on {date of change per rate sheet}  to services that you haven’t mentioned as important. We will send those changes across in a welcome pack and I can read these for you now, or keeping in mind that the important services will continue to be covered, are you happy to just look through those in your own time?</p>
 				{{ } }}
 			</div>
-
-			<div class="scriptingOptions">
-				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_welcome_pack" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="checkbox_welcome_pack">Read in the welcome pack</label></div>
-				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="checkbox_inclusion_details">Read me inclusion details</label></div>
+			<div class="scriptingOptions col-sm-12 no-padding">
+				<div class="row">
+					<div class="col-sm-6 no-padding">&nbsp;</div>
+					<div class="col-sm-6 no-padding">
+						<div class="row row-content">
+							<div class="col-sm-6 no-padding">
+								<div class="checkbox">
+									<input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please choose the method that the client would like to be informed of the inclusions and exclusions." required="required">
+									<label for="checkbox_inclusion_details">Read me inclusion details</label>
+								</div>
+							</div>
+							<div class="col-sm-6 no-padding">
+								<div class="checkbox">
+									<input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_welcome_pack" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please choose the method that the client would like to be informed of the inclusions and exclusions." required="required">
+									<label for="checkbox_welcome_pack">Read in the welcome pack</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		{{ } }}
@@ -234,9 +250,12 @@
 			<div class="simplesReformScriptingBox scriptingFlagContent row">
 				{{ if (custom.reform.scripting === 'A') { }}
 					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
-					<div class="readInclusionsFlag row">
+					<div class="readInclusionsFlag row-content row">
 						<div class="col-sm-1 no-padding">
-							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_inclusions_scripting_A"></label></div>
+							<div class="checkbox">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+								<label for="read_inclusions_scripting_A"></label>
+							</div>
 						</div>
 						<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
@@ -265,9 +284,12 @@
 
 				{{ if (custom.reform.scripting === 'B1') { }}
 					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
-					<div class="readInclusionsFlag row">
+					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
-							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_inclusions_scripting_B1"></label></div>
+							<div class="checkbox">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+								<label for="read_inclusions_scripting_B1"></label>
+							</div>
 						</div>
 						<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
@@ -318,9 +340,12 @@
 
 				{{ if (custom.reform.scripting === 'B2') { }}
 					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
-					<div class="readInclusionsFlag row">
+					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
-							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="read_inclusions_scripting_B2"></label></div>
+							<div class="checkbox">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+								<label for="read_inclusions_scripting_B2"></label>
+							</div>
 						</div>
 						<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
@@ -361,9 +386,12 @@
 
 				{{ if (custom.reform.scripting === 'C') { }}
 					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
-					<div class="readInclusionsFlag row">
+					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
-							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="before_read_inclusions_scripting_C"></label></div>
+							<div class="checkbox">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+								<label for="before_read_inclusions_scripting_C"></label>
+							</div>
 						</div>
 						<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
@@ -397,11 +425,14 @@
 			</div>
 
 			{{ if (custom.reform.scripting === 'D') { }}
-			<div class="simplesReformScriptingBox row">
+			<div class="simplesReformScriptingBox row row-content">
 				{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null) { }}
 				<div class="row">
 					<div class="col-sm-1 no-padding">
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1_not_null"></label></div>
+						<div class="checkbox">
+							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+							<label for="limited_cover_scripting_tab_1_not_null"></label>
+						</div>
 					</div>
 					<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
@@ -500,9 +531,12 @@
 				{{ if (custom.reform.scripting === 'C') { }}
 				<div class="simplesReformScriptingBox scriptingFlagContent row">
 						{{ if (custom.reform.tab2 && custom.reform.tab2.benefits && custom.reform.tab2.benefits.length > 0) { }}
-						<div class="readInclusionsFlag row">
+						<div class="readInclusionsFlag row row-content">
 							<div class="col-sm-1 no-padding">
-								<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-760" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="after_read_inclusions_scripting_C"></label></div>
+								<div class="checkbox">
+									<input type="radio" name="health_simples_dialogue-radio-760" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+									<label for="after_read_inclusions_scripting_C"></label>
+								</div>
 							</div>
 							<div class="col-sm-11 padding">
 								<span class="clinicalCatInfo">
@@ -532,9 +566,12 @@
 
 				{{ if (custom.reform.scripting === 'D') { }}
 				{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited === null && custom.reform.tab2.limited  !== null) { }}
-				<div class="row">
+				<div class="row row-content">
 					<div class="col-sm-1 no-padding">
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_2_not_null"></label></div>
+						<div class="checkbox">
+							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+							<label for="limited_cover_scripting_tab_2_not_null"></label>
+						</div>
 					</div>
 					<div class="col-sm-11 no-padding">
 						<span class="clinicalCatInfo">
