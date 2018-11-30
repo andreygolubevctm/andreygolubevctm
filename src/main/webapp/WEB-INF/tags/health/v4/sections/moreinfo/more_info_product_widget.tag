@@ -11,13 +11,13 @@
     </div>
     <div class="col-xs-12 productWidgetSection">
         {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-        <img src="assets/graphics/health_classification/{{= classification.icon}}" class="results-header-classification-icon" />
+        <div class="more-info-classification-icon {{= classification.icon}}" />
     </div>
     <div class="col-xs-12 productWidgetSection">
-        <div class="col-md-2 col-sm-12 productWidgetIconWrapper">
+        <div class="col-md-2 col-xs-2 col-xs-offset-1 productWidgetIconWrapper">
             <img src="assets/brand/ctm/images/brochure_icon.svg" class="productWidgetIcon"/>
         </div>
-        <div class="col-md-10 col-sm-12">
+        <div class="col-md-10 col-xs-9">
             {{ if (typeof hospitalCover !== 'undefined') { }}
             <div class="brochureLink">
                 <a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View hospital brochure</a>
