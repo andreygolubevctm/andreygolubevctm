@@ -34,7 +34,6 @@
                 </div>
 
                 {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
-                    <div class="premium-rising-tag hidden-lg"><span class="text-bold">Premiums Rise</span> from April 1st <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a></div>
                     {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
                 {{ } }}
             </div>
@@ -70,7 +69,7 @@
             <c:when test="${onlineHealthReformMessaging eq 'Y'}">
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
                 <div class="results-header-classification">
-                    <img src="assets/graphics/health_classification/{{= classification.icon}}" class="results-header-classification-icon" />
+                    <div class="results-header-classification-icon {{= classification.icon}}" />
                 </div>
             </c:when>
             </c:choose>
