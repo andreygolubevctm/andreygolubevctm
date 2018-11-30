@@ -81,6 +81,17 @@
 	</div>
 </core_v1:js_template>
 
+<core_v1:js_template id="dual-pricing-moreinfo-affixed-header-template">
+	<div class="row">
+		<div class="col-xs-6">
+			{{= renderedAffixedHeaderPriceTemplate }}
+		</div>
+		<div class="col-xs-6">
+			{{= renderedAltAffixedHeaderPriceTemplate }}
+		</div>
+	</div>
+</core_v1:js_template>
+
 <core_v1:js_template id="dual-pricing-moreinfo-xs-template">
 	{{ var comingSoonClass = ''; }}
 	{{ var lhcText = meerkat.site.isCallCentreUser ? 'pricing' : 'lhcfreepricing'; }}
