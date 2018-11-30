@@ -96,6 +96,9 @@
 					</div>
 					<div class="col-xs-9 <c:if test="${isDualPriceActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
+							<div class="about-this-fund-row">
+        				<a href="javascript:;" class="about-this-fund">About this fund</a>
+    					</div>
 					</div>
 				</div>
 				<div class="row priceRow productSummary hidden-xs">
@@ -116,7 +119,9 @@
 				<div class="row hidden-xs">
 					<div class="col-xs-12 <c:if test="${isDualPriceActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
-
+							<div class="about-this-fund-row">
+        				<a href="javascript:;" class="about-this-fund">About this fund</a>
+    					</div>
 						<div class="hidden-xs">
 							{{ if (promo.promoText !== ''){ }}
 							<p class="promoHeading">Buy now and benefit from these promotions</p>
@@ -209,7 +214,7 @@
 
 			<div class="scriptingOptions">
 				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_welcome_pack" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="checkbox_welcome_pack">Read in the welcome pack</label></div>
-				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="checkbox_inclusion_details">Read me inclusion details</label></div>
+				<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="checkbox_inclusion_details">Read exclusions/inclusions details</label></div>
 			</div>
 		</div>
 		{{ } }}
