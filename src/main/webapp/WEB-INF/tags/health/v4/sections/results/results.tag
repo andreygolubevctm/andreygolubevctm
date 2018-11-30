@@ -78,7 +78,7 @@
                 {{= specialFeaturesHtml }}
                 <div class="hospitalCoverSection">
                     <div class="clearfix">
-                        <h2>Hospital</h2>
+                        <h2>Hospital cover</h2>
                         <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
                             <a class="results-download-brochure" href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">hospital </span>brochure</a>
                         </c:if>
@@ -91,23 +91,53 @@
                         <div class="featuresListHospitalSelections"><health_v4_results:limited_cover_label /></div>
                         {{ } }}
                     </div>
-                    <div class="benefits-click-text visible-xs">Click below for cover limits</div>
-                    <div class="featuresListHospitalOtherList" data-feature-index="4" data-feature-type="hospital"></div>
+                        <div class="yourSelectionsHospital">
+                            <div class="coverTitle">Your selected cover benefits:</div>
+                        </div>
+
+                    <div class="featuresListHospitalSelections" data-feature-index="2"></div>
+                    <div class="otherHospitalBenefits">
+                        <div class="coverTitle"><span>Other benefits: </span>
+                            <div class="featuresViewAll hidden expanded">
+                                <span class="icon expander leftPosition" />  <span class="viewLessDetails">View less details</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="featuresListHospitalOtherList" data-feature-template="#results-features-extras-template" data-feature-index="4"></div>
+                    <div class="featuresListHospitalFullList" data-feature-index="4"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
                     <div class="clearfix">
-                        <h2>Extras</h2>
+                        <h2>Extras cover</h2>
+                    </div>
+                        <div class="extrasCoverContainer">
+                            <div class="extrasCoverSectionBorder">
+                                Health insurance reform does not affect extras cover.
+                            </div>
+                        </div>
                         <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
                             <a class="results-download-brochure" href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">extras </span>brochure</a>
                         </c:if>
+                        <div class="yourSelectionsHospital">
+                            <div class="coverTitle">Your selected cover benefits:</div>
+                        </div>
+                    <div class="featuresListExtrasSelections" data-feature-index="3"></div>
+                    <div class="otherExtrasBenefits">
+                        <div class="coverTitle"><span>Other benefits: </span>
+                            <div class="featuresViewAll hidden expanded">
+                                <span class="icon expander leftPosition" />  <span class="viewLessDetails">View less details</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="benefits-click-text visible-xs">Click below for cover limits</div>
-                    <div class="featuresListExtrasOtherList" data-feature-index="5" data-feature-type="extras"></div>
-                </div>
+                    <div class="featuresListExtrasOtherList" data-feature-template="#results-features-extras-template" data-feature-index="5"></div>
+                    <div class="featuresListExtrasFullList" data-feature-index="5"></div>
+                    </div>
                 {{ } }}
                 <div class="ambulanceCoverSection">
-                    <h2>Ambulance</h2>
+                    <div class="clearfix">
+                        <h2>Ambulance cover</h2>
+                    </div>
                     <div class="featuresListAmbulance" data-feature-index="6" data-feature-type="ambulance"></div>
                 </div>
             </div>
