@@ -63,7 +63,6 @@ public class MarketingAutomationEmailService {
 		emailRequest.setVertical(verticalCode);
         EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
         emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
-        emailTranslator.setUrls(request, emailRequest, data, verticalCode);
 
         if (attemptEmailDistribution(emailRequest)) {
 			emailTranslator.setUrls(request, emailRequest, data, verticalCode);
