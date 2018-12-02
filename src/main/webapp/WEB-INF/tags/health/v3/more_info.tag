@@ -246,6 +246,11 @@
 		</div>
 		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoBeforeContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 			<c:if test="${moreinfolayout_splittest_default eq true}">
+			{{ if (custom.reform.tab2 && custom.reform.tab2.benefits && custom.reform.tab2.benefits.length > 0) { }}
+				{{ var readInclusionScriptingValidationMessage = 'Please confirm that script on tab Cover before ' + custom.reform.changeDate + ' and tab Cover after ' + custom.reform.changeDate + ' has been read out to the customer.'; }}
+			{{ } else { }}
+				{{ var readInclusionScriptingValidationMessage = 'Please confirm that this script has been read out to the customer.'; }}
+			{{ } }}
 
 			<div class="simplesReformScriptingBox scriptingFlagContent row">
 				{{ if (custom.reform.scripting === 'A') { }}
@@ -253,7 +258,7 @@
 					<div class="readInclusionsFlag row-content row">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="read_inclusions_scripting_A"></label>
 							</div>
 						</div>
@@ -287,7 +292,7 @@
 					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="read_inclusions_scripting_B1"></label>
 							</div>
 						</div>
@@ -343,7 +348,7 @@
 					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="read_inclusions_scripting_B2"></label>
 							</div>
 						</div>
@@ -389,7 +394,7 @@
 					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="before_read_inclusions_scripting_C"></label>
 							</div>
 						</div>
@@ -424,7 +429,7 @@
 				<div class="row">
 					<div class="col-sm-1 no-padding">
 						<div class="checkbox">
-							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 							<label for="limited_cover_scripting_tab_1_not_null"></label>
 						</div>
 					</div>
@@ -528,7 +533,7 @@
 						<div class="readInclusionsFlag row row-content">
 							<div class="col-sm-1 no-padding">
 								<div class="checkbox">
-									<input type="radio" name="health_simples_dialogue-radio-760" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+									<input type="radio" name="health_simples_dialogue-radio-760" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 									<label for="after_read_inclusions_scripting_C"></label>
 								</div>
 							</div>
@@ -563,7 +568,7 @@
 				<div class="row row-content">
 					<div class="col-sm-1 no-padding">
 						<div class="checkbox">
-							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm that this script has been read out to the customer" required="required">
+							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 							<label for="limited_cover_scripting_tab_2_not_null"></label>
 						</div>
 					</div>
