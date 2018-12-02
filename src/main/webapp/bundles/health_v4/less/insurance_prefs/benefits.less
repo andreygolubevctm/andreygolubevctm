@@ -27,9 +27,6 @@ body.health {
 
       .scrollable {
         margin-left: 0;
-        @media (@lg) {
-          margin-left: 15px;
-        }
       }
 
       @media (@xs-only) {
@@ -160,18 +157,11 @@ body.health {
           font-size: 12px;
         }
         h2 {
-          color: @theme-accent-4;
+          color: @gray-dark;
           display: inline-block;
           margin-bottom: 0;
           font-size: 21px;
         }
-      }
-
-      .nav-tabs {
-        margin-top: 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-        background-color: transparent;
       }
     }
 
@@ -259,5 +249,27 @@ body.health {
   @media (@xs-only) {
     margin-top: 15px;
     margin-bottom: 0;
+  }
+}
+
+.switchContainer {
+  display: flex;
+  margin: 5px 0px 10px 0px;
+
+  p {
+    font-weight: bold;
+    padding: 5px 0px 5px 0px;
+  }
+
+  .switchContainerItem {
+    flex: 0 1 auto;
+    &:first-child {
+      flex: 4 0 auto;
+    }
+
+    .has-switch {
+      margin-left: 0px !important;
+      margin-top: -4px !important;
+    }
   }
 }
