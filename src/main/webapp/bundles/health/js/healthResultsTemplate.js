@@ -419,13 +419,6 @@
                 $el.removeClass('disabled');
             }, 1000);
 
-        }).off('click', '.reset-filters').on('click', '.reset-filters', function (e) {
-            e.preventDefault();
-            filteredOutResults = [];
-            Results.unfilterBy('productId', "value", true);
-            _.defer(function(){
-                toggleRemoveResultPagination();
-            });
         }).off('click', '.featuresListExtrasOtherList').on('click', '.featuresListExtrasOtherList', function () {
             $('.featuresListExtrasOtherList').addClass('hidden');
             $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
