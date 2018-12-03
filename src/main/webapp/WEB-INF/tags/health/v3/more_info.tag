@@ -258,7 +258,7 @@
 					<div class="readInclusionsFlag row-content row">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="read_inclusions_scripting_A"></label>
 							</div>
 						</div>
@@ -292,7 +292,7 @@
 					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="read_inclusions_scripting_B1"></label>
 							</div>
 						</div>
@@ -348,7 +348,7 @@
 					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="read_inclusions_scripting_B2"></label>
 							</div>
 						</div>
@@ -394,7 +394,7 @@
 					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+								<input type="radio" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="before_read_inclusions_scripting_C"></label>
 							</div>
 						</div>
@@ -429,7 +429,7 @@
 				<div class="row">
 					<div class="col-sm-1 no-padding">
 						<div class="checkbox">
-							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 							<label for="limited_cover_scripting_tab_1_not_null"></label>
 						</div>
 					</div>
@@ -533,7 +533,7 @@
 						<div class="readInclusionsFlag row row-content">
 							<div class="col-sm-1 no-padding">
 								<div class="checkbox">
-									<input type="radio" name="health_simples_dialogue-radio-761" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" data-attach="true" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+									<input type="radio" name="health_simples_dialogue-radio-761" id="after_read_inclusions_scripting_C" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" data-attach="true" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 									<label for="after_read_inclusions_scripting_C"></label>
 								</div>
 							</div>
@@ -568,7 +568,7 @@
 				<div class="row row-content">
 					<div class="col-sm-1 no-padding">
 						<div class="checkbox">
-							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 							<label for="limited_cover_scripting_tab_2_not_null"></label>
 						</div>
 					</div>
