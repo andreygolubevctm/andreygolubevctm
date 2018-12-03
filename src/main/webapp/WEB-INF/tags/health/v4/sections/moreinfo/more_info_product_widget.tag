@@ -14,7 +14,7 @@
         <div class="more-info-classification-icon {{= classification.icon}}" />
     </div>
     <div class="col-xs-12 productWidgetSection">
-        <div class="col-md-2 col-xs-2 col-xs-offset-1 productWidgetIconWrapper">
+        <div class="col-md-2 col-md-offset-0 col-xs-2 col-xs-offset-1 productWidgetIconWrapper">
             <img src="assets/brand/ctm/images/brochure_icon.svg" class="productWidgetIcon"/>
         </div>
         <div class="col-md-10 col-xs-9">
