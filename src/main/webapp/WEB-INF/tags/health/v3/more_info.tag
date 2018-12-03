@@ -200,7 +200,7 @@
 				{{ } }}
 
 				{{ if (['C'].includes(custom.reform.scripting)) { }}
-				<p>So with this hospital policy, everything mentioned as important is covered. This policy will have some changes on {date of change per rate sheet}  to services that you haven’t mentioned as important. We will send those changes across in a welcome pack and I can read these for you now, or keeping in mind that the important services will continue to be covered, are you happy to just look through those in your own time?</p>
+				<p>So with this hospital policy, everything mentioned as important is covered. This policy will have some changes on {{= custom.reform.changeDate }}  to services that you haven’t mentioned as important. We will send those changes across in a welcome pack and I can read these for you now, or keeping in mind that the important services will continue to be covered, are you happy to just look through those in your own time?</p>
 				{{ } }}
 			</div>
 			<div class="scriptingOptions col-sm-12 no-padding">
@@ -533,7 +533,7 @@
 						<div class="readInclusionsFlag row row-content">
 							<div class="col-sm-1 no-padding">
 								<div class="checkbox">
-									<input type="radio" name="health_simples_dialogue-radio-760" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+									<input type="radio" name="health_simples_dialogue-radio-761" id="after_read_inclusions_scripting_C" class="checkbox-custom checkbox" data-attach="true" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 									<label for="after_read_inclusions_scripting_C"></label>
 								</div>
 							</div>
