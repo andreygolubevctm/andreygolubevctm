@@ -35,7 +35,14 @@
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
         <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" scope="request" />
 
-        <c:set var="simplesCategoryVersion" value="health2018" />
+        <c:choose>
+            <c:when test="${comparisonMode eq 'PHIO'}">
+                <c:set var="simplesCategoryVersion" value="health" />
+            </c:when>    
+            <c:otherwise>
+                <c:set var="simplesCategoryVersion" value="health2018" />
+            </c:otherwise> 
+        </c:choose>
 
         <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure(simplesCategoryVersion)}" scope="request"  />
         <%--TODO: turn this on and off either in a settings file or in the database --%>

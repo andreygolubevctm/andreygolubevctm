@@ -106,6 +106,12 @@
             $("#health_simples_restrictions_verified, #health_simples_exclusions_verified").attr('aria-required', true).attr("required", "required");
         });
 
+        $(document).on('click', '.about-this-fund', function() {
+            meerkat.modules.dialogs.show({
+                title: 'About the fund',
+                htmlContent: Results.getSelectedProduct().aboutFund
+            });
+        });
     }
 
     function onApplySuccess() {
