@@ -154,8 +154,15 @@
         ft.displayItem = ft.type != 'section';
         // section headers are not displayed anymore but we need the section container
         ft.pathValue = _getPathValue(obj, ft);
-        ft.isRestricted = ft.pathValue == "R";
-        ft.isNotCovered = ft.pathValue == "N";
+        if(window.meerkat.site.isHealthReformMessaging === 'Y') {
+            //if the new health reforms flag is set, we need to determine the values differently
+            ft.isRestricted = true;
+            ft.isNotCovered = true;
+            ft.hideCategory = false;
+        }else{
+            ft.isRestricted = ft.pathValue == "R";
+            ft.isNotCovered = ft.pathValue == "N";
+        }
         ft.hasChildFeatures = typeof ft.children !== 'undefined' && ft.children.length;
 
         // Additional attributes for category's only.

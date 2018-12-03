@@ -872,7 +872,21 @@
           .contentInner {
             .benefit-container {
               margin-top: 10px;
+              .benefit-container-item {
+                display: inline;
+
+                @media (@xs-only) {
+                 width: 100%;
+                 display: block;
+                }
+              }
               .benefit-icon {
+                margin: 0px 5px 0px 5px;
+
+                @media (@sm) {
+                  margin: 0px 15px 0px 5px;
+                }
+
                 &::before {
                   content: '\e600';
                   color: #0DB14B;

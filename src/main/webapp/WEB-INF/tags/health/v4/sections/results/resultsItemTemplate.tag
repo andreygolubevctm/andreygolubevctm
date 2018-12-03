@@ -27,8 +27,14 @@
                         <span class="health-icon {{= ft.iconClass }}"></span> {{= ft.safeName }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
                     </div>
                     <div class="benefit-container">
-                        <span class="benefit-icon" />
-                        Now
+                        <div class="benefit-container-item">
+                            <span>Now</span>
+                            <span class="benefit-icon" />
+                        </div>
+                        <div class="benefit-container-item april">
+                            <span>From April 1</span>
+                            <span class="benefit-icon" />
+                        </div>
                     </div>
                 </div>
             </div>
