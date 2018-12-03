@@ -89,6 +89,139 @@
   }
 }
 
+.moreInfoProductWidget {
+  border: 1px solid lightgrey;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+
+  .companyLogo {
+    margin-top: 15px;
+  }
+
+  .productWidgetSection {
+    margin: 0px 5px 12px 0px;
+
+    .results-header-classification-icon {
+      vertical-align: inherit;
+    }
+  }
+
+  .more-info-classification-icon {
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100px;
+
+    @media (@sm) {
+      height: 60px;
+    }
+
+    &.gov-unclassified {
+      background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+      }
+    }
+
+    &.gov-bronze-plus {
+      background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
+      }
+    }
+
+    &.gov-bronze {
+      background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
+      }
+    }
+
+    &.gov-silver-plus {
+      background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
+      }
+    }
+
+    &.gov-silver {
+      background-image: url('../../../../assets/graphics/health_classification/Silver_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
+      }
+    }
+
+    &.gov-gold {
+      background-image: url('../../../../assets/graphics/health_classification/Gold_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
+      }
+    }
+
+    &.gov-basic-plus {
+      background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
+      }
+    }
+
+    &.gov-basic {
+      background-image: url('../../../../assets/graphics/health_classification/Basic_govclass_mobile.svg');
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
+      }
+    }
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .productWidgetHeader {
+    background-color: #1E4D8B;
+    height: 10px;
+  }
+
+  .productWidgetName {
+    color: black;
+    margin-top: 20px;
+  }
+
+  .productWidgetIconWrapper {
+    padding-left: 5px;
+  }
+
+  .productWidgetIcon {
+    width: 30px;
+  }
+
+  .row {
+    margin-top: 10px;
+  }
+
+  .classification {
+    display: inline-block;
+    line-height: 1rem;
+    font-weight: bold;
+  }
+
+  .brochureLink {
+    padding-bottom: 1rem;
+  }
+}
+
+.topFix {
+  top: 171px;
+}
+
 .more-info-affixed-header {
 
   div[class*="col-xs-"] {
@@ -102,7 +235,7 @@
   }
 
   .vertical-align {
-    line-height: 60px;
+    line-height: 30px;
   }
 
   .productNames {
@@ -189,7 +322,7 @@
   flex: 1 0 auto;
   margin: 10px;
   min-height: 150px;
-  width: 100%;
+  width: 45px;
   max-width: 400px;
 }
 
@@ -232,8 +365,10 @@
   display: block;
 }
 
-.about-this-fund {
-  line-height: 3rem;
+.aboutThisFundLink {
+  padding-top: 10px;
+  padding-bottom: 15px;
+  font-size: 12px;
 }
 
 .aboutIcon {
@@ -324,6 +459,12 @@
       margin: inherit;
     }
 
+    .moreInfoProductWidget {
+      .companyLogo {
+        margin: 10px auto;
+      }
+    }
+
     &.mobile {
       margin-bottom: 20px;
     }
@@ -333,6 +474,7 @@
   h3,
   .productName {
     color: @theme-accent-4;
+
   }
 
   h3 {
@@ -349,12 +491,13 @@
   .moreInfoProductSummaryRow {
     display: flex;
     justify-content: space-between;
-    padding-top: 4rem;
+    padding-top: 20px;
   }
 
   .moreInfoProductSummaryColumn {
     width: 100%;
     max-width: 400px;
+    margin: 10px;
   }
 
   .productExtraInfoItem {
@@ -372,12 +515,8 @@
   }
 
   .moreInfoPricePromise {
-    height: auto;
-    width: 97px;
-    flex: 1 0 auto;
-
-    img {
-      height: 100%;
+    object {
+      margin-top: -20px;
     }
   }
 
@@ -462,9 +601,9 @@
     }
     .frequencyTitle {
       white-space: nowrap;
-      display: block !important;
-      top: 0 !important;
-      left: 0 !important;
+      display: block;
+      top: 0;
+      left: 0;
       padding: 5px 0px 5px 0px;
     }
   }
