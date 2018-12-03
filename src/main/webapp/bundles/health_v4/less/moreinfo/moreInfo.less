@@ -247,7 +247,7 @@
 
   @media (@xs-only) {
     .companyLogo {
-      margin-top: 10px;
+      margin-top: 15px;
     }
     background-color: @theme-light;
   }
@@ -330,9 +330,14 @@
   }
 
   h2,
-  h3,
-  .productName {
+  h3 {
     color: @theme-accent-4;
+  }
+
+  .productName {
+    font-size: 18px;
+    color: #333333;
+    margin-top: 15px;
   }
 
   h3 {
@@ -700,6 +705,7 @@ body[data-is-single="true"] {
         background: #fff;
         padding-top: 0;
         position: fixed;
+        border-bottom: 1px solid lightgray;
         width: 100%;
         z-index: 1;
         top: 40px;
@@ -713,7 +719,15 @@ body[data-is-single="true"] {
       }
 
       h5.productName {
-        margin-right: -15px;
+        font-size: 18px;
+        color: #333333;
+        margin-top: 15px;
+      }
+
+      .quote-reference-number {
+        h3 {
+          color: #333333;
+        }
       }
 
       .frequencyAmount {
@@ -750,10 +764,11 @@ body[data-is-single="true"] {
 
       .quote-reference-number {
         h3 {
-          font-size: @font-size-base;
+          font-size: 18px;
           line-height: @line-height-base;
           color: @gray-darker;
-          margin-bottom: 0px;
+          margin-bottom: 5px;
+          margin-top: 5px;
           text-align: center;
           span{
             font-weight: @font-family-theme-regular;

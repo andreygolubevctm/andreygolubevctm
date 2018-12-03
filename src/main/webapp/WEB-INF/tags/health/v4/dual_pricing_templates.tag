@@ -105,29 +105,17 @@
 		<div class="row">
 			<div class="col-xs-6 current-container">
 				<div class="current-pricing">
-					<div class="dual-pricing-before-after-text"><span class="text-bold">Before</span> April 1st</div>
+					<div class="dual-pricing-before-after-text">Now</div>
 					{{= renderedPriceTemplate }}
 
-					<div>Current <span class="current-frequency">{{= currFreq }}</span> price</div>
-					<span class="applyBy">Must apply by <span class="text-bold">{{= obj.dropDeadDateFormatted }}</span></span>
-				</div>
-				<div class="current-pricing-details">
-					{{ if (!_.isUndefined(obj.premium[obj._selectedFrequency][lhcText])) { }}
-					<span>{{= obj.premium[obj._selectedFrequency][lhcText] }}</span>
-					{{ } }}
+					<div><span class="current-frequency">{{= currFreq }}</span></div>
 				</div>
 			</div>
 			<div class="col-xs-6 april-container">
 				<div class="april-pricing">
-					<div class="dual-pricing-before-after-text"><span class="text-bold">After</span> April 1st</div>
+					<div class="dual-pricing-before-after-text">Price after April 1</div>
 					{{= renderedAltPriceTemplate }}
-					<span class="premiumsRising">Premiums are rising<br/> from April 1st</span>
-					<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
-				</div>
-				<div class="april-pricing-details">
-					{{ if (comingSoonClass === '') { }}
-						<span>{{= obj.altPremium[obj._selectedFrequency][lhcText] }}</span>
-					{{ } }}
+					<div><span class="current-frequency">{{= currFreq }}</span></div>
 				</div>
 			</div>
 		</div>

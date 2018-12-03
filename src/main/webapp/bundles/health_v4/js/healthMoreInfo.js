@@ -261,7 +261,6 @@
     function _setupDualPricing(product) {
         if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) {
             // $('.april-pricing').addClass('april-pricing-done');
-            $('.current-pricing').addClass('current-pricing-done');
 
             var productPremium = product.altPremium,
                 comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon';
