@@ -1,5 +1,6 @@
 package com.ctm.web.email;
 
+import com.ctm.emails.utils.validators.Email;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.services.ResultsService;
@@ -11,6 +12,7 @@ import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -114,5 +116,13 @@ public class EmailUtils {
             premiumList.add(ANNUAL_ONLINE_PREMIUM);
         });
         return premiumList;
+    }
+
+    public static boolean isValidEmailAddress(String email) {
+		// Validate specified String containing an email address
+		if (!Email.isValid(email)) {
+			return false;
+		}
+		return true;
     }
 }

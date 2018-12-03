@@ -91,6 +91,14 @@ public class MarketingAutomationEmailServiceTest {
     }
 
     @Test
+    public void givenTravelEmailWithInvalidEmailAddress_thenAttemptEmailDistributionIsFalse(){
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setVertical(TRAVEL);
+        emailRequest.setEmailAddress("test@comparethenmarket.comau");
+        Assert.assertFalse(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
+    }
+
+    @Test
     public void givenHealthEmailWithPopularProductSelected_thenAttemptEmailDistributionIsFalse(){
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setVertical(HEALTH);
@@ -103,6 +111,7 @@ public class MarketingAutomationEmailServiceTest {
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setVertical(HEALTH);
         emailRequest.setPopularProductsSelected(false);
+        emailRequest.setEmailAddress("preload.testing@comparethemarket.com.au");
         Assert.assertTrue(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
     }
 
@@ -110,6 +119,7 @@ public class MarketingAutomationEmailServiceTest {
     public void givenCarEmail_thenAttemptEmailDistributionIsTrue(){
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setVertical(CAR);
+        emailRequest.setEmailAddress("preload.testing@comparethemarket.com.au");
         Assert.assertTrue(MarketingAutomationEmailService.attemptEmailDistribution(emailRequest));
     }
 

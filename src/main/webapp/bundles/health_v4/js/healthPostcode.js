@@ -87,12 +87,20 @@
         });
     }
 
+
     function _getResults(postcode) {
         _postcode = postcode;
         meerkat.modules.loadingAnimation.showAfter($elements.input);
         $elements.results.hide();
 
         _pendingGet = true;
+
+        var buttons = document.getElementsByClassName('journeyNavButton');
+
+        for(var i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+            buttons[i].style.pointerEvents = 'none';
+        }
 
         var data = { term: postcode },
             request_obj = {
@@ -112,7 +120,14 @@
                             _showResults(res);
                         }
                     } else {
+                        $elements.location.val('');
+                        $elements.location.valid();
                         _clearResults();
+                    }
+
+                    for(var i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = false;
+                        buttons[i].style.pointerEvents = 'auto';
                     }
                 },
                 onComplete: function() {

@@ -116,7 +116,7 @@
 		{{ var promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
 		{{ var offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
-		{{ var template = $("#title-download-special-template").html(); }}
+		{{ var template = $("#title-download-special-template-pds").html(); }}
 		{{ var htmlTemplate = _.template(template); }}
 		{{ var titleDownloadSpecialTemplate = htmlTemplate(obj); }}
 

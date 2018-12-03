@@ -42,10 +42,13 @@
 			</c:set>
 
 			<c:choose>
+<%-- Removed call to delay lead to reduce dialler interactions however keeping code as may wish to re-instate this later --%>
+<%--
 				<c:when test="${verticalCode eq 'health' and empty authenticatedData.login.user.uid and param.touchtype eq 'A' and not empty param.phone and pageSettings.hasSetting('delayLeadOnApplicationStep') and pageSettings.getSetting('delayLeadOnApplicationStep') eq 'Y'}">
 					<jsp:useBean id="simplesLeadService" class="com.ctm.web.health.services.HealthSimplesLeadService" scope="application" />
 					<c:set var="delayResult" value="${simplesLeadService.delayLeadAsEnteredApplicationStep(pageContext.request, param.phone)}" />
 				</c:when>
+--%>
 				<c:when test="${param.touchtype == 'R' || param.touchtype == 'S'}">
 					<security:populateDataFromParams rootPath="${verticalCode}" />
 				</c:when>

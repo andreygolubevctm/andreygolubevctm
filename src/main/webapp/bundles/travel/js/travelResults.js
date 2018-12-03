@@ -1,41 +1,22 @@
 ;(function($){
 
 	var meerkat = window.meerkat,
-		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info;
+			meerkatEvents = meerkat.modules.events;
 
 	var events = {
 			// Defined here because it's published in Results.js
 			RESULTS_ERROR: 'RESULTS_ERROR'
 	};
 	var $component, //Stores the jQuery object for the component group
-	previousBreakpoint,
-	best_price_count = 10, price_log_count = 10,
-	needToBuildFeatures = false,
-	initialised = false;
+			best_price_count = 10, price_log_count = 10,
+			initialised = false;
 
 	function initPage(){
 		if(!initialised) {
 			initialised = true;
-
 			initResults();
-
-			//Features.init();
-
 			eventSubscriptions();
-
-			//breakpointTracking();
 		}
-	}
-
-	function onReturnToPage(){
-		breakpointTracking();
-		if (previousBreakpoint !== meerkat.modules.deviceMediaState.get()) {
-			Results.view.calculateResultsContainerWidth();
-			Features.clearSetHeights();
-			Features.balanceVisibleRowsHeight();
-		}
-		Results.pagination.refresh();
 	}
 
 	function initResults(){
@@ -70,7 +51,6 @@
 					}
 				},
 				show: {
-					//nonAvailablePrices: true,     // This will apply the availability.price rule
 					nonAvailableProducts: false, // This will apply the availability.product rule
 					unavailableCombined: true    // Whether or not to render a 'fake' product which is a placeholder for all unavailable products.
 				},
@@ -79,11 +59,6 @@
 				},
 				render: {
 					templateEngine: '_',
-					/*features: {
-						mode: 'populate',
-						headers: false,
-						numberOfXSColumns: 1
-					},*/
 					dockCompareBar: false
 				},
 				displayMode: 'price', // features, price
@@ -274,8 +249,6 @@
 			}, 1000);
 		});
 
-		//$(document).on("resultsLoaded", onResultsLoaded);
-
 		// Scroll to the top when results come back
 		$(document).on("resultsReturned", function(){
 			meerkat.modules.utils.scrollPageTo($("header"));
@@ -310,8 +283,8 @@
 				$(document.body).removeClass('priceMode').addClass('priceMode');
 			}
 
-			var  currentProduct,
-				previousProduct;
+			var currentProduct,
+					previousProduct;
 			$.each(Results.model.sortedProducts, function massageSortedProducts(index, result){
 				// alternate any pricing results if two or more results have the exact same price
 				previousProduct = currentProduct;
@@ -350,7 +323,15 @@
 					// show the custom popup
 					showBlockedResults();
 				} else {
-					showNoResults();
+					var fromDateElement = document.getElementById('travel_dates_fromDate');
+					var fromDate = new Date(fromDateElement.value);
+					var todayDate = meerkat.site.serverDate;
+					if (fromDate < todayDate) {
+						// quote is old that's why there's no results
+						invalidQuoteDueToDate();
+					} else {
+						showNoResults();
+					}
 				}
 			} else {
 				meerkat.modules.salesTracking.addPHGImpressionTracking();
@@ -362,7 +343,6 @@
 	}
 
 	function launchOfferTerms(event) {
-		//meerkat.modules.carMoreInfo.setScrollPosition();
 		event.preventDefault();
 
 		var $element = $(event.target);
@@ -433,50 +413,25 @@
 		meerkat.modules.travelMoreInfo.runDisplayMethod();
 	}
 
-
-	function breakpointTracking(){
-
-		startColumnWidthTracking();
-
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter(){
-			if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
-				startColumnWidthTracking();
-			}
-		});
-
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave(){
-			stopColumnWidthTracking();
-			Results.pagination.setCurrentPageNumber(1);
-			Results.pagination.resync();
-		});
-
-	}
-
-	function startColumnWidthTracking() {
-		if (meerkat.modules.deviceMediaState.get() === 'xs' && Results.getDisplayMode() === 'features') {
-			Results.view.startColumnWidthTracking( $(window), Results.settings.render.features.numberOfXSColumns, false );
-			Results.pagination.setCurrentPageNumber(1);
-			Results.pagination.resync();
-		}
-	}
-
-	function stopColumnWidthTracking() {
-		Results.view.stopColumnWidthTracking();
-	}
-
 	// Wrapper around results component, load results data
 	function get() {
-        var envParam = "";
-        Results.updateAggregatorEnvironment();
+    Results.updateAggregatorEnvironment();
 		Results.get();
 	}
 
-	function onResultsLoaded() {
-		startColumnWidthTracking();
+	function invalidQuoteDueToDate() {
+		meerkat.modules.travelDatepicker.reset();
+		setTimeout(function() {
+			meerkat.modules.address.setHash('start');
+			showInvalidDateModal();
+		}, 150);
+	}
 
-		// Reset vars
-		if (Results.getDisplayMode() !== 'features')
-			needToBuildFeatures = true;
+	function showInvalidDateModal() {
+		var element = document.getElementById('invalid-date').outerHTML;
+		meerkat.modules.dialogs.show({
+			htmlContent: element
+		});
 	}
 
 	function showNoResults() {
@@ -518,7 +473,8 @@
 		get: get,
 		showNoResults: showNoResults,
 		rankingCallback: rankingCallback,
-		publishExtraTrackingEvents: publishExtraTrackingEvents
+		publishExtraTrackingEvents: publishExtraTrackingEvents,
+		invalidQuoteDueToDate: invalidQuoteDueToDate,
 	});
 
 })(jQuery);
