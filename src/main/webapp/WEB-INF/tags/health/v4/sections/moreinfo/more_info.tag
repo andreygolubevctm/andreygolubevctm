@@ -272,16 +272,16 @@
 										{{ product.ignoreLimits = false; }}
 										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-5 newBenefitRow benefitHeaderTitle">
+											<div class="col-xs-8 newBenefitRow benefitHeaderTitle">
 												Extras services
 											</div>
-											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-1 newBenefitRow benefitHeaderTitle align-center">
 												Annual limit
 											</div>
-											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-1 newBenefitRow benefitHeaderTitle align-center">
 												Inclusion
 											</div>
-											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
 												Waiting period
 											</div>
 										</div>
