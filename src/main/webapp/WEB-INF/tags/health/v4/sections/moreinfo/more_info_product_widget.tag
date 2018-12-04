@@ -11,7 +11,7 @@
     </div>
     <div class="col-xs-12 productWidgetSection">
         {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-        <div class="more-info-classification-icon {{= classification.icon}}" />
+        <div class="more-info-classification-icon force-large {{= classification.icon}}" />
     </div>
     <div class="col-xs-12 productWidgetSection">
         <div class="col-md-2 col-md-offset-0 col-xs-2 col-xs-offset-1 productWidgetIconWrapper">

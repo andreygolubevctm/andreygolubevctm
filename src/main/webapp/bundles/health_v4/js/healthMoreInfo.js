@@ -33,7 +33,7 @@
                     className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
                     openOnHashChange: false,
                     leftBtn: {
-                        label: 'Back',
+                        label: 'Back to my results',
                         icon: '<span class="icon icon-angle-left"></span>',
                         callback: function (eventObject) {
                             $(eventObject.currentTarget).closest('.modal').modal('hide');
