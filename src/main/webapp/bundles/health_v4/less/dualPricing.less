@@ -405,7 +405,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
     /* CURRENT PRICING */
     /* override the shared module styling */
     .current-pricing {
-      background: @theme-accent-1;
+      color: #333333;
       border-left: initial;
       padding-left: initial;
 
@@ -455,7 +455,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       .frequencyAmount,
       .lhcText {
         .priceAnimationTransitions();
-        color: @white;
+        color: #333333;
       }
     }
 
@@ -468,8 +468,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
     /* APRIL PRICING */
     .april-pricing {
-      background: @theme-accent-3;
-
+      color: #333333;
       .price.premium {
         .lhcText {
           float: right;
@@ -546,7 +545,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       }
 
       .frequencyAmount {
-        font-size: 24px;
+        font-size: 48px;
 
         &.comingSoon {
           font-size: 18px;
@@ -563,7 +562,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       .premiumsRising,
       .frequencyAmount {
         .priceAnimationTransitions();
-        color: @white;
+        color: #333333;
       }
     }
 
@@ -587,6 +586,8 @@ body[data-step="results"]:not(.moreInfoVisible) {
     .logo-header {
       display: flex;
       margin-bottom: 20px;
+      padding: 0px;
+      max-width: 100px;
     }
   }
 
