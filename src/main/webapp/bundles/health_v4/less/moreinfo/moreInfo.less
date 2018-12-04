@@ -515,6 +515,20 @@
     margin-top: 15px;
   }
 
+  .current-pricing-details {
+    width: 70%;
+    margin: 5px auto;
+    text-align: center;
+  }
+
+  .quote-ref-container {
+    width: 100%;
+  }
+
+  .aboutThisFundLink {
+    padding: 0px;
+  }
+
   h3 {
     margin-top: 0px;
   }
@@ -627,7 +641,7 @@
   }
 
   .frequencyAmount {
-    color: @theme-tertiary;
+    color: #333333;
     font-size: 48px;
     line-height: 40px;
 
@@ -886,6 +900,8 @@ body[data-is-single="true"] {
     }
 
     .dockedHeaderLarge {
+      border-bottom: 1px solid lightgray;
+
       .hidden-large {
         display: none;
       }
@@ -903,7 +919,7 @@ body[data-is-single="true"] {
       }
 
       .frequencyAmount {
-        line-height: 30px;
+        line-height: 40px;
 
         .frequencyTitle {
           line-height: 20px;
@@ -912,7 +928,6 @@ body[data-is-single="true"] {
     }
 
     .dockedHeaderSlim {
-      .quoteRefHdr,
       .logo-header.hidden-slim,
       .hidden-slim {
         display: none;
@@ -949,11 +964,6 @@ body[data-is-single="true"] {
       }
 
       &.callCentreOpen {
-        .quote-reference-number {
-          h3 {
-            text-align:left;
-          }
-        }
         .getPrintableBrochures {
           text-align:left;
         }

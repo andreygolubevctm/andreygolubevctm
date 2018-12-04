@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 productWidgetSection">
+    <div class="col-xs-12 productWidgetSection hidden-xs">
         <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now <span class="icon-angle-right" /></a>
     </div>
     </div>
