@@ -54,13 +54,14 @@
 
 .reformHospitalTabs {
   overflow: hidden;
-  color: @gray-base;
+  position: relative;
+  top: -50px;
 
   button {
-    width: 200px;
-    background-color: inherit;
+    background-color: @gray;
+    color: @white;
     float: left;
-    border: 1px solid @gray-light;
+    border-bottom: none;
     outline: none;
     cursor: pointer;
     padding: 14px 16px;
@@ -69,8 +70,8 @@
     margin-right: 10px;
 
     &.active {
-      background-color: @gray-base;
-      color: @white;
+      background-color: @white;
+      color: @gray-base;
     }
   }
 }
@@ -80,10 +81,6 @@
 }
 
 .HospitalBenefits {
-  .heading-brochure {
-    margin-top: 60px;
-  }
-
   .excessCoPayment {
     margin-bottom: 40px;
     padding: 10px 0;
@@ -134,10 +131,9 @@
   }
 
   .newBenefitRow {
-    padding-left: 10px;
+    padding: 10px;
     font-size: 14px;
-    height: 50px;
-    line-height: 50px;
+    line-height: 20px;
     text-align: left;
 
     &.benefitHeaderTitle {

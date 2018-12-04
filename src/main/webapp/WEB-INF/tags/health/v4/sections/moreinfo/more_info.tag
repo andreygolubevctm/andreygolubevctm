@@ -95,7 +95,7 @@
 								<!-- Hospital Benefits Heading + Brochure -->
 								<div class="reformHospitalTabs">
 									<button type="button" class="reformHospitalTabLink preAprilReformLink active">Covered now</button>
-									<button type="button" class="reformHospitalTabLink postAprilReformLink">Covered from April 1</button>
+									<button type="button" class="reformHospitalTabLink postAprilReformLink">Covered from {{= custom.reform.changeDate }}</button>
 								</div>
 								<div class="row">
 									<div class="col-xs-12">
@@ -173,7 +173,7 @@
 										{{ _.each(product.custom.reform.tab1.benefits, function(benefit){ }}
 										<div class="row benefitRow">
 											<div class="col-xs-7 newBenefitRow benefitRowTitle">
-												{{= benefit.name }}
+												{{= benefit.category }}
 											</div>
 											<div class="col-xs-2 newBenefitRow benefitRowTitle">
 												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
@@ -206,7 +206,7 @@
 										{{ _.each(product.custom.reform.tab2.benefits, function(benefit){ }}
 										<div class="row benefitRow">
 											<div class="col-xs-7 newBenefitRow benefitRowTitle">
-												{{= benefit.name }}
+												{{= benefit.category }}
 											</div>
 											<div class="col-xs-2 newBenefitRow benefitRowTitle">
 												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
