@@ -28,13 +28,13 @@
                 <a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure">View extras brochure</a>
             </div>
             {{ } }}
-            <div class="brochureLink">
-                <a href="javascript:;">Email brochures</a>
+            <div class="brochureLink printableBrochures">
+                <a href="javascript:;" class="getPrintableBrochures">Email brochures</a>
             </div>
         </div>
     </div>
     <div class="col-xs-12 productWidgetSection">
         <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now <span class="icon-angle-right" /></a>
     </div>
-    </div>
+</div>
 </div>
