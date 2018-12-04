@@ -19,14 +19,14 @@
 		<optin>Y</optin>
 	</contactDetails>
 	<situation>
-		<healthCvr>C</healthCvr>
-		<location>Toowong 4000 QLD</location>
+		<healthCvr>F</healthCvr>
+		<location>Toowong 4066 QLD</location>
 		<state>QLD</state>
 		<suburb>Toowong</suburb>
-		<postcode>4000</postcode>
+		<postcode>4066</postcode>
 		<healthSitu>LC</healthSitu>
 		<cover>Y</cover>
-		<singleProvider>14</singleProvider>
+		<singleProvider></singleProvider>
 		<coverType>C</coverType>
 	</situation>
 	<benefits>
@@ -34,10 +34,14 @@
 		<benefitsExtras>
 			<Hospital>Y</Hospital>
 			<PrHospital>Y</PrHospital>
-			<DentalGeneral>N</DentalGeneral>
+			<Cardiac>Y</Cardiac>
+			<Rehabilitation>Y</Rehabilitation>
+			<PlasticNonCosmetic>Y</PlasticNonCosmetic>
+			<Palliative>Y</Palliative>
+			<GeneralHealth>Y</GeneralHealth>
+			<DentalGeneral>Y</DentalGeneral>
 		</benefitsExtras>
 		<healthSitu>FK</healthSitu>
-		<ExtrasSwitch>N</ExtrasSwitch>
 	</benefits>
 	<healthCover>
 		<income>0</income>
@@ -111,7 +115,7 @@
 		<productId />
 		<productNumber />
 		<productTitle />
-		<provider>CTM</provider>
+		<provider />
 		<primary>
 			<title>MR</title>
 			<firstname>Lechuck</firstname>
@@ -132,7 +136,7 @@
 		<postal>
 			<streetSearch>PO Box 11, Toowong QLD</streetSearch>
 			<state>QLD</state>
-			<postCode>4000</postCode>
+			<postCode>4066</postCode>
 			<nonStdStreet>PO Box</nonStdStreet>
 			<suburbName>Toowong</suburbName>
 			<suburb>7984</suburb>
@@ -144,7 +148,7 @@
 		<address>
 			<streetName>Golding St</streetName>
 			<type>R</type>
-			<postCode>4000</postCode>
+			<postCode>4066</postCode>
 			<state>QLD</state>
 			<houseNoSel>1</houseNoSel>
 			<streetNum>1</streetNum>
@@ -153,7 +157,7 @@
 			<streetId>239459</streetId>
 			<dpId>81907205</dpId>
 			<streetSearch>10 Golding St., Toowong QLD</streetSearch>
-			<fullAddress>10 Golding St.,Toowong QLD 4000</fullAddress>
+			<fullAddress>10 Golding St.,Toowong QLD 4066</fullAddress>
 			<fullAddressLineOne>10 Golding St</fullAddressLineOne>
 		</address>
 
@@ -291,8 +295,8 @@
 		<dialogue-checkbox-25>Y</dialogue-checkbox-25>
 		<dialogue-checkbox-26>Y</dialogue-checkbox-26>
 		<dialogue-checkbox-28>Y</dialogue-checkbox-28>
-        <dialogue-checkbox-37>Y</dialogue-checkbox-37>
-        <dialogue-checkbox-38>Y</dialogue-checkbox-38>
+		<dialogue-checkbox-37>Y</dialogue-checkbox-37>
+		<dialogue-checkbox-38>Y</dialogue-checkbox-38>
 		<dialogue-checkbox-45>Y</dialogue-checkbox-45>
 		<dialogue-checkbox-51>Y</dialogue-checkbox-51>
 		<dialogue-checkbox-54>Y</dialogue-checkbox-54>
