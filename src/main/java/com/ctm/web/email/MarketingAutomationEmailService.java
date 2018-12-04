@@ -99,7 +99,7 @@ public class MarketingAutomationEmailService {
         }
 
         if (brand != null && brand.equalsIgnoreCase("choo")) {
-            LOGGER.warn("Invalid request. No emails for Choosi brand: VerticalCode: {}, brand: {}, transactionId: {}", verticalCode, brand, transactionId);
+            LOGGER.info("Invalid request. No emails for Choosi brand: VerticalCode: {}, brand: {}, transactionId: {}", verticalCode, brand, transactionId);
             return false;
         }
 
