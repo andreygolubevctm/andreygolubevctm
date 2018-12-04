@@ -286,25 +286,81 @@
 											</div>
 										</div>
 										{{ } }}
-										{{ _.each(product.extras, function(benefit, key){ }}
-											{{ if (typeof benefit === 'object') { }}
-											<div class="row benefitRow">
-												<div class="col-xs-5 newBenefitRow benefitRowTitle">
-													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
+										{{ _.each(extras, function(benefit, key){ }}
+										{{ if (typeof benefit === 'object') { }}
+										<div class="row benefitRow">
+											<div class="col-xs-8 newBenefitRow benefitRowTitle">
+												{{= key.replace(/([A-Z])/g, ' $1').trim() }}
+												<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
+													<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
+												</a>
+											</div>
+											<div class="col-xs-1 newBenefitRow benefitRowTitle align-center">
+												{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+											</div>
+											<div class="col-xs-1 newBenefitRow benefitRowTitle">
+												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
+												{{= benefit.waitingPeriod.substring(0, 20) }}
+											</div>
+										</div>
+										<div class="row collapse benefitCollapsedContent" id="extrasCollapsedContent-{{= key }}">
+											<div class="col-xs-8">
+												<div class="row">
+													<div class="col-xs-6">
+														<div class="row extraBenefitSection">
+															<div class="col-xs-12 extraBenefitSubHeading"><strong>Claim Benefit:</strong></div>
+															{{ if (benefit.benefits !== undefined) { }}
+															<div class="col-xs-12">
+																{{ _.each(benefit.benefits, function (option, key) { }}
+																<div class="row">
+																	<div class="col-xs-9 extraBenefitOption">
+																		{{= key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim() }}
+																	</div>
+																	<div class="col-xs-3 extraBenefitOption align-center">
+																		{{= option }}
+																	</div>
+																</div>
+																{{ }); }}
+															</div>
+															{{ } }}
+														</div>
+													</div>
+													<div class="col-xs-6">
+														<div class="row">
+															<div class="col-xs-12 extraBenefitSubHeading"><strong>Annual Limits:</strong></div>
+															{{ if (benefit.benefitLimits !== undefined) { }}
+															<div class="col-xs-12">
+																{{ _.each(benefit.benefitLimits, function (option, key) { }}
+																<div class="row">
+																	<div class="col-xs-9 extraBenefitOption">
+																		{{= key.replace(/([A-Z])/g, ' $1').trim().toLowerCase() }}
+																	</div>
+																	<div class="col-xs-3 extraBenefitOption align-center">
+																		{{= option }}
+																	</div>
+																</div>
+																{{ }); }}
+															</div>
+															{{ } }}
+														</div>
+													</div>
 												</div>
-												<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
-													{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
-												</div>
-												<div class="col-xs-2 newBenefitRow benefitRowTitle">
-													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
-												</div>
-												<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
-													{{= benefit.waitingPeriod.substring(0, 20) }}
+											</div>
+											<div class="col-xs-4">&nbsp;</div>
+
+											{{ if (benefit.hasSpecialFeatures) { }}
+											<div class="col-xs-8">
+												<div class="row">
+													<div class="col-xs-12 extraBenefitSubHeading"><strong>Extra info:</strong></div>
+													<div class="col-xs-12 extraBenefitOption">{{= benefit.hasSpecialFeatures }}</div>
 												</div>
 											</div>
 											{{ } }}
-										{{ }) }}
-
+										</div>
+										{{ } }}
+										{{ }); }}
 									</div>
 								</div>
 							</div>
