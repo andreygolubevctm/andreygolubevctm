@@ -107,7 +107,7 @@
 
             event.preventDefault();
 
-            if ($('#resultsForm').valid()) {
+            if ($('#resultsForm').valid() && _isScriptingRead()) {
 
                 var $this = $(this);
                 $this.addClass('inactive').addClass('disabled');
@@ -143,17 +143,11 @@
         });
 
         $(document.body).on('click', '.simplesMoreInfoBeforeTab', function () {
-            $('.simplesMoreInfoAfterTab').removeClass('active');
-            $(this).addClass('active');
-            $('.simplesMoreInfoBeforeContent').show();
-            $('.simplesMoreInfoAfterContent').hide();
+            _triggerBeforeTabContent();
         });
 
         $(document.body).on('click', '.simplesMoreInfoAfterTab', function () {
-            $('.simplesMoreInfoBeforeTab').removeClass('active');
-            $(this).addClass('active');
-            $('.simplesMoreInfoBeforeContent').hide();
-            $('.simplesMoreInfoAfterContent').show();
+            _triggerAfterTabContent();
         });
 
         $(document.body).on('click', '#checkbox_inclusion_details', function () {
@@ -173,6 +167,42 @@
                 $(this).html('<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details');
             }
         });
+    }
+
+    function _triggerBeforeTabContent() {
+        $('.simplesMoreInfoAfterTab').removeClass('active');
+        $('.simplesMoreInfoBeforeTab').addClass('active');
+        $('.simplesMoreInfoBeforeContent').show();
+        $('.simplesMoreInfoAfterContent').hide();
+    }
+
+    function _triggerAfterTabContent() {
+        $('.simplesMoreInfoBeforeTab').removeClass('active');
+        $('.simplesMoreInfoAfterTab').addClass('active');
+        $('.simplesMoreInfoBeforeContent').hide();
+        $('.simplesMoreInfoAfterContent').show();
+    }
+
+    function _isScriptingRead () {
+        var $scriptingReadCheckboxBefore = $('.simplesMoreInfoBeforeContent .simples-more-info-scripting-checkbox');
+        var $scriptingReadCheckboxAfter = $('.simplesMoreInfoAfterContent .simples-more-info-scripting-checkbox');
+
+        if ($scriptingReadCheckboxAfter.length) {
+            if($($scriptingReadCheckboxAfter).prop('checked') && $($scriptingReadCheckboxBefore).prop('checked')) {
+                return true;
+            } else if ($($scriptingReadCheckboxAfter).prop('checked') && !$($scriptingReadCheckboxBefore).prop('checked')) {
+                _triggerBeforeTabContent();
+                return false;
+
+            } else if (!$($scriptingReadCheckboxAfter).prop('checked') && $($scriptingReadCheckboxBefore).prop('checked')) {
+                _triggerAfterTabContent();
+                return false;
+
+            }
+        } else {
+            return true;
+        }
+
     }
 
     function eventSubscriptions() {

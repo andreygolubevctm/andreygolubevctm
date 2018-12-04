@@ -345,6 +345,10 @@
         return $limitedCoverHidden.val();
     }
 
+    function getCoverType() {
+        return $coverType.find('input:checked').val().toLowerCase();
+    }
+
     meerkat.modules.register('healthBenefitsStep', {
         init: init,
         events: events,
@@ -356,7 +360,8 @@
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
         getExtraBenefitsModel: getExtraBenefitsModel,
-        getLimitedCover: getLimitedCover
+        getLimitedCover: getLimitedCover,
+        getCoverType: getCoverType
     });
 
 })(jQuery);

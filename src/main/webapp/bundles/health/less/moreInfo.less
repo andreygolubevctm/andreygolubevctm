@@ -57,6 +57,13 @@
     color: #ff5f5f !important;
   }
 
+  .error-field {
+    label.has-error {
+      color: #333333 !important;
+      font-size: 14px !important;
+    }
+  }
+
   &.scriptingFlagContent {
     font-size: 16px;
     .checkbox {
@@ -73,8 +80,6 @@
 
   .scriptingOptions {
     .checkbox {
-      float: right;
-      display: inline-block;
       margin-top: 10px;
 
       input + label {
@@ -91,6 +96,13 @@
         height: 25px;
         color: #ff5f5f;
         font-size: 20px;
+      }
+
+      .error-field {
+        label.has-error {
+          color: #333333 !important;
+          font-size: 14px !important;
+        }
       }
     }
   }
