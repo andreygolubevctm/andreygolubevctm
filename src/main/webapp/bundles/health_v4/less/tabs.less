@@ -44,8 +44,75 @@
   }
 }
 
+.preAprilReformContent {
+  display: block;
+}
+
+.postAprilReformContent {
+  display: none;
+}
+
+.reformHospitalTabs {
+  overflow: hidden;
+  position: relative;
+  top: -50px;
+
+  button {
+    background-color: @gray;
+    color: @white;
+    float: left;
+    border-bottom: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    margin-right: 10px;
+
+    &.active {
+      background-color: @white;
+      color: @gray-base;
+    }
+  }
+}
+
 .benefitTable {
   border: 1px solid @gray-light;
+}
+
+.HospitalBenefits {
+  .excessCoPayment {
+    margin-bottom: 40px;
+    padding: 10px 0;
+
+    .excessInfo {
+      border-right: 1px solid @gray;
+    }
+
+    .dollarValue {
+      font-size: 31px;
+
+      &::before {
+        content: '$';
+        font-size: 15px;
+        position: relative;
+        top: -10px;
+      }
+    }
+
+    .valueUnit {
+      font-size: 12px;
+    }
+  }
+
+  h2 {
+    font-size: 28px;
+    color: @gray-base;
+  }
+
+  h3 {
+    color: @gray-base;
+  }
 }
 
 .benefitRow {
@@ -57,16 +124,16 @@
   .limitTitle {
     padding-left: 0px;
   }
+
   &.benefitRowHeader {
     background-color: @reform-blue;
     color: @white;
   }
 
   .newBenefitRow {
-    padding-left: 10px;
+    padding: 10px;
     font-size: 14px;
-    height: 50px;
-    line-height: 50px;
+    line-height: 20px;
     text-align: left;
 
     &.benefitHeaderTitle {
@@ -102,6 +169,27 @@
   font-size: 16px;
   display: inline-block;
   text-align: center;
+}
+
+.newBenefitStatus {
+  display: block;
+  top: 30%;
+  position: relative;
+
+  &.benefitStatusIcon_N {
+    background: url('../images/icons/exclude_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_Y {
+    background: url('../images/icons/included_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_R {
+    background: url('../images/icons/restricted_icon.svg') center center no-repeat;
+    height: 30px;
+  }
 }
 
 .pink {

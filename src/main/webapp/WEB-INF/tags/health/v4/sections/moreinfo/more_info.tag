@@ -91,19 +91,23 @@
 					<div class="row">
 						{{ if(typeof hospitalCover !== 'undefined') { }}
 						<div class="benefitsColumn">
-							<div class="col-sm-6 col-xs-12 HospitalBenefits">
+							<div class="col-sm-12 col-xs-12 HospitalBenefits">
 								<!-- Hospital Benefits Heading + Brochure -->
+								<div class="reformHospitalTabs">
+									<button type="button" class="reformHospitalTabLink preAprilReformLink active">Covered now</button>
+									<button type="button" class="reformHospitalTabLink postAprilReformLink">Covered from {{= custom.reform.changeDate }}</button>
+								</div>
 								<div class="row">
 									<div class="col-xs-12">
 										{{ if(typeof hospitalCover !== 'undefined') { }}
-										<div class="row row-eq-height">
+										<div class="row row-eq-height heading-brochure">
 											<div class="col-xs-6">
 											{{ } }}
 										<h2>Hospital</h2>
 										{{ if(typeof hospitalCover !== 'undefined') { }}
 											</div>
 											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }} text-right">
-												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-secondary btn-sm btn-block download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View brochure</a>
+												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View hospital brochure</a>
 											</div>
 										</div>
 										{{ } }}
@@ -111,89 +115,110 @@
 								</div>
 
 								<!-- Hospital Benefits -->
-								<div class="row">
-									<div class="col-xs-12 addBottomMargin">
-										<h3>Excess</h3>
-										{{= hospital.inclusions.excess }}
+								<div class="row excessCoPayment">
+									<div class="col-xs-6 excessInfo">
+										<div class="row">
+											<div class="col-xs-8">
+												<h3>Excess</h3><br/><br/>
+												<p>{{= hospital.inclusions.excess }}</p>
+											</div>
+											<div class="col-xs-4">
+												<span class="dollarValue">{{= hospital.inclusions.excesses.perAdmission.replace('$', '') }}</span><br/>
+												<span class="valueUnit">per admission</span>
+											</div>
+										</div>
 									</div>
 
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-6 limitTitleLG">
-											Co-Payment/ % Hospital Contribution
-										</div>
-										<div class="col-xs-6">
-											{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
-										</div><div class="clearfix"></div>
-										<div class="col-xs-6 limitTitleLG addTopMargin">
-											Excess Waivers
-										</div>
-										<div class="col-xs-6 addTopMargin">
-											{{= hospital.inclusions.waivers == '-' ? 'None' : hospital.inclusions.waivers }}
-										</div><div class="clearfix"></div>
-									{{ } }}
+									<div class="col-xs-6">
+										<div class="row">
+											<div class="col-xs-8">
+												<h3>Co-payments</h3><br/><br/>
+												<p>{{= hospital.inclusions.copayment }}</p>
+											</div>
+											<div class="col-xs-4">
+												{{ if (hospital.inclusions.copayments.type == 'shared') { }}
+													<span class="dollarValue">{{= hospital.inclusions.copayments.shared }}</span><br/>
+													<span class="valueUnit">per day/night</span>
+												{{ } }}
 
-									<div class="col-xs-12">
-										<h3>Waiting Periods</h3>
+												{{ if (hospital.inclusions.copayments.type == 'private') { }}
+													<span class="dollarValue">{{= hospital.inclusions.copayments.private }}</span><br/>
+													<span class="valueUnit">per day/night</span>
+												{{ } }}
+											</div>
+										</div>
 									</div>
-
-									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-6 limitTitleLG">
-											Pre-existing conditions
-										</div>
-										<div class="col-xs-6">
-											{{= hospital.inclusions.waitingPeriods.PreExisting }}
-										</div><div class="clearfix"></div>
-										<div class="col-xs-6 limitTitleLG addTopMargin">
-											All other conditions
-										</div>
-										<div class="col-xs-6 addTopMargin">
-											{{= hospital.inclusions.waitingPeriods.Other }}
-										</div><div class="clearfix"></div>
-									{{ } }}
-
-									{{ if(typeof hospitalCover !== 'undefined') { }}
-										<div class="col-xs-12 secondaryBrochureLink addTopMargin">
-											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
-										</div>
 									{{ } }}
 								</div>
 
-								<div class="row hospitalTabContainer">
-									<div class="col-xs-12 moreInfoHospitalTab">
-										<ul class="nav nav-tabs">
-											<li>
-												<a href="javascript:;" data-target=".hospitalCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
-											</li>
-											<li>
-												<a href="javascript:;" data-target=".hospitalNotCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-
-								<!-- Inclusions / Exclusions -->
-								<div class="row tab-content">
-									<div class="col-xs-12 tab-pane hospitalCoveredPane">
+								<div class="row preAprilReformContent">
+									<div class="col-xs-12 tab-pane benefitTable">
 										{{ product.structureIndex = 4; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
-								        {{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
-										<div class="row HLTicon-hospital benefitRow">
-											<div class="benefitContent">
-											<div class="col-xs-12 benefitTitle">
-												<p>Public Hospital</p>
+										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										<div class="row benefitRow benefitRowHeader">
+											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
+												Hospital cover benefits
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+												Inclusion
+											</div>
+											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
+												Waiting period
 											</div>
 										</div>
+										{{ } }}
+										{{ _.each(product.custom.reform.tab1.benefits, function(benefit){ }}
+										<div class="row benefitRow">
+											<div class="col-xs-7 newBenefitRow benefitRowTitle">
+												{{= benefit.category }}
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitRowTitle">
+												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+											</div>
+											<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
+												{{= benefit.WaitingPeriod}}
+											</div>
 										</div>
-								        {{ } }}
-										{{= benefitTemplate(product) }}
-									</div>
-									<div class="col-xs-12 tab-pane hospitalNotCoveredPane">
-										{{ product.showNotCoveredBenefits = true; }}
-										{{ product.ignoreLimits = true; }}
-										{{= benefitTemplate(product) }}
+										{{ }) }}
 									</div>
 								</div>
+
+								{{ if (product.custom.reform.tab2.benefits.length > 0) { }}
+								<div class="row postAprilReformContent">
+									<div class="col-xs-12 tab-pane benefitTable">
+										{{ product.structureIndex = 4; }}
+										{{ product.showNotCoveredBenefits = false; }}
+										{{ product.ignoreLimits = false; }}
+										<div class="row benefitRow benefitRowHeader">
+											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
+												Hospital cover benefits
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+												Inclusion
+											</div>
+											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
+												Waiting period
+											</div>
+										</div>
+										{{ _.each(product.custom.reform.tab2.benefits, function(benefit){ }}
+										<div class="row benefitRow">
+											<div class="col-xs-7 newBenefitRow benefitRowTitle">
+												{{= benefit.category }}
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitRowTitle">
+												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+											</div>
+											<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
+												{{= benefit.WaitingPeriod}}
+											</div>
+										</div>
+										{{ }) }}
+									</div>
+								</div>
+								{{ } }}
 
 								<!-- Restricted Benefits -->
 								{{ if (hospitalCover.restrictions.length > 0) { }}
@@ -225,7 +250,7 @@
 						{{ } }}
 						{{ if(typeof extrasCover !== 'undefined') { }}
 						<div class="benefitsColumn">
-							<div class="col-sm-6 col-xs-12 ExtrasBenefits">
+							<div class="col-sm-12 col-xs-12 ExtrasBenefits">
 								<!-- Extras Benefits Heading + Brochure -->
 								<div class="row row-eq-height">
 									{{ if(typeof extrasCover !== 'undefined') { }}
@@ -241,30 +266,45 @@
 								</div>
 
 								<div class="row">
-									<div class="col-xs-12 moreInfoExtrasTab">
-										<ul class="nav nav-tabs">
-											<li>
-												<a href="javascript:;" data-target=".extrasCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
-											</li>
-											<li>
-												<a href="javascript:;" data-target=".extrasNotCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-
-								<!-- Inclusions / Exclusions -->
-								<div class="row tab-content">
-									<div class="col-xs-12 tab-pane extrasCoveredPane">
+									<div class="col-xs-12 tab-pane benefitTable">
 										{{ product.structureIndex = 5; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
-										{{= benefitTemplate(product) }}
-									</div>
-									<div class="col-xs-12 tab-pane extrasNotCoveredPane">
-										{{ product.showNotCoveredBenefits = true; }}
-										{{ product.ignoreLimits = true; }}
-										{{= benefitTemplate(product) }}
+										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										<div class="row benefitRow benefitRowHeader">
+											<div class="col-xs-5 newBenefitRow benefitHeaderTitle">
+												Extras services
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+												Annual limit
+											</div>
+											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+												Inclusion
+											</div>
+											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
+												Waiting period
+											</div>
+										</div>
+										{{ } }}
+										{{ _.each(product.extras, function(benefit, key){ }}
+											{{ if (typeof benefit === 'object') { }}
+											<div class="row benefitRow">
+												<div class="col-xs-5 newBenefitRow benefitRowTitle">
+													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
+												</div>
+												<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
+													{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+												</div>
+												<div class="col-xs-2 newBenefitRow benefitRowTitle">
+													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+												</div>
+												<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
+													{{= benefit.waitingPeriod.substring(0, 20) }}
+												</div>
+											</div>
+											{{ } }}
+										{{ }) }}
+
 									</div>
 								</div>
 							</div>
