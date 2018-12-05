@@ -4,7 +4,7 @@
 <%-- Setup New Health Session --%>
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils" />
 <session:new verticalCode="HEALTH" authenticated="true" />
-
+<c:set var="comparisonMode" scope="request"><content:get key="comparisonMode" /></c:set>
 <jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
 <agg_v1:remember_me_settings vertical="health" />
 

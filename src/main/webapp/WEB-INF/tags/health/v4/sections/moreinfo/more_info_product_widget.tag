@@ -9,10 +9,12 @@
     <div class="col-xs-12 productWidgetSection">
         <h3 class="productWidgetName">{{= info.productTitle }}</h3>
     </div>
-    <div class="col-xs-12 productWidgetSection">
-        {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-        <div class="more-info-classification-icon {{= classification.icon}}" />
-    </div>
+    <c:if test="${comparisonMode ne 'PHIO'}">
+        <div class="col-xs-12 productWidgetSection">
+            {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
+            <div class="more-info-classification-icon {{= classification.icon}}" />
+        </div>
+    </c:if>
     <div class="col-xs-12 productWidgetSection">
         <div class="col-md-2 col-md-offset-0 col-xs-2 col-xs-offset-1 productWidgetIconWrapper">
             <img src="assets/brand/ctm/images/brochure_icon.svg" class="productWidgetIcon"/>
@@ -35,6 +37,5 @@
     </div>
     <div class="col-xs-12 productWidgetSection">
         <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now <span class="icon-angle-right" /></a>
-    </div>
     </div>
 </div>
