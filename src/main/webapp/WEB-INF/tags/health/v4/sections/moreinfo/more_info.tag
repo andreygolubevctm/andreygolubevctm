@@ -306,17 +306,21 @@
 						<div class="benefitsColumn">
 							<div class="col-sm-12 col-xs-12 ExtrasBenefits">
 								<!-- Extras Benefits Heading + Brochure -->
-								<div class="row row-eq-height">
-									{{ if(typeof extrasCover !== 'undefined') { }}
-									<div class="col-xs-6">
-									{{ } }}
-									<h2>Extras</h2>
-									{{ if(typeof extrasCover !== 'undefined') { }}
+								<div class="row">
+									<div class="col-xs-12">
+										{{ if(typeof extrasCover !== 'undefined') { }}
+										<div class="row row-eq-height heading-brochure">
+											<div class="col-xs-6">
+											{{ } }}
+										<h2>Extras</h2>
+										{{ if(typeof extrasCover !== 'undefined') { }}
+											</div>
+											<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-xs-6 {{ } }} text-right">
+												<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure col-xs-12"><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View extras brochure</a>
+											</div>
+										</div>
+										{{ } }}
 									</div>
-									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-xs-6 {{ } }} text-right">
-										<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-secondary btn-sm btn-block download-extras-brochure col-xs-12">View brochure</a>
-									</div>
-									{{ } }}
 								</div>
 
 								<div class="row">
@@ -326,7 +330,7 @@
 										{{ product.ignoreLimits = false; }}
 										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
+											<div class="col-xs-8 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">
 													Extras services
 												</div>
@@ -351,7 +355,7 @@
 										{{ _.each(extras, function(benefit, key){ }}
 										{{ if (typeof benefit === 'object') { }}
 										<div class="row benefitRow">
-											<div class="col-xs-7 newBenefitRow benefitRowTitle">
+											<div class="col-xs-8 newBenefitRow benefitRowTitle">
 												<div class="benefitRowTableCell">
 													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
 													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
