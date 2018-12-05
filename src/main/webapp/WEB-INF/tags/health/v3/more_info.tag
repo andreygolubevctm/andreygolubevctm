@@ -215,13 +215,13 @@
 						<div class="row row-content">
 							<div class="col-sm-6 no-padding">
 								<div class="checkbox">
-									<input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please choose the method that the client would like to be informed of the inclusions and exclusions." required="required">
+									<input type="radio" name="health_simples_dialogue-radio-76-1" id="checkbox_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please choose the method that the client would like to be informed of the inclusions and exclusions." required="required">
 									<label for="checkbox_inclusion_details">Read me inclusion details</label>
 								</div>
 							</div>
 							<div class="col-sm-6 no-padding">
 								<div class="checkbox">
-									<input type="radio" name="health_simples_dialogue-radio-76" id="checkbox_welcome_pack" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please choose the method that the client would like to be informed of the inclusions and exclusions." required="required">
+									<input type="radio" name="health_simples_dialogue-radio-76-2" id="checkbox_welcome_pack" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please choose the method that the client would like to be informed of the inclusions and exclusions." required="required">
 									<label for="checkbox_welcome_pack">Read in the welcome pack</label>
 								</div>
 							</div>
@@ -303,19 +303,30 @@
 						</div>
 						<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
+								{{ var exclusions = ''; var exclusionsIndex = 0; }}
+								{{ var restrictions = ''; var restrictionsIndex = 0; }}
+
+								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'N') { }}
+										{{ exclusions += (exclusionsIndex > 0 ? ', ' : '') + benefit.category; exclusionsIndex++; }}
+									{{ } else if (benefit.covered === 'R') { }}
+										{{ restrictions += (restrictionsIndex > 0 ? ', ' : '') + benefit.category; restrictionsIndex++; }}
+								{{ } }}
+								{{ }); }}
+
+								{{ if(exclusions.length) { }}
 								This policy excludes
-								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
-									{{ if (benefit.covered === 'N') { }}
-										{{= benefit.category }},
-									{{ } }}
-								{{ }); }}
+								{{= exclusions }}
+								{{ } else { }}
+									<b>There are no exclusions </b>
+								{{ } }}
+
+							{{ if(restrictions.length) { }}
 								and there is restricted cover for
-								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
-									{{ if (benefit.covered === 'R') { }}
-										{{= benefit.category }},
-									{{ } }}
-								{{ }); }}
-								every other category is covered.
+								{{= restrictions }}
+								{{ } else { }}
+									<b>There are no restrictions </b>
+							{{ } }}
 							</span><br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
 
@@ -359,19 +370,30 @@
 						</div>
 						<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
+								{{ var exclusions = ''; var exclusionsIndex = 0; }}
+								{{ var restrictions = ''; var restrictionsIndex = 0; }}
+
+								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+								{{ if (benefit.covered === 'N') { }}
+										{{ exclusions += (exclusionsIndex > 0 ? ', ' : '') + benefit.category; exclusionsIndex++; }}
+									{{ } else if (benefit.covered === 'R') { }}
+										{{ restrictions += (restrictionsIndex > 0 ? ', ' : '') + benefit.category; restrictionsIndex++; }}
+								{{ } }}
+								{{ }); }}
+
+								{{ if(exclusions.length) { }}
 								This policy excludes
-								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
-									{{ if (benefit.covered === 'N') { }}
-										{{= benefit.category }},
-									{{ } }}
-								{{ }); }}
+								{{= exclusions }}
+								{{ } else { }}
+									<b>There are no exclusions </b>
+								{{ } }}
+
+							{{ if(restrictions.length) { }}
 								and there is restricted cover for
-								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
-									{{ if (benefit.covered === 'R') { }}
-										{{= benefit.category }},
-									{{ } }}
-								{{ }); }}
-								every other category is covered.
+								{{= restrictions }}
+								{{ } else { }}
+									<b>There are no restrictions </b>
+							{{ } }}
 							</span><br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
 
@@ -405,18 +427,32 @@
 						</div>
 						<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
-								So prior to the changes on {{= custom.reform.changeDate }} this policy excludes
+								So prior to the changes on {{= custom.reform.changeDate }} 
+
+								{{ var exclusions = ''; var exclusionsIndex = 0; }}
+								{{ var restrictions = ''; var restrictionsIndex = 0; }}
+
 								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
-									{{ if (benefit.covered === 'N') { }}
-										{{= benefit.category }},
-									{{ } }}
+								{{ if (benefit.covered === 'N') { }}
+										{{ exclusions += (exclusionsIndex > 0 ? ', ' : '') + benefit.category; exclusionsIndex++; }}
+									{{ } else if (benefit.covered === 'R') { }}
+										{{ restrictions += (restrictionsIndex > 0 ? ', ' : '') + benefit.category; restrictionsIndex++; }}
+								{{ } }}
 								{{ }); }}
+
+								{{ if(exclusions.length) { }}
+								This policy excludes
+								{{= exclusions }}
+								{{ } else { }}
+									<b>There are no exclusions </b>
+								{{ } }}
+
+							{{ if(restrictions.length) { }}
 								and there is restricted cover for
-								{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
-									{{ if (benefit.covered === 'R') { }}
-										{{= benefit.category }},
-									{{ } }}
-								{{ }); }}
+								{{= restrictions }}
+								{{ } else { }}
+									<b>There are no restrictions </b>
+							{{ } }}
 							</span>
 						</div>
 					</div>
@@ -471,7 +507,7 @@
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
 					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reform.tab1.limited }}</label></div><br/><br/>
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810-2" id="limited_cover_scripting_tab_1" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reform.tab1.limited }}</label></div><br/><br/>
 					{{ } else { }}
 					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  === null) { }}
@@ -573,7 +609,7 @@
 				<div class="row row-content">
 					<div class="col-sm-1 no-padding">
 						<div class="checkbox">
-							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+							<input type="radio" name="health_simples_dialogue-radio-810-3" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 							<label for="limited_cover_scripting_tab_2_not_null"></label>
 						</div>
 					</div>
@@ -609,7 +645,7 @@
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
 					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab2.limited  !== null) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_2" class="checkbox-custom checkbox" value="READNOW" data-msg-required="" required="required">
+						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810-1" id="limited_cover_scripting_tab_2" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required">
 							<label for="limited_cover_scripting_tab_2">{{= custom.reform.tab2.limited }}</label>
 						</div><br/>
 					{{ } else { }}
@@ -696,14 +732,16 @@
 				{{ if (typeof benefit === 'object') { }}
 				<div class="row benefitRow">
 					<div class="col-xs-8 newBenefitRow benefitRowTitle">
+						{{ var expanded = false; }}
 						{{ _.each(meerkat.modules.healthBenefitsStep.getSelectedBenefits(), function(benefit) { }}
 							{{ if (benefit === key) { }}
+							{{ expanded = true; }}
 							<span class="selectedExtrasIcon"></span>
 							{{ } }}
 						{{ }); }}
 						{{= key.replace(/([A-Z])/g, ' $1').trim() }}
-						<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
-							<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
+						<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
+							<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span><span>{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
 						</a>
 					</div>
 					<div class="col-xs-1 newBenefitRow benefitRowTitle align-center">
@@ -716,7 +754,7 @@
 						{{= benefit.waitingPeriod.substring(0, 20) }}
 					</div>
 				</div>
-				<div class="row collapse benefitCollapsedContent" id="extrasCollapsedContent-{{= key }}">
+				<div class="row collapse benefitCollapsedContent {{= expanded ? 'in' : '' }}" id="extrasCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}">
 					<div class="col-xs-8">
 						<div class="row">
 							<div class="col-xs-6">

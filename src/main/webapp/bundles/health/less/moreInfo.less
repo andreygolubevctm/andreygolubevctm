@@ -899,6 +899,7 @@ ul.benefitsIcons {
     position: relative;
     top: 12px;
     left: -23px;
+    background-color: white;
   }
 
   .newBenefitRow {
@@ -935,8 +936,11 @@ ul.benefitsIcons {
   color: #1C3E94;
 
   span {
-    vertical-align: top;
-    font-size: 20px;
+    &.icon-angle-down,
+    &.icon-angle-up {
+      vertical-align: top;
+      font-size: 20px;
+    }
   }
 }
 
