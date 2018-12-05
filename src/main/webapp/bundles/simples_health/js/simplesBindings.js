@@ -52,8 +52,7 @@
         $nzMedicareRulesCopy,
         $pricePromisePromotionDialogue,
         $affiliatesDialogue,
-        $dialogue106,
-        $dialogue109;
+        $dialogue106;
 
     function init() {
         $(document).ready(function () {
@@ -109,7 +108,6 @@
             $pricePromisePromotionDialogue = $('.simples-dialogue-101');
             $affiliatesDialogue = $('.simples-dialogue-105');
             $dialogue106 = $('.simples-dialogue-106');
-            $dialogue109 = $('.simples-dialogue-109');
             $dialogue111 = $('.simples-dialogue-111');
             $dialogue112 = $('.simples-dialogue-112');
 
@@ -455,7 +453,6 @@
         $dialogue21.toggle(!isWebChat);
         $dialogue26.toggleClass('hidden', isWebChat);
         $dialogue37.toggleClass('hidden', isWebChat);
-        $dialogue109.toggleClass('hidden', isWebChat);
         $healthSituationMedicare.toggleClass('hidden', isWebChat);
         $healthCvrDtlsIncomeBasedOn.toggleClass('hidden', isWebChat);
 
@@ -533,12 +530,6 @@
         $privatePatientDialogue.toggleClass('hidden', _toggle);
     }
 
-    function toggleMoreInfoDialogue() {
-        if (!webChatInProgress()) {
-            toggleResultsMandatoryDialogue();
-        }
-    }
-
     function toggleAffiliateRewardsDialogue() {
         var dialogueHTML = $affiliatesDialogue.html();
 
@@ -564,23 +555,14 @@
                 _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public');
     }
 
-    function toggleResultsMandatoryDialogue() {
-        // needs to be deferred, when retrieving limited cover quote
-        _.defer(function() {
-            $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
-        });
-    }
-
     meerkat.modules.register("simplesBindings", {
         init: init,
         toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
         toggleRebateDialogue: toggleRebateDialogue,
-        toggleMoreInfoDialogue: toggleMoreInfoDialogue,
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
         getCallType: getCallType,
         togglePricePromisePromoDialogue: togglePricePromisePromoDialogue,
         toggleBenefitsDialogue: toggleBenefitsDialogue,
-        toggleResultsMandatoryDialogue: toggleResultsMandatoryDialogue,
 		webChatInProgress: webChatInProgress
     });
 

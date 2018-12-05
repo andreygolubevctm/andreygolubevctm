@@ -59,18 +59,6 @@
                 defaultValue: '',
                 values: [
                     {
-                        value: 'top',
-                        label: 'Top'
-                    },
-                    {
-                        value: 'medium',
-                        label: 'Medium'
-                    },
-                    {
-                        value: 'basic',
-                        label: 'Basic'
-                    },
-                    {
                         value: 'customise',
                         label: 'Customise'
                     },

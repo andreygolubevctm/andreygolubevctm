@@ -187,8 +187,6 @@
             initialiseBrochureEmailForm(Results.getSelectedProduct(), moreInfoContainer, $('#resultsForm'));
             populateBrochureEmail();
         }
-
-        meerkat.modules.simplesBindings.toggleMoreInfoDialogue();
     }
 
     function onAfterShowTemplate() {

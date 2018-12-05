@@ -161,10 +161,15 @@
         });
 
         $(document.body).on('click', '.extrasCollapseContentLink', function () {
-            if ($(this).find('span').hasClass('icon-angle-down')) {
-                $(this).html('<span class="icon-angle-up" title="icon-angle-up"></span>&nbsp;Less details');
+            var span = $(this).find('span').first();
+            var textSpan = $(this).find('span').last();
+
+            if (span.hasClass('icon-angle-down')) {
+                span.removeClass('icon-angle-down').addClass('icon-angle-up');
+                textSpan.html("&nbsp;Less details");
             } else {
-                $(this).html('<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details');
+                span.removeClass('icon-angle-up').addClass('icon-angle-down');
+                textSpan.html("&nbsp;More details")
             }
         });
     }
