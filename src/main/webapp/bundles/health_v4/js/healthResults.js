@@ -7,7 +7,7 @@
         previousBreakpoint,
         best_price_count = 14,
         isLhcApplicable = 'N',
-        selectedBenefitsList = [],
+        selectedBenefitsList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
@@ -320,6 +320,9 @@
         var tStart = 0;
 
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
+            _resetSelectionsStructureObject();
+            _setupSelectedBenefits('Extras Selections', 'Extras Cover');
+            _setupSelectedBenefits('Hospital Selections', 'Hospital Cover');
             Features.buildHtml();
             _.defer(meerkat.modules.healthResultsTemplate.postRenderFeatures);
         });
@@ -551,7 +554,7 @@
                     $benefitsClickText = $('.benefits-click-text');
 
                 $(window).off("scroll.transitionBenefitsClick").on("scroll.transitionBenefitsClick", function () {
-                    if (!benefitsClickMadeFocus) {
+                    if (!benefitsClickMadeFocus && $benefitsClickText[0]) {
                         if ($benefitsClickText[0].getBoundingClientRect().top < $(window).height()) {
                             $benefitsClickText.addClass('make-focus');
                             benefitsClickMadeFocus = true;
@@ -577,6 +580,54 @@
             }
         }
         return null;
+    }
+
+        /**
+     * Reset the object to remove "do not render" flag
+     * i.e. if the user changes selected benefits.
+     * @private
+     */
+    function _resetSelectionsStructureObject() {
+        var structure = Features.getPageStructure();
+        for (var i = 0; i < structure.length; i++) {
+            if (typeof structure[i].children !== 'undefined' && structure[i].children.length) {
+                for (var m = 0; m < structure[i].children.length; m++) {
+                    delete structure[i].children[m].doNotRender;
+                }
+            }
+        }
+    }
+
+    /**
+     * This function copies the benefits from the parent's pageStructure object, and injects it into the "selections" object.
+     * We cannot splice from the original object, as if someone changes their filter, a benefit that used to be selected will not appear anymore.
+     * We shouldn't store the object in memory twice, as its 100kb.
+     * We can't set a property onto the object, without first removing the property after every rebuild.
+     * @param injectIntoParent
+     * @param injectFromParent
+     * @private
+     */
+    function _setupSelectedBenefits(injectIntoParent, injectFromParent) {
+
+        // Fetch the relevant objects so we can update the features structure
+        var structure = Features.getPageStructure();
+
+        // This is the object we are going to inject the selected benefits into.
+        var selectedBenefitsStructureObject = _findByKey(structure, injectIntoParent, 'name');
+
+        // reset it on each build, as benefits could change
+        selectedBenefitsStructureObject.children = [];
+        // this is where we are going to pull the children benefits from.
+        var featuresStructureCover = _findByKey(structure, injectFromParent, 'name');
+
+        // For each of the selected benefits
+        for (var i = 0; i < selectedBenefitsList.length; i++) {
+            var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefitsList[i], 'id');
+            if (putInShortList) {
+                selectedBenefitsStructureObject.children.push($.extend({}, putInShortList));
+                putInShortList.doNotRender = true;
+            }
+        }
     }
 
     function breakpointTracking() {
@@ -848,6 +899,27 @@
         });
     }
 
+        // Change the results templates to promote features to the 'selected' features row.
+
+        function onBenefitsSelectionChange(selectedBenefits, callback) {
+
+            selectedBenefitsList = selectedBenefits;
+    
+            // when hospital is set to off in [Customise Cover] hide the excess section
+            var $excessSection = $component.find('.cell.excessSection');
+            _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
+    
+            // If on the results step, reload the results data. Can this be more generic?
+            if (typeof callback === 'undefined') {
+                if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
+                    get();
+                }
+            } else {
+                callback();
+            }
+    
+        }
+
     function onResultsLoaded() {
         meerkat.modules.coupon.dealWithAddedCouponHeight();
         if (meerkat.modules.deviceMediaState.get() === "xs") {
@@ -1097,6 +1169,10 @@
         selectedBenefitsList = selectedBenefits;
     }
 
+    function getSelectedBenefitsList() {
+        return selectedBenefitsList;
+    }
+
     function setCallCentreText() {
         $openingHours = _.isNull($openingHours) ? $('[data-step="results"] [data-livechat="target"] .today-hours') : $openingHours;
         // add talk to experts blurb just for results page
@@ -1134,6 +1210,7 @@
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
+        getSelectedBenefitsList: getSelectedBenefitsList,
         setCallCentreText: setCallCentreText,
         resetCallCentreText: resetCallCentreText,
         unpinProductFromFilterUpdate: unpinProductFromFilterUpdate

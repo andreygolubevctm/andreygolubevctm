@@ -331,7 +331,7 @@ public class ResponseAdapterV2 {
                 if (isSimplesUser) {
                     sb.append("\" title=\"Terms and Conditions\"").append(" data-class=\"results-promo-modal\">").append("^ Terms and Conditions");
                 } else {
-                    sb.append("\" title=\"Find out more\"").append(" data-class=\"results-promo-modal\">").append("^ Find out more");
+                    sb.append("\" title=\"Find out more\"").append(" data-class=\"results-promo-modal\">").append("Find out more");
                 }
 
                 sb.append("</a>").append("</p>");
