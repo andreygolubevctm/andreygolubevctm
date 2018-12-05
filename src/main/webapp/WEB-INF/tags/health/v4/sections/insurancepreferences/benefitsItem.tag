@@ -7,7 +7,14 @@
 <c:if test="${item.isShortlistable()}">
 
     <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v4")}' />
-    <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v4")}' />
+    <c:choose>
+        <c:when test="${comparisonMode eq 'PHIO'}">
+            <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v4")}' />
+        </c:when>
+        <c:otherwise>
+            <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v5")}' />
+        </c:otherwise>
+    </c:choose>
     <%-- Get the correct cell width for sections v. categories --%>
     <c:choose>
         <c:when test="${item.getType() == 'section'}">
