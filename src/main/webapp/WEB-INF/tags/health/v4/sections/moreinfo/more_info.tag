@@ -160,31 +160,43 @@
 										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
 											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
-												Hospital cover benefits
+												<div class="benefitRowTableCell">
+													Hospital cover benefits
+												</div>
 											</div>
 											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
-												Inclusion
+												<div class="benefitRowTableCell">
+													Inclusion
+												</div>
 											</div>
 											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
-												Waiting period
+												<div class="benefitRowTableCell">
+													Waiting period
+												</div>
 											</div>
 										</div>
 										{{ } }}
 										{{ _.each(product.custom.reform.tab1.benefits, function(benefit, key) { }}
 										<div class="row benefitRow">
 											<div class="col-xs-7 newBenefitRow benefitRowTitle">
-												{{= benefit.category }}
-												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
-													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab1CategoriesCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
-														<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
-													</a>
-												{{ } }}
+												<div class="benefitRowTableCell">
+													{{= benefit.category }}
+													{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+														<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab1CategoriesCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
+															<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
+														</a>
+													{{ } }}
+												</div>
 											</div>
 											<div class="col-xs-2 newBenefitRow benefitRowTitle">
-												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+												<div class="benefitRowTableCell">
+													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+												</div>
 											</div>
 											<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
-												{{= benefit.WaitingPeriod}}
+												<div class="benefitRowTableCell">
+													{{= benefit.WaitingPeriod}}
+												</div>
 											</div>
 										</div>
 										{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
@@ -209,30 +221,42 @@
 										{{ product.ignoreLimits = false; }}
 										<div class="row benefitRow benefitRowHeader">
 											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
-												Hospital cover benefits
+												<div class="benefitRowTableCell">
+													Hospital cover benefits
+												</div>
 											</div>
 											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
-												Inclusion
+												<div class="benefitRowTableCell">
+													Inclusion
+												</div>
 											</div>
 											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
-												Waiting period
+												<div class="benefitRowTableCell">
+													Waiting period
+												</div>
 											</div>
 										</div>
 										{{ _.each(product.custom.reform.tab2.benefits, function(benefit, key){ }}
 										<div class="row benefitRow">
 											<div class="col-xs-7 newBenefitRow benefitRowTitle">
-												{{= benefit.category }}
-												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
-												<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab2CategoriesCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
-													<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
-												</a>
-												{{ } }}
+												<div class="benefitRowTableCell">
+													{{= benefit.category }}
+													{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab2CategoriesCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
+														<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
+													</a>
+													{{ } }}
+												</div>
 											</div>
 											<div class="col-xs-2 newBenefitRow benefitRowTitle">
-												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+												<div class="benefitRowTableCell">
+													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+												</div>
 											</div>
 											<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
-												{{= benefit.WaitingPeriod}}
+												<div class="benefitRowTableCell">
+													{{= benefit.WaitingPeriod}}
+												</div>
 											</div>
 										</div>
 										{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
@@ -302,37 +326,53 @@
 										{{ product.ignoreLimits = false; }}
 										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-8 newBenefitRow benefitHeaderTitle">
-												Extras services
+											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
+												<div class="benefitRowTableCell">
+													Extras services
+												</div>
 											</div>
 											<div class="col-xs-1 newBenefitRow benefitHeaderTitle align-center">
-												Annual limit
+												<div class="benefitRowTableCell">
+													Annual limit
+												</div>
 											</div>
 											<div class="col-xs-1 newBenefitRow benefitHeaderTitle align-center">
-												Inclusion
+												<div class="benefitRowTableCell">
+													Inclusion
+												</div>
 											</div>
 											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
-												Waiting period
+												<div class="benefitRowTableCell">
+													Waiting period
+												</div>
 											</div>
 										</div>
 										{{ } }}
 										{{ _.each(extras, function(benefit, key){ }}
 										{{ if (typeof benefit === 'object') { }}
 										<div class="row benefitRow">
-											<div class="col-xs-8 newBenefitRow benefitRowTitle">
-												{{= key.replace(/([A-Z])/g, ' $1').trim() }}
-												<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
-													<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
-												</a>
+											<div class="col-xs-7 newBenefitRow benefitRowTitle">
+												<div class="benefitRowTableCell">
+													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
+													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
+														<span class="icon-angle-down" title="icon-angle-down"></span>&nbsp;More details
+													</a>
+												</div>
 											</div>
 											<div class="col-xs-1 newBenefitRow benefitRowTitle align-center">
-												{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+												<div class="benefitRowTableCell">
+													{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+												</div>
 											</div>
 											<div class="col-xs-1 newBenefitRow benefitRowTitle">
-												<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+												<div class="benefitRowTableCell">
+													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
+												</div>
 											</div>
 											<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
-												{{= benefit.waitingPeriod.substring(0, 20) }}
+												<div class="benefitRowTableCell">
+													{{= benefit.waitingPeriod.substring(0, 20) }}
+												</div>
 											</div>
 										</div>
 										<div class="row collapse benefitCollapsedContent" id="extrasCollapsedContent-{{= key }}">

@@ -131,9 +131,11 @@
   }
 
   .newBenefitRow {
-    padding: 15px 10px;
+    display: table;
+    padding: 10px;
     font-size: 14px;
     line-height: 20px;
+    height: 70px;
     text-align: left;
 
     &.benefitHeaderTitle {
@@ -154,6 +156,11 @@
 
     &.align-center {
       text-align: center;
+    }
+
+    .benefitRowTableCell {
+      display: table-cell;
+      vertical-align: middle;
     }
   }
 }
