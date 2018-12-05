@@ -115,6 +115,15 @@
   }
 }
 
+.ExtrasBenefits {
+  margin-top: 40px;
+
+  h2 {
+    font-size: 28px;
+    color: @gray-base;
+  }
+}
+
 .benefitRow {
   padding-top: 0;
   padding-bottom: 0;
@@ -131,9 +140,12 @@
   }
 
   .newBenefitRow {
-    padding: 15px 10px;
+    display: grid;
+    align-items: center;
+    padding: 10px;
     font-size: 14px;
     line-height: 20px;
+    height: 70px;
     text-align: left;
 
     &.benefitHeaderTitle {
@@ -153,7 +165,7 @@
     }
 
     &.align-center {
-      text-align: center;
+      justify-content: center;
     }
   }
 }
