@@ -44,14 +44,6 @@
                             {{ premiumSplit = premiumSplit.split(".") }}
                             <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}{{ if (obj.showAltPremium === true) { }}&#42;{{ } }}</span>
                         </span>
-					<div class="frequencyTitle">
-						{{= freq === 'halfyearly' ? 'Half yearly' : freq.charAt(0).toUpperCase() + freq.slice(1) }}
-					</div>
-					{{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
-					<div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
-					{{ } else { }}
-					{{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, freq, false) }}
-					{{ } }}
 					{{ } else { }}
 					<div class="frequencyAmount comingSoon">New price not yet released</div>
 					{{ } }}
