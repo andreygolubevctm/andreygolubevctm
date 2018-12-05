@@ -106,6 +106,12 @@
             $("#health_simples_restrictions_verified, #health_simples_exclusions_verified").attr('aria-required', true).attr("required", "required");
         });
 
+        $(document).on('click', '.about-this-fund', function() {
+            meerkat.modules.dialogs.show({
+                title: 'About the fund',
+                htmlContent: Results.getSelectedProduct().aboutFund
+            });
+        });
     }
 
     function onApplySuccess() {
@@ -181,11 +187,6 @@
             initialiseBrochureEmailForm(Results.getSelectedProduct(), moreInfoContainer, $('#resultsForm'));
             populateBrochureEmail();
         }
-
-        meerkat.modules.simplesBindings.toggleMoreInfoDialogue();
-
-        var showReadNowChecks =  (($('#health_simples_notifyInclusionsExclusionsVia').val() === 'READNOW' ? true : false ) && !meerkat.modules.simplesBindings.webChatInProgress() );
-        $('.simples_dialogue-checkbox-restrictions-verified, .simples_dialogue-checkbox-exclusions-verified').toggleClass('hidden', !showReadNowChecks);
     }
 
     function onAfterShowTemplate() {

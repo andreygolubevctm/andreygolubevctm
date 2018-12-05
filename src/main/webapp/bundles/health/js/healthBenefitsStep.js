@@ -250,8 +250,6 @@
 
             $hospitalCover.find('.coverExplanation.' + previousCover + 'Cover').addClass('hidden').end().find('.coverExplanation.' + currentCover + 'Cover').removeClass('hidden');
             previousCover = currentCover;
-
-            meerkat.modules.simplesBindings.toggleResultsMandatoryDialogue();
         });
 
         $allHospitalButtons.on('change', function onHospitalBenefitsChange() {
@@ -341,6 +339,14 @@
 
     }
 
+    function getLimitedCover() {
+        return $limitedCoverHidden.val();
+    }
+
+    function getCoverType() {
+        return $coverType.find('input:checked').val().toLowerCase();
+    }
+
     meerkat.modules.register('healthBenefitsStep', {
         init: init,
         events: events,
@@ -351,7 +357,9 @@
         getSelectedBenefits: getSelectedBenefits,
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
-        getExtraBenefitsModel: getExtraBenefitsModel
+        getExtraBenefitsModel: getExtraBenefitsModel,
+        getLimitedCover: getLimitedCover,
+        getCoverType: getCoverType
     });
 
 })(jQuery);

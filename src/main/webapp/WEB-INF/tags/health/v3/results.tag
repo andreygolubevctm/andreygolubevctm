@@ -45,7 +45,7 @@
             Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later.</a>
     </jsp:attribute>
     <jsp:attribute name="zeroResultsFoundMessage">
-            No results match your filters. Please try resetting your results by <a href="javascript;" class="reset-filters">clicking here</a>.
+            No results match your filters. Please try resetting your results by <a href="javascript:window.meerkat.modules.journeyEngine.gotoPath('benefits');" class="reset-filters">clicking here</a>.
     </jsp:attribute>
 
     <jsp:attribute name="quoterefTemplate">
@@ -82,12 +82,10 @@
                     <h3><span class="health-icon HLTicon-hospital"></span> Hospital Cover</h3>
                     <div class="hospitalSelectionsExcessContainer">
                         <div class="hospitalExcessSectionBorder">
-                            <h5>Excess</h5>
+                            <h5>Hospital excess</h5>
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1"></div>
                             <div class="yourSelectionsHospital">
-                                <h5>Your selections</h5>
-                                <a href="javascript:;" class="restrictedBenefit hidden" data-content="helpid:543" data-toggle="dialog" data-title="" data-dialog-hash-id="hospitalCover" tabindex="-1"
-                                   data-cache="true" <field_v1:analytics_attr analVal="view restricted {{= info.provider}}" quoteChar="\"" />># restricted benefit</a>
+                                <h5>Your selected benefits</h5>
                             </div>
                         </div>
                         {{ if(info.situationFilter == 'Y') { }}
@@ -96,14 +94,14 @@
                         <div class="featuresListHospitalSelections" data-feature-index="2"></div>
                         {{ } }}
                     </div>
-                    <h5>Other options</h5>
+                    <h5>Other hospital benefits</h5>
                     <div class="featuresListHospitalOther" data-feature-index="4"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
-                    <h3><span class="health-icon HLTicon-extras"></span> Extras Cover</h3>
+                    <h3 class="noStyles"><span class="health-icon HLTicon-extras"></span> Extras Cover</h3>
                     <div class="featuresListExtrasSelections" data-feature-index="3"></div>
-                    <h5>Other options</h5>
+                    <h5>Other extras services</h5>
                     <div class="featuresListExtrasOtherList" data-feature-template="#results-features-extras-template" data-feature-index="5"></div>
                     <div class="featuresListExtrasFullList" data-feature-index="5"></div>
                 </div>

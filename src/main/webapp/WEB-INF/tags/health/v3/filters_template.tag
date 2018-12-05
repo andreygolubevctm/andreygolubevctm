@@ -67,6 +67,7 @@
             </div>
         </div>
     </div>
+
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
@@ -87,25 +88,6 @@
         </div>
     </div>
 
-    <c:if test="${not empty callCentre}">
-        <div class="row filter need-extras" data-filter-serverside="true">
-            <div class="col-xs-12">
-                <div class="sidebar-subtitle-container">
-                    <span class="heading-text">Extras cover level</span>
-                </div>
-                <div class="filter-extrascoverlevel select">
-                    <span class="input-group-addon"><i class="icon-sort"></i></span>
-                    <select id="health_filterBar_extrasCoverLevel" name="health_filterBar_extrasCoverLevel" class="form-control array-select">
-                        {{ _.each(model.extrasCoverLevel.values, function(object) { }}
-                        {{ var selected = object.selected ? ' selected="selected"' : ''; }}
-                        <option id="health_filterBar_extrasCoverLevel_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
-                        {{ }) }}
-                    </select>
-                </div>
-            </div>
-        </div>
-    </c:if>
-
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
@@ -113,7 +95,15 @@
                 <span class="heading-text">Hospital excess</span>
             </div>
             <div class="filter-excess">
-                <health_v1:filter_excess useDefaultOutputField="true" />
+                <select class="form-control array_select income health_cover_details_excess has-success" id="health_filterBar_excess" name="health_filterBar_excess" required="required" data-msg-required="Please choose your hospital excess" aria-required="true" aria-invalid="false" data-visible="true">
+                    <! -- The order of these options are important, changing these will also require changes in ResultAdapter2.java -->
+                    <option id="health_healthCover_excess_1" value="1">$0</option>
+                    <option id="health_healthCover_excess_2" value="2">$1 - $250</option>
+                    <option id="health_healthCover_excess_3" value="3">$251 - $500</option>
+                    <option id="health_healthCover_excess_5" value="5">$501 - $750</option>
+                    <option id="health_healthCover_excess_6" value="6">$751+</option>
+                    <option id="health_healthCover_excess_4" value="4">All</option>
+                </select>
             </div>
         </div>
     </div>
