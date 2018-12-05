@@ -169,18 +169,26 @@ body[data-step="results"]:not(.moreInfoVisible) {
   }
 
   .dual-pricing-before-after-text {
-    color: @gray;
-    font-size: @font-size-small;
+    color: @gray-base;
+    font-size: @font-size-base;
     text-align: center;
   }
 
   .resultInsert .productSummary.hasDualPricing {
     height: initial;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .logo-full-width {
+      width: 100%;
+      margin-bottom: 15px;
+    }
 
     .open-more-info {
       @media (@lg) {
-        width: 60%;
-        float: left;
+        width: 50%;
+        border-right: 1px solid black;
 
         .lhcText {
           margin-top: -10px;
@@ -204,30 +212,26 @@ body[data-step="results"]:not(.moreInfoVisible) {
           float: none;
           text-align: center;
           width: auto;
+          margin-top: 0px;
         }
       }
     }
 
     .dual-pricing-container {
+      margin: 0 auto;
+      width: 100%;
+      margin-top: 10px;
       @media (@lg) {
-        width: 40%;
-        float: left;
+        width: 50%;
       }
       .april-pricing {
         @media (@xs-only) {
           height: 81px;
         }
 
-        .deadline,
-        .frequencyAmount,
-        .dollarSign,
-        .cents {
-          color: @theme-accent-3;
-        }
-
         .price.premium {
           .frequencyAmount {
-            font-size: 28px;
+            font-size: 36px;
           }
         }
 
@@ -242,7 +246,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
         }
 
         .frequencyTitle {
-          display: none;
+          top: -5px;
         }
 
         .altPriceContainer {
@@ -409,7 +413,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       }
 
       .frequencyTitle {
-        display: none;
+       top: -11px;
       }
 
       &.no-background {
@@ -522,12 +526,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
         }
       }
 
-      @media(@xs-only) {
-        .frequencyTitle {
-          display: none;
-        }
-      }
-
       .cents,
       .dollarSign {
         @media(@lg) {
@@ -607,10 +605,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
           @media (@md) {
             margin-left: 0;
           }
-        }
-
-        .frequencyTitle {
-          display: none;
         }
 
         .lhcText {
@@ -721,8 +715,8 @@ body[data-step="results"]:not(.moreInfoVisible) {
   }
 
   .dual-pricing-before-after-text {
-    color: @gray;
-    font-size: @font-size-small;
+    color: @gray-base;
+    font-size: @font-size-base;
     text-align: center;
   }
 
@@ -765,13 +759,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
         float: right;
         width: 60%;
       }
-
-      .frequencyTitle {
-        top: initial;
-        left: -25px;
-        bottom: -11px;
-        display: inline;
-      }
     }
 
     .premium-rising-tag {
@@ -792,23 +779,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
     .priceSaved {
       font-size: 18px;
-    }
-  }
-}
-
-body[data-step=apply],
-body[data-step=payment] {
-  .policySummary-sidebar.hasDualPricing {
-    .current-pricing {
-      @media (@md-only) {
-        .annually {
-          .frequencyTitle {
-            display: block;
-            left: initial;
-            top: -11px;
-          }
-        }
-      }
     }
   }
 }

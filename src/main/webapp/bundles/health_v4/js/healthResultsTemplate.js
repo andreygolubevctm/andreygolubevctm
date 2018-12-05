@@ -252,6 +252,44 @@
         return result;
     }
 
+    function getClassification(obj) {
+        var classification = {};
+        classification.icon = getClassificationIcon(obj.custom.reform ? obj.custom.reform.tier : null);
+        
+        return classification;
+    }
+
+    function getClassificationIcon(tier) {
+        if(!tier) {
+            return 'gov-unclassified';
+        }
+        
+        if(tier.toLowerCase().indexOf('bronze') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'gov-bronze-plus';
+            }else{
+                return 'gov-bronze';
+            }
+        }else if(tier.toLowerCase().indexOf('silver') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'gov-silver-plus';
+            }else{
+                return 'gov-silver';
+            }
+        }else if(tier.toLowerCase().indexOf('gold') > -1){
+            return 'gov-gold';
+        }else if(tier.toLowerCase().indexOf('basic') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'gov-basic-plus';
+            }else{
+                return 'gov-basic';
+            }
+        }else
+        {
+            return 'gov-unclassified';
+        }
+    }
+
     /**
      * @returns {number}
      */
@@ -429,9 +467,9 @@
                 var selectedBenefits = window.meerkat.modules.healthResults.getSelectedBenefitsList();
                 var featureId = element.context.children[0].children[0].getAttribute('data-featureid');
                 var alreadySelected = selectedBenefits.indexOf(featureId) > -1;
-                if(!$(this).hasClass('hidden') &&  alreadySelected) {
+                if(!$(this).hasClass('hidden') && alreadySelected) {
                     $(this).addClass('hidden');
-                } 
+                }
             });
         }).off('click', '.featuresListHospitalOtherList').on('click', '.featuresListHospitalOtherList', function () {
             $('.featuresListHospitalOtherList').addClass('hidden');
@@ -446,7 +484,7 @@
                 var alreadySelected = selectedBenefits.indexOf(featureId.toString()) > -1;
                 if(!$(this).hasClass('hidden') && alreadySelected) {
                     $(this).addClass('hidden');
-                }            
+                }
             });
         }).off('click', '.otherHospitalBenefits .coverTitle').on('click', '.otherHospitalBenefits .coverTitle', function () {
             $('.featuresListHospitalOtherList').removeClass('hidden');
@@ -528,6 +566,7 @@
         getExcessPrices: getExcessPrices,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
+        getClassification: getClassification,
         getItem: getItem,
         getExcessItem: getExcessItem,
         postRenderFeatures: postRenderFeatures,

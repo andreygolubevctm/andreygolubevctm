@@ -91,7 +91,6 @@
                         <div class="featuresListHospitalSelections"><health_v4_results:limited_cover_label /></div>
                         {{ } }}
                     </div>
-                    <div class="benefits-click-text visible-xs">Click below for cover limits</div>
                         <div class="yourSelectionsHospital">
                             <div class="coverTitle">Your selected cover benefits:</div>
                         </div>
@@ -133,7 +132,6 @@
                     </div>
                     <div class="featuresListExtrasOtherList" data-feature-template="#results-features-extras-template" data-feature-index="5"></div>
                     <div class="featuresListExtrasFullList" data-feature-index="5"></div>
-                    <div class="benefits-click-text visible-xs">Click below for cover limits</div>
                     </div>
                 {{ } }}
                 <div class="ambulanceCoverSection">

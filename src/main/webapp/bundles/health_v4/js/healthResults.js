@@ -554,7 +554,7 @@
                     $benefitsClickText = $('.benefits-click-text');
 
                 $(window).off("scroll.transitionBenefitsClick").on("scroll.transitionBenefitsClick", function () {
-                    if (!benefitsClickMadeFocus) {
+                    if (!benefitsClickMadeFocus && $benefitsClickText[0]) {
                         if ($benefitsClickText[0].getBoundingClientRect().top < $(window).height()) {
                             $benefitsClickText.addClass('make-focus');
                             benefitsClickMadeFocus = true;
