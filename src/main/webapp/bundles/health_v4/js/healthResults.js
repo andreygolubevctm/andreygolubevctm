@@ -691,7 +691,7 @@
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
         var afterFetchRates = function() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
-            meerkat.modules.resultsFeatures.fetchStructure('health_v4').done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getOnlineCategoryVersion()).done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
@@ -706,7 +706,7 @@
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
         var afterFetchRates = function() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
-            meerkat.modules.resultsFeatures.fetchStructure('health_v4').done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getOnlineCategoryVersion()).done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
