@@ -5,8 +5,15 @@
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.benefits')}" />
 
 <c:if test="${item.isShortlistable()}">
+    <c:choose>
+        <c:when test="${comparisonMode eq 'PHIO'}">
+            <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v4")}' />
+        </c:when>
+        <c:otherwise>
+            <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v5")}' />
+        </c:otherwise>
+    </c:choose>
 
-    <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v4")}' />
     <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v4")}' />
     <%-- Get the correct cell width for sections v. categories --%>
     <c:choose>

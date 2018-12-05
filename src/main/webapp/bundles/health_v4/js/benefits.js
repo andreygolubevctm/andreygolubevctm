@@ -196,18 +196,17 @@
         // set the hidden field
         var isLimited = meerkat.modules.benefits.getHospitalType() === 'limited',
             coverType = 'C',
-            hospitalCount = meerkat.modules.benefitsSwitch.isHospitalOn() ? meerkat.modules.benefitsModel.getHospitalCount() : 0,
             extrasCount = meerkat.modules.benefitsSwitch.isExtrasOn() ? meerkat.modules.benefitsModel.getExtrasCount() : 0,
             extrasOnButNoExtrasSelected = meerkat.modules.benefitsSwitch.isExtrasOn() && extrasCount === 0;
 
         // C = extras AND (hospital OR limited) OR (hospital AND extrasSwitchOn AND no extras)
-        if ((extrasCount > 0 && (hospitalCount > 0 || isLimited)) || (hospitalCount > 0 && extrasOnButNoExtrasSelected)) {
+        if ((extrasCount > 0 && (meerkat.modules.benefitsSwitch.isHospitalOn() || isLimited)) || (hospitalCount > 0 && extrasOnButNoExtrasSelected)) {
             coverType = 'C';
             // H = No extras, and Hospital benefits OR limited
-        } else if (extrasCount === 0 && (hospitalCount > 0 || isLimited)) {
+        } else if (extrasCount === 0 && (meerkat.modules.benefitsSwitch.isHospitalOn() || isLimited)) {
             coverType = 'H';
             // E = extras only
-        } else if (extrasCount > 0 || (hospitalCount === 0 && extrasOnButNoExtrasSelected)) {
+        } else if (extrasCount > 0 || (!meerkat.modules.benefitsSwitch.isHospitalOn()&& extrasOnButNoExtrasSelected)) {
             coverType = 'E';
         }
 
