@@ -175,11 +175,6 @@
   margin-right: 20px;
   text-decoration: none !important;
   color: #1C3E94;
-
-  span {
-    vertical-align: top;
-    font-size: 20px;
-  }
 }
 
 .benefitCollapsedContent {
@@ -194,6 +189,12 @@
     height: 30px;
     padding-left: 0;
     border-bottom: 1px solid #999999;
+
+    @media (min-width: 576px) {
+      &:last-of-type {
+        margin-top: 20px;
+      }
+    }
   }
 
   .extraBenefitOption {
@@ -224,8 +225,6 @@
 
 .newBenefitStatus {
   display: block;
-  top: 30%;
-  position: relative;
 
   &.benefitStatusIcon_N {
     background: url('../images/icons/exclude_icon.svg') center center no-repeat;
