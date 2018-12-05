@@ -37,7 +37,7 @@
 
         <c:choose>
             <c:when test="${comparisonMode eq 'PHIO'}">
-                <c:set var="simplesCategoryVersion" value="health" />
+                <c:set var="simplesCategoryVersion" value="health2016" />
             </c:when>    
             <c:otherwise>
                 <c:set var="simplesCategoryVersion" value="health2018" />
