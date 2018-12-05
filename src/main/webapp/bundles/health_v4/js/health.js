@@ -323,7 +323,7 @@
                 validate: true
             },
             onInitialise: function onContactInit(event) {
-                meerkat.modules.resultsFeatures.fetchStructure('health_v4');
+                meerkat.modules.resultsFeatures.fetchStructure(getOnlineCategoryVersion());
             },
             onBeforeEnter: function enterContactStep(event) {
                 // configure progress bar
