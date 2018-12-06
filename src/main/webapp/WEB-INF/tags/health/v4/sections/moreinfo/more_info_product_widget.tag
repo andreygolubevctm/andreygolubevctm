@@ -9,7 +9,7 @@
     <div class="col-xs-12 productWidgetSection">
         <h3 class="productWidgetName">{{= info.productTitle }}</h3>
     </div>
-    <c:if test="${comparisonMode ne 'PHIO'}">
+    <c:if test="${onlineHealthReformMessaging eq true}">
         <div class="col-xs-12 productWidgetSection">
             {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
             <div class="more-info-classification-icon {{= classification.icon}}" />
