@@ -4,7 +4,7 @@
 <%-- Setup New Health Session --%>
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils" />
 <session:new verticalCode="HEALTH" authenticated="true" />
-
+<c:set var="comparisonMode" scope="request"><content:get key="comparisonMode" /></c:set>
 <jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
 <agg_v1:remember_me_settings vertical="health" />
 
@@ -55,7 +55,15 @@
 
         <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
-        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health_v4')}" scope="request" />
+        <c:choose>
+            <c:when test="${comparisonMode eq 'PHIO'}">
+                <c:set var="healthCategoryVersion" value="health_v4" />
+            </c:when>
+            <c:otherwise>
+                <c:set var="healthCategoryVersion" value="health_v5" />
+            </c:otherwise>
+        </c:choose>
+        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure(healthCategoryVersion)}" scope="request" />
 
         <%-- Call centre numbers --%>
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
