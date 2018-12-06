@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <div class="row ambulanceCoverSection">
-    <h2 class="text-dark">Ambulance cover</h2>
+    <h2>Ambulance cover</h2>
     <div class="col-xs-12 benefitTable">
         <div class="row benefitRow benefitRowHeader">
             <div class="col-xs-8 newBenefitRow benefitHeaderTitle">

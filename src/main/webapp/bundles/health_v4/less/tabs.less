@@ -115,12 +115,22 @@
   }
 }
 
-.ExtrasBenefits {
+.ExtrasBenefits, .ambulanceCoverSection {
   margin-top: 40px;
 
   h2 {
     font-size: 28px;
     color: @gray-base;
+  }
+
+  .heading-brochure {
+    @media (@sm) {
+      text-align: right;
+    }
+
+    @media (@xs-only) {
+      margin-bottom: 20px;
+    }
   }
 }
 

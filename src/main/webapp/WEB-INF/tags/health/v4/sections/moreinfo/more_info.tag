@@ -306,22 +306,18 @@
 						{{ } }}
 						{{ if(typeof extrasCover !== 'undefined') { }}
 						<div class="benefitsColumn">
-							<div class="col-sm-12 col-xs-12 ExtrasBenefits">
+							<div class="col-xs-12 col-sm-12 ExtrasBenefits">
 								<!-- Extras Benefits Heading + Brochure -->
-								<div class="row">
-									<div class="col-xs-12">
-										{{ if(typeof extrasCover !== 'undefined') { }}
-										<div class="row row-eq-height heading-brochure">
-											<div class="col-xs-12 col-sm-6">
-												<h2>Extras cover</h2>
-											</div>
-											<div class="col-xs-12 col-sm-6 text-right">
-												<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure col-xs-12"><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View extras brochure</a>
-											</div>
-										</div>
-										{{ } }}
+								{{ if(typeof extrasCover !== 'undefined') { }}
+								<div class="row row-eq-height">
+									<div class="col-xs-12 col-sm-6 no-padding">
+										<h2>Extras cover</h2>
+									</div>
+									<div class="col-xs-12 col-sm-6 heading-brochure no-padding">
+										<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure"><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View extras brochure</a>
 									</div>
 								</div>
+								{{ } }}
 
 								<div class="row">
 									<div class="col-xs-12 tab-pane benefitTable">
@@ -360,7 +356,8 @@
 												<div class="benefitRowTableCell">
 													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
 													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
-														<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span><span>{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
+														<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span>
+														<span class="hidden-xs">{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
 													</a>
 												</div>
 											</div>
