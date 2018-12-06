@@ -44,16 +44,168 @@
   }
 }
 
+.preAprilReformContent {
+  display: block;
+}
+
+.postAprilReformContent {
+  display: none;
+}
+
+.reformHospitalTabs {
+  overflow: hidden;
+  position: relative;
+  top: -50px;
+
+  button {
+    background-color: @gray;
+    color: @white;
+    float: left;
+    border-bottom: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    margin-right: 10px;
+
+    &.active {
+      background-color: @white;
+      color: @gray-base;
+    }
+  }
+}
+
+.benefitTable {
+  border: 1px solid @gray-light;
+}
+
+.HospitalBenefits {
+  .excessCoPayment {
+    margin-bottom: 40px;
+    padding: 10px 0;
+
+    .excessInfo {
+      border-right: 1px solid @gray;
+    }
+
+    .dollarValue {
+      font-size: 31px;
+
+      &::before {
+        content: '$';
+        font-size: 15px;
+        position: relative;
+        top: -10px;
+      }
+    }
+
+    .valueUnit {
+      font-size: 12px;
+    }
+  }
+
+  h2 {
+    font-size: 28px;
+    color: @gray-base;
+  }
+
+  h3 {
+    color: @gray-base;
+  }
+}
+
+.ExtrasBenefits {
+  margin-top: 40px;
+
+  h2 {
+    font-size: 28px;
+    color: @gray-base;
+  }
+}
+
 .benefitRow {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 0;
+  padding-bottom: 0;
   border-bottom: 1px solid @gray-lighter;
-  margin-left: 0px;
-  margin-right: 0px;
 
   .benefitTitle,
   .limitTitle {
     padding-left: 0px;
+  }
+
+  &.benefitRowHeader {
+    background-color: @reform-blue;
+    color: @white;
+  }
+
+  .newBenefitRow {
+    display: grid;
+    align-items: center;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    height: 70px;
+    text-align: left;
+
+    &.benefitHeaderTitle {
+      border-left: 1px solid @white;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.benefitRowTitle {
+      border-left: 1px solid @gray-lighter;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.align-center {
+      justify-content: center;
+    }
+  }
+}
+
+.extrasCollapseContentLink {
+  float: right;
+  margin-right: 20px;
+  text-decoration: none !important;
+  color: #1C3E94;
+
+  span {
+    vertical-align: top;
+    font-size: 20px;
+  }
+}
+
+.benefitCollapsedContent {
+  background-color: #E9EBF5;
+  padding: 21px 30px;
+
+  .extraBenefitSection {
+    padding-right: 20px;
+  }
+
+  .extraBenefitSubHeading {
+    height: 30px;
+    padding-left: 0;
+    border-bottom: 1px solid #999999;
+  }
+
+  .extraBenefitOption {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 0;
+    vertical-align: middle;
+    font-size: 12px;
+
+    &.align-center {
+      text-align: center;
+    }
   }
 }
 
@@ -68,6 +220,27 @@
   font-size: 16px;
   display: inline-block;
   text-align: center;
+}
+
+.newBenefitStatus {
+  display: block;
+  top: 30%;
+  position: relative;
+
+  &.benefitStatusIcon_N {
+    background: url('../images/icons/exclude_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_Y {
+    background: url('../images/icons/included_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_R {
+    background: url('../images/icons/restricted_icon.svg') center center no-repeat;
+    height: 30px;
+  }
 }
 
 .pink {

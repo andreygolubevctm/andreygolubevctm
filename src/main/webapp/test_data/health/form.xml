@@ -19,11 +19,11 @@
 		<optin>Y</optin>
 	</contactDetails>
 	<situation>
-		<healthCvr>C</healthCvr>
-		<location>Toowong 4000 QLD</location>
+		<healthCvr>F</healthCvr>
+		<location>Toowong 4066 QLD</location>
 		<state>QLD</state>
 		<suburb>Toowong</suburb>
-		<postcode>4000</postcode>
+		<postcode>4066</postcode>
 		<healthSitu>LC</healthSitu>
 		<cover>Y</cover>
 		<singleProvider>17</singleProvider>
@@ -111,7 +111,7 @@
 		<productId />
 		<productNumber />
 		<productTitle />
-		<provider>Navy Health</provider>
+		<provider />
 		<primary>
 			<title>MR</title>
 			<firstname>Lechuck</firstname>

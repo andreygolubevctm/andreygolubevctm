@@ -104,6 +104,7 @@
      * @param ft
      * @returns {*}
      */
+
     function getItem(obj, ft) {
         //NOTE: Not sure if we need to extend the feature object each time to clone it.
         // If you don't, the last row's data ends up on Features.getPageStructure. Is that a problem? Not sure...
@@ -170,7 +171,7 @@
             ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
         result.hasValidPrice = (prem.value && prem.value > 0) || (prem.text && prem.text.indexOf('$0.') < 0) ||
             (prem.payableAmount && prem.payableAmount > 0);
-        result.lhcFreePriceMode = typeof mode === "undefined" || (mode !== "lhcInc" || prem.lhcfreepricing.indexOf('The premium may be affected by LHC<br/>') === 0 && meerkat.modules.healthLHC.getNewLHC() === null);
+        result.lhcFreePriceMode = typeof mode === "undefined" || (mode !== "lhcInc" || prem.lhcfreepricing.indexOf('The premium may be affected by LHC') === 0 && meerkat.modules.healthLHC.getNewLHC() === null);
         result.discounted = prem.discounted === 'Y';
         result.discountPercentage = prem.discountPercentage;
         return result;
@@ -209,6 +210,44 @@
         result.pathValue = Object.byString(obj, specialOffer.resultPath);
         result.displayValue = Features.parseFeatureValue(result.pathValue, true);
         return result;
+    }
+
+    function getClassification(obj) {
+        var classification = {};
+        classification.icon = getClassificationIcon(obj.custom.reform.tier);
+
+        return classification;
+    }
+
+    function getClassificationIcon(tier) {
+        if(!tier) {
+            return 'gov-unclassified';
+        }
+
+        if(tier.toLowerCase().indexOf('bronze') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'gov-bronze-plus';
+            }else{
+                return 'gov-bronze';
+            }
+        }else if(tier.toLowerCase().indexOf('silver') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'gov-silver-plus';
+            }else{
+                return 'gov-silver';
+            }
+        }else if(tier.toLowerCase().indexOf('gold') > -1){
+            return 'Gold_govclass.svg';
+        }else if(tier.toLowerCase().indexOf('basic') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'gov-basic-plus';
+            }else{
+                return 'gov-basic';
+            }
+        }else
+        {
+            return 'gov-unclassified';
+        }
     }
 
     /**
@@ -441,6 +480,7 @@
         getExcessPrices: getExcessPrices,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
+        getClassification: getClassification,
         getItem: getItem,
         getExcessItem: getExcessItem,
         postRenderFeatures: postRenderFeatures,

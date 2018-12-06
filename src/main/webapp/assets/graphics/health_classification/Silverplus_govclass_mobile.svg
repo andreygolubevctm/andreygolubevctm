@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 150 85">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #333;
+        font-size: 14px;
+      }
+
+      .cls-2, .cls-4 {
+        font-family: SourceSansPro-Regular, Source Sans Pro;
+      }
+
+      .cls-3, .cls-7 {
+        font-family: SourceSansPro-SemiBold, Source Sans Pro;
+        font-weight: 600;
+      }
+
+      .cls-4 {
+        font-weight: 400;
+      }
+
+      .cls-11, .cls-5, .cls-9 {
+        fill: #999;
+      }
+
+      .cls-6 {
+        opacity: 0.4;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-7, .cls-8 {
+        fill: #fff;
+      }
+
+      .cls-7, .cls-9 {
+        font-size: 24px;
+      }
+
+      .cls-9 {
+        font-family: SourceSansPro-Bold, Source Sans Pro;
+        font-weight: 700;
+      }
+
+      .cls-10, .cls-11 {
+        stroke: none;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="1" y1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.488" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_8974" data-name="Group 8974" transform="translate(-1480 -1262)">
+    <g id="Path_4706" data-name="Path 4706" class="cls-1" transform="translate(1507.242 1262)">
+      <path class="cls-10" d="M0,0H122.758V85H0Z"/>
+      <path class="cls-11" d="M 1 1 L 1 84 L 121.7577972412109 84 L 121.7577972412109 1 L 23.93099975585938 1 L 1 1 M 0 0 L 23.93099975585938 0 L 122.7577972412109 0 L 122.7577972412109 85 L 0 85 L 0 0 Z"/>
+    </g>
+    <text id="Government_classification_SILVER_PLUS_from_April_1" data-name="Government classification
+SILVER PLUS from April 1" class="cls-2" transform="translate(1539.998 1267)"><tspan x="0" y="14">Government </tspan><tspan x="0" y="32">classification</tspan><tspan class="cls-3"><tspan x="0" y="50">SILVER PLUS</tspan><tspan class="cls-4" y="50"> </tspan><tspan class="cls-4" x="0" y="68">from April 1</tspan></tspan></text>
+    <g id="Group_8957" data-name="Group 8957" transform="translate(1480 1285)">
+      <path id="Union_120" data-name="Union 120" class="cls-5" d="M21.211,40v-.02C9.409,39.509,0,30.743,0,20S9.409.491,21.211.02V0H32.846C45.087.028,55,8.972,55,20S45.087,39.972,32.846,40H21.211Z"/>
+      <path id="Union_121" data-name="Union 121" class="cls-6" d="M21.1,40v-.025C9.348,39.452,0,30.708,0,20S9.348.548,21.1.025V0H33.789V.02C45.591.491,55,9.257,55,20S45.591,39.509,33.789,39.98V40Z"/>
+      <g id="Group_8727" data-name="Group 8727" transform="translate(11 4)">
+        <text id="S" class="cls-7" transform="translate(7 24)"><tspan x="-6.54" y="0">S</tspan></text>
+        <g id="Group_8741" data-name="Group 8741" transform="translate(19)">
+          <circle id="Ellipse_2078" data-name="Ellipse 2078" class="cls-8" cx="8" cy="8" r="8" transform="translate(0 8)"/>
+          <text id="_" data-name="+" class="cls-9" transform="translate(8 24)"><tspan x="-6.336" y="0">+</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
