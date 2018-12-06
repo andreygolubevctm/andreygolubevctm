@@ -94,6 +94,7 @@
   background-color: white;
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 
   .companyLogo {
     margin-top: 15px;
@@ -119,6 +120,10 @@
     &.gov-unclassified {
       background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
 
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+      }
+
       @media (@sm) {
         background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
       }
@@ -126,6 +131,10 @@
 
     &.gov-bronze-plus {
       background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
+      }
 
       @media (@sm) {
         background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
@@ -135,6 +144,10 @@
     &.gov-bronze {
       background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass_mobile.svg');
 
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
+      }
+
       @media (@sm) {
         background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
       }
@@ -142,6 +155,10 @@
 
     &.gov-silver-plus {
       background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
+      }
 
       @media (@sm) {
         background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
@@ -151,6 +168,10 @@
     &.gov-silver {
       background-image: url('../../../../assets/graphics/health_classification/Silver_govclass_mobile.svg');
 
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
+      }
+
       @media (@sm) {
         background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
       }
@@ -158,6 +179,10 @@
 
     &.gov-gold {
       background-image: url('../../../../assets/graphics/health_classification/Gold_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
+      }
 
       @media (@sm) {
         background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
@@ -167,6 +192,10 @@
     &.gov-basic-plus {
       background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass_mobile.svg');
 
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
+      }
+
       @media (@sm) {
         background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
       }
@@ -174,6 +203,10 @@
 
     &.gov-basic {
       background-image: url('../../../../assets/graphics/health_classification/Basic_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
+      }
 
       @media (@sm) {
         background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
@@ -366,9 +399,14 @@
 }
 
 .aboutThisFundLink {
+  padding: 0px;
+
+  @media (@sm) {
   padding-top: 10px;
   padding-bottom: 15px;
+  padding-left: 15px;
   font-size: 12px;
+  }
 }
 
 .aboutIcon {
@@ -382,7 +420,7 @@
 
   @media (@xs-only) {
     .companyLogo {
-      margin-top: 10px;
+      margin-top: 15px;
     }
     background-color: @theme-light;
   }
@@ -471,10 +509,25 @@
   }
 
   h2,
-  h3,
-  .productName {
+  h3 {
     color: @theme-accent-4;
 
+  }
+
+  .productName {
+    font-size: 18px;
+    color: #333333;
+    margin-top: 15px;
+  }
+
+  .current-pricing-details {
+    width: 70%;
+    margin: 5px auto;
+    text-align: center;
+  }
+
+  .quote-ref-container {
+    width: 100%;
   }
 
   h3 {
@@ -589,7 +642,7 @@
   }
 
   .frequencyAmount {
-    color: @theme-tertiary;
+    color: #333333;
     font-size: 48px;
     line-height: 40px;
 
@@ -838,6 +891,7 @@ body[data-is-single="true"] {
         background: #fff;
         padding-top: 0;
         position: fixed;
+        border-bottom: 1px solid lightgray;
         width: 100%;
         z-index: 1;
         top: 40px;
@@ -846,16 +900,26 @@ body[data-is-single="true"] {
     }
 
     .dockedHeaderLarge {
+      border-bottom: 1px solid lightgray;
+
       .hidden-large {
         display: none;
       }
 
       h5.productName {
-        margin-right: -15px;
+        font-size: 18px;
+        color: #333333;
+        margin-top: 15px;
+      }
+
+      .quote-reference-number {
+        h3 {
+          color: #333333;
+        }
       }
 
       .frequencyAmount {
-        line-height: 30px;
+        line-height: 40px;
 
         .frequencyTitle {
           line-height: 20px;
@@ -864,7 +928,6 @@ body[data-is-single="true"] {
     }
 
     .dockedHeaderSlim {
-      .quoteRefHdr,
       .logo-header.hidden-slim,
       .hidden-slim {
         display: none;
@@ -888,10 +951,11 @@ body[data-is-single="true"] {
 
       .quote-reference-number {
         h3 {
-          font-size: @font-size-base;
+          font-size: 18px;
           line-height: @line-height-base;
           color: @gray-darker;
-          margin-bottom: 0px;
+          margin-bottom: 5px;
+          margin-top: 5px;
           text-align: center;
           span{
             font-weight: @font-family-theme-regular;
@@ -900,11 +964,6 @@ body[data-is-single="true"] {
       }
 
       &.callCentreOpen {
-        .quote-reference-number {
-          h3 {
-            text-align:left;
-          }
-        }
         .getPrintableBrochures {
           text-align:left;
         }
