@@ -604,12 +604,14 @@
   }
 
   .row-eq-height {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @media(@sm) {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .leftAlignedLink {
@@ -976,4 +978,8 @@ body[data-is-single="true"] {
       }
     }
   }
+}
+
+.no-padding {
+  padding: 0;
 }
