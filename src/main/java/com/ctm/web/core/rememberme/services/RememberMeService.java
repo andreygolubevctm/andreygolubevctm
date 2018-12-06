@@ -321,7 +321,7 @@ public class RememberMeService {
         if (attemptsSessionAttributeName != null) {
             Optional<Integer> attemptsSessionValue = getAttemptsCounterFromSession(session, attemptsSessionAttributeName);
             if (attemptsSessionValue.isPresent()) {
-                attemptsCounter = attemptsSessionValue.orElse(Integer.MAX_VALUE) + 1;
+                attemptsCounter = attemptsSessionValue.map(x -> x + 1).orElse(Integer.MAX_VALUE);
                 session.setAttribute(attemptsSessionAttributeName, attemptsCounter);
             } else {
                 session.setAttribute(attemptsSessionAttributeName, attemptsCounter);
