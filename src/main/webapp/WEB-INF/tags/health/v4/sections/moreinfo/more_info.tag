@@ -157,19 +157,20 @@
 										{{ product.structureIndex = 4; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
+										{{ var isMobile = meerkat.modules.deviceMediaState.get() === "xs"; }}
 										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
+											<div class="col-xs-9 col-sm-7 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">
 													Hospital cover benefits
 												</div>
 											</div>
-											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center">
 												<div class="benefitRowTableCell">
 													Inclusion
 												</div>
 											</div>
-											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center hidden-xs">
 												<div class="benefitRowTableCell">
 													Waiting period
 												</div>
@@ -178,36 +179,45 @@
 										{{ } }}
 										{{ _.each(product.custom.reform.tab1.benefits, function(benefit, key) { }}
 										<div class="row benefitRow">
-											<div class="col-xs-7 newBenefitRow benefitRowTitle">
+											<div class="col-xs-9 col-sm-7 newBenefitRow benefitRowTitle">
 												{{ var expanded = false; }}
 												<div class="benefitRowTableCell">
 													{{= benefit.category }}
-													{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") || isMobile) { }}
 														<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab1CategoriesCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
-															<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span><span>{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
+															<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span>
+															<span class="hidden-xs">{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
 														</a>
 													{{ } }}
 												</div>
 											</div>
-											<div class="col-xs-2 newBenefitRow benefitRowTitle">
+											<div class="col-xs-3 col-sm-2 newBenefitRow benefitRowTitle">
 												<div class="benefitRowTableCell">
 													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
 												</div>
 											</div>
-											<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
+											<div class="col-xs-3 col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs">
 												<div class="benefitRowTableCell">
 													{{= benefit.WaitingPeriod}}
 												</div>
 											</div>
 										</div>
-										{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+										{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") || isMobile) { }}
 											<div class="row collapse benefitCollapsedContent" id="clinicalTab1CategoriesCollapsedContent-{{= key }}">
-												<div class="col-xs-8">
+												<div class="col-xs-12 col-sm-8 visible-xs">
+													<div class="row">
+														<div class="col-xs-12 extraBenefitSubHeading"><strong>Waiting period</strong></div>
+														<div class="col-xs-12 extraBenefitOption">{{= benefit.WaitingPeriod }}</div>
+													</div>
+												</div>
+												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+												<div class="col-xs-12 col-sm-8 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
 														<div class="col-xs-12 extraBenefitOption">{{= benefit.scopeOfCover }}</div>
 													</div>
 												</div>
+												{{ } }}
 											</div>
 										{{ } }}
 										{{ }); }}
@@ -221,17 +231,17 @@
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
+											<div class="col-xs-9 col-sm-7 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">
 													Hospital cover benefits
 												</div>
 											</div>
-											<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center">
 												<div class="benefitRowTableCell">
 													Inclusion
 												</div>
 											</div>
-											<div class="col-xs-3 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center hidden-xs">
 												<div class="benefitRowTableCell">
 													Waiting period
 												</div>
@@ -239,23 +249,24 @@
 										</div>
 										{{ _.each(product.custom.reform.tab2.benefits, function(benefit, key){ }}
 										<div class="row benefitRow">
-											<div class="col-xs-7 newBenefitRow benefitRowTitle">
+											<div class="col-xs-9 col-sm-7 newBenefitRow benefitRowTitle">
 												{{ var expanded = false; }}
 												<div class="benefitRowTableCell">
 													{{= benefit.category }}
-													{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") || isMobile) { }}
 													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab2CategoriesCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
-														<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span><span>{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
+														<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span>
+														<span class="hidden-xs">{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
 													</a>
 													{{ } }}
 												</div>
 											</div>
-											<div class="col-xs-2 newBenefitRow benefitRowTitle">
+											<div class="col-xs-3 col-sm-2 newBenefitRow benefitRowTitle">
 												<div class="benefitRowTableCell">
 													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
 												</div>
 											</div>
-											<div class="col-xs-3 newBenefitRow benefitRowTitle align-center">
+											<div class="col-xs-3 col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs">
 												<div class="benefitRowTableCell">
 													{{= benefit.WaitingPeriod}}
 												</div>
@@ -263,12 +274,20 @@
 										</div>
 										{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
 											<div class="row collapse benefitCollapsedContent" id="clinicalTab2CategoriesCollapsedContent-{{= key }}">
-												<div class="col-xs-8">
+												<div class="col-xs-12 col-sm-8 visible-xs">
+													<div class="row">
+														<div class="col-xs-12 extraBenefitSubHeading"><strong>Waiting period</strong></div>
+														<div class="col-xs-12 extraBenefitOption">{{= benefit.WaitingPeriod }}</div>
+													</div>
+												</div>
+												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+												<div class="col-xs-12 col-sm-8 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
 														<div class="col-xs-12 extraBenefitOption">{{= benefit.scopeOfCover }}</div>
 													</div>
 												</div>
+												{{ } }}
 											</div>
 										{{ } }}
 										{{ }) }}
