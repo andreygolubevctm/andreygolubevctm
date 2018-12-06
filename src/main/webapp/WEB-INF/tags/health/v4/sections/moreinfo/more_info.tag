@@ -213,7 +213,7 @@
 									</div>
 								</div>
 
-								{{ if (product.custom.reform.tab2.benefits.length > 0) { }}
+								{{ if (!_.isNull(product.custom.reform.tab2.benefits) && product.custom.reform.tab2.benefits.length > 0) { }}
 								<div class="row postAprilReformContent">
 									<div class="col-xs-12 tab-pane benefitTable">
 										{{ product.structureIndex = 4; }}
