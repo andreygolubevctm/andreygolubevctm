@@ -191,6 +191,11 @@
     function _isScriptingRead () {
         var $scriptingReadCheckboxBefore = $('.simplesMoreInfoBeforeContent .simples-more-info-scripting-checkbox');
         var $scriptingReadCheckboxAfter = $('.simplesMoreInfoAfterContent .simples-more-info-scripting-checkbox');
+        var $checkboxWelcomePack = $('#checkbox_welcome_pack');
+
+        if($checkboxWelcomePack && $($checkboxWelcomePack).prop('checked')) {
+            return true;
+        }
 
         if ($scriptingReadCheckboxAfter.length) {
             if($($scriptingReadCheckboxAfter).prop('checked') && $($scriptingReadCheckboxBefore).prop('checked')) {
