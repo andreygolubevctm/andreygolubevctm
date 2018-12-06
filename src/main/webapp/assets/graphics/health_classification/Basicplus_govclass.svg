@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 247.242 51">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2, .cls-5, .cls-8 {
+        fill: #333;
+      }
+
+      .cls-2 {
+        font-size: 14px;
+      }
+
+      .cls-2, .cls-4 {
+        font-family: SourceSansPro-Regular, Source Sans Pro;
+      }
+
+      .cls-3, .cls-6 {
+        font-family: SourceSansPro-SemiBold, Source Sans Pro;
+        font-weight: 600;
+      }
+
+      .cls-4 {
+        font-weight: 400;
+      }
+
+      .cls-6, .cls-7 {
+        fill: #fff;
+      }
+
+      .cls-6, .cls-8 {
+        font-size: 24px;
+      }
+
+      .cls-8 {
+        font-family: SourceSansPro-Bold, Source Sans Pro;
+        font-weight: 700;
+      }
+
+      .cls-10, .cls-9 {
+        stroke: none;
+      }
+
+      .cls-10 {
+        fill: #999;
+      }
+    </style>
+  </defs>
+  <g id="Group_8973" data-name="Group 8973" transform="translate(-1191 -1264)">
+    <g id="Group_8943" data-name="Group 8943" transform="translate(-138)">
+      <g id="Path_4662" data-name="Path 4662" class="cls-1" transform="translate(1356.242 1264)">
+        <path class="cls-9" d="M0,0H220V51H0Z"/>
+        <path class="cls-10" d="M 1 1 L 1 50 L 219 50 L 219 1 L 1 1 M 0 0 L 220 0 L 220 51 L 0 51 L 0 0 Z"/>
+      </g>
+      <text id="Government_classification_BASIC_PLUS_from_April_1" data-name="Government classification
+BASIC PLUS from April 1" class="cls-2" transform="translate(1398 1271)"><tspan x="0" y="14">Government classification</tspan><tspan class="cls-3"><tspan x="0" y="32">BASIC PLUS</tspan><tspan class="cls-4" y="32" xml:space="preserve"> from April 1</tspan></tspan></text>
+      <g id="Group_8942" data-name="Group 8942">
+        <path id="Union_123" data-name="Union 123" class="cls-5" d="M20,40v-.022C8.867,39.48,0,30.726,0,20S8.867.52,20,.022V0H34C45.6,0,55,8.954,55,20S45.6,40,34,40Z" transform="translate(1329 1270)"/>
+        <g id="Group_8728" data-name="Group 8728" transform="translate(-4922 1554)">
+          <text id="Ba" class="cls-6" transform="translate(6270 -256)"><tspan x="-13.356" y="0">Ba</tspan></text>
+          <g id="Group_8741" data-name="Group 8741" transform="translate(6)">
+            <circle id="Ellipse_2078" data-name="Ellipse 2078" class="cls-7" cx="8" cy="8" r="8" transform="translate(6280 -272)"/>
+            <text id="_" data-name="+" class="cls-8" transform="translate(6288 -256)"><tspan x="-6.336" y="0">+</tspan></text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

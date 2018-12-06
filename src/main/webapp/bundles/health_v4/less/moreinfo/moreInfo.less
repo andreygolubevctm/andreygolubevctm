@@ -73,6 +73,10 @@
       .more-info-affixed-header .lhcText {
         display: none;
       }
+
+      .more-info-affixed-header .rateRiseDisclaimer {
+        display: none;
+      }
     }
   }
 
@@ -85,15 +89,186 @@
   }
 }
 
+.moreInfoProductWidget {
+  border: 1px solid lightgrey;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+
+  .companyLogo {
+    margin-top: 15px;
+  }
+
+  .productWidgetSection {
+    margin: 0px 5px 12px 0px;
+
+    .results-header-classification-icon {
+      vertical-align: inherit;
+    }
+  }
+
+  .more-info-classification-icon {
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100px;
+
+    @media (@sm) {
+      height: 60px;
+    }
+
+    &.gov-unclassified {
+      background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+      }
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+      }
+    }
+
+    &.gov-bronze-plus {
+      background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
+      }
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
+      }
+    }
+
+    &.gov-bronze {
+      background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
+      }
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
+      }
+    }
+
+    &.gov-silver-plus {
+      background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
+      }
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
+      }
+    }
+
+    &.gov-silver {
+      background-image: url('../../../../assets/graphics/health_classification/Silver_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
+      }
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
+      }
+    }
+
+    &.gov-gold {
+      background-image: url('../../../../assets/graphics/health_classification/Gold_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
+      }
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
+      }
+    }
+
+    &.gov-basic-plus {
+      background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
+      }
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
+      }
+    }
+
+    &.gov-basic {
+      background-image: url('../../../../assets/graphics/health_classification/Basic_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
+      }
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
+      }
+    }
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .productWidgetHeader {
+    background-color: #1E4D8B;
+    height: 10px;
+  }
+
+  .productWidgetName {
+    color: black;
+    margin-top: 20px;
+  }
+
+  .productWidgetIconWrapper {
+    padding-left: 5px;
+  }
+
+  .productWidgetIcon {
+    width: 30px;
+  }
+
+  .row {
+    margin-top: 10px;
+  }
+
+  .classification {
+    display: inline-block;
+    line-height: 1rem;
+    font-weight: bold;
+  }
+
+  .brochureLink {
+    padding-bottom: 1rem;
+  }
+}
+
+.topFix {
+  top: 171px;
+}
+
 .more-info-affixed-header {
-  padding-bottom: 10px;
 
   div[class*="col-xs-"] {
     vertical-align: middle;
+    margin-top: 10px;
+    padding-left: 0px;
+
+    img {
+      margin-top: -10px;
+    }
   }
 
   .vertical-align {
-    line-height: 60px;
+    line-height: 30px;
   }
 
   .productNames {
@@ -134,7 +309,17 @@
     line-height: inherit;
     h3 {
       color: @gray-darker;
+      font-size: @font-size-large;
     }
+  }
+
+  .affixed-header-aleks {
+    background-image: url('../../../../assets/brand/ctm/images/aleks@2x.png');
+    height: 170px;
+    background-repeat: no-repeat;
+    background-size: 170px;
+    margin-bottom: -43px;
+    margin-top: -20px;
   }
 }
 
@@ -154,16 +339,88 @@
   }
 }
 
+.moreInfoPricingSingle {
+  display: flex;
+  justify-content: flex-start;
+  margin: -10px;
+}
+
+.moreInfoPricingDual {
+  display: flex;
+  justify-content: space-between;
+  margin: -10px;
+}
+
+.moreInfoPriceWrapper {
+  flex: 1 0 auto;
+  margin: 10px;
+  min-height: 150px;
+  width: 45px;
+  max-width: 400px;
+}
+
+.moreInfoPriceContainer {
+  border: 1px solid lightgrey;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .moreInfoPriceHeading {
+    line-height: 2;
+    background-color: #074C90;
+    color: white;
+    text-align: center;
+    width: 100%;
+  }
+
+  .moreInfoPrice {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+
+    .frequencyTitle {
+      line-height: 2rem;
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+.ambulanceCoverSection {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.moreInfoFrequencyTitle {
+  display: block;
+}
+
+.aboutThisFundLink {
+  padding: 0px;
+
+  @media (@sm) {
+  padding-top: 10px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  font-size: 12px;
+  }
+}
+
+.aboutIcon {
+  height: 1em;
+  width: 1em;
+  margin-right: 4px;
+}
+
 // Bridging page
 .moreInfoDropdown {
 
-  @media (@md) {
-    padding-top: 20px;
-  }
-
   @media (@xs-only) {
     .companyLogo {
-      margin-top: 10px;
+      margin-top: 15px;
     }
     background-color: @theme-light;
   }
@@ -199,6 +456,29 @@
     font-size: 20px;
   }
 
+  .fundDetails {
+    padding-bottom: 10px;
+  }
+
+  .containerTest {
+    overflow-x: hidden;
+  }
+
+  .moreInfoSummaryContainer {
+    background-color: #E9ECF4;
+    width: 100vw; //99.6
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding-bottom: 50px;
+  }
+
+
+  .moreInfoFrequencyTitle {
+    color: green;
+  }
   .productSummary {
 
     .frequency {
@@ -217,15 +497,37 @@
       margin: inherit;
     }
 
+    .moreInfoProductWidget {
+      .companyLogo {
+        margin: 10px auto;
+      }
+    }
+
     &.mobile {
       margin-bottom: 20px;
     }
   }
 
   h2,
-  h3,
-  .productName {
+  h3 {
     color: @theme-accent-4;
+
+  }
+
+  .productName {
+    font-size: 18px;
+    color: #333333;
+    margin-top: 15px;
+  }
+
+  .current-pricing-details {
+    width: 70%;
+    margin: 5px auto;
+    text-align: center;
+  }
+
+  .quote-ref-container {
+    width: 100%;
   }
 
   h3 {
@@ -239,11 +541,66 @@
     }
   }
 
-  .productExtraInfo {
-    padding: 10px 30px;
-    border-bottom: 1px solid @gray-lighter;
-    margin-bottom: 20px;
-    color: @gray;
+  .moreInfoProductSummaryRow {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+  }
+
+  .moreInfoProductSummaryColumn {
+    width: 100%;
+    max-width: 400px;
+    margin: 10px;
+  }
+
+  .productExtraInfoItem {
+    display: flex;
+    padding-top: 25px;
+  }
+
+  .productExtraInfoCol {
+    width: 46.5%;
+    float: left;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: 0 auto;
+    margin-right: 15px;
+  }
+
+  .moreInfoPricePromise {
+    object {
+      margin-top: -20px;
+    }
+  }
+
+  .extraInfoItemType {
+    min-width: 97px;
+    width: 97px;
+    background-color: #1E4D8B;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    height: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .extraInfoItemText {
+    padding-left: 5px;
+  }
+
+  .fundDescription {
+    display: block;
+    display: -webkit-box;
+    max-height: 3rem;
+    height: 100%;
+    margin: 0 auto;
+    line-height: 1.5rem;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .row-eq-height {
@@ -258,6 +615,10 @@
   .leftAlignedLink {
     text-align: left;
     padding-left: 0;
+  }
+
+  .centeredLink {
+    text-align: center;
   }
 
   .heading {
@@ -281,7 +642,7 @@
   }
 
   .frequencyAmount {
-    color: @theme-tertiary;
+    color: #333333;
     font-size: 48px;
     line-height: 40px;
 
@@ -293,6 +654,10 @@
     }
     .frequencyTitle {
       white-space: nowrap;
+      display: block;
+      top: 0;
+      left: 0;
+      padding: 5px 0px 5px 0px;
     }
   }
 
@@ -301,15 +666,6 @@
   }
 
   .benefitRow {
-    color: @theme-secondary;
-    &:before {
-      font-family: 'ctm-health';
-      font-size: 36px;
-      vertical-align: top;
-      display: inline-block;
-      color: @theme-secondary;
-    }
-
     &.privateHospital {
       .benefitContent {
         .limitTitle {
@@ -535,6 +891,7 @@ body[data-is-single="true"] {
         background: #fff;
         padding-top: 0;
         position: fixed;
+        border-bottom: 1px solid lightgray;
         width: 100%;
         z-index: 1;
         top: 40px;
@@ -543,16 +900,26 @@ body[data-is-single="true"] {
     }
 
     .dockedHeaderLarge {
+      border-bottom: 1px solid lightgray;
+
       .hidden-large {
         display: none;
       }
 
       h5.productName {
-        margin-right: -15px;
+        font-size: 18px;
+        color: #333333;
+        margin-top: 15px;
+      }
+
+      .quote-reference-number {
+        h3 {
+          color: #333333;
+        }
       }
 
       .frequencyAmount {
-        line-height: 30px;
+        line-height: 40px;
 
         .frequencyTitle {
           line-height: 20px;
@@ -561,7 +928,6 @@ body[data-is-single="true"] {
     }
 
     .dockedHeaderSlim {
-      .quoteRefHdr,
       .logo-header.hidden-slim,
       .hidden-slim {
         display: none;
@@ -585,10 +951,11 @@ body[data-is-single="true"] {
 
       .quote-reference-number {
         h3 {
-          font-size: @font-size-base;
+          font-size: 18px;
           line-height: @line-height-base;
           color: @gray-darker;
-          margin-bottom: 0px;
+          margin-bottom: 5px;
+          margin-top: 5px;
           text-align: center;
           span{
             font-weight: @font-family-theme-regular;
@@ -597,11 +964,6 @@ body[data-is-single="true"] {
       }
 
       &.callCentreOpen {
-        .quote-reference-number {
-          h3 {
-            text-align:left;
-          }
-        }
         .getPrintableBrochures {
           text-align:left;
         }
