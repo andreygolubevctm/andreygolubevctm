@@ -169,7 +169,7 @@
                 textSpan.html("&nbsp;Less details");
             } else {
                 span.removeClass('icon-angle-up').addClass('icon-angle-down');
-                textSpan.html("&nbsp;More details")
+                textSpan.html("&nbsp;More details");
             }
         });
     }

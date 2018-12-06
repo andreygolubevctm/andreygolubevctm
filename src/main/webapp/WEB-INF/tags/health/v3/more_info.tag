@@ -216,7 +216,7 @@
 							<div class="col-sm-6 no-padding">
 								<div class="checkbox">
 									<input type="radio" name="health_simples_dialogue-radio-76-1" id="checkbox_inclusion_details" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please choose the method that the client would like to be informed of the inclusions and exclusions." required="required">
-									<label for="checkbox_inclusion_details">Read me inclusion details</label>
+									<label for="checkbox_inclusion_details">Read me inclusion/exclusion details</label>
 								</div>
 							</div>
 							<div class="col-sm-6 no-padding">
