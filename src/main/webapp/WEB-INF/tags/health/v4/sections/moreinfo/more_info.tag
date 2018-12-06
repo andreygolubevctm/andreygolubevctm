@@ -378,10 +378,30 @@
 											</div>
 										</div>
 										<div class="row collapse benefitCollapsedContent" id="extrasCollapsedContent-{{= key }}">
+											<div class="col-xs-12 visible-xs">
+												<div class="row extraBenefitSubHeading">
+													<div class="col-xs-9 extraBenefitOption">
+														<strong>Waiting period</strong>
+													</div>
+													<div class="col-xs-3 extraBenefitOption align-center">
+														{{= benefit.waitingPeriod.substring(0, 20) }}
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-12 visible-xs">
+												<div class="row">
+													<div class="col-xs-9 extraBenefitOption">
+														<strong>Annual limit</strong>
+													</div>
+													<div class="col-xs-3 extraBenefitOption align-center">
+														{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+													</div>
+												</div>
+											</div>
 											<div class="col-xs-12 col-sm-8">
 												<div class="row">
-													<div class="col-xs-12 col-sm-6">
-														<div class="row extraBenefitSection">
+													<div class="col-xs-12 col-sm-6 extraBenefitSection">
+														<div class="row">
 															<div class="col-xs-12 col-sm-12 extraBenefitSubHeading"><strong>Claim Benefit:</strong></div>
 															{{ if (benefit.benefits !== undefined) { }}
 															<div class="col-xs-12 col-sm-12">
@@ -399,7 +419,7 @@
 															{{ } }}
 														</div>
 													</div>
-													<div class="col-xs-12 col-sm-6">
+													<div class="col-xs-12 col-sm-6 extraBenefitSection">
 														<div class="row">
 															<div class="col-xs-12 extraBenefitSubHeading"><strong>Annual Limits:</strong></div>
 															{{ if (benefit.benefitLimits !== undefined) { }}
@@ -423,7 +443,7 @@
 											<div class="col-sm-4 hidden-xs">&nbsp;</div>
 
 											{{ if (benefit.hasSpecialFeatures) { }}
-											<div class="col-xs-12 col-sm-8">
+											<div class="col-xs-12 col-sm-8 extraBenefitSection">
 												<div class="row">
 													<div class="col-xs-12 col-sm-12 extraBenefitSubHeading"><strong>Extra info:</strong></div>
 													<div class="col-xs-12 col-sm-12 extraBenefitOption">{{= benefit.hasSpecialFeatures }}</div>

@@ -192,7 +192,13 @@
   padding: 21px 30px;
 
   .extraBenefitSection {
-    padding-right: 20px;
+    @media (@sm) {
+      padding-right: 20px;
+    }
+
+    @media (@xs-only) {
+      margin-top: 30px;
+    }
   }
 
   .extraBenefitSubHeading {
@@ -200,10 +206,17 @@
     padding-left: 0;
     border-bottom: 1px solid #999999;
 
-    @media (min-width: 576px) {
+    @media (@sm) {
       &:last-of-type {
         margin-top: 20px;
       }
+    }
+  }
+
+  .extraBenefitMobile {
+    @media (@xs-only) {
+      height: 30px;
+      border-bottom: 1px solid #999999;
     }
   }
 
