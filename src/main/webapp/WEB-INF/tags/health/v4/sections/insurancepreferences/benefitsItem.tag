@@ -6,8 +6,22 @@
 
 <c:if test="${item.isShortlistable()}">
 
-    <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v4")}' />
-    <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v4")}' />
+    <c:choose>
+        <c:when test="${comparisonMode eq 'PHIO'}">
+            <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v4")}' />
+        </c:when>
+        <c:otherwise>
+            <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v5")}' />
+        </c:otherwise>
+    </c:choose>
+    <c:choose>
+        <c:when test="${comparisonMode eq 'PHIO'}">
+            <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v4")}' />
+        </c:when>
+        <c:otherwise>
+            <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v5")}' />
+        </c:otherwise>
+    </c:choose>
     <%-- Get the correct cell width for sections v. categories --%>
     <c:choose>
         <c:when test="${item.getType() == 'section'}">
@@ -44,8 +58,17 @@
 
                 <c:if test="${category != 'Hospital'}">
                     <div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
-                        <h2 class="ignore">Extras</h2>
-                        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='extras' data-attach='true'" />
+                        <h2 class="ignore">Extras cover</h2>
+                    </div>
+                    <div class="switchContainer">
+                        <div class="switchContainerItem">
+                            <p>I want extras cover</p>
+                        </div>
+                        <div class="switchContainerItem">
+                            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="Yes" offText="No" additionalAttributes="data-benefit='extras' data-attach='true'" />
+                        </div>
+                    </div>
+                    <div id="tabs" class="benefitsTab">
                         <p>${colContent}</p>
                         <health_v4:benefits_switch_extras_message />
                         <health_v4_insuranceprefs:quick_select
@@ -54,13 +77,29 @@
                 </c:if>
                 <c:if test="${category eq 'Hospital'}">
                 <div class="title">
-                    <h2 class="ignore">Hospital</h2>
-                    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='hospital' data-attach='true'" />
+                    <h2 class="ignore">Private hospital cover</h2>
+                </div>
+                <div class="switchContainer">
+                    <div class="switchContainerItem">
+                        <p>I want private hospital cover</p>
+                    </div>
+                    <div class="switchContainerItem">
+                        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="Yes" offText="No" additionalAttributes="data-benefit='hospital' data-attach='true'" />
+                    </div>
                 </div>
                 <div id="tabs" class="benefitsTab">
+                    <p>${colContent}</p>
                     <ul class="nav nav-tabs tab-count-2">
-                        <li id="comprehensiveBenefitTab" class="active"><a data-toggle="tab" href="#comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('comprehensiveTabCopy')}</h2></a></li>
-                        <li><a data-toggle="tab" href="#limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('limitedTabCopy')}</h2></a></li>
+                        <li id="comprehensiveBenefitTab" class="active">
+                            <a data-toggle="tab" href="#comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>
+                                <h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('comprehensiveTabCopy')}</h2>
+                            </a>
+                        </li>
+                        <li id="limitedBenefitTab">
+                            <a data-toggle="tab" href="#limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>
+                                <h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('limitedTabCopy')}</h2>
+                            </a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active in" id="comprehensive-pane">
