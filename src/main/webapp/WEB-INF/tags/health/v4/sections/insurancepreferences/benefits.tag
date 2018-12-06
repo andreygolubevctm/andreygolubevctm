@@ -8,7 +8,7 @@
 <%-- VARIABLES --%>
 <c:set var="benefitsIntroCopy"><content:get key="benefitsIntroCopy" /></c:set>
 
-<form_v2:fieldset legend="What would you like covered in your new health policy?" postLegend="${benefitsIntroCopy}" className="mainBenefitHeading">
+<form_v2:fieldset legend="Help us find the right cover for you" postLegend="${benefitsIntroCopy}" className="mainBenefitHeading">
 	<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customise" />
 </form_v2:fieldset>
 
