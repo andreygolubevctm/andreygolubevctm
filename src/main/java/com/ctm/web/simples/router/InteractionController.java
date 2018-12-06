@@ -67,7 +67,7 @@ public class InteractionController extends CommonQuoteRouter {
                     interactionService.persistInteractionId(transId, callId);
                     return "Success. Call Details are stored for the transaction" + transactionId;
                 } else {
-                    LOGGER.error("No call Id exists for the user:" + authenticatedData.getUid());
+                    LOGGER.info("No call Id exists for the user:" + authenticatedData.getUid());
                 }
             }
         }
