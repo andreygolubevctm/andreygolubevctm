@@ -729,12 +729,15 @@
 					</div>
 				</div>
 				{{ _.each(extras, function(benefit, key){ }}
+				{{ if(!benefit) { }}
+					{{ return; }}
+				{{ } }}
 				{{ if (typeof benefit === 'object') { }}
 				<div class="row benefitRow">
 					<div class="col-xs-8 newBenefitRow benefitRowTitle">
 						{{ var expanded = false; }}
-						{{ _.each(meerkat.modules.healthBenefitsStep.getSelectedBenefits(), function(benefit) { }}
-							{{ if (benefit === key) { }}
+						{{ _.each(meerkat.modules.healthBenefitsStep.getSelectedBenefits(), function(benefitKey) { }}
+							{{ if (benefitKey === key) { }}
 							{{ expanded = true; }}
 							<span class="selectedExtrasIcon"></span>
 							{{ } }}
