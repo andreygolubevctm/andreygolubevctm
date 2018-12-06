@@ -30,8 +30,8 @@
                 <a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure">View extras brochure</a>
             </div>
             {{ } }}
-            <div class="brochureLink">
-                <a href="javascript:;">Email brochures</a>
+            <div class="brochureLink printableBrochures">
+                <a href="javascript:;" class="getPrintableBrochures">Email brochures</a>
             </div>
         </div>
     </div>
