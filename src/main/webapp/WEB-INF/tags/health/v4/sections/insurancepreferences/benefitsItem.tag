@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div id="tabs" class="benefitsTab">
-                        <p>${colContent}</p>
+                        <p id="benefits_tab_extras_col_content">${colContent}</p>
                         <health_v4:benefits_switch_extras_message />
                         <health_v4_insuranceprefs:quick_select
                                 options="Dental:dental|Sports:sports|Peace of Mind:peace" trackingLabel="extras" />
@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 <div id="tabs" class="benefitsTab">
-                    <p>${colContent}</p>
+                    <p id="benefits_tab_hospital_col_content">${colContent}</p>
                     <ul class="nav nav-tabs tab-count-2">
                         <li id="comprehensiveBenefitTab" class="active">
                             <a data-toggle="tab" href="#comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>
