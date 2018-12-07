@@ -107,7 +107,7 @@
 
             event.preventDefault();
 
-            if ($('#resultsForm').valid()) {
+            if ($('#resultsForm').valid() && _isScriptingRead()) {
 
                 var $this = $(this);
                 $this.addClass('inactive').addClass('disabled');
@@ -141,6 +141,72 @@
                 className: $(this).attr("data-class")
             });
         });
+
+        $(document.body).on('click', '.simplesMoreInfoBeforeTab', function () {
+            _triggerBeforeTabContent();
+        });
+
+        $(document.body).on('click', '.simplesMoreInfoAfterTab', function () {
+            _triggerAfterTabContent();
+        });
+
+        $(document.body).on('click', '#checkbox_inclusion_details', function () {
+            $('.scriptingFlagContent, .readInclusionsFlag').show();
+            $('.readWelcomeFlag').hide();
+        });
+
+        $(document.body).on('click', '#checkbox_welcome_pack', function () {
+            $('.scriptingFlagContent, .readWelcomeFlag').show();
+            $('.readInclusionsFlag').hide();
+        });
+
+        $(document.body).on('click', '.extrasCollapseContentLink', function () {
+            var span = $(this).find('span').first();
+            var textSpan = $(this).find('span').last();
+
+            if (span.hasClass('icon-angle-down')) {
+                span.removeClass('icon-angle-down').addClass('icon-angle-up');
+                textSpan.html("&nbsp;Less details");
+            } else {
+                span.removeClass('icon-angle-up').addClass('icon-angle-down');
+                textSpan.html("&nbsp;More details")
+            }
+        });
+    }
+
+    function _triggerBeforeTabContent() {
+        $('.simplesMoreInfoAfterTab').removeClass('active');
+        $('.simplesMoreInfoBeforeTab').addClass('active');
+        $('.simplesMoreInfoBeforeContent').show();
+        $('.simplesMoreInfoAfterContent').hide();
+    }
+
+    function _triggerAfterTabContent() {
+        $('.simplesMoreInfoBeforeTab').removeClass('active');
+        $('.simplesMoreInfoAfterTab').addClass('active');
+        $('.simplesMoreInfoBeforeContent').hide();
+        $('.simplesMoreInfoAfterContent').show();
+    }
+
+    function _isScriptingRead () {
+        var $scriptingReadCheckboxBefore = $('.simplesMoreInfoBeforeContent .simples-more-info-scripting-checkbox');
+        var $scriptingReadCheckboxAfter = $('.simplesMoreInfoAfterContent .simples-more-info-scripting-checkbox');
+
+        if ($scriptingReadCheckboxAfter.length) {
+            if($($scriptingReadCheckboxAfter).prop('checked') && $($scriptingReadCheckboxBefore).prop('checked')) {
+                return true;
+            } else if ($($scriptingReadCheckboxAfter).prop('checked') && !$($scriptingReadCheckboxBefore).prop('checked')) {
+                _triggerBeforeTabContent();
+                return false;
+
+            } else if (!$($scriptingReadCheckboxAfter).prop('checked') && $($scriptingReadCheckboxBefore).prop('checked')) {
+                _triggerAfterTabContent();
+                return false;
+
+            }
+        } else {
+            return true;
+        }
 
     }
 

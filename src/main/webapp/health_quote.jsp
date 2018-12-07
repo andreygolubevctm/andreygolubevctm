@@ -6,6 +6,7 @@
 
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
 <session:new verticalCode="HEALTH" authenticated="true" />
+<c:set var="comparisonMode" scope="request"><content:get key="comparisonMode" /></c:set>
 
 <health_v1:redirect_rules />
 
@@ -34,8 +35,16 @@
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
         <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" scope="request" />
 
-        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health')}" scope="request"  />
+        <c:choose>
+            <c:when test="${comparisonMode eq 'PHIO'}">
+                <c:set var="simplesCategoryVersion" value="health2016" />
+            </c:when>    
+            <c:otherwise>
+                <c:set var="simplesCategoryVersion" value="health2018" />
+            </c:otherwise> 
+        </c:choose>
 
+        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure(simplesCategoryVersion)}" scope="request"  />
         <%--TODO: turn this on and off either in a settings file or in the database --%>
         <c:set var="showReducedHoursMessage" value="false" />
 
@@ -62,7 +71,7 @@
         </jsp:attribute>
 
 	<jsp:attribute name="header">
-		<div class="navbar-collapse header-collapse-contact collapse">
+		<div class="navbar-collapse header-collapse-contact collapse simples-results-control-container" data-simples-category-version="${simplesCategoryVersion}">
             <ul class="nav navbar-nav navbar-right callCentreNumberSection">
                 <c:if test="${not empty callCentreNumber}">
                     <li>
