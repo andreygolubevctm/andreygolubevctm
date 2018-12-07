@@ -39,6 +39,7 @@
 	{{ } }}
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
 		<div class="april-pricing">
+		  <div class="dual-pricing-before-after-text">From April 1</div>
 			<div class="altPriceContainer">
 				{{= renderedAltPriceTemplate }}
 			</div>
