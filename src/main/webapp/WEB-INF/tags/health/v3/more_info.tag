@@ -722,7 +722,7 @@
 						Annual Limit
 					</div>
 					<div class="col-xs-1 newBenefitRow benefitHeaderTitle align-center">
-						Inclusion
+						Included
 					</div>
 					<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
 						Waiting period
@@ -766,12 +766,22 @@
 									{{ if (benefit.benefits !== undefined) { }}
 									<div class="col-xs-12">
 										{{ _.each(benefit.benefits, function (option, key) { }}
+										{{ var situation = window.meerkat.modules.health.getSituation(); }}
+										{{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
+										{{ var trimmedKey = key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim(); }}
+										{{ if(isSingle && trimmedKey === 'per person') { }}
+											{{ return; }}
+										{{ } }}
 										<div class="row">
 											<div class="col-xs-9 extraBenefitOption">
 												{{= key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim() }}
 											</div>
 											<div class="col-xs-3 extraBenefitOption align-center">
-												{{= option }}
+												{{ if(!option) { }}
+													None
+												{{ } else { }}
+													{{= option }}
+												{{ } }}
 											</div>
 										</div>
 										{{ }); }}
@@ -785,12 +795,22 @@
 									{{ if (benefit.benefitLimits !== undefined) { }}
 									<div class="col-xs-12">
 										{{ _.each(benefit.benefitLimits, function (option, key) { }}
+										{{ var situation = window.meerkat.modules.health.getSituation(); }}
+										{{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
+										{{ var trimmedKey = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
+										{{ if(isSingle && trimmedKey === 'per person') { }}
+											{{ return; }}
+										{{ } }}
 										<div class="row">
 											<div class="col-xs-9 extraBenefitOption">
 												{{= key.replace(/([A-Z])/g, ' $1').trim().toLowerCase() }}
 											</div>
 											<div class="col-xs-3 extraBenefitOption align-center">
-												{{= option }}
+												{{ if(!option) { }}
+													None
+												{{ } else { }}
+													{{= option }}
+												{{ } }}
 											</div>
 										</div>
 										{{ }); }}

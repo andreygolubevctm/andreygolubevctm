@@ -8,8 +8,6 @@
 		<health_v1:results />
 		<health_v1:more_info />
 		<health_v1:prices_have_changed_notification />
-
-		<simples:dialogue id="24" vertical="health" mandatory="true" />
 	</layout_v3:slide_content>
 
 </layout_v3:slide>

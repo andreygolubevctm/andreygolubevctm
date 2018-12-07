@@ -33,7 +33,6 @@
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
         $inboundApplicationFollowupDialogue,
-        $privatePatientDialogue,
         $inboundApplicationFollowupToggles,
         $followupDialogueContentContainers,
         $simplesMedicareCoverForm = null,
@@ -113,7 +112,6 @@
             $simplesinternationalStudentForm = $('#health_situation_internationalstudent_wrapper');
             $applicantWrappers.primary = $('#health-contact-fieldset .content:first');
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
-	        $privatePatientDialogue = $('.simples-dialogue-24');
             $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
             $dialogue21 = $('.simples-dialogue-21');
             $dialogue26 = $('.simples-dialogue-26');
@@ -557,12 +555,6 @@
         $dialoguePartnerCover.toggleClass('hidden', $healthPartnerCover.filter(':checked').val() !== "Y");
     }
 
-    function toggleLimitedCoverDialogue() {
-        var _toggle = $limitedCoverHidden.val() === 'N' || ($limitedCoverHidden.val() === 'Y' && _isHospitalPublic() === false);
-
-        $privatePatientDialogue.toggleClass('hidden', _toggle);
-    }
-
     function toggleAffiliateRewardsDialogue() {
         var dialogueHTML = $affiliatesDialogue.html();
 
@@ -590,7 +582,6 @@
 
     meerkat.modules.register("simplesBindings", {
         init: init,
-        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
         toggleRebateDialogue: toggleRebateDialogue,
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
         getCallType: getCallType,
