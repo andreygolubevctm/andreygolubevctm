@@ -53,9 +53,15 @@
 }
 
 .reformHospitalTabs {
-  overflow: hidden;
   position: relative;
-  top: -50px;
+  @media (@sm) {
+    overflow: hidden;
+    top: -50px;
+  }
+
+  @media (@xs-only) {
+    top: -38px;
+  }
 
   button {
     background-color: @gray;
@@ -64,10 +70,17 @@
     border-bottom: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
     transition: 0.3s;
     font-size: 17px;
     margin-right: 10px;
+
+    @media (@sm) {
+      padding: 14px 16px;
+    }
+
+    @media (@xs-only) {
+      padding: 8px;
+    }
 
     &.active {
       background-color: @white;
@@ -86,7 +99,17 @@
     padding: 10px 0;
 
     .excessInfo {
-      border-right: 1px solid @gray;
+      @media (@sm) {
+        border-right: 1px solid @gray;
+      }
+    }
+
+    .hospitalCoverDetails {
+      @media (@xs-only) {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid @gray;
+      }
     }
 
     .dollarValue {
@@ -115,12 +138,22 @@
   }
 }
 
-.ExtrasBenefits {
+.ExtrasBenefits, .ambulanceCoverSection {
   margin-top: 40px;
 
   h2 {
     font-size: 28px;
     color: @gray-base;
+  }
+}
+
+.heading-brochure {
+  @media (@sm) {
+    text-align: right;
+  }
+
+  @media (@xs-only) {
+    margin-bottom: 20px;
   }
 }
 
@@ -175,11 +208,6 @@
   margin-right: 20px;
   text-decoration: none !important;
   color: #1C3E94;
-
-  span {
-    vertical-align: top;
-    font-size: 20px;
-  }
 }
 
 .benefitCollapsedContent {
@@ -187,13 +215,25 @@
   padding: 21px 30px;
 
   .extraBenefitSection {
-    padding-right: 20px;
+    @media (@sm) {
+      padding-right: 20px;
+    }
+
+    @media (@xs-only) {
+      margin-top: 30px;
+    }
   }
 
   .extraBenefitSubHeading {
     height: 30px;
     padding-left: 0;
     border-bottom: 1px solid #999999;
+
+    @media (@sm) {
+      &:last-of-type {
+        margin-top: 20px;
+      }
+    }
   }
 
   .extraBenefitOption {
@@ -224,8 +264,6 @@
 
 .newBenefitStatus {
   display: block;
-  top: 30%;
-  position: relative;
 
   &.benefitStatusIcon_N {
     background: url('../images/icons/exclude_icon.svg') center center no-repeat;

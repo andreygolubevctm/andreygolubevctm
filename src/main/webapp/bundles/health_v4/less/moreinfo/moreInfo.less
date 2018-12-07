@@ -472,7 +472,14 @@
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-    padding-bottom: 50px;
+
+    @media (@sm) {
+      padding-bottom: 50px;
+    }
+
+    @media (@xs-only) {
+      padding-bottom: 80px;
+    }
   }
 
 
@@ -604,12 +611,14 @@
   }
 
   .row-eq-height {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @media(@sm) {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .leftAlignedLink {
@@ -793,8 +802,11 @@
 
     .benefitsOverflow {
       width: 100%;
-      overflow-x: hidden;
-      position: relative;
+
+      @media (@sm) {
+        overflow-x: hidden;
+        position: relative;
+      }
     }
 
     .toggleBar {
@@ -976,4 +988,8 @@ body[data-is-single="true"] {
       }
     }
   }
+}
+
+.no-padding {
+  padding: 0;
 }
