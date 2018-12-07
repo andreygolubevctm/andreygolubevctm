@@ -104,7 +104,7 @@
                         </div>
                     </div>
                     <div class="featuresListHospitalOtherList" data-feature-template="#results-features-extras-template" data-feature-index="4"></div>
-                    <div class="featuresListHospitalFullList" data-feature-index="4"></div>
+                    <div class="featuresListHospitalFullList hidden" data-feature-index="4"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="featuresListExtrasOtherList" data-feature-template="#results-features-extras-template" data-feature-index="5"></div>
-                    <div class="featuresListExtrasFullList" data-feature-index="5"></div>
+                    <div class="featuresListExtrasFullList hidden" data-feature-index="5"></div>
                     </div>
                 {{ } }}
                 <div class="ambulanceCoverSection">
@@ -188,7 +188,7 @@
     <jsp:body>
         <div class="col-xs-12 moreInfoDropdown"></div>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
-        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health_v4', 'category')}" scope="request" />
+        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString(window.meerkat.health.getOnlineCategoryVersion(), 'category')}" scope="request" />
         <script>
             var resultLabels = ${jsonString};
         </script>

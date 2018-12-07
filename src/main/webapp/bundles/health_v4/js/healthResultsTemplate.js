@@ -48,7 +48,8 @@
             }
             var hasResult = ft.resultPath !== null && ft.resultPath !== '';
             var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
-            if (pathValue == "Y") {
+            //Also check the first value in the case of april 1 products
+            if (pathValue == "Y" || (pathValue.length > 1 && pathValue[0] === 'Y')) {
                 availableExtras.push(ft);
             }
         });
@@ -154,8 +155,8 @@
         ft.displayItem = ft.type != 'section';
         // section headers are not displayed anymore but we need the section container
         ft.pathValue = _getPathValue(obj, ft);
-        ft.isRestricted = ft.pathValue == "R";
-        ft.isNotCovered = ft.pathValue == "N";
+        ft.isRestricted = ft.pathValue == "R" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'R';
+        ft.isNotCovered = ft.pathValue == "N" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'N';
         ft.hasChildFeatures = typeof ft.children !== 'undefined' && ft.children.length;
 
         // Additional attributes for category's only.
