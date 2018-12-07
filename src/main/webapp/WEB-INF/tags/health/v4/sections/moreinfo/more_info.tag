@@ -99,11 +99,11 @@
 								</div>
 								<div class="row hospitalInfo">
 									<div class="col-xs-12">
-										<div class="row row-eq-height heading-brochure">
-											<div class="col-xs-6">
-												<h2>Hospital</h2>
+										<div class="row row-eq-height">
+											<div class="col-xs-12 col-sm-6">
+												<h2>Hospital cover</h2>
 											</div>
-											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }} text-right">
+											<div class="col-xs-12 col-sm-6 heading-brochure no-padding">
 												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View hospital brochure</a>
 											</div>
 										</div>
@@ -112,21 +112,24 @@
 
 								<!-- Hospital Benefits -->
 								<div class="row excessCoPayment">
-									<div class="col-xs-6 excessInfo">
+									<div class="col-xs-12 col-sm-6 excessInfo hospitalCoverDetails">
 										<div class="row">
 											<div class="col-xs-8">
 												<h3>Excess</h3><br/><br/>
-												<p>{{= hospital.inclusions.excess }}</p>
+												<p class="hidden-xs">{{= hospital.inclusions.excess }}</p>
 											</div>
 											<div class="col-xs-4">
 												<span class="dollarValue">{{= hospital.inclusions.excesses.perAdmission.replace('$', '') }}</span><br/>
 												<span class="valueUnit">per admission</span>
 											</div>
+											<div class="col-xs-12 visible-xs">
+												{{= hospital.inclusions.excess }}
+											</div>
 										</div>
 									</div>
 
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-									<div class="col-xs-6">
+									<div class="col-xs-12 col-sm-6 hospitalCoverDetails">
 										<div class="row">
 											<div class="col-xs-8">
 												<h3>Co-payments</h3><br/><br/>
