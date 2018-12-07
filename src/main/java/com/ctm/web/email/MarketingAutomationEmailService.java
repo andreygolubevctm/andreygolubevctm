@@ -98,6 +98,11 @@ public class MarketingAutomationEmailService {
             return false;
         }
 
+        if (brand != null && brand.equalsIgnoreCase("choo")) {
+            LOGGER.info("Invalid request. No emails for Choosi brand: VerticalCode: {}, brand: {}, transactionId: {}", verticalCode, brand, transactionId);
+            return false;
+        }
+
         if (!validVerticalList.contains(verticalType)) {
             LOGGER.info("Unsupported vertical: {}. Not sending email request to marketing automation service.", verticalCode);
             return false;
