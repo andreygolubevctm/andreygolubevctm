@@ -97,20 +97,16 @@
 									<button type="button" class="reformHospitalTabLink preAprilReformLink active">Covered now</button>
 									<button type="button" class="reformHospitalTabLink postAprilReformLink">Covered from {{= custom.reform.changeDate }}</button>
 								</div>
-								<div class="row">
+								<div class="row hospitalInfo">
 									<div class="col-xs-12">
-										{{ if(typeof hospitalCover !== 'undefined') { }}
 										<div class="row row-eq-height heading-brochure">
 											<div class="col-xs-6">
-											{{ } }}
-										<h2>Hospital</h2>
-										{{ if(typeof hospitalCover !== 'undefined') { }}
+												<h2>Hospital</h2>
 											</div>
 											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }} text-right">
 												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View hospital brochure</a>
 											</div>
 										</div>
-										{{ } }}
 									</div>
 								</div>
 
