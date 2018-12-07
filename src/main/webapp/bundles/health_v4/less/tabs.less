@@ -53,9 +53,15 @@
 }
 
 .reformHospitalTabs {
-  overflow: hidden;
   position: relative;
-  top: -50px;
+  @media (@sm) {
+    overflow: hidden;
+    top: -50px;
+  }
+
+  @media (@xs-only) {
+    top: -38px;
+  }
 
   button {
     background-color: @gray;
@@ -64,10 +70,17 @@
     border-bottom: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
     transition: 0.3s;
     font-size: 17px;
     margin-right: 10px;
+
+    @media (@sm) {
+      padding: 14px 16px;
+    }
+
+    @media (@xs-only) {
+      padding: 8px;
+    }
 
     &.active {
       background-color: @white;
@@ -86,7 +99,17 @@
     padding: 10px 0;
 
     .excessInfo {
-      border-right: 1px solid @gray;
+      @media (@sm) {
+        border-right: 1px solid @gray;
+      }
+    }
+
+    .hospitalCoverDetails {
+      @media (@xs-only) {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid @gray;
+      }
     }
 
     .dollarValue {
@@ -122,15 +145,15 @@
     font-size: 28px;
     color: @gray-base;
   }
+}
 
-  .heading-brochure {
-    @media (@sm) {
-      text-align: right;
-    }
+.heading-brochure {
+  @media (@sm) {
+    text-align: right;
+  }
 
-    @media (@xs-only) {
-      margin-bottom: 20px;
-    }
+  @media (@xs-only) {
+    margin-bottom: 20px;
   }
 }
 
@@ -210,13 +233,6 @@
       &:last-of-type {
         margin-top: 20px;
       }
-    }
-  }
-
-  .extraBenefitMobile {
-    @media (@xs-only) {
-      height: 30px;
-      border-bottom: 1px solid #999999;
     }
   }
 
