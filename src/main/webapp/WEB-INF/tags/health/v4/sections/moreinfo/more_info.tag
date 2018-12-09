@@ -367,6 +367,9 @@
 										</div>
 										{{ } }}
 										{{ _.each(extras, function(benefit, key){ }}
+										{{ if(!benefit) { }}
+											{{ return; }}
+										{{ } }}
 										{{ if (typeof benefit === 'object') { }}
 										<div class="row benefitRow">
 											<div class="col-xs-9 col-sm-8 newBenefitRow benefitRowTitle">
