@@ -8,6 +8,7 @@
 		<health_v1:results />
 		<health_v1:more_info />
 		<health_v1:prices_have_changed_notification />
+		<health_v4:logo_price_template_affixed_header />
 	</layout_v3:slide_content>
 
 </layout_v3:slide>

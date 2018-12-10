@@ -12,6 +12,7 @@
         <health_v3:more_info/>
         <health_v1:prices_have_changed_notification/>
         <health_v1:dual_pricing_modal />
+        <health_v4:logo_price_template_affixed_header />
         <c:if test="${callCentre}">
             <core_v1:js_template id="simples-dialogue-popup-template">
                 <competition:africaCompSettings />
