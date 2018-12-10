@@ -136,19 +136,6 @@
             $('.preAprilReformContent').show();
             $('.postAprilReformContent').hide();
         });
-
-        $(document.body).on('click', '.extrasCollapseContentLink', function () {
-            var span = $(this).find('span').first();
-            var textSpan = $(this).find('span').last();
-
-            if (span.hasClass('icon-angle-down')) {
-                span.removeClass('icon-angle-down').addClass('icon-angle-up');
-                textSpan.html('&nbsp;Less details');
-            } else {
-                span.removeClass('icon-angle-up').addClass('icon-angle-down');
-                textSpan.html('&nbsp;More details');
-            }
-        });
     }
 
     function _setTabs() {

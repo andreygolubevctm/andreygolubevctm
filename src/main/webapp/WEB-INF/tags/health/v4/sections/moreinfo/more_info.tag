@@ -373,12 +373,11 @@
 										{{ if (typeof benefit === 'object') { }}
 										<div class="row benefitRow">
 											<div class="col-xs-9 col-sm-8 newBenefitRow benefitRowTitle">
-												{{ var expanded = false; }}
 												<div class="benefitRowTableCell">
 													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
-													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
-														<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span>
-														<span class="hidden-xs">{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
+													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
+														<span class="icon-angle-down"></span>
+														<span class="hidden-xs">&nbsp;More details</span>
 													</a>
 												</div>
 											</div>
