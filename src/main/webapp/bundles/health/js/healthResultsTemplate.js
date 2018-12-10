@@ -81,9 +81,9 @@
         var serviceLimitResultPath = resultPathTemp.join('.');
         var displayValueList = [
             !_.isEmpty(copy) ? copy : '',
-            '<h3>Sub-limits</h3>',
+            '<h3 class="noStyles">Sub-limits</h3>',
             Features.parseFeatureValue(_getPathValue(obj, {resultPath:subLimitResultPath}), true),
-            '<h3>Service limits</h3>',
+            '<h3 class="noStyles">Service limits</h3>',
             Features.parseFeatureValue(_getPathValue(obj, {resultPath:serviceLimitResultPath}), true),
             '<br><br>'
         ];
@@ -133,7 +133,15 @@
      * @private
      */
     function _getPathValue(obj, ft) {
-        return _hasResult(ft) ? Object.byString(obj, ft.resultPath) : false;
+        if(!_hasResult(ft)) {
+            return false;
+        }
+
+        if(ft.resultPath.length === 1) {
+            return Object.byString(obj, ft.resultPath);
+        }
+
+        return Object.byString(obj, ft.resultPath);
     }
 
     /**
@@ -197,8 +205,8 @@
         // section headers are not displayed anymore but we need the section container
         //if (ft.displayItem) {
         ft.pathValue = _getPathValue(obj, ft);
-        ft.isRestricted = ft.pathValue == "R";
-        ft.isNotCovered = ft.pathValue == "N";
+        ft.isRestricted = ft.pathValue ? ft.pathValue[0] == "R" : false;
+        ft.isNotCovered = ft.pathValue ? ft.pathValue[0] == "N" : false;
         ft.hasChildFeatures = typeof ft.children !== 'undefined' && ft.children.length;
 
         // Additional attributes for category's only.
@@ -306,6 +314,47 @@
         return result;
     }
 
+    function getNewProductName(obj) {
+        return obj.custom.reform.name;
+    }
+
+    function getClassification(obj) {
+        var classification = {};
+        classification.icon = getClassificationIcon(obj.custom.reform.tier);
+        
+        return classification;
+    }
+
+    function getClassificationIcon(tier) {
+        if(!tier) {
+            return 'unclassified_govclass.svg';
+        }
+        
+        if(tier.toLowerCase().indexOf('bronze') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'Bronzeplus_govclass.svg';
+            }else{
+                return 'Bronze_govclass.svg';
+            }
+        }else if(tier.toLowerCase().indexOf('silver') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'Silverplus_govclass.svg';
+            }else{
+                return 'Silver_govclass.svg';
+            }
+        }else if(tier.toLowerCase().indexOf('gold') > -1){
+            return 'Gold_govclass.svg';
+        }else if(tier.toLowerCase().indexOf('basic') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'Basicplus_govclass.svg';
+            }else{
+                return 'Basic_govclass.svg';
+            }
+        }else
+        {
+            return 'unclassified_govclass.svg';
+        }
+    }
 
     function init() {
         $(document).ready(function () {
@@ -370,13 +419,6 @@
                 $el.removeClass('disabled');
             }, 1000);
 
-        }).off('click', '.reset-filters').on('click', '.reset-filters', function (e) {
-            e.preventDefault();
-            filteredOutResults = [];
-            Results.unfilterBy('productId', "value", true);
-            _.defer(function(){
-                toggleRemoveResultPagination();
-            });
         }).off('click', '.featuresListExtrasOtherList').on('click', '.featuresListExtrasOtherList', function () {
             $('.featuresListExtrasOtherList').addClass('hidden');
             $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
@@ -434,6 +476,8 @@
         getExcessPrices: getExcessPrices,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
+        getNewProductName: getNewProductName,
+        getClassification: getClassification,
         getItem: getItem,
         postRenderFeatures: postRenderFeatures,
         numberOfSelectedExtras: numberOfSelectedExtras,

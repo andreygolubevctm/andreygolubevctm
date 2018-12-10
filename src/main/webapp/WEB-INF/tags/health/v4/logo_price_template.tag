@@ -42,8 +42,8 @@
                         <span class="frequencyAmount">
                             {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
                             {{ premiumSplit = premiumSplit.split(".") }}
-                            <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
-                              <div class="frequencyTitle">
+                            <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}{{ if (obj.showAltPremium === true) { }}&#42;{{ } }}</span>
+													    <div class="frequencyTitle">
                                 {{= freq === 'annually' ? 'per year' : '' }}
                                 {{= freq.toLowerCase() === 'halfyearly' ? 'per half year' : '' }}
                                 {{= freq === 'quarterly' ? 'per quarter' : '' }}
@@ -51,7 +51,7 @@
                                 {{= freq === 'fortnightly' ? 'per f/night' : '' }}
                                 {{= freq === 'weekly' ? 'per week' : '' }}
                             </div>
-                        </span>
+												</span>
 					{{ } else { }}
 					<div class="frequencyAmount comingSoon">New price not yet released</div>
 					{{ } }}

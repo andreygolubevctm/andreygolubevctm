@@ -48,7 +48,8 @@
             }
             var hasResult = ft.resultPath !== null && ft.resultPath !== '';
             var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
-            if (pathValue == "Y") {
+            //Also check the first value in the case of april 1 products
+            if (pathValue == "Y" || (pathValue.length > 1 && pathValue[0] === 'Y')) {
                 availableExtras.push(ft);
             }
         });
@@ -145,6 +146,7 @@
      * @param ft
      * @returns {*}
      */
+
     function getItem(obj, ft) {
         //NOTE: Not sure if we need to extend the feature object each time to clone it.
         // If you don't, the last row's data ends up on Features.getPageStructure. Is that a problem? Not sure...
@@ -156,13 +158,14 @@
         ft.pathValue = _getPathValue(obj, ft);
         if(window.meerkat.site.isHealthReformMessaging === 'Y') {
             //if the new health reforms flag is set, we need to determine the values differently
-            ft.isRestricted = true;
-            ft.isNotCovered = true;
+            ft.isRestricted = ft.pathValue == "R" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'R';
+            ft.isNotCovered = ft.pathValue == "N" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'N';
             ft.hideCategory = false;
         }else{
             ft.isRestricted = ft.pathValue == "R";
             ft.isNotCovered = ft.pathValue == "N";
         }
+
         ft.hasChildFeatures = typeof ft.children !== 'undefined' && ft.children.length;
 
         // Additional attributes for category's only.
@@ -218,7 +221,7 @@
             ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
         result.hasValidPrice = (prem.value && prem.value > 0) || (prem.text && prem.text.indexOf('$0.') < 0) ||
             (prem.payableAmount && prem.payableAmount > 0);
-        result.lhcFreePriceMode = typeof mode === "undefined" || (mode !== "lhcInc" || prem.lhcfreepricing.indexOf('The premium may be affected by LHC<br/>') === 0 && meerkat.modules.healthLHC.getNewLHC() === null);
+        result.lhcFreePriceMode = typeof mode === "undefined" || (mode !== "lhcInc" || prem.lhcfreepricing.indexOf('The premium may be affected by LHC') === 0 && meerkat.modules.healthLHC.getNewLHC() === null);
         result.discounted = prem.discounted === 'Y';
         result.discountPercentage = prem.discountPercentage;
         return result;
@@ -262,7 +265,7 @@
     function getClassification(obj) {
         var classification = {};
         classification.icon = getClassificationIcon(obj.custom.reform ? obj.custom.reform.tier : null);
-        
+    
         return classification;
     }
 
@@ -270,7 +273,7 @@
         if(!tier) {
             return 'gov-unclassified';
         }
-        
+
         if(tier.toLowerCase().indexOf('bronze') > -1) {
             if(tier.toLowerCase().indexOf('+') > -1) {
                 return 'gov-bronze-plus';
@@ -284,7 +287,9 @@
                 return 'gov-silver';
             }
         }else if(tier.toLowerCase().indexOf('gold') > -1){
+
             return 'gov-gold';
+
         }else if(tier.toLowerCase().indexOf('basic') > -1) {
             if(tier.toLowerCase().indexOf('+') > -1) {
                 return 'gov-basic-plus';

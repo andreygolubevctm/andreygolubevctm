@@ -66,4 +66,4 @@
 
 
 <%-- HTML --%>
-<input type="checkbox" name="${name}" id="${name}" class="checkbox-switch ${className}" value="${value}"${checked}${requiredAttribute} data-text-label="" data-on-text="${onText}" data-off-text="${offText}" ${additionalAttributes}>
+<input type="checkbox" name="${name}" id="${name}" class="checkbox-switch ${className}" value="${value}"${checked}${requiredAttribute} data-text-label="" data-on-label="${onText}" data-off-label="${offText}" ${additionalAttributes}>

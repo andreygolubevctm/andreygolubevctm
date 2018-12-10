@@ -63,7 +63,6 @@ public class MarketingAutomationEmailService {
 		emailRequest.setVertical(verticalCode);
         EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
         emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
-        emailTranslator.setUrls(request, emailRequest, data, verticalCode);
 
         if (attemptEmailDistribution(emailRequest)) {
 			emailTranslator.setUrls(request, emailRequest, data, verticalCode);
@@ -96,6 +95,11 @@ public class MarketingAutomationEmailService {
 
         if (StringUtils.isBlank(verticalCode) || brand == null || transactionId == null) {
             LOGGER.warn("Invalid request. Blank: VerticalCode: {}, brand: {}, transactionId: {}", verticalCode, brand, transactionId);
+            return false;
+        }
+
+        if (brand != null && brand.equalsIgnoreCase("choo")) {
+            LOGGER.info("Invalid request. No emails for Choosi brand: VerticalCode: {}, brand: {}, transactionId: {}", verticalCode, brand, transactionId);
             return false;
         }
 

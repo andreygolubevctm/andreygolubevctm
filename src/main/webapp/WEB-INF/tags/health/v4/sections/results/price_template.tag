@@ -15,13 +15,13 @@
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
         {{ if (!result.hasValidPrice) { }}
-        {{ var frequencyLabel = frequency; }}
-        {{ if (frequencyLabel == 'annually') { }}
-            {{ frequencyLabel = 'Annual'; }}
+        {{ var comingSoonLabel = frequency; }}
+        {{ if (comingSoonLabel == 'annually') { }}
+            {{ comingSoonLabel = 'Annual'; }}
         {{ } }}
         <%-- Convert to title case --%>
-        {{ frequencyLabel = frequencyLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
-        <div class="frequencyAmount comingSoon">{{= frequencyLabel }} payments not available</div>
+        {{ comingSoonLabel = comingSoonLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
+        <div class="frequencyAmount comingSoon">{{= comingSoonLabel }} payments not available</div>
     </div>
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
     {{ return; } }}
@@ -31,6 +31,5 @@
         <div class="frequencyTitle">{{= freqObj.label }}</div>
     </div>
 </div>
-
 {{ }); }}
 </div>

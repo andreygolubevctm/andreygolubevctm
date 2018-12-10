@@ -63,8 +63,8 @@
 
 	<%-- Write the ranking master --%>
 	<sql:update>
-	 	INSERT INTO aggregator.ranking_master 
-	 	(TransactionId,CalcSequence,RankSequence,RankBy) 
+	 	INSERT INTO aggregator.ranking_master
+	 	(TransactionId,CalcSequence,RankSequence,RankBy)
 			values (?,?,?,?);
 		<sql:param>${transactionId}</sql:param>
 		<sql:param>${calcSequence}</sql:param>
@@ -137,70 +137,6 @@
 			</c:forEach>
 		</sql:update>
 	</c:if>
-
-	<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
-
-	<c:choose>
-		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
-			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
-				<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
-				<c:catch var="error">
-					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
-				</c:catch>
-				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
-				<%--
-				This will either be a RuntimeException or SendEmailException
-				If this fails it is not a show stopper so log and keep calm and carry on
-				--%>
-				<c:if test="${not empty error}">
-					${logger.error('BPEMAIL Failed to send best price for {} {}', log:kv('transactionId', transactionId), log:kv('email', data.travel.email), error)}
-					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
-				</c:if>
-			</c:if>
-		</c:when>
-		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
-			<%-- Attempt to send email only once and only if not call centre user --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
-				<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
-				<c:catch var="error">
-					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
-				</c:catch>
-				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
-				<%--
-				This will either be a RuntimeException or SendEmailException
-				If this fails it is not a show stopper so log and keep calm and carry on
-				--%>
-				<c:if test="${not empty error}">
-					${logger.error('BPEMAIL Failed to send best price for {} {}', log:kv('transactionId', transactionId), log:kv('email', data.health.contactDetails.email), error)}
-					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
-				</c:if>
-			</c:if>
-		</c:when>
-		<c:when test="${pageSettings.getVerticalCode() == 'home'}">
-			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent}">
-				<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.home.policyHolder.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
-			</c:if>
-			<c:if test="${empty data.home.policyHolder.email}">
-				${logger.error("BPEMAIL Home Policy Holder email address empty: {} {}", log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
-			</c:if>
-		</c:when>
-		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
-			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
-				<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
-			</c:if>
-			<c:if test="${empty data.quote.contact.email}">
-				${logger.error("BPEMAIL Contact email address empty: {} {}", log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
-			</c:if>
-		</c:when>
-		<c:otherwise>
-			${logger.error('BPEMAIL No matching vertical to send email to user: {} {}', log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
-		</c:otherwise>
-	</c:choose>
 
 	<c:if test="${pageSettings.getVerticalCode() == 'health' || pageSettings.getVerticalCode() == 'car' || pageSettings.getVerticalCode() == 'travel'}">
 		<jsp:forward page="/spring/marketing-automation/sendEmail.json" />

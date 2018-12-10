@@ -44,12 +44,7 @@
 }
 
 #resultsPage {
-  padding-top: 6px;
   margin-bottom: 20px;
-
-  @media (@sm) {
-    padding-top: 20px;
-  }
 
   a.dialogPop {
     text-decoration: underline;
@@ -68,6 +63,10 @@
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding: 0;
+  padding-top: 6px;
+  @media (@sm) {
+    padding-top: 20px;
+  }
 
   .smaller-text {
     font-size: 12px;
@@ -391,7 +390,7 @@
   }
   .productSummary {
     margin-bottom: 10px;
-    height: 150px;
+    height: 110px;
     @media (@lg-only) {
       height: initial;
     }
@@ -656,7 +655,7 @@
         .limits-label {
           // default color is accent 1
           color: @theme-accent-4;
-          padding: 0px 15px;
+          padding: 0px 0px 0px 15px;
           .user-select(none);
           display: block;
         }
@@ -675,20 +674,19 @@
           &.ambulanceSection {
             border-top: 1px solid @results-border-color;
           }
-          .contentInner {
-            color: #333333;
-            .cover-title {	
-              font-size: 14px;
-              font-weight: 600;
-            } 
-          }
         }
-        &.expanded {
+
+        .contentInner {
+          color: #333333;
+          .cover-title {	
+            font-size: 14px;
+            font-weight: 600;
+          } 
+        }
+
           .labelInColumn {
             border-bottom: 1px solid @results-border-color;
           }
-
-        }
 
         .featureValue, .featureLabel {
           float: left;
@@ -867,7 +865,7 @@
         }
       }
 
-      .labelInColumn.category.expandable {
+      .labelInColumn.category {
         .content {
           .contentInner {
             .benefit-container {
@@ -1127,8 +1125,9 @@ body {
 
     &:not(.moreInfoVisible) {
       .price.premium {
+        margin-top: 10px;
+
         .frequency {
-          height: 101px;
 
           @media (@sm) {
             height: 108px;

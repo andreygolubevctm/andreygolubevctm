@@ -125,6 +125,11 @@
   }
 }
 
+.rateRiseDisclaimer {
+  text-align: center;
+  padding-top: 1rem;
+}
+
 .premium-rising-tag {
   background-color: @theme-accent-3;
   color: #fff;
@@ -220,7 +225,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
     .dual-pricing-container {
       margin: 0 auto;
       width: 100%;
-      margin-top: 10px;
       @media (@lg) {
         width: 50%;
       }
@@ -237,6 +241,11 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
         .dollarSign {
           font-size: 15px;
+          vertical-align: super;
+        }
+
+        .asterisk {
+          font-size: 10px;
           vertical-align: super;
         }
 
@@ -348,10 +357,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
     display: block;
     align-items: initial;
 
-    @media (@lg) {
-      margin-left: 100px;
-    }
-
     // xs-only
     .april-container {
       padding-left: 5px;
@@ -403,7 +408,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
     /* CURRENT PRICING */
     /* override the shared module styling */
     .current-pricing {
-      background: @theme-accent-1;
+      color: #333333;
       border-left: initial;
       padding-left: initial;
 
@@ -453,7 +458,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       .frequencyAmount,
       .lhcText {
         .priceAnimationTransitions();
-        color: @white;
+        color: #333333;
       }
     }
 
@@ -466,8 +471,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
     /* APRIL PRICING */
     .april-pricing {
-      background: @theme-accent-3;
-
+      color: #333333;
       .price.premium {
         .lhcText {
           float: right;
@@ -538,7 +542,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       }
 
       .frequencyAmount {
-        font-size: 24px;
+        font-size: 48px;
 
         &.comingSoon {
           font-size: 18px;
@@ -555,7 +559,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       .premiumsRising,
       .frequencyAmount {
         .priceAnimationTransitions();
-        color: @white;
+        color: #333333;
       }
     }
 
@@ -579,6 +583,8 @@ body[data-step="results"]:not(.moreInfoVisible) {
     .logo-header {
       display: flex;
       margin-bottom: 20px;
+      padding: 0px;
+      max-width: 100px;
     }
   }
 
