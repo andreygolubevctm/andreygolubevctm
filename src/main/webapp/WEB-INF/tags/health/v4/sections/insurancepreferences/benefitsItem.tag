@@ -155,10 +155,12 @@
                                                     <c:set var="benefitLabel">
 													<span class="benefitContent">
 														<div class="benefitTitle needsclick">${selectedValue.getName()}</div>
-                                                            <span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
+                                                            <span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())}</span>
+                                                            <div class="benefit-learn-more">
+                                                            <a href="javascript:;"
                                                             class="help_icon floatLeft"
                                                             data-content="helpid:${selectedValue.getHelpId()}"
-                                                            data-toggle="popover">more</a></span>
+                                                            data-toggle="popover">more</a></div>
 													</span>
                                                     </c:set>
                                                     <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false"
