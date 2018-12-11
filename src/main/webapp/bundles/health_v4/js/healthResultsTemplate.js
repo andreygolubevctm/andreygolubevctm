@@ -160,6 +160,8 @@
             //if the new health reforms flag is set, we need to determine the values differently
             ft.isRestricted = ft.pathValue == "R" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'R';
             ft.isNotCovered = ft.pathValue == "N" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'N';
+            ft.isRestrictedApril = ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[1] === 'R';
+            ft.isNotCoveredApril = ft.pathValue && ft.pathValue.length > 1 && (ft.pathValue[1] === 'N' || ft.pathValue[1] === 'X' );
             ft.hideCategory = false;
         }else{
             ft.isRestricted = ft.pathValue == "R";
@@ -180,6 +182,15 @@
             } else {
                 ft.labelInColumnContentClass = '';
             }
+
+            if(ft.isNotCoveredApril) {
+                ft.labelInColumnContentClassApril = ' noCover';
+            } else if (ft.isRestrictedApril) {
+                ft.labelInColumnContentClassApril = ' restrictedCover';
+            }else {
+                ft.labelInColumnContentClassApril = '';
+            }
+
         } else if (ft.type == 'feature') {
             ft.displayValue = buildDisplayValue(ft.pathValue, ft, obj);
         }
