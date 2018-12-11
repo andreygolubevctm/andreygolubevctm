@@ -489,11 +489,14 @@
 <c:choose>
 	<%-- Do not write quote if this quote is already confirmed/finished --%>
 	<c:when test="${confirmationResult == '' && transactionId.matches('^[0-9]+$') }">
+		<jsp:useBean id="insertParams" class="java.util.ArrayList" scope="request" />
+		<%-- CTM-809 - remove after monitoring period --%>
+		<c:set var="fuelSQLParams" value="" />
+		<%-- END CTM-809 --%>
+		<c:set var="sandbox">${insertParams.clear()}</c:set>
+		<c:set var="insertSQLSB" value="${go:getStringBuilder()}" />
 		<c:catch var="error">
 			<sql:transaction>
-				<jsp:useBean id="insertParams" class="java.util.ArrayList" scope="request" />
-				<c:set var="sandbox">${insertParams.clear()}</c:set>
-				<c:set var="insertSQLSB" value="${go:getStringBuilder()}" />
 				${go:appendString(insertSQLSB ,'INSERT INTO aggregator.transaction_details (transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) VALUES ')}
 
 				<%-- Add sticky content to transaction details for triggered saves (Kampyle, SessionPop or FatalError) --%>
@@ -599,9 +602,9 @@
 							<c:set var="rowVal" value="${fn:substringAfter(xpathAndVal,'=')}" />
 							<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
 
-							<%-- Cap the value to a certain length so we don't get database errors --%>
+							<%-- To avoid truncation errors we'll limit textValue to 1000 chars but will add an error log entry so can track --%>
 							<c:if test="${fn:length(rowVal) > 1000}">
-								<c:set var="errorStr" value="Data Truncated - xpath (${xpath}) has textValue longer than 1000 chars: ${rowVal}" />
+								${logger.error("Data Truncated - xpath (${xpath}) has textValue longer than 1000 chars: ${rowVal}")}
 								<c:set var="rowVal" value="${fn:substring(rowVal, 0, 999)}" />
 							</c:if>
 
@@ -632,19 +635,19 @@
 									${go:appendString(insertSQLSB , transactionId)}
 									${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
 
-									<%-- To avoid truncation errors we'll limit textValue to 1000 chars but will add an error log entry so can track --%>
 									<c:set var="textValue" value="${tranDao.encryptBlacklistFields(transactionId, xpath, rowVal)}" />
-									<c:if test="${fn:length(textValue) > 1000}">
-										<c:set var="errorStr" value="Data Truncated - xpath (${xpath}) has textValue longer than 1000 chars: ${textValue}" />
-										${logger.error(errorStr)}
-										<c:set var="textValue" value="${fn:substring(textValue,0,999)}" />
-									</c:if>
 
 									<c:set var="ignore">
 										${insertParams.add(counter)};
 										${insertParams.add(xpath)};
 										${insertParams.add(textValue)};
 									</c:set>
+
+									<%-- CTM-809 - remove after monitoring period --%>
+									<c:if test="${rootPath eq 'fuel'}">
+										<c:set var="fuelSQLParams"><c:if test="${not empty fuelSQLParams}">,</c:if>${xpath}=${textValue}</c:set>
+									</c:if>
+									<%-- END CTM-809 --%>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -706,7 +709,12 @@
 			</sql:transaction>
 		</c:catch>
 		<c:if test="${not empty error}">
-			${logger.error('Write quote failed. {}', error)}
+			${logger.error("Write quote failed. {} {} {} {}", log:kv("errorMessage", error.message), log:kv("errorCause", error.cause), log:kv("sql", insertSQLSB.toString()), log:kv("sqlParams", insertParams.toString()))}
+			<%-- CTM-809 - remove after monitoring period --%>
+			<c:if test="${rootPath eq 'fuel'}">
+				${logger.error("Fuel write quote failed using: {}", log:kv("originalSqlParams",fuelSQLParams)}
+			</c:if>
+			<%-- END CTM-809 --%>
 			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 				<c:param name="transactionId" value="${transactionId}" />
 				<c:param name="page" value="${pageContext.request.servletPath}" />
