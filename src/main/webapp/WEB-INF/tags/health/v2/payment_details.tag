@@ -64,6 +64,75 @@
 
 		<health_v2:vouchers xpath="health/voucher" />
 
+		<div id="possibleMatchingCustomer">
+			<h5>Split Transaction found</h5>
+			<p>Some of the customer details in this transaction match a previous sale made within the last 60 days. Please select a reason for the split transaction.</p>
+
+			<div class="disableable-fields">
+
+				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/transactionId" />
+				<form_v3:row fieldXpath="${fieldXpath}" label="Matched transaction Id" className="healthSplitTransactionTransIdRow">
+					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched transaction Id" required="false" className="health-payment_details-splitTransaction_trans-Id" />
+					<p id="healthSplitTransactionTransactionId" class="display-only"></p>
+				</form_v3:row>
+
+				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/rootId" />
+				<form_v3:row fieldXpath="${fieldXpath}" label="Matched root Id" className="healthSplitTransactionRootIdRow">
+					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched Root Id" required="false" className="health-payment_details-splitTransaction_root-Id" />
+					<p id="healthSplitTransactionRootId" class="display-only"></p>
+				</form_v3:row>
+
+				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/fullName" />
+				<form_v3:row fieldXpath="${fieldXpath}" label="Matched full name" className="healthSplitTransactionfullNameRow">
+					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched full name" required="false" className="health-payment_details-splitTransaction_full-name" />
+					<p id="healthSplitTransactionFullName" class="display-only"></p>
+				</form_v3:row>
+
+				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/date" />
+				<form_v3:row fieldXpath="${fieldXpath}" label="Matched date" className="healthSplitTransactionDateRow">
+					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched date" required="false" className="health-payment_details-splitTransaction_date" />
+					<p id="healthSplitTransactionDate" class="display-only"></p>
+				</form_v3:row>
+
+				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/time" />
+				<form_v3:row fieldXpath="${fieldXpath}" label="Matched time" className="healthSplitTransactionTimeRow">
+					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched time" required="false" className="health-payment_details-splitTransaction_time" />
+					<p id="healthSplitTransactionTime" class="display-only"></p>
+				</form_v3:row>
+
+				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/operatorId" />
+				<form_v3:row fieldXpath="${fieldXpath}" label="Matched operator id" className="healthSplitTransactionOperatorIdRow">
+					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched operator id" required="false" className="health-payment_details-splitTransaction_operator-id" />
+					<p id="healthSplitTransactionOperatorId" class="display-only"></p>
+				</form_v3:row>
+
+				<c:set var="fieldXpath" value="${xpath}/splitTransaction/reason" />
+				<form_v3:row fieldXpath="${fieldXpath}" label="Reason for split transaction?" className="healthSplitTransactionReasonRow">
+					<field_v2:array_select items="=Please choose...,HES=Hospital extras split contact centre,CSP=Couple Split on Different Policies,FSP=Family or Couple Split on Same Policy,CRX=Customer Resold Cancel Previous Policy,CSS=Child Sold Separate to family,DSP=Double Sold Same Policy,BFS=Blood Family Split (ie brothers and sisters),RPF=Reprocessed Failed Join,FDA=False Duplicate (to be Audited)" xpath="${fieldXpath}" title="split transaction reason" required="false" className="health-payment_details-splitTransaction_reason" />
+					<p id="healthSplitTransactionReason" class="display-only"></p>
+				</form_v3:row>
+
+				<c:set var="fieldXpath" value="${xpath}/splitTransaction/approvedby" />
+				<form_v3:row fieldXpath="${fieldXpath}" label="Approved By?" className="healthSplitTransactionApprovedByRow">
+					<p id="healthSplitTransactionApprovedBy" class="display-only"></p>
+					<field_v1:hidden xpath="${fieldXpath}" required="false" validationMessage="Voucher much be approved" />  <%-- the required prop might need to be set dynamically  --%>
+				</form_v3:row>
+
+				<c:set var="fieldXpath" value="${xpath}/splitTransaction/authorisationcode" />
+				<c:set var="wrapperClass" value="authorisation-column" />
+				<form_v3:row fieldXpath="${fieldXpath}" label="Team Leader Authorisation?" className="healthSplitTransactionAuthorisationRow" isNestedField="${false}" hideHelpIconCol="${true}" smRowOverride="6">
+					<div class="split-trans-validation-messages"><!-- empty --></div>
+					<div class="col-xs-12 col-sm-7 ${wrapperClass}">
+						<field_v1:password xpath="${fieldXpath}" required="false" title="authorisation code" placeHolder="authorisation code" />
+					</div>
+					<div class="col-xs-12 col-sm-5 ${wrapperClass} buttons">
+						<a href="javascript:;" class="btn btn-cta btn-authorise">AUTHORISE</a>
+						<a href="javascript:;" class="btn btn-save btn-reset">RESET</a>
+					</div>
+				</form_v3:row>
+			</div>
+		</div>
+
 		<c:if test="${not empty disclaimer_content}">
 			<c:set var="fieldXpath" value="${xpath}/disclaimer" />
 			<form_v3:row fieldXpath="${fieldXpath}" hideHelpIconCol="true">

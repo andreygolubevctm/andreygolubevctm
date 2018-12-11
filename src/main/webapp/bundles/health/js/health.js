@@ -725,6 +725,8 @@
 					meerkat.modules.healthPaymentStep.toggleCouponSeenText();
 
 					meerkat.modules.simplesBindings.toggleBenefitsDialogue();
+
+					meerkat.modules.healthSplitTransaction.checkIfMatchingCustomerTransactions();
 				}
 			}
 		};
