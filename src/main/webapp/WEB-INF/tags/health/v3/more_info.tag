@@ -197,15 +197,15 @@
 		<div class="simplesReformScriptingBox row">
 			<div class="col-sm-12 no-padding">
 				{{ if (['A', 'B1'].includes(custom.reform.scripting)) { }}
-				<p>So with the hospital cover, we have made sure everything you mentioned as important will be covered, like most policies there are some additional services covered as well as services that are excluded or restricted. We will send those across in a welcome pack, I can either read the exclusions and restrictions now or are you happy to just look through those in your own time?</p>
+				<p>So with the hospital cover, we have made sure <strong>everything you</strong> mentioned as important will be covered, like most policies there are some additional services covered as well as services that are excluded or restricted. We will send those across in a welcome pack, I can either read the exclusions and restrictions now or are you happy to just look through those in your own time?</p>
 				{{ } }}
 
 				{{ if (['B2'].includes(custom.reform.scripting)) { }}
-				<p>So with the hospital cover, we have made sure everything mentioned as important will be covered, like most policies there are some services that are excluded or restricted, nothing you’ve mentioned as important, we will send those across in a welcome pack, I can either read them now or are you happy to just look through those in your own time?</p>
+				<p>So with the hospital cover, we have made sure <strong>everything</strong> mentioned as important will be covered, like most policies there are some services that are excluded or restricted, <strong>nothing</strong> you’ve mentioned as important, we will send those across in a welcome pack, I can either read them now or are you happy to just look through those in your own time?</p>
 				{{ } }}
 
 				{{ if (['C'].includes(custom.reform.scripting)) { }}
-				<p>So with this hospital policy, everything mentioned as important is covered. This policy will have some changes on {{= custom.reform.changeDate }}  to services that you haven’t mentioned as important. We will send those changes across in a welcome pack and I can read these for you now, or keeping in mind that the important services will continue to be covered, are you happy to just look through those in your own time?</p>
+				<p>So with this hospital policy, <strong>everything</strong> mentioned as important is covered. This policy will have <strong>some</strong> changes on {{= custom.reform.changeDate }}  to services that you <strong>haven’t</strong> mentioned as important. We will send those changes across in a welcome pack and I can read these for you now, or keeping in mind that the <strong>important</strong> services will continue to be covered, are you happy to just look through those in your own time?</p>
 				{{ } }}
 			</div>
 			<div class="scriptingOptions col-sm-12 no-padding">
@@ -330,14 +330,15 @@
 							</span><br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
 
-							<b>What’s the product changing to? (within CTM benefits)</b><br/>
+							<b>ONLY READ IF CUSTOMER ASKS THE FOLLOWING QUESTIONS</b><br/>
+							<b>What’s the product changing to? (if we know customer’s needs are within the CTM benefit)</b><br/>
 							<span class="clinicalCatInfo">
-								I can’t tell you exactly what the changes are, but I can tell you everything you’ve mentioned as important will continue to be covered, the only changes may be to services that you haven’t mentioned as important, and the health fund is required to tell you well in advance of any changes.
+								I can’t tell you exactly what the changes are, but I can tell you <strong>everything</strong> you’ve mentioned as important <strong>will continue to be covered</strong>, the only changes may be to services that you haven’t mentioned as important, and the health fund is <strong>required</strong> to tell you well in <strong>advance</strong> of any changes.
 							</span><br/><br/>
 
-							<b>What’s the product changing to? (outside of CTM benefits)</b><br/>
+							<b>What’s the product changing to? (if we know customer’s needs are outside the CTM benefits)</b><br/>
 							<span class="clinicalCatInfo">
-								The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
+								The fund hasn’t released the changes on this policy <strong>just yet</strong>, the health funds are <strong>required</strong> to tell you <strong>well in advance</strong> of any changes, but until then, you have the peace of mind to know <strong>everything</strong> you’ve mentioned as important to you is covered.
 							</span>
 						</div>
 					</div>
@@ -347,14 +348,15 @@
 						Great, we'll send the full documents at the end of the call, but based on what you've told me,
 						you are covered for all the things you said are most important.<br/><br/>
 
-						<b>What’s the product changing to? (within CTM benefits)</b><br/>
+						<b>ONLY READ IF CUSTOMER ASKS THE FOLLOWING QUESTIONS</b><br/>
+						<b>What’s the product changing to? (if we know customer’s needs are within the CTM benefit)</b><br/>
 						<span class="clinicalCatInfo">
-							I can’t tell you exactly what the changes are, but I can tell you everything you’ve mentioned as important will continue to be covered, the only changes may be to services that you haven’t mentioned as important, and the health fund is required to tell you well in advance of any changes.
+							I can’t tell you exactly what the changes are, but I can tell you <strong>everything</strong> you’ve mentioned as important <strong>will continue to be covered</strong>, the only changes may be to services that you haven’t mentioned as important, and the health fund is required to tell you <strong>well in advance</strong> of any changes.
 						</span><br/><br/>
 
-						<b>What’s the product changing to? (outside of CTM benefits)</b><br/>
+						<b>What’s the product changing to? (if we know customer’s needs are outside the CTM benefits)</b><br/>
 						<span class="clinicalCatInfo">
-							The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
+							The fund hasn’t released the changes on this policy <strong>just yet</strong>, the health funds are <strong>required</strong> to tell you <strong>well in advance</strong> of any changes, but until then, you have the peace of mind to know <strong>everything</strong> you’ve mentioned as important to you is covered.
 						</span>
 					</div>
 				{{ } }}
@@ -397,9 +399,10 @@
 							</span><br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
 
+							<b>ONLY READ IF CUSTOMER ASKS THE FOLLOWING QUESTIONS</b><br/>
 							<b>What’s the product changing to?</b><br/>
 							<span class="clinicalCatInfo">
-								The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
+								The fund hasn’t released the changes on this policy <strong>just yet</strong>, the health funds are <strong>required</strong> to tell you <strong>well in advance</strong> of any changes, but until then, you have the peace of mind to know <strong>everything</strong> you’ve mentioned as important to you is covered.
 							</span>
 						</div>
 					</div>
@@ -409,9 +412,10 @@
 					Great, we'll send the full documents at the end of the call, but based on what you've told me, you
 					are covered for all the things you said are most important.<br/><br/>
 
+					<b>ONLY READ IF CUSTOMER ASKS THE FOLLOWING QUESTIONS</b><br/>
 					<b>What’s the product changing to?</b><br/>
 					<span class="clinicalCatInfo">
-						The fund hasn’t released the changes on this policy just yet, the health funds are required to tell you well in advance of any changes, but until then, you have the peace of mind to know everything you’ve mentioned as important to you is covered.
+						The fund hasn’t released the changes on this policy <strong>just yet</strong>, the health funds are <strong>required</strong> to tell you <strong>well in advance</strong> of any changes, but until then, you have the peace of mind to know <strong>everything</strong> you’ve mentioned as important to you is covered.
 					</span>
 				</div>
 				{{ } }}
@@ -441,17 +445,17 @@
 								{{ }); }}
 
 								{{ if(exclusions.length) { }}
-								This policy excludes
+								this policy excludes
 								{{= exclusions }}
 								{{ } else { }}
-									<b>There are no exclusions </b>
+									<b>there are no exclusions </b>
 								{{ } }}
 
 							{{ if(restrictions.length) { }}
 								and there is restricted cover for
 								{{= restrictions }}
 								{{ } else { }}
-									<b>There are no restrictions </b>
+									<b>and there are no restrictions.</b>
 							{{ } }}
 							</span>
 						</div>
@@ -580,18 +584,32 @@
 							</div>
 							<div class="col-sm-11 padding">
 								<span class="clinicalCatInfo">
-									But the changes on {{= custom.reform.changeDate }} mean your hospital policy will then exclude
-									{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
+									But the changes on {{= custom.reform.changeDate }} mean your hospital policy
+
+									{{ var tab2exclusions = ''; var tab2exclusionsIndex = 0; }}
+									{{ var tab2restrictions = ''; var tab2restrictionsIndex = 0; }}
+
+									{{ _.each(custom.reform.tab2.benefits, function(benefit){ }}
 										{{ if (benefit.covered === 'N') { }}
-											{{= benefit.category }},
+											{{ tab2exclusions += (tab2exclusionsIndex > 0 ? ', ' : '') + benefit.category; tab2exclusionsIndex++; }}
+										{{ } else if (benefit.covered === 'R') { }}
+											{{ tab2restrictions += (tab2restrictionsIndex > 0 ? ', ' : '') + benefit.category; tab2restrictionsIndex++; }}
 										{{ } }}
 									{{ }); }}
-									and have restricted cover for
-									{{ _.each(custom.reform.tab1.benefits, function(benefit){ }}
-										{{ if (benefit.covered === 'R') { }}
-											{{= benefit.category }},
-										{{ } }}
-									{{ }); }}
+
+									{{ if (tab2exclusions.length) { }}
+										will then exclude
+										{{= tab2exclusions }}
+									{{ } else { }}
+									 	<b>will have no exclusions</b>
+									{{ } }}
+
+									{{ if (tab2restrictions.length) { }}
+										and have restricted cover for
+										{{= tab2restrictions }}
+									{{ } else { }}
+										<b>and will have no restrictions.</b>
+									{{ } }}
 									every other category is covered. Does that make sense?
 								</span>
 							</div>
