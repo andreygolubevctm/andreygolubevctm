@@ -190,6 +190,11 @@
                                                     </span>
                                                 </label>
                                             </div>
+                                            <div class="limited-cover-text">
+                                            Limited Hospital Cover provides the most basic level of hospital cover and is generally the cheapest. It is also sufficient to avoid paying the Medicare Levy Surcharge, which is a government surcharge on the taxable income of individuals who earn over $90,000 a year and couples who earn over $180,000 a year total. However, Limited Hospital Cover products exclude a large number of benefits that other hospital policies cover as standard, and in some instances, provides cover only where you need treatment as a result of an accident.
+                                            <br> 
+                                            <br>
+                                            To compare policies that provide a better level of cover, select the <i>My cover options</i> tab above.</div>
                                         </div>
                                     </div>
                                 </div>
