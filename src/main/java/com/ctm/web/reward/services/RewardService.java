@@ -200,7 +200,7 @@ public class RewardService {
 			}
 		}
 		catch (Exception e) {
-			LOGGER.error("Reward: Failed to createPlaceholderOrderForOnline. transactionId={}", transactionId, e);
+			LOGGER.error("Reward: Failed to createPlaceholderOrderForOnline. errorMessage={}, transactionId={}", e.getMessage(), transactionId, e);
 			return null;
 		}
 	}

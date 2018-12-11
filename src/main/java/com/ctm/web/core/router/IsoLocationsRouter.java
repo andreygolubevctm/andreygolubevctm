@@ -2,6 +2,7 @@ package com.ctm.web.core.router;
 
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.services.IsoLocationsService;
@@ -81,9 +82,13 @@ public abstract class IsoLocationsRouter extends HttpServlet {
             try {
                 RequestUtils.checkForTransactionIdInDataBucket(request);
                 json = fetchCountryList(request);
-            } catch (DaoException | SessionException e) {
-                LOGGER.error("Failed to retrieve countries.");
-                FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);
+            } catch (DaoException | SessionException | SessionExpiredException e) {
+                if(e instanceof SessionExpiredException) {
+                    LOGGER.info(e.getMessage(), e);
+                } else {
+                    LOGGER.error("Failed to retrieve countries {}", kv("errorMessage", e.getMessage()));
+                    FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);
+                }
 
                 Error error = new Error();
                 error.addError(new Error(e.getMessage()));

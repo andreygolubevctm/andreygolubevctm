@@ -3,6 +3,7 @@ package com.ctm.web.core.services;
 import com.ctm.web.core.dao.CountryMappingDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.CountryMapping;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.web.go.Data;
@@ -73,10 +74,10 @@ public class CountryMappingService {
     /**
      * Get the details from the data bucket for this current transaction
      */
-    private Data getData(HttpServletRequest request, long transactionId) throws SessionException {
+    private Data getData(HttpServletRequest request, long transactionId) throws SessionException, SessionExpiredException {
         SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
         if (sessionData == null) {
-            throw new SessionException("session has expired");
+            throw new SessionExpiredException("Session has expired");
         }
 
         return sessionData.getSessionDataForTransactionId(transactionId);

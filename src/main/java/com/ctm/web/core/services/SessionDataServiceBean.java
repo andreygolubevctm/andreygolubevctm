@@ -13,6 +13,7 @@ package com.ctm.web.core.services;
 import com.ctm.web.core.exceptions.BrandException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
@@ -144,7 +145,7 @@ public class SessionDataServiceBean {
 	 * @param searchPreviousIds
 	 * @throws SessionException
 	 */
-	public Data getDataForTransactionId(HttpServletRequest request, String transactionId, boolean searchPreviousIds) throws DaoException, SessionException {
+	public Data getDataForTransactionId(HttpServletRequest request, String transactionId, boolean searchPreviousIds) throws DaoException, SessionException, SessionExpiredException {
 
 		SessionData sessionData = getSessionDataForTransactionId(request, transactionId);
 
@@ -170,7 +171,7 @@ public class SessionDataServiceBean {
 	 * @param transactionId
 	 * @throws SessionException
 	 */
-	public Data getDataForMostRecentRelatedTransactionId(HttpServletRequest request, String transactionId) throws DaoException, SessionException {
+	public Data getDataForMostRecentRelatedTransactionId(HttpServletRequest request, String transactionId) throws DaoException, SessionException, SessionExpiredException {
 
 		SessionData sessionData = getSessionDataForTransactionId(request, transactionId);
 
@@ -183,10 +184,10 @@ public class SessionDataServiceBean {
 	 * Helper for getData methods above - provides codes common to both
 	 * Generally this should NOT be accessed directly, but via getDataForTransactionId()
 	 */
-	public SessionData getSessionDataForTransactionId(HttpServletRequest request, String transactionId) throws SessionException {
+	public SessionData getSessionDataForTransactionId(HttpServletRequest request, String transactionId) throws SessionException, SessionExpiredException {
 		SessionData sessionData = getSessionDataFromSession(request);
 		if (sessionData == null ) {
-			throw new SessionException("session has expired");
+			throw new SessionException("Session has expired");
 		}
 		if (transactionId == null || transactionId.equals("")) {
 			throw new SessionException("Transaction Id not provided");
