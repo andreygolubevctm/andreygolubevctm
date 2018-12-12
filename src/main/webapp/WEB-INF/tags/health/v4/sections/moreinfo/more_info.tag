@@ -171,7 +171,7 @@
 													Inclusion
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center hidden-xs">
+											<div class="col-xs-3 col-sm-3 newBenefitRow benefitHeaderTitle align-center hidden-xs">
 												<div class="benefitRowTableCell">
 													Waiting period
 												</div>
@@ -197,9 +197,10 @@
 													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs">
+											<div class="col-xs-3 col-sm-3 newBenefitRow benefitRowTitle align-center hidden-xs">
+											{{ console.log(benefit); }}
 												<div class="benefitRowTableCell">
-													{{= benefit.WaitingPeriod}}
+													{{= benefit.waitingperiod}}
 												</div>
 											</div>
 										</div>
@@ -208,7 +209,7 @@
 												<div class="col-xs-12 col-sm-8 visible-xs">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Waiting period</strong></div>
-														<div class="col-xs-12 extraBenefitOption">{{= benefit.WaitingPeriod }}</div>
+														<div class="col-xs-12 extraBenefitOption">{{= benefit.waitingperiod }}</div>
 													</div>
 												</div>
 												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
@@ -237,12 +238,12 @@
 													Hospital cover benefits
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-3 col-sm-3 newBenefitRow benefitHeaderTitle align-center">
 												<div class="benefitRowTableCell">
 													Inclusion
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center hidden-xs">
+											<div class="col-xs-3 col-sm-3 newBenefitRow benefitHeaderTitle align-center hidden-xs">
 												<div class="benefitRowTableCell">
 													Waiting period
 												</div>
@@ -267,9 +268,9 @@
 													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs">
+											<div class="col-xs-3 col-sm-3 newBenefitRow benefitRowTitle align-center hidden-xs">
 												<div class="benefitRowTableCell">
-													{{= benefit.WaitingPeriod}}
+													{{= benefit.waitingperiod}}
 												</div>
 											</div>
 										</div>
@@ -278,7 +279,7 @@
 												<div class="col-xs-12 col-sm-8 visible-xs">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Waiting period</strong></div>
-														<div class="col-xs-12 extraBenefitOption">{{= benefit.WaitingPeriod }}</div>
+														<div class="col-xs-12 extraBenefitOption">{{= benefit.waitingperiod }}</div>
 													</div>
 												</div>
 												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
@@ -312,7 +313,7 @@
 												<div class="col-xs-12 benefitTitle">
 													<p>{{= restriction.name }}</p>
 												</div>
-												<div class="col-xs-6 limitTitle">Waiting period</div><div class="col-xs-6 limitValue">{{= restriction.WaitingPeriod }}</div>
+												<div class="col-xs-6 limitTitle">Waiting period</div><div class="col-xs-6 limitValue">{{= restriction.waitingperiod }}</div>
 												<div class="col-xs-6 limitTitle">Benefit Limitation Period</div><div class="col-xs-6 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
 												<div class="clearfix"></div>
 											</div>
