@@ -95,7 +95,9 @@
 								<!-- Hospital Benefits Heading + Brochure -->
 								<div class="reformHospitalTabs">
 									<button type="button" class="reformHospitalTabLink preAprilReformLink active">Covered now</button>
+									{{ if (product.custom.reform.tab2.benefits && product.custom.reform.tab2.benefits.length > 0) { }}
 									<button type="button" class="reformHospitalTabLink postAprilReformLink">Covered from {{= custom.reform.changeDate }}</button>
+									{{ } }}
 								</div>
 								<div class="row hospitalInfo">
 									<div class="col-xs-12">
