@@ -85,7 +85,7 @@
      */
     function showSplitTransactions(found) {
         resetData();
-        data.available = found === true ? found : false;
+        data.available = found;
         updateData();
         updateView();
     }
