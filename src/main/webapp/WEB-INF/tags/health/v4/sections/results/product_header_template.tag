@@ -23,24 +23,60 @@
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); var logoHtml = logoTemplate(obj); }}
                 {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
                 {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
+
+                <div class="hide-on-affix logo-full-width">{{= logoHtml }}</div>
+
                 <div class="open-more-info more-info-showapply" data-productId='{{= obj.productId }}' data-available='{{= obj.available }}'>
                     {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
-                        <div class="dual-pricing-before-after-text"><span class="text-bold">Before</span> April 1st</div>
+                        <div class="dual-pricing-before-after-text">Now</div>
                     {{ } }}
                     {{= priceTemplate(obj) }}
                 </div>
 
                 {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
-                    <div class="premium-rising-tag hidden-lg"><span class="text-bold">Premiums Rise</span> from April 1st <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a></div>
-                    <div class="dual-pricing-before-after-text"><span class="text-bold">After</span> April 1st</div>
                     {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
                 {{ } }}
-
-                <div class="hide-on-affix">{{= logoHtml }}</div>
             </div>
+
+            {{ if (obj.hasOwnProperty('premium')) { }}
+                {{ var availablePremiums = obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true ? obj.altPremium : obj.premium; }}
+                {{ var healthResultsTemplate = meerkat.modules.healthResultsTemplate; }}
+                {{ var discountText = healthResultsTemplate.getDiscountText(obj); }}
+                {{ var result = healthResultsTemplate.getPricePremium(obj._selectedFrequency, availablePremiums, obj.mode); }}
+                {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
+
+                {{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
+                    <div class="lhcText hide-on-affix">
+                        <span>
+                            {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
+                        </span>
+                        {{ if (result.discounted) { }}
+                            <span class="discountText">
+                                inc {{= discountPercentage }}% Discount
+                                <a href="javascript:;" class="discount-tool-tip" data-toggle="popover" data-content="{{= discountText }}">?</a>
+                            </span>
+                        {{ } }}
+                    </div>
+                {{ } else { }}
+                    {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, result.frequency, true) }}
+                {{ } }}
+            {{ } }}
+
+
+            <c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
+            
+            <c:choose>
+            <c:when test="${onlineHealthReformMessaging eq 'Y'}">
+                {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
+                <div class="results-header-classification">
+                    <div class="results-header-classification-icon {{= classification.icon}}" />
+                </div>
+            </c:when>
+            </c:choose>
+
             <div class="clearfix show-on-affix"></div>
             <a class="btn btn-cta btn-block btn-more-info more-info-showapply hide-on-affix" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
-                <div class="more-info-text">View Product <span class="icon icon-angle-right"></span></div>
+                <div class="more-info-text">Review product and join <span class="icon icon-angle-right"></span></div>
             </a>
 
             <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">

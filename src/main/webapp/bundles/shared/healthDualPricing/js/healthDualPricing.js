@@ -41,13 +41,15 @@
     function _setupElements() {
         $elements = {
             logoPriceTemplate: $('#logo-price-template'),
+            affixedHeaderLogoPriceTemplate: $('#affixed-header-logo-price-template'),
             template: {
                 results: {
                     default: $('#dual-pricing-results-template')
                 },
                 moreinfo: {
                     default: $('#dual-pricing-moreinfo-template'),
-                    xs : $('#dual-pricing-moreinfo-xs-template')
+                    xs : $('#dual-pricing-moreinfo-xs-template'),
+                    affixedHeader: $('#dual-pricing-moreinfo-affixed-header-template')
                 },
                 sidebar: $('#dual-pricing-template-sidebar'),
                 applicationXS: $('#dual-pricing-application-xs-template')
@@ -240,7 +242,7 @@
         }
     }
 
-    function renderTemplate(target, product, returnTemplate, isForSidebar, page) {
+    function renderTemplate(target, product, returnTemplate, isForSidebar, page, isForAffixedHeader) {
         var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
         selectedProduct = product;
@@ -275,7 +277,7 @@
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
         product.showRisingTag = (isForSidebar && deviceMediaState !== 'xs') || (meerkat.site.pageAction === 'confirmation');
-        product.showBeforeAfterText = isForSidebar && deviceMediaState !== 'xs';
+        product.showBeforeAfterText = (isForSidebar && deviceMediaState !== 'xs') || isForAffixedHeader;
         product.priceBreakdown = meerkat.modules.healthPriceBreakdown.showBreakdown();
 
         var pricingDate = new Date(selectedProduct.pricingDate);
@@ -284,7 +286,9 @@
         product.pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "MMMM Do, YYYY");
 
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        var affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
         product.renderedPriceTemplate = htmlTemplate(product);
+        product.renderedAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
 
         product.showAltPremium = _.has(product, 'altPremium');
         product.displayLogo = false;
@@ -292,10 +296,12 @@
         product.showRisingTag = false;
         product.priceBreakdown = false;
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);
+        product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
-        $elements.mainDualPricingTemplate = _getTemplate(isForSidebar, page);
+        $elements.mainDualPricingTemplate = _getTemplate(isForSidebar, isForAffixedHeader, page);
 
         var dualPriceTemplate = _.template($elements.mainDualPricingTemplate.html());
 
@@ -311,8 +317,12 @@
         }
     }
 
-    function _getTemplate(isForSidebar, page) {
+    function _getTemplate(isForSidebar, isForAffixedHeader, page) {
         var deviceMediaState = meerkat.modules.deviceMediaState.get();
+
+        if (isForAffixedHeader) {
+            return $elements.template.moreinfo.affixedHeader;
+        }
 
         if (isForSidebar) {
             return deviceMediaState !== 'xs' ? $elements.template.sidebar : $elements.template.applicationXS;

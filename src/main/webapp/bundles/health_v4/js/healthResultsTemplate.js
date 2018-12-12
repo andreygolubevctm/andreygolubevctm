@@ -33,6 +33,48 @@
         return availableBenefits;
     }
 
+    /**
+     * Get the list of available extras.
+     * @param obj The Result object for that product.
+     * @returns {string}
+     */
+    function getAvailableExtrasAsList(obj) {
+        var feature = Features.getPageStructure(obj.featuresStructureIndexToUse)[0];
+        var availableExtras = [],
+            output = "";
+        _.each(feature.children, function (ft) {
+            if (ft.doNotRender === true) {
+                return;
+            }
+            var hasResult = ft.resultPath !== null && ft.resultPath !== '';
+            var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
+            //Also check the first value in the case of april 1 products
+            if (pathValue == "Y" || (pathValue.length > 1 && pathValue[0] === 'Y')) {
+                availableExtras.push(ft);
+            }
+        });
+        if (!availableExtras.length) {
+            //4 = Hospital Cover
+            if(Number.parseInt(obj.featuresStructureIndexToUse) === 4) {
+                $('.featuresListHospitalOtherList, .featuresListHospitalFullList').addClass('hidden');
+            }else{
+                $('.featuresListExtrasOtherList, .featuresListExtrasFullList').addClass('hidden');
+            }
+        } else {
+            _.each(availableExtras, function (ft, i) {
+                var separator = '';
+                if (i == (availableExtras.length - 2)) {
+                    separator = ' and ';
+                } else if (i !== availableExtras.length - 1) {
+                    separator = ', ';
+                }
+                output += ft.safeName + separator;
+            });
+        }
+
+        return output;
+    }
+
     function getPopOverContent(obj, availableBenefits) {
         var output = '';
         _.each(availableBenefits, function (ft) {
@@ -104,6 +146,7 @@
      * @param ft
      * @returns {*}
      */
+
     function getItem(obj, ft) {
         //NOTE: Not sure if we need to extend the feature object each time to clone it.
         // If you don't, the last row's data ends up on Features.getPageStructure. Is that a problem? Not sure...
@@ -113,8 +156,8 @@
         ft.displayItem = ft.type != 'section';
         // section headers are not displayed anymore but we need the section container
         ft.pathValue = _getPathValue(obj, ft);
-        ft.isRestricted = ft.pathValue == "R";
-        ft.isNotCovered = ft.pathValue == "N";
+        ft.isRestricted = ft.pathValue == "R" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'R';
+        ft.isNotCovered = ft.pathValue == "N" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'N';
         ft.hasChildFeatures = typeof ft.children !== 'undefined' && ft.children.length;
 
         // Additional attributes for category's only.
@@ -170,7 +213,7 @@
             ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
         result.hasValidPrice = (prem.value && prem.value > 0) || (prem.text && prem.text.indexOf('$0.') < 0) ||
             (prem.payableAmount && prem.payableAmount > 0);
-        result.lhcFreePriceMode = typeof mode === "undefined" || (mode !== "lhcInc" || prem.lhcfreepricing.indexOf('The premium may be affected by LHC<br/>') === 0 && meerkat.modules.healthLHC.getNewLHC() === null);
+        result.lhcFreePriceMode = typeof mode === "undefined" || (mode !== "lhcInc" || prem.lhcfreepricing.indexOf('The premium may be affected by LHC') === 0 && meerkat.modules.healthLHC.getNewLHC() === null);
         result.discounted = prem.discounted === 'Y';
         result.discountPercentage = prem.discountPercentage;
         return result;
@@ -209,6 +252,46 @@
         result.pathValue = Object.byString(obj, specialOffer.resultPath);
         result.displayValue = Features.parseFeatureValue(result.pathValue, true);
         return result;
+    }
+
+    function getClassification(obj) {
+        var classification = {};
+        classification.icon = getClassificationIcon(obj.custom.reform ? obj.custom.reform.tier : null);
+    
+        return classification;
+    }
+
+    function getClassificationIcon(tier) {
+        if(!tier) {
+            return 'gov-unclassified';
+        }
+
+        if(tier.toLowerCase().indexOf('bronze') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'gov-bronze-plus';
+            }else{
+                return 'gov-bronze';
+            }
+        }else if(tier.toLowerCase().indexOf('silver') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'gov-silver-plus';
+            }else{
+                return 'gov-silver';
+            }
+        }else if(tier.toLowerCase().indexOf('gold') > -1){
+
+            return 'gov-gold';
+
+        }else if(tier.toLowerCase().indexOf('basic') > -1) {
+            if(tier.toLowerCase().indexOf('+') > -1) {
+                return 'gov-basic-plus';
+            }else{
+                return 'gov-basic';
+            }
+        }else
+        {
+            return 'gov-unclassified';
+        }
     }
 
     /**
@@ -338,6 +421,14 @@
 
     function postRenderFeatures() {
         eventSubscriptions();
+
+        if(numberOfSelectedHospitals() === 0) {
+            $('.featuresListHospitalSelections .children').each(function(){
+                if ($.trim($(this).html()) === '') {
+                    $(this).html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital benefits selected</div></div></div></div>');
+                }
+            });
+        }
     }
 
     function numberOfSelectedExtras() {
@@ -370,6 +461,43 @@
             e.preventDefault();
             Results.unfilterBy('productId', "value", true);
             unhideFilteredProducts();
+        }).off('click', '.featuresListExtrasOtherList').on('click', '.featuresListExtrasOtherList', function () {
+            $('.featuresListExtrasOtherList').addClass('hidden');
+            $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
+            $('.featuresListExtrasFullList').removeClass('hidden');
+            $('.otherExtrasBenefits .coverTitle .featuresViewAll').removeClass('hidden');
+            $('.featuresListExtrasFullList .children').children('.cell .category').each(function(i) { 
+                var element = $(this).first();
+                var selectedBenefits = window.meerkat.modules.healthResults.getSelectedBenefitsList();
+                var featureId = element.context.children[0].children[0].getAttribute('data-featureid');
+                var alreadySelected = selectedBenefits.indexOf(featureId) > -1;
+                if(!$(this).hasClass('hidden') && alreadySelected) {
+                    $(this).addClass('hidden');
+                }
+            });
+        }).off('click', '.featuresListHospitalOtherList').on('click', '.featuresListHospitalOtherList', function () {
+            $('.featuresListHospitalOtherList').addClass('hidden');
+            $('.featuresListHospitalFullList > .collapsed').removeClass('collapsed');
+            $('.featuresListHospitalFullList').removeClass('hidden');
+            $('.otherHospitalBenefits .coverTitle .featuresViewAll').removeClass('hidden');
+
+            $('.featuresListHospitalFullList .children').children('.cell .category').each(function(i) { 
+                var element = $(this).first();
+                var selectedBenefits = window.meerkat.modules.healthResults.getSelectedBenefitsList();
+                var featureId = element.context.children[0].children[0].getAttribute('data-featureid');
+                var alreadySelected = selectedBenefits.indexOf(featureId.toString()) > -1;
+                if(!$(this).hasClass('hidden') && alreadySelected) {
+                    $(this).addClass('hidden');
+                }
+            });
+        }).off('click', '.otherHospitalBenefits .coverTitle').on('click', '.otherHospitalBenefits .coverTitle', function () {
+            $('.featuresListHospitalOtherList').removeClass('hidden');
+            $('.featuresListHospitalFullList').addClass('hidden');
+            $('.otherHospitalBenefits .coverTitle .featuresViewAll').addClass('hidden');
+        }).off('click', '.otherExtrasBenefits .coverTitle').on('click', '.otherExtrasBenefits .coverTitle', function () {
+            $('.featuresListExtrasOtherList').removeClass('hidden');
+            $('.featuresListExtrasFullList').addClass('hidden');
+            $('.otherExtrasBenefits .coverTitle .featuresViewAll').addClass('hidden');
         });
     }
 
@@ -436,11 +564,13 @@
     meerkat.modules.register('healthResultsTemplate', {
         init: init,
         getAvailableBenefits: getAvailableBenefits,
+        getAvailableExtrasAsList: getAvailableExtrasAsList,
         getPopOverContent: getPopOverContent,
         getPricePremium: getPricePremium,
         getExcessPrices: getExcessPrices,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
+        getClassification: getClassification,
         getItem: getItem,
         getExcessItem: getExcessItem,
         postRenderFeatures: postRenderFeatures,

@@ -31,6 +31,8 @@ public class HealthApplicationRequest {
     public List<String> providerFilter;
 
     private String operator;
+	private String cid;
+    private String trialCampaign;
 
     private HealthApplicationRequest(Builder builder) {
         contactDetails = builder.contactDetails;
@@ -39,6 +41,8 @@ public class HealthApplicationRequest {
         applicants = builder.applicants;
         providerFilter = builder.providerFilter;
         operator = builder.operator;
+		cid = builder.cid;
+		trialCampaign = builder.trialCampaign;
     }
 
     public static Builder newBuilder() {
@@ -70,6 +74,14 @@ public class HealthApplicationRequest {
         return operator;
     }
 
+	public String getCid() {
+		return cid;
+	}
+
+    public String getTrialCampaign() {
+        return trialCampaign;
+    }
+
     public static final class Builder {
         private ContactDetails contactDetails;
         private Payment payment;
@@ -77,6 +89,8 @@ public class HealthApplicationRequest {
         private ApplicationGroup applicants;
         private List<String> providerFilter;
         private String operator;
+		private String cid;
+        private String trialCampaign;
 
         private Builder() {
         }
@@ -108,6 +122,16 @@ public class HealthApplicationRequest {
 
         public Builder operator(String val) {
             operator = val;
+            return this;
+        }
+
+		public Builder cid(String val) {
+			cid = val;
+			return this;
+		}
+
+        public Builder trialCampaign(String val) {
+			trialCampaign = val;
             return this;
         }
 

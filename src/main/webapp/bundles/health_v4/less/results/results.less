@@ -39,19 +39,15 @@
 
 .open-more-info {
   cursor: pointer;
+  margin: 0 auto;
+  width: 100%;
 }
 
 #resultsPage {
-  padding-top: 6px;
   margin-bottom: 20px;
-
-  @media (@sm) {
-    padding-top: 20px;
-  }
 
   a.dialogPop {
     text-decoration: underline;
-    color: #000000;
     font-family: @font-family-base;
   }
 }
@@ -67,6 +63,10 @@
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding: 0;
+  padding-top: 6px;
+  @media (@sm) {
+    padding-top: 20px;
+  }
 
   .smaller-text {
     font-size: 12px;
@@ -284,10 +284,97 @@
     }
   }
 
+  .btn {
+    white-space: normal !important;
+  }
+
   .results-header-inner-container {
-    border-bottom: 1px solid @results-border-color;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     padding-bottom: 15px;
+
+    .results-header-classification {
+      margin: 15px 0px;
+
+      .results-header-classification-icon {
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100px;
+    
+        @media (@sm) {
+          height: 60px;
+        }
+    
+        &.gov-unclassified {
+          background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
+    
+          @media (@sm) {
+            background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+          }
+        }
+    
+        &.gov-bronze-plus {
+          background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass_mobile.svg');
+    
+          @media (@sm) {
+            background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
+          }
+        }
+    
+        &.gov-bronze {
+          background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass_mobile.svg');
+    
+          @media (@sm) {
+            background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
+          }
+        }
+    
+        &.gov-silver-plus {
+          background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass_mobile.svg');
+    
+          @media (@sm) {
+            background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
+          }
+        }
+    
+        &.gov-silver {
+          background-image: url('../../../../assets/graphics/health_classification/Silver_govclass_mobile.svg');
+    
+          @media (@sm) {
+            background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
+          }
+        }
+    
+        &.gov-gold {
+          background-image: url('../../../../assets/graphics/health_classification/Gold_govclass_mobile.svg');
+    
+          @media (@sm) {
+            background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
+          }
+        }
+    
+        &.gov-basic-plus {
+          background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass_mobile.svg');
+    
+          @media (@sm) {
+            background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
+          }
+        }
+    
+        &.gov-basic {
+          background-image: url('../../../../assets/graphics/health_classification/Basic_govclass_mobile.svg');
+    
+          @media (@sm) {
+            background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
+          }
+        }
+      }
+    }
+
+    .lhcText {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
 
     .btn-more-info {
       @media (@lg) {
@@ -303,19 +390,16 @@
   }
   .productSummary {
     margin-bottom: 10px;
-    height: 150px;
+    height: 110px;
     @media (@lg-only) {
       height: initial;
     }
 
     .frequencyAmount {
-      color: @link-color;
-      font-size: 42px;
+      color: @gray-base;
+      font-size: 36px;
       @media(@sm) {
-        font-size: 48px;
-      }
-      .frequencyTitle {
-        display: none;
+        font-size: 36px;
       }
 
       &.comingSoon {
@@ -335,13 +419,13 @@
       min-height: 47px;
     }
     @media (@lg) {
-      .frequencyAmount, .lhcText {
-        float: left;
-        width: 50%;
-        min-height: auto;
+      .frequencyAmount {
+        width: 100%;
+        margin-top: 10px;
       }
 
       .lhcText {
+        min-height: auto;
         padding-bottom: 0;
         text-align: right;
         .small;
@@ -361,7 +445,7 @@
   // Fix margins for rows on XS @todo may be unnecessary in v4
   .result-row {
     h2, h3 {
-      color: @theme-accent-4;
+      color: #333333;
     }
     margin-left: 5px;
     @media (@sm) {
@@ -469,13 +553,75 @@
     }
 
     .featuresList {
-      margin: auto 15px;
+      .hospitalCoverSection {
+        .featuresListHospitalSelections {
+          .section {
+            .children {
+              .cell:nth-child(odd) {
+                  background-color: #E5EBF3;
+                }
+              }
+            }
+          }
+        }
 
+      .extrasCoverSection {
+        .featuresListExtrasSelections {
+          .section {
+            .children {
+              .cell:nth-child(odd) {
+                background-color: #FFF4E9;
+              }
+            }
+          }
+        }
+      }
+
+      .hospitalCoverSection,
+      .extrasCoverSection, 
+      .ambulanceCoverSection  {
+        .coverTitle {
+          padding: 15px 15px 15px;
+          font-weight: bold;
+          font-size: 16px;
+          color: #333333;
+          border-bottom: 1px solid @gray-light;
+        }
+        h2 {
+          float: left;
+          padding: 0px 10px;
+        }
+        .results-download-brochure {
+          float: right;
+          font-size: @font-size-small;
+          margin-top: 23px;
+          text-decoration: underline;
+        }
+
+        .featuresListHospitalOtherList {
+          padding: 0px 10px;
+        }
+
+        .featuresListExtrasOtherList {
+          padding: 0px 10px;
+          border-bottom: 1px solid @results-border-color;
+        }
+      }
+      
       @media (@lg) {
         .hospitalCoverSection,
-        .extrasCoverSection {
+        .extrasCoverSection, 
+        .ambulanceCoverSection  {
+          .coverTitle {
+            padding: 15px 15px 15px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #333333;
+            border-bottom: 1px solid @gray-light;
+          }
           h2 {
             float: left;
+            padding: 0px 15px;
           }
           .results-download-brochure {
             float: right;
@@ -483,15 +629,24 @@
             margin-top: 23px;
             text-decoration: underline;
           }
+
+          .featuresListHospitalOtherList {
+            padding: 0px 15px;
+          }
+
+          .featuresListExtrasOtherList {
+            padding: 0px 15px;
+            border-bottom: 1px solid @results-border-color;
+          }
         }
       }
     }
+
     // .cell is used as parent wrapper as .category is re-used on non-cell divs.
     .cell {
 
       // A top level category e.g. the Non Cosmetic Plastic Surgery cell
       &.category { //.cell.category
-
         .transition(~"color ease-in-out .25s");
 
         // The label cell e.g. "Non Cosmetic Plastic Surgery"
@@ -500,6 +655,7 @@
         .limits-label {
           // default color is accent 1
           color: @theme-accent-4;
+          padding: 0px 0px 0px 15px;
           .user-select(none);
           display: block;
         }
@@ -509,8 +665,6 @@
         &.expandable {
           border-top: 1px solid transparent;
           border-bottom: 1px solid @gray-light;
-          margin: 0 -15px;
-          padding: 0 15px;
 
           &.row-hovered {
             background-color: #f3f3f3;
@@ -518,35 +672,53 @@
           }
 
           &.ambulanceSection {
-            border-bottom: 0;
-          }
-          .contentInner {
-            color: @link-color;
+            border-top: 1px solid @results-border-color;
           }
         }
-        &.expanded {
-          .contentInner {
-            color: @theme-secondary;
-          }
+
+        .contentInner {
+          color: #333333;
+          .cover-title {	
+            font-size: 14px;
+            font-weight: 600;
+          } 
+        }
+
           .labelInColumn {
             border-bottom: 1px solid @results-border-color;
           }
-
-        }
 
         .featureValue, .featureLabel {
           float: left;
         }
         .featureLabel {
-          color: @theme-accent-4;
-          width: 60%;
+          color: #333333;
+          font-weight: bold;
+          width: 100%;
+
+          @media (@lg) {
+            width: 60%;
+          }
         }
         .featureValue {
-          text-align: right;
-          width: 40%;
+          text-align: left;
+          width: 100%;
+          margin-top: 5px;
+          font-weight: normal;
+
+          @media (@lg) {
+            text-align: right;
+            width: 40%;
+            margin-top: 0px;
+          }
+
           @media (@xs-only) {
             word-wrap: break-word;
             font-size: 12px;
+          }
+
+          .excess-value {
+            font-weight: bold;
           }
         }
 
@@ -558,9 +730,9 @@
 
           .children { // sub-features
             margin-bottom: 20px;
+            margin: 0px 15px;
             .cell {
               font-size: 12px;
-              margin-left: 10px;
               &.featureGroupLimit {
                 color: @gray;
               }
@@ -589,7 +761,26 @@
     padding: 10px 0;
     border-bottom: 1px solid @results-border-color;
   }
+
+  .featuresListMargin {
+    margin: 0px 15px;
+  }
+
+  .extrasCoverContainer {
+    background-color: #eae8e8;
+
+    .extrasCoverSectionBorder {
+      padding: 15px;
+    }
+  }
+
   .hospitalSelectionsExcessContainer {
+    background-color: #eae8e8;
+
+    .hospitalExcessSectionBorder {
+      padding: 0px 15px;
+    }
+
     .selected-benefits-title {
       color: @gray;
       font-size: 16px;
@@ -611,17 +802,11 @@
     }
   }
 
-  // Overrides for the extras "other" list template:
-  .featuresListExtrasOtherList {
-    .cell {
-      border-bottom: 1px solid @results-border-color;
-    }
-  }
-
   .hospitalSelectionsExcessContainer {
     .featuresListExcess {
       .content {
         padding-bottom: 5px;
+        padding-top: 15px;
       }
     }
   }
@@ -630,8 +815,32 @@
     .featuresList.featuresElements {
       .featuresListExcess {
         .cell {
+          min-height: 50px;
+          font-weight: 600;
+
           &:first-of-type {
-            border-bottom: 1px solid @gray;
+            border-bottom: 1px solid @gray-light;
+          }
+
+          small {
+            font-weight: normal;
+          }
+        }
+      }
+
+      .featuresViewAll {
+        color: @link-color;
+        margin-top: 10px;
+        cursor: pointer;
+
+        .viewLessDetails {
+          font-size: 14px;
+          font-weight: normal;
+        }
+
+        &.expanded {
+          .expander::before {
+            content: "\e911";
           }
         }
       }
@@ -649,17 +858,6 @@
       }
 
       .expander {
-        .icon-plus;
-        border: 1px solid;
-        border-radius: 100%;
-        font-size: 6px;
-        position: absolute;
-        left: 0;
-        top: 50%;
-        margin-top: -6px;
-        padding: 2px;
-        width: 12px;
-
         @media (@md) {
           position: relative;
           margin-top: 4px;
@@ -667,43 +865,49 @@
         }
       }
 
-      .expanded {
-        > .category.expandable {
-          .expander {
-            .icon-minus;
-          }
-        }
-      }
-
-      .labelInColumn.category.expandable {
+      .labelInColumn.category {
         .content {
           .contentInner {
-            &::after {
-              content: '\e600';
-              color: @theme-secondary;
-              font-family: 'framework_font';
-              position: absolute;
-              right: 0;
-              top: 50%;
-              margin-top: -7px;
+            .benefit-container {
+              margin-top: 10px;
+              .benefit-icon {
+                &::before {
+                  content: '\e600';
+                  color: #0DB14B;
+                  font-family: 'framework_font';
+                  margin-right: 5px;
+                  margin-top: -7px;
+                  vertical-align: middle;
+                } 
+              }
             }
           }
 
           &.noCover {
             .contentInner {
-              &::after {
-                content: '\e601';
-                color: @theme-accent-3;
+              .benefit-container {
+                margin-top: 10px;
+                .benefit-icon {
+                  &::before {
+                    content: '\e601';
+                    color: @theme-accent-3;
+                  } 
+                }
               }
             }
           }
 
           &.restrictedCover {
             .contentInner {
-              &::after {
-                .icon-r();
-                right: 2px;
-                margin-top: -12px;
+              .benefit-container {
+                margin-top: 10px;
+                .benefit-icon {
+                  &::before {
+                    .icon-r();
+                    right: 2px;
+                    margin-top: -12px;
+                  } 
+                }
               }
             }
           }
@@ -734,21 +938,11 @@
 
           &.privateHospital {
             .children {
-              padding-top: @results-column-side-padding-width;
+              padding: @results-column-side-padding-width 0px;
               .restrictedLabel.invisible {
                 display: none;
               }
             }
-          }
-        }
-
-        &.displayAsRows {
-          .featureLabel {
-            width: 100%;
-          }
-          .featureValue {
-            text-align: left;
-            width: 100%;
           }
         }
       }
@@ -774,6 +968,7 @@
         display: inline-block;
         max-width: 76%;
         margin: 0 12%;
+        text-indent: 20px;
 
         @media (@md) {
           max-width: inherit;
@@ -790,18 +985,26 @@
   width: 100%;
 
   &.content {
-    padding: 0;
+    padding: 0px 15px;
     position: initial;
     overflow: visible;;
   }
   .feature-item-text {
-    width: 86%;
-    float: left;
+    width: 100%;
     p {
       margin-bottom: 0;
     }
   }
   .feature-item {
+    .feature-item-offer {
+      background-color: @theme-tertiary;
+      float: left;
+      color: white;
+      padding: 5px 10px;
+      margin-right: 10px;
+      margin-bottom: 5px;
+    }
+
     float: left;
     &.item-popover {
       &:hover {
@@ -834,6 +1037,7 @@
 
   &.features-1 .feature-item {
     width: 100%;
+    margin-bottom: 10px;
   }
   &.features-2 .feature-item {
     width: 50%;
@@ -870,12 +1074,20 @@
       margin-top:0;
       text-align:center;
       a {
-        color:#0DB14B;
+        color:#1C3F94;
         span {
           margin-top:-1px;
+          color: #555555;
+          margin-right: 5px;
         }
       }
     }
+  }
+
+  .fundCallCentreNumberTitle{
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 5px;
   }
 }
 
@@ -899,8 +1111,9 @@ body {
 
     &:not(.moreInfoVisible) {
       .price.premium {
+        margin-top: 10px;
+
         .frequency {
-          height: 101px;
 
           @media (@sm) {
             height: 108px;

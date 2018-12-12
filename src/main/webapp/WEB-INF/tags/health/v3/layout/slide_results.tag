@@ -7,12 +7,12 @@
     <layout_v3:slide_content>
         <simples:dialogue id="83" className="" vertical="health" />
         <simples:dialogue id="112" className="hidden red" vertical="health" />
-        <simples:dialogue id="24" className="" vertical="health" />
         <simples:dialogue id="74" className="extendedFamilyRules hidden" vertical="health"/>
         <health_v3:results />
         <health_v3:more_info/>
         <health_v1:prices_have_changed_notification/>
         <health_v1:dual_pricing_modal />
+        <health_v4:logo_price_template_affixed_header />
         <c:if test="${callCentre}">
             <core_v1:js_template id="simples-dialogue-popup-template">
                 <competition:africaCompSettings />
