@@ -267,11 +267,7 @@
         moreInfoContainer.html(meerkat.modules.loadingAnimation.getTemplate()).show();
 
         prepareProduct(function moreInfoShowSuccess() {
-            try {
             var htmlString = htmlTemplate(product);
-            }catch(e){
-                console.log(e);
-            }
             // fade out loading anim
             moreInfoContainer.find(".spinner").fadeOut();
 
