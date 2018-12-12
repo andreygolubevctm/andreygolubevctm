@@ -320,7 +320,7 @@
 
     function getClassification(obj) {
         var classification = {};
-        classification.icon = getClassificationIcon(obj.custom.reform.tier);
+        classification.icon = getClassificationIcon(obj.custom.reform ? obj.custom.reform.tier : null);
         
         return classification;
     }
