@@ -76,18 +76,6 @@
 					<p id="healthSplitTransactionTransactionId" class="display-only"></p>
 				</form_v3:row>
 
-				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/rootId" />
-				<form_v3:row fieldXpath="${fieldXpath}" label="Matched root Id" className="healthSplitTransactionRootIdRow">
-					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched Root Id" required="false" className="health-payment_details-splitTransaction_root-Id" />
-					<p id="healthSplitTransactionRootId" class="display-only"></p>
-				</form_v3:row>
-
-				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/fullName" />
-				<form_v3:row fieldXpath="${fieldXpath}" label="Matched full name" className="healthSplitTransactionfullNameRow">
-					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched full name" required="false" className="health-payment_details-splitTransaction_full-name" />
-					<p id="healthSplitTransactionFullName" class="display-only"></p>
-				</form_v3:row>
-
 				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/date" />
 				<form_v3:row fieldXpath="${fieldXpath}" label="Matched date" className="healthSplitTransactionDateRow">
 					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched date" required="false" className="health-payment_details-splitTransaction_date" />
@@ -98,12 +86,6 @@
 				<form_v3:row fieldXpath="${fieldXpath}" label="Matched time" className="healthSplitTransactionTimeRow">
 					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched time" required="false" className="health-payment_details-splitTransaction_time" />
 					<p id="healthSplitTransactionTime" class="display-only"></p>
-				</form_v3:row>
-
-				<c:set var="fieldXpath" value="${xpath}/splitTransaction/matched/operatorId" />
-				<form_v3:row fieldXpath="${fieldXpath}" label="Matched operator id" className="healthSplitTransactionOperatorIdRow">
-					<field_v2:input readOnly="true" xpath="${fieldXpath}" title="Matched operator id" required="false" className="health-payment_details-splitTransaction_operator-id" />
-					<p id="healthSplitTransactionOperatorId" class="display-only"></p>
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/splitTransaction/reason" />
