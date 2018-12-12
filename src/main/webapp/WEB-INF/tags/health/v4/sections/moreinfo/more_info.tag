@@ -89,13 +89,15 @@
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">
 					<div class="row">
-						{{ if(typeof hospitalCover !== 'undefined') { }}
+						{{ if(hospital && typeof hospitalCover !== 'undefined') { }}
 						<div class="benefitsColumn">
 							<div class="col-sm-12 col-xs-12 HospitalBenefits">
 								<!-- Hospital Benefits Heading + Brochure -->
 								<div class="reformHospitalTabs">
 									<button type="button" class="reformHospitalTabLink preAprilReformLink active">Covered now</button>
+									{{ if (product.custom.reform.tab2.benefits && product.custom.reform.tab2.benefits.length > 0) { }}
 									<button type="button" class="reformHospitalTabLink postAprilReformLink">Covered from {{= custom.reform.changeDate }}</button>
+									{{ } }}
 								</div>
 								<div class="row hospitalInfo">
 									<div class="col-xs-12">
@@ -157,7 +159,7 @@
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
 										{{ var isMobile = meerkat.modules.deviceMediaState.get() === "xs"; }}
-										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										{{ if(hospital && meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
 											<div class="col-xs-9 col-sm-7 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">
@@ -295,15 +297,15 @@
 								{{ } }}
 
 								<!-- Restricted Benefits -->
-								{{ if (hospitalCover.restrictions.length > 0) { }}
+								{{ if (hospital && hospitalCover.restrictions.length > 0) { }}
 								<div class="row restrictedContainer">
 									<div class="col-xs-12">
 										<h3 class="heading">Restricted Benefits <span class="benefitCount gray">{{= hospitalCover.restrictions.length }}</span></h3>
 										<p>These treatments are limited to the same amount you would receive in a public hospital for those treatments.</p>
-										{{ if(typeof hospitalCover !== 'undefined') { }}
+										{{ if(hospital && typeof hospitalCover !== 'undefined') { }}
 											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
 										{{ } }}
-
+										{{ if(hospital) { }}
 										{{ _.each(hospitalCover.restrictions, function(restriction){ }}
 										<div class="row {{= restriction.className }} benefitRow restricted">
 											<div class="benefitContent">
@@ -316,6 +318,7 @@
 											</div>
 										</div>
 										{{ }) }}
+										{{ } }}
 									</div>
 								</div>
 								{{ } }}
@@ -342,7 +345,7 @@
 										{{ product.structureIndex = 5; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
-										{{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										{{ if(hospital && meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
 											<div class="col-xs-9 col-sm-8 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">

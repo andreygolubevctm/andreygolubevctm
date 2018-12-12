@@ -369,8 +369,9 @@
 
         if (initToggleBar) {
             meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
-            _trackScroll();
         }
+
+        _trackScroll();
 
         $(toggleBarInitSettings.container).find('.toggleBar').toggleClass('hidden', initToggleBar === false);
         $('#' + moreInfoDialogId).find('.navbar-text.modal-title-label').html('<span class="quoteRefHdr">Quote Ref: <span class="quoteRefHdrTransId">' + meerkat.modules.transactionId.get() + '</span></span>');

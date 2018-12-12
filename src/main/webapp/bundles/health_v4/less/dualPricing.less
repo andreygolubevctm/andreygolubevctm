@@ -180,7 +180,12 @@ body[data-step="results"]:not(.moreInfoVisible) {
   }
 
   .resultInsert .productSummary.hasDualPricing {
-    height: initial;
+    height: 250px;
+
+    @media (@lg) {
+    height: 180px;
+    }
+    
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
