@@ -121,8 +121,10 @@
 												<p class="hidden-xs">{{= hospital.inclusions.excess }}</p>
 											</div>
 											<div class="col-xs-4">
+												{{ if (hospital.inclusions.excesses.perAdmission) { }}
 												<span class="dollarValue">{{= hospital.inclusions.excesses.perAdmission.replace('$', '') }}</span><br/>
 												<span class="valueUnit">per admission</span>
+												{{ } }}
 											</div>
 											<div class="col-xs-12 visible-xs">
 												{{= hospital.inclusions.excess }}
