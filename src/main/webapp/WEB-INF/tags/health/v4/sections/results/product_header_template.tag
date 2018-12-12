@@ -50,12 +50,6 @@
                         <span>
                             {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
                         </span>
-                        {{ if (result.discounted) { }}
-                            <span class="discountText">
-                                inc {{= discountPercentage }}% Discount
-                                <a href="javascript:;" class="discount-tool-tip" data-toggle="popover" data-content="{{= discountText }}">?</a>
-                            </span>
-                        {{ } }}
                     </div>
                 {{ } else { }}
                     {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, result.frequency, true) }}

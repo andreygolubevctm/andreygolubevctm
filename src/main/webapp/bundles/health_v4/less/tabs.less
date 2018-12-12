@@ -138,12 +138,37 @@
   }
 }
 
+.ambulanceCoverSection {
+  margin-left: 0px;
+  margin-right: 0px;
+
+  @media (@md) {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
+  .featuresListAmbulance {
+    margin-left: 0px;
+    margin-right: 0px;
+
+    @media (@md) {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+  }
+}
+
 .ExtrasBenefits, .ambulanceCoverSection {
   margin-top: 40px;
 
   h2 {
     font-size: 28px;
     color: @gray-base;
+    margin-left: 10px;
+  }
+
+  .heading-brochure {
+    margin-left: 10px;
   }
 }
 
@@ -204,10 +229,11 @@
 }
 
 .extrasCollapseContentLink {
+  width: 10%;
   float: right;
-  margin-right: 20px;
   text-decoration: none !important;
   color: #1C3E94;
+  text-align: center;
 }
 
 .benefitCollapsedContent {

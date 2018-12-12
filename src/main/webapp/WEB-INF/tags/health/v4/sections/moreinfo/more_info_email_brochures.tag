@@ -10,7 +10,7 @@
         <div class="policyBrochures row">
             <div class="col-xs-12">
                 <h2>Policy brochures</h2>
-                <p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
+                <p>See your policy brochure{{= hospital && typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
             </div>
             <div class="col-xs-12 moreInfoEmailBrochures" novalidate="novalidate">
 
@@ -24,7 +24,7 @@
                                         placeHolder="${emailPlaceHolder}" />
                     </div>
                     <div class="col-sm-4 hidden-xs">
-                        <a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+                        <a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= hospital && typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
                     </div>
                 </div>
                 <div class="row row-content formInput optInMarketingRow">
@@ -38,13 +38,13 @@
 
                 <div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
                     <div class="col-xs-12">
-                        <a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+                        <a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= hospital && typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
                     </div>
                 </div>
                 <div class="row row-content moreInfoEmailBrochuresSuccess hidden">
                     <div class="col-xs-12">
                         <div class="success alert alert-success">
-                            Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
+                            Success! Your policy brochure{{= hospital && hospitalCover && typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
                         </div>
                     </div>
                 </div>

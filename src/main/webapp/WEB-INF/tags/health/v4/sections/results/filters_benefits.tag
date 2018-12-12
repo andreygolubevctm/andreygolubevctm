@@ -9,7 +9,7 @@
     <div class="separator-container bottom-separator">
         <div class="filter filter-hospital-benefits" data-filter-serverside="true">
             <div class="filter-sub-heading black-text">Hospital</div>
-            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
+            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="Yes" offText="No" />
             <div class="filter-by-container">
                 <div class="filter-by-hospital-benefits small"></div>
                 <a href="javascript:;" class="filter-toggle small full-width " data-filter="hospital-benefits" <field_v1:analytics_attr analVal="hospital benefits filter" quoteChar="\"" />>Change</a>
@@ -42,7 +42,7 @@
     <div class="separator-container bottom-separator bottom-separator-widget-padding">
         <div class="filter filter-extras-benefits" data-filter-serverside="true">
             <div class="filter-sub-heading black-text">Extras</div>
-            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
+            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="Yes" offText="No" />
             <health_v4:benefits_switch_extras_message />
             <div class="filter-by-container">
                 <span class="filter-by-extras-benefits small"></span>

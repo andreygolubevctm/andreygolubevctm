@@ -542,7 +542,7 @@
                             return /HLTicon-.+/.test(item);
                         });
 
-                        $('.cell.category.expandable.' + cellRowClass).addClass('row-hovered');
+                        $('.cell.category.expandable' + cellRowClass).addClass('row-hovered');
                     },
                     function() {
                         $('.cell.category.expandable.row-hovered').removeClass('row-hovered');
