@@ -24,11 +24,13 @@
             hospitalSwitch: $('#health_benefits_HospitalSwitch'),
             extrasSwitch: $('#health_benefits_ExtrasSwitch'),
             hiddenHospitalCover: $('input[name="health_benefits_benefitsExtras_Hospital"]'),
-            hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]')
+            hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]'),
+            hospitalColContent: $('#benefits_tab_hospital_col_content'),
+            extrasColContent: $('#benefits_tab_extras_col_content')
         };
 
-        var hasHospitalCover = $elements.hiddenHospitalCover.val() === 'Y',
-            hasExtrasCover = $elements.hiddenExtraCover.val() === 'Y';
+        var hasHospitalCover = $elements.hiddenHospitalCover.val() !== 'N',
+            hasExtrasCover = $elements.hiddenExtraCover.val() !== 'N';
 
         $elements.hospitalSwitch.bootstrapSwitch('setState', hasHospitalCover);
         $elements.extrasSwitch.bootstrapSwitch('setState', hasExtrasCover);
@@ -46,6 +48,22 @@
         meerkat.messaging.subscribe(meerkatEvents.benefits.BENEFIT_SELECTED, function onBenefitSelected(options) {
             if (options.isHospital && meerkat.modules.benefitsModel.getHospitalCount() === 0) {
                 $elements.hospitalSwitch.bootstrapSwitch('setState', false);
+            }
+        });
+
+        meerkat.messaging.subscribe(moduleEvents.benefitsSwitch.SWITCH_CHANGED, function onBenefitSwitchChanged(options) {
+            if (options.benefit === 'hospital') {
+                if (options.isSwitchedOn) {
+                    $elements.hospitalColContent.show();
+                } else {
+                    $elements.hospitalColContent.hide();
+                }
+            } else {
+                if (options.isSwitchedOn) {
+                    $elements.extrasColContent.show();
+                } else {
+                    $elements.extrasColContent.hide();
+                }
             }
         });
     }

@@ -320,16 +320,13 @@
 <div class="hidden">
 	<div id="invalid-date">
 		<div class="col-xs-12 modal-invalid-date-content">
-			<fieldset>
-				<h2>Sorry, your previous travel dates are expired</h2>
-				<p>Please enter your new travel dates.</p>
-			</fieldset>
+			<h2 style="text-align: center; margin-bottom: 4rem;">It looks like your original departure date has already arrived.</h2>
 		</div>
 		<div class="modal-closebar">
 			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
 		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4">
-			<a href="javascript:;" class="btn btn-block btn-secondary btn-close-dialog">Ok</a>
+		<div class="col-sm-offset-3 col-xs-12 col-sm-6 col-md-6">
+			<a href="javascript:;" class="btn btn-block btn-secondary btn-close-dialog">Click here to enter new travel dates</a>
 		</div>
 	</div>
 </div>

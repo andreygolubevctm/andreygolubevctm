@@ -33,7 +33,6 @@
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
         $inboundApplicationFollowupDialogue,
-        $privatePatientDialogue,
         $inboundApplicationFollowupToggles,
         $followupDialogueContentContainers,
         $simplesMedicareCoverForm = null,
@@ -52,7 +51,24 @@
         $nzMedicareRulesCopy,
         $pricePromisePromotionDialogue,
         $affiliatesDialogue,
-        $dialogue106;
+        $dialogue106,
+        $dialogue109,
+	    $optin_email,
+	    $optin_email_app,
+        $optin_phone,
+        $optin_privacy,
+        $optin_optin,
+        // List of affiliates who must be ommited from auto optin functionality
+        affiliatesOptinBlacklist = [
+            "trialcampaignFacebook",
+	        "trialcampaignHealthEngine",
+	        "trialcampaignHealthEngineLP",
+	        "trialcampaignJackMedia",
+	        "trialcampaignMicrosite",
+	        "trialcampaignOmnilead",
+	        "trialcampaignOptimise"
+        ]
+    ;
 
     function init() {
         $(document).ready(function () {
@@ -96,7 +112,6 @@
             $simplesinternationalStudentForm = $('#health_situation_internationalstudent_wrapper');
             $applicantWrappers.primary = $('#health-contact-fieldset .content:first');
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
-	        $privatePatientDialogue = $('.simples-dialogue-24');
             $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
             $dialogue21 = $('.simples-dialogue-21');
             $dialogue26 = $('.simples-dialogue-26');
@@ -110,6 +125,11 @@
             $dialogue106 = $('.simples-dialogue-106');
             $dialogue111 = $('.simples-dialogue-111');
             $dialogue112 = $('.simples-dialogue-112');
+            $optin_email = $('#health_contactDetails_optInEmail');
+	        $optin_email_app = $('#health_application_optInEmail');
+	        $optin_phone = $('#health_contactDetails_call');
+	        $optin_privacy = $('#health_privacyoptin');
+	        $optin_optin = $('#health_contactDetails_optin');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -198,6 +218,7 @@
             toggleReferralCallDialog();
             toggleWebChatDialog();
             toggleAfricaCompDialog();
+            cleanupOptins();
         });
         // Handle callback checkbox 68
         $followupCallCheckbox.on('change', toggleFollowupCallDialog);
@@ -269,6 +290,16 @@
             $simplesMoreInfo.hide();
             $simplesResults.show();
         });
+    }
+
+    // When lead originates from a nominated affiliate source then we cannot
+    // automatically opt them in for anything - all default to N
+    function cleanupOptins() {
+	    var contactType = $healthContactTypeField.val();
+	    if(!_.isUndefined(contactType) && !_.isEmpty(contactType)) {
+	        var optin = _.indexOf(affiliatesOptinBlacklist, contactType) === -1 ? "Y" : "N";
+		    $optin_email.add($optin_phone).add($optin_privacy).add($optin_optin).add($optin_email_app).val(optin);
+        }
     }
 
     // Hide/show simple dialogues when toggle inbound/outbound in simples journey
@@ -524,12 +555,6 @@
         $dialoguePartnerCover.toggleClass('hidden', $healthPartnerCover.filter(':checked').val() !== "Y");
     }
 
-    function toggleLimitedCoverDialogue() {
-        var _toggle = $limitedCoverHidden.val() === 'N' || ($limitedCoverHidden.val() === 'Y' && _isHospitalPublic() === false);
-
-        $privatePatientDialogue.toggleClass('hidden', _toggle);
-    }
-
     function toggleAffiliateRewardsDialogue() {
         var dialogueHTML = $affiliatesDialogue.html();
 
@@ -557,7 +582,6 @@
 
     meerkat.modules.register("simplesBindings", {
         init: init,
-        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
         toggleRebateDialogue: toggleRebateDialogue,
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
         getCallType: getCallType,

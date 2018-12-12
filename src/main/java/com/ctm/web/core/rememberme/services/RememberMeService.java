@@ -13,6 +13,7 @@ import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.core.web.go.Data;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -226,7 +227,7 @@ public class RememberMeService {
                                               final HttpServletResponse response,
                                               final String vertical) throws GeneralSecurityException {
         return Optional.ofNullable(getTransactionIdFromCookie(vertical.toLowerCase(), request))
-                .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.get()))
+                .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.orElse(null)))
                         .map(presentTransactionDetails -> {
                             boolean hasPersonalInfo = presentTransactionDetails.stream().anyMatch(details ->
                                     details.getXPath().equals(getXpathToVerifyForVertical(vertical)));
@@ -284,7 +285,7 @@ public class RememberMeService {
                                 final HttpServletResponse response,
                                 final String vertical) throws GeneralSecurityException {
         return Optional.ofNullable(getTransactionIdFromCookie(vertical.toLowerCase(), request))
-                .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.get()))
+                .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.orElse(null)))
                         .map(presentTransactionDetails -> {
                             TransactionDetail detail = presentTransactionDetails.stream().
                                     filter(transactionDetail -> transactionDetail.getXPath().equals(getXpathForName(vertical))).findFirst().orElse(null);
@@ -300,7 +301,7 @@ public class RememberMeService {
     public Boolean validateAnswerAndLoadData(final String vertical, final String answer,
                                              HttpServletRequest request) throws GeneralSecurityException {
         return Optional.ofNullable(getTransactionIdFromCookie(vertical.toLowerCase(), request))
-                .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.get()))
+                .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.orElse(null)))
                         .map(presentTransactionDetails -> {
                             boolean match = presentTransactionDetails.stream().anyMatch(details ->
                                     details.getXPath().equals(getXpathToVerifyForVertical(vertical)) && details.getTextValue().equals(answer));
@@ -320,7 +321,7 @@ public class RememberMeService {
         if (attemptsSessionAttributeName != null) {
             Optional<Integer> attemptsSessionValue = getAttemptsCounterFromSession(session, attemptsSessionAttributeName);
             if (attemptsSessionValue.isPresent()) {
-                attemptsCounter = attemptsSessionValue.get() + 1;
+                attemptsCounter = attemptsSessionValue.map(x -> x + 1).orElse(Integer.MAX_VALUE);
                 session.setAttribute(attemptsSessionAttributeName, attemptsCounter);
             } else {
                 session.setAttribute(attemptsSessionAttributeName, attemptsCounter);
@@ -389,7 +390,7 @@ public class RememberMeService {
 
     private List<TransactionDetail> getTransactionDetails(final String transactionId) {
         try {
-            return transactionDetailsDao.getTransactionDetails(Long.valueOf(transactionId));
+            return transactionDetailsDao.getTransactionDetails(NumberUtils.toLong(transactionId, 1L));
         } catch (DaoException e) {
             LOGGER.error("populateDataBucket: Error getting transaction details for transactionId {}", kv("transactionId", transactionId), e);
             throw new RuntimeException(e);

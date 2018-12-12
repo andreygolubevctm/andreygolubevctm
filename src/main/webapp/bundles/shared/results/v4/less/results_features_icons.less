@@ -5,19 +5,20 @@
 
 .featuresMode {
   &.resultsContainer {
-
     .expander {
+      &.leftPosition {
+        position: relative !important;
+        left: 0px;
+        margin-top: 0px !important;
+      }
       .icon-angle-down;
-      right: @results-feature-cell-padding;
-      top: @results-feature-cell-padding + floor(14 / 4);
+      right: 5px;
       @media(@sm-only) {
         right: 5px;
-        top: 9px;
       }
-      position: absolute;
-      font-size: 12px;
+      position: absolute !important;
+      font-size: 18px;
     }
-
     .expanded > .category.expandable .expander {
       .icon-angle-up;
     }

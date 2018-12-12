@@ -64,6 +64,8 @@ public class HealthQuote {
 
     private String rewardsSchemeFirst;
 
+    private Tracking tracking;
+
     public Application getApplication() {
         return application;
     }
@@ -310,5 +312,13 @@ public class HealthQuote {
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
+    }
+
+    public Tracking getTracking() {
+        return tracking;
+    }
+
+    public void setTracking(Tracking tracking) {
+        this.tracking = tracking;
     }
 }
