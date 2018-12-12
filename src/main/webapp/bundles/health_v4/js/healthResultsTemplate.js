@@ -159,6 +159,8 @@
         if(window.meerkat.site.isHealthReformMessaging === 'Y') {
             if(ft.pathValue) {
                 getNowAndAprilCover(ft, ft.pathValue);
+            }else{
+                ft.hideCategoryApril = true;
             }
         }else{
             ft.isRestricted = ft.pathValue == "R";
