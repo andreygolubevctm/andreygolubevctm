@@ -157,15 +157,13 @@
         // section headers are not displayed anymore but we need the section container
         ft.pathValue = _getPathValue(obj, ft);
         if(window.meerkat.site.isHealthReformMessaging === 'Y') {
-            //if the new health reforms flag is set, we need to determine the values differently
-            ft.isRestricted = ft.pathValue == "R" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'R';
-            ft.isNotCovered = ft.pathValue == "N" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'N';
-            ft.isRestrictedApril = ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[1] === 'R';
-            ft.isNotCoveredApril = ft.pathValue && ft.pathValue.length > 1 && (ft.pathValue[1] === 'N' || ft.pathValue[1] === 'X' );
-            ft.hideCategory = false;
+            if(ft.pathValue) {
+                getNowAndAprilCover(ft, ft.pathValue);
+            }
         }else{
             ft.isRestricted = ft.pathValue == "R";
             ft.isNotCovered = ft.pathValue == "N";
+            ft.hideCategoryApril = true;
         }
 
         ft.hasChildFeatures = typeof ft.children !== 'undefined' && ft.children.length;
@@ -184,11 +182,11 @@
             }
 
             if(ft.isNotCoveredApril) {
-                ft.labelInColumnContentClassApril = ' noCover';
+                ft.labelInColumnContentClassApril = `${ft.hideCategoryApril ? 'hidden' : ''} noCover`;
             } else if (ft.isRestrictedApril) {
-                ft.labelInColumnContentClassApril = ' restrictedCover';
+                ft.labelInColumnContentClassApril = `${ft.hideCategoryApril ? 'hidden' : ''} restrictedCover`;
             }else {
-                ft.labelInColumnContentClassApril = '';
+                ft.labelInColumnContentClassApril = `${ft.hideCategoryApril ? 'hidden' : ''}`;
             }
 
         } else if (ft.type == 'feature') {
@@ -203,6 +201,50 @@
         }
 
         return ft;
+    }
+
+    function getNowAndAprilCover(ft, val) {
+        var nowVal = val[0];
+        var aprilVal = val.length > 1 ? val[1] : '';
+
+        ft.isRestricted = false;
+        ft.isNotCovered = false;
+
+        switch(nowVal) {
+            case 'R' :
+                ft.isRestricted = true;
+            break;
+            case 'N' :
+            ft.isNotCovered = true;
+            break;
+        }
+
+        ft.isRestrictedApril = false;
+        ft.isNotCoveredApril = false;
+        ft.hideCategoryApril = aprilVal ? false : true;
+
+        switch(aprilVal){
+            case 'N':
+                ft.isNotCoveredApril = true;
+            break;
+            case 'R':
+                ft.isRestrictedApril = true;
+            break;
+            case 'X':
+                ft.isNotCoveredApril = true;
+                ft.hideCategoryApril = true;
+            break;
+            case 'Q':
+                ft.hideCategoryApril = true;
+            break;
+            case 'P':
+                ft.hideCategoryApril = true;
+            break;
+            case 'F':
+                ft.isRestrictedApril = true;
+                ft.hideCategoryApril = true;
+            break;
+        }
     }
 
     function getExcessItem(obj, ft) {
