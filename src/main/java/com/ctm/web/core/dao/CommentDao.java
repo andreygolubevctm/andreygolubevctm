@@ -37,7 +37,7 @@ public class CommentDao {
 			);
 			stmt.setLong(1, rootId);
 			stmt.setString(2, comment.getOperator());
-			stmt.setString(3, comment.getComment());
+			stmt.setString(3, cleanTextContent(comment.getComment()));
 			stmt.executeUpdate();
 
 			// Update the comment model with the insert ID
@@ -116,6 +116,25 @@ public class CommentDao {
 		}
 
 		return comments;
+	}
+
+	/**
+	 * Strip out invalid characters from string to avoid database and rendering issues
+	 *
+	 * @param text
+	 * @return
+	 */
+	private String cleanTextContent(String text) {
+		// strips off all non-ASCII characters
+		text = text.replaceAll("[^\\x00-\\x7F]", "");
+
+		// strips off all 4 byte UTF-8 characters
+		text = text.replaceAll("[^\\u0000-\\uFFFF]", "");
+
+		// removes non-printable characters from Unicode
+		text = text.replaceAll("\\p{C}", "");
+
+		return text.trim();
 	}
 
 }

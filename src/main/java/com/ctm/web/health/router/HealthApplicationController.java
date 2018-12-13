@@ -49,6 +49,7 @@ import com.ctm.web.reward.services.RewardService;
 import com.ctm.web.simples.services.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.NotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.InvalidParameterException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -377,7 +379,11 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     private void writePolicyNoToTransactionDetails(@FormParam("") HealthRequest data, HealthApplicationResponse response) {
         try {
-            transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -2, "health/policyNo", response.getProductId());
+            if(StringUtils.isNotEmpty(response.getProductId())) {
+                transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -2, "health/policyNo", response.getProductId());
+            } else {
+                throw new InvalidParameterException("Cannot insert transaction detail for xpath: health/policyNo with empty textValue." );
+            }
         } catch (Exception e) {
             LOGGER.warn("Failed to add transactionDetail {} because {}", data.getTransactionId(), e);
         }
