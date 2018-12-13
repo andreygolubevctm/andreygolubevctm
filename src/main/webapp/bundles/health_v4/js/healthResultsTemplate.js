@@ -184,11 +184,11 @@
             }
 
             if(ft.isNotCoveredApril) {
-                ft.labelInColumnContentClassApril = `${ft.hideCategoryApril ? 'hidden' : ''} noCover`;
+                ft.labelInColumnContentClassApril =  ft.hideCategoryApril ? ' hidden' : '' + ' noCover';
             } else if (ft.isRestrictedApril) {
-                ft.labelInColumnContentClassApril = `${ft.hideCategoryApril ? 'hidden' : ''} restrictedCover`;
+                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : '' + ' restrictedCover';
             }else {
-                ft.labelInColumnContentClassApril = `${ft.hideCategoryApril ? 'hidden' : ''}`;
+                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : '';
             }
 
         } else if (ft.type == 'feature') {

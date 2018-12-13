@@ -12,6 +12,7 @@
 <c:set var="healthCvr" value="${data[xpathSituation].healthCvr}" />
 <c:set var="state" value="${data[xpathSituation].state}" />
 <c:set var="healthSitu" value="${data[xpathSituation].healthSitu}" />
+<c:set var="simplesHealthReformMessaging" scope="request"><content:get key="simplesHealthReformMessaging" /></c:set>
 
 <%-- Only ajax-fetch and update benefits if situation is defined in a param (e.g. from brochureware). No need to update if new quote or load quote etc. --%>
 <c:set var="performHealthChoicesUpdate" value="false" />
@@ -178,6 +179,7 @@
     isDefaultToHealthApply: ${defaultToHealthApply},
 	isTaxTime: '<content:get key="taxTime"/>',
 	isDualPricingActive: ${isDualPriceActive},
+	isHealthReformMessaging: `${simplesHealthReformMessaging}`,
 	isPyrrActive: ${isPyrrActive},
 	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>

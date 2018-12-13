@@ -35,6 +35,23 @@
                     {{ } }}
                         Now
                     </div>
+                     <c:set var="simplesHealthReformMessaging" scope="request"><content:get key="simplesHealthReformMessaging" /></c:set>
+
+                    <c:choose>
+                    <c:when test="${simplesHealthReformMessaging eq 'active'}">
+                        <div class="benefit-container">
+                            {{ if(ft.isRestrictedApril) { }}
+                                <span class="restricted-icon margin-icon">R</span>
+                            {{ } else if(ft.isNotCoveredApril) { }}
+                                <img class="margin-icon" src="brand/ctm/images/cross_lge_gray.png"></img>
+                            {{ } else { }}
+                                <img class="margin-icon" src="brand/ctm/images/tick.png"></img>
+                            {{ } }}
+                            From April 1
+                        </div>
+                    </c:when>
+                    </c:choose>
+
                 </div>
             </div>
         </div>{{ } }}
