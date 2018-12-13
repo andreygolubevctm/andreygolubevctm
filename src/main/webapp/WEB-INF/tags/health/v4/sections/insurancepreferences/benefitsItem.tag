@@ -6,8 +6,22 @@
 
 <c:if test="${item.isShortlistable()}">
 
-    <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v4")}' />
-    <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v4")}' />
+    <c:choose>
+        <c:when test="${comparisonMode eq 'PHIO'}">
+            <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v4")}' />
+        </c:when>
+        <c:otherwise>
+            <c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v5")}' />
+        </c:otherwise>
+    </c:choose>
+    <c:choose>
+        <c:when test="${comparisonMode eq 'PHIO'}">
+            <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v4")}' />
+        </c:when>
+        <c:otherwise>
+            <c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v5")}' />
+        </c:otherwise>
+    </c:choose>
     <%-- Get the correct cell width for sections v. categories --%>
     <c:choose>
         <c:when test="${item.getType() == 'section'}">
@@ -44,9 +58,18 @@
 
                 <c:if test="${category != 'Hospital'}">
                     <div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
-                        <h2 class="ignore">Extras</h2>
-                        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='extras' data-attach='true'" />
-                        <p>${colContent}</p>
+                        <h2 class="ignore">Extras cover</h2>
+                    </div>
+                    <div class="switchContainer">
+                        <div class="switchContainerItem">
+                            <p>I want extras cover</p>
+                        </div>
+                        <div class="switchContainerItem">
+                            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="Yes" offText="No" additionalAttributes="data-benefit='extras' data-attach='true'" />
+                        </div>
+                    </div>
+                    <div id="tabs" class="benefitsTab">
+                        <p id="benefits_tab_extras_col_content">${colContent}</p>
                         <health_v4:benefits_switch_extras_message />
                         <health_v4_insuranceprefs:quick_select
                                 options="Dental:dental|Sports:sports|Peace of Mind:peace" trackingLabel="extras" />
@@ -54,13 +77,29 @@
                 </c:if>
                 <c:if test="${category eq 'Hospital'}">
                 <div class="title">
-                    <h2 class="ignore">Hospital</h2>
-                    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='hospital' data-attach='true'" />
+                    <h2 class="ignore">Private hospital cover</h2>
+                </div>
+                <div class="switchContainer">
+                    <div class="switchContainerItem">
+                        <p>I want private hospital cover</p>
+                    </div>
+                    <div class="switchContainerItem">
+                        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="Yes" offText="No" additionalAttributes="data-benefit='hospital' data-attach='true'" />
+                    </div>
                 </div>
                 <div id="tabs" class="benefitsTab">
+                    <p id="benefits_tab_hospital_col_content">${colContent}</p>
                     <ul class="nav nav-tabs tab-count-2">
-                        <li id="comprehensiveBenefitTab" class="active"><a data-toggle="tab" href="#comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('comprehensiveTabCopy')}</h2></a></li>
-                        <li><a data-toggle="tab" href="#limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('limitedTabCopy')}</h2></a></li>
+                        <li id="comprehensiveBenefitTab" class="active">
+                            <a data-toggle="tab" href="#comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>
+                                <h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('comprehensiveTabCopy')}</h2>
+                            </a>
+                        </li>
+                        <li id="limitedBenefitTab">
+                            <a data-toggle="tab" href="#limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>
+                                <h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('limitedTabCopy')}</h2>
+                            </a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active in" id="comprehensive-pane">
@@ -116,10 +155,12 @@
                                                     <c:set var="benefitLabel">
 													<span class="benefitContent">
 														<div class="benefitTitle needsclick">${selectedValue.getName()}</div>
-                                                            <span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
+                                                            <span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())}</span>
+                                                            <div class="benefit-learn-more">
+                                                            <a href="javascript:;"
                                                             class="help_icon floatLeft"
                                                             data-content="helpid:${selectedValue.getHelpId()}"
-                                                            data-toggle="popover">more</a></span>
+                                                            data-toggle="popover">more</a></div>
 													</span>
                                                     </c:set>
                                                     <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false"
@@ -149,6 +190,11 @@
                                                     </span>
                                                 </label>
                                             </div>
+                                            <div class="limited-cover-text">
+                                            Limited Hospital Cover provides the most basic level of hospital cover and is generally the cheapest. It is also sufficient to avoid paying the Medicare Levy Surcharge, which is a government surcharge on the taxable income of individuals who earn over $90,000 a year and couples who earn over $180,000 a year total. However, Limited Hospital Cover products exclude a large number of benefits that other hospital policies cover as standard, and in some instances, provides cover only where you need treatment as a result of an accident.
+                                            <br> 
+                                            <br>
+                                            To compare policies that provide a better level of cover, select the <i>My cover options</i> tab above.</div>
                                         </div>
                                     </div>
                                 </div>

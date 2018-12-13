@@ -33,7 +33,7 @@
                     className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
                     openOnHashChange: false,
                     leftBtn: {
-                        label: 'Back',
+                        label: 'Back to my results',
                         icon: '<span class="icon icon-angle-left"></span>',
                         callback: function (eventObject) {
                             $(eventObject.currentTarget).closest('.modal').modal('hide');
@@ -121,6 +121,20 @@
                 title: 'About the fund',
                 htmlContent: Results.getSelectedProduct().aboutFund
             });
+        });
+
+        $(document).on('click', '.postAprilReformLink', function () {
+            $('.preAprilReformLink').removeClass('active');
+            $(this).addClass('active');
+            $('.preAprilReformContent').hide();
+            $('.postAprilReformContent').show();
+        });
+
+        $(document).on('click', '.preAprilReformLink', function () {
+            $('.postAprilReformLink').removeClass('active');
+            $(this).addClass('active');
+            $('.preAprilReformContent').show();
+            $('.postAprilReformContent').hide();
         });
     }
 
@@ -261,7 +275,6 @@
     function _setupDualPricing(product) {
         if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) {
             // $('.april-pricing').addClass('april-pricing-done');
-            $('.current-pricing').addClass('current-pricing-done');
 
             var productPremium = product.altPremium,
                 comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon';
@@ -356,8 +369,9 @@
 
         if (initToggleBar) {
             meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
-            _trackScroll();
         }
+
+        _trackScroll();
 
         $(toggleBarInitSettings.container).find('.toggleBar').toggleClass('hidden', initToggleBar === false);
         $('#' + moreInfoDialogId).find('.navbar-text.modal-title-label').html('<span class="quoteRefHdr">Quote Ref: <span class="quoteRefHdrTransId">' + meerkat.modules.transactionId.get() + '</span></span>');
@@ -365,38 +379,16 @@
 
     function _trackScroll() {
         var $dockedHdr = $('.dockedHdr'),
-            dockedHeaderLargeHeight = $dockedHdr.filter('.dockedHeaderLarge').outerHeight(),
-            dockedHeaderBottomHeight = $dockedHdr.find('.dockedHeaderBottom').outerHeight(),
-            $clonedDockedHdr = $dockedHdr.clone(true),
+            dockedHeaderLargeHeight = $dockedHdr.filter('.dockedHeaderLarge').height(),
             $moreInfoContent = $('.more-info-content'),
             contentTop = 0,
-            isDocked = null;
+            isDocked = true;
 
-        // clone the header to prepend and affix it
-        $clonedDockedHdr
-            .hide()
-            .addClass('cloned-docked-header dockedHeaderSlim')
-            .removeClass('dockedHeaderLarge')
-            .prependTo('.modal-content');
-
-        $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function () {
-            // if the the content position is at or pass top position; set dock to true
-            if (!isDocked && $moreInfoContent.position().top <= dockedHeaderBottomHeight) {
-                isDocked = true;
-            // else if the content position is going down pass the position when it was at top; set dock to false
-            } else if (isDocked && $moreInfoContent.position().top > contentTop) {
-                isDocked = false;
-            // else just return
-            } else {
-                return;
-            }
-
-            $clonedDockedHdr.toggle(isDocked);
-            $dockedHdr.toggle(!isDocked);
-            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderSlim', isDocked);
+        // $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function () {
+            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderLarge', isDocked);
             $moreInfoContent.css({ 'paddingTop': isDocked ? dockedHeaderLargeHeight : 0 });
             contentTop = isDocked ? $moreInfoContent.position().top : 0;
-        });
+        // });
     }
 
     /**

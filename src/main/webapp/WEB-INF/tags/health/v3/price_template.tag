@@ -43,12 +43,6 @@
         <span>
             {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
         </span>
-        {{ if (result.discounted && !meerkat.site.isCallCentreUser) { }}
-        <span class="discountText">
-                inc {{= discountPercentage }}% Discount
-                <a href="javascript:;" class="discount-tool-tip" data-toggle="popover" data-content="{{= discountText }}">?</a>
-            </span>
-        {{ } }}
     </div>
 
     {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}

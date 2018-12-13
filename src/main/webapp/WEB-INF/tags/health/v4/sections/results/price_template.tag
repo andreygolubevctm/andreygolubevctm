@@ -15,38 +15,21 @@
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
         {{ if (!result.hasValidPrice) { }}
-        {{ var frequencyLabel = frequency; }}
-        {{ if (frequencyLabel == 'annually') { }}
-            {{ frequencyLabel = 'Annual'; }}
+        {{ var comingSoonLabel = frequency; }}
+        {{ if (comingSoonLabel == 'annually') { }}
+            {{ comingSoonLabel = 'Annual'; }}
         {{ } }}
         <%-- Convert to title case --%>
-        {{ frequencyLabel = frequencyLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
-        <div class="frequencyAmount comingSoon">{{= frequencyLabel }} payments not available</div>
+        {{ comingSoonLabel = comingSoonLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
+        <div class="frequencyAmount comingSoon">{{= comingSoonLabel }} payments not available</div>
     </div>
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
     {{ return; } }}
     <div class="frequencyAmount">
         {{ var dollarPriceResult = healthResultsTemplate.getPrice(result); }}
         <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
-        <span class="frequencyTitle">{{= freqObj.label }}</span>
+        <div class="frequencyTitle">{{= freqObj.label }}</div>
     </div>
-
-    {{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
-    <div class="lhcText hide-on-affix">
-        <span>
-            {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
-        </span>
-        {{ if (result.discounted) { }}
-            <span class="discountText">
-                inc {{= discountPercentage }}% Discount
-                <a href="javascript:;" class="discount-tool-tip" data-toggle="popover" data-content="{{= discountText }}">?</a>
-            </span>
-        {{ } }}
-    </div>
-    {{ } else { }}
-        {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, frequency, true) }}
-    {{ } }}
 </div>
-
 {{ }); }}
 </div>

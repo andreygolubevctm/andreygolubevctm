@@ -137,7 +137,7 @@
 			</div>
 
 			<div class="featuresList featuresElements">
-				<img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/> <%-- #WHITELABEL CX --%>
+				<img src="assets/brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/> <%-- #WHITELABEL CX --%>
 			</div>
 
 		</div>

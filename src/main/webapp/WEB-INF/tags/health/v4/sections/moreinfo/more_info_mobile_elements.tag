@@ -3,11 +3,11 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="continueOnlineCTAHtml" scope="application">
-    <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Continue Online<span class="icon-arrow-right" /></a>
+    <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now<span class="icon-arrow-right" /></a>
 </c:set>
 
 <c:set var="continueOnlineALinkHtml" scope="application">
-    <a href="javascript:;" class="btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Continue Online&nbsp;<span class="icon-arrow-right" /></a>
+    <a href="javascript:;" class="btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now&nbsp;<span class="icon-arrow-right" /></a>
 </c:set>
 
 <c:set var="callNowCTAHtml" scope="application">
@@ -19,7 +19,7 @@
 </c:set>
 
 <c:set var="quoteRefHtml" scope="application">
-    <div class="quote-reference-number hidden-large">
+    <div class="quote-reference-number">
         <h3>Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></h3>
     </div>
 </c:set>
