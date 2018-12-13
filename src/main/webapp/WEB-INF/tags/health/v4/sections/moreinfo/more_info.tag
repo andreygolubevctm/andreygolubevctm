@@ -186,7 +186,7 @@
 												{{ var expanded = false; }}
 												<div class="benefitRowTableCell">
 													{{= benefit.category }}
-													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") || isMobile) { }}
+													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") || isMobile) { }}
 														<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab1CategoriesCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
 															<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span>
 															<span class="hidden-xs">{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
@@ -205,7 +205,7 @@
 												</div>
 											</div>
 										</div>
-										{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") || isMobile) { }}
+										{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") || isMobile) { }}
 											<div class="row collapse benefitCollapsedContent" id="clinicalTab1CategoriesCollapsedContent-{{= key }}">
 												<div class="col-xs-12 col-sm-8 visible-xs">
 													<div class="row">
@@ -213,7 +213,7 @@
 														<div class="col-xs-12 extraBenefitOption">{{= benefit.waitingperiod }}</div>
 													</div>
 												</div>
-												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") { }}
 												<div class="col-xs-12 col-sm-8 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
@@ -256,7 +256,7 @@
 												{{ var expanded = false; }}
 												<div class="benefitRowTableCell">
 													{{= benefit.category }}
-													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") || isMobile) { }}
+													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") || isMobile) { }}
 													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab2CategoriesCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
 														<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span>
 														<span class="hidden-xs">{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
@@ -275,7 +275,7 @@
 												</div>
 											</div>
 										</div>
-										{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+										{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") { }}
 											<div class="row collapse benefitCollapsedContent" id="clinicalTab2CategoriesCollapsedContent-{{= key }}">
 												<div class="col-xs-12 col-sm-8 visible-xs">
 													<div class="row">
@@ -283,7 +283,7 @@
 														<div class="col-xs-12 extraBenefitOption">{{= benefit.waitingperiod }}</div>
 													</div>
 												</div>
-												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") { }}
 												<div class="col-xs-12 col-sm-8 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
