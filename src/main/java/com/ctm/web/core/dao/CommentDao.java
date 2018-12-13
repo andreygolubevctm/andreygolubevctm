@@ -120,7 +120,7 @@ public class CommentDao {
 
 	/**
 	 * Strip out invalid characters from string to avoid database and rendering issues
-	 * 
+	 *
 	 * @param text
 	 * @return
 	 */
@@ -128,8 +128,8 @@ public class CommentDao {
 		// strips off all non-ASCII characters
 		text = text.replaceAll("[^\\x00-\\x7F]", "");
 
-		// erases all the ASCII control characters
-		text = text.replaceAll("[\\p{Cntrl}&&[^\r\n\t]]", "");
+		// strips off all 4 byte UTF-8 characters
+		text = text.replaceAll("[^\\u0000-\\uFFFF]", "");
 
 		// removes non-printable characters from Unicode
 		text = text.replaceAll("\\p{C}", "");
