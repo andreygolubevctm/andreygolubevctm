@@ -241,7 +241,7 @@
 
         $elements.inputs.approvedby.val(!_.isEmpty(data.other.approvedby) ? data.other.approvedby : '');
         $elements.inputs.approvedbydisplay.empty().append(!_.isEmpty(data.other.approvedby) ? data.other.approvedby : '');
-        $elements.inputs.code.val(!_.isEmpty(data.other.code) ? data.other.code : '');
+        $elements.inputs.code.val(data.other.code || '');
 
         // Enable/disable fields based on whether authorised
         if(!_.isEmpty(data.other.approvedby)) {
@@ -296,8 +296,8 @@
      * @returns {boolean}
      */
     function isValidAuthoriseResponse(response) {
-        if(!_.isEmpty(response) && _.isObject(response)) {
-            return _.has(response,'isAuthorised') && response.isAuthorised === true && _.has(response,'username') && !_.isEmpty(response.username);
+        if(response && typeof response === 'object') {
+            return response.isAuthorised && response.username;
         }
     }
 
@@ -312,7 +312,7 @@
             var code = $elements.inputs.code.val();
             var approvedby = $elements.inputs.approvedby.val();
             data.other = {
-                reason: _.isEmpty(reason) ? null : reason,
+                reason: $elements.triggers.reason.val() || null,
                 code: _.isEmpty(code) ? null : code,
                 approvedby: _.isEmpty(approvedby) ? null : approvedby
             };
