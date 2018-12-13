@@ -90,7 +90,7 @@
 
 				<c:set var="fieldXpath" value="${xpath}/splitTransaction/reason" />
 				<form_v3:row fieldXpath="${fieldXpath}" label="Reason for split transaction?" className="healthSplitTransactionReasonRow">
-					<field_v2:array_select items="=Please choose...,HES=Hospital extras split contact centre,CSP=Couple Split on Different Policies,FSP=Family or Couple Split on Same Policy,CRX=Customer Resold Cancel Previous Policy,CSS=Child Sold Separate to family,DSP=Double Sold Same Policy,BFS=Blood Family Split (ie brothers and sisters),RPF=Reprocessed Failed Join,FDA=False Duplicate (to be Audited)" xpath="${fieldXpath}" title="split transaction reason" required="false" className="health-payment_details-splitTransaction_reason" />
+					<field_v2:array_select items="=Please choose...,HES=Hospital + Extras split between funds,CSP=Couples sold as single on different cover,FSP=Family or couple sold separate policies on same cover,CRX=Customer resold after cancelling previous policy,CSS=Child sold seperate to family/parents,DSP=Sold the exact same policy twice,BFS=Blood Family split (i.e. brothers + sisters),RPF=Reprocessed failed joins,FDA=False duplicate (to be audited)" xpath="${fieldXpath}" title="split transaction reason" required="true" className="health-payment_details-splitTransaction_reason" />
 					<p id="healthSplitTransactionReason" class="display-only"></p>
 				</form_v3:row>
 

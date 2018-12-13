@@ -175,6 +175,24 @@
      */
     function onUpdateReason() {
         deAuthorise();
+        clearAuthCodeValidation();
+
+        var reason = $elements.inputs.reason.val();
+        if (reason === 'HES' || reason === 'CSP' || reason === 'CSS' || reason === 'DSP' || reason === 'FDA') {
+            $elements.inputs.code.attr("required", "true");
+            $elements.inputs.code.attr("aria-required", "true");
+        } else {
+            $elements.inputs.code.prop("required", false);
+            $elements.inputs.code.attr("aria-required", "false");
+        }
+    }
+
+    function clearAuthCodeValidation() {
+        $elements.inputs.code.attr("aria-invalid", "false");
+        $elements.inputs.code.toggleClass( "has-error", false);
+        $elements.inputs.code.parent().parent().toggleClass( "has-error", false);
+        $elements.inputs.code.parent().parent().find('.error-field').remove();
+        $elements.inputs.code.parent().parent().find('.split-trans-validation-messages').remove();
     }
 
 
