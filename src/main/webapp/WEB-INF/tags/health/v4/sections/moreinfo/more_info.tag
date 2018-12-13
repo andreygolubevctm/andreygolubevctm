@@ -198,7 +198,6 @@
 												</div>
 											</div>
 											<div class="col-xs-3 col-sm-3 newBenefitRow benefitRowTitle align-center hidden-xs">
-											{{ console.log(benefit); }}
 												<div class="benefitRowTableCell">
 													{{= benefit.waitingperiod}}
 												</div>
@@ -348,12 +347,12 @@
 										{{ product.ignoreLimits = false; }}
 										{{ if(hospital && meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-9 col-sm-8 newBenefitRow benefitHeaderTitle">
+											<div class="col-xs-9 col-sm-7 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">
 													Extras services
 												</div>
 											</div>
-											<div class="col-sm-1 newBenefitRow benefitHeaderTitle align-center hidden-xs">
+											<div class="col-sm-2 newBenefitRow benefitHeaderTitle align-center hidden-xs">
 												<div class="benefitRowTableCell">
 													Annual limit
 												</div>
@@ -376,7 +375,7 @@
 										{{ } }}
 										{{ if (typeof benefit === 'object') { }}
 										<div class="row benefitRow">
-											<div class="col-xs-9 col-sm-8 newBenefitRow benefitRowTitle">
+											<div class="col-xs-9 col-sm-7 newBenefitRow benefitRowTitle">
 												<div class="benefitRowTableCell">
 													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
 													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
@@ -385,9 +384,15 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-1 newBenefitRow benefitRowTitle align-center hidden-xs">
+											<div class="col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs">
 												<div class="benefitRowTableCell">
-													{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+												{{ var coverType = window.meerkat.modules.healthSituation.getSituation(); }}
+													{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
+														<div>per person: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
+													{{ } }}
+													{{ if(benefit.benefitLimits.perPolicy !== '-') { }}
+													<div>per policy: {{= benefit.benefitLimits.perPolicy ? benefit.benefitLimits.perPolicy : '' }}</div>
+													{{ } }}
 												</div>
 											</div>
 											<div class="col-xs-3 col-sm-1 newBenefitRow benefitRowTitle">
@@ -422,7 +427,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-xs-12 col-sm-8">
+											<div class="col-xs-12 col-sm-12">
 												<div class="row">
 													<div class="col-xs-12 col-sm-6 extraBenefitSection">
 														<div class="row">
@@ -449,12 +454,19 @@
 															{{ if (benefit.benefitLimits !== undefined) { }}
 															<div class="col-xs-12 col-sm-12">
 																{{ _.each(benefit.benefitLimits, function (option, key) { }}
+																{{ if(key === 'annualLimit') { }}
+																	{{ return; }}
+																{{ } }}
 																<div class="row">
-																	<div class="col-xs-9 col-sm-9 extraBenefitOption">
+																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
 																		{{= key.replace(/([A-Z])/g, ' $1').trim().toLowerCase() }}
 																	</div>
-																	<div class="col-xs-3 col-sm-3 extraBenefitOption align-center">
-																		{{= option }}
+																	<div class="col-xs-3 col-sm-6 extraBenefitOption align-center">
+																		{{ if(!option) { }}
+																			None
+																		{{ } else { }}
+																			{{= option }}
+																		{{ } }}
 																	</div>
 																</div>
 																{{ }); }}
