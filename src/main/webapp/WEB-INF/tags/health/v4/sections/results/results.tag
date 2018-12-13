@@ -86,10 +86,14 @@
                     <div class="hospitalSelectionsExcessContainer">
                         <div class="hospitalExcessSectionBorder">
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1" data-feature-type="excess"></div>
-                        </div>
                         {{ if(info.situationFilter == 'Y') { }}
-                        <div class="featuresListHospitalSelections"><health_v4_results:limited_cover_label /></div>
+                            <health_v4_results:limited_cover_label />
+                        {{ } else { }}
+                        {{ if(meerkat.modules.healthResults.resultsHasLimitedProducts()) { }}
+                            <div class="blank-excess" />
                         {{ } }}
+                        {{ } }}
+                        </div>
                     </div>
                         <div class="yourSelectionsHospital">
                             <div class="coverTitle">Your selected cover benefits:</div>
