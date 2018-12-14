@@ -115,19 +115,24 @@
 								<!-- Hospital Benefits -->
 								<div class="row excessCoPayment">
 									<div class="col-xs-12 col-sm-6 excessInfo hospitalCoverDetails">
-										<div class="row">
+										<div class="row preAprilReformContent">
 											<div class="col-xs-8">
 												<h3>Excess</h3><br/><br/>
-												<p class="hidden-xs">{{= hospital.inclusions.excess }}</p>
+												<p class="hidden-xs">{{= custom.reform.tab1.excess }}</p>
 											</div>
-											<div class="col-xs-4">
-												{{ if (hospital.inclusions.excesses.perAdmission) { }}
-												<span class="dollarValue">{{= hospital.inclusions.excesses.perAdmission.replace('$', '') }}</span><br/>
-												<span class="valueUnit">per admission</span>
-												{{ } }}
-											</div>
+											<div class="col-xs-4">&nbsp;</div>
 											<div class="col-xs-12 visible-xs">
-												{{= hospital.inclusions.excess }}
+												{{= custom.reform.tab1.excess }}
+											</div>
+										</div>
+										<div class="row postAprilReformContent">
+											<div class="col-xs-8">
+												<h3>Excess</h3><br/><br/>
+												<p class="hidden-xs">{{= custom.reform.tab2.excess }}</p>
+											</div>
+											<div class="col-xs-4">&nbsp;</div>
+											<div class="col-xs-12 visible-xs">
+												{{= custom.reform.tab2.excess }}
 											</div>
 										</div>
 									</div>
@@ -239,7 +244,7 @@
 													Hospital cover benefits
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-3 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center">
 												<div class="benefitRowTableCell">
 													Inclusion
 												</div>
