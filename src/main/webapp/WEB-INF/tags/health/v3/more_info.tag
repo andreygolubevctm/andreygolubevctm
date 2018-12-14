@@ -210,8 +210,8 @@
 			</div>
 			<div class="scriptingOptions col-sm-12 no-padding">
 				<div class="row">
-					<div class="col-sm-6 no-padding">&nbsp;</div>
-					<div class="col-sm-6 no-padding">
+					<div class="col-sm-4 no-padding">&nbsp;</div>
+					<div class="col-sm-8 no-padding">
 						<div class="row row-content">
 							<div class="col-sm-6 no-padding">
 								<div class="checkbox">
@@ -626,8 +626,14 @@
 				<div class="col-xs-12 col-md-6 hospitalCover">
 					{{ if(typeof hospital.inclusions !== 'undefined') { }}
 					<h2>Hospital cover</h2>
-					<p><strong>Hospital Excess:</strong><br>{{= custom.reform.tab2.excess }}</p>
-					<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
+					{{ if (custom.reform.tab1.excess ==== custom.reform.tab2.excess) { }}
+						<p>
+							<strong>Hospital Excess:</strong><br>
+							<span class="scripting-text"><strong>{{= custom.reform.tab2.excess }}</strong></span>
+						</p>
+					{{ } else { }}
+						<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
+					{{ } }}
 					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
 
 					<p><strong>Accident Override:</strong><br>

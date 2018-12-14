@@ -23,7 +23,7 @@
 			<p>Found the right product for you?</p>
 		</div>
 		<div class="col-xs-12 col-sm-4 col-md-5 col-lg-6">
-			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now<span class="icon-arrow-right" /></a>
 		</div>
 	</div>
 
@@ -115,17 +115,24 @@
 								<!-- Hospital Benefits -->
 								<div class="row excessCoPayment">
 									<div class="col-xs-12 col-sm-6 excessInfo hospitalCoverDetails">
-										<div class="row">
+										<div class="row preAprilReformContent">
 											<div class="col-xs-8">
 												<h3>Excess</h3><br/><br/>
-												<p class="hidden-xs">{{= hospital.inclusions.excess }}</p>
+												<p class="hidden-xs">{{= custom.reform.tab1.excess }}</p>
 											</div>
-											<div class="col-xs-4">
-												<span class="dollarValue">{{= hospital.inclusions.excesses.perAdmission.replace('$', '') }}</span><br/>
-												<span class="valueUnit">per admission</span>
-											</div>
+											<div class="col-xs-4">&nbsp;</div>
 											<div class="col-xs-12 visible-xs">
-												{{= hospital.inclusions.excess }}
+												{{= custom.reform.tab1.excess }}
+											</div>
+										</div>
+										<div class="row postAprilReformContent">
+											<div class="col-xs-8">
+												<h3>Excess</h3><br/><br/>
+												<p class="hidden-xs">{{= custom.reform.tab2.excess }}</p>
+											</div>
+											<div class="col-xs-4">&nbsp;</div>
+											<div class="col-xs-12 visible-xs">
+												{{= custom.reform.tab2.excess }}
 											</div>
 										</div>
 									</div>
@@ -184,7 +191,7 @@
 												{{ var expanded = false; }}
 												<div class="benefitRowTableCell">
 													{{= benefit.category }}
-													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") || isMobile) { }}
+													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") || isMobile) { }}
 														<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab1CategoriesCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
 															<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span>
 															<span class="hidden-xs">{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
@@ -203,7 +210,7 @@
 												</div>
 											</div>
 										</div>
-										{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") || isMobile) { }}
+										{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") || isMobile) { }}
 											<div class="row collapse benefitCollapsedContent" id="clinicalTab1CategoriesCollapsedContent-{{= key }}">
 												<div class="col-xs-12 col-sm-8 visible-xs">
 													<div class="row">
@@ -211,7 +218,7 @@
 														<div class="col-xs-12 extraBenefitOption">{{= benefit.waitingperiod }}</div>
 													</div>
 												</div>
-												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") { }}
 												<div class="col-xs-12 col-sm-8 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
@@ -254,7 +261,7 @@
 												{{ var expanded = false; }}
 												<div class="benefitRowTableCell">
 													{{= benefit.category }}
-													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") || isMobile) { }}
+													{{ if ((benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") || isMobile) { }}
 													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#clinicalTab2CategoriesCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
 														<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span>
 														<span class="hidden-xs">{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
@@ -273,7 +280,7 @@
 												</div>
 											</div>
 										</div>
-										{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+										{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") { }}
 											<div class="row collapse benefitCollapsedContent" id="clinicalTab2CategoriesCollapsedContent-{{= key }}">
 												<div class="col-xs-12 col-sm-8 visible-xs">
 													<div class="row">
@@ -281,7 +288,7 @@
 														<div class="col-xs-12 extraBenefitOption">{{= benefit.waitingperiod }}</div>
 													</div>
 												</div>
-												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory === "true") { }}
+												{{ if (benefit.isClinicalCategory !== undefined && benefit.isClinicalCategory.toLowerCase() === "true") { }}
 												<div class="col-xs-12 col-sm-8 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
@@ -502,7 +509,7 @@
 
 				<div class="row">
 					<div class="col-sm-4 col-sm-push-4">
-						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now<span class="icon-arrow-right" /></a>
 					</div>
 				</div>
 			</div>
