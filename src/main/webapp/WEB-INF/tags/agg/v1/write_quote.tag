@@ -9,6 +9,7 @@
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 <jsp:useBean id="tranDao" class="com.ctm.web.core.transaction.dao.TransactionDetailsDao" scope="request" />
+<jsp:useBean id="strUtils" class="com.ctm.web.core.utils.common.utils.StringUtils" scope="request" />
 
 <%@ attribute name="productType" 	required="true"	 rtexprvalue="true"	 description="The product type (e.g. TRAVEL)" %>
 <%@ attribute name="rootPath" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
@@ -601,6 +602,7 @@
 							<c:set var="xpath" value="${fn:substringAfter(xpath,'/')}" />
 							<c:set var="rowVal" value="${fn:substringAfter(xpathAndVal,'=')}" />
 							<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
+							<c:set var="rowVal" value="${strUtils.toValid3ByteUtf8String(rowVal)}" />
 
 							<%-- To avoid truncation errors we'll limit textValue to 1000 chars but will add an error log entry so can track --%>
 							<c:if test="${fn:length(rowVal) > 1000}">
