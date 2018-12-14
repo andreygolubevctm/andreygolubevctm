@@ -168,17 +168,17 @@
 										{{ var isMobile = meerkat.modules.deviceMediaState.get() === "xs"; }}
 										{{ if(hospital && meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-9 col-sm-7 newBenefitRow benefitHeaderTitle">
+											<div class="col-xs-9 col-md-10 col-sm-10 col-lg-7 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">
 													Hospital cover benefits
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-3 col-md-2 col-sm-2 newBenefitRow benefitHeaderTitle align-center">
 												<div class="benefitRowTableCell">
-													Inclusion
+													Included
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-3 newBenefitRow benefitHeaderTitle align-center hidden-xs">
+											<div class="col-xs-3 col-sm-3 newBenefitRow benefitHeaderTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
 													Waiting period
 												</div>
@@ -187,7 +187,7 @@
 										{{ } }}
 										{{ _.each(product.custom.reform.tab1.benefits, function(benefit, key) { }}
 										<div class="row benefitRow">
-											<div class="col-xs-9 col-sm-7 newBenefitRow benefitRowTitle">
+											<div class="col-xs-9 col-md-10 col-sm-10 col-lg-7 newBenefitRow benefitRowTitle">
 												{{ var expanded = false; }}
 												<div class="benefitRowTableCell">
 													{{= benefit.category }}
@@ -199,12 +199,12 @@
 													{{ } }}
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-2 newBenefitRow benefitRowTitle">
+											<div class="col-xs-3 col-md-2 col-sm-2 newBenefitRow benefitRowTitle">
 												<div class="benefitRowTableCell">
 													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-3 newBenefitRow benefitRowTitle align-center hidden-xs">
+											<div class="col-xs-3 col-sm-3 newBenefitRow benefitRowTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
 													{{= benefit.waitingperiod}}
 												</div>
@@ -239,17 +239,17 @@
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-9 col-sm-7 newBenefitRow benefitHeaderTitle">
+											<div class="col-xs-9 col-md-10 col-sm-10 col-lg-7 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">
 													Hospital cover benefits
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-2 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-3 col-md-2 col-sm-2 newBenefitRow benefitHeaderTitle align-center">
 												<div class="benefitRowTableCell">
-													Inclusion
+													Included
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-3 newBenefitRow benefitHeaderTitle align-center hidden-xs">
+											<div class="col-xs-3 col-sm-3 newBenefitRow benefitHeaderTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
 													Waiting period
 												</div>
@@ -257,7 +257,7 @@
 										</div>
 										{{ _.each(product.custom.reform.tab2.benefits, function(benefit, key){ }}
 										<div class="row benefitRow">
-											<div class="col-xs-9 col-sm-7 newBenefitRow benefitRowTitle">
+											<div class="col-xs-9 col-md-10 col-sm-10 col-lg-7 newBenefitRow benefitRowTitle">
 												{{ var expanded = false; }}
 												<div class="benefitRowTableCell">
 													{{= benefit.category }}
@@ -269,12 +269,12 @@
 													{{ } }}
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-2 newBenefitRow benefitRowTitle">
+											<div class="col-xs-3 col-md-2 col-sm-2 newBenefitRow benefitRowTitle">
 												<div class="benefitRowTableCell">
 													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-3 newBenefitRow benefitRowTitle align-center hidden-xs">
+											<div class="col-xs-3 col-sm-3 newBenefitRow benefitRowTitle align-center hidden-sm hidden-md hidden-xs">
 												<div class="benefitRowTableCell">
 													{{= benefit.waitingperiod}}
 												</div>
@@ -354,22 +354,22 @@
 										{{ product.ignoreLimits = false; }}
 										{{ if(hospital && meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
-											<div class="col-xs-9 col-sm-7 newBenefitRow benefitHeaderTitle">
+											<div class="col-xs-9 col-md-10 col-sm-10 col-lg-7 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">
 													Extras services
 												</div>
 											</div>
-											<div class="col-sm-2 newBenefitRow benefitHeaderTitle align-center hidden-xs">
+											<div class="col-sm-2 newBenefitRow benefitHeaderTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
 													Annual limit
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-1 newBenefitRow benefitHeaderTitle align-center">
+											<div class="col-xs-3 col-md-2 col-sm-2 col-lg-1 newBenefitRow benefitHeaderTitle align-center">
 												<div class="benefitRowTableCell">
-													Inclusion
+													Included
 												</div>
 											</div>
-											<div class="col-sm-2 newBenefitRow benefitHeaderTitle align-center hidden-xs">
+											<div class="col-sm-2 newBenefitRow benefitHeaderTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
 													Waiting period
 												</div>
@@ -382,7 +382,7 @@
 										{{ } }}
 										{{ if (typeof benefit === 'object') { }}
 										<div class="row benefitRow">
-											<div class="col-xs-9 col-sm-7 newBenefitRow benefitRowTitle">
+											<div class="col-xs-9 col-md-10 col-sm-10 col-lg-7 newBenefitRow benefitRowTitle">
 												<div class="benefitRowTableCell">
 													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
 													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
@@ -391,7 +391,7 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs">
+											<div class="col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
 												{{ var coverType = window.meerkat.modules.healthSituation.getSituation(); }}
 													{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
@@ -402,12 +402,12 @@
 													{{ } }}
 												</div>
 											</div>
-											<div class="col-xs-3 col-sm-1 newBenefitRow benefitRowTitle">
+											<div class="col-xs-3 col-md-2 col-sm-2 col-lg-1 newBenefitRow benefitRowTitle">
 												<div class="benefitRowTableCell">
 													<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
 												</div>
 											</div>
-											<div class="col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs">
+											<div class="col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
 													{{= benefit.waitingPeriod.substring(0, 20) }}
 												</div>
