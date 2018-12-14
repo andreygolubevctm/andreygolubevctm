@@ -893,21 +893,23 @@ ul.benefitsIcons {
   }
 
   .selectedExtrasIcon {
-    background: url('../images/icons/selected_extras_fav.svg') center center no-repeat;
+    background: url(../images/icons/selected_extras_fav.svg) center center no-repeat;
     height: 26px;
     width: 26px;
     float: left;
-    position: relative;
-    top: 12px;
-    left: -23px;
+    position: absolute;
+    top: 20px;
+    left: -20px;
     background-color: white;
   }
 
   .newBenefitRow {
-    padding-left: 10px;
+    display: grid;
+    align-items: center;
+    padding: 10px;
     font-size: 14px;
-    line-height: 50px;
-    height: 58px;
+    line-height: 20px;
+    height: 70px;
     text-align: left;
 
     &.benefitHeaderTitle {
@@ -978,7 +980,6 @@ ul.benefitsIcons {
 
 .newBenefitStatus {
   display: block;
-  top: 30%;
   position: relative;
 
   &.benefitStatusIcon_N {

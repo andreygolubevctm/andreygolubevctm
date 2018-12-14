@@ -715,10 +715,10 @@
 			<h3 class="text-dark">(&nbsp;<img src="assets/brand/ctm/images/icons/selected_extras_fav.svg" width="26" height="26" />&nbsp;selected extras)</h3>
 			<div class="col-xs-12 benefitTable">
 				<div class="row benefitRow benefitRowHeader">
-					<div class="col-xs-8 newBenefitRow benefitHeaderTitle">
+					<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
 						Extras services
 					</div>
-					<div class="col-xs-1 newBenefitRow benefitHeaderTitle align-center">
+					<div class="col-xs-2 newBenefitRow benefitHeaderTitle align-center">
 						Annual Limit
 					</div>
 					<div class="col-xs-1 newBenefitRow benefitHeaderTitle align-center">
@@ -734,7 +734,7 @@
 				{{ } }}
 				{{ if (typeof benefit === 'object') { }}
 				<div class="row benefitRow">
-					<div class="col-xs-8 newBenefitRow benefitRowTitle">
+					<div class="col-xs-7 newBenefitRow benefitRowTitle">
 						{{ var expanded = false; }}
 						{{ _.each(meerkat.modules.healthBenefitsStep.getSelectedBenefits(), function(benefitKey) { }}
 							{{ if (benefitKey === key) { }}
@@ -742,13 +742,21 @@
 							<span class="selectedExtrasIcon"></span>
 							{{ } }}
 						{{ }); }}
+						<div class="benefitRowTableCell">
 						{{= key.replace(/([A-Z])/g, ' $1').trim() }}
 						<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
 							<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span><span>{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
 						</a>
+						</div>
 					</div>
-					<div class="col-xs-1 newBenefitRow benefitRowTitle align-center">
-						{{= benefit.benefitLimits.annualLimit ? benefit.benefitLimits.annualLimit : '' }}
+					<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
+						{{ var coverType = window.meerkat.modules.healthAboutYou.getSituation(); }}
+							{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
+								<div>per person: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
+							{{ } }}
+							{{ if(benefit.benefitLimits.perPolicy !== '-') { }}
+							<div>per policy: {{= benefit.benefitLimits.perPolicy ? benefit.benefitLimits.perPolicy : '' }}</div>
+							{{ } }}
 					</div>
 					<div class="col-xs-1 newBenefitRow benefitRowTitle">
 						<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
