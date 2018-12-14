@@ -602,7 +602,7 @@
 							<c:set var="xpath" value="${fn:substringAfter(xpath,'/')}" />
 							<c:set var="rowVal" value="${fn:substringAfter(xpathAndVal,'=')}" />
 							<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
-							<c:set var="rowVal" value="${strUtils.toValid3ByteUTF8String(rowVal)}" />
+							<c:set var="rowVal" value="${strUtils.toValid3ByteUtf8String(rowVal)}" />
 
 							<%-- To avoid truncation errors we'll limit textValue to 1000 chars but will add an error log entry so can track --%>
 							<c:if test="${fn:length(rowVal) > 1000}">

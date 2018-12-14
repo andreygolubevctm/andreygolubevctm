@@ -5,7 +5,7 @@ public class StringUtils {
     public static final String LAST_3_BYTE_UTF_CHAR = "\uFFFF";
     public static final String REPLACEMENT_CHAR = "\uFFFD";
 
-    public static String toValid3ByteUTF8String(String str)  {
+    public static String toValid3ByteUtf8String(String str)  {
         final int length = str.length();
         StringBuilder validStringBuilder = new StringBuilder(length);
         for (int offset = 0; offset < length; ) {
