@@ -7,23 +7,23 @@ public class StringUtils {
 
     public static String toValid3ByteUTF8String(String str)  {
         final int length = str.length();
-        StringBuilder b = new StringBuilder(length);
+        StringBuilder validStringBuilder = new StringBuilder(length);
         for (int offset = 0; offset < length; ) {
             final int codepoint = str.codePointAt(offset);
 
             // do something with the codepoint
             if (codepoint > StringUtils.LAST_3_BYTE_UTF_CHAR.codePointAt(0)) {
-                b.append(StringUtils.REPLACEMENT_CHAR);
+                validStringBuilder.append(StringUtils.REPLACEMENT_CHAR);
             } else {
                 if (Character.isValidCodePoint(codepoint)) {
-                    b.appendCodePoint(codepoint);
+                    validStringBuilder.appendCodePoint(codepoint);
                 } else {
-                    b.append(StringUtils.REPLACEMENT_CHAR);
+                    validStringBuilder.append(StringUtils.REPLACEMENT_CHAR);
                 }
             }
             offset += Character.charCount(codepoint);
         }
-        return b.toString();
+        return validStringBuilder.toString();
     }
 
     public static String sqlQuestionMarkStringBuilder(int repeatNumber){
