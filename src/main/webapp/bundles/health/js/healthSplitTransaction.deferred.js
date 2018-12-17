@@ -189,10 +189,12 @@
 
     function clearAuthCodeValidation() {
         $elements.inputs.code.attr("aria-invalid", "false");
-        $elements.inputs.code.toggleClass( "has-error", false);
+        $elements.inputs.code.toggleClass("has-error", false);
         $elements.inputs.code.parent().parent().toggleClass( "has-error", false);
+        $elements.inputs.code.toggleClass("has-success", false);
+        $elements.inputs.code.parent().parent().toggleClass( "has-success", false);
         $elements.inputs.code.parent().parent().find('.error-field').remove();
-        $elements.inputs.code.parent().parent().find('.split-trans-validation-messages').remove();
+        $elements.inputs.code.parent().parent().find('.split-trans-validation-messages').html('<!-- empty -->');
     }
 
 
@@ -275,9 +277,8 @@
             });
         } else {
             $elements.wrappers.disableables.removeClass('disabled');
-            $elements.inputs.disableables.each(function() {
-                $(this).closest('.fieldrow').find('.display-only').empty();
-            });
+            $elements.inputs.reasonDisplay.empty();
+            $elements.inputs.approvedbydisplay.empty();
             $elements.inputs.code.closest('.authorisation-column').show();
             $elements.wrappers.approvedby.slideUp('fast');
             $elements.triggers.reset.slideUp('fast', function(){
