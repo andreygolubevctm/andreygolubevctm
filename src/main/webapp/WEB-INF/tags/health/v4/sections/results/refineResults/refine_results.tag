@@ -65,9 +65,9 @@
 </core_v1:js_template>
 
 <core_v1:js_template id="refineResultsHospitalBenefitsSwitch">
-    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/refineResults/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
+    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/refineResults/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="Yes" offText="No" />
 </core_v1:js_template>
 
 <core_v1:js_template id="refineResultsExtrasBenefitsSwitch">
-    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/refineResults/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
+    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/refineResults/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="Yes" offText="No" />
 </core_v1:js_template>

@@ -542,7 +542,7 @@
                             return /HLTicon-.+/.test(item);
                         });
 
-                        $('.cell.category.expandable.' + cellRowClass).addClass('row-hovered');
+                        $('.cell.category.expandable' + cellRowClass).addClass('row-hovered');
                     },
                     function() {
                         $('.cell.category.expandable.row-hovered').removeClass('row-hovered');
@@ -1187,6 +1187,16 @@
         }
     }
 
+    function resultsHasLimitedProducts() {
+        if(!Results || !Results.model || !Results.model.returnedProducts) {
+            return false;
+        }
+
+        return _.find( Results.model.returnedProducts, function(product) {
+            return product.info.situationFilter === 'Y';
+        }) != null; 
+    }
+
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
@@ -1213,7 +1223,8 @@
         getSelectedBenefitsList: getSelectedBenefitsList,
         setCallCentreText: setCallCentreText,
         resetCallCentreText: resetCallCentreText,
-        unpinProductFromFilterUpdate: unpinProductFromFilterUpdate
+        unpinProductFromFilterUpdate: unpinProductFromFilterUpdate,
+        resultsHasLimitedProducts: resultsHasLimitedProducts
     });
 
 })(jQuery);

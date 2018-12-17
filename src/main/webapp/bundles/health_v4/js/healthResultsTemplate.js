@@ -23,13 +23,13 @@
             }
         });
 
-        if (!availableBenefits.length) {
-            if (numberOfSelectedExtras() === 0) {
-                $('.featuresListExtrasOtherList').addClass('hidden');
-            } else if (numberOfSelectedHospitals() === 0) {
-                $('.featuresListHospitalOtherList').addClass('hidden');
-            }
-        }
+        // if (!availableBenefits.length) {
+        //     if (numberOfSelectedExtras() === 0) {
+        //         $('.featuresListExtrasOtherList').addClass('hidden');
+        //     } else if (numberOfSelectedHospitals() === 0) {
+        //         $('.featuresListHospitalOtherList').addClass('hidden');
+        //     }
+        // }
         return availableBenefits;
     }
 
@@ -49,17 +49,13 @@
             var hasResult = ft.resultPath !== null && ft.resultPath !== '';
             var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
             //Also check the first value in the case of april 1 products
-            if (pathValue == "Y" || (pathValue.length > 1 && pathValue[0] === 'Y')) {
+            if (pathValue && (pathValue == "Y" || (pathValue.length > 1 && pathValue[0] === 'Y'))) {
                 availableExtras.push(ft);
             }
         });
         if (!availableExtras.length) {
             //4 = Hospital Cover
-            if(Number.parseInt(obj.featuresStructureIndexToUse) === 4) {
-                $('.featuresListHospitalOtherList, .featuresListHospitalFullList').addClass('hidden');
-            }else{
-                $('.featuresListExtrasOtherList, .featuresListExtrasFullList').addClass('hidden');
-            }
+            output = 'No other benefits available';
         } else {
             _.each(availableExtras, function (ft, i) {
                 var separator = '';

@@ -369,8 +369,9 @@
 
         if (initToggleBar) {
             meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
-            _trackScroll();
         }
+
+        _trackScroll();
 
         $(toggleBarInitSettings.container).find('.toggleBar').toggleClass('hidden', initToggleBar === false);
         $('#' + moreInfoDialogId).find('.navbar-text.modal-title-label').html('<span class="quoteRefHdr">Quote Ref: <span class="quoteRefHdrTransId">' + meerkat.modules.transactionId.get() + '</span></span>');
@@ -385,7 +386,9 @@
 
         // $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function () {
             $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderLarge', isDocked);
-            $moreInfoContent.css({ 'paddingTop': isDocked ? dockedHeaderLargeHeight : 0 });
+            $moreInfoContent.css({ 'height': 'calc(100% - ' + (dockedHeaderLargeHeight + 20) + 'px)' });
+            $moreInfoContent.css({ 'overflow': 'scroll' });
+            $moreInfoContent.css({ '-webkit-overflow-scrolling': 'touch' });
             contentTop = isDocked ? $moreInfoContent.position().top : 0;
         // });
     }

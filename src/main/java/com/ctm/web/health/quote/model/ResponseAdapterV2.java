@@ -259,7 +259,7 @@ public class ResponseAdapterV2 {
         price.setValue(payableAmount);
 
         //If changing/remove span tag underneath, make sure to change HealthModelTranslator premiumlabel translation accordingly.
-        price.setLhcfreepricing(getLhcFreePricing(healthQuote, lhcAmount, lookingForPrivateHospitalCover) + " / inc " + rebateValue + " Govt Rebate");
+        price.setLhcfreepricing(getLhcFreePricing(healthQuote, lhcAmount, lookingForPrivateHospitalCover) + "<br> inc " + rebateValue + " Govt Rebate");
 
         price.setRebateValue(rebateValue);
 

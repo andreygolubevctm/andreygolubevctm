@@ -20,7 +20,7 @@
             <img src="assets/brand/ctm/images/brochure_icon.svg" class="productWidgetIcon"/>
         </div>
         <div class="col-md-10 col-xs-9">
-            {{ if (typeof hospitalCover !== 'undefined') { }}
+            {{ if (hospital && typeof hospitalCover !== 'undefined') { }}
             <div class="brochureLink">
                 <a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View hospital brochure</a>
             </div>

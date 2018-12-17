@@ -155,10 +155,12 @@
                                                     <c:set var="benefitLabel">
 													<span class="benefitContent">
 														<div class="benefitTitle needsclick">${selectedValue.getName()}</div>
-                                                            <span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
+                                                            <span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())}</span>
+                                                            <div class="benefit-learn-more">
+                                                            <a href="javascript:;"
                                                             class="help_icon floatLeft"
                                                             data-content="helpid:${selectedValue.getHelpId()}"
-                                                            data-toggle="popover">more</a></span>
+                                                            data-toggle="popover">more</a></div>
 													</span>
                                                     </c:set>
                                                     <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false"
@@ -188,6 +190,11 @@
                                                     </span>
                                                 </label>
                                             </div>
+                                            <div class="limited-cover-text">
+                                            Limited Hospital Cover provides the most basic level of hospital cover and is generally the cheapest. It is also sufficient to avoid paying the Medicare Levy Surcharge, which is a government surcharge on the taxable income of individuals who earn over $90,000 a year and couples who earn over $180,000 a year total. However, Limited Hospital Cover products exclude a large number of benefits that other hospital policies cover as standard, and in some instances, provides cover only where you need treatment as a result of an accident.
+                                            <br> 
+                                            <br>
+                                            To compare policies that provide a better level of cover, select the <i>My cover options</i> tab above.</div>
                                         </div>
                                     </div>
                                 </div>
