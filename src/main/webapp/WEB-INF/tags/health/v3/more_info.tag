@@ -57,6 +57,7 @@
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
+	{{ var product = Results.getSelectedProduct(); }}
 
 	{{ var comingSoonClass = ''; var priceContainerWidth = 'col-xs-6'; }}
 	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
@@ -626,7 +627,7 @@
 				<div class="col-xs-12 col-md-6 hospitalCover">
 					{{ if(typeof hospital.inclusions !== 'undefined') { }}
 					<h2>Hospital cover</h2>
-					{{ if (custom.reform.tab1.excess ==== custom.reform.tab2.excess) { }}
+					{{ if (custom.reform.tab1.excess === custom.reform.tab2.excess) { }}
 						<p>
 							<strong>Hospital Excess:</strong><br>
 							<span class="scripting-text"><strong>{{= custom.reform.tab2.excess }}</strong></span>
@@ -720,6 +721,10 @@
 			<h2 class="text-dark">Extras cover</h2>
 			<h3 class="text-dark">(&nbsp;<img src="assets/brand/ctm/images/icons/selected_extras_fav.svg" width="26" height="26" />&nbsp;selected extras)</h3>
 			<div class="col-xs-12 benefitTable">
+				{{ product.structureIndex = 5; }}
+				{{ product.showNotCoveredBenefits = false; }}
+				{{ product.ignoreLimits = false; }}
+				{{ var featureIterator = product.childFeatureDetails || Features.getPageStructure(product.structureIndex); }}
 				<div class="row benefitRow benefitRowHeader">
 					<div class="col-xs-7 newBenefitRow benefitHeaderTitle">
 						Extras services
@@ -739,6 +744,12 @@
 					{{ return; }}
 				{{ } }}
 				{{ if (typeof benefit === 'object') { }}
+				{{ var benefitName = ''; }}
+				{{_.each(featureIterator[0].children, function(child) { }}
+					{{ if (child.shortlistKey === key) { }}
+						{{ benefitName = child.safeName }}
+					{{ } }}
+				{{ }); }}
 				<div class="row benefitRow">
 					<div class="col-xs-7 newBenefitRow benefitRowTitle">
 						{{ var expanded = false; }}
@@ -749,7 +760,7 @@
 							{{ } }}
 						{{ }); }}
 						<div class="benefitRowTableCell">
-						{{= key.replace(/([A-Z])/g, ' $1').trim() }}
+							{{= benefitName || key.replace(/([A-Z])/g, ' $1').trim() }}
 						<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
 							<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span><span>{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
 						</a>
@@ -757,7 +768,7 @@
 					</div>
 					<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
 						{{ var coverType = window.meerkat.modules.healthAboutYou.getSituation(); }}
-							{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
+							{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && (benefit.benefitLimits.perPerson !== '-')) { }}
 								<div>per person: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
 							{{ } }}
 							{{ if(benefit.benefitLimits.perPolicy !== '-') { }}
@@ -780,12 +791,12 @@
 									{{ if (benefit.benefits !== undefined) { }}
 									<div class="col-xs-12">
 										{{ _.each(benefit.benefits, function (option, key) { }}
-										{{ var situation = window.meerkat.modules.health.getSituation(); }}
-										{{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
-										{{ var trimmedKey = key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim(); }}
-										{{ if(isSingle && trimmedKey === 'per person') { }}
-											{{ return; }}
-										{{ } }}
+											{{ var situation = window.meerkat.modules.health.getSituation(); }}
+											{{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
+											{{ var trimmedKey = key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim(); }}
+											{{ if(isSingle && trimmedKey === 'per person') { }}
+												{{ return; }}
+											{{ } }}
 										<div class="row">
 											<div class="col-xs-9 extraBenefitOption">
 												{{= key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim() }}
@@ -809,12 +820,12 @@
 									{{ if (benefit.benefitLimits !== undefined) { }}
 									<div class="col-xs-12">
 										{{ _.each(benefit.benefitLimits, function (option, key) { }}
-										{{ var situation = window.meerkat.modules.health.getSituation(); }}
-										{{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
-										{{ var trimmedKey = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
-										{{ if(isSingle && trimmedKey === 'per person') { }}
-											{{ return; }}
-										{{ } }}
+											{{ var situation = window.meerkat.modules.health.getSituation(); }}
+											{{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
+											{{ var trimmedKey = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
+											{{ if(isSingle && trimmedKey === 'per person') { }}
+												{{ return; }}
+											{{ } }}
 										<div class="row">
 											<div class="col-xs-9 extraBenefitOption">
 												{{= key.replace(/([A-Z])/g, ' $1').trim().toLowerCase() }}

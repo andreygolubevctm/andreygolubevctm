@@ -352,6 +352,7 @@
 										{{ product.structureIndex = 5; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
+										{{ var featureIterator = product.childFeatureDetails || Features.getPageStructure(product.structureIndex); }}
 										{{ if(hospital && meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
 										<div class="row benefitRow benefitRowHeader">
 											<div class="col-xs-9 col-md-10 col-sm-10 col-lg-7 newBenefitRow benefitHeaderTitle">
@@ -376,15 +377,21 @@
 											</div>
 										</div>
 										{{ } }}
-										{{ _.each(extras, function(benefit, key){ }}
+										{{ _.each(product.extras, function(benefit, key){ }}
 										{{ if(!benefit) { }}
 											{{ return; }}
 										{{ } }}
 										{{ if (typeof benefit === 'object') { }}
+										{{ var benefitName = ''; }}
+										{{_.each(featureIterator[0].children, function(child) { }}
+											{{ if (child.shortlistKey === key) { }}
+												{{ benefitName = child.safeName }}
+											{{ } }}
+										{{ }); }}
 										<div class="row benefitRow">
 											<div class="col-xs-9 col-md-10 col-sm-10 col-lg-7 newBenefitRow benefitRowTitle">
 												<div class="benefitRowTableCell">
-													{{= key.replace(/([A-Z])/g, ' $1').trim() }}
+													{{= benefitName || key.replace(/([A-Z])/g, ' $1').trim() }}
 													<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="false" aria-controls="collapseExample">
 														<span class="icon-angle-down"></span>
 														<span class="hidden-xs">&nbsp;More details</span>
