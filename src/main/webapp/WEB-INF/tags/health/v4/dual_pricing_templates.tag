@@ -116,8 +116,6 @@
 				<div class="current-pricing">
 					<div class="dual-pricing-before-after-text">Now</div>
 					{{= renderedPriceTemplate }}
-
-					<div><span class="current-frequency">{{= currFreq }}</span></div>
 				</div>
 			</div>
 			<div class="col-xs-6 april-container">
