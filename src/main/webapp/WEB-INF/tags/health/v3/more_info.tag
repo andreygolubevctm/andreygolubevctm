@@ -318,14 +318,14 @@
 								This policy excludes
 								{{= exclusions }}
 								{{ } else { }}
-									<b>There are no exclusions </b>
+									This policy excludes <b>no exclusions </b>
 								{{ } }}
 
 							{{ if(restrictions.length) { }}
 								and there is restricted cover for
 								{{= restrictions }}
 								{{ } else { }}
-									<b>There are no restrictions </b>
+								and there is restricted cover for <b>no restrictions </b>
 							{{ } }}
 							</span><br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
@@ -385,14 +385,14 @@
 								This policy excludes
 								{{= exclusions }}
 								{{ } else { }}
-									<b>There are no exclusions </b>
+								This policy excludes <b>no exclusions </b>
 								{{ } }}
 
 							{{ if(restrictions.length) { }}
 								and there is restricted cover for
 								{{= restrictions }}
 								{{ } else { }}
-									<b>There are no restrictions </b>
+								and there is restricted cover for <b>no restrictions </b>
 							{{ } }}
 							</span><br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods. <br/><br/>
@@ -444,14 +444,14 @@
 								This policy excludes
 								{{= exclusions }}
 								{{ } else { }}
-									<b>There are no exclusions </b>
+								This policy excludes <b>no exclusions </b>
 								{{ } }}
 
 							{{ if(restrictions.length) { }}
 								and there is restricted cover for
 								{{= restrictions }}
 								{{ } else { }}
-									<b>There are no restrictions </b>
+								and there is restricted cover for <b>no restrictions </b>
 							{{ } }}
 							</span>
 						</div>
