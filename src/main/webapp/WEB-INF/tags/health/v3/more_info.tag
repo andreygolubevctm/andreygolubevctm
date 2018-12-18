@@ -264,7 +264,7 @@
 					<div class="readInclusionsFlag row-content row">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+								<input type="checkbox" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_A" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="read_inclusions_scripting_A"></label>
 							</div>
 						</div>
@@ -298,7 +298,7 @@
 					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+								<input type="checkbox" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B1" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="read_inclusions_scripting_B1"></label>
 							</div>
 						</div>
@@ -367,7 +367,7 @@
 					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+								<input type="checkbox" name="health_simples_dialogue-radio-760" id="read_inclusions_scripting_B2" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="read_inclusions_scripting_B2"></label>
 							</div>
 						</div>
@@ -426,7 +426,7 @@
 					<div class="readInclusionsFlag row row-content">
 						<div class="col-sm-1 no-padding">
 							<div class="checkbox">
-								<input type="radio" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+								<input type="checkbox" name="health_simples_dialogue-radio-760" id="before_read_inclusions_scripting_C" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 								<label for="before_read_inclusions_scripting_C"></label>
 							</div>
 						</div>
@@ -475,7 +475,7 @@
 				<div class="row">
 					<div class="col-sm-1 no-padding">
 						<div class="checkbox">
-							<input type="radio" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+							<input type="checkbox" name="health_simples_dialogue-radio-810" id="limited_cover_scripting_tab_1_not_null" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 							<label for="limited_cover_scripting_tab_1_not_null"></label>
 						</div>
 					</div>
@@ -512,11 +512,11 @@
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
 					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810-2" id="limited_cover_scripting_tab_1" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reform.tab1.limited }}</label></div><br/><br/>
+						<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-810-2" id="limited_cover_scripting_tab_1" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reform.tab1.limited }}</label></div><br/><br/>
 					{{ } else { }}
 					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && meerkat.modules.healthBenefitsStep.showTabOneCheckboxes(custom.reform)) { }}
-							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_1_inclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
+							<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_1_inclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
 								<label for="limited_cover_scripting_tab_1_inclusions_checkbox">Inclusions</label>
 							</div><br/>
 						{{ } else { }}
@@ -531,7 +531,7 @@
 						</ul>
 
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && meerkat.modules.healthBenefitsStep.showTabOneCheckboxes(custom.reform)) { }}
-							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-912" id="limited_cover_scripting_tab_1_restrictions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
+							<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-912" id="limited_cover_scripting_tab_1_restrictions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
 								<label for="limited_cover_scripting_tab_1_restrictions_checkbox">Restrictions</label>
 							</div><br/>
 						{{ } else { }}
@@ -546,7 +546,7 @@
 						</ul>
 
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && meerkat.modules.healthBenefitsStep.showTabOneCheckboxes(custom.reform)) { }}
-							<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-913" id="limited_cover_scripting_tab_1_exclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
+							<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-913" id="limited_cover_scripting_tab_1_exclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
 								<label for="limited_cover_scripting_tab_1_exclusions_checkbox">Exclusions</label>
 							</div><br/>
 						{{ } else { }}
@@ -579,7 +579,7 @@
 						<div class="readInclusionsFlag row row-content">
 							<div class="col-sm-1 no-padding">
 								<div class="checkbox">
-									<input type="radio" name="health_simples_dialogue-radio-761" id="after_read_inclusions_scripting_C" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" data-attach="true" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+									<input type="checkbox" name="health_simples_dialogue-radio-761" id="after_read_inclusions_scripting_C" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" data-attach="true" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 									<label for="after_read_inclusions_scripting_C"></label>
 								</div>
 							</div>
@@ -628,7 +628,7 @@
 				<div class="row row-content">
 					<div class="col-sm-1 no-padding">
 						<div class="checkbox">
-							<input type="radio" name="health_simples_dialogue-radio-810-3" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
+							<input type="checkbox" name="health_simples_dialogue-radio-810-3" id="limited_cover_scripting_tab_2_not_null" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="{{= readInclusionScriptingValidationMessage }}" required="required">
 							<label for="limited_cover_scripting_tab_2_not_null"></label>
 						</div>
 					</div>
@@ -670,13 +670,13 @@
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
 					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab2.limited  !== null) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-810-1" id="limited_cover_scripting_tab_2" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required">
+						<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-810-1" id="limited_cover_scripting_tab_2" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required">
 							<label for="limited_cover_scripting_tab_2">{{= custom.reform.tab2.limited }}</label>
 						</div><br/>
 					{{ } else { }}
 					{{ if (custom.reform.tab2 && custom.reform.tab2.benefits && custom.reform.tab2.benefits.length > 0) { }}
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && meerkat.modules.healthBenefitsStep.showTabTwoCheckboxes(custom.reform)) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_2_inclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
+						<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_2_inclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
 							<label for="limited_cover_scripting_tab_2_inclusions_checkbox">Inclusions</label>
 						</div><br/>
 						{{ } else { }}
@@ -692,7 +692,7 @@
 						</ul>
 
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && meerkat.modules.healthBenefitsStep.showTabTwoCheckboxes(custom.reform)) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_2_restrictions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
+						<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_2_restrictions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
 							<label for="limited_cover_scripting_tab_2_restrictions_checkbox">Restrictions</label>
 						</div><br/>
 						{{ } else { }}
@@ -708,7 +708,7 @@
 						</ul>
 
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && meerkat.modules.healthBenefitsStep.showTabTwoCheckboxes(custom.reform)) { }}
-						<div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_2_exclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
+						<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-911" id="limited_cover_scripting_tab_2_exclusions_checkbox" class="checkbox-custom checkbox" value="" data-msg-required="" required="required">
 							<label for="limited_cover_scripting_tab_2_exclusions_checkbox">Exclusions</label>
 						</div><br/>
 						{{ } else { }}
