@@ -122,7 +122,6 @@
 				<div class="april-pricing">
 					<div class="dual-pricing-before-after-text">Price after April 1</div>
 					{{= renderedAltPriceTemplate }}
-					<div><span class="current-frequency">{{= currFreq }}</span></div>
 				</div>
 			</div>
 		</div>
