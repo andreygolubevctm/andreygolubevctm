@@ -12,6 +12,8 @@
     {{ if (typeof availablePremiums[frequency] === "undefined") { return; } }}
     {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode); }}
     {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
+    {{ var property = obj.premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = obj.altPremium; } }}
+
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
         {{ if (!result.hasValidPrice) { }}
@@ -30,6 +32,10 @@
         <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
         <div class="frequencyTitle">{{= freqObj.label }}</div>
     </div>
+
+        {{ if (frequency === obj._selectedFrequency && (obj.hasOwnProperty('priceBreakdown') || (!obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown))) { }}
+            {{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, frequency, false) }}
+        {{ } }}
 </div>
 {{ }); }}
 </div>

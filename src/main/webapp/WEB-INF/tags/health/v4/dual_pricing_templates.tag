@@ -79,7 +79,7 @@
 					<div class="moreInfoPriceHeading">PRICE FROM April 1</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltPriceTemplate }}
-								<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? altTextLhcFreePricing : altTextPricing }}</div>
+						<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? altTextLhcFreePricing : altTextPricing }}</div>
 					</div>
 				</div>
 				{{ if (obj.showAltPremium === true) { }}
@@ -116,16 +116,12 @@
 				<div class="current-pricing">
 					<div class="dual-pricing-before-after-text">Now</div>
 					{{= renderedPriceTemplate }}
-
-					<div><span class="current-frequency">{{= currFreq }}</span></div>
-					<div> {{= lhcText }} </div>
 				</div>
 			</div>
 			<div class="col-xs-6 april-container">
 				<div class="april-pricing">
 					<div class="dual-pricing-before-after-text">Price after April 1</div>
 					{{= renderedAltPriceTemplate }}
-					<div><span class="current-frequency">{{= currFreq }}</span></div>
 				</div>
 			</div>
 		</div>
