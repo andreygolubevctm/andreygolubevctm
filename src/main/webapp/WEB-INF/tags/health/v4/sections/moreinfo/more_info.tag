@@ -222,7 +222,7 @@
 												<div class="col-xs-12 col-sm-8 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
-														<div class="col-xs-12 extraBenefitOption">{{= benefit.scopeOfCover }}</div>
+														<div class="col-xs-12 extraBenefitOption">{{= benefit.scopeofcover }}</div>
 													</div>
 												</div>
 												{{ } }}
@@ -292,7 +292,7 @@
 												<div class="col-xs-12 col-sm-8 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
-														<div class="col-xs-12 extraBenefitOption">{{= benefit.scopeOfCover }}</div>
+														<div class="col-xs-12 extraBenefitOption">{{= benefit.scopeofcover }}</div>
 													</div>
 												</div>
 												{{ } }}
