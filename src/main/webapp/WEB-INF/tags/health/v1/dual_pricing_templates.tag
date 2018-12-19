@@ -39,24 +39,30 @@
 <c:set var="note">You must purchase before {{= obj.dropDeadDateFormatted }}.</c:set>
 <c:set var="heading">Premiums are rising April 1</c:set>
 <c:set var="whyPremiumsRising"><a href="javascript:;" class="why-rising-premiums">Why are premiums rising?</a></c:set>
-<c:set var="april1Header">from April 1<sup>st</sup></c:set>
+<c:set var="april1Header">from April 1</c:set>
 <c:set var="april1HeaderNoSup">from April 1st</c:set>
 
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
+	{{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}
+	{{ var prem = obj.premium[obj._selectedFrequency] }}
+	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
+	{{ var textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
+
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
 		<div class="current-pricing">
+			<div>
+				Now
+			</div>
 			{{= renderedPriceTemplate }}
 		</div>
 		<div class="april-pricing">
-			<div class="altPriceContainer">
-				{{= renderedAltPriceTemplate }}
+			<div>
+				${april1Header}
 			</div>
-			<div class="altPriceDetailsContainer">
-				<span class="deadline">${april1Header}</span>
-				<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
-			</div>
+			{{= renderedAltPriceTemplate }}
 		</div>
+		<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? textLhcFreePricing : textPricing }}</div>
 	</div>
 </core_v1:js_template>
 
@@ -65,15 +71,12 @@
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} ">
 		<div class="current-pricing">
 			{{ var currFreq = obj._selectedFrequency === 'annually' ? 'annual' : obj._selectedFrequency; }}
-			<h3>Current {{= currFreq }} pricing</h3>
+			<h3>Now</h3>
 			{{= renderedPriceTemplate }}
-			<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>
 		</div>
 		<div class="april-pricing">
-			<h3>{{= obj._selectedFrequency }} premium<br/>${april1HeaderNoSup}</h3>
+			<h3>From April 1</h3>
 			{{= renderedAltPriceTemplate }}
-			<span class="premiumsRising">Premiums are rising</span>
-			<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 		</div>
 	</div>
 </core_v1:js_template>

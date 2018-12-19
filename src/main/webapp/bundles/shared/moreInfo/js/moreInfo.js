@@ -107,7 +107,7 @@
 
             event.preventDefault();
 
-            if ($('#resultsForm').valid()) {
+            if ($('#resultsForm').valid() && _isScriptingRead()) {
 
                 var $this = $(this);
                 $this.addClass('inactive').addClass('disabled');
@@ -141,6 +141,77 @@
                 className: $(this).attr("data-class")
             });
         });
+
+        $(document.body).on('click', '.simplesMoreInfoBeforeTab', function () {
+            _triggerBeforeTabContent();
+        });
+
+        $(document.body).on('click', '.simplesMoreInfoAfterTab', function () {
+            _triggerAfterTabContent();
+        });
+
+        $(document.body).on('click', '#checkbox_inclusion_details', function () {
+            $('.scriptingFlagContent, .readInclusionsFlag').show();
+            $('.readWelcomeFlag').hide();
+        });
+
+        $(document.body).on('click', '#checkbox_welcome_pack', function () {
+            $('.scriptingFlagContent, .readWelcomeFlag').show();
+            $('.readInclusionsFlag').hide();
+        });
+
+        $(document.body).on('click', '.extrasCollapseContentLink', function () {
+            var span = $(this).find('span').first();
+            var textSpan = $(this).find('span').last();
+
+            if (span.hasClass('icon-angle-down')) {
+                span.removeClass('icon-angle-down').addClass('icon-angle-up');
+                textSpan.html("&nbsp;Less details");
+            } else {
+                span.removeClass('icon-angle-up').addClass('icon-angle-down');
+                textSpan.html("&nbsp;More details");
+            }
+        });
+    }
+
+    function _triggerBeforeTabContent() {
+        $('.simplesMoreInfoAfterTab').removeClass('active');
+        $('.simplesMoreInfoBeforeTab').addClass('active');
+        $('.simplesMoreInfoBeforeContent').show();
+        $('.simplesMoreInfoAfterContent').hide();
+    }
+
+    function _triggerAfterTabContent() {
+        $('.simplesMoreInfoBeforeTab').removeClass('active');
+        $('.simplesMoreInfoAfterTab').addClass('active');
+        $('.simplesMoreInfoBeforeContent').hide();
+        $('.simplesMoreInfoAfterContent').show();
+    }
+
+    function _isScriptingRead () {
+        var $scriptingReadCheckboxBefore = $('.simplesMoreInfoBeforeContent .simples-more-info-scripting-checkbox');
+        var $scriptingReadCheckboxAfter = $('.simplesMoreInfoAfterContent .simples-more-info-scripting-checkbox');
+        var $checkboxWelcomePack = $('#checkbox_welcome_pack');
+
+        if($checkboxWelcomePack && $($checkboxWelcomePack).prop('checked')) {
+            return true;
+        }
+
+        if ($scriptingReadCheckboxAfter.length) {
+            if($($scriptingReadCheckboxAfter).prop('checked') && $($scriptingReadCheckboxBefore).prop('checked')) {
+                return true;
+            } else if ($($scriptingReadCheckboxAfter).prop('checked') && !$($scriptingReadCheckboxBefore).prop('checked')) {
+                _triggerBeforeTabContent();
+                return false;
+
+            } else if (!$($scriptingReadCheckboxAfter).prop('checked') && $($scriptingReadCheckboxBefore).prop('checked')) {
+                _triggerAfterTabContent();
+                return false;
+
+            }
+        } else {
+            return true;
+        }
 
     }
 
@@ -276,8 +347,61 @@
             // Instigate a session poke
             meerkat.modules.session.poke();
 
+            initMoreInfoProductExtraInfo();
+
         });
 
+    }
+
+    /**
+     * Populates the more info product summary items (discount, promo, etc)
+     * Called by showTemplate
+     */
+    function initMoreInfoProductExtraInfo() {
+        var product = Results.getSelectedProduct();
+        if (!product) return;
+        var ind = 1; //index starts at 1 as the best price promise already exists in the left column
+        var addToColumns = function(type, text) {
+            if (!text || text.length === 0) return;
+            var container = $('#productSummaryRight');
+            if (ind % 2 === 0) {
+                container = $('#productSummaryLeft');
+            }
+            $(container).append(
+                $('<div/>', { 'class': 'productExtraInfoItem'}).append(
+                    $('<div/>', { 'class': 'extraInfoItemType', 'html': type})
+                ).append(
+                    $('<div/>', { 'class': 'extraInfoItemText', 'html': text})
+                )
+            );
+        };
+
+        var productHasProperty = function(obj) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            for (var i = 0; i < args.length; i++) {
+                if (!obj || !obj.hasOwnProperty(args[i])) {
+                    return false;
+                }
+                obj = obj[args[i]];
+            }
+            return true;
+        };
+
+        if (productHasProperty(product, 'promo', 'promoText')) {
+            addToColumns('Offer', product.promo.promoText);
+        }
+
+        if (productHasProperty(product, 'promo', 'discountText')) {
+            addToColumns('Discount', product.promo.discountText);
+        }
+
+        if (productHasProperty(product, 'awardScheme', 'text')) {
+            addToColumns('Reward', product.awardScheme.text);
+        }
+
+        if (productHasProperty(product, 'custom', 'info', 'content', 'results', 'header', 'text')) {
+            addToColumns('Other', product.custom.info.content.results.header.text);
+        }
     }
 
     /**

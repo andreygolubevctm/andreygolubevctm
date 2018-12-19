@@ -44,16 +44,234 @@
   }
 }
 
-.benefitRow {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid @gray-lighter;
+.preAprilReformContent {
+  display: block;
+}
+
+.postAprilReformContent {
+  display: none;
+}
+
+.reformHospitalTabs {
+  position: relative;
+  @media (@sm) {
+    overflow: hidden;
+    top: -50px;
+  }
+
+  @media (@xs-only) {
+    top: -38px;
+  }
+
+  button {
+    background-color: @gray;
+    color: @white;
+    float: left;
+    border-bottom: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 17px;
+    margin-right: 10px;
+
+    @media (@sm) {
+      padding: 14px 16px;
+    }
+
+    @media (@xs-only) {
+      padding: 8px;
+    }
+
+    &.active {
+      background-color: @white;
+      color: @gray-base;
+    }
+  }
+}
+
+.benefitTable {
+  border: 1px solid @gray-light;
+}
+
+.HospitalBenefits {
+  .excessCoPayment {
+    margin-bottom: 40px;
+    padding: 10px 0;
+
+    .excessInfo {
+      @media (@sm) {
+        border-right: 1px solid @gray;
+      }
+    }
+
+    .hospitalCoverDetails {
+      @media (@xs-only) {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid @gray;
+      }
+    }
+
+    .dollarValue {
+      font-size: 31px;
+
+      &::before {
+        content: '$';
+        font-size: 15px;
+        position: relative;
+        top: -10px;
+      }
+    }
+
+    .valueUnit {
+      font-size: 12px;
+    }
+  }
+
+  h2 {
+    font-size: 28px;
+    color: @gray-base;
+  }
+
+  h3 {
+    color: @gray-base;
+  }
+}
+
+.ambulanceCoverSection {
   margin-left: 0px;
   margin-right: 0px;
+
+  @media (@md) {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
+  .featuresListAmbulance {
+    margin-left: 0px;
+    margin-right: 0px;
+
+    @media (@md) {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+  }
+}
+
+.ExtrasBenefits, .ambulanceCoverSection {
+  margin-top: 40px;
+
+  h2 {
+    font-size: 28px;
+    color: @gray-base;
+    margin-left: 10px;
+  }
+
+  .heading-brochure {
+    margin-left: 10px;
+  }
+}
+
+.heading-brochure {
+  @media (@sm) {
+    text-align: right;
+  }
+
+  @media (@xs-only) {
+    margin-bottom: 20px;
+  }
+}
+
+.benefitRow {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom: 1px solid @gray-lighter;
 
   .benefitTitle,
   .limitTitle {
     padding-left: 0px;
+  }
+
+  &.benefitRowHeader {
+    background-color: @reform-blue;
+    color: @white;
+  }
+
+  .newBenefitRow {
+    display: grid;
+    align-items: center;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    height: 70px;
+    text-align: left;
+
+    &.benefitHeaderTitle {
+      border-left: 1px solid @white;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.benefitRowTitle {
+      border-left: 1px solid @gray-lighter;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.align-center {
+      justify-content: center;
+    }
+  }
+}
+
+.extrasCollapseContentLink {
+  width: 20%;
+  float: right;
+  text-decoration: none !important;
+  color: #1C3E94;
+  text-align: right;
+}
+
+.benefitCollapsedContent {
+  background-color: #E9EBF5;
+  padding: 21px 30px;
+
+  .extraBenefitSection {
+    @media (@sm) {
+      padding-right: 20px;
+    }
+
+    @media (@xs-only) {
+      margin-top: 30px;
+    }
+  }
+
+  .extraBenefitSubHeading {
+    height: 30px;
+    padding-left: 0;
+    border-bottom: 1px solid #999999;
+
+    @media (@sm) {
+      &:last-of-type {
+        margin-top: 20px;
+      }
+    }
+  }
+
+  .extraBenefitOption {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 0;
+    vertical-align: middle;
+    font-size: 12px;
+
+    &.align-center {
+      text-align: center;
+    }
   }
 }
 
@@ -68,6 +286,25 @@
   font-size: 16px;
   display: inline-block;
   text-align: center;
+}
+
+.newBenefitStatus {
+  display: block;
+
+  &.benefitStatusIcon_N {
+    background: url('../images/icons/exclude_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_Y {
+    background: url('../images/icons/included_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_R {
+    background: url('../images/icons/restricted_icon.svg') center center no-repeat;
+    height: 30px;
+  }
 }
 
 .pink {

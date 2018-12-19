@@ -21,7 +21,7 @@
             }
             var hasResult = ft.resultPath !== null && ft.resultPath !== '';
             var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
-            if (pathValue == "Y") {
+            if (pathValue && pathValue == "Y") {
                 availableExtras.push(ft);
             }
         });
