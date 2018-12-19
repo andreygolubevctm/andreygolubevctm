@@ -34,10 +34,10 @@
 		<benefitsExtras>
 			<Hospital>Y</Hospital>
 			<PrHospital>Y</PrHospital>
-            <Cardiac>Y</Cardiac>
-            <Rehabilitation>Y</Rehabilitation>
-            <PlasticNonCosmetic>Y</PlasticNonCosmetic>
-            <Palliative>Y</Palliative>
+			<Cardiac>Y</Cardiac>
+			<Rehabilitation>Y</Rehabilitation>
+			<PlasticNonCosmetic>Y</PlasticNonCosmetic>
+			<Palliative>Y</Palliative>
 			<GeneralHealth>Y</GeneralHealth>
 			<DentalGeneral>Y</DentalGeneral>
 		</benefitsExtras>
@@ -295,8 +295,8 @@
 		<dialogue-checkbox-25>Y</dialogue-checkbox-25>
 		<dialogue-checkbox-26>Y</dialogue-checkbox-26>
 		<dialogue-checkbox-28>Y</dialogue-checkbox-28>
-        <dialogue-checkbox-37>Y</dialogue-checkbox-37>
-        <dialogue-checkbox-38>Y</dialogue-checkbox-38>
+		<dialogue-checkbox-37>Y</dialogue-checkbox-37>
+		<dialogue-checkbox-38>Y</dialogue-checkbox-38>
 		<dialogue-checkbox-45>Y</dialogue-checkbox-45>
 		<dialogue-checkbox-51>Y</dialogue-checkbox-51>
 		<dialogue-checkbox-54>Y</dialogue-checkbox-54>

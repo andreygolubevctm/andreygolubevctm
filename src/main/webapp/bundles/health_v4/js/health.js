@@ -6,6 +6,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        onlineCategoryVersion = $('.online-results-control-container').data('online-category-version'),
         log = meerkat.logging.info;
 
     var moduleEvents = {
@@ -322,7 +323,7 @@
                 validate: true
             },
             onInitialise: function onContactInit(event) {
-                meerkat.modules.resultsFeatures.fetchStructure('health_v4');
+                meerkat.modules.resultsFeatures.fetchStructure(getOnlineCategoryVersion());
             },
             onBeforeEnter: function enterContactStep(event) {
                 // configure progress bar
@@ -851,11 +852,19 @@
         }
     }
 
+    /**
+     * Get the simples category version as per the comparison mode in the content control table ie. health2016/health2018
+     */
+    function getOnlineCategoryVersion() {
+        return onlineCategoryVersion;
+    }
+
     meerkat.modules.register("health", {
         init: initHealth,
         events: moduleEvents,
         initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject
+        getTrackingFieldsObject: getTrackingFieldsObject,
+        getOnlineCategoryVersion: getOnlineCategoryVersion
     });
 
 
