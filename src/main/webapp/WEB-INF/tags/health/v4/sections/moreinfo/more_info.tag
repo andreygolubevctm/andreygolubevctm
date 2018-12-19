@@ -383,9 +383,11 @@
 										{{ } }}
 										{{ if (typeof benefit === 'object') { }}
 										{{ var benefitName = ''; }}
+										{{ var featureIteratorChild; }}
 										{{_.each(featureIterator[0].children, function(child) { }}
 											{{ if (child.shortlistKey === key) { }}
-												{{ benefitName = child.safeName }}
+												{{ featureIteratorChild = child; }}
+												{{ benefitName = child.safeName; }}
 											{{ } }}
 										{{ }); }}
 										<div class="row benefitRow">
@@ -447,11 +449,20 @@
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 extraBenefitSubHeading"><strong>Claim Benefit:</strong></div>
 															{{ if (benefit.benefits !== undefined) { }}
+															{{ if(!featureIteratorChild) { }}
+																{{ return; }}
+															{{ } }}
 															<div class="col-xs-12 col-sm-12">
 																{{ _.each(benefit.benefits, function (option, key) { }}
 																<div class="row">
 																	<div class="col-xs-9 col-sm-9 extraBenefitOption">
-																		{{= key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim() }}
+																		{{ var benefitLimitsName = ''; }}
+																			{{ _.each(featureIteratorChild.children, function (child) { }}
+																				{{ if(child.resultPath.indexOf(key) > -1) { }}
+																					{{ benefitLimitsName = child.safeName; }}
+																				{{ } }}
+																			{{ }); }}
+																		{{= benefitLimitsName }}
 																	</div>
 																	<div class="col-xs-3 col-sm-3 extraBenefitOption align-center">
 																		{{= option }}
@@ -468,15 +479,21 @@
 															{{ if (benefit.benefitLimits !== undefined) { }}
 															<div class="col-xs-12 col-sm-12">
 																{{ _.each(benefit.benefitLimits, function (option, key) { }}
-																{{ if(key === 'annualLimit') { }}
+																{{ if(key === 'annualLimit' || !featureIteratorChild) { }}
 																	{{ return; }}
 																{{ } }}
 																<div class="row">
 																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
-																		{{= key.replace(/([A-Z])/g, ' $1').trim().toLowerCase() }}
+																		{{ var benefitLimitsName = ''; }}
+																			{{ _.each(featureIteratorChild.children, function (child) { }}
+																				{{ if(child.resultPath.indexOf(key) > -1) { }}
+																					{{ benefitLimitsName = child.safeName; }}
+																				{{ } }}
+																			{{ }); }}
+																		{{= benefitLimitsName }}
 																	</div>
 																	<div class="col-xs-3 col-sm-6 extraBenefitOption align-center">
-																		{{ if(!option) { }}
+																		{{ if(!option || option === '-') { }}
 																			None
 																		{{ } else { }}
 																			{{= option }}
@@ -484,6 +501,31 @@
 																	</div>
 																</div>
 																{{ }); }}
+																{{ if(benefit.groupLimit) { }}
+																{{ _.each(benefit.groupLimit, function (option, key) { }}
+																{{ if(key === 'annualLimit' || !featureIteratorChild) { }}
+																	{{ return; }}
+																{{ } }}
+																<div class="row">
+																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
+																		{{ var benefitGroupLimitName = ''; }}
+																			{{ _.each(featureIteratorChild.children, function (child) { }}
+																				{{ if(child.resultPath.indexOf(key) > -1) { }}
+																					{{ benefitGroupLimitName = child.safeName; }}
+																				{{ } }}
+																			{{ }); }}
+																		{{= benefitGroupLimitName }}
+																	</div>
+																	<div class="col-xs-3 col-sm-6 extraBenefitOption align-center">
+																		{{ if(!option || option === '-') { }}
+																			None
+																		{{ } else { }}
+																			{{= option }}
+																		{{ } }}
+																	</div>
+																</div>
+																{{ }); }}
+																{{ } }}
 															</div>
 															{{ } }}
 														</div>
