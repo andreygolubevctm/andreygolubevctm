@@ -196,7 +196,7 @@
         if ((meerkat.modules.benefitsSwitch.isExtrasOn() && (meerkat.modules.benefitsSwitch.isHospitalOn() || isLimited)) || (extrasOnButNoExtrasSelected)) {
             coverType = 'C';
             // H = No extras, and Hospital benefits OR limited
-        } else if (meerkat.modules.benefitsSwitch.isExtrasOn() && (meerkat.modules.benefitsSwitch.isHospitalOn() || isLimited)) {
+        } else if (!meerkat.modules.benefitsSwitch.isExtrasOn() && (meerkat.modules.benefitsSwitch.isHospitalOn() || isLimited)) {
             coverType = 'H';
             // E = extras only
         } else if (meerkat.modules.benefitsSwitch.isExtrasOn() || (!meerkat.modules.benefitsSwitch.isHospitalOn()&& extrasOnButNoExtrasSelected)) {
