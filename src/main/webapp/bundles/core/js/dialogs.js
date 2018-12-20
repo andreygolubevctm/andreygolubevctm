@@ -439,8 +439,7 @@
 
             // Bind the default close button
             $(document).on('click', '.btn-close-dialog', function () {
-                window.history.back();
-                // $(this).closest('.modal').modal('hide');
+                $(this).closest('.modal').modal('hide');
             });
 
             if (!Modernizr.touch) return;
