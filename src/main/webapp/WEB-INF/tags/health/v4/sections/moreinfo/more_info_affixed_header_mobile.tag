@@ -13,20 +13,28 @@
 
 <script id="moreInfoAffixedHeaderMobileTemplate" type="text/html">
 	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if> visible-xs">
-		<div class="row dockedHdr dockedHeaderLarge">
-			<div class="col-xs-6">
-				<div class="logo-header hidden-slim">
+		<div class="row dockedHdr dockedHeaderLarge cloned-docked-header">
+			<div class="col-xs-12">
+				<div class="logo-header col-xs-4">
 					<div class="companyLogo {{= info.provider }}"></div>
 				</div>
-				<div class="productTitleText hidden-slim">
-					<h5 class="noTopMargin productName text-center">{{= info.productTitle }}</h5>
+				<div class="productTitleText col-xs-8">
+					<h5 class="noTopMargin productName">{{= info.productTitle }}</h5>
+					<div class="col-xs-12 aboutThisFundLink">
+        		<a href="javascript:;" class="about-this-fund"><img class="aboutIcon" src="assets/brand/ctm/images/icons/down_arrow.svg" />About this fund</a>
+    			</div>
 				</div>
 			</div>
-			<div class="col-xs-6 text-center mobile-pricing hidden-slim">
+			<div class="col-xs-12 text-center mobile-pricing">
 				{{= renderedPriceTemplate }}
 			</div>
 			{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
 				{{= renderedPyrrCampaign }}
+			{{ } }}
+			{{ if (obj.premium[obj._selectedFrequency].lhcfreepricing) { }}
+				<div class="current-pricing-details">
+					<span>{{= obj.premium[obj._selectedFrequency].lhcfreepricing }}</span>
+				</div>
 			{{ } }}
 			<div class="col-xs-12 text-center dockedHeaderBottom <c:if test="${callCentreOpen eq true}">callCentreOpen</c:if>">
 				<health_v4_moreinfo:more_info_mobile_elements />
@@ -36,30 +44,14 @@
 						<c:choose>
 							<c:when test="${continueOnlineAsCTA eq 'Y'}">
 								${continueOnlineCTAHtml}
-								<div class="col-xs-6">
-									${quoteRefHtml}
-									${emailBrochuresHtml}
-								</div>
-								<div class="col-xs-6">
-									${callNowALinkHtml}
-								</div>
 							</c:when>
 							<c:otherwise>
-								${callNowCTAHtml}
-								<div class="col-xs-6">
-									${quoteRefHtml}
-									${emailBrochuresHtml}
-								</div>
-								<div class="col-xs-6">
-									${continueOnlineALinkHtml}
-								</div>
 							</c:otherwise>
 						</c:choose>
 					</c:when>
 					<c:otherwise>
 						${continueOnlineCTAHtml}
 						${quoteRefHtml}
-						${emailBrochuresHtml}
 					</c:otherwise>
 				</c:choose>
 			</div>

@@ -250,8 +250,6 @@
 
             $hospitalCover.find('.coverExplanation.' + previousCover + 'Cover').addClass('hidden').end().find('.coverExplanation.' + currentCover + 'Cover').removeClass('hidden');
             previousCover = currentCover;
-
-            meerkat.modules.simplesBindings.toggleResultsMandatoryDialogue();
         });
 
         $allHospitalButtons.on('change', function onHospitalBenefitsChange() {
@@ -341,6 +339,75 @@
 
     }
 
+    function getLimitedCover() {
+        return $limitedCoverHidden.val();
+    }
+
+    function showTabOneCheckboxes(reform) {
+        var tab1Limited = reform.tab1.limited;
+        var tab2Limited = reform.tab2.limited;
+
+        //Scenario 5: Non Limited product
+        if(!tab1Limited && !tab2Limited) {
+            return false;
+        }
+
+        //Scenario 2: Transition product limited now but not in future
+        if(tab1Limited && !tab2Limited) {
+            return false;
+        }
+        
+        //Scenario 3: Transition Product covered now limited in future
+        if(!tab1Limited && tab2Limited) {
+            return true;
+        }
+        
+        //Scenario 4: Transition product limited now and limited in future
+        if(tab1Limited && tab2Limited) {
+            return true;
+        }
+
+        //Scenario 1: New product and it is limited
+        if(tab1Limited) {
+            return false;
+        }
+
+        //Default if no other criteria is met
+        return true;
+    }
+
+    function showTabTwoCheckboxes(reform) {
+        var tab1Limited = reform.tab1.limited;
+        var tab2Limited = reform.tab2.limited;
+
+        //Scenario 5: Non Limited product
+        if(!tab1Limited && !tab2Limited) {
+            return false;
+        }
+
+        //Scenario 2: Transition product limited now but not in future
+        if(tab1Limited && !tab2Limited) {
+            return true;
+        }
+        
+        //Scenario 3: Transition Product covered now limited in future
+        if(!tab1Limited && tab2Limited) {
+            return false;
+        }
+        
+        //Scenario 4: Transition product limited now and limited in future
+        if(tab1Limited && tab2Limited) {
+            return false;
+        }
+
+        //Default if no other criteria is met
+        return true;
+    }
+
+    function getCoverType() {
+        return $coverType.find('input:checked').val().toLowerCase();
+    }
+
     meerkat.modules.register('healthBenefitsStep', {
         init: init,
         events: events,
@@ -351,7 +418,11 @@
         getSelectedBenefits: getSelectedBenefits,
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
-        getExtraBenefitsModel: getExtraBenefitsModel
+        getExtraBenefitsModel: getExtraBenefitsModel,
+        getLimitedCover: getLimitedCover,
+        showTabOneCheckboxes: showTabOneCheckboxes,
+        showTabTwoCheckboxes: showTabTwoCheckboxes,
+        getCoverType: getCoverType
     });
 
 })(jQuery);

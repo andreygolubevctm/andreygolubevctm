@@ -404,11 +404,11 @@
             meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
         });
 
-        $(document).on('click', 'input[name=health_filterBar_benefitsHospital]', function () {
-            if ($('input[name=health_filterBar_benefitsHospital]:checked').length === 0) {
-                meerkat.modules.benefitsSwitch.switchOffHospitalFilters();
-            }
-        });
+        // $(document).on('click', 'input[name=health_filterBar_benefitsHospital]', function () {
+        //     if ($('input[name=health_filterBar_benefitsHospital]:checked').length === 0) {
+        //         meerkat.modules.benefitsSwitch.switchOffHospitalFilters();
+        //     }
+        // });
     }
 
     function toggleFilterByContainer($filter, toggle) {
