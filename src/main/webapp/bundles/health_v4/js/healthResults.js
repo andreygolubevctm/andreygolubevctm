@@ -410,6 +410,9 @@
                 meerkat.modules.healthPopularProducts.show();
             }, tVariance);
 
+            // Clear loaded product from EDM etc.
+            $(':input[name=health_productCode]').val("");
+
 
             if (!meerkat.site.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
                 Results.setSelectedProduct($('.health_application_details_productId').val());
