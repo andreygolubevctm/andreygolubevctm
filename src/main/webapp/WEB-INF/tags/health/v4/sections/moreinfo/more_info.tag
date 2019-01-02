@@ -478,9 +478,7 @@
 															{{ if (benefit.benefitLimits !== undefined) { }}
 															<div class="col-xs-12 col-sm-12">
 																{{ _.each(benefit.benefitLimits, function (option, key) { }}
-																{{ if(key === 'annualLimit') { }}
-																	{{ return; }}
-																{{ } }}
+																{{ if(key !== 'annualLimit') { }}
 																<div class="row">
 																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
 																	{{ if(featureIteratorChild) { }}
@@ -488,6 +486,8 @@
 																			{{ _.each(featureIteratorChild.children, function (child) { }}
 																				{{ if(child.resultPath.indexOf(key) > -1) { }}
 																					{{ benefitLimitsName = child.safeName; }}
+																				{{ } else { }}
+																					{{ benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim() }}
 																				{{ } }}
 																			{{ }); }}
 																		{{= benefitLimitsName }}
@@ -501,12 +501,11 @@
 																		{{ } }}
 																	</div>
 																</div>
+																{{ } }}
 																{{ }); }}
 																{{ if(benefit.groupLimit) { }}
 																{{ _.each(benefit.groupLimit, function (option, key) { }}
-																{{ if(key === 'annualLimit') { }}
-																	{{ return; }}
-																{{ } }}
+																{{ if(key !== 'annualLimit') { }}
 																<div class="row">
 																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
 																	{{ if(featureIteratorChild) { }}
@@ -514,6 +513,8 @@
 																			{{ _.each(featureIteratorChild.children, function (child) { }}
 																				{{ if(child.resultPath.indexOf(key) > -1) { }}
 																					{{ benefitGroupLimitName = child.safeName; }}
+																				{{ } else { }}
+																					{{ benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim() }}
 																				{{ } }}
 																			{{ }); }}
 																		{{= benefitGroupLimitName }}
@@ -527,6 +528,7 @@
 																		{{ } }}
 																	</div>
 																</div>
+																{{ } }}
 																{{ }); }}
 																{{ } }}
 															</div>
