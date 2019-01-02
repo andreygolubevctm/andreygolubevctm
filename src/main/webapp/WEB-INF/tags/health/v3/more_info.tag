@@ -763,8 +763,10 @@
 				{{ } }}
 				{{ if (typeof benefit === 'object') { }}
 				{{ var benefitName = ''; }}
+				{{ var featureIteratorChild; }}
 				{{_.each(featureIterator[0].children, function(child) { }}
 					{{ if (child.shortlistKey === key) { }}
+						{{ featureIteratorChild = child; }}
 						{{ benefitName = child.safeName }}
 					{{ } }}
 				{{ }); }}
@@ -844,19 +846,59 @@
 											{{ if(isSingle && trimmedKey === 'per person') { }}
 												{{ return; }}
 											{{ } }}
+										{{ if(key !== 'annualLimit') { }}
+											<div class="row">
+												<div class="col-xs-9 extraBenefitOption">
+													{{ if(featureIteratorChild) { }}
+														{{ var benefitLimitsName = ''; }}
+															{{ _.each(featureIteratorChild.children, function (child) { }}
+																{{ if(child.resultPath.indexOf(key) > -1) { }}
+																	{{ benefitLimitsName = child.safeName; }}
+																{{ } else { }}
+																	{{ benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim() }}
+																{{ } }}
+															{{ }); }}
+														{{= benefitLimitsName }}
+													{{ } }}
+												</div>
+												<div class="col-xs-3 extraBenefitOption align-center">
+													{{ if(!option || option === '-') { }}
+														None
+													{{ } else { }}
+														{{= option }}
+													{{ } }}
+												</div>
+											</div>
+										{{ } }}
+										{{ }); }}
+										{{ if(benefit.groupLimit) { }}
+										{{ _.each(benefit.groupLimit, function (option, key) { }}
+										{{ if(key !== 'annualLimit') { }}
 										<div class="row">
 											<div class="col-xs-9 extraBenefitOption">
-												{{= key.replace(/([A-Z])/g, ' $1').trim().toLowerCase() }}
+												{{ if(featureIteratorChild) { }}
+													{{ var benefitGroupLimitName = ''; }}
+													{{ _.each(featureIteratorChild.children, function (child) { }}
+														{{ if(child.resultPath.indexOf(key) > -1) { }}
+															{{ benefitGroupLimitName = child.safeName; }}
+														{{ } else { }}
+															{{ benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim() }}
+														{{ } }}
+													{{ }); }}
+													{{= benefitGroupLimitName }}
+												{{ } }}
 											</div>
 											<div class="col-xs-3 extraBenefitOption align-center">
-												{{ if(!option) { }}
+												{{ if(!option || option === '-') { }}
 													None
 												{{ } else { }}
 													{{= option }}
 												{{ } }}
 											</div>
 										</div>
+										{{ } }}
 										{{ }); }}
+										{{ } }}
 									</div>
 									{{ } }}
 								</div>

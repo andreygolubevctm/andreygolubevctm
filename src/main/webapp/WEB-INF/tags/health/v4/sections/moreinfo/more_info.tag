@@ -491,7 +491,7 @@
 																				{{ } }}
 																			{{ }); }}
 																		{{= benefitLimitsName }}
-																		{{ } }}
+																	{{ } }}
 																	</div>
 																	<div class="col-xs-3 col-sm-6 extraBenefitOption align-center">
 																		{{ if(!option || option === '-') { }}
