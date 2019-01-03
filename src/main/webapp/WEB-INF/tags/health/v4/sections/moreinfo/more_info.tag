@@ -478,6 +478,12 @@
 															{{ if (benefit.benefitLimits !== undefined) { }}
 															<div class="col-xs-12 col-sm-12">
 																{{ _.each(benefit.benefitLimits, function (option, key) { }}
+																	{{ var situation = window.meerkat.modules.healthSituation.getSituation(); }}
+																	{{ var isSingle = situation === 'SM' || situation === 'SF'; }}
+																	{{ var trimmedKey = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
+																	{{ if(isSingle && trimmedKey === 'per person') { }}
+																		{{ return; }}
+																	{{ } }}
 																{{ if(key !== 'annualLimit') { }}
 																<div class="row">
 																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
