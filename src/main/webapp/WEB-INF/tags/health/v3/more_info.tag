@@ -819,7 +819,15 @@
 											{{ } }}
 										<div class="row">
 											<div class="col-xs-9 extraBenefitOption">
-												{{= key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim() }}
+												{{ if(featureIteratorChild) { }}
+													{{ var benefitLimitsName = ''; }}
+													{{ _.each(featureIteratorChild.children, function (child) { }}
+														{{ if(child.resultPath.indexOf(key) > -1) { }}
+															{{ benefitLimitsName = child.safeName; }}
+														{{ } }}
+													{{ }); }}
+													{{= benefitLimitsName }}
+												{{ } }}
 											</div>
 											<div class="col-xs-3 extraBenefitOption align-center">
 												{{ if(!option) { }}
