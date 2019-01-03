@@ -468,6 +468,26 @@
 																	</div>
 																</div>
 																{{ }); }}
+																{{ _.each(benefit, function (option, key) { }}
+																	{{ if (typeof key !== 'object' && key.indexOf('benefit') !== -1) { }}
+																		<div class="row">
+																			<div class="col-xs-9 col-sm-9 extraBenefitOption">
+																				{{ if(featureIteratorChild) { }}
+																					{{ var benefitLimitsName = ''; }}
+																					{{ _.each(featureIteratorChild.children, function (child) { }}
+																						{{ if(child.resultPath.indexOf(key) > -1) { }}
+																							{{ benefitLimitsName = child.safeName; }}
+																						{{ } }}
+																					{{ }); }}
+																					{{= benefitLimitsName }}
+																				{{ } }}
+																			</div>
+																			<div class="col-xs-3 col-sm-3 extraBenefitOption align-center">
+																				{{= option }}
+																			</div>
+																		</div>
+																	{{ } }}
+																{{ }); }}
 															</div>
 															{{ } }}
 														</div>
