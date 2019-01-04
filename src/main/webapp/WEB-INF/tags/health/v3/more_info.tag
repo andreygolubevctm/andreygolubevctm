@@ -854,7 +854,7 @@
 														{{ } }}
 													</div>
 													<div class="col-xs-3 extraBenefitOption align-center">
-														{{ if(!option || option === '-') { }}
+														{{ if(!option || option.trim() === '-') { }}
 															None
 														{{ } else { }}
 															{{= option }}
@@ -894,7 +894,7 @@
 													{{ } }}
 												</div>
 												<div class="col-xs-3 extraBenefitOption align-center">
-													{{ if(!option || option === '-') { }}
+													{{ if(!option || option.trim() === '-') { }}
 														None
 													{{ } else { }}
 														{{= option }}
@@ -921,7 +921,7 @@
 												{{ } }}
 											</div>
 											<div class="col-xs-3 extraBenefitOption align-center">
-												{{ if(!option || option === '-') { }}
+												{{ if(!option || option.trim() === '-') { }}
 													None
 												{{ } else { }}
 													{{= option }}
