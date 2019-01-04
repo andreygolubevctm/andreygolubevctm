@@ -385,7 +385,7 @@
 										{{ var benefitName = ''; }}
 										{{ var featureIteratorChild; }}
 										{{_.each(featureIterator[0].children, function(child) { }}
-											{{ if (child.shortlistKey === key) { }}
+											{{ if (child.shortlistKey === key || child.name === key) { }}
 												{{ featureIteratorChild = child; }}
 												{{ benefitName = child.safeName; }}
 											{{ } }}
