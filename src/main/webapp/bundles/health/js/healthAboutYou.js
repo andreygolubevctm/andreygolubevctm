@@ -259,10 +259,15 @@
 		$('#health_healthCover_tier_row_legend_mls').toggleClass('hidden', ['CHC', 'ATP'].indexOf($healthSituation.val()) < 0 || $healthCoverIncome.val() !== '0');
 	}
 
+	function getSituation() {
+		return $('#health_situation_healthCvr').val();
+	}
+
 	meerkat.modules.register('healthAboutYou', {
 		init: init,
 		getPartnerCurrentCover : getPartnerCurrentCover,
-		getPrimaryCurrentCover : getPrimaryCurrentCover
+		getPrimaryCurrentCover : getPrimaryCurrentCover,
+		getSituation : getSituation
 	});
 
 })(jQuery);

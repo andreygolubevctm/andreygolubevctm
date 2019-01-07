@@ -28,7 +28,6 @@
                     </div>
                     <div class="benefit-container">
                         <span class="benefit-icon" />
-                        Now
                     </div>
                 </div>
             </div>

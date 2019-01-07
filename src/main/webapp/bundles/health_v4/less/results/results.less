@@ -751,6 +751,11 @@
     overflow: hidden;
   }
 
+  .limited-cover-warning {
+    height: 51px;
+    font-size: 13px;
+  }
+
   .extraText {
     display: none;
   }
@@ -779,6 +784,10 @@
 
     .hospitalExcessSectionBorder {
       padding: 0px 15px;
+    }
+
+    .blank-excess {
+      height: 51px;
     }
 
     .selected-benefits-title {
@@ -817,10 +826,7 @@
         .cell {
           min-height: 50px;
           font-weight: 600;
-
-          &:first-of-type {
-            border-bottom: 1px solid @gray-light;
-          }
+          border-bottom: 1px solid @gray-light;
 
           small {
             font-weight: normal;
