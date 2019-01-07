@@ -49,6 +49,8 @@
   border-radius: 10px;
   padding: 20px 30px;
   margin-bottom: 30px;
+  margin-left: 0px;
+  margin-right: 0px;
   text-align: justify;
 
   p {
@@ -220,6 +222,8 @@
   .fieldset-card {
     padding-top: 20px;
     padding-bottom: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
     &.price-card {
       margin-bottom: 20px;
       @media (@md) {
@@ -607,6 +611,9 @@
 
 .moreInfoCallToActionBar {
   background: @theme-tertiary;
+  margin-left: 0px;
+  margin-right: 0px;
+  
   @media (@xs-only) {
     padding-top: 15px;
     padding-bottom: 15px;
@@ -646,6 +653,8 @@
   padding-bottom: 25px;
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
 
   .modal-body & h2 {
     margin-top: 10px;
@@ -863,6 +872,8 @@ ul.benefitsIcons {
 .ambulanceCoverSection, .extrasCoverSection {
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 .benefitTable {
@@ -881,6 +892,7 @@ ul.benefitsIcons {
 }
 
 .benefitRow {
+  display: flex;
   padding-top: 0;
   padding-bottom: 0;
   border-bottom: 1px solid @gray-lighter;
@@ -904,6 +916,7 @@ ul.benefitsIcons {
     top: 20px;
     left: -20px;
     background-color: white;
+    border-radius: 10px;
   }
 
   .newBenefitRow {
@@ -912,7 +925,7 @@ ul.benefitsIcons {
     padding: 10px;
     font-size: 14px;
     line-height: 20px;
-    height: 70px;
+    min-height: 70px;
     text-align: left;
 
     &.benefitHeaderTitle {
