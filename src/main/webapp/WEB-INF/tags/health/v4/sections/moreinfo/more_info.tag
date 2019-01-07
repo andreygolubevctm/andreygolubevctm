@@ -385,7 +385,7 @@
 										{{ var benefitName = ''; }}
 										{{ var featureIteratorChild; }}
 										{{_.each(featureIterator[0].children, function(child) { }}
-											{{ if (child.shortlistKey === key) { }}
+											{{ if (child.shortlistKey === key || child.name === key) { }}
 												{{ featureIteratorChild = child; }}
 												{{ benefitName = child.safeName; }}
 											{{ } }}
@@ -448,28 +448,52 @@
 													<div class="col-xs-12 col-sm-6 extraBenefitSection">
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 extraBenefitSubHeading"><strong>Claim Benefit:</strong></div>
-															{{ if (benefit.benefits !== undefined) { }}
 															<div class="col-xs-12 col-sm-12">
-																{{ _.each(benefit.benefits, function (option, key) { }}
-																<div class="row">
-																	<div class="col-xs-9 col-sm-9 extraBenefitOption">
-																	{{ if(featureIteratorChild) { }}
-																		{{ var benefitLimitsName = ''; }}
-																			{{ _.each(featureIteratorChild.children, function (child) { }}
-																				{{ if(child.resultPath.indexOf(key) > -1) { }}
-																					{{ benefitLimitsName = child.safeName; }}
-																				{{ } }}
-																			{{ }); }}
-																		{{= benefitLimitsName }}
+																{{ if (benefit.benefits !== undefined) { }}
+																	{{ _.each(benefit.benefits, function (option, key) { }}
+																	<div class="row">
+																		<div class="col-xs-9 col-sm-9 extraBenefitOption">
+																		{{ if(featureIteratorChild) { }}
+																			{{ var benefitLimitsName = ''; }}
+																				{{ _.each(featureIteratorChild.children, function (child) { }}
+																					{{ if(child.resultPath.indexOf(key) > -1) { }}
+																						{{ benefitLimitsName = child.safeName; }}
+																					{{ } }}
+																				{{ }); }}
+																			{{= benefitLimitsName }}
+																		{{ } }}
+																		</div>
+																		<div class="col-xs-3 col-sm-3 extraBenefitOption align-center">
+																			{{= option }}
+																		</div>
+																	</div>
+																	{{ }); }}
+																{{ } }}
+																{{ _.each(benefit, function (option, key) { }}
+																	{{ if (key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent') { }}
+																	<div class="row">
+																		<div class="col-xs-9 col-sm-9 extraBenefitOption">
+																			{{ if(featureIteratorChild) { }}
+																				{{ var benefitLimitsName = ''; }}
+																				{{ _.each(featureIteratorChild.children, function (child) { }}
+																					{{ if(child.resultPath.indexOf(key) > -1) { }}
+																						{{ benefitLimitsName = child.safeName; }}
+																					{{ } }}
+																				{{ }); }}
+																				{{= benefitLimitsName }}
+																			{{ } }}
+																		</div>
+																		<div class="col-xs-3 col-sm-3 extraBenefitOption align-center">
+																			{{ if(!option || option.trim() === '-') { }}
+																				None
+																			{{ } else { }}
+																				{{= option }}
+																			{{ } }}
+																		</div>
+																	</div>
 																	{{ } }}
-																	</div>
-																	<div class="col-xs-3 col-sm-3 extraBenefitOption align-center">
-																		{{= option }}
-																	</div>
-																</div>
 																{{ }); }}
 															</div>
-															{{ } }}
 														</div>
 													</div>
 													<div class="col-xs-12 col-sm-6 extraBenefitSection">
@@ -478,55 +502,63 @@
 															{{ if (benefit.benefitLimits !== undefined) { }}
 															<div class="col-xs-12 col-sm-12">
 																{{ _.each(benefit.benefitLimits, function (option, key) { }}
-																{{ if(key === 'annualLimit') { }}
-																	{{ return; }}
-																{{ } }}
+																	{{ var situation = window.meerkat.modules.healthSituation.getSituation(); }}
+																	{{ var isSingle = situation === 'SM' || situation === 'SF'; }}
+																	{{ var trimmedKey = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
+																	{{ if(isSingle && trimmedKey === 'per person') { }}
+																		{{ return; }}
+																	{{ } }}
+																{{ if(key !== 'annualLimit') { }}
 																<div class="row">
 																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
+																	{{ var benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim(); }}
 																	{{ if(featureIteratorChild) { }}
-																		{{ var benefitLimitsName = ''; }}
-																			{{ _.each(featureIteratorChild.children, function (child) { }}
-																				{{ if(child.resultPath.indexOf(key) > -1) { }}
-																					{{ benefitLimitsName = child.safeName; }}
-																				{{ } }}
-																			{{ }); }}
+																		{{ _.each(featureIteratorChild.children, function (child) { }}
+																			{{ if(child.resultPath.indexOf(key) > -1) { }}
+																				{{ benefitLimitsName = child.safeName; }}
+																			{{ } }}
+																		{{ }); }}
 																		{{= benefitLimitsName }}
-																		{{ } }}
+																	{{ } else { }}
+																		{{= benefitLimitsName }}
+																	{{ } }}
 																	</div>
 																	<div class="col-xs-3 col-sm-6 extraBenefitOption align-center">
-																		{{ if(!option || option === '-') { }}
+																		{{ if(!option || option.trim() === '-') { }}
 																			None
 																		{{ } else { }}
 																			{{= option }}
 																		{{ } }}
 																	</div>
 																</div>
+																{{ } }}
 																{{ }); }}
 																{{ if(benefit.groupLimit) { }}
 																{{ _.each(benefit.groupLimit, function (option, key) { }}
-																{{ if(key === 'annualLimit') { }}
-																	{{ return; }}
-																{{ } }}
+																{{ if(key !== 'annualLimit') { }}
 																<div class="row">
 																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
+																	{{ var benefitGroupLimitName = key.replace(/([A-Z])/g, ' $1').trim(); }}
 																	{{ if(featureIteratorChild) { }}
-																		{{ var benefitGroupLimitName = ''; }}
-																			{{ _.each(featureIteratorChild.children, function (child) { }}
-																				{{ if(child.resultPath.indexOf(key) > -1) { }}
-																					{{ benefitGroupLimitName = child.safeName; }}
-																				{{ } }}
-																			{{ }); }}
+																		{{ _.each(featureIteratorChild.children, function (child) { }}
+																			{{ if(child.resultPath.indexOf(key) > -1) { }}
+																				{{ benefitGroupLimitName = child.safeName; }}
+																			{{ } }}
+																		{{ }); }}
+																		{{= benefitGroupLimitName }}
+																	{{ } else { }}
 																		{{= benefitGroupLimitName }}
 																	{{ } }}
 																	</div>
 																	<div class="col-xs-3 col-sm-6 extraBenefitOption align-center">
-																		{{ if(!option || option === '-') { }}
+																		{{ if(!option || option.trim() === '-') { }}
 																			None
 																		{{ } else { }}
 																			{{= option }}
 																		{{ } }}
 																	</div>
 																</div>
+																{{ } }}
 																{{ }); }}
 																{{ } }}
 															</div>
