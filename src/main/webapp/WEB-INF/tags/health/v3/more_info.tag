@@ -976,7 +976,7 @@
             </div>
         </div>
 
-		<div class="row">
+		<div>
 			<simples:dialogue id="99" vertical="health" />
 		</div>
 
