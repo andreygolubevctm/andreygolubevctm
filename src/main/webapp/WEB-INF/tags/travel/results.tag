@@ -88,7 +88,19 @@
 					</div>
 
                    	<div class="col-sm-2 col-lg-1 excessAmount">
-						<div><span>{{= obj.info.excess }}</span></div>
+						<div><span>
+							{{ if(obj.info.excess === 'Nil') { }}
+								{{= '$0' }}
+							{{ } else if ((obj.info.excess.indexOf('$') < 0) && (obj.info.excess.indexOf(".") >= 0) ) { }}
+								{{= '$' + obj.info.excess.substring(0, obj.info.excess.indexOf(".")) }}
+							{{ } else if (obj.info.excess.indexOf('$') < 0 ) { }}
+								{{= '$' + obj.info.excess }}
+							{{ } else if (obj.info.excess.indexOf(".") >= 0 ) { }}
+								{{= obj.info.excess.substring(0, obj.info.excess.indexOf(".")) }}
+							{{ } else { }}
+								{{= obj.info.excess }}
+							{{ } }}
+						</span></div>
 					</div>
 					<div class="col-sm-2 col-lg-1 medicalAmount">
 						<div><span>{{= obj.info.medical }}</span></div>

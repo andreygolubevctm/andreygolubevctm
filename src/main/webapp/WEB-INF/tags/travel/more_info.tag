@@ -38,7 +38,23 @@
 					{{ if((typeof obj.sorting[index] === 'object')) { }}
 						<tr>
 							<td class="col-xs-8 col-sm-6">{{= obj.sorting[index].desc }}</td>
-							<td class=" col-xs-4 col-sm-6">{{= obj.sorting[index].text }}</td>
+							<td class=" col-xs-4 col-sm-6">
+								{{ if(obj.sorting[index].desc.indexOf("Excess") >= 0 ) { }}
+									{{ if(obj.sorting[index].text === 'Nil') { }}
+										{{= '$0' }}
+									{{ } else if ((obj.sorting[index].text.indexOf('$') < 0) && (obj.sorting[index].text.indexOf(".") >= 0) ) { }}
+										{{= '$' + obj.sorting[index].text.substring(0, obj.sorting[index].text.indexOf(".")) }}
+									{{ } else if (obj.sorting[index].text.indexOf('$') < 0 ) { }}
+										{{= '$' + obj.sorting[index].text }}
+									{{ } else if (obj.sorting[index].text.indexOf(".") >= 0 ) { }}
+										{{= obj.sorting[index].text.substring(0, obj.sorting[index].text.indexOf(".")) }}
+									{{ } else { }}
+										{{= obj.sorting[index].text }}
+									{{ } }}
+								{{ } else { }}
+									{{= obj.sorting[index].text }}
+								{{ } }}
+							</td>
 						</tr>
 					{{ } }}
 				{{ }); }}
