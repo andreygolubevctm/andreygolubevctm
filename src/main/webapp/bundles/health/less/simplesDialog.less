@@ -2,9 +2,11 @@
 .simples-dialogue {
 	.alert;
 	.alert-info;
-
+	
 	border: none;
 	padding-bottom: 10px;
+	margin-left: 0px;
+	margin-right: 0px;
 
 	&.green {
 		.alert-success;
@@ -74,33 +76,33 @@
 	&.outbound {
 		&[data-step=start] {
 			#pageContent {
-				background-color: rgba(158,223,183,0.3);
+				background-color: whitesmoke;
 			}
 		}
 
 		&[data-step=benefits] {
 			#pageContent {
-				background-color: rgba(209,216,233,1);
+				background-color: whitesmoke;
 			}
 		}
 
 		&[data-step=contact] {
 			#pageContent {
-				background-color: darkgrey;
+				background-color: whitesmoke;
 			}
 		}
 
 		&[data-step=results] {
 			#pageContent {
-				background-color: rgba(249,196,119,0.3);
+				background-color: whitesmoke;
 			}
 		}
-
+	
 		&[data-step=results].moreInfoVisible,
 		&[data-step=payment],
 		&[data-step=apply] {
 			#pageContent {
-				background-color: #ffffff;
+				background-color: @btn-hollow-red-color;
 			}
 			&.trial {
 				#pageContent {
