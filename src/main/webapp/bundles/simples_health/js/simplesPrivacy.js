@@ -22,7 +22,7 @@
     }
 
     function callback(state) {
-        return true;//meerkat.modules.healthAppCompliance.callback(state);
+        return meerkat.modules.healthAppCompliance.callback(state);
     }
 
     function toggle($_obj) {
