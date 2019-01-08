@@ -86,10 +86,14 @@
                     <div class="hospitalSelectionsExcessContainer">
                         <div class="hospitalExcessSectionBorder">
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1" data-feature-type="excess"></div>
-                        </div>
                         {{ if(info.situationFilter == 'Y') { }}
-                        <div class="featuresListHospitalSelections"><health_v4_results:limited_cover_label /></div>
+                            <health_v4_results:limited_cover_label />
+                        {{ } else { }}
+                        {{ if(meerkat.modules.healthResults.resultsHasLimitedProducts()) { }}
+                            <div class="blank-excess" />
                         {{ } }}
+                        {{ } }}
+                        </div>
                     </div>
                         <div class="yourSelectionsHospital">
                             <div class="coverTitle">Your selected cover benefits:</div>
@@ -106,16 +110,23 @@
                     <div class="featuresListHospitalOtherList" data-feature-template="#results-features-extras-template" data-feature-index="4"></div>
                     <div class="featuresListHospitalFullList hidden" data-feature-index="4"></div>
                 </div>
+
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
                     <div class="clearfix">
                         <h2>Extras cover</h2>
                     </div>
+
+                    <c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
+                    <c:choose>
+                    <c:when test="${onlineHealthReformMessaging eq 'Y'}">
                         <div class="extrasCoverContainer">
                             <div class="extrasCoverSectionBorder">
                                 Health insurance reform does not affect extras cover.
                             </div>
                         </div>
+                    </c:when>
+                    </c:choose>
                         <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
                             <a class="results-download-brochure" href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">extras </span>brochure</a>
                         </c:if>

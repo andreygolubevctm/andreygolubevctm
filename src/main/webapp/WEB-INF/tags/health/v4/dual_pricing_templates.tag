@@ -52,6 +52,12 @@
 	{{ var comingSoonClass = ''; }}
 	{{ var alternatePremium = obj.altPremium[obj._selectedFrequency]; }}
 	{{ var currFreq = obj._selectedFrequency === 'annually' ? 'annual' : obj._selectedFrequency; }}
+	{{ var prem = obj.premium[obj._selectedFrequency] }}
+	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
+	{{ var textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
+
+	{{ var altTextLhcFreePricing = alternatePremium.lhcfreepricing ? alternatePremium.lhcfreepricing : '+ ' + formatCurrency(alternatePremium.lhcAmount) + ' LHC inc ' + formatCurrency(alternatePremium.rebateAmount) + ' Government Rebate' }}
+	{{ var altTextPricing = alternatePremium.pricing ? alternatePremium.pricing : 'Includes rebate of ' + formatCurrency(alternatePremium.rebateAmount) + ' & LHC loading of ' + formatCurrency(alternatePremium.lhcAmount) }}
 
 	{{ if (!_.isUndefined(alternatePremium)) { }}
 		{{ var productPremium = alternatePremium }}
@@ -64,6 +70,7 @@
 					<div class="moreInfoPriceHeading">NOW</div>
 					<div class="moreInfoPrice">
 						{{= renderedPriceTemplate }}
+						<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? textLhcFreePricing : textPricing }}</div>
 					</div>
 				</div>
 			</div>
@@ -72,6 +79,7 @@
 					<div class="moreInfoPriceHeading">PRICE FROM April 1</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltPriceTemplate }}
+						<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? altTextLhcFreePricing : altTextPricing }}</div>
 					</div>
 				</div>
 				{{ if (obj.showAltPremium === true) { }}
@@ -108,15 +116,12 @@
 				<div class="current-pricing">
 					<div class="dual-pricing-before-after-text">Now</div>
 					{{= renderedPriceTemplate }}
-
-					<div><span class="current-frequency">{{= currFreq }}</span></div>
 				</div>
 			</div>
 			<div class="col-xs-6 april-container">
 				<div class="april-pricing">
 					<div class="dual-pricing-before-after-text">Price after April 1</div>
 					{{= renderedAltPriceTemplate }}
-					<div><span class="current-frequency">{{= currFreq }}</span></div>
 				</div>
 			</div>
 		</div>

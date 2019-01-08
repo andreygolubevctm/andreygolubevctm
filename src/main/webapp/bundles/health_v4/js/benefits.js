@@ -193,10 +193,10 @@
             extrasOnButNoExtrasSelected = meerkat.modules.benefitsSwitch.isExtrasOn() && extrasCount === 0;
 
         // C = extras AND (hospital OR limited) OR (hospital AND extrasSwitchOn AND no extras)
-        if ((meerkat.modules.benefitsSwitch.isExtrasOn() && (meerkat.modules.benefitsSwitch.isHospitalOn() || isLimited)) || (hospitalCount > 0 && extrasOnButNoExtrasSelected)) {
+        if ((meerkat.modules.benefitsSwitch.isExtrasOn() && (meerkat.modules.benefitsSwitch.isHospitalOn() || isLimited)) || (extrasOnButNoExtrasSelected)) {
             coverType = 'C';
             // H = No extras, and Hospital benefits OR limited
-        } else if (meerkat.modules.benefitsSwitch.isExtrasOn() && (meerkat.modules.benefitsSwitch.isHospitalOn() || isLimited)) {
+        } else if (!meerkat.modules.benefitsSwitch.isExtrasOn() && (meerkat.modules.benefitsSwitch.isHospitalOn() || isLimited)) {
             coverType = 'H';
             // E = extras only
         } else if (meerkat.modules.benefitsSwitch.isExtrasOn() || (!meerkat.modules.benefitsSwitch.isHospitalOn()&& extrasOnButNoExtrasSelected)) {

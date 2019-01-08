@@ -23,13 +23,13 @@
             }
         });
 
-        if (!availableBenefits.length) {
-            if (numberOfSelectedExtras() === 0) {
-                $('.featuresListExtrasOtherList').addClass('hidden');
-            } else if (numberOfSelectedHospitals() === 0) {
-                $('.featuresListHospitalOtherList').addClass('hidden');
-            }
-        }
+        // if (!availableBenefits.length) {
+        //     if (numberOfSelectedExtras() === 0) {
+        //         $('.featuresListExtrasOtherList').addClass('hidden');
+        //     } else if (numberOfSelectedHospitals() === 0) {
+        //         $('.featuresListHospitalOtherList').addClass('hidden');
+        //     }
+        // }
         return availableBenefits;
     }
 
@@ -55,11 +55,7 @@
         });
         if (!availableExtras.length) {
             //4 = Hospital Cover
-            if(Number.parseInt(obj.featuresStructureIndexToUse) === 4) {
-                $('.featuresListHospitalOtherList, .featuresListHospitalFullList').addClass('hidden');
-            }else{
-                $('.featuresListExtrasOtherList, .featuresListExtrasFullList').addClass('hidden');
-            }
+            output = 'No other benefits available';
         } else {
             _.each(availableExtras, function (ft, i) {
                 var separator = '';

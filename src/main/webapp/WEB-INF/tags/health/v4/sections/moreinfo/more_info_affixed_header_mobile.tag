@@ -25,7 +25,7 @@
     			</div>
 				</div>
 			</div>
-			<div class="col-xs-6 text-center mobile-pricing">
+			<div class="col-xs-12 text-center mobile-pricing">
 				{{= renderedPriceTemplate }}
 			</div>
 			{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}

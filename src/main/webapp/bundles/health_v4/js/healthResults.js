@@ -410,6 +410,9 @@
                 meerkat.modules.healthPopularProducts.show();
             }, tVariance);
 
+            // Clear loaded product from EDM etc.
+            $(':input[name=health_productCode]').val("");
+
 
             if (!meerkat.site.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
                 Results.setSelectedProduct($('.health_application_details_productId').val());
@@ -1187,6 +1190,16 @@
         }
     }
 
+    function resultsHasLimitedProducts() {
+        if(!Results || !Results.model || !Results.model.returnedProducts) {
+            return false;
+        }
+
+        return _.find( Results.model.returnedProducts, function(product) {
+            return product.info.situationFilter === 'Y';
+        }) != null; 
+    }
+
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
@@ -1213,7 +1226,8 @@
         getSelectedBenefitsList: getSelectedBenefitsList,
         setCallCentreText: setCallCentreText,
         resetCallCentreText: resetCallCentreText,
-        unpinProductFromFilterUpdate: unpinProductFromFilterUpdate
+        unpinProductFromFilterUpdate: unpinProductFromFilterUpdate,
+        resultsHasLimitedProducts: resultsHasLimitedProducts
     });
 
 })(jQuery);
