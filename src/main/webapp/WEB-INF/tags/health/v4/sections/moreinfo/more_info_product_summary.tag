@@ -22,12 +22,17 @@
     <div class="col-xs-12">
         <c:choose>
             <c:when test="${!isDualPriceActive eq true}">
+            	{{ var prem = obj.premium[obj._selectedFrequency] }}
+	            {{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
+	            {{ var textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
+
             <div class="row hidden-xs moreInfoPricingSingle">
                 <div class="moreInfoPriceWrapper">
                     <div class="moreInfoPriceContainer">
                         <div class="moreInfoPriceHeading">NOW</div>
                         <div class="moreInfoPrice">
                             {{= renderedPriceTemplate }}
+                            <div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? textLhcFreePricing : textPricing }}</div>
                         </div>
                     </div>
                 </div>
