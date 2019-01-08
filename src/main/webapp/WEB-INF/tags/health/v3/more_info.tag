@@ -810,6 +810,7 @@
 									<div class="col-xs-12 extraBenefitSubHeading"><strong>Claim Benefit:</strong></div>
 									<div class="col-xs-12">
 										{{ if (benefit.benefits !== undefined) { }}
+											{{ var dentalBenefitsTotalCost = 0; }}
 											{{ _.each(benefit.benefits, function (option, key) { }}
 												{{ var situation = window.meerkat.modules.health.getSituation(); }}
 												{{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
@@ -838,6 +839,26 @@
 												</div>
 											</div>
 											{{ }); }}
+											{{ if(benefitName === 'General Dental' && benefit.benefits.DentalGeneral012PeriodicExam.indexOf('$') !== -1) { }}
+												{{ if(benefit.benefits.DentalGeneral012PeriodicExam) { }}
+													{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral012PeriodicExam.replace('$', '')); }}
+												{{ } }}
+												{{ if(benefit.benefits.DentalGeneral114ScaleClean) { }}
+													{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral114ScaleClean.replace('$', '')); }}
+												{{ } }}
+												{{ if(benefit.benefits.DentalGeneral121Fluoride) { }}
+													{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral121Fluoride.replace('$', '')); }}
+												{{ } }}
+												{{ dentalBenefitsTotalCost = '$' + String(dentalBenefitsTotalCost); }}
+												<div class="row">
+													<div class="col-xs-9 extraBenefitOption">
+														So for your periodic check-up, scale and clean, and fluoride treatment, you'll receive:
+													</div>
+													<div class="col-xs-3 extraBenefitOption align-center">
+														{{= dentalBenefitsTotalCost }}
+													</div>
+												</div>
+											{{ } }}
 										{{ } }}
 										{{ _.each(benefit, function (option, key) { }}
 											{{ if (key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent') { }}
