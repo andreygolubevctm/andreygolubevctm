@@ -839,17 +839,22 @@
 												</div>
 											</div>
 											{{ }); }}
-											{{ if(benefitName === 'General Dental' && benefit.benefits.DentalGeneral012PeriodicExam.indexOf('$') !== -1) { }}
-												{{ if(benefit.benefits.DentalGeneral012PeriodicExam) { }}
-													{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral012PeriodicExam.replace('$', '')); }}
+											{{ if(benefitName === 'General Dental') { }}
+												{{ if(benefit.benefits.DentalGeneral012PeriodicExam.indexOf('$') !== -1) { }}
+													{{ if(benefit.benefits.DentalGeneral012PeriodicExam) { }}
+														{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral012PeriodicExam.replace('$', '')); }}
+													{{ } }}
+													{{ if(benefit.benefits.DentalGeneral114ScaleClean) { }}
+														{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral114ScaleClean.replace('$', '')); }}
+													{{ } }}
+													{{ if(benefit.benefits.DentalGeneral121Fluoride) { }}
+														{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral121Fluoride.replace('$', '')); }}
+													{{ } }}
+													{{ dentalBenefitsTotalCost = '$' + String(dentalBenefitsTotalCost); }}
 												{{ } }}
-												{{ if(benefit.benefits.DentalGeneral114ScaleClean) { }}
-													{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral114ScaleClean.replace('$', '')); }}
+												{{ if(benefit.benefits.DentalGeneral012PeriodicExam.indexOf('%') !== -1) { }}
+													{{ dentalBenefitsTotalCost = benefit.benefits.DentalGeneral012PeriodicExam; }}
 												{{ } }}
-												{{ if(benefit.benefits.DentalGeneral121Fluoride) { }}
-													{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral121Fluoride.replace('$', '')); }}
-												{{ } }}
-												{{ dentalBenefitsTotalCost = '$' + String(dentalBenefitsTotalCost); }}
 												<div class="row">
 													<div class="col-xs-9 extraBenefitOption">
 														So for your periodic check-up, scale and clean, and fluoride treatment, you'll receive:
