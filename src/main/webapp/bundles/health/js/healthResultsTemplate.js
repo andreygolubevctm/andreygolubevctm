@@ -318,41 +318,84 @@
         return obj.custom.reform.name;
     }
 
+
     function getClassification(obj) {
         var classification = {};
         classification.icon = getClassificationIcon(obj.custom.reform ? obj.custom.reform.tier : null);
-        
+        classification.date = getClassificationDate(obj.custom.reform ? obj.custom.reform.changeDate : null);
+
         return classification;
+    }
+
+    function getClassificationDate(date) {
+        if(!date) {
+            return '';
+        }
+
+        var day = date.split(' ')[0];
+        var month = date.split(' ')[1];
+        var year = date.split(' ')[2];
+        
+        switch(month) {
+            case 'January':
+                return day + ' Jan ' + year;
+            case 'February': 
+                return day + ' Feb ' + year;
+            case 'March':
+                return day + ' Mar ' + year;
+            case 'April':
+                return day + ' Apr ' + year;
+            case 'May':
+                return day + ' May ' + year;
+            case 'June':
+                return day + ' Jun ' + year;
+            case 'July':
+                return day + ' Jul ' + year;
+            case 'August':
+                return day + ' Aug ' + year;
+            case 'September':
+                return day + ' Sep ' + year;
+            case 'October':
+                return day + ' Oct ' + year;
+            case 'November':
+                return day + ' Nov ' + year;
+            case 'December':
+                return day + ' Dec ' + year;
+            default :
+                return '';
+        }
     }
 
     function getClassificationIcon(tier) {
         if(!tier) {
-            return 'unclassified_govclass.svg';
+            return 'gov-unclassified';
         }
-        
+
         if(tier.toLowerCase().indexOf('bronze') > -1) {
             if(tier.toLowerCase().indexOf('+') > -1) {
-                return 'Bronzeplus_govclass.svg';
+                return 'gov-bronze-plus';
             }else{
-                return 'Bronze_govclass.svg';
+                return 'gov-bronze';
             }
         }else if(tier.toLowerCase().indexOf('silver') > -1) {
             if(tier.toLowerCase().indexOf('+') > -1) {
-                return 'Silverplus_govclass.svg';
+                return 'gov-silver-plus';
             }else{
-                return 'Silver_govclass.svg';
+                return 'gov-silver';
             }
         }else if(tier.toLowerCase().indexOf('gold') > -1){
-            return 'Gold_govclass.svg';
+
+            return 'gov-gold';
+
         }else if(tier.toLowerCase().indexOf('basic') > -1) {
             if(tier.toLowerCase().indexOf('+') > -1) {
-                return 'Basicplus_govclass.svg';
+                return 'gov-basic-plus';
             }else{
-                return 'Basic_govclass.svg';
+                return 'gov-basic';
             }
         }else
         {
-            return 'unclassified_govclass.svg';
+            return 'gov-unclassified';
         }
     }
 

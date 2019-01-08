@@ -63,7 +63,9 @@
             <c:when test="${onlineHealthReformMessaging eq 'Y'}">
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
                 <div class="results-header-classification">
-                    <div class="results-header-classification-icon {{= classification.icon}}" />
+                   <div class="results-header-classification-icon {{= classification.icon}}">
+                        <div class="results-header-classification-date">From {{= classification.date}}</div>
+                    </div>
                 </div>
             </c:when>
             </c:choose>

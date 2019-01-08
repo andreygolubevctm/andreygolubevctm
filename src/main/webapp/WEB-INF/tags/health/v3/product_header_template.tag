@@ -61,16 +61,20 @@
             <c:choose>
             <c:when test="${simplesHealthReformMessaging eq 'Y'}">
                 {{ var newName = meerkat.modules.healthResultsTemplate.getNewProductName(obj); }}
-                <div class="productTitle">
-                    {{= newName }}
-                </div>
+                {{ if(newName) { }}
+                    <div class="productTitle">
+                        {{= newName }}
+                    </div>
+                {{ } }}
 
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-
-                    <div class="results-header-classification">
-                        <img src="assets/graphics/health_classification/{{= classification.icon}}" class="results-header-classification-icon" />
+                <div class="results-header-classification">
+                    <div class="results-header-classification-icon {{= classification.icon}}">
+                    {{ if(classification.date) { }}
+                        <div class="results-header-classification-date">From {{= classification.date}}</div>
+                    {{ } }}
+                    </div>
                 </div>
-
             </c:when>
             </c:choose>
 
