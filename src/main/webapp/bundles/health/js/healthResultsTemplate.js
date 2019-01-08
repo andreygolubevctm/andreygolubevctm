@@ -205,7 +205,7 @@
         // section headers are not displayed anymore but we need the section container
         //if (ft.displayItem) {
         ft.pathValue = _getPathValue(obj, ft);
-        if(window.meerkat.site.isHealthReformMessaging === 'active') {
+        if(window.meerkat.site.isHealthReformMessaging === 'Y') {
             if(ft.pathValue) {
                 getNowAndAprilCover(ft, ft.pathValue);
             }else{
@@ -224,11 +224,13 @@
             if (ft.name === '') {
                 ft.classStringForInlineLabel += " noLabel";
             }
+
             if (ft.isNotCovered) {
                 ft.labelInColumnTitle = ' title="Not Covered"';
                 ft.labelInColumnContentClass = ' noCover';
+            } else if (ft.isRestricted) {
+                ft.labelInColumnContentClass = ' restrictedCover';
             } else {
-                ft.labelInColumnTitle = '';
                 ft.labelInColumnContentClass = '';
             }
 

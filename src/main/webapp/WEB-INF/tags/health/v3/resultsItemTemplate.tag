@@ -25,32 +25,17 @@
                     <div>
                         <span class="health-icon {{= ft.iconClass }}"></span> {{= ft.safeName }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
                     </div>
-                    <div class="benefit-container">
-                    {{ if(ft.isRestricted) { }}
-                        <span class="restricted-icon margin-icon">R</span>
-                    {{ } else if(ft.isNotCovered) { }}
-                        <img class="margin-icon" src="brand/ctm/images/cross_lge_gray.png"></img>
-                    {{ } else { }}
-                        <img class="margin-icon" src="brand/ctm/images/tick.png"></img>
-                    {{ } }}
-                        Now
-                    </div>
-                     <c:set var="simplesHealthReformMessaging" scope="request"><content:get key="simplesHealthReformMessaging" /></c:set>
 
-                    <c:choose>
-                    <c:when test="${simplesHealthReformMessaging eq 'active'}">
-                        <div class="benefit-container">
-                            {{ if(ft.isRestrictedApril) { }}
-                                <span class="restricted-icon margin-icon">R</span>
-                            {{ } else if(ft.isNotCoveredApril) { }}
-                                <img class="margin-icon" src="brand/ctm/images/cross_lge_gray.png"></img>
-                            {{ } else { }}
-                                <img class="margin-icon" src="brand/ctm/images/tick.png"></img>
-                            {{ } }}
-                            From April 1
+                    <div class="benefit-container">
+                        <div class="benefit-container-item {{= ft.labelInColumnContentClass }}">
+                            <span>Now</span>
+                            <span class="benefit-icon" />
                         </div>
-                    </c:when>
-                    </c:choose>
+                        <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
+                            <span>From April 1</span>
+                            <span class="benefit-icon" />
+                        </div>
+                    </div>
 
                 </div>
             </div>
