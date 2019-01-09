@@ -294,7 +294,7 @@
         product.displayLogo = false;
         product.showCurrPremText = false;
         product.showRisingTag = false;
-        product.priceBreakdown = false;
+        //product.priceBreakdown = false;
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
         affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);
