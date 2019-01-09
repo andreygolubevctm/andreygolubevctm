@@ -60,6 +60,15 @@
   font-weight: bold;
 }
 
+.icon-tba {
+  color: #313131;
+  content: 'TBA';
+  font-family: @font-family-theme-semibold;
+  font-size: 15px;
+  font-weight: bold;
+  vertical-align: initial;
+}
+
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding: 0;
@@ -203,6 +212,15 @@
           }
         }
 
+        &.icon-tbaCover {
+          margin-top: 0;
+          margin-right: 4px;
+          margin-left: 1px;
+          &:before {
+            .icon-tba();
+          }
+        }
+
         &.icon-cross {
           &:before {
             color: @theme-accent-3;
@@ -213,6 +231,7 @@
 
     .results-legend-restricted-help {
       padding-left: 18.25px;
+      margin-bottom: 5px;
 
       p:last-child {
         margin-bottom: 0px;
@@ -553,30 +572,6 @@
     }
 
     .featuresList {
-      .hospitalCoverSection {
-        .featuresListHospitalSelections {
-          .section {
-            .children {
-              .cell:nth-child(odd) {
-                  background-color: #E5EBF3;
-                }
-              }
-            }
-          }
-        }
-
-      .extrasCoverSection {
-        .featuresListExtrasSelections {
-          .section {
-            .children {
-              .cell:nth-child(odd) {
-                background-color: #FFF4E9;
-              }
-            }
-          }
-        }
-      }
-
       .hospitalCoverSection,
       .extrasCoverSection, 
       .ambulanceCoverSection  {
@@ -686,6 +681,18 @@
 
           .labelInColumn {
             border-bottom: 1px solid @results-border-color;
+
+            &.noCover {
+              background-color: #E5EBF3;
+
+              .cover-title {
+                color: darkgray;
+              }
+
+              .benefit-container {
+                color: darkgray;
+              }
+            }
           }
 
         .featureValue, .featureLabel {
@@ -932,6 +939,21 @@
               }
             }
           }
+
+          .contentInner {
+            .benefit-container {
+              .tbaCover {
+              margin-top: 10px;
+              .benefit-icon {
+                &::before {
+                  .icon-tba();
+                  right: 2px;
+                  margin-top: -12px;
+                } 
+              }
+            }
+          }
+        }
         }
       }
 

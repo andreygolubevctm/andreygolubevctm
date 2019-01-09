@@ -221,6 +221,8 @@
 
         // Additional attributes for category's only.
         if (ft.type == 'category') {
+            ft.classStringForInlineLabelCover = "";
+            
             if (ft.name === '') {
                 ft.classStringForInlineLabel += " noLabel";
             }
@@ -239,7 +241,11 @@
             } else if (ft.isRestrictedApril) {
                 ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : '' + ' restrictedCover';
             }else {
-                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : '';
+                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : 'tbaCover';
+            }
+
+            if(ft.isNotCoveredApril && ft.isNotCovered) {
+                ft.classStringForInlineLabelCover = "noCover";
             }
 
             ft.iconClass = _getIconClass(ft);
@@ -286,18 +292,18 @@
                 ft.isRestrictedApril = true;
             break;
             case 'X':
-                ft.isNotCoveredApril = true;
-                ft.hideCategoryApril = true;
+                //ft.isNotCoveredApril = true;
+                ft.isTbaApril = true;
             break;
             case 'Q':
-                ft.hideCategoryApril = true;
+                ft.isTbaApril = true;
             break;
             case 'P':
-                ft.hideCategoryApril = true;
+                ft.isTbaApril = true;
             break;
             case 'F':
-                ft.isRestrictedApril = true;
-                ft.hideCategoryApril = true;
+                //ft.isRestrictedApril = true;
+                ft.isTbaApril = true;
             break;
         }
     }

@@ -168,6 +168,8 @@
 
         // Additional attributes for category's only.
         if (ft.type == 'category') {
+            ft.classStringForInlineLabelCover = "";
+
             if (ft.name === '') {
                 ft.classStringForInlineLabel += " noLabel";
             }
@@ -183,8 +185,12 @@
                 ft.labelInColumnContentClassApril =  ft.hideCategoryApril ? ' hidden' : '' + ' noCover';
             } else if (ft.isRestrictedApril) {
                 ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : '' + ' restrictedCover';
-            }else {
-                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : '';
+            } else if(ft.isTbaApril) {
+                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : 'tbaCover';
+            }
+
+            if(ft.isNotCoveredApril && ft.isNotCovered) {
+                ft.classStringForInlineLabelCover = "noCover";
             }
 
         } else if (ft.type == 'feature') {
@@ -229,18 +235,18 @@
                 ft.isRestrictedApril = true;
             break;
             case 'X':
-                ft.isNotCoveredApril = true;
-                ft.hideCategoryApril = true;
+                //ft.isNotCoveredApril = true;
+                ft.isTbaApril = true;
             break;
             case 'Q':
-                ft.hideCategoryApril = true;
+                ft.isTbaApril = true;
             break;
             case 'P':
-                ft.hideCategoryApril = true;
+                ft.isTbaApril = true;
             break;
             case 'F':
-                ft.isRestrictedApril = true;
-                ft.hideCategoryApril = true;
+                //ft.isRestrictedApril = true;
+                ft.isTbaApril = true;
             break;
         }
     }

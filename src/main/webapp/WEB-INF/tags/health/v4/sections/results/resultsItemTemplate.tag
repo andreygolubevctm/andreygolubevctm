@@ -20,7 +20,7 @@
         {{          benefitGroup = 'extras'; }}
         {{      } }}
         {{ } }}
-        <div class="labelInColumn {{= ft.classStringForInlineLabel }}">
+        <div class="labelInColumn {{= ft.classStringForInlineLabel }} {{= ft.classStringForInlineLabelCover }}">
             <div class="content" data-featureId="{{= ft.id }}">
                 <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
                     <div class="cover-title">
