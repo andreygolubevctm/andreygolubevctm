@@ -249,6 +249,13 @@
 			}, 1000);
 		});
 
+		// update disclaimer and heading text as required if multi trip
+		$('input[type=radio][name=amt-toggle]').change(function() {
+			if (meerkat.modules.travel.getVerticalFilter() === 'Multi Trip') {
+				denoteDisclaimer(this.value === 'D');
+			}
+		});
+
 		// Scroll to the top when results come back
 		$(document).on("resultsReturned", function(){
 			meerkat.modules.utils.scrollPageTo($("header"));
@@ -256,6 +263,16 @@
 			// Reset the feature header to match the new column content.
 			$(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
 
+			// update disclaimer and heading text as required
+			var isDomestic = false;
+
+			if (meerkat.modules.travel.getVerticalFilter() === 'Single Trip') {
+				isDomestic = $('#travel_destination').val() === 'AUS';
+			} else {
+				isDomestic = $('#travel_filter_domestic:checked').val();
+			}
+
+			denoteDisclaimer(isDomestic);
 		});
 
 		// Start fetching results
@@ -340,6 +357,26 @@
 
 		// Handle result row click
 		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
+	}
+
+	function denoteDisclaimer(isDomestic) {
+		var disclaimerText = "", oSMedical2ColText = "", cancelFeeColText = "", luggageColText = "";
+
+		if (isDomestic ) {
+			disclaimerText = "Before choosing a Policy, please note that for cancellation fee cover* and luggage** there are some exclusions and sub-limits that apply for each Policy. Always read the Product Disclosure Statement (PDS) before purchasing.";
+			oSMedical2ColText = "Expenses";
+			cancelFeeColText = "Cancellation Fee&nbsp;Cover*";
+			luggageColText = "Luggage**";
+		} else {
+			disclaimerText = "Before choosing a Policy, please note that for overseas medical expenses*, cancellation fee cover** and luggage*** there are some exclusions and sub-limits that apply for each Policy.  Always read the Product Disclosure Statement (PDS) before purchasing.";
+			oSMedical2ColText = "Expenses*";
+			cancelFeeColText = "Cancellation Fee&nbsp;Cover**";
+			luggageColText = "Luggage***";
+		}
+		$(".travelResultsDisclaimerHeader").html(disclaimerText);
+		$(".oSMedical2ColText").html(oSMedical2ColText);
+		$(".cancelFeeColText").html(cancelFeeColText);
+		$(".luggageColText").html(luggageColText);
 	}
 
 	function launchOfferTerms(event) {
