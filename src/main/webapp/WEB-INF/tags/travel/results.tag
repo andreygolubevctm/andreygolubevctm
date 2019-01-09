@@ -17,6 +17,9 @@
 
 	<div class="bridgingContainer"></div>
 	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
+
+		<div class="travelResultsDisclaimerHeader"></div>
+
 		<div class="featuresHeaders featuresElements">
 			<div class="result headers">
 
