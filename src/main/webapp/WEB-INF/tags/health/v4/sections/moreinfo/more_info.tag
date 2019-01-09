@@ -456,7 +456,7 @@
 																		{{ if(featureIteratorChild) { }}
 																			{{ var benefitLimitsName = ''; }}
 																				{{ _.each(featureIteratorChild.children, function (child) { }}
-																					{{ if(child.resultPath.indexOf(key) > -1) { }}
+																					{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																						{{ benefitLimitsName = child.safeName; }}
 																					{{ } }}
 																				{{ }); }}
@@ -476,7 +476,7 @@
 																			{{ if(featureIteratorChild) { }}
 																				{{ var benefitLimitsName = ''; }}
 																				{{ _.each(featureIteratorChild.children, function (child) { }}
-																					{{ if(child.resultPath.indexOf(key) > -1) { }}
+																					{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																						{{ benefitLimitsName = child.safeName; }}
 																					{{ } }}
 																				{{ }); }}
@@ -514,7 +514,7 @@
 																	{{ var benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim(); }}
 																	{{ if(featureIteratorChild) { }}
 																		{{ _.each(featureIteratorChild.children, function (child) { }}
-																			{{ if(child.resultPath.indexOf(key) > -1) { }}
+																			{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																				{{ benefitLimitsName = child.safeName; }}
 																			{{ } }}
 																		{{ }); }}
@@ -541,7 +541,7 @@
 																	{{ var benefitGroupLimitName = key.replace(/([A-Z])/g, ' $1').trim(); }}
 																	{{ if(featureIteratorChild) { }}
 																		{{ _.each(featureIteratorChild.children, function (child) { }}
-																			{{ if(child.resultPath.indexOf(key) > -1) { }}
+																			{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																				{{ benefitGroupLimitName = child.safeName; }}
 																			{{ } }}
 																		{{ }); }}
