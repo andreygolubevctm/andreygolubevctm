@@ -19,8 +19,8 @@
         {{          benefitGroup = 'extras'; }}
         {{      } }}
         {{ } }}
-        <div class="labelInColumn {{= ft.classStringForInlineLabel }} {{= ft.classStringForInlineLabelCover }}" {{=ft.labelInColumnTitle }}>
-            <div class="content {{= ft.labelInColumnContentClass }}" data-featureId="{{= ft.id }}">
+        <div class="labelInColumn {{= ft.classStringForInlineLabel }}" {{=ft.labelInColumnTitle }}>
+            <div class="content {{= ft.classStringForInlineLabelCover }}" data-featureId="{{= ft.id }}">
                 <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
                     <div>
                         <span class="health-icon {{= ft.iconClass }}"></span> {{= ft.safeName }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
