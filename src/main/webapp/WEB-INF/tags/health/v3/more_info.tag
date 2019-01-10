@@ -850,17 +850,17 @@
 													{{ if(benefit.benefits.DentalGeneral121Fluoride) { }}
 														{{ dentalBenefitsTotalCost += parseFloat(benefit.benefits.DentalGeneral121Fluoride.replace('$', '')); }}
 													{{ } }}
-													{{ dentalBenefitsTotalCost = '$' + String(dentalBenefitsTotalCost); }}
+													{{ dentalBenefitsTotalCost = '$' + String(dentalBenefitsTotalCost.toFixed(2)); }}
 												{{ } }}
 												{{ if(benefit.benefits.DentalGeneral012PeriodicExam.indexOf('%') !== -1) { }}
 													{{ dentalBenefitsTotalCost = benefit.benefits.DentalGeneral012PeriodicExam; }}
 												{{ } }}
 												<div class="row">
 													<div class="col-xs-9 extraBenefitOption">
-														So for your periodic check-up, scale and clean, and fluoride treatment, you'll receive:
+														<span class="text-highlight">So for your periodic check-up, scale and clean, and fluoride treatment, you'll receive:</span>
 													</div>
 													<div class="col-xs-3 extraBenefitOption align-center">
-														{{= dentalBenefitsTotalCost }}
+														<span class="text-highlight">{{= dentalBenefitsTotalCost }}</span>
 													</div>
 												</div>
 											{{ } }}
