@@ -240,8 +240,10 @@
                 ft.labelInColumnContentClassApril =  ft.hideCategoryApril ? ' hidden' : '' + ' noCover';
             } else if (ft.isRestrictedApril) {
                 ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : '' + ' restrictedCover';
-            }else {
+            }else if(ft.isTbaApril) {
                 ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : 'tbaCover';
+            } else if(ft.hideCategoryApril) {
+                ft.labelInColumnContentClassApril = 'hidden';
             }
 
             if(ft.isNotCoveredApril && ft.isNotCovered) {
