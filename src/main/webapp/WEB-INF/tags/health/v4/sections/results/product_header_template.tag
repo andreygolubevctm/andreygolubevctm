@@ -58,7 +58,7 @@
                 {{ var result = healthResultsTemplate.getPricePremium(obj._selectedFrequency, availablePremiums, obj.mode); }}
                 {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
 
-                {{ if (obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown) { }}
+                {{ if (obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown && window.meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment') { }}
                     {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, result.frequency, true) }}
                 {{ } }}
             {{ } }}

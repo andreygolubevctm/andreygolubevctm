@@ -54,11 +54,11 @@
                                 {{= freq === 'fortnightly' ? 'per f/night' : '' }}
                                 {{= freq === 'weekly' ? 'per week' : '' }}
                             </div>
-												</span>
-										{{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
+							</span>
+            			{{ if ((!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) || window.meerkat.modules.journeyEngine.getCurrentStep().navigationId !=='payment' ) { }}
                     	<div class="lhcText hide-on-affix">
                     	    <span>
-													{{= textLhcFreePricing}}
+								{{= textLhcFreePricing}}
                     	    </span>
                     	</div>
                 		{{ } else { }}
