@@ -28,7 +28,7 @@
                     </div>
                     <div class="benefit-container">
                         <div class="benefit-container-item {{= ft.labelInColumnContentClass }}">
-                            <span>Now</span>
+                            <span {{= ft.labelInColumnContentClassApril }}>Now</span>
                             <span class="benefit-icon" />
                         </div>
                         <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
