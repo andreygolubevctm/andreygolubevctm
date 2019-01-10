@@ -258,7 +258,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							</c:if>
 
 							<c:if test="${bundleFileName eq 'health_v4'}">
-								<a class="refine-results" href="javascript:;">Refine</a>
+								<a class="refine-results" href="javascript:;"><span class="icon icon-filter"></span> <span>Refine Results</span></a>
 							</c:if>
 
 							<c:set var="exitUrl" value="" />
