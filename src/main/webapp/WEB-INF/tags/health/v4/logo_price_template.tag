@@ -12,7 +12,9 @@
 	<div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
 	{{ } }}
 
-	<a href="javascript:;" class="about-this-fund hidden-xs">About this fund</a>
+	{{ if (!obj.hasOwnProperty('showAltPremium') || !obj.showAltPremium) { }}
+		<a href="javascript:;" class="about-this-fund hidden-xs">About this fund</a>
+	{{ } }}
 
 	{{ if(typeof obj.showRisingTag === 'undefined' || obj.showRisingTag == true) { }}
 	<div class="premium-rising-tag">
@@ -33,6 +35,7 @@
 		{{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
 			{{ if (typeof property[freq] !== "undefined") { }}
 				{{ var premium = property[freq] }}
+				{{ var availablePremiums = obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true ? obj.altPremium : obj.premium; }}
 				{{ var priceText = premium.text ? premium.text : formatCurrency(premium.payableAmount) }}
 				{{ var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount) }}
 				{{ var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate' }}
@@ -51,7 +54,16 @@
                                 {{= freq === 'fortnightly' ? 'per f/night' : '' }}
                                 {{= freq === 'weekly' ? 'per week' : '' }}
                             </div>
-												</span>
+							</span>
+            			{{ if ((!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) || window.meerkat.modules.journeyEngine.getCurrentStep().navigationId !=='payment' ) { }}
+                    	<div class="lhcText hide-on-affix">
+                    	    <span>
+								{{= textLhcFreePricing}}
+                    	    </span>
+                    	</div>
+                		{{ } else { }}
+                		    {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, freq, obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) }}
+                		{{ } }}
 					{{ } else { }}
 					<div class="frequencyAmount comingSoon">New price not yet released</div>
 					{{ } }}

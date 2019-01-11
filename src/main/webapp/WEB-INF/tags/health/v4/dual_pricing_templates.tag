@@ -70,7 +70,6 @@
 					<div class="moreInfoPriceHeading">NOW</div>
 					<div class="moreInfoPrice">
 						{{= renderedPriceTemplate }}
-						<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? textLhcFreePricing : textPricing }}</div>
 					</div>
 				</div>
 			</div>
@@ -79,7 +78,6 @@
 					<div class="moreInfoPriceHeading">PRICE FROM April 1</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltPriceTemplate }}
-						<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? altTextLhcFreePricing : altTextPricing }}</div>
 					</div>
 				</div>
 				{{ if (obj.showAltPremium === true) { }}

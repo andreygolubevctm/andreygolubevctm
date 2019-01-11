@@ -34,7 +34,7 @@
             <div class="frequencyTitle">
                 {{= freq === 'halfyearly' ? 'Half yearly' : freq.charAt(0).toUpperCase() + freq.slice(1) }}
             </div>
-            {{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
+            {{ if ((!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) || window.meerkat.modules.journeyEngine.getCurrentStep().navigationId !=='payment' ) { }}
             <div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
             {{ } else { }}
             {{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, freq, false) }}
