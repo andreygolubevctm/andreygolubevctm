@@ -15,4 +15,7 @@
         <span class="icon icon-restricted"></span> Restricted Benefits
     </div>
     <div class="results-legend-restricted-help smaller-text dark-grey-text"><content:get key="ResultsPageLegendRestricted" /></div>
+    <div class="results-legend-row smaller-text dark-grey-text">
+        <span class="icon icon-tbaCover"></span> Status not yet confirmed by fund
+    </div>
 </div>

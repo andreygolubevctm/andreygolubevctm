@@ -59,7 +59,7 @@
             <c:set var="simplesHealthReformMessaging" scope="request"><content:get key="simplesHealthReformMessaging" /></c:set>
             
             <c:choose>
-            <c:when test="${simplesHealthReformMessaging eq 'Y'}">
+            <c:when test="${simplesHealthReformMessaging eq 'active'}">
                 {{ var newName = meerkat.modules.healthResultsTemplate.getNewProductName(obj); }}
                 {{ if(newName) { }}
                     <div class="productTitle">

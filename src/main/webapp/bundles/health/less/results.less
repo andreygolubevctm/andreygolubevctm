@@ -350,24 +350,74 @@
             margin-right: 10px;
 
             .benefit-container {
-              margin-left: 6px;
-              color: #666666;
-              height: 30px;
-            }
+              margin-top: 10px;
 
-            .restricted-icon {
-              color: #F49E1E;
-              font-weight: bold;
-              font-size: 20px;
-              vertical-align: sub;
-            }
-      
-            .margin-icon {
-              margin-right: 5px;
-            }
+              .benefit-container-item {
+                display: inline;
 
-            @media (@sm) {
-              margin-right: 16px;
+                @media (@xs-only) {
+                 width: 100%;
+                 display: block;
+                }
+              }
+
+              .tbaCover {
+                margin-top: 10px;
+                .benefit-icon {
+                  &::before {
+                    color: #313131;
+                    content: 'TBA';
+                    font-family: 'SourceSansProSemiBold';
+                    font-size: 15px;
+                    font-weight: bold;
+                    vertical-align: initial;
+                    right: 2px;
+                    margin-top: -12px;
+                  } 
+                }
+              }
+
+              .restrictedCover {
+                margin-top: 10px;
+                .benefit-icon {
+                  &::before {
+                    color: #f6b14b;
+                    content: 'R';
+                    font-family: 'SourceSansProSemiBold';
+                    font-size: 18px;
+                    font-weight: bold;
+                    right: 2px;
+                    margin-top: -12px;
+                  } 
+                }
+              }
+
+              .noCover {
+                margin-top: 10px;
+                .benefit-icon {
+                  &::before {
+                    content: '\e601';
+                    color: @theme-accent-3;
+                  } 
+                }
+              }
+
+              .benefit-icon {
+                margin: 0px 5px 0px 5px;
+
+                @media (@sm) {
+                  margin: 0px 15px 0px 5px;
+                }
+
+                &::before {
+                  content: '\e600';
+                  color: #0DB14B;
+                  font-family: 'framework_font';
+                  margin-right: 5px;
+                  margin-top: -7px;
+                  vertical-align: middle;
+                } 
+              }
             }
           }
           .user-select(none);

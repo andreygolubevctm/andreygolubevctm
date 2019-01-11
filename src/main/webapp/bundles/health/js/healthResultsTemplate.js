@@ -200,27 +200,56 @@
         // If you don't, the last row's data ends up on Features.getPageStructure. Is that a problem? Not sure...
         // If data isn't displaying properly after a refresh/reset of results uncomment this line:
         //ft = $.extend(true, {}, ft);
-
+        
         ft.displayItem = ft.type != 'section';
         // section headers are not displayed anymore but we need the section container
         //if (ft.displayItem) {
         ft.pathValue = _getPathValue(obj, ft);
-        ft.isRestricted = ft.pathValue ? ft.pathValue[0] == "R" : false;
-        ft.isNotCovered = ft.pathValue ? ft.pathValue[0] == "N" : false;
+        if(window.meerkat.site.isHealthReformMessaging === 'Y') {
+            if(ft.pathValue) {
+                getNowAndAprilCover(ft, ft.pathValue);
+            }else{
+                ft.hideCategoryApril = true;
+            }
+        }else{
+            ft.isRestricted = ft.pathValue == "R";
+            ft.isNotCovered = ft.pathValue == "N";
+            ft.hideCategoryApril = true;
+        }
+
         ft.hasChildFeatures = typeof ft.children !== 'undefined' && ft.children.length;
 
         // Additional attributes for category's only.
         if (ft.type == 'category') {
+            ft.classStringForInlineLabelCover = "";
+            
             if (ft.name === '') {
                 ft.classStringForInlineLabel += " noLabel";
             }
+
             if (ft.isNotCovered) {
                 ft.labelInColumnTitle = ' title="Not Covered"';
                 ft.labelInColumnContentClass = ' noCover';
+            } else if (ft.isRestricted) {
+                ft.labelInColumnContentClass = ' restrictedCover';
             } else {
-                ft.labelInColumnTitle = '';
                 ft.labelInColumnContentClass = '';
             }
+
+            if(ft.isNotCoveredApril) {
+                ft.labelInColumnContentClassApril =  ft.hideCategoryApril ? ' hidden' : '' + ' noCover';
+            } else if (ft.isRestrictedApril) {
+                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : '' + ' restrictedCover';
+            }else if(ft.isTbaApril) {
+                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : 'tbaCover';
+            } else if(ft.hideCategoryApril) {
+                ft.labelInColumnContentClassApril = 'hidden';
+            }
+
+            if(ft.isNotCoveredApril && ft.isNotCovered) {
+                ft.classStringForInlineLabelCover = "noCover";
+            }
+
             ft.iconClass = _getIconClass(ft);
         } else if (ft.type == 'feature') {
             ft.displayValue = buildDisplayValue(ft.pathValue, ft, obj);
@@ -236,6 +265,51 @@
         //}
         return ft;
     }
+
+    function getNowAndAprilCover(ft, val) {
+        var nowVal = val[0];
+        var aprilVal = val.length > 1 ? val[1] : '';
+
+        ft.isRestricted = false;
+        ft.isNotCovered = false;
+
+        switch(nowVal) {
+            case 'R' :
+                ft.isRestricted = true;
+            break;
+            case 'N' :
+            ft.isNotCovered = true;
+            break;
+        }
+
+        ft.isRestrictedApril = false;
+        ft.isNotCoveredApril = false;
+        ft.hideCategoryApril = aprilVal ? false : true;
+
+        switch(aprilVal){
+            case 'N':
+                ft.isNotCoveredApril = true;
+            break;
+            case 'R':
+                ft.isRestrictedApril = true;
+            break;
+            case 'X':
+                //ft.isNotCoveredApril = true;
+                ft.isTbaApril = true;
+            break;
+            case 'Q':
+                ft.isTbaApril = true;
+            break;
+            case 'P':
+                ft.isTbaApril = true;
+            break;
+            case 'F':
+                //ft.isRestrictedApril = true;
+                ft.isTbaApril = true;
+            break;
+        }
+    }
+
 
     /**
      * Used for excess_template.tag
