@@ -28,7 +28,7 @@
           Age(years)
         </span>
       <div class="clearfix">
-        <input data-msg-required="Please add age" data-msg-range="Age must be between 16-99" data-rule-range="16,99" name="travellers-age-1" required type="text" maxlength="2" />
+        <input data-msg-required="Please add age" data-msg-range="Age must be between 16-99" data-rule-range="16,99" name="travellers-age-1" required type="number" maxlength="2" />
       </div>
     </div>
   </div>
