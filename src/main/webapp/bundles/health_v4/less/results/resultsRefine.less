@@ -7,12 +7,28 @@
 }
 
 .refine-results {
-  float: right;
-  line-height: 21px;
-  padding: 9px 10px;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  bottom: 55px;
+  background-color: white;
+  width: 120px;
+  border-radius: 25px;
+  height: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #1c3e94;
+  font-size: 18px;
+  font-weight: 700;
+  border: 1px solid #1c3e94;
 
   @media (@sm) {
     display: none;
+  }
+
+  .icon {
+    width: 30px;
   }
 }
 
