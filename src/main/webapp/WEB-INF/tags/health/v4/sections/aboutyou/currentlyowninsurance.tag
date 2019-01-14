@@ -21,7 +21,7 @@
 	</c:choose>
 </c:set>
 
-<form_v4:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover" className="lhcRebateCalcTrigger" helpId="${theHelpid}">
+<form_v4:row hideRowBorder="true" label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover" className="lhcRebateCalcTrigger" helpId="${theHelpid}">
 	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold private health insurance?" required="true" className="health-cover_details" id="${name}_health_cover" additionalLabelAttributes="${analyticsAttr}"/>
 
 	<c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}" />
