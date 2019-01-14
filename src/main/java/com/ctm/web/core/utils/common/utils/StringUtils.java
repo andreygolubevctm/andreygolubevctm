@@ -15,7 +15,7 @@ public class StringUtils {
             if (codepoint > StringUtils.LAST_3_BYTE_UTF_CHAR.codePointAt(0)) {
                 validStringBuilder.append(StringUtils.REPLACEMENT_CHAR);
             } else {
-                if (Character.isValidCodePoint(codepoint)) {
+                if (Character.isValidCodePoint(codepoint) && !Character.isSupplementaryCodePoint(codepoint) && !Character.isIdeographic(codepoint)) {
                     validStringBuilder.appendCodePoint(codepoint);
                 } else {
                     validStringBuilder.append(StringUtils.REPLACEMENT_CHAR);
