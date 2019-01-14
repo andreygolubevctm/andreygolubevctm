@@ -79,7 +79,7 @@
         _.defer(function(){
             var postData = {
                 dependants: $elements.dependants.val(),
-                income: ($elements.income.filter(':checked').val() || 0),
+                income: ($elements.income[0].selectedOptions[0].value || 0),
                 rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),
                 primary_loading: '',
