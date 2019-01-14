@@ -51,6 +51,7 @@
                                           legend="${legend}"
                                           className="health-about-you">
                             <health_v4_aboutyou:youarea xpath="${xpath}" />
+                            
                             <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                             
                             <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate income level" quoteChar="\"" /></c:set>
@@ -67,8 +68,9 @@
                             <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
                             <health_v4_aboutyou:current_health_fund xpath="${xpath}" />
                             <health_v4_aboutyou:dob xpath="${xpath}" />
-                            
-                            <h3 class="allow-margin-top">Your partner's details</h3>
+
+                            <h3 id="health_insurance_preferences_additional_partner_title" class="allow-margin-top">Your partner's details</h3>
+
                             <health_v4_aboutyou:partner_cover xpath="${xpath}" />
                             <div id="health_insurance_preferences_additional_partner_fields">
                                 <health_v4_aboutyou:partner_current_fund xpath="${xpath}" />
