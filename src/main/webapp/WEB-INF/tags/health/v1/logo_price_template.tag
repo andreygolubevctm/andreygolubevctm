@@ -63,7 +63,7 @@
             {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
             <div class="rounding">Premium may vary slightly due to rounding</div>
             {{ } }}
-            <div class="lhcText hide-on-affix">
+            <div class="lhcText">
                 <span>
 					{{= textLhcFreePricing}}
                 </span>
