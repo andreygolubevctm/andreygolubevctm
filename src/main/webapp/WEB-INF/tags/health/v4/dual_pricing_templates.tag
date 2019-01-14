@@ -144,6 +144,8 @@
 		<div class="current-pricing">
 			{{= renderedPriceTemplate }}
 		</div>
-		<div class="premium-rising-tag">Premiums are rising from April 1st, 2017 <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a></div>
+		<div class="april-pricing">
+			{{= renderedAltPriceTemplate }}
+		</div>
 	</div>
 </core_v1:js_template>

@@ -13,7 +13,7 @@
 
     <div class="row">
         <div class="col-xs-12 text-center">
-            Health funds adjust their premiums on April 1st every year. The amounts you see reflect the premiums <span class="text-bold">before</span> and <span class="text-bold">after</span> April 1st, 2018.
+            Health funds adjust their premiums on April 1st every year. The amounts you see reflect the premiums <span class="text-bold">before</span> and <span class="text-bold">after</span> April 1st, 2019.
         </div>
     </div>
 

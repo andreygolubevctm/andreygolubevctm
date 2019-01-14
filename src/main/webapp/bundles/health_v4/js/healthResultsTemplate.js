@@ -335,9 +335,18 @@
         }
 
         var day = date.split(' ')[0];
+        var dayNumbers = day.match(/\d+/g).join([]);
+
         var month = date.split(' ')[1];
-        var year = date.split(' ')[2];
+        var year = date.split(' ')[2] ? date.split(' ')[2] : '2019';
         
+        var curDate = window.meerkat.site.serverDate;
+        var dateParsed = new Date(Date.parse(dayNumbers + ' ' + month + ' ' + year));
+
+        if(curDate.getTime() > dateParsed.getTime()){
+            return '';
+        }
+
         switch(month) {
             case 'January':
                 return day + ' Jan ' + year;

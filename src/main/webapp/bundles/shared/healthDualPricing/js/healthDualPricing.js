@@ -277,7 +277,7 @@
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
         product.showRisingTag = (isForSidebar && deviceMediaState !== 'xs') || (meerkat.site.pageAction === 'confirmation');
-        product.showBeforeAfterText = (isForSidebar && deviceMediaState !== 'xs') || isForAffixedHeader;
+        product.showBeforeAfterText = (isForSidebar) || isForAffixedHeader;
         product.priceBreakdown = meerkat.modules.healthPriceBreakdown.showBreakdown();
 
         var pricingDate = new Date(selectedProduct.pricingDate);
