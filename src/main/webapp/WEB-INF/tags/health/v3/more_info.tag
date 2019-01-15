@@ -520,7 +520,7 @@
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
 					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null) { }}
-						<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-810-2" id="limited_cover_scripting_tab_1" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reform.tab1.limited }}</label></div><br/><br/>
+						<div class="checkbox scripting-text"><input type="checkbox" name="health_simples_dialogue-radio-810-2" id="limited_cover_scripting_tab_1" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required"><label for="limited_cover_scripting_tab_1">{{= custom.reform.tab1.limited }}</label></div><br/><br/>
 					{{ } else { }}
 					{{ if (custom.reform.tab1 && custom.reform.tab1.benefits && custom.reform.tab1.benefits.length > 0) { }}
 						{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && meerkat.modules.healthBenefitsStep.showTabOneCheckboxes(custom.reform)) { }}
