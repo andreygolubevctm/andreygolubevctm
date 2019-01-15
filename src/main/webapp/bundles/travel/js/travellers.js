@@ -50,7 +50,7 @@
 		var className = canDelete ? 'col-lg-4' : 'col-lg-3';
 		return (
 			'<div class="age-item col-md-5 ' + className + '"> <span>Age(years)</span><div class="clearfix">' +
-			'<input value="' + val + '" name="travellers-age-'+ index +'" data-msg-required="Please add age" data-msg-range="age must be between ' + state.minAge + '-' + state.maxAge + '" data-rule-range="' + state.minAge + ',' + state.maxAge + '" required type="text" maxlength="2" />' +
+			'<input value="' + val + '" name="travellers-age-'+ index +'" data-msg-required="Please add age" data-msg-range="age must be between ' + state.minAge + '-' + state.maxAge + '" data-rule-range="' + state.minAge + ',' + state.maxAge + '" required type="number" maxlength="2" />' +
 			(canDelete ? '<div class="exit-container"> <a href="javascript:;" class="icon-exit"></a> </div>' : '') + '</div></div>'
 		);
 	}

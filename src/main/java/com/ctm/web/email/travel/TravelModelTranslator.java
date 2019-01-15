@@ -24,6 +24,7 @@ import com.ctm.web.email.EmailUtils;
 import com.ctm.web.email.OptIn;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class TravelModelTranslator implements EmailTranslator {
     public void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException, GeneralSecurityException {
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
         String emailAddress = getEmail(data);
-        LOGGER.info("emailAddress retrieved from SessionData is: {}", emailAddress);
+        LOGGER.info("[setUrls] emailAddress retrieved from SessionData is: {}", emailAddress);
         if(emailAddress != null){
             EmailMaster emailDetails = new EmailMaster();
             emailDetails.setEmailAddress(emailAddress);
@@ -139,7 +140,7 @@ public class TravelModelTranslator implements EmailTranslator {
 
     private void setDataFields(EmailRequest emailRequest, Data data, TravelEmailModel travelEmailModel){
         String email = getEmail(data);
-        LOGGER.info("email retrieved from SessionData is: {}", email);
+        LOGGER.info("[setDataFields] email retrieved from SessionData is: {}", email);
         String firstName =  emailUtils.getParamSafely(data,vertical + "/firstName");
         String surname =  emailUtils.getParamSafely(data,vertical + "/surname");
         String adultsTravelling = emailUtils.getParamSafely(data,vertical + "/adults");
@@ -149,24 +150,27 @@ public class TravelModelTranslator implements EmailTranslator {
         String destination = emailUtils.getParamSafely(data,vertical + "/destination");
         String travellerAges = emailUtils.getParamSafely(data,vertical + "/travellers/travellersAge");
 
-        List<Integer> ages = Arrays.stream(travellerAges.trim().split(",")).map(s -> Integer.parseInt(s)).collect(Collectors.toList());
-        Integer oldestTravellerAge = ages.stream().max(Comparator.naturalOrder()).orElse(null);
+        if (!StringUtils.isBlank(travellerAges)) {
+            List<Integer> ages = Arrays.stream(travellerAges.trim().split(",")).map(s -> Integer.parseInt(s)).collect(Collectors.toList());
+            Integer oldestTravellerAge = ages.stream().max(Comparator.naturalOrder()).orElse(null);
+            travelEmailModel.setTravellerAge(ages);
+            travelEmailModel.setOldestTravellerAge(oldestTravellerAge);
+        } else {
+            LOGGER.warn("Mandatory traveller ages were not stored in the session data needed for an email", data);
+        }
 
         emailRequest.setOptIn(getOptIn(data));
         emailRequest.setFirstName(firstName);
         emailRequest.setLastName(surname);
-        emailRequest.setEmailAddress(email);
-
+        if (!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);
         travelEmailModel.setAdultsTravelling(adultsTravelling);
         travelEmailModel.setChildrenTravelling(childrenTravelling);
         travelEmailModel.setDestination(destination);
-        travelEmailModel.setTravellerAge(ages);
-        travelEmailModel.setOldestTravellerAge(oldestTravellerAge);
 
-        if(fromDate !=null){
+        if(fromDate != null){
             travelEmailModel.setTravelStartDate(LocalDate.parse(fromDate,dateTimeFormatter));
         }
-        if(toDate !=null){
+        if(toDate != null){
             travelEmailModel.setTravelEndDate(LocalDate.parse(toDate, dateTimeFormatter));
         }
     }
