@@ -49,6 +49,8 @@
     }
 
     function renderTemplate(premium, frequency, showCopyPanel) {
+        if(!_template) return;
+
         var html = _.template(_template.html());
         return html({
             premium: premium,
