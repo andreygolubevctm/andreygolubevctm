@@ -56,7 +56,7 @@
                             
                             <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate income level" quoteChar="\"" /></c:set>
                             <c:set var="fieldXpath" value="${xpath}/income" />
-                            <form_v4:row label="<span data-situation='single'>What is your taxable income?</span><span class='hidden' data-situation='hasPartner'>What is your, and your partners combined taxable income?</span><br /><span class='label-sub-text'>We need this figure to calculate your health insurance rebate.</span>" id="${name}_income_field_row" className="lhcRebateCalcTrigger" smRowOverride="6">
+                            <form_v4:row label="<span id='health_healthCover_situation_single'>What is your taxable income?</span><span id='health_healthCover_situation_hasPartner' class='hidden'>What is your, and your partners combined taxable income?</span><br />" id="${name}_income_field_row" className="lhcRebateCalcTrigger" smRowOverride="6">
                                 <field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income"/>
                             	<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
                             	<div id="rebateLabel"><span></span></div>

@@ -54,8 +54,8 @@
             lhcContainers: $('.lhcRebateCalcTrigger'),
             dependentsSelect: $('#health_healthCover_dependants'),
             incomeLabelSpans: {
-                single: $('#health_healthCover_income_field_row .control-label span[data-situation=single]'),
-                hasPartner: $('#health_healthCover_income_field_row .control-label span[data-situation=hasPartner]')
+                single: $('#health_healthCover_situation_single'),
+                hasPartner: $('#health_healthCover_situation_hasPartner')
             },
             incomeSelect: $(':input[name="health_healthCover_income"]'),
             rebateLabel: $('#rebateLabel'),
