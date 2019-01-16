@@ -53,7 +53,8 @@ Handling of the rebate tiers based off situation
 
 	function setIncomeLabel() {
 		var $selectedIncome;
-        $selectedIncome = $income.get(0).selectedOptions[0];
+		var $incomeElement = $income.get(0);
+        $selectedIncome = $incomeElement.options[$incomeElement.selectedIndex];
 		var incomeLabel = $selectedIncome.value.length > 0 ? $selectedIncome.text : '';
 		$healthCoverIncomeLabel.val( incomeLabel );
 	}
