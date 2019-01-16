@@ -19,22 +19,24 @@
         {{          benefitGroup = 'extras'; }}
         {{      } }}
         {{ } }}
-        <div class="labelInColumn {{= ft.classStringForInlineLabel }} " {{=ft.labelInColumnTitle }}>
-            <div class="content {{= ft.labelInColumnContentClass }}" data-featureId="{{= ft.id }}">
+        <div class="labelInColumn {{= ft.classStringForInlineLabel }}" {{=ft.labelInColumnTitle }}>
+            <div class="content {{= ft.classStringForInlineLabelCover }}" data-featureId="{{= ft.id }}">
                 <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
                     <div>
                         <span class="health-icon {{= ft.iconClass }}"></span> {{= ft.safeName }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
                     </div>
+
                     <div class="benefit-container">
-                    {{ if(ft.isRestricted) { }}
-                        <span class="restricted-icon margin-icon">R</span>
-                    {{ } else if(ft.isNotCovered) { }}
-                        <img class="margin-icon" src="brand/ctm/images/cross_lge_gray.png"></img>
-                    {{ } else { }}
-                        <img class="margin-icon" src="brand/ctm/images/tick.png"></img>
-                    {{ } }}
-                        Now
+                        <div class="benefit-container-item {{= ft.labelInColumnContentClass }}">
+                            <span class="{{= ft.labelInColumnContentClassApril }}">Now</span>
+                            <span class="benefit-icon" />
+                        </div>
+                        <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
+                            <span>From April 1</span>
+                            <span class="benefit-icon" />
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>{{ } }}

@@ -70,7 +70,6 @@
 					<div class="moreInfoPriceHeading">NOW</div>
 					<div class="moreInfoPrice">
 						{{= renderedPriceTemplate }}
-						<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? textLhcFreePricing : textPricing }}</div>
 					</div>
 				</div>
 			</div>
@@ -79,7 +78,6 @@
 					<div class="moreInfoPriceHeading">PRICE FROM April 1</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltPriceTemplate }}
-						<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? altTextLhcFreePricing : altTextPricing }}</div>
 					</div>
 				</div>
 				{{ if (obj.showAltPremium === true) { }}
@@ -146,6 +144,8 @@
 		<div class="current-pricing">
 			{{= renderedPriceTemplate }}
 		</div>
-		<div class="premium-rising-tag">Premiums are rising from April 1st, 2017 <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a></div>
+		<div class="april-pricing">
+			{{= renderedAltPriceTemplate }}
+		</div>
 	</div>
 </core_v1:js_template>

@@ -33,7 +33,7 @@
         <div class="frequencyTitle">{{= freqObj.label }}</div>
     </div>
 
-        {{ if (frequency === obj._selectedFrequency && (obj.hasOwnProperty('priceBreakdown') || (!obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown))) { }}
+        {{ if (frequency === obj._selectedFrequency && (obj.hasOwnProperty('priceBreakdown') || (!obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown)) && window.meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment') { }}
             {{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, frequency, false) }}
         {{ } }}
 </div>

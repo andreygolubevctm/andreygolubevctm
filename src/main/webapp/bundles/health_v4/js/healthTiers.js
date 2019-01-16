@@ -66,6 +66,7 @@ Handling of the rebate tiers based off situation
 			allowance = (allowance > 0 ? allowance * 1500 : 0);
 		}
 
+		
 		//Set the tier type based on hierarchy of selection
 		var _cover;
 		if( $incomeBase.is(':visible') && $('#health_healthCover_incomeBase').find(':checked').length > 0 ) {

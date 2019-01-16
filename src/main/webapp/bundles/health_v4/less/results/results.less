@@ -60,6 +60,15 @@
   font-weight: bold;
 }
 
+.icon-tba {
+  color: #313131;
+  content: 'TBA';
+  font-family: @font-family-theme-semibold;
+  font-size: 15px;
+  font-weight: bold;
+  vertical-align: initial;
+}
+
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding: 0;
@@ -203,6 +212,15 @@
           }
         }
 
+        &.icon-tbaCover {
+          margin-top: 0;
+          margin-right: 4px;
+          margin-left: 1px;
+          &:before {
+            .icon-tba();
+          }
+        }
+
         &.icon-cross {
           &:before {
             color: @theme-accent-3;
@@ -213,6 +231,7 @@
 
     .results-legend-restricted-help {
       padding-left: 18.25px;
+      margin-bottom: 5px;
 
       p:last-child {
         margin-bottom: 0px;
@@ -293,11 +312,29 @@
     padding-bottom: 15px;
 
     .results-header-classification {
-      margin: 15px 0px;
+      margin: 115px 0px 15px;
+
+      @media (@lg) {
+        margin: 15px 0px;
+      }
 
       .results-header-classification-icon {
         background-repeat: no-repeat;
         background-position: center;
+        background-size: contain;
+        position: relative;
+
+        .results-header-classification-date {
+          position: absolute;
+          bottom: -5px;
+          left: ~"calc(50% - 65px)";
+          width: 130px;
+          text-align: center;
+          color: white;
+          border-radius: 10px;
+          background-color: #a0a0a0;
+        }
+
         height: 100px;
     
         @media (@sm) {
@@ -307,6 +344,10 @@
         &.gov-unclassified {
           background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
     
+          &.force-large {
+            background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+          }
+    
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
           }
@@ -314,6 +355,10 @@
     
         &.gov-bronze-plus {
           background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass_mobile.svg');
+    
+          &.force-large {
+            background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
+          }
     
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
@@ -323,6 +368,10 @@
         &.gov-bronze {
           background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass_mobile.svg');
     
+          &.force-large {
+            background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
+          }
+    
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
           }
@@ -330,6 +379,10 @@
     
         &.gov-silver-plus {
           background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass_mobile.svg');
+    
+          &.force-large {
+            background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
+          }
     
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
@@ -339,6 +392,10 @@
         &.gov-silver {
           background-image: url('../../../../assets/graphics/health_classification/Silver_govclass_mobile.svg');
     
+          &.force-large {
+            background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
+          }
+    
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
           }
@@ -346,6 +403,10 @@
     
         &.gov-gold {
           background-image: url('../../../../assets/graphics/health_classification/Gold_govclass_mobile.svg');
+    
+          &.force-large {
+            background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
+          }
     
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
@@ -355,6 +416,10 @@
         &.gov-basic-plus {
           background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass_mobile.svg');
     
+          &.force-large {
+            background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
+          }
+    
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
           }
@@ -362,6 +427,10 @@
     
         &.gov-basic {
           background-image: url('../../../../assets/graphics/health_classification/Basic_govclass_mobile.svg');
+    
+          &.force-large {
+            background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
+          }
     
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
@@ -372,7 +441,6 @@
 
     .lhcText {
       text-align: center;
-      margin-bottom: 10px;
       font-size: 12px;
     }
 
@@ -427,14 +495,14 @@
       .lhcText {
         min-height: auto;
         padding-bottom: 0;
-        text-align: right;
+        text-align: center;
         .small;
         height: 53px;
       }
     }
 
     .companyLogo {
-      margin-top: 10px;
+      margin-top: 20px;
     }
   }
 
@@ -553,30 +621,6 @@
     }
 
     .featuresList {
-      .hospitalCoverSection {
-        .featuresListHospitalSelections {
-          .section {
-            .children {
-              .cell:nth-child(odd) {
-                  background-color: #E5EBF3;
-                }
-              }
-            }
-          }
-        }
-
-      .extrasCoverSection {
-        .featuresListExtrasSelections {
-          .section {
-            .children {
-              .cell:nth-child(odd) {
-                background-color: #FFF4E9;
-              }
-            }
-          }
-        }
-      }
-
       .hospitalCoverSection,
       .extrasCoverSection, 
       .ambulanceCoverSection  {
@@ -686,6 +730,16 @@
 
           .labelInColumn {
             border-bottom: 1px solid @results-border-color;
+
+            &.noCover {
+              .cover-title {
+                color: darkgray;
+              }
+
+              .benefit-container {
+                color: darkgray;
+              }
+            }
           }
 
         .featureValue, .featureLabel {
@@ -876,7 +930,21 @@
           .contentInner {
             .benefit-container {
               margin-top: 10px;
+              .benefit-container-item {
+                display: inline;
+
+                @media (@xs-only) {
+                 width: 100%;
+                 display: block;
+                }
+              }
               .benefit-icon {
+                margin: 0px 5px 0px 5px;
+
+                @media (@sm) {
+                  margin: 0px 15px 0px 5px;
+                }
+
                 &::before {
                   content: '\e600';
                   color: #0DB14B;
@@ -889,9 +957,10 @@
             }
           }
 
-          &.noCover {
+         
             .contentInner {
               .benefit-container {
+                .noCover {
                 margin-top: 10px;
                 .benefit-icon {
                   &::before {
@@ -903,9 +972,9 @@
             }
           }
 
-          &.restrictedCover {
             .contentInner {
               .benefit-container {
+                .restrictedCover {
                 margin-top: 10px;
                 .benefit-icon {
                   &::before {
@@ -917,6 +986,21 @@
               }
             }
           }
+
+          .contentInner {
+            .benefit-container {
+              .tbaCover {
+              margin-top: 10px;
+              .benefit-icon {
+                &::before {
+                  .icon-tba();
+                  right: 2px;
+                  margin-top: -12px;
+                } 
+              }
+            }
+          }
+        }
         }
       }
 

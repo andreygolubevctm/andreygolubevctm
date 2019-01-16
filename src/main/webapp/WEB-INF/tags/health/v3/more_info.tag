@@ -173,8 +173,12 @@
 							<div class="insureNow">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 							</div>
-							<c:if test="${simplesHealthReformMessaging eq 'active'}">
-								<img class="simplesMoreInfoTierLogo" src="assets/graphics/health_classification/{{= classification.icon}}" height="42" />
+							<c:if test="${simplesHealthReformMessaging eq 'Y'}">
+								<div class="simplesMoreInfoTierLogo {{= classification.icon}}">
+									{{ if(classification.date) { }}
+                      <div class="results-header-classification-date">From {{= classification.date}}</div>
+                  {{ } }}
+								</div>
 							</c:if>
 					</div>
 				</c:when>
@@ -184,8 +188,12 @@
 						<div class="row">
 							<div class="col-xs-12">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
-								<c:if test="${simplesHealthReformMessaging eq 'active'}">
-									<img class="simplesMoreInfoTierLogo" src="assets/graphics/health_classification/{{= classification.icon}}" height="42" />
+								<c:if test="${simplesHealthReformMessaging eq 'Y'}">
+									<div class="simplesMoreInfoTierLogo {{= classification.icon}}">
+									  {{ if(classification.date) { }}
+                      <div class="results-header-classification-date">From {{= classification.date}}</div>
+                    {{ } }}
+										</div>
 								</c:if>
 							</div>
 						</div>
@@ -758,197 +766,46 @@
 					</div>
 				</div>
 				{{ _.each(extras, function(benefit, key){ }}
-				{{ if(!benefit) { }}
-					{{ return; }}
-				{{ } }}
-				{{ if (typeof benefit === 'object') { }}
-				{{ var benefitName = ''; }}
-				{{ var featureIteratorChild; }}
-				{{_.each(featureIterator[0].children, function(child) { }}
-					{{ if (child.shortlistKey === key || child.name === key) { }}
-						{{ featureIteratorChild = child; }}
-						{{ benefitName = child.safeName }}
+					{{ if(!benefit) { }}
+						{{ return; }}
 					{{ } }}
-				{{ }); }}
-				<div class="row benefitRow">
-					<div class="col-xs-7 newBenefitRow benefitRowTitle">
-						{{ var expanded = false; }}
-						{{ _.each(meerkat.modules.healthBenefitsStep.getSelectedBenefits(), function(benefitKey) { }}
-							{{ if (benefitKey === key) { }}
-							{{ expanded = true; }}
-							<span class="selectedExtrasIcon"></span>
+					{{ if (typeof benefit === 'object') { }}
+						{{ var benefitName = ''; }}
+						{{ var featureIteratorChild; }}
+						{{_.each(featureIterator[0].children, function(child) { }}
+							{{ if (child.shortlistKey === key || child.name === key) { }}
+								{{ featureIteratorChild = child; }}
+								{{ benefitName = child.safeName }}
 							{{ } }}
 						{{ }); }}
-						<div class="benefitRowTableCell">
-							{{= benefitName || key.replace(/([A-Z])/g, ' $1').trim() }}
-						<a class="extrasCollapseContentLink" data-toggle="collapse" href="#extrasCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}" aria-controls="collapseExample">
-							<span class="{{= expanded ? 'icon-angle-up' : 'icon-angle-down' }}"></span><span>{{= expanded ? '&nbsp;Less details' : '&nbsp;More details' }}</span>
-						</a>
-						</div>
-					</div>
-					<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
-						{{ var coverType = window.meerkat.modules.healthAboutYou.getSituation(); }}
-							{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && (benefit.benefitLimits.perPerson !== '-')) { }}
-								<div>per person: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
-							{{ } }}
-							{{ if(benefit.benefitLimits.perPolicy !== '-') { }}
-							<div>per policy: {{= benefit.benefitLimits.perPolicy ? benefit.benefitLimits.perPolicy : '' }}</div>
-							{{ } }}
-					</div>
-					<div class="col-xs-1 newBenefitRow benefitRowTitle">
-						<span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
-					</div>
-					<div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
-						{{= benefit.waitingPeriod.substring(0, 20) }}
-					</div>
-				</div>
-				<div class="row collapse benefitCollapsedContent {{= expanded ? 'in' : '' }}" id="extrasCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}">
-					<div class="col-xs-8">
-						<div class="row">
-							<div class="col-xs-6">
-								<div class="row extraBenefitSection">
-									<div class="col-xs-12 extraBenefitSubHeading"><strong>Claim Benefit:</strong></div>
-									<div class="col-xs-12">
-										{{ if (benefit.benefits !== undefined) { }}
-											{{ _.each(benefit.benefits, function (option, key) { }}
-												{{ var situation = window.meerkat.modules.health.getSituation(); }}
-												{{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
-												{{ var trimmedKey = key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim(); }}
-												{{ if(isSingle && trimmedKey === 'per person') { }}
-													{{ return; }}
-												{{ } }}
-											<div class="row">
-												<div class="col-xs-9 extraBenefitOption">
-													{{ if(featureIteratorChild) { }}
-														{{ var benefitLimitsName = ''; }}
-														{{ _.each(featureIteratorChild.children, function (child) { }}
-															{{ if(child.resultPath.indexOf(key) > -1) { }}
-																{{ benefitLimitsName = child.safeName; }}
-															{{ } }}
-														{{ }); }}
-														{{= benefitLimitsName }}
-													{{ } }}
-												</div>
-												<div class="col-xs-3 extraBenefitOption align-center">
-													{{ if(!option) { }}
-														None
-													{{ } else { }}
-														{{= option }}
-													{{ } }}
-												</div>
-											</div>
-											{{ }); }}
-										{{ } }}
-										{{ _.each(benefit, function (option, key) { }}
-											{{ if (key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent') { }}
-												<div class="row">
-													<div class="col-xs-9 extraBenefitOption">
-														{{ if(featureIteratorChild) { }}
-															{{ var benefitLimitsName = ''; }}
-															{{ _.each(featureIteratorChild.children, function (child) { }}
-																{{ if(child.resultPath.indexOf(key) > -1) { }}
-																	{{ benefitLimitsName = child.safeName; }}
-																{{ } }}
-															{{ }); }}
-															{{= benefitLimitsName }}
-														{{ } }}
-													</div>
-													<div class="col-xs-3 extraBenefitOption align-center">
-														{{ if(!option || option.trim() === '-') { }}
-															None
-														{{ } else { }}
-															{{= option }}
-														{{ } }}
-													</div>
-												</div>
-											{{ } }}
-										{{ }); }}
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-6">
-								<div class="row">
-									<div class="col-xs-12 extraBenefitSubHeading"><strong>Annual Limits:</strong></div>
-									{{ if (benefit.benefitLimits !== undefined) { }}
-									<div class="col-xs-12">
-										{{ _.each(benefit.benefitLimits, function (option, key) { }}
-											{{ var situation = window.meerkat.modules.health.getSituation(); }}
-											{{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
-											{{ var trimmedKey = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
-											{{ if(isSingle && trimmedKey === 'per person') { }}
-												{{ return; }}
-											{{ } }}
-										{{ if(key !== 'annualLimit') { }}
-											<div class="row">
-												<div class="col-xs-9 extraBenefitOption">
-													{{ var benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim(); }}
-													{{ if(featureIteratorChild) { }}
-														{{ _.each(featureIteratorChild.children, function (child) { }}
-															{{ if(child.resultPath.indexOf(key) > -1) { }}
-																{{ benefitLimitsName = child.safeName; }}
-															{{ } }}
-														{{ }); }}
-														{{= benefitLimitsName }}
-													{{ } else { }}
-														{{= benefitLimitsName }}
-													{{ } }}
-												</div>
-												<div class="col-xs-3 extraBenefitOption align-center">
-													{{ if(!option || option.trim() === '-') { }}
-														None
-													{{ } else { }}
-														{{= option }}
-													{{ } }}
-												</div>
-											</div>
-										{{ } }}
-										{{ }); }}
-										{{ if(benefit.groupLimit) { }}
-										{{ _.each(benefit.groupLimit, function (option, key) { }}
-										{{ if(key !== 'annualLimit') { }}
-										<div class="row">
-											<div class="col-xs-9 extraBenefitOption">
-												{{ var benefitGroupLimitName = key.replace(/([A-Z])/g, ' $1').trim(); }}
-												{{ if(featureIteratorChild) { }}
-													{{ _.each(featureIteratorChild.children, function (child) { }}
-														{{ if(child.resultPath.indexOf(key) > -1) { }}
-															{{ benefitGroupLimitName = child.safeName; }}
-														{{ } }}
-													{{ }); }}
-													{{= benefitGroupLimitName  }}
-												{{ } else { }}
-													{{= benefitGroupLimitName }}
-												{{ } }}
-											</div>
-											<div class="col-xs-3 extraBenefitOption align-center">
-												{{ if(!option || option.trim() === '-') { }}
-													None
-												{{ } else { }}
-													{{= option }}
-												{{ } }}
-											</div>
-										</div>
-										{{ } }}
-										{{ }); }}
-										{{ } }}
-									</div>
-									{{ } }}
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">&nbsp;</div>
-
-					{{ if (benefit.hasSpecialFeatures) { }}
-					<div class="col-xs-8">
-						<div class="row">
-							<div class="col-xs-12 extraBenefitSubHeading"><strong>Extra info:</strong></div>
-							<div class="col-xs-12 extraBenefitOption">{{= benefit.hasSpecialFeatures }}</div>
-						</div>
-					</div>
+						{{ var expanded = false; }}
+						{{ var selectedExtrasBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits(); }}
+						{{ if (selectedExtrasBenefits.indexOf(key) !== -1) { }}
+								{{ expanded = true; }}
+								<health_v3:selected_extras_template />
+						{{ } }}
 					{{ } }}
-				</div>
-				{{ } }}
+				{{ }); }}
+				
+				{{ _.each(extras, function(benefit, key){ }}
+					{{ if(!benefit) { }}
+						{{ return; }}
+					{{ } }}
+					{{ if (typeof benefit === 'object') { }}
+						{{ var benefitName = ''; }}
+						{{ var featureIteratorChild; }}
+						{{_.each(featureIterator[0].children, function(child) { }}
+							{{ if (child.shortlistKey === key || child.name === key) { }}
+								{{ featureIteratorChild = child; }}
+								{{ benefitName = child.safeName }}
+							{{ } }}
+						{{ }); }}
+						{{ var expanded = false; }}
+						{{ var selectedExtrasBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits(); }}
+						{{ if (selectedExtrasBenefits.indexOf(key) === -1) { }}
+							<health_v3:selected_extras_template />
+						{{ } }}
+					{{ } }}
 				{{ }); }}
 			</div>
 		</div>
