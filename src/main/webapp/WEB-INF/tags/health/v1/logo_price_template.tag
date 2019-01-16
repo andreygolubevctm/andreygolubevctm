@@ -65,7 +65,7 @@
             {{ } }}
             <div class="lhcText">
                 <span>
-					{{= textLhcFreePricing}}
+					{{= textPricing}}
                 </span>
             </div>
         </div>
