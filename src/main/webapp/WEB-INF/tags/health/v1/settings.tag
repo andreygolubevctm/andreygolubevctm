@@ -179,7 +179,7 @@
     isDefaultToHealthApply: ${defaultToHealthApply},
 	isTaxTime: '<content:get key="taxTime"/>',
 	isDualPricingActive: ${isDualPriceActive},
-	isHealthReformMessaging: `${simplesHealthReformMessaging}`,
+	isHealthReformMessaging: '<content:get key="simplesHealthReformMessaging"/>',
 	isPyrrActive: ${isPyrrActive},
 	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>
