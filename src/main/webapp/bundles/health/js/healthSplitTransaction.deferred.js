@@ -39,21 +39,25 @@
                     approvedby:     $elements.root.find('.healthSplitTransactionApprovedByRow').first(),
                     authorisation:  $elements.root.find('.healthSplitTransactionAuthorisationRow').first(),
                     messages:       $elements.root.find('.split-trans-validation-messages'),
-                    disableables:   $elements.root.find('.disableable-fields')
+                    disableables:   $elements.root.find('.disableable-fields'),
+                    matchedDatas:    $elements.root.find('.splitTransactionMatchedTransDataGroup'),
+                    userEditables: $elements.root.find('.splitTransactionReasonAndApprovalGroup')
                 };
                 $elements.triggers = {
                     reason:     $elements.wrappers.reason.find("select").first(),
                     submit:     $elements.wrappers.authorisation.find(".btn-authorise").first(),
-                    reset:     $elements.wrappers.authorisation.find(".btn-reset").first()
+                    reset:      $elements.wrappers.authorisation.find(".btn-reset").first()
                 };
                 $elements.inputs = {
                     all: $elements.root.find('input,select'),
-                    disableables: $elements.wrappers.disableables.find('input,select'),
-                    reason: $elements.root.find('#health_payment_details_splitTransaction_reason'),
-                    reasonDisplay: $elements.root.find('#healthSplitTransactionReason'),
-                    approvedby: $elements.root.find('#health_payment_details_splitTransaction_approvedby'),
+                    disableables:      $elements.wrappers.disableables.find('input,select'),
+                    matchedDatas:      $elements.wrappers.matchedDatas.find('input,select'),
+                    userEditables:    $elements.wrappers.userEditables.find('input,select'),
+                    reason:            $elements.root.find('#health_payment_details_splitTransaction_reason'),
+                    reasonDisplay:     $elements.root.find('#healthSplitTransactionReason'),
+                    approvedby:        $elements.root.find('#health_payment_details_splitTransaction_approvedby'),
                     approvedbydisplay: $elements.root.find('#healthSplitTransactionApprovedBy'),
-                    code: $elements.root.find('#health_payment_details_splitTransaction_authorisationcode')
+                    code:              $elements.root.find('#health_payment_details_splitTransaction_authorisationcode')
                 };
 
                 applyEventListeners();
@@ -265,8 +269,8 @@
 
         // Enable/disable fields based on whether authorised
         if(!_.isEmpty(data.other.approvedby)) {
-            $elements.wrappers.disableables.addClass('disabled');
-            $elements.inputs.disableables.each(function() {
+            $elements.wrappers.userEditables.addClass('disabled');
+            $elements.inputs.userEditables.each(function() {
                 var value = $(this).val();
                 $(this).closest('.fieldrow').find('.display-only').empty().append(value);
             });
@@ -276,9 +280,12 @@
                 $elements.triggers.reset.slideDown('fast');
             });
         } else {
-            $elements.wrappers.disableables.removeClass('disabled');
+            $elements.wrappers.userEditables.removeClass('disabled');
             $elements.inputs.reasonDisplay.empty();
             $elements.inputs.approvedbydisplay.empty();
+            $elements.inputs.userEditables.each(function() {
+                $(this).closest('.fieldrow').find('.display-only').empty();
+            });
             $elements.inputs.code.closest('.authorisation-column').show();
             $elements.wrappers.approvedby.slideUp('fast');
             $elements.triggers.reset.slideUp('fast', function(){
@@ -380,9 +387,49 @@
     }
 
 
+    /**
+     * checkTLAuthorised: if AuthCode field has valid value (greater than 6 chars) but team leader authorisation,
+     * not yet checked then do not allow submit
+    */
+    function checkTLAuthorised() {
+        var returnVal = true;
+
+        if ($elements.root.css('display') === 'block') {
+            if ($elements.inputs.code.prop("required")) {
+                if ($elements.inputs.code.val().length > 5) {
+
+                    if ($elements.inputs.code.css('display') === 'block') {
+                        returnVal = false;
+
+                        $elements.inputs.code.toggleClass("has-success", false);
+                        $elements.inputs.code.toggleClass("has-error", true);
+                        $elements.inputs.code.parent().parent().toggleClass("has-success", false);
+                        $elements.inputs.code.parent().parent().toggleClass("has-error", true);
+                        $elements.inputs.code.attr('aria-invalid', 'true');
+
+                        if ($elements.inputs.code.parent().parent().find('.error-field').length) {
+
+                            if ($('#health_payment_details_splitTransaction_authorisationcode-error').length) {
+                                $('#health_payment_details_splitTransaction_authorisationcode-error').html("Authorisation required");
+                            } else {
+                                $elements.inputs.code.parent().parent().find('.error-field').prepend('<label id="health_payment_details_splitTransaction_authorisationcode-error" class="has-error" for="health_payment_details_splitTransaction_authorisationcode">Authorisation required</label>');
+                            }
+                        } else {
+                            $elements.inputs.code.parent().parent().prepend('<div class="error-field" style="display: block;"><label id="health_payment_details_splitTransaction_authorisationcode-error" class="has-error" for="health_payment_details_splitTransaction_authorisationcode">Authorisation required</label></div>');
+                        }
+                    }
+                }
+            }
+        }
+
+        return returnVal;
+    }
+
+
     meerkat.modules.register("healthSplitTransaction", {
         init: init,
-        checkIfMatchingCustomerTransactions: checkIfMatchingCustomerTransactions
+        checkIfMatchingCustomerTransactions: checkIfMatchingCustomerTransactions,
+        checkTLAuthorised: checkTLAuthorised
 
     });
 
