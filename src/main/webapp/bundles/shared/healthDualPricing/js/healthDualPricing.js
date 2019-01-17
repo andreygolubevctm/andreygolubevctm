@@ -277,7 +277,7 @@
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
         product.showRisingTag = (isForSidebar && deviceMediaState !== 'xs') || (meerkat.site.pageAction === 'confirmation');
-        product.showBeforeAfterText = (isForSidebar && deviceMediaState !== 'xs') || isForAffixedHeader;
+        product.showBeforeAfterText = (isForSidebar) || isForAffixedHeader;
         product.priceBreakdown = meerkat.modules.healthPriceBreakdown.showBreakdown();
 
         var pricingDate = new Date(selectedProduct.pricingDate);
@@ -294,7 +294,7 @@
         product.displayLogo = false;
         product.showCurrPremText = false;
         product.showRisingTag = false;
-        product.priceBreakdown = false;
+
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
         affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);

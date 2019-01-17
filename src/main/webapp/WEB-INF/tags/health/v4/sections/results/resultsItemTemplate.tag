@@ -20,14 +20,21 @@
         {{          benefitGroup = 'extras'; }}
         {{      } }}
         {{ } }}
-        <div class="labelInColumn {{= ft.classStringForInlineLabel }}">
-            <div class="content {{= ft.labelInColumnContentClass }}" data-featureId="{{= ft.id }}">
+        <div class="labelInColumn {{= ft.classStringForInlineLabel }} {{= ft.classStringForInlineLabelCover }}">
+            <div class="content" data-featureId="{{= ft.id }}">
                 <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
                     <div class="cover-title">
                         <span class="health-icon {{= ft.iconClass }}"></span> {{= ft.safeName }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
                     </div>
                     <div class="benefit-container">
-                        <span class="benefit-icon" />
+                        <div class="benefit-container-item {{= ft.labelInColumnContentClass }}">
+                            <span {{= ft.labelInColumnContentClassApril }}>Now</span>
+                            <span class="benefit-icon" />
+                        </div>
+                        <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
+                            <span>From April 1</span>
+                            <span class="benefit-icon" />
+                        </div>
                     </div>
                 </div>
             </div>
