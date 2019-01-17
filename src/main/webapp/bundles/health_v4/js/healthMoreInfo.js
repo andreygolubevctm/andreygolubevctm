@@ -351,10 +351,6 @@
             applyBy: $('.applyBy')
         };
 
-        if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
-            $elements.pricingContainer.removeClass('col-xs-6').addClass('col-xs-12');
-        }
-
         _setTabs();
 
         var toggleBarInitSettings = {
@@ -386,7 +382,7 @@
 
         // $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function () {
             $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderLarge', isDocked);
-            $moreInfoContent.css({ 'height': 'calc(100% - ' + (dockedHeaderLargeHeight + 20) + 'px)' });
+            $moreInfoContent.css({ 'height': 'calc(100% - ' + (dockedHeaderLargeHeight) + 'px)' });
             $moreInfoContent.css({ 'overflow': 'scroll' });
             $moreInfoContent.css({ '-webkit-overflow-scrolling': 'touch' });
             contentTop = isDocked ? $moreInfoContent.position().top : 0;

@@ -183,7 +183,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
     height: 250px;
 
     @media (@lg) {
-    height: 180px;
+    height: 230px;
     }
     
     display: flex;
@@ -305,7 +305,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
           @media (@sm) {
             height: 88px;
-            line-height: 88px;
           }
 
           @media (@lg) {
@@ -450,10 +449,10 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
       .price.premium {
         .lhcText {
-          margin-top: 5px;
+          margin-top: 0px;
 
           @media (@xs-only) {
-            display: none;
+            font-size: 12px;
           }
         }
       }
@@ -480,10 +479,10 @@ body[data-step="results"]:not(.moreInfoVisible) {
       .price.premium {
         .lhcText {
           float: right;
-          margin-left: 10px;
+          margin-left: 0px;
 
           @media (@xs-only) {
-            display: none;
+            font-size: 12px;
           }
         }
       }
@@ -618,10 +617,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
           }
         }
 
-        .lhcText {
-          display: none;
-        }
-
         .dual-pricing-learn-more {
           float: none;
           line-height: 16px;
@@ -674,7 +669,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
         }
 
         .lhcText {
-          display: none;
+          font-size: 12px;
         }
 
         h3,
@@ -763,12 +758,11 @@ body[data-step="results"]:not(.moreInfoVisible) {
       .clearfix;
 
       .companyLogo {
-        float: left;
+        margin-bottom: 10px;
       }
 
       .price.premium {
-        float: right;
-        width: 60%;
+        margin-bottom: 10px;
       }
     }
 

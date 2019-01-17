@@ -9,10 +9,14 @@
     <div class="col-xs-12 productWidgetSection">
         <h3 class="productWidgetName">{{= info.productTitle }}</h3>
     </div>
-    <c:if test="${onlineHealthReformMessaging eq true}">
+    <c:if test="${onlineHealthReformMessaging eq 'Y'}">
         <div class="col-xs-12 productWidgetSection">
             {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-            <div class="more-info-classification-icon {{= classification.icon}}" />
+            <div class="more-info-classification-icon {{= classification.icon}}">
+            {{ if(classification.date) { }}
+                <div class="results-header-classification-date">From {{= classification.date}}</div>
+            {{ } }}
+            </div>
         </div>
     </c:if>
     <div class="col-xs-12 productWidgetSection">

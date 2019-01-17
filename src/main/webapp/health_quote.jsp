@@ -7,6 +7,7 @@
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
 <session:new verticalCode="HEALTH" authenticated="true" />
 <c:set var="comparisonMode" scope="request"><content:get key="comparisonMode" /></c:set>
+<c:set var="simplesHealthReformMessaging" scope="request"><content:get key="simplesHealthReformMessaging" /></c:set>
 
 <health_v1:redirect_rules />
 

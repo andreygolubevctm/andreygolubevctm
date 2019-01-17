@@ -54,8 +54,8 @@
             lhcContainers: $('.lhcRebateCalcTrigger'),
             dependentsSelect: $('#health_healthCover_dependants'),
             incomeLabelSpans: {
-                single: $('#health_healthCover_income_field_row .control-label span[data-situation=single]'),
-                hasPartner: $('#health_healthCover_income_field_row .control-label span[data-situation=hasPartner]')
+                single: $('#health_healthCover_situation_single'),
+                hasPartner: $('#health_healthCover_situation_hasPartner')
             },
             incomeSelect: $(':input[name="health_healthCover_income"]'),
             rebateLabel: $('#rebateLabel'),
@@ -170,7 +170,7 @@
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(forceRebate, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
 
-                if ($elements.incomeSelect.filter(':checked').length > 0) {
+                if ($elements.incomeSelect.get(0).selectedIndex > 0) {
                     $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
                 }
 

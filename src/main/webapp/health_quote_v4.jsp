@@ -97,7 +97,6 @@
                 <c:if test="${not empty callCentreNumber}">
                     <div class="navbar-collapse header-collapse-contact collapse online-results-control-container" data-online-category-version="${onlineCategoryVersion}">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-                            <li><a href="javascript:;" class="refine-results">Refine</a></li>
                             <li class="navbar-text hidden-sm call-opening-text">
                                 ${desktopOpenText}
                             </li>
@@ -199,6 +198,7 @@
 
                 <health_v1:choices xpathBenefits="${pageSettings.getVerticalCode()}/benefits" xpathSituation="${pageSettings.getVerticalCode()}/situation" />
 
+                <!-- <a class="refine-results" href="javascript:;"><span class="icon icon-filter"></span> <span>Filter</span></a> -->
 
                 <%-- generate the benefit fields (hidden) for form selection. --%>
                 <div class="hiddenFields">

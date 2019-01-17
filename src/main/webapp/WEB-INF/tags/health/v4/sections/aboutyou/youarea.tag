@@ -11,7 +11,7 @@
 <c:set var="fieldXpath" value="${xpath}/healthCvr" />
 <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="about you" quoteChar="\"" /></c:set>
 
-<form_v4:row label="Comparing private health insurance for" fieldXpath="${fieldXpath}" className="health-cover lhcRebateCalcTrigger">
+<form_v4:row hideRowBorder="true" label="I want to compare private health insurance for:" fieldXpath="${fieldXpath}" className="health-cover lhcRebateCalcTrigger">
 	<field_v2:array_radio xpath="${fieldXpath}"
 		required="true"
 		className="health-situation-healthCvr has-icons"
