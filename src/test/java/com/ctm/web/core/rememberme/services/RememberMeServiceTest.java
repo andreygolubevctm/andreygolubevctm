@@ -3,6 +3,7 @@ package com.ctm.web.core.rememberme.services;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
@@ -153,7 +154,7 @@ public class RememberMeServiceTest {
     }
 
     @Test
-    public void testValidateAnswer() throws GeneralSecurityException, DaoException, SessionException {
+    public void testValidateAnswer() throws GeneralSecurityException, DaoException, SessionException, SessionExpiredException {
         final Long cookieTransactionId = 12345678L;
         final Data data = new Data();
         final String validAnswer = "01/02/1985";

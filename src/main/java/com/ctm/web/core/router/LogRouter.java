@@ -2,6 +2,7 @@ package com.ctm.web.core.router;
 
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.services.FormValidationService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
@@ -91,7 +92,7 @@ public class LogRouter extends HttpServlet {
 			else {
 				writer.print(new JSONObject().toString());
 			}
-		} catch (DaoException | SessionException e) {
+		} catch (DaoException | SessionException | SessionExpiredException e) {
 			LOGGER.error("Failed to log form validation errors", e);
 		}
 

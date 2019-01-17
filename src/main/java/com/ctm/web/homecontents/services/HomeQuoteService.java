@@ -6,6 +6,7 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.providers.model.AggregateOutgoingRequest;
@@ -176,7 +177,7 @@ public class HomeQuoteService extends CommonRequestServiceV2 {
         return ResponseAdapter.adapt(moreInfoResponse);
     }
 
-    public void writeTempResultDetails(HttpServletRequest request, HomeRequest data, List<HomeResult> quotes) throws SessionException, DaoException {
+    public void writeTempResultDetails(HttpServletRequest request, HomeRequest data, List<HomeResult> quotes) throws SessionException, SessionExpiredException, DaoException {
 
         Data dataBucket = sessionDataServiceBean.getDataForTransactionId(request, data.getTransactionId().toString(), true);
 

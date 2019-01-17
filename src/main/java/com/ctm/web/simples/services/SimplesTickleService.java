@@ -1,5 +1,6 @@
 package com.ctm.web.simples.services;
 
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
@@ -41,6 +42,9 @@ public class SimplesTickleService {
             } else {
                 fatalErrorService.logFatalError(0, "simplesTickle", false, "Not Found", "Could not find simplesUid", transactionId);
             }
+        } catch(SessionExpiredException e) {
+            LOGGER.info("Problem performing simples tickle {}", kv("errorMessage",  e.getMessage()), e);
+            throw new ServletException(e);
         } catch (DaoException | SessionException e) {
             fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
             LOGGER.error("Error performing simples tickle {}", kv("simplesUid",  authenticatedData), e);
