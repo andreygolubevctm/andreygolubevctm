@@ -49,6 +49,8 @@
     }
 
     function renderTemplate(premium, frequency, showCopyPanel) {
+        if(!_template) return;
+
         var html = _.template(_template.html());
         return html({
             premium: premium,
@@ -58,7 +60,7 @@
     }
 
     function showLHC(product, frequency) {
-        return (((product.premium[frequency].lhc !== '$0.00' && product.premium[frequency].lhcfreepricing.indexOf('The premium may be affected by LHC ') < 0) ||
+        return (((product.premium[frequency].lhc !== '$0.00') ||
             (!_.isNull(meerkat.modules.healthLHC.getNewLHC()) && meerkat.modules.healthLHC.getNewLHC() > 0)) && meerkat.modules.journeyEngine.getCurrentStep().navigationId !=='apply');
     }
 

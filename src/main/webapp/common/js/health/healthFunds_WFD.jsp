@@ -139,7 +139,7 @@ var healthFunds_WFD = {
                 'Your first payment will be debited within 48 hours and this will be a pro-rata amount until next Thursday. Your regular premium will be deducted from your nominated account on a Thursday.');
 
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.deduction-message').remove();
-        healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.statement').before('<p class="deduction-message" style="margin-top:1em">'+ deductionMsg +'</p>');
+        healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.statement').before('<p class="deduction-message" style="margin-top:1em; color: #ff5f5f">'+ deductionMsg +'</p>');
     },
     unset: function() {
 

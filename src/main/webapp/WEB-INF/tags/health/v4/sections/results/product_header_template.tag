@@ -31,6 +31,18 @@
                         <div class="dual-pricing-before-after-text">Now</div>
                     {{ } }}
                     {{= priceTemplate(obj) }}
+
+                     {{ if (obj.hasOwnProperty('premium')) { }}
+	                    {{ var prem = obj.premium[obj._selectedFrequency]; }}
+				        {{ var priceLhcfreetext = prem.lhcfreetext ? prem.lhcfreetext : formatCurrency(prem.lhcFreeAmount) }}
+				        {{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
+                     
+                    <div class="lhcText hide-on-affix">
+                        <span>
+							{{= textLhcFreePricing}}
+                        </span>
+                    </div>
+                     {{ } }}
                 </div>
 
                 {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
@@ -45,13 +57,7 @@
                 {{ var result = healthResultsTemplate.getPricePremium(obj._selectedFrequency, availablePremiums, obj.mode); }}
                 {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
 
-                {{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
-                    <div class="lhcText hide-on-affix">
-                        <span>
-                            {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
-                        </span>
-                    </div>
-                {{ } else { }}
+                {{ if (obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown && window.meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment') { }}
                     {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, result.frequency, true) }}
                 {{ } }}
             {{ } }}
@@ -63,7 +69,11 @@
             <c:when test="${onlineHealthReformMessaging eq 'Y'}">
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
                 <div class="results-header-classification">
-                    <div class="results-header-classification-icon {{= classification.icon}}" />
+                   <div class="results-header-classification-icon {{= classification.icon}}">
+                        {{ if(classification.date) { }}
+                            <div class="results-header-classification-date">From {{= classification.date}}</div>
+                        {{ } }}
+                    </div>
                 </div>
             </c:when>
             </c:choose>

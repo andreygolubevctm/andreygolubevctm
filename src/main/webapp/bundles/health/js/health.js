@@ -675,6 +675,7 @@
 				// Submit application button
 				$("#submit_btn").on('click', function(event){
 					var valid = meerkat.modules.journeyEngine.isCurrentStepValid();
+					var secondaryValidation = true;
 
 					// Because validation is inline we can't see them inside privacy/compliance panels.
 					if (meerkat.site.isCallCentreUser === true) {
@@ -689,10 +690,12 @@
 								$this.find('.payment-complete-text').remove();
 							}
 						});
+
+						secondaryValidation = meerkat.modules.healthSplitTransaction.checkTLAuthorised();
 					}
 
 					// Validation passed, submit the application after showing confirmation modal - see subscribe event below.
-					if (valid) {
+					if (valid && secondaryValidation) {
                         meerkat.modules.healthPayConfDetailsModal.open(submitApplication);
 					}
 				});

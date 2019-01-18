@@ -21,6 +21,10 @@
         {{ if (typeof property[freq] !== "undefined") { }}
         {{ var premium = property[freq] }}
         {{ var priceText = premium.text ? premium.text : formatCurrency(premium.payableAmount) }}
+        {{ var isPaymentPage = meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment'; }}
+        {{ if(!isPaymentPage) { }}
+            {{ priceText = premium.lhcfreetext; }}
+        {{ } }}
         {{ var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount) }}
         {{ var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate' }}
         {{ var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount) }}
@@ -34,7 +38,7 @@
             <div class="frequencyTitle">
                 {{= freq === 'halfyearly' ? 'Half yearly' : freq.charAt(0).toUpperCase() + freq.slice(1) }}
             </div>
-            {{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
+            {{ if ((!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) || window.meerkat.modules.journeyEngine.getCurrentStep().navigationId !=='payment' ) { }}
             <div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
             {{ } else { }}
             {{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, freq, false) }}

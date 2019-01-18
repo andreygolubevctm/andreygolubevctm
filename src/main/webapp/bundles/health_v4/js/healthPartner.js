@@ -22,7 +22,7 @@
             partnerEverHadPrivateHospital_2: $('input[name=health_application_partner_everHadCoverPrivateHospital2]'),
             partnerCurrentFundName: $('select[name=health_healthCover_partner_fundName]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
-            additionalFieldsToHide: $('#health_insurance_preferences_additional_partner_fields'),
+            additionalFieldsToHide: $('#health_insurance_preferences_additional_partner_fields, #health_insurance_preferences_additional_partner_title'),
             benefitsScrollerLinks: $('.benefitsScroller'),
             coverLoadingHeading: $('.benefitsContainer').find('h3:first-child'),
             appDob: $('#health_application_partner_dob'),

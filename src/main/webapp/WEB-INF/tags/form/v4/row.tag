@@ -2,6 +2,7 @@
 <%@ tag description="Represents a single row on a form with grid layout on sm+ of 4 - 8" %>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<%@ attribute name="hideRowBorder" required="false" rtexprvalue="true" description="toggle the row border" %>
 <%@ attribute name="label" required="false" rtexprvalue="true" description="label for the field" %>
 <%@ attribute name="subLabel" required="false" rtexprvalue="true" description="sublabel for the field" %>
 <%@ attribute name="id" required="false" rtexprvalue="true" description="optional id for this row" %>
@@ -32,11 +33,16 @@
 <c:if test="${showHelpIcon eq false}"><c:set var="labelWidthXs" value="12" /></c:if>
 <c:set var="formGroupClasses" value="" />
 <c:set var="labelClass" value="hidden-sm hidden-md hidden-lg" />
+<c:set var="rowClass" value=" " />
+
+<c:set var="rowBorderClass" value="" />
+<c:if test="${hideRowBorder eq true}">
+    <c:set var="rowBorderClass" value="hide-row-border " />
+</c:if>
 <c:if test="${not isNestedField eq true}">
     <c:set var="formGroupClasses" value="form-group row " />
     <c:set var="labelClass" value="" />
 </c:if>
-<c:set var="inputClass" value=" " />
 <c:if test="${isNestedStyleGroup eq true}">
     <c:set var="formGroupClasses" value="nestedGroup form-group " />
     <c:set var="inputClass" value="row " />
@@ -46,7 +52,7 @@
 <c:if test="${showLabel eq false}"><c:set var="inputOffsetSm" value="col-sm-offset-4 " /></c:if>
 <%-- / SETUP --%>
 
-<div class="${formGroupClasses} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
+<div class="${formGroupClasses} ${rowBorderClass} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
     <%-- Row Label --%>
     <c:if test="${showLabel}">
         <div class="col-xs-<c:out value="${labelWidthXs} " /> col-sm-4 <c:out value="${labelClass}" />">

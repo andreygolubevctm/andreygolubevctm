@@ -9,10 +9,7 @@ import com.ctm.web.car.exceptions.RegoLookupException;
 import com.ctm.web.car.model.CarDetails;
 import com.ctm.web.car.model.MotorwebResponse;
 import com.ctm.web.core.content.services.ContentService;
-import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.ServiceConfigurationException;
-import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.*;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
@@ -160,7 +157,7 @@ public class RegoLookupService {
         try {
             RequestUtils.checkForTransactionIdInDataBucket(request); // Will throw exception if fails
             return true;
-        } catch(SessionException e) {
+        } catch(SessionException | SessionExpiredException e) {
             LOGGER.debug("[rego lookup] Error occurred verifying transaction {}", e);
             throw new RegoLookupException(RegoLookupStatus.TRANSACTION_UNVERIFIED, e);
         }

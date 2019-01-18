@@ -62,7 +62,6 @@
 			</div>
 			{{= renderedAltPriceTemplate }}
 		</div>
-		<div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? textLhcFreePricing : textPricing }}</div>
 	</div>
 </core_v1:js_template>
 

@@ -19,6 +19,7 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.model.session.SessionData;
@@ -249,7 +250,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                 .collect(toList());
     }
 
-    public void writeTempResultDetails(HttpServletRequest request, CarRequest data, List<CarResult> quotes) throws SessionException, DaoException {
+    public void writeTempResultDetails(HttpServletRequest request, CarRequest data, List<CarResult> quotes) throws SessionException, SessionExpiredException, DaoException {
 
         Data dataBucket = sessionDataServiceBean.getDataForTransactionId(request, data.getTransactionId().toString(), true);
 
