@@ -31,18 +31,6 @@
                         <div class="dual-pricing-before-after-text">Now</div>
                     {{ } }}
                     {{= priceTemplate(obj) }}
-
-                     {{ if (obj.hasOwnProperty('premium')) { }}
-	                    {{ var prem = obj.premium[obj._selectedFrequency]; }}
-				        {{ var priceLhcfreetext = prem.lhcfreetext ? prem.lhcfreetext : formatCurrency(prem.lhcFreeAmount) }}
-				        {{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
-                     
-                    <div class="lhcText hide-on-affix">
-                        <span>
-							{{= textLhcFreePricing}}
-                        </span>
-                    </div>
-                     {{ } }}
                 </div>
 
                 {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
