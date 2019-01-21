@@ -40,12 +40,12 @@
 
                         <c:choose>
                         <c:when test="${onlineHealthReformMessaging eq 'Y'}">
+                            <h3 class="reform-messaging-title">A few important things before you get started.</h3>
                             <div class="reform-messaging">
-                                To align with the Australian government health insurance reforms that will come into full effect by April 2019. we have made it simple for you o find a health insurance policy that suits your needs.
+                                To align with the Australian government health insurance reforms that will come into effect from April 2019, we have made it simple for you to find a health insurance policy that suits your needs.                                
                                 <br>
                                 <br>
-                                Each quote we provide includes details on your cover options leading upto April 2019 as well as beyond, allowing you to make the choice that's right for you.
-                            </div>
+                                Each quote we provide includes details on your cover options leading up to April 2019 as well as beyond, allowing you to make the choice that's right for you.                            </div>
                         </c:when>
                         </c:choose>
 
