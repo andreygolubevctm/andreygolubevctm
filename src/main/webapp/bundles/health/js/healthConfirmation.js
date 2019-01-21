@@ -241,9 +241,21 @@
 		}
 	}
 
+	function showEnergyCrossSell() {
+		var state = window.meerkat.modules.healthChoices.getState();
+		var postCode = window.meerkat.modules.healthChoices.getPostcode();
+
+		if($.inArray(state, ['ACT', 'NSW', 'VIC']) !== -1) {
+			return true;
+		}
+
+		return false;
+	}
+
 	meerkat.modules.register('healthConfirmation', {
 		init: init,
-		getPremium: getPremium
+		getPremium: getPremium,
+		showEnergyCrossSell: showEnergyCrossSell
 	});
 
 })(jQuery);

@@ -19,17 +19,12 @@
     </div>
     {{ } }}
 
-    {{ if(meerkat.site.isCallCentreUser) { }}
-        {{ if(typeof obj.hasOwnProperty('showCurrPremText') && obj.showCurrPremText === true) { }}
-        <p>Current premium</p>
-        {{ } }}
-    {{ } else { }}
-        {{ if(typeof obj.hasOwnProperty('showBeforeAfterText') && obj.showBeforeAfterText === true) { }}
-        <div class="dual-pricing-before-after-text">
+    {{ if(typeof obj.hasOwnProperty('showBeforeAfterText') && obj.showBeforeAfterText === true) { }}
+       <div class="dual-pricing-before-after-text">
             <span class="text-bold">
-            {{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { }}After{{ } else { }}Before{{ } }}
-            </span> April 1st</div>
-        {{ } }}
+              {{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { }}After{{ } else { }}Before{{ } }}
+            </span> April 1st
+        </div>
     {{ } }}
 
     {{ var pyrrClass = meerkat.modules.healthPyrrCampaign.isPyrrActive(true) ? " pyrrMoreInfoInline" : ""; }}

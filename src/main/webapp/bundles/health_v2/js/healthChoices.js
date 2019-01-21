@@ -108,6 +108,15 @@
 		}
 	}
 
+	function getPostcode() {
+		return $elements.postcode.val();
+	}
+
+	function getState() {
+		return $elements.state.val();
+	}
+
+
 	function shouldPerformUpdate(performUpdate) {
 		_performUpdate = performUpdate;
 	}
@@ -139,6 +148,8 @@
 		setCover: setCover,
 		setLocation: setLocation,
 		setState: setState,
+		getPostcode: getPostcode,
+		getState: getState,
 		shouldPerformUpdate: shouldPerformUpdate
 	});
 

@@ -184,9 +184,10 @@
 
 						</div>
 
+					{{ if(meerkat.modules.healthConfirmation.showEnergyCrossSell()) { }}
 						<c:if test="${not empty callCentre and callCentre}">
 							<div class="row confirmation-complete no-wimples">
-								<div class="callbackLeads simples-dialogue yellow">
+								<div class="callbackLeads simples-dialogue red">
 
 									<div class="lbContactName hidden">${lbContactName}</div>
 									<div class="lbContactDOB hidden">${lbContactDOB}</div>
@@ -197,8 +198,9 @@
 									<div class="lbContactEmail hidden">${lbContactEmail}</div>
 									<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
 
-									<simples:dialogue id="98" vertical="health" mandatory="true" className="simples-lifebroker-leads yellow" />
-
+								
+									<simples:dialogue id="98" vertical="health" className="simples-lifebroker-leads red" />
+									
 									<div class="callbackLeadsContent hidden">
 
 										<div class="call-now-panel">
@@ -275,6 +277,8 @@
 
 							</div>
 						</c:if>
+					{{ } }}
+
 
 						<div class="row confirmation-complete">
 
