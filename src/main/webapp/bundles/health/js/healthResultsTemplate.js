@@ -274,6 +274,7 @@
 
         ft.isRestricted = false;
         ft.isNotCovered = false;
+        ft.isTbaApril = false;
 
         switch(nowVal) {
             case 'R' :
@@ -436,7 +437,7 @@
                 return day + ' Jun ' + year;
             case 'July':
                 return day + ' Jul ' + year;
-            case 'August':
+            case 'August':gov-unclassified
                 return day + ' Aug ' + year;
             case 'September':
                 return day + ' Sep ' + year;

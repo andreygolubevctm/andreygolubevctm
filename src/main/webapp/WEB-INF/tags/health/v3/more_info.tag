@@ -175,7 +175,7 @@
 							</div>
 							<c:if test="${simplesHealthReformMessaging eq 'Y'}">
 								<div class="simplesMoreInfoTierLogo {{= classification.icon}}">
-									{{ if(classification.date) { }}
+                  {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                       <div class="results-header-classification-date">From {{= classification.date}}</div>
                   {{ } }}
 								</div>
@@ -190,7 +190,7 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 								<c:if test="${simplesHealthReformMessaging eq 'Y'}">
 									<div class="simplesMoreInfoTierLogo {{= classification.icon}}">
-									  {{ if(classification.date) { }}
+                    {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                       <div class="results-header-classification-date">From {{= classification.date}}</div>
                     {{ } }}
 										</div>

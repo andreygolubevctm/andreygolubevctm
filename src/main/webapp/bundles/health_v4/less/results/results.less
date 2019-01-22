@@ -930,13 +930,19 @@
           .contentInner {
             .benefit-container {
               margin-top: 10px;
-              height: 21px;
+              max-height: 43px;
+
+              @media (@lg) {
+                height: 21px;
+              }
               .benefit-container-item {
                 display: inline;
+                margin: 5px 0px;
 
                 @media (@xs-only) {
                  width: 100%;
                  display: block;
+                 height: 19px;
                 }
               }
               .benefit-icon {
@@ -967,6 +973,7 @@
                   &::before {
                     content: '\e601';
                     color: @theme-accent-3;
+                    vertical-align: top;
                   } 
                 }
               }
@@ -982,6 +989,7 @@
                     .icon-r();
                     right: 2px;
                     margin-top: -12px;
+                    vertical-align: top;
                   } 
                 }
               }
@@ -995,6 +1003,8 @@
                   display: none;
                 }
               .benefit-icon {
+                margin-left: 0px;
+                
                 &::before {
                   .icon-tba();
                   right: 2px;

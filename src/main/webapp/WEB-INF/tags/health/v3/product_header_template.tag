@@ -68,7 +68,7 @@
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
                 <div class="results-header-classification">
                     <div class="results-header-classification-icon {{= classification.icon}}">
-                    {{ if(classification.date) { }}
+                    {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                         <div class="results-header-classification-date">From {{= classification.date}}</div>
                     {{ } }}
                     </div>

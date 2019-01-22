@@ -14,19 +14,13 @@
 <script id="moreInfoAffixedHeaderMobileTemplate" type="text/html">
 	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if> visible-xs">
 		<div class="dockedHdr dockedHeaderLarge cloned-docked-header">
-			<div>
+			<div class="header-fund-details">
 				<div class="logo-header col-xs-4">
 					<div class="companyLogo {{= info.provider }}"></div>
 				</div>
 				<div class="productTitleText col-xs-8">
 					<h5 class="noTopMargin productName">{{= info.productTitle }}</h5>
-					<div class="col-xs-12 aboutThisFundLink">
-        		<a href="javascript:;" class="about-this-fund"><img class="aboutIcon" src="assets/brand/ctm/images/icons/down_arrow.svg" />About this fund</a>
-    			</div>
 				</div>
-			</div>
-			<div class="text-center mobile-pricing">
-				{{= renderedPriceTemplate }}
 			</div>
 			{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
 				{{= renderedPyrrCampaign }}
@@ -39,17 +33,20 @@
 						<c:choose>
 							<c:when test="${continueOnlineAsCTA eq 'Y'}">
 								${continueOnlineCTAHtml}
+									</div>
+								</div>
 							</c:when>
 							<c:otherwise>
+									</div>
+								</div>
 							</c:otherwise>
 						</c:choose>
 					</c:when>
 					<c:otherwise>
+							</div>
 						${continueOnlineCTAHtml}
-						${quoteRefHtml}
+						</div>
 					</c:otherwise>
 				</c:choose>
-			</div>
-		</div>
 	</div>
 </script>
