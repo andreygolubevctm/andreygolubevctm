@@ -3,6 +3,7 @@ package com.ctm.web.core.rememberme.services;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.session.SessionData;
 
 import com.ctm.web.core.security.StringEncryption;
@@ -400,6 +401,9 @@ public class RememberMeService {
     private Data getDataBucket(final HttpServletRequest request,final String transactionId) {
         try {
             return sessionDataServiceBean.getDataForTransactionId(request, transactionId, true);
+        } catch(SessionExpiredException e) {
+            LOGGER.info(e.getMessage() + " {}", kv("transactionId", transactionId), e);
+            throw new RuntimeException(e);
         } catch (DaoException | SessionException e) {
             LOGGER.error("Error getting data for transactionId {}", kv("transactionId", transactionId), e);
             throw new RuntimeException(e);

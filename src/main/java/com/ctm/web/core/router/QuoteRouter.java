@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.utils.RequestUtils;
 import org.slf4j.Logger;
@@ -80,6 +81,8 @@ public class QuoteRouter extends HttpServlet {
 				} else {
 					writer.print(new JSONObject().toString());
 				}
+			} catch(SessionExpiredException e) {
+				LOGGER.info(e.getMessage() + " {}", kv("requestUri", request.getRequestURI()), e);
 			} catch (DaoException | SessionException e) {
 				LOGGER.error("Failed handling quote request {}", kv("requestUri", request.getRequestURI()), e);
 				// Fails silently.
@@ -92,10 +95,10 @@ public class QuoteRouter extends HttpServlet {
 	/**
 	 * Retrieve the current sessions data bucket
 	 */
-	private Data getData(HttpServletRequest request, long transactionId) throws SessionException {
+	private Data getData(HttpServletRequest request, long transactionId) throws SessionException, SessionExpiredException {
 		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 		if (sessionData == null) {
-			throw new SessionException("session has expired");
+			throw new SessionExpiredException("Session has expired");
 		}
 		return sessionData.getSessionDataForTransactionId(transactionId);
 	}

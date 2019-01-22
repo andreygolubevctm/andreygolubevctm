@@ -1,6 +1,7 @@
 package com.ctm.web.core.utils;
 
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.SessionDataService;
@@ -76,7 +77,7 @@ public class RequestUtils {
      * @param request
      * @return
      */
-    public static void checkForTransactionIdInDataBucket(HttpServletRequest request) throws SessionException {
+    public static void checkForTransactionIdInDataBucket(HttpServletRequest request) throws SessionException, SessionExpiredException {
         String uri = request.getRequestURI();
 
         long transactionId = RequestUtils.getTransactionIdFromRequest(request);
@@ -100,10 +101,10 @@ public class RequestUtils {
     /**
      * Retrieve the current sessions data bucket
      */
-    private Data getData(HttpServletRequest request, long transactionId) throws SessionException {
+    private Data getData(HttpServletRequest request, long transactionId) throws SessionException, SessionExpiredException {
         SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
         if (sessionData == null) {
-            throw new SessionException("Session has Expired");
+            throw new SessionExpiredException("Session has Expired");
         }
         return sessionData.getSessionDataForTransactionId(transactionId);
     }
@@ -111,7 +112,7 @@ public class RequestUtils {
     /**
      * To make getData accessible via a static method.
      */
-    public static Data getValidDataBucket(HttpServletRequest request, long transactionId) throws SessionException {
+    public static Data getValidDataBucket(HttpServletRequest request, long transactionId) throws SessionException, SessionExpiredException {
         RequestUtils utils = new RequestUtils();
         return utils.getData(request, transactionId);
     }

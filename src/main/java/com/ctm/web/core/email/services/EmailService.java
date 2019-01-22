@@ -6,6 +6,7 @@ import com.ctm.web.core.email.model.EmailResponse;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
@@ -161,8 +162,11 @@ public class EmailService {
 			if(transactionId > 0) {
 				try {
 					data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+				} catch (SessionExpiredException e) {
+					LOGGER.info("Session has expired {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
+							kv("transactionId", transactionId), e);
 				} catch (SessionException e) {
-					LOGGER.warn("Failed to get session data {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
+					LOGGER.warn("Failed to get session data {}, {}, {}, {}", kv("errorMessage", e.getMessage()), kv("mode", mode), kv("emailAddress", emailAddress),
 							kv("transactionId", transactionId), e);
 				}
 			}

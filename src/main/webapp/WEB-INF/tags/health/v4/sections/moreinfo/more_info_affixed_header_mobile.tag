@@ -13,8 +13,8 @@
 
 <script id="moreInfoAffixedHeaderMobileTemplate" type="text/html">
 	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if> visible-xs">
-		<div class="row dockedHdr dockedHeaderLarge cloned-docked-header">
-			<div class="col-xs-12">
+		<div class="dockedHdr dockedHeaderLarge cloned-docked-header">
+			<div>
 				<div class="logo-header col-xs-4">
 					<div class="companyLogo {{= info.provider }}"></div>
 				</div>
@@ -25,18 +25,13 @@
     			</div>
 				</div>
 			</div>
-			<div class="col-xs-12 text-center mobile-pricing">
+			<div class="text-center mobile-pricing">
 				{{= renderedPriceTemplate }}
 			</div>
 			{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
 				{{= renderedPyrrCampaign }}
 			{{ } }}
-			{{ if (obj.premium[obj._selectedFrequency].lhcfreepricing) { }}
-				<div class="current-pricing-details">
-					<span>{{= obj.premium[obj._selectedFrequency].lhcfreepricing }}</span>
-				</div>
-			{{ } }}
-			<div class="col-xs-12 text-center dockedHeaderBottom <c:if test="${callCentreOpen eq true}">callCentreOpen</c:if>">
+			<div class="text-center dockedHeaderBottom <c:if test="${callCentreOpen eq true}">callCentreOpen</c:if>">
 				<health_v4_moreinfo:more_info_mobile_elements />
 				<c:choose>
 					<c:when test="${callCentreOpen eq true}">

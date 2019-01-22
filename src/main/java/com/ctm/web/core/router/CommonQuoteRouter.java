@@ -2,10 +2,7 @@ package com.ctm.web.core.router;
 
 import com.ctm.commonlogging.context.LoggingVariables;
 import com.ctm.interfaces.common.types.VerticalType;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.RouterException;
-import com.ctm.web.core.exceptions.ServiceRequestException;
-import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.*;
 import com.ctm.web.core.model.formData.Request;
 import com.ctm.web.core.model.resultsData.Error;
 import com.ctm.web.core.model.settings.Brand;
@@ -78,7 +75,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonR
     protected Data getDataBucket(HttpServletRequest request, Long transactionId) {
         try {
             return sessionDataServiceBean.getDataForTransactionId(request, transactionId.toString(), true);
-        } catch (DaoException | SessionException e) {
+        } catch (DaoException | SessionException | SessionExpiredException e) {
             throw new RouterException(e);
         }
     }

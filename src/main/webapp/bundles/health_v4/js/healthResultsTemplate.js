@@ -152,12 +152,24 @@
         ft.displayItem = ft.type != 'section';
         // section headers are not displayed anymore but we need the section container
         ft.pathValue = _getPathValue(obj, ft);
-        ft.isRestricted = ft.pathValue == "R" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'R';
-        ft.isNotCovered = ft.pathValue == "N" || (ft.pathValue && ft.pathValue.length > 1 && ft.pathValue[0]) === 'N';
+        if(window.meerkat.site.isHealthReformMessaging === 'Y') {
+            if(ft.pathValue) {
+                getNowAndAprilCover(ft, ft.pathValue);
+            }else{
+                ft.hideCategoryApril = true;
+            }
+        }else{
+            ft.isRestricted = ft.pathValue == "R";
+            ft.isNotCovered = ft.pathValue == "N";
+            ft.hideCategoryApril = true;
+        }
+
         ft.hasChildFeatures = typeof ft.children !== 'undefined' && ft.children.length;
 
         // Additional attributes for category's only.
         if (ft.type == 'category') {
+            ft.classStringForInlineLabelCover = "";
+
             if (ft.name === '') {
                 ft.classStringForInlineLabel += " noLabel";
             }
@@ -168,6 +180,21 @@
             } else {
                 ft.labelInColumnContentClass = '';
             }
+
+            if(ft.isNotCoveredApril) {
+                ft.labelInColumnContentClassApril =  ft.hideCategoryApril ? ' hidden' : '' + ' noCover';
+            } else if (ft.isRestrictedApril) {
+                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : '' + ' restrictedCover';
+            } else if(ft.isTbaApril) {
+                ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : 'tbaCover';
+            } else if(ft.hideCategoryApril) {
+                ft.labelInColumnContentClassApril = 'hidden';
+            }
+
+            if(ft.isNotCoveredApril && ft.isNotCovered) {
+                ft.classStringForInlineLabelCover = "noCover";
+            }
+
         } else if (ft.type == 'feature') {
             ft.displayValue = buildDisplayValue(ft.pathValue, ft, obj);
         }
@@ -180,6 +207,50 @@
         }
 
         return ft;
+    }
+
+    function getNowAndAprilCover(ft, val) {
+        var nowVal = val[0];
+        var aprilVal = val.length > 1 ? val[1] : '';
+
+        ft.isRestricted = false;
+        ft.isNotCovered = false;
+
+        switch(nowVal) {
+            case 'R' :
+                ft.isRestricted = true;
+            break;
+            case 'N' :
+            ft.isNotCovered = true;
+            break;
+        }
+
+        ft.isRestrictedApril = false;
+        ft.isNotCoveredApril = false;
+        ft.hideCategoryApril = aprilVal ? false : true;
+
+        switch(aprilVal){
+            case 'N':
+                ft.isNotCoveredApril = true;
+            break;
+            case 'R':
+                ft.isRestrictedApril = true;
+            break;
+            case 'X':
+                //ft.isNotCoveredApril = true;
+                ft.isTbaApril = true;
+            break;
+            case 'Q':
+                ft.isTbaApril = true;
+            break;
+            case 'P':
+                ft.isTbaApril = true;
+            break;
+            case 'F':
+                //ft.isRestrictedApril = true;
+                ft.isTbaApril = true;
+            break;
+        }
     }
 
     function getExcessItem(obj, ft) {
@@ -253,8 +324,57 @@
     function getClassification(obj) {
         var classification = {};
         classification.icon = getClassificationIcon(obj.custom.reform ? obj.custom.reform.tier : null);
-    
+        classification.date = getClassificationDate(obj.custom.reform ? obj.custom.reform.changeDate : null);
+
         return classification;
+    }
+
+    function getClassificationDate(date) {
+        if(!date) {
+            return '';
+        }
+
+        var day = date.split(' ')[0];
+        var dayNumbers = day.match(/\d+/g).join([]);
+
+        var month = date.split(' ')[1];
+        var year = date.split(' ')[2] ? date.split(' ')[2] : '2019';
+        
+        var curDate = window.meerkat.site.serverDate;
+        var dateParsed = new Date(Date.parse(dayNumbers + ' ' + month + ' ' + year));
+
+        if(curDate.getTime() > dateParsed.getTime()){
+            return '';
+        }
+
+        switch(month) {
+            case 'January':
+                return day + ' Jan ' + year;
+            case 'February': 
+                return day + ' Feb ' + year;
+            case 'March':
+                return day + ' Mar ' + year;
+            case 'April':
+                return day + ' Apr ' + year;
+            case 'May':
+                return day + ' May ' + year;
+            case 'June':
+                return day + ' Jun ' + year;
+            case 'July':
+                return day + ' Jul ' + year;
+            case 'August':
+                return day + ' Aug ' + year;
+            case 'September':
+                return day + ' Sep ' + year;
+            case 'October':
+                return day + ' Oct ' + year;
+            case 'November':
+                return day + ' Nov ' + year;
+            case 'December':
+                return day + ' Dec ' + year;
+            default :
+                return '';
+        }
     }
 
     function getClassificationIcon(tier) {

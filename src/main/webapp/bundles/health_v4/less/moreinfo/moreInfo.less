@@ -109,13 +109,36 @@
 
     .results-header-classification-icon {
       vertical-align: inherit;
+
+      .results-header-classification-date {
+        position: absolute;
+        bottom: -5px;
+        left: ~"calc(50% - 65px)";
+        width: 130px;
+        text-align: center;
+        color: white;
+        border-radius: 10px;
+        background-color: #a0a0a0;
+      }
     }
   }
 
   .more-info-classification-icon {
     background-repeat: no-repeat;
     background-position: center;
+    background-size: contain;
     height: 100px;
+
+    .results-header-classification-date {
+      position: absolute;
+      bottom: -5px;
+      left: ~"calc(50% - 65px)";
+      width: 130px;
+      text-align: center;
+      color: white;
+      border-radius: 10px;
+      background-color: #a0a0a0;
+    }
 
     @media (@sm) {
       height: 60px;
@@ -300,6 +323,11 @@
 .more-info-affixed-header {
   .frequencyAmount {
     font-size: 36px;
+
+    &.comingSoon {
+      font-size: 18px;
+      margin-top: 5px;
+    }
   }
 
   .dollarSign,
@@ -318,7 +346,7 @@
   }
 
   .affixed-header-aleks {
-    background-image: url('../../../../assets/brand/ctm/images/aleks@2x.png');
+    background-image: url('../../../../assets/brand/ctm/images/aleks@2x.svg');
     height: 170px;
     background-repeat: no-repeat;
     background-size: 170px;
@@ -353,6 +381,7 @@
   display: flex;
   justify-content: space-between;
   margin: -10px;
+  width: 100%;
 }
 
 .moreInfoPriceWrapper {

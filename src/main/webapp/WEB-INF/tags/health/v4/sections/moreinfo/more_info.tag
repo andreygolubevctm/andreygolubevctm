@@ -219,7 +219,7 @@
 													</div>
 												</div>
 												{{ if (benefit.isclinicalcategory !== undefined && benefit.isclinicalcategory.toLowerCase() === "true") { }}
-												<div class="col-xs-12 col-sm-8 extraBenefitSection">
+												<div class="col-xs-12 col-sm-12 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
 														<div class="col-xs-12 extraBenefitOption">{{= benefit.scopeofcover }}</div>
@@ -289,7 +289,7 @@
 													</div>
 												</div>
 												{{ if (benefit.isclinicalcategory !== undefined && benefit.isclinicalcategory.toLowerCase() === "true") { }}
-												<div class="col-xs-12 col-sm-8 extraBenefitSection">
+												<div class="col-xs-12 col-sm-12 extraBenefitSection">
 													<div class="row">
 														<div class="col-xs-12 extraBenefitSubHeading"><strong>Scope of cover:</strong></div>
 														<div class="col-xs-12 extraBenefitOption">{{= benefit.scopeofcover }}</div>
@@ -452,18 +452,18 @@
 																{{ if (benefit.benefits !== undefined) { }}
 																	{{ _.each(benefit.benefits, function (option, key) { }}
 																	<div class="row">
-																		<div class="col-xs-9 col-sm-9 extraBenefitOption">
+																		<div class="col-xs-6 col-sm-6 extraBenefitOption">
 																		{{ if(featureIteratorChild) { }}
 																			{{ var benefitLimitsName = ''; }}
 																				{{ _.each(featureIteratorChild.children, function (child) { }}
-																					{{ if(child.resultPath.indexOf(key) > -1) { }}
+																					{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																						{{ benefitLimitsName = child.safeName; }}
 																					{{ } }}
 																				{{ }); }}
 																			{{= benefitLimitsName }}
 																		{{ } }}
 																		</div>
-																		<div class="col-xs-3 col-sm-3 extraBenefitOption align-center">
+																		<div class="col-xs-6 col-sm-6 extraBenefitOption align-center">
 																			{{= option }}
 																		</div>
 																	</div>
@@ -472,18 +472,18 @@
 																{{ _.each(benefit, function (option, key) { }}
 																	{{ if (key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent') { }}
 																	<div class="row">
-																		<div class="col-xs-9 col-sm-9 extraBenefitOption">
+																		<div class="col-xs-6 col-sm-6 extraBenefitOption">
 																			{{ if(featureIteratorChild) { }}
 																				{{ var benefitLimitsName = ''; }}
 																				{{ _.each(featureIteratorChild.children, function (child) { }}
-																					{{ if(child.resultPath.indexOf(key) > -1) { }}
+																					{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																						{{ benefitLimitsName = child.safeName; }}
 																					{{ } }}
 																				{{ }); }}
 																				{{= benefitLimitsName }}
 																			{{ } }}
 																		</div>
-																		<div class="col-xs-3 col-sm-3 extraBenefitOption align-center">
+																		<div class="col-xs-6 col-sm-6 extraBenefitOption align-center">
 																			{{ if(!option || option.trim() === '-') { }}
 																				None
 																			{{ } else { }}
@@ -514,7 +514,7 @@
 																	{{ var benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim(); }}
 																	{{ if(featureIteratorChild) { }}
 																		{{ _.each(featureIteratorChild.children, function (child) { }}
-																			{{ if(child.resultPath.indexOf(key) > -1) { }}
+																			{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																				{{ benefitLimitsName = child.safeName; }}
 																			{{ } }}
 																		{{ }); }}
@@ -541,7 +541,7 @@
 																	{{ var benefitGroupLimitName = key.replace(/([A-Z])/g, ' $1').trim(); }}
 																	{{ if(featureIteratorChild) { }}
 																		{{ _.each(featureIteratorChild.children, function (child) { }}
-																			{{ if(child.resultPath.indexOf(key) > -1) { }}
+																			{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																				{{ benefitGroupLimitName = child.safeName; }}
 																			{{ } }}
 																		{{ }); }}
@@ -570,7 +570,7 @@
 											<div class="col-sm-4 hidden-xs">&nbsp;</div>
 
 											{{ if (benefit.hasSpecialFeatures) { }}
-											<div class="col-xs-12 col-sm-8 extraBenefitSection">
+											<div class="col-xs-12 col-sm-12 extraBenefitSection">
 												<div class="row">
 													<div class="col-xs-12 col-sm-12 extraBenefitSubHeading"><strong>Extra info:</strong></div>
 													<div class="col-xs-12 col-sm-12 extraBenefitOption">{{= benefit.hasSpecialFeatures }}</div>
