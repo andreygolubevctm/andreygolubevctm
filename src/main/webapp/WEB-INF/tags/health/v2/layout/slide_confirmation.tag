@@ -186,7 +186,7 @@
 
 						<c:set var="hasPostCode"><content:get key="healthEnergyPostCodes" suppKey="${lbContactPostCode}" /></c:set>
 
-						<c:if test="${(not empty callCentre and callCentre) and hasPostCode}">
+						<c:if test="${not empty callCentre and callCentre}">
 								<div class="lbContactName hidden">${lbContactName}</div>
 								<div class="lbContactDOB hidden">${lbContactDOB}</div>
 								<div class="lbContactGender hidden">${lbContactGender}</div>
@@ -194,6 +194,7 @@
 								<div class="lbContactPostCode hidden">${lbContactPostCode}</div>
 								<div class="lbContactPhone hidden">${lbContactPhone}</div>
 								<div class="lbContactEmail hidden">${lbContactEmail}</div>
+								<div class="lbHasPostCode hidden">${hasPostCode}</div>
 								<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
 
 							<div class="row confirmation-complete no-wimples">
