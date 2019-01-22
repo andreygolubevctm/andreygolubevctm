@@ -184,20 +184,20 @@
 
 						</div>
 
-					{{ if(meerkat.modules.healthConfirmation.showEnergyCrossSell()) { }}
-						<c:if test="${not empty callCentre and callCentre}">
+						<c:set var="hasPostCode"><content:get key="healthEnergyPostCodes" suppKey="${lbContactPostCode}" /></c:set>
+
+						<c:if test="${(not empty callCentre and callCentre) and (hasPostCode or (lbContactState eq 'ACT' or lbContactState eq 'NSW' or lbContactState eq 'VIC'))}">
+								<div class="lbContactName hidden">${lbContactName}</div>
+								<div class="lbContactDOB hidden">${lbContactDOB}</div>
+								<div class="lbContactGender hidden">${lbContactGender}</div>
+								<div class="lbContactState hidden">${lbContactState}</div>
+								<div class="lbContactPostCode hidden">${lbContactPostCode}</div>
+								<div class="lbContactPhone hidden">${lbContactPhone}</div>
+								<div class="lbContactEmail hidden">${lbContactEmail}</div>
+								<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
+
 							<div class="row confirmation-complete no-wimples">
 								<div class="callbackLeads simples-dialogue red">
-
-									<div class="lbContactName hidden">${lbContactName}</div>
-									<div class="lbContactDOB hidden">${lbContactDOB}</div>
-									<div class="lbContactGender hidden">${lbContactGender}</div>
-									<div class="lbContactState hidden">${lbContactState}</div>
-									<div class="lbContactPostCode hidden">${lbContactPostCode}</div>
-									<div class="lbContactPhone hidden">${lbContactPhone}</div>
-									<div class="lbContactEmail hidden">${lbContactEmail}</div>
-									<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
-
 								
 									<simples:dialogue id="98" vertical="health" className="simples-lifebroker-leads red" />
 									
@@ -277,7 +277,6 @@
 
 							</div>
 						</c:if>
-					{{ } }}
 
 
 						<div class="row confirmation-complete">
