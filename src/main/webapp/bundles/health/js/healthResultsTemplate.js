@@ -449,6 +449,58 @@
         }
     }
 
+    function getCoverDate(obj) {
+        var date = obj.custom.reform.changeDate;
+
+        if(!date) {
+            return '';
+        }
+
+        var day = date.split(' ')[0];
+        var dayNumbers = day.match(/\d+/g).join([]);
+
+        var month = date.split(' ')[1];
+        var year = date.split(' ')[2] ? date.split(' ')[2] : '2019';
+        
+        var curDate = window.meerkat.site.serverDate;
+        var dateParsed = new Date(Date.parse(dayNumbers + ' ' + month + ' ' + year));
+
+        day = day.replace('st', '');
+
+        if(curDate.getTime() > dateParsed.getTime()){
+            return 'From April 1';
+        }
+
+        switch(month) {
+            case 'January':
+                return 'From Jan ' + day;
+            case 'February': 
+                return 'From Feb ' + day;
+            case 'March':
+                return 'From March ' + day;
+            case 'April':
+                return 'From April ' + day;
+            case 'May':
+                return 'From May ' + day;
+            case 'June':
+                return 'From June ' + day;
+            case 'July':
+                return 'From July ' + day;
+            case 'August':
+                return 'From August ' + day;
+            case 'September':
+                return 'From Sept ' + day;
+            case 'October':
+                return 'From Oct ' + day;
+            case 'November':
+                return 'From Nov ' + day;
+            case 'December':
+                return 'From Dec ' + day;
+            default :
+                return '';
+        }
+    }
+
     function getClassificationIcon(tier) {
         if(!tier) {
             return 'gov-unclassified';
@@ -610,7 +662,8 @@
         toggleRemoveResultPagination: toggleRemoveResultPagination,
         getDiscountText: getDiscountText,
         getDiscountPercentage: getDiscountPercentage,
-	    fundDiscountExists: fundDiscountExists
+        fundDiscountExists: fundDiscountExists,
+        getCoverDate: getCoverDate
     });
 
 })(jQuery);

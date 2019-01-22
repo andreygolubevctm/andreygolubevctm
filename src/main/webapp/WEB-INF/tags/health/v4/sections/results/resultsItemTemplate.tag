@@ -33,7 +33,7 @@
                             <span class="benefit-icon" />
                         </div>
                         <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
-                            <span>{{= coverDate}}</span>
+                            <span class="benefit-container-item-date">{{= coverDate}}</span>
                             <span class="benefit-icon" />
                         </div>
                     </div>
