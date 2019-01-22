@@ -244,6 +244,8 @@
                 ft.labelInColumnContentClassApril = ft.hideCategoryApril ? ' hidden' : 'tbaCover';
             } else if(ft.hideCategoryApril) {
                 ft.labelInColumnContentClassApril = 'hidden';
+            }else {
+                ft.labelInColumnContentClassApril = '';
             }
 
             if(ft.isNotCoveredApril && ft.isNotCovered) {
