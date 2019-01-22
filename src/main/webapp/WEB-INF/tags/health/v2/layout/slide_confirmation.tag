@@ -186,7 +186,7 @@
 
 						<c:set var="hasPostCode"><content:get key="healthEnergyPostCodes" suppKey="${lbContactPostCode}" /></c:set>
 
-						<c:if test="${(not empty callCentre and callCentre) and (hasPostCode or (lbContactState eq 'ACT' or lbContactState eq 'NSW' or lbContactState eq 'VIC'))}">
+						<c:if test="${(not empty callCentre and callCentre) and hasPostCode}">
 								<div class="lbContactName hidden">${lbContactName}</div>
 								<div class="lbContactDOB hidden">${lbContactDOB}</div>
 								<div class="lbContactGender hidden">${lbContactGender}</div>
