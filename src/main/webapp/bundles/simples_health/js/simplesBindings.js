@@ -317,6 +317,15 @@
                 .removeClass('outbound trial')
                 .addClass('inbound');
         }
+        else if(healthContactTypeSelection === 'dummy') {
+            $healthContactType.val('dummy');
+            $healthContactTypeTrial.val('');
+
+            $body
+                .removeClass('outbound trial')
+                .removeClass('inbound')
+                .addClass('dummy');
+        }
         // Outbound
         else {
             $body
