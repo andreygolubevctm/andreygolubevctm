@@ -54,6 +54,27 @@
 	</c:choose>
 </c:set>
 
+<c:set var="hasPostCode" scope="request">
+<c:choose>
+  <c:when test="${ not empty lbContactPostCode }">
+      <content:get key="healthEnergyPostCodes" suppKey="${lbContactPostCode}" />
+  </c:when>
+    <c:otherwise>
+        N
+    </c:otherwise>
+</c:choose>
+</c
+<c:set var="inState">
+    <c:choose>
+        <c:when test="${ not empty lbContactState and (lbContactState eq 'ACT' or lbContactState eq 'NSW' or lbContactState eq 'VIC') }">
+            Y
+        </c:when>
+        <c:otherwise>
+            N
+        </c:otherwise>
+    </c:choose>
+</c:set>
+
 <c:set var="lbContactPhone" >
 	<c:choose>
 		<c:when test="${not empty data.health.application.mobile}">${data.health.application.mobile}</c:when>
@@ -184,9 +205,8 @@
 
 						</div>
 
-						<c:set var="hasPostCode"><content:get key="healthEnergyPostCodes" suppKey="${lbContactPostCode}" /></c:set>
 
-						<c:if test="${not empty callCentre and callCentre}">
+						<c:if test="${(not empty callCentre and callCentre) and (hasPostCode eq 'Y' or inState eq 'Y')}">
 								<div class="lbContactName hidden">${lbContactName}</div>
 								<div class="lbContactDOB hidden">${lbContactDOB}</div>
 								<div class="lbContactGender hidden">${lbContactGender}</div>
