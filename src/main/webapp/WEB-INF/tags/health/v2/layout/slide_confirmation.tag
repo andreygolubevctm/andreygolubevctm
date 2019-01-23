@@ -63,7 +63,8 @@
         N
     </c:otherwise>
 </c:choose>
-</c
+</c:set>
+
 <c:set var="inState">
     <c:choose>
         <c:when test="${ not empty lbContactState and (lbContactState eq 'ACT' or lbContactState eq 'NSW' or lbContactState eq 'VIC') }">
