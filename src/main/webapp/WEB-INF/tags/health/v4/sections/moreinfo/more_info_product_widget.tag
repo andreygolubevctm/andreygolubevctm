@@ -13,7 +13,7 @@
         <div class="col-xs-12 productWidgetSection">
             {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
             <div class="more-info-classification-icon {{= classification.icon}}">
-            {{ if(classification.date) { }}
+            {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                 <div class="results-header-classification-date">From {{= classification.date}}</div>
             {{ } }}
             </div>

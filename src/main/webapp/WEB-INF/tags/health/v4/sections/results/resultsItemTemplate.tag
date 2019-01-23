@@ -6,6 +6,7 @@
 <core_v1:js_template id="feature-template">
     {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(obj.featuresStructureIndexToUse); }}
     {{ var module = meerkat.modules.healthResultsTemplate; }}
+    {{ var coverDate = module.getCoverDate(obj); }}
     {{ for(var i = 0; i < featureIterator.length; i++) { var ft = module.getItem(obj, featureIterator[i]); }}
     {{ if(ft.classStringForInlineLabel.indexOf('more-info-only') != -1) { continue; } }}
     <div class="cell {{= ft.classString }}" title="Click on each benefit to learn about what level of cover this policy offers.">
@@ -32,7 +33,7 @@
                             <span class="benefit-icon" />
                         </div>
                         <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
-                            <span>From April 1</span>
+                            <span class="benefit-container-item-date">{{= coverDate}}</span>
                             <span class="benefit-icon" />
                         </div>
                     </div>
