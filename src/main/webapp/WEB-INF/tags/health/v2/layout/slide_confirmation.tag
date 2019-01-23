@@ -54,7 +54,7 @@
 	</c:choose>
 </c:set>
 
-<c:set var="hasPostCode" scope="request">
+<c:set var="hasPostCode">
 <c:choose>
   <c:when test="${ not empty lbContactPostCode }">
       <content:get key="healthEnergyPostCodes" suppKey="${lbContactPostCode}" />
