@@ -653,12 +653,17 @@
 				<div class="col-xs-12 col-md-6 hospitalCover">
 					{{ if(typeof hospital.inclusions !== 'undefined') { }}
 					<h2>Hospital cover</h2>
-					{{ if (custom.reform.tab1.excess === custom.reform.tab2.excess) { }}
+				
 						<p>
 							<strong>Hospital Excess:</strong><br>
-							<span class="scripting-text"><strong>{{= custom.reform.tab2.excess }}</strong></span>
+							{{ if(custom.reform.tab2.excess !== custom.reform.tab1.excess) { }}
+								<span class="scripting-text"><strong>{{= custom.reform.tab2.excess }}</strong></span>
+							{{ }else { }}
+								<span>{{= custom.reform.tab2.excess }}</span>
+							{{ } }}
 						</p>
-					{{ } else { }}
+						
+						{{ if (custom.reform.tab1.excess !== custom.reform.tab2.excess) { }}
 						<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
 					{{ } }}
 					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
