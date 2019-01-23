@@ -212,8 +212,10 @@
                 ft.hideCategoryApril = true;
             }
         }else{
-            ft.isRestricted = ft.pathValue == "R";
-            ft.isNotCovered = ft.pathValue == "N";
+            if(ft.pathValue) {
+                ft.isRestricted = ft.pathValue[0] == "R";
+                ft.isNotCovered = ft.pathValue[0] == "N";
+            }
             ft.hideCategoryApril = true;
         }
 
@@ -437,7 +439,7 @@
                 return day + ' Jun ' + year;
             case 'July':
                 return day + ' Jul ' + year;
-            case 'August':gov-unclassified
+            case 'August':
                 return day + ' Aug ' + year;
             case 'September':
                 return day + ' Sep ' + year;

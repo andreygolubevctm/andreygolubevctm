@@ -159,8 +159,10 @@
                 ft.hideCategoryApril = true;
             }
         }else{
-            ft.isRestricted = ft.pathValue == "R";
-            ft.isNotCovered = ft.pathValue == "N";
+            if(ft.pathValue) {
+                ft.isRestricted = ft.pathValue[0] == "R";
+                ft.isNotCovered = ft.pathValue[0] == "N";
+            }
             ft.hideCategoryApril = true;
         }
 
