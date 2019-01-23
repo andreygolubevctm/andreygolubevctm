@@ -2,6 +2,7 @@ package com.ctm.web.life.leadfeed.services;
 
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.model.settings.Brand;
@@ -53,8 +54,10 @@ public class AGISLeadFromRequest {
 			Data data = null;
 			try {
 				data = sds.getDataForTransactionId(request, transactionId, false);
+			} catch(SessionExpiredException e0) {
+				LOGGER.info(e0.getMessage());
 			} catch (DaoException | SessionException e1) {
-				LOGGER.error("Failed to retrieve session {}", kv("transactionId", transactionId));
+				LOGGER.error("Failed to retrieve session {} {}", kv("errorMessage", e1.getMessage()), kv("transactionId", transactionId));
 			}
 
 			String vertical = data.get("current/verticalCode").toString().toLowerCase();

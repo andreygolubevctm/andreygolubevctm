@@ -1,6 +1,7 @@
 package com.ctm.web.core.services.tracking;
 
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.security.StringEncryption;
@@ -63,7 +64,7 @@ public class TrackingKeyService {
 					data.put(xpathRoot + "/trackingKey", key);
 				}
 
-			} catch (SessionException e) {
+			} catch (SessionException | SessionExpiredException e) {
 				throw new Exception(e.getMessage());
 			}
 		} else {

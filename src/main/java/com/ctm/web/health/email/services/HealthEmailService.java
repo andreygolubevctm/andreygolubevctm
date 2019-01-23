@@ -47,6 +47,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jms.Session;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.*;
@@ -280,7 +281,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(transactionId), true);
 			final String productSelected = new HealthSelectedProductService().getProductXML(transactionId, productId);
 			productJSON = new JSONObject(productSelected);
-		} catch (DaoException | JSONException | SessionException e) {
+		} catch (DaoException | JSONException | SessionException | SessionExpiredException e) {
 			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
 		}
 
@@ -514,7 +515,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			} else {
 				emailEventRequest.setApplyUrl(urlServiceOld.getApplyUrl(emailDetails, emailBrochureRequest.transactionId, "bestprice", productId, emailBrochureRequest.productName));
 			}
-		} catch (EnvironmentException | VerticalException | ConfigSettingException | DaoException | SessionException e) {
+		} catch (EnvironmentException | VerticalException | ConfigSettingException | DaoException | SessionException | SessionExpiredException e) {
 			throw new SendEmailException("An error occurred retrieving parameters for Health PDS email", e);
 		}
 
