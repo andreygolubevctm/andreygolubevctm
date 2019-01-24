@@ -53,9 +53,8 @@ Handling of the rebate tiers based off situation
 
 	function setIncomeLabel() {
 		var $selectedIncome;
-		var $incomeElement = $income.get(0);
-        $selectedIncome = $incomeElement.options[$incomeElement.selectedIndex];
-		var incomeLabel = $selectedIncome.value.length > 0 ? $selectedIncome.text : '';
+		$selectedIncome = $income.filter(':checked');
+		var incomeLabel = ($selectedIncome.val().length > 0) ? $selectedIncome.text() : '';
 		$healthCoverIncomeLabel.val( incomeLabel );
 	}
 
@@ -79,7 +78,7 @@ Handling of the rebate tiers based off situation
 		// Reset and then loop through all of the options
 
 		// Reset and then loop through all of the options
-		$income.find('option').each( function() {
+		$income.each( function() {
 			//set default vars
 			var $this = $(this);
 			var _value = $this.val();
@@ -87,60 +86,60 @@ Handling of the rebate tiers based off situation
 
 			// Calculate the Age Bonus
 			if( meerkat.modules.healthRates.getRates() === null){
-				_ageBonus = 0;
+					_ageBonus = 0;
 			} else {
-				_ageBonus = parseInt(meerkat.modules.healthRates.getRates().ageBonus);
+					_ageBonus = parseInt(meerkat.modules.healthRates.getRates().ageBonus);
 			}
 
 			if(_cover === 'S' || _cover === 'SM' || _cover === 'SF' || _cover === ''){
-				// Single tiers
-				switch(_value) {
-					case '0':
-					_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeBaseTier) +' or less';
-					rebateIncomeRange.push(_text);
-					break;
-					case '1':
-					_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier1.from) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier1.to);
-					rebateIncomeRange.push(_text);
-					break;
-					case '2':
-					_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier2.from) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier2.to);
-					rebateIncomeRange.push(_text);
-					break;
-					case '3':
-					_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier3) + '+ (no rebate)';
-					rebateIncomeRange.push('$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier3) + '+');
-					break;
-				}
+					// Single tiers
+					switch(_value) {
+							case '0':
+									_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeBaseTier) +' or less';
+									rebateIncomeRange.push(_text);
+									break;
+							case '1':
+									_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier1.from) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier1.to);
+									rebateIncomeRange.push(_text);
+									break;
+							case '2':
+									_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier2.from) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier2.to);
+									rebateIncomeRange.push(_text);
+									break;
+							case '3':
+									_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier3) + '+ (no rebate)';
+									rebateIncomeRange.push('$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier3) + '+');
+									break;
+					}
 			} else {
-				// Family tiers
-				if(_cover === 'C') { allowance = 0; }
+					// Family tiers
+					if(_cover === 'C') { allowance = 0; }
 
-				switch(_value) {
-					case '0':
-					_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + allowance) +' or less';
-					rebateIncomeRange.push(_text);
-					break;
-					case '1':
-					_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier1.from + allowance) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier1.to + allowance);
-					rebateIncomeRange.push(_text);
-						break;
-					case '2':
-					_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier2.from + allowance) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier2.to + allowance);
-					rebateIncomeRange.push(_text);
-						break;
-					case '3':
-					_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier3 + allowance) + '+ (no rebate)';
-					rebateIncomeRange.push('$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier3 + allowance) + '+');
-						break;
+					switch(_value) {
+							case '0':
+									_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + allowance) +' or less';
+									rebateIncomeRange.push(_text);
+									break;
+							case '1':
+									_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier1.from + allowance) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier1.to + allowance);
+									rebateIncomeRange.push(_text);
+									break;
+							case '2':
+									_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier2.from + allowance) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier2.to + allowance);
+									rebateIncomeRange.push(_text);
+									break;
+							case '3':
+									_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier3 + allowance) + '+ (no rebate)';
+									rebateIncomeRange.push('$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier3 + allowance) + '+');
+									break;
 					}
 			}
 
 			// Set Description
 			if(_text !== ''){
-				$this.text(_text);
+					$("label[for="+$(this).attr("id")+"]").html("<span>" + _text + "</span>");
 			}
-		});
+	});
 
 		if (!initMode) {
 			// after updating the dropdown, update the income label

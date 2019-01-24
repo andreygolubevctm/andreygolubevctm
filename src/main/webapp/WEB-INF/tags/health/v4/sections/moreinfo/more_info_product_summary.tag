@@ -32,7 +32,6 @@
                         <div class="moreInfoPriceHeading">NOW</div>
                         <div class="moreInfoPrice">
                             {{= renderedPriceTemplate }}
-                            <div class="lhcText">{{= typeof obj.mode === "undefined" || obj.mode !== "lhcInc" ? textLhcFreePricing : textPricing }}</div>
                         </div>
                     </div>
                 </div>

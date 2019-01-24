@@ -41,11 +41,11 @@
                         <c:choose>
                         <c:when test="${onlineHealthReformMessaging eq 'Y'}">
                             <div class="reform-messaging">
-                                To align with the Australian government health insurance reforms that will come into full effect by April 2019. we have made it simple for you o find a health insurance policy that suits your needs.
+                                <h3 class="reform-messaging-title">A few important things before you get started.</h3>
+                                To align with the Australian government health insurance reforms that will come into effect from April 2019, we have made it simple for you to find a health insurance policy that suits your needs.                                
                                 <br>
                                 <br>
-                                Each quote we provide includes details on your cover options leading upto April 2019 as well as beyond, allowing you to make the choice that's right for you.
-                            </div>
+                                Each quote we provide includes details on your cover options leading up to April 2019 as well as beyond, allowing you to make the choice that's right for you.                            </div>
                         </c:when>
                         </c:choose>
 
@@ -71,10 +71,10 @@
                             <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate income level" quoteChar="\"" /></c:set>
                             <c:set var="fieldXpath" value="${xpath}/income" />
                             <form_v4:row label="<span id='health_healthCover_situation_single'>What is your taxable income?</span><span id='health_healthCover_situation_hasPartner' class='hidden'>What is your, and your partners combined taxable income?</span><span class='help-icon-with-label hidden-xs'><a href='javascript:void(0);' class='help-icon icon-info' data-content='helpid:642' data-toggle='popover' tabindex='-1'><span class='text-hide'>Need Help?</span></a></span><br />" id="${name}_income_field_row" className="lhcRebateCalcTrigger" smRowOverride="6">
-                                <field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income"/>
+                            	<field_v2:array_radio xpath="${fieldXpath}" title="your household income" required="true" items="0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" style="radio-as-checkbox" wrapCopyInSpan="true" outerWrapperClassName="col-xs-12 col-sm-6" className="income health_cover_details_income radio-as-checkbox" additionalAttributes="${analyticsAttr} data-attach=true" />
                             	<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
                             	<div id="rebateLabel"><span></span></div>
-                            	<div class="fieldrow_legend" id="health_healthCover_tier_row_legend">Depending on your taxable income, you may be eligible for a government discount on your premium.</div>
+                            	<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
                             </form_v4:row>
                             <input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
 
