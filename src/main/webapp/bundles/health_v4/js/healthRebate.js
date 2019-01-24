@@ -170,7 +170,7 @@
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(forceRebate, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
 
-                if ($elements.incomeSelect.get(0).selectedIndex > 0) {
+                if ($elements.incomeSelect.filter(':checked').length > 0) {
                     $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
                 }
 

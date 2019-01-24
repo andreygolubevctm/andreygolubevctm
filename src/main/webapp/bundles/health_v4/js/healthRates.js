@@ -80,7 +80,7 @@
             var incomeElement = $elements.income.get(0);
             var postData = {
                 dependants: $elements.dependants.val(),
-                income: (incomeElement.options[incomeElement.selectedIndex].value || 0),
+                income: ($elements.income.filter(':checked').val() || 0),
                 rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),
                 primary_loading: '',
