@@ -175,7 +175,7 @@
 							</div>
 							<c:if test="${simplesHealthReformMessaging eq 'Y'}">
 								<div class="simplesMoreInfoTierLogo {{= classification.icon}}">
-									{{ if(classification.date) { }}
+                  {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                       <div class="results-header-classification-date">From {{= classification.date}}</div>
                   {{ } }}
 								</div>
@@ -190,7 +190,7 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 								<c:if test="${simplesHealthReformMessaging eq 'Y'}">
 									<div class="simplesMoreInfoTierLogo {{= classification.icon}}">
-									  {{ if(classification.date) { }}
+                    {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                       <div class="results-header-classification-date">From {{= classification.date}}</div>
                     {{ } }}
 										</div>
@@ -653,12 +653,17 @@
 				<div class="col-xs-12 col-md-6 hospitalCover">
 					{{ if(typeof hospital.inclusions !== 'undefined') { }}
 					<h2>Hospital cover</h2>
-					{{ if (custom.reform.tab1.excess === custom.reform.tab2.excess) { }}
+				
 						<p>
 							<strong>Hospital Excess:</strong><br>
-							<span class="scripting-text"><strong>{{= custom.reform.tab2.excess }}</strong></span>
+							{{ if(custom.reform.tab2.excess !== custom.reform.tab1.excess) { }}
+								<span class="scripting-text"><strong>{{= custom.reform.tab2.excess }}</strong></span>
+							{{ }else { }}
+								<span>{{= custom.reform.tab2.excess }}</span>
+							{{ } }}
 						</p>
-					{{ } else { }}
+						
+						{{ if (custom.reform.tab1.excess !== custom.reform.tab2.excess) { }}
 						<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
 					{{ } }}
 					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
