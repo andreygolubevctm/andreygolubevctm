@@ -65,7 +65,8 @@
                                           legend="${legend}"
                                           className="health-about-you">
                             <health_v4_aboutyou:youarea xpath="${xpath}" />
-                            
+                            <health_v4_aboutyou:applyrebate xpath="${xpath}" />
+
                             <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                             
                             <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate income level" quoteChar="\"" /></c:set>
@@ -91,7 +92,6 @@
                             </div>
                             <health_v4_aboutyou:partner_dob xpath="${xpath}" />
 
-                            <health_v4_aboutyou:applyrebate xpath="${xpath}" />
                             <health_v4_aboutyou:optin xpath="${xpath}" />
 
                         </form_v4:fieldset>

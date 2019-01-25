@@ -4,6 +4,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
+<%@ attribute name="hideRowBorder" required="false" rtexprvalue="true" description="toggle the row border" %>
 <%@ attribute name="label" 				required="false" rtexprvalue="true"	 description="label for the field"%>
 <%@ attribute name="fieldXpath"			required="false" rtexprvalue="true"	 description="The xpath of the field the label needs to point to"%>
 <%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
@@ -23,6 +24,11 @@
 <%@ attribute name="isNestedStyleGroup" required="false" rtexprvalue="true"	 description="Toggle to remove the col-xs-12 class. If not removed breaks the nesting design introduced to health" %>
 
 <%-- VARIABLES --%>
+<c:set var="rowBorderClass" value="" />
+<c:if test="${hideRowBorder eq true}">
+    <c:set var="rowBorderClass" value=" hide-row-border " />
+</c:if>
+
 <c:if test="${empty labelAbove}">
 	<c:set var="labelAbove" value="${false}" />
 </c:if>
@@ -58,7 +64,7 @@
 		readonly
 		imgOnlyLabel
 --%>
-<div class="${readonlyClass} ${formGroupClasses} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
+<div class="${readonlyClass} ${formGroupClasses} ${rowBorderClass} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
 
 	<c:choose>
 		<c:when test="${empty hideHelpIconCol}">
