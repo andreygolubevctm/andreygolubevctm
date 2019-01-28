@@ -91,7 +91,7 @@ Handling of the rebate tiers based off situation
 					_ageBonus = parseInt(meerkat.modules.healthRates.getRates().ageBonus);
 			}
 
-			if(_cover === 'S' || _cover === 'SM' || _cover === 'SF' || _cover === 'SPF' || _cover === ''){
+			if(_cover === 'S' || _cover === 'SM' || _cover === 'SF' || _cover === ''){
 					// Single tiers
 					switch(_value) {
 							case '0':
