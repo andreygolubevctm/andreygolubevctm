@@ -140,6 +140,11 @@
         });
     }
 
+    function showHideVouchers() {
+        var isExtrasOnly = meerkat.modules.healthBenefitsStep.getCoverType() === 'e';
+        $elements.root.toggleClass('hidden', isExtrasOnly);
+    }
+
     /**
      * updateData: updates the private data object with values from the form
      */
@@ -488,7 +493,8 @@
     }
 
     meerkat.modules.register("healthVouchers", {
-        init: init
+        init: init,
+        showHideVouchers: showHideVouchers
     });
 
 })(jQuery);
