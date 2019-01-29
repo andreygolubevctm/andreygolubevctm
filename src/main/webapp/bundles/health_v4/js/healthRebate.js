@@ -66,7 +66,7 @@
     }
 
     function _eventSubscriptions() {
-        $(':input[name="health_situation_healthCvr"], :input[name="health_healthCover_income"], #health_situation_dependants, #health_healthCover_dependants').on('change', function updateRebateTiers() {
+        $(':input[name="health_situation_healthCvr"], :input[name="health_healthCover_income"], #health_healthCover_dependants').on('change', function updateRebateTiers() {
             meerkat.modules.healthChoices.setCover($elements.situationSelect.filter(':checked').val());
             meerkat.modules.healthTiers.setTiers();
         });

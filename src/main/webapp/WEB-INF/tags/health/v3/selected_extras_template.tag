@@ -159,7 +159,7 @@
                         {{ } }}
                         {{ } }}
                         {{ _.each(benefit, function (option, key) { }}
-                        {{ if (key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent') { }}
+                        {{ if (key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent' || key === 'listBenefitExample') { }}
                         <div class="row">
                             <div class="col-xs-4 extraBenefitOption">
                                 {{ if(featureIteratorChild) { }}

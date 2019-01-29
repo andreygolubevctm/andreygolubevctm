@@ -65,10 +65,10 @@
                                           legend="${legend}"
                                           className="health-about-you">
                             <health_v4_aboutyou:youarea xpath="${xpath}" />
+                            
+                            <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                             <health_v4_aboutyou:applyrebate xpath="${xpath}" />
 
-                            <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
-                            
                             <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate income level" quoteChar="\"" /></c:set>
                             <c:set var="fieldXpath" value="${xpath}/income" />
                             <form_v4:row label="<span id='health_healthCover_situation_single'>What is your taxable income?</span><span id='health_healthCover_situation_hasPartner' class='hidden'>What is your, and your partners combined taxable income?</span>" id="${name}_income_field_row" className="lhcRebateCalcTrigger" helpId="642" smRowOverride="6">
