@@ -15,6 +15,6 @@
 </form_v4:row>
 
 <c:set var="fieldXpath" value="${xpath}/dependants" />
-<form_v2:row label="How many dependents do you have?" id="${name}_dependants_field_row" className="lhcRebateCalcTrigger">
+<form_v2:row hideRowBorder="true" label="How many dependents do you have?" id="${name}_dependants_field_row" className="lhcRebateCalcTrigger">
 	<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" placeHolder="Please choose..." title="number of dependants" required="true" className="${name}_health_cover_dependants dependants" />
 </form_v2:row>

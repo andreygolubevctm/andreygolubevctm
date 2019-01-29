@@ -729,6 +729,10 @@
 					meerkat.modules.simplesBindings.toggleBenefitsDialogue();
 
 					meerkat.modules.healthSplitTransaction.checkIfMatchingCustomerTransactions();
+
+					if(meerkat.modules.healthVouchers) {
+						meerkat.modules.healthVouchers.showHideVouchers();
+				}
 				}
 			}
 		};
