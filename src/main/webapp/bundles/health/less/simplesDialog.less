@@ -73,11 +73,30 @@
 			font-weight:bold;
 		}
 	}
-	&.dummy {
+	&.nextgen {
 		&[data-step=start] {
 			#pageContent {
-				background-color: blue;
+				background-color: whitesmoke;
 			}
+		}
+		&[data-step=results].moreInfoVisible,
+		&[data-step=payment],
+		&[data-step=apply] {
+			#pageContent {
+				background-color: #c18eda;
+			}
+		}
+
+		.simples-dialog-inbound {
+			display: none;
+		}
+
+		.simples-dialog-outbound {
+			display: none;
+		}
+
+		.simples-dialog-cli {
+			display: none;
 		}
 	}
 	&.outbound {

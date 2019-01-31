@@ -315,21 +315,23 @@
 
             $body
                 .removeClass('outbound trial')
+                .removeClass('nextgen')
                 .addClass('inbound');
         }
-        else if(healthContactTypeSelection === 'dummy') {
-            $healthContactType.val('dummy');
+        else if(healthContactTypeSelection === 'nextgen') {
+            $healthContactType.val('nextgen');
             $healthContactTypeTrial.val('');
 
             $body
                 .removeClass('outbound trial')
                 .removeClass('inbound')
-                .addClass('dummy');
+                .addClass('nextgen');
         }
         // Outbound
         else {
             $body
                 .removeClass('inbound trial')
+                .removeClass('nextgen')
                 .addClass('outbound');
 
             var contatTypeTrialRegex = new RegExp('trial','i');
