@@ -407,7 +407,7 @@
     }
 
     function getClassificationDate(date) {
-        if(!date) {
+        if(!date || date.toLowerCase() === 'unknown') {
             return '';
         }
 
