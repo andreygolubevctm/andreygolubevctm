@@ -29,8 +29,8 @@
             extrasColContent: $('#benefits_tab_extras_col_content')
         };
 
-        var hasHospitalCover = $elements.hiddenHospitalCover.val() !== 'N',
-            hasExtrasCover = $elements.hiddenExtraCover.val() !== 'N';
+        var hasHospitalCover = $elements.hiddenHospitalCover.val() === 'Y',
+            hasExtrasCover = $elements.hiddenExtraCover.val() === 'Y';
 
         $elements.hospitalSwitch.bootstrapSwitch('setState', hasHospitalCover);
         $elements.extrasSwitch.bootstrapSwitch('setState', hasExtrasCover);
