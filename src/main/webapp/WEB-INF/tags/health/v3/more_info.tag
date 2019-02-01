@@ -663,9 +663,7 @@
 							{{ } }}
 						</p>
 						
-						{{ if (custom.reform.tab1.excess !== custom.reform.tab2.excess) { }}
 						<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
-					{{ } }}
 					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
 
 					<p><strong>Accident Override:</strong><br>
