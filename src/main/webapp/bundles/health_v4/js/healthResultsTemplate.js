@@ -611,6 +611,19 @@
                 }
             });
         }
+
+        var excessWaiverHeight = 0;
+
+        $('.content.excess-wavier').each(function() {
+            if($(this).height() > excessWaiverHeight) {
+                excessWaiverHeight = $(this).height();
+            }
+        });
+
+
+        $('.content.excess-wavier').each(function() {
+            $(this).height(excessWaiverHeight);
+        });
     }
 
     function numberOfSelectedExtras() {

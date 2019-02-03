@@ -21,11 +21,11 @@
         </div>
     </div>
         <div class="cell category">
-        <div class="content" data-featureId="{{= feature.id }}">
-            <div class="featureLabel">
+        <div class="content excess-wavier" data-featureId="{{= feature.id }}">
+            <div class="featureLabel excess-wavier">
                 Excess Waivers
             </div>
-            <div class="featureValue">
+            <div class="featureValue excess-wavier">
                 <span>{{= obj.hospital.inclusions.waivers }}</span>
             </div>
             <div class="clearfix"></div>
