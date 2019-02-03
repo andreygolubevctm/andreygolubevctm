@@ -116,7 +116,6 @@
 		<hr />
 		{{ if (showAltPremium) { }}
 		<div class="april-pricing">
-			<p>Premiums ${april1HeaderNoSup}</p>
 			{{= renderedAltPriceTemplate }}
 		</div>
 		{{ } }}
@@ -131,7 +130,6 @@
 		<hr />
 		{{ if (showAltPremium) { }}
 		<div class="april-pricing">
-			<p>Premiums ${april1HeaderNoSup}</p>
 			{{= renderedAltPriceTemplate }}
 		</div>
 		{{ } }}
