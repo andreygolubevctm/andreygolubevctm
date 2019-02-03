@@ -29,8 +29,12 @@
             extrasColContent: $('#benefits_tab_extras_col_content')
         };
 
-        var hasHospitalCover = $elements.hiddenHospitalCover.val() === 'Y',
-            hasExtrasCover = $elements.hiddenExtraCover.val() === 'Y';
+        var hasProductCode = window.meerkat.site.loadProductCode;
+        var hospitalVal = $elements.hiddenHospitalCover.val();
+        var extrasVal = $elements.hiddenExtraCover.val();
+
+        var hasHospitalCover = hospitalVal === 'Y' || (!hasProductCode && !hospitalVal),
+            hasExtrasCover = extrasVal  === 'Y' || (!hasProductCode && !extrasVal);
 
         $elements.hospitalSwitch.bootstrapSwitch('setState', hasHospitalCover);
         $elements.extrasSwitch.bootstrapSwitch('setState', hasExtrasCover);
