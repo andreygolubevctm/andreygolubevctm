@@ -744,6 +744,10 @@
 
         .featureValue, .featureLabel {
           float: left;
+
+          &.excess-wavier {
+            float: none;
+          }
         }
         .featureLabel {
           color: #333333;
@@ -751,6 +755,10 @@
           width: 100%;
 
           @media (@lg) {
+            &.excess-wavier {
+              width: 100%;
+            }
+
             width: 60%;
           }
         }
@@ -761,6 +769,11 @@
           font-weight: normal;
 
           @media (@lg) {
+            &.excess-wavier {
+              width: 100%;
+              text-align: left;
+            }
+
             text-align: right;
             width: 40%;
             margin-top: 0px;

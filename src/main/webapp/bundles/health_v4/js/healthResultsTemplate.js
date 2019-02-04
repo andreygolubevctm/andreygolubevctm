@@ -344,7 +344,7 @@
     }
 
     function getClassificationDate(date) {
-        if(!date) {
+        if(!date || date.toLowerCase() === 'unknown') {
             return '';
         }
 
@@ -394,7 +394,7 @@
     function getCoverDate(obj) {
         var date = obj.custom.reform.changeDate;
 
-        if(!date) {
+        if(!date || date.toLowerCase() === 'unknown') {
             return '';
         }
 
@@ -611,6 +611,19 @@
                 }
             });
         }
+
+        var excessWaiverHeight = 0;
+
+        $('.content.excess-wavier').each(function() {
+            if($(this).height() > excessWaiverHeight) {
+                excessWaiverHeight = $(this).height();
+            }
+        });
+
+
+        $('.content.excess-wavier').each(function() {
+            $(this).height(excessWaiverHeight);
+        });
     }
 
     function numberOfSelectedExtras() {
