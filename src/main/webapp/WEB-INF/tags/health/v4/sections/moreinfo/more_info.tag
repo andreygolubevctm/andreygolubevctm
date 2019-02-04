@@ -131,13 +131,18 @@
 											</div>
 										</div>
 										<div class="row postAprilReformContent">
-											<div class="col-xs-8">
-												<h3>Excess</h3><br/><br/>
-												<p class="hidden-xs">{{= custom.reform.tab2.excess }}</p>
+											<div class="col-xs-8 hidden-xs">
+												<h3>Excess</h3>
+												<p class="hidden-xs">{{= custom.reform.tab2.excess }}</p><br/><br/>
+												<h3>Excess Waivers</h3>
+												<p class="hidden-xs">{{= hospital.inclusions.waivers }}</p>
 											</div>
 											<div class="col-xs-4">&nbsp;</div>
 											<div class="col-xs-12 visible-xs">
-												{{= custom.reform.tab2.excess }}
+												<h3>Excess</h3>
+												<div>{{= custom.reform.tab2.excess }}</div><br/><br/>
+												<h3>Excess Waivers</h3>
+												<div>{{= hospital.inclusions.waivers }}</div>
 											</div>
 										</div>
 									</div>
