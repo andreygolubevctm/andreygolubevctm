@@ -147,6 +147,7 @@
         meerkat.messaging.subscribe(meerkatEvents.benefitsModel.UPDATE_SELECTED_BENEFITS_CHECKBOX, _reSelectBenefitCheckboxes);
 
         meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.SWITCH_CHANGED, function (e) {
+            meerkat.modules.healthResults.unpinProductFromFilterUpdate();
             _toggleBenefitSelection(e.benefit, e.isSwitchedOn);
             _toggleSwitchValidation();
 
