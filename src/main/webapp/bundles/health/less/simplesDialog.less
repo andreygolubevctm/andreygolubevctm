@@ -73,6 +73,11 @@
 			font-weight:bold;
 		}
 	}
+
+	.simples-dialog-nextgen {
+		display: none;
+	}
+
 	&.nextgen {
 		&[data-step=start] {
 			#pageContent {
@@ -83,7 +88,7 @@
 		&[data-step=payment],
 		&[data-step=apply] {
 			#pageContent {
-				background-color: #c18eda;
+				background-color: whitesmoke;
 			}
 		}
 
@@ -97,6 +102,10 @@
 
 		.simples-dialog-cli {
 			display: none;
+		}
+
+		.simples-dialog-nextgen {
+			display: block;
 		}
 	}
 	&.outbound {
