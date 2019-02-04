@@ -50,6 +50,8 @@
 
         // benefit selected
         meerkat.messaging.subscribe(meerkatEvents.benefits.BENEFIT_SELECTED, function onBenefitSelected(options) {
+            meerkat.modules.healthResults.unpinProductFromFilterUpdate();
+
             // if (options.isHospital && meerkat.modules.benefitsModel.getHospitalCount() === 0) {
             //     $elements.hospitalSwitch.bootstrapSwitch('setState', false);
             // }
