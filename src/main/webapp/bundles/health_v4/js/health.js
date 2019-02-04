@@ -399,6 +399,12 @@
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
+                $("#journeyEngineSlidesContainer").css('opacity', '0');
+                $('.results-pagination, .results-filters-frequency').addClass('invisible');
+
+                meerkat.modules.journeyEngine.loadingShow("");
+
+
                 if (event.isForward && meerkat.site.isCallCentreUser) {
                     $('#journeyEngineSlidesContainer .journeyEngineSlide')
                         .eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
@@ -440,6 +446,8 @@
                 meerkat.modules.healthResults.setCallCentreText();
             },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
+                $('.results-pagination, .results-filters-frequency').addClass('invisible');
+
                 // Increment the transactionId
                 if (event.isBackward === true) {
                     meerkat.modules.transactionId.getNew(3);

@@ -197,7 +197,7 @@
 									<div class="lbContactEmail hidden">${lbContactEmail}</div>
 									<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
 
-									<simples:dialogue id="98" vertical="health" mandatory="true" className="simples-lifebroker-leads yellow" />
+									<simples:dialogue id="98" vertical="health" />
 
 									<div class="callbackLeadsContent hidden">
 
@@ -293,7 +293,7 @@
 							{{ } }}
 						</div>
 
-						<simples:dialogue id="41" vertical="health" className="yellow" />
+						<simples:dialogue id="41" vertical="health" />
 
 					</form_v3:fieldset>
 

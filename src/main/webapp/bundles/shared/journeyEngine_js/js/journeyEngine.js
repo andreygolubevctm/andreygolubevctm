@@ -835,6 +835,7 @@
     function loadingShow(message, showInstantly, footerMessage) {
         var messageText = message || 'Please wait...';
         var $ele = $('#journeyEngineLoading');
+        $('body,html').css('overflow','hidden');
         
         if (footerMessage) {
           $ele.append('<div id="loading-footer"><span>' + footerMessage + '</span></div>');
@@ -860,6 +861,8 @@
 
         $ele.attr('data-active', '0');
         $ele.removeClass('opacity1');
+        $('body,html').css('overflow','auto');
+        $("#journeyEngineSlidesContainer").css('opacity', '1');
 
         var speed = $ele.transitionDuration();
 
