@@ -324,6 +324,10 @@
         background-size: contain;
         position: relative;
 
+        &.small-height {
+          height: 2px;
+        }
+
         .results-header-classification-date {
           position: absolute;
           bottom: -5px;
@@ -744,6 +748,10 @@
 
         .featureValue, .featureLabel {
           float: left;
+
+          &.excess-wavier {
+            float: none;
+          }
         }
         .featureLabel {
           color: #333333;
@@ -751,6 +759,10 @@
           width: 100%;
 
           @media (@lg) {
+            &.excess-wavier {
+              width: 100%;
+            }
+
             width: 60%;
           }
         }
@@ -761,6 +773,11 @@
           font-weight: normal;
 
           @media (@lg) {
+            &.excess-wavier {
+              width: 100%;
+              text-align: left;
+            }
+
             text-align: right;
             width: 40%;
             margin-top: 0px;
@@ -999,9 +1016,6 @@
           .contentInner {
             .benefit-container {
               .tbaCover {
-                .benefit-container-item-date {
-                  display: none;
-                }
               .benefit-icon {
                 margin-left: 0px;
                 

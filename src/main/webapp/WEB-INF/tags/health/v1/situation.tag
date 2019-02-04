@@ -75,6 +75,7 @@
             <simples:dialogue id="69" vertical="health" />
             <simples:dialogue id="70" vertical="health" />
             <simples:dialogue id="19" vertical="health" className="simples-dialog-inbound"/>
+            <simples:dialogue id="113" vertical="health" className="simples-dialog-nextgen"/>
             <simples:dialogue id="20" vertical="health" className="simples-dialog-outbound"/>
             <simples:dialogue id="78" vertical="health" className="simples-dialog-cli"/>
             <simples:dialogue id="48" vertical="health" />

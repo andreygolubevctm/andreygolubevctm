@@ -54,6 +54,28 @@
 	</c:choose>
 </c:set>
 
+<c:set var="hasPostCode">
+<c:choose>
+  <c:when test="${ not empty lbContactPostCode }">
+      <content:get key="healthEnergyPostCodes" suppKey="${lbContactPostCode}" />
+  </c:when>
+    <c:otherwise>
+        N
+    </c:otherwise>
+</c:choose>
+</c:set>
+
+<c:set var="inState">
+    <c:choose>
+        <c:when test="${ not empty lbContactState and (lbContactState eq 'ACT' or lbContactState eq 'NSW' or lbContactState eq 'VIC') }">
+            Y
+        </c:when>
+        <c:otherwise>
+            N
+        </c:otherwise>
+    </c:choose>
+</c:set>
+
 <c:set var="lbContactPhone" >
 	<c:choose>
 		<c:when test="${not empty data.health.application.mobile}">${data.health.application.mobile}</c:when>
@@ -184,21 +206,23 @@
 
 						</div>
 
-						<c:if test="${not empty callCentre and callCentre}">
+
+						<c:if test="${(not empty callCentre and callCentre) and (hasPostCode eq 'Y' or inState eq 'Y')}">
+								<div class="lbContactName hidden">${lbContactName}</div>
+								<div class="lbContactDOB hidden">${lbContactDOB}</div>
+								<div class="lbContactGender hidden">${lbContactGender}</div>
+								<div class="lbContactState hidden">${lbContactState}</div>
+								<div class="lbContactPostCode hidden">${lbContactPostCode}</div>
+								<div class="lbContactPhone hidden">${lbContactPhone}</div>
+								<div class="lbContactEmail hidden">${lbContactEmail}</div>
+								<div class="lbHasPostCode hidden">${hasPostCode}</div>
+								<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
+
 							<div class="row confirmation-complete no-wimples">
-								<div class="callbackLeads simples-dialogue yellow">
-
-									<div class="lbContactName hidden">${lbContactName}</div>
-									<div class="lbContactDOB hidden">${lbContactDOB}</div>
-									<div class="lbContactGender hidden">${lbContactGender}</div>
-									<div class="lbContactState hidden">${lbContactState}</div>
-									<div class="lbContactPostCode hidden">${lbContactPostCode}</div>
-									<div class="lbContactPhone hidden">${lbContactPhone}</div>
-									<div class="lbContactEmail hidden">${lbContactEmail}</div>
-									<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
-
-									<simples:dialogue id="98" vertical="health" />
-
+								<div class="callbackLeads simples-dialogue red">
+								
+									<simples:dialogue id="98" vertical="health" className="simples-lifebroker-leads red" />
+									
 									<div class="callbackLeadsContent hidden">
 
 										<div class="call-now-panel">
@@ -275,6 +299,7 @@
 
 							</div>
 						</c:if>
+
 
 						<div class="row confirmation-complete">
 

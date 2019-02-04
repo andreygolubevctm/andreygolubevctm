@@ -243,7 +243,7 @@
 
 	meerkat.modules.register('healthConfirmation', {
 		init: init,
-		getPremium: getPremium
+		getPremium: getPremium,
 	});
 
 })(jQuery);
