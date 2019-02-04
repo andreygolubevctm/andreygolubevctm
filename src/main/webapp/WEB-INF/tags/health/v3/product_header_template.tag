@@ -18,7 +18,7 @@
             </div>
             {{ } else if( hasCustomHeaderContent && (!_.isEmpty(custom.info.content.results.header.label) || !_.isEmpty(custom.info.content.results.header.text))) { }}
             <div class="customHeaderContent" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center"
-                 data-at="bottom center" data-content="{{= custom.info.content.results.header.text}}" data-class="resultHeaderTooltips">{{= custom.info.content.results.header.label}} (?)
+                 data-at="bottom center" data-content="{{= custom.info.content.results.header.text}}" data-class="resultHeaderTooltips"><div class="customHeaderContentText">{{= custom.info.content.results.header.label}} (?)</div>
             </div>
             {{ } else { }}
             <div class="utility-bar-blank">&nbsp;</div>
