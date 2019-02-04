@@ -458,7 +458,7 @@
         var date = obj.custom.reform.changeDate;
 
         if(!date || date.toLowerCase() === 'unknown') {
-            return '';
+            return 'Future State';
         }
 
         var day = date.split(' ')[0];
