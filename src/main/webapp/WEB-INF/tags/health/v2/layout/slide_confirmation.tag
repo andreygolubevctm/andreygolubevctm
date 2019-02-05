@@ -221,7 +221,7 @@
 							<div class="row confirmation-complete no-wimples">
 								<div class="callbackLeads simples-dialogue red">
 								
-									<simples:dialogue id="98" vertical="health" className="simples-lifebroker-leads red" />
+									<simples:dialogue id="98" vertical="health" />
 									
 									<div class="callbackLeadsContent hidden">
 
@@ -318,7 +318,7 @@
 							{{ } }}
 						</div>
 
-						<simples:dialogue id="41" vertical="health" className="yellow" />
+						<simples:dialogue id="41" vertical="health" />
 
 					</form_v3:fieldset>
 
