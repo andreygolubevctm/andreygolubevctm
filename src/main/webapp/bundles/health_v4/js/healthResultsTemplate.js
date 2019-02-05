@@ -219,12 +219,7 @@
         }
 
         var nowVal = val[0];
-        var aprilVal = val.length > 1 ? val[1] : '';
-
-        if(nowVal === 'Y' && aprilVal === 'Y') {
-            console.log(val + ' APRIL: ' + aprilVal);
-        }
-        
+        var aprilVal = val.length > 1 ? val[1] : '';    
 
         ft.isRestricted = false;
         ft.isNotCovered = false;
@@ -344,7 +339,7 @@
     }
 
     function getClassificationDate(date) {
-        if(!date) {
+        if(!date || date.toLowerCase() === 'unknown') {
             return '';
         }
 
@@ -394,8 +389,8 @@
     function getCoverDate(obj) {
         var date = obj.custom.reform.changeDate;
 
-        if(!date) {
-            return '';
+        if(!date || date.toLowerCase() === 'unknown') {
+            return 'Future State';
         }
 
         var day = date.split(' ')[0];
@@ -611,6 +606,19 @@
                 }
             });
         }
+
+        var excessWaiverHeight = 0;
+
+        $('.content.excess-wavier').each(function() {
+            if($(this).height() > excessWaiverHeight) {
+                excessWaiverHeight = $(this).height();
+            }
+        });
+
+
+        $('.content.excess-wavier').each(function() {
+            $(this).height(excessWaiverHeight);
+        });
     }
 
     function numberOfSelectedExtras() {

@@ -35,6 +35,10 @@
     background-size: contain;
     position: relative;
 
+    &.small-height {
+      height: 2px;
+    }
+
     .results-header-classification-date {
       position: absolute;
       bottom: -5px;
@@ -182,6 +186,13 @@
   .customHeaderContent {
     background-color: #9EACD1;
     color: @theme-tertiary;
+
+    .customHeaderContentText {
+      width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
   .remove-result {
     position: absolute;
@@ -363,9 +374,6 @@
               }
 
               .tbaCover {
-                .benefit-container-item-date {
-                  display: none;
-                }
                 .benefit-icon {
                   &::before {
                     color: #313131;

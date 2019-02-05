@@ -407,7 +407,7 @@
     }
 
     function getClassificationDate(date) {
-        if(!date) {
+        if(!date || date.toLowerCase() === 'unknown') {
             return '';
         }
 
@@ -457,8 +457,8 @@
     function getCoverDate(obj) {
         var date = obj.custom.reform.changeDate;
 
-        if(!date) {
-            return '';
+        if(!date || date.toLowerCase() === 'unknown') {
+            return 'Future State';
         }
 
         var day = date.split(' ')[0];
