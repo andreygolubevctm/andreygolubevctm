@@ -219,7 +219,7 @@
 								<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
 
 							<div class="row confirmation-complete no-wimples">
-								<div class="callbackLeads simples-dialogue red">
+								<div class="callbackLeads simples-dialogue">
 								
 									<simples:dialogue id="98" vertical="health" />
 									
