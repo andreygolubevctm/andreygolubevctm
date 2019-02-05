@@ -68,6 +68,14 @@
         _state = state;
     }
 
+    function getState() {
+		return $elements.state.val();
+	}
+
+    function getPostcode() {
+		return $elements.postcode.val();
+	}
+
     function returnCoverCode() {
         return _cover;
     }
@@ -137,6 +145,8 @@
         setCover: setCover,
         setLocation: setLocation,
         setState: setState,
+        getPostcode: getPostcode,
+        getState: getState,
         shouldPerformUpdate: shouldPerformUpdate
     });
 

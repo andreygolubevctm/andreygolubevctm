@@ -152,10 +152,10 @@
                 <div class="navbar-affix results-control-container">
                     <div class="container">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-4 results-filters-frequency"></div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 results-filters-frequency invisible"></div>
                             <div class="hidden-xs hidden-sm col-md-2 text-center small filter-results-hidden-products"></div>
                             <div class="col-sm-9 more-info-return-to-results text-left"><a data-slide-control="prev" href="javascript:;" class="btn-close-more-info" data-analytics="nav button"><span class="icon icon-angle-left"></span> Back to results</a> </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3 results-pagination">
+                            <div class="col-xs-12 col-sm-6 col-md-3 results-pagination invisible">
                                 <div class="navbar-collapse">
                                     <ul class="nav navbar-nav slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
                                 </div>

@@ -286,19 +286,22 @@
         product.pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "MMMM Do, YYYY");
 
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
-        var affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
+        var affixedHeaderTemplate = '';
         product.renderedPriceTemplate = htmlTemplate(product);
-        product.renderedAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
-
+        if($elements.affixedHeaderLogoPriceTemplate.html()) {
+            affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
+            product.renderedAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
+            product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
+        }
+        
         product.showAltPremium = _.has(product, 'altPremium');
         product.displayLogo = false;
         product.showCurrPremText = false;
         product.showRisingTag = false;
 
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
-        affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
+
         product.renderedAltPriceTemplate = htmlTemplate(product);
-        product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
         $elements.mainDualPricingTemplate = _getTemplate(isForSidebar, isForAffixedHeader, page);

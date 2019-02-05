@@ -315,12 +315,23 @@
 
             $body
                 .removeClass('outbound trial')
+                .removeClass('nextgen')
                 .addClass('inbound');
+        }
+        else if(healthContactTypeSelection === 'nextgen') {
+            $healthContactType.val('nextgen');
+            $healthContactTypeTrial.val('');
+
+            $body
+                .removeClass('outbound trial')
+                .removeClass('inbound')
+                .addClass('nextgen');
         }
         // Outbound
         else {
             $body
                 .removeClass('inbound trial')
+                .removeClass('nextgen')
                 .addClass('outbound');
 
             var contatTypeTrialRegex = new RegExp('trial','i');
@@ -389,7 +400,7 @@
         // Set the calltype variables
         callType = getCallType();
         if (!_.isEmpty(callType)) {
-            isValidCallType = _.indexOf(['outbound','inbound','cli'],callType) >= 0;
+            isValidCallType = _.indexOf(['outbound','inbound','cli', 'nextgen'],callType) >= 0;
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
@@ -434,7 +445,7 @@
 	// Toggle visibility on referral call dialogs based on if NOT inbound call
 	function toggleReferralCallDialog() {
     	var callType = getRawCallType();
-    	var validCallType = !_.isEmpty(callType) && callType !== 'inbound';
+    	var validCallType = !_.isEmpty(callType) && callType !== 'inbound' && callType !== 'nextgen';
 		$referralCallCheckboxDialogue.toggle(validCallType);
 		if(!validCallType && $referralCallCheckbox.is(':checked')) {
 			$referralCallCheckbox.prop("checked", null).trigger("change");

@@ -6,6 +6,8 @@
 <core_v1:js_template id="results-features-excess-template">
     {{ var module = meerkat.modules.healthResultsTemplate; }}
     {{ var feature = module.getItem(obj, Features.getPageStructure(obj.featuresStructureIndexToUse)[0]); }}
+    {{ var feature = module.getItem(obj, Features.getPageStructure(obj.featuresStructureIndexToUse)[0]); }}
+
     {{ var excessData = module.getExcessPrices(obj); if(excessData.hasExcesses) { }}
     <div class="cell category">
         <div class="content" data-featureId="{{= feature.id }}">
@@ -14,6 +16,17 @@
             </div>
             <div class="featureValue">
                 <span class="excess-value">{{= excessData.perAdmission }} <small>/admission</small></span>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+        <div class="cell category">
+        <div class="content excess-wavier" data-featureId="{{= feature.id }}">
+            <div class="featureLabel excess-wavier">
+                Excess Waivers
+            </div>
+            <div class="featureValue excess-wavier">
+                <span>{{= obj.hospital.inclusions.waivers }}</span>
             </div>
             <div class="clearfix"></div>
         </div>

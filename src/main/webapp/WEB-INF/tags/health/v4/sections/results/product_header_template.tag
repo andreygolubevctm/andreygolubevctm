@@ -56,8 +56,11 @@
             <c:choose>
             <c:when test="${onlineHealthReformMessaging eq 'Y'}">
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
+                {{ var isExtrasOnly = meerkat.modules.healthChoices.getCoverType() === 'E'; }}
+                {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
+
                 <div class="results-header-classification">
-                   <div class="results-header-classification-icon {{= classification.icon}}">
+                   <div class="results-header-classification-icon {{= icon}}">
                         {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                             <div class="results-header-classification-date">From {{= classification.date}}</div>
                         {{ } }}

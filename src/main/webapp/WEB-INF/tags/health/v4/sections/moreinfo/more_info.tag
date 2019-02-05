@@ -116,23 +116,33 @@
 								<div class="row excessCoPayment">
 									<div class="col-xs-12 col-sm-6 excessInfo hospitalCoverDetails">
 										<div class="row preAprilReformContent">
-											<div class="col-xs-8">
-												<h3>Excess</h3><br/><br/>
-												<p class="hidden-xs">{{= custom.reform.tab1.excess }}</p>
+											<div class="col-xs-8 hidden-xs">
+												<h3>Excess</h3>
+												<p class="hidden-xs">{{= custom.reform.tab1.excess }}</p><br/><br/>
+												<h3>Excess Waivers</h3>
+												<p class="hidden-xs">{{= hospital.inclusions.waivers }}</p>
 											</div>
 											<div class="col-xs-4">&nbsp;</div>
 											<div class="col-xs-12 visible-xs">
-												{{= custom.reform.tab1.excess }}
+												<h3>Excess</h3>
+												<div>{{= custom.reform.tab1.excess }}</div><br/><br/>
+												<h3>Excess Waivers</h3>
+												<div>{{= hospital.inclusions.waivers }}</div>
 											</div>
 										</div>
 										<div class="row postAprilReformContent">
-											<div class="col-xs-8">
-												<h3>Excess</h3><br/><br/>
-												<p class="hidden-xs">{{= custom.reform.tab2.excess }}</p>
+											<div class="col-xs-8 hidden-xs">
+												<h3>Excess</h3>
+												<p class="hidden-xs">{{= custom.reform.tab2.excess }}</p><br/><br/>
+												<h3>Excess Waivers</h3>
+												<p class="hidden-xs">{{= hospital.inclusions.waivers }}</p>
 											</div>
 											<div class="col-xs-4">&nbsp;</div>
 											<div class="col-xs-12 visible-xs">
-												{{= custom.reform.tab2.excess }}
+												<h3>Excess</h3>
+												<div>{{= custom.reform.tab2.excess }}</div><br/><br/>
+												<h3>Excess Waivers</h3>
+												<div>{{= hospital.inclusions.waivers }}</div>
 											</div>
 										</div>
 									</div>
@@ -141,7 +151,7 @@
 									<div class="col-xs-12 col-sm-6 hospitalCoverDetails">
 										<div class="row">
 											<div class="col-xs-8">
-												<h3>Co-payments</h3><br/><br/>
+												<h3>Co-payments</h3>
 												<p>{{= hospital.inclusions.copayment }}</p>
 											</div>
 											<div class="col-xs-4">
