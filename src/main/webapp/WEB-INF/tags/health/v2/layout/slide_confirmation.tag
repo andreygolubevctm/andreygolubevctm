@@ -318,7 +318,7 @@
 							{{ } }}
 						</div>
 
-						<simples:dialogue id="41" vertical="health" className="yellow" />
+						<simples:dialogue id="41" vertical="health" />
 
 					</form_v3:fieldset>
 
