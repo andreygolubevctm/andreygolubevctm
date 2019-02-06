@@ -15,7 +15,8 @@
     {{ var property = obj.premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = obj.altPremium; } }}
 	{{ var prem = obj.premium[frequency]; }}
 	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
-                     
+    {{ var showABDToolTip = prem.abd > 0; }}
+           
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
         {{ if (!result.hasValidPrice) { }}
@@ -37,6 +38,9 @@
     <div class="lhcText hide-on-affix">
         <span>
 			{{= textLhcFreePricing}}
+            {{ if(showABDToolTip) { }}
+                <field_v2:help_icon helpId="643" showText="false" />
+            {{ } }}
         </span>
     </div>
 
