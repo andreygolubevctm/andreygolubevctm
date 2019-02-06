@@ -12,7 +12,10 @@
     <c:if test="${onlineHealthReformMessaging eq 'Y'}">
         <div class="col-xs-12 productWidgetSection">
             {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-            <div class="more-info-classification-icon {{= classification.icon}}">
+            {{ var isExtrasOnly = meerkat.modules.healthChoices.getCoverType() === 'E'; }}
+            {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
+            
+            <div class="more-info-classification-icon {{= icon}}">
             {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                 <div class="results-header-classification-date">From {{= classification.date}}</div>
             {{ } }}

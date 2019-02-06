@@ -219,11 +219,22 @@
 	}
 
 	function setCoverStartRange(min, max){
+		var applicationDate = $('#health_searchDate').val();
+		var dateSplit = applicationDate.split('/');
+		var applicationDateString = ''; 
+
+		if(applicationDate) {
+			var year = dateSplit[2];
+			var month = dateSplit[1];
+			var day = dateSplit[0];
+			applicationDateString = year + '-' + month + '-' + day;
+		}
+
 		settings.minStartDateOffset = min;
 		settings.maxStartDateOffset = max;
 
 		// Get today's date in UTC timezone
-		var today = meerkat.modules.utils.getUTCToday(),
+		var today = applicationDate ? new Date(applicationDateString).getTime() : meerkat.modules.utils.getUTCToday(),
 			start = 0,
 			end = 0,
 			hourAsMs = 60 * 60 * 1000;
@@ -239,12 +250,18 @@
 
 		// Calculate the end date
 		end = today + (max * 24 * hourAsMs);
-
 		today = new Date(start);
-		settings.minStartDate = today.getUTCDate() + '/' + (today.getUTCMonth()+1) + '/' + today.getUTCFullYear();
-		today = new Date(end);
-		settings.maxStartDate = today.getUTCDate() + '/' + (today.getUTCMonth()+1) + '/' + today.getUTCFullYear();
 
+		var yearUtc = today.getUTCFullYear();
+		var monthUtc = today.getUTCMonth()+1 < 10 ? '0' + (today.getUTCMonth()+1) : today.getUTCMonth()+1;
+		var dayUtc = today.getUTCDate() < 10 ? '0' + today.getUTCDate() : today.getUTCDate();
+
+		settings.minStartDate = dayUtc + '/' + monthUtc + '/' + yearUtc;
+		today = new Date(end);
+		yearUtc = today.getUTCFullYear();
+		monthUtc = Number(today.getUTCMonth()+1) < 10 ? '0' + (today.getUTCMonth()+1) : today.getUTCMonth()+1;
+		dayUtc = Number(today.getUTCDate()) < 10 ? '0' + today.getUTCDate() : today.getUTCDate();
+		settings.maxStartDate = dayUtc + '/' + monthUtc + '/' + yearUtc;
 	}
 
 	// Show approved listings only, this can potentially change per fund
@@ -597,7 +614,8 @@
             .addRule('earliestDateEUR', min, 'Please enter a date on or after ' + min)
             .addRule('latestDateEUR', max, 'Please enter a date on or before ' + max)
             .datepicker('setStartDate', min)
-            .datepicker('setEndDate', max);
+						.datepicker('setEndDate', max)
+						.datepicker("update", min);
 	}
 
 	function toggleCouponSeenText() {

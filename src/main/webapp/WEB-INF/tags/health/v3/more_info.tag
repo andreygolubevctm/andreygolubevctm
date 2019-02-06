@@ -166,6 +166,9 @@
 
 			</div>
 			{{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
+			{{ var isExtrasOnly = meerkat.modules.health.getCoverType() === 'E'; }}
+      {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
+
 			<c:choose>
 				<c:when test="${isDualPriceActive eq true}">
 					<div class="col-md-3 hidden-xs moreInfoTopRightColumn">
@@ -174,7 +177,7 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 							</div>
 							<c:if test="${simplesHealthReformMessaging eq 'Y'}">
-								<div class="simplesMoreInfoTierLogo {{= classification.icon}}">
+								<div class="simplesMoreInfoTierLogo {{= icon}}">
                   {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                       <div class="results-header-classification-date">From {{= classification.date}}</div>
                   {{ } }}
@@ -189,7 +192,7 @@
 							<div class="col-xs-12">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 								<c:if test="${simplesHealthReformMessaging eq 'Y'}">
-									<div class="simplesMoreInfoTierLogo {{= classification.icon}}">
+									<div class="simplesMoreInfoTierLogo {{= icon}}">
                     {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
                       <div class="results-header-classification-date">From {{= classification.date}}</div>
                     {{ } }}
@@ -663,9 +666,7 @@
 							{{ } }}
 						</p>
 						
-						{{ if (custom.reform.tab1.excess !== custom.reform.tab2.excess) { }}
 						<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
-					{{ } }}
 					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
 
 					<p><strong>Accident Override:</strong><br>
