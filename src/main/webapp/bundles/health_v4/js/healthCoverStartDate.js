@@ -86,7 +86,7 @@
 
 	function setCoverStartRange(min, max){
 		var applicationDate = $('#health_searchDate').val();
-		var dateSplit = applicationDate.split('/');
+		var dateSplit = applicationDate ? applicationDate.split('/') : [];
 		var applicationDateString = ''; 
 
 		if(applicationDate) {
