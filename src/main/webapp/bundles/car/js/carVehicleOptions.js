@@ -242,49 +242,6 @@
 			selectedPrices.push(itemPrice);
 		});
 
-		// Create the new dropdown lists (per accessory) used for prices of non-standard accessories also set the select dropdown, if it has one.
-		$.each(vehicleNonStandardAccessories, function(index, vehicleNonStandardAccessory) {
-
-			var foundSelectedIndex = selectedIndexes.indexOf(index);
-
-			var checked = false;
-			if (foundSelectedIndex >= 0) {
-				checked = true;
-			}
-			vehicleNonStandardAccessory.checked = checked;
-
-			vehicleNonStandardAccessory.priceDropdown = '<option value="">Please choose&hellip;</option>';
-
-			selectedDropdown = '';
-			if (selectedPrices[foundSelectedIndex] == '0') {
-				selectedDropdown = 'selected';
-			}
-			vehicleNonStandardAccessory.priceDropdown += '<option value="" disabled="true">---</option>';
-			vehicleNonStandardAccessory.priceDropdown += '<option value="0" '+selectedDropdown+'>Included in purchase price</option>';
-			vehicleNonStandardAccessory.priceDropdown += '<option value="" disabled="true">---</option>';
-			var min = Math.ceil(vehicleNonStandardAccessory.standard * (vehicleNonStandardAccessory.min / 100));
-			var step = min;
-			var max = Math.floor(vehicleNonStandardAccessory.standard * (vehicleNonStandardAccessory.max / 100));
-
-			while (step <= max) {
-				selectedDropdown = '';
-				if (selectedPrices[foundSelectedIndex] == step) {
-					selectedDropdown = 'selected';
-				}
-				vehicleNonStandardAccessory.priceDropdown += '<option value="'+step+'" '+selectedDropdown+'>$'+step+'</option>';
-				step += min;
-			}
-			step -= min;
-			// Add the max value if the last step fell short of the max.
-			if (step != max) {
-				selectedDropdown = '';
-				if (selectedPrices[foundSelectedIndex] == max) {
-					selectedDropdown = 'selected';
-				}
-				vehicleNonStandardAccessory.priceDropdown += '<option value="'+max+'" '+selectedDropdown+'>$'+max+'</option>';
-			}
-		});
-
 		var htmlContent = templateAccessories({
 				standardAccessories: standardAccessories,
 				vehicleNonStandardAccessories: vehicleNonStandardAccessories
@@ -422,9 +379,6 @@
 				title:"remove accessory"
 			}).addClass("icon-cross")
 			.on('click', _.bind(onRemoveAccessoriesItem, this, item))
-		)
-		.append(
-			$("<span/>").append(item.price === false ? "Included" : "$" + item.price)
 		);
 	}
 
@@ -660,7 +614,6 @@
 		var $li = $("<li/>")
 		.addClass('saved-item-' + item.type + '-' + item.position)
 		.attr("itemIndex", item.position)
-		.attr("itemPrice", item.price)
 		.append(
 			$("<span/>").append(item.label)
 		)
@@ -670,12 +623,6 @@
 			}).addClass("icon-cross")
 			.on('click', _.bind(onRemoveSavedItem, this, item))
 		);
-
-		if(!_.isNull(item.price)) {
-			$li.append(
-				$("<span/>").append(item.price === '0' ? "Included" : "$" + item.price)
-			);
-		}
 
 		return $li;
 	}
@@ -693,7 +640,6 @@
 		if(data.type == 'accessories') {
 			item.position = data.item.position;
 			item.label = data.item.label;
-			item.price = data.item.price;
 			item.code = data.item.code;
 			item.item = data.item;
 			$(elements.accessories.saveditems).append(
@@ -829,15 +775,6 @@
 				value: item.included === true ? 'Y' : 'N'
 			}).addClass('saved-item-accessories-' + ("0" + item.position).slice(-2))
 		);
-
-		if(item.included === false) {
-			$(elements.accessories.inputs).append(
-				getInputHTML({
-					name: 'quote_accs_acc' + item.position + '_prc',
-					value: item.price
-				}).addClass('saved-item-accessories-' + ("0" + item.position).slice(-2))
-			);
-		}
 
 		// Append item to list view in the main form
 		renderExistingSelectionToMainForm({
