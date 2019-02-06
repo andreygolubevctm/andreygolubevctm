@@ -220,10 +220,10 @@
 
 	function setCoverStartRange(min, max){
 		var applicationDate = $('#health_searchDate').val();
-		var dateSplit = applicationDate ? applicationDate.split('/') : [];
 		var applicationDateString = ''; 
 
 		if(applicationDate) {
+			var dateSplit = applicationDate.split('/');
 			var year = dateSplit[2];
 			var month = dateSplit[1];
 			var day = dateSplit[0];
