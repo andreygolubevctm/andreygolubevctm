@@ -94,16 +94,14 @@
 							<div class="col-sm-12 col-xs-12 HospitalBenefits">
 								<!-- Hospital Benefits Heading + Brochure -->
 									<c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
-    							<c:choose>
-    							<c:when test="${onlineHealthReformMessaging eq 'Y'}">
+    							<c:if test="${onlineHealthReformMessaging eq 'Y'}">
     							<div class="reformHospitalTabs">
 										{{ if (product.custom.reform.tab2.benefits && product.custom.reform.tab2.benefits.length > 0) { }}
 										<button type="button" class="reformHospitalTabLink preAprilReformLink active">Covered now</button>
 										<button type="button" class="reformHospitalTabLink postAprilReformLink">Covered from {{= custom.reform.changeDate }}</button>
 										{{ } }}
 									</div>
-    							</c:when>
-    							</c:choose>
+    							</c:if>
 								<div class="row hospitalInfo">
 									<div class="col-xs-12">
 										<div class="row row-eq-height">
