@@ -29,13 +29,20 @@
 
                     <div class="benefit-container">
                         <div class="benefit-container-item {{= ft.labelInColumnContentClass }}">
-                            <span class="{{= ft.labelInColumnContentClassApril }}">Now</span>
+                            {{ if(ft.beforeChangeDate && coverDate) { }}
+                                <span {{= ft.labelInColumnContentClassApril }}>Now</span>
+                            {{ } }}
                             <span class="benefit-icon" />
+                            {{ if(ft.isBenefit && !coverDate && ft.beforeChangeDate) { }}
+                                <span class="benefit-container-item-date">* subject to change</span>
+                            {{ } }}
                         </div>
-                        <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
-                            <span class="benefit-container-item-date">{{= coverDate}}</span>
-                            <span class="benefit-icon" />
-                        </div>
+                        {{ if(ft.beforeChangeDate && coverDate) { }}
+                            <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
+                                <span class="benefit-container-item-date">{{= coverDate}}</span>
+                                <span class="benefit-icon" />
+                            </div>
+                        {{ } }}
                     </div>
 
                 </div>
