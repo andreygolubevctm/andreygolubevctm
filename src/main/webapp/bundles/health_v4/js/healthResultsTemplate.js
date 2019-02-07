@@ -345,7 +345,7 @@
     function getClassification(obj) {
         var classification = {};
         classification.icon = getClassificationIcon(obj.custom.reform ? obj.custom.reform.tier : null);
-        classification.date = getClassificationDate(obj.custom.reform ? obj.custom.reform.changeDate : null);
+        classification.date = getClassificationDate(obj);
 
         return classification;
     }
@@ -366,23 +366,17 @@
         return new Date(Date.parse(dayNumbers + ' ' + month + ' ' + year));
     }
 
-    function getClassificationDate(date) {
-        if(!date || date.toLowerCase() === 'unknown') {
-            return '';
-        }
-
-        var day = date.split(' ')[0];
-        var dayNumbers = day.match(/\d+/g).join([]);
-
-        var month = date.split(' ')[1];
-        var year = date.split(' ')[2] ? date.split(' ')[2] : '2019';
-        
+    function getClassificationDate(obj) {
+        var dateParsed = parseCoverDate(obj);
         var curDate = window.meerkat.site.serverDate;
-        var dateParsed = new Date(Date.parse(dayNumbers + ' ' + month + ' ' + year));
 
-        if(curDate.getTime() > dateParsed.getTime()){
+        if(!dateParsed || curDate.getTime() > dateParsed.getTime()) {
             return '';
         }
+
+        var year = dateParsed.getFullYear();
+        var day = dateParsed.getDate();
+        var month = dateParsed.toLocaleString('en-au', { month: "long" });
 
         switch(month) {
             case 'January':
@@ -415,27 +409,15 @@
     }
 
     function getCoverDate(obj) {
-        var date = obj.custom.reform.changeDate;
-
-        if(!date || date.toLowerCase() === 'unknown') {
-            return '';
-        }
-
-        var day = date.split(' ')[0];
-        var dayNumbers = day.match(/\d+/g).join([]);
-
-        var month = date.split(' ')[1];
-        var year = date.split(' ')[2] ? date.split(' ')[2] : '2019';
-        
+        var dateParsed = parseCoverDate(obj);
         var curDate = window.meerkat.site.serverDate;
-        var dateParsed = new Date(Date.parse(dayNumbers + ' ' + month + ' ' + year));
 
-        day = day.replace('st', '');
-
-        //The change date is in the past so also hide the cover date
-        if(curDate.getTime() > dateParsed.getTime()){
+        if(!dateParsed || curDate.getTime() > dateParsed.getTime()) {
             return '';
         }
+
+        var day = dateParsed.getDate();
+        var month = dateParsed.toLocaleString('en-au', { month: "long" });
 
         switch(month) {
             case 'January':
