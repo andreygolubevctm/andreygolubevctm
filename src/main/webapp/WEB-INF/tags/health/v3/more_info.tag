@@ -244,7 +244,10 @@
 		</div>
 		{{ } }}
 
-		<div class="simplesMoreInfoReformTabs row">
+		<c:set var="simplesHealthReformMessaging" scope="request"><content:get key="simplesHealthReformMessaging" /></c:set>
+    <c:choose>
+    <c:when test="${simplesHealthReformMessaging eq 'Y'}">
+    <div class="simplesMoreInfoReformTabs row">
 			{{ if (custom.reform.tab2.benefits && custom.reform.tab2.benefits.length === 0) { }}
 				<button class="simplesMoreInfoTabLink simplesMoreInfoBeforeTab active" type="button">
 					 Cover Details
@@ -261,6 +264,8 @@
 				</button>
 			{{ } }}
 		</div>
+    </c:when>
+    </c:choose>
 		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoBeforeContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if (custom.reform.tab2 && custom.reform.tab2.benefits && custom.reform.tab2.benefits.length > 0) { }}
@@ -582,6 +587,9 @@
             </c:if>
 		</div>
 
+	<c:set var="simplesHealthReformMessaging" scope="request"><content:get key="simplesHealthReformMessaging" /></c:set>
+    <c:choose>
+    <c:when test="${simplesHealthReformMessaging eq 'Y'}">
 		<div class="fieldset-card row cover-card simplesMoreInfoHospitalCover simplesMoreInfoAfterContent ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				{{ if (custom.reform.scripting === 'C') { }}
@@ -747,7 +755,9 @@
 				</div>
 			</c:if>
 		</div>
-
+    </c:when>
+    </c:choose>
+		
 		{{ if (['c', 'e'].includes(meerkat.modules.healthBenefitsStep.getCoverType())) { }}
 		<div class="row extrasCoverSection">
 			<h2 class="text-dark">Extras cover</h2>
