@@ -170,6 +170,18 @@
 
         // Additional attributes for category's only.
         if (ft.type == 'category') {
+            var isSelectedBenefit = obj.featuresStructureIndexToUse === "2";
+            var afterChangeDate = false;
+            var changeDate = parseCoverDate(obj);
+
+            if(changeDate) {
+                afterChangeDate = changeDate.getTime() < meerkat.site.serverDate.getTime(); 
+            }
+    
+            ft.displayItem = ft.type != 'section';
+            ft.isBenefit = obj.featuresStructureIndexToUse === "4";
+            ft.beforeChangeDate = !isSelectedBenefit && !afterChangeDate;
+
             ft.classStringForInlineLabelCover = "";
 
             if (ft.name === '') {
@@ -338,6 +350,22 @@
         return classification;
     }
 
+    function parseCoverDate(obj) {
+        var date = obj.custom.reform ? obj.custom.reform.changeDate : null;
+        
+        if(!date || date.toLowerCase() === 'unknown') {
+            return null;
+        }
+
+        var day = date.split(' ')[0];
+        var dayNumbers = day.match(/\d+/g).join([]);
+
+        var month = date.split(' ')[1];
+        var year = date.split(' ')[2] ? date.split(' ')[2] : '2019';
+        
+        return new Date(Date.parse(dayNumbers + ' ' + month + ' ' + year));
+    }
+
     function getClassificationDate(date) {
         if(!date || date.toLowerCase() === 'unknown') {
             return '';
@@ -390,7 +418,7 @@
         var date = obj.custom.reform.changeDate;
 
         if(!date || date.toLowerCase() === 'unknown') {
-            return 'Future State';
+            return '';
         }
 
         var day = date.split(' ')[0];
@@ -404,8 +432,9 @@
 
         day = day.replace('st', '');
 
+        //The change date is in the past so also hide the cover date
         if(curDate.getTime() > dateParsed.getTime()){
-            return 'From April 1';
+            return '';
         }
 
         switch(month) {
