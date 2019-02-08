@@ -298,7 +298,8 @@
 	    var contactType = $healthContactTypeField.val();
 	    if(!_.isUndefined(contactType) && !_.isEmpty(contactType)) {
 	        var optin = _.indexOf(affiliatesOptinBlacklist, contactType) === -1 ? "Y" : "N";
-		    $optin_email.add($optin_phone).add($optin_privacy).add($optin_optin).add($optin_email_app).val(optin);
+	        // Set any marketing optins to NO
+		    $optin_email.add($optin_phone).add($optin_email_app).val(optin);
         }
     }
 
