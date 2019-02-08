@@ -225,7 +225,7 @@
         if (ft.type == 'category') {
             var isSelectedBenefit = obj.featuresStructureIndexToUse === "2";
             var afterChangeDate = false;
-            var changeDate = parseCoverDate(obj);
+            var changeDate = parseChangeDate(obj.custom.reform ? obj.custom.reform.changeDate : null);
 
             if(changeDate) {
                 afterChangeDate = changeDate.getTime() < meerkat.site.serverDate.getTime(); 
@@ -418,8 +418,7 @@
         return classification;
     }
 
-    function parseCoverDate(obj) {
-        var date = obj.custom.reform ? obj.custom.reform.changeDate : null;
+    function parseChangeDate(date) {
         
         if(!date || date.toLowerCase() === 'unknown') {
             return null;
@@ -435,7 +434,7 @@
     }
 
     function getClassificationDate(obj) {
-        var dateParsed = parseCoverDate(obj);
+        var dateParsed = parseChangeDate(obj.custom.reform ? obj.custom.reform.changeDate : null);
         var curDate = window.meerkat.site.serverDate;
 
         if(!dateParsed || curDate.getTime() > dateParsed.getTime()) {
@@ -477,7 +476,7 @@
     }
 
     function getCoverDate(obj) {
-        var dateParsed = parseCoverDate(obj);
+        var dateParsed = parseChangeDate(obj.custom.reform ? obj.custom.reform.changeDate : null);
         var curDate = window.meerkat.site.serverDate;
 
         if(!dateParsed || curDate.getTime() > dateParsed.getTime()) {
@@ -679,7 +678,8 @@
         getDiscountText: getDiscountText,
         getDiscountPercentage: getDiscountPercentage,
         fundDiscountExists: fundDiscountExists,
-        getCoverDate: getCoverDate
+        getCoverDate: getCoverDate,
+        parseChangeDate: parseChangeDate
     });
 
 })(jQuery);

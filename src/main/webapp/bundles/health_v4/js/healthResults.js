@@ -951,10 +951,10 @@
         var hasSubjectToChangeProduct = false;
 
         Results.getReturnedResults().forEach(function(result) {
-            var date = result.custom.reform ? result.custom.reform.changeDate : null;
+            var date = meerkat.modules.healthResultsTemplate.parseChangeDate(result.custom.reform ? result.custom.reform.changeDate : null);
             var serverDate = meerkat.site.serverDate;
 
-            if(!date || date.toLowerCase() === 'unknown' || serverDate < date) {
+            if(!date || serverDate < date) {
                 hasSubjectToChangeProduct = true;
             }
         });
