@@ -877,12 +877,22 @@
         return onlineCategoryVersion;
     }
 
+    function hideReformsBanner() {
+        $("#reforms-banner").addClass("hidden");
+    }
+
+    function showReformsBanner() {
+        $("#reforms-banner").removeClass("hidden");
+    }
+
     meerkat.modules.register("health", {
         init: initHealth,
         events: moduleEvents,
         initProgressBar: initProgressBar,
         getTrackingFieldsObject: getTrackingFieldsObject,
-        getOnlineCategoryVersion: getOnlineCategoryVersion
+        getOnlineCategoryVersion: getOnlineCategoryVersion,
+        showReformsBanner: showReformsBanner,
+        hideReformsBanner: hideReformsBanner
     });
 
 
