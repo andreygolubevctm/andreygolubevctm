@@ -947,6 +947,23 @@
                 productSelectedFromProductCode = true;
             }
         }
+
+        var hasSubjectToChangeProduct = false;
+
+        Results.getReturnedResults().forEach(function(result) {
+            var date = result.custom.reform ? result.custom.reform.changeDate : null;
+            var serverDate = meerkat.site.serverDate;
+
+            if(!date || date.toLowerCase() === 'unknown' || serverDate < date) {
+                hasSubjectToChangeProduct = true;
+            }
+        });
+
+        if(hasSubjectToChangeProduct) {
+            meerkat.modules.health.showReformsBanner();
+        }else{
+            meerkat.modules.health.hideReformsBanner();
+        }
     }
 
     function _selectProductFromProductCode(productCode) {
