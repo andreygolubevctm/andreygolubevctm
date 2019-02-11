@@ -61,6 +61,11 @@
 				</table>
 			</div>
 		</div>
+		<div class="row about">
+			<div class="col-xs-12">
+				<p><strong>Before choosing a policy, please be aware that exclusions and/or sub-limits will apply to most sections. It is important to read the Product Disclosure Statement (PDS) before making any purchase to ensure the cover provided matches your specific requirements.</strong></p>
+			</div>
+		</div>
 		<%-- PDS Link --%>
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-sm-offset-3 ">
