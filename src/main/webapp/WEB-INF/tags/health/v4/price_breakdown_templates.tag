@@ -46,7 +46,7 @@
 
         {{ if (showABDRow) { }}
         <div class="row">
-            <div class="col-xs-12 col-md-8">Age Based Discount {{= obj.premium[obj.frequency].discountPercentage }}% <field_v2:help_icon helpId="643" showText="false" /></div>
+            <div class="col-xs-12 col-md-8">Age Based Discount {{= obj.premium[obj.frequency].abd }}% <field_v2:help_icon helpId="643" showText="false" /></div>
             <div class="col-xs-12 col-md-4 text-right">-{{= obj.premium[obj.frequency].abdValue }}</div>
         </div>
         {{ } }}

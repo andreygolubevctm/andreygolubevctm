@@ -16,7 +16,6 @@
 	{{ var prem = obj.premium[frequency]; }}
 	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
     {{ var showABDToolTip = prem.abd > 0; }}
-           
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
         {{ if (!result.hasValidPrice) { }}
