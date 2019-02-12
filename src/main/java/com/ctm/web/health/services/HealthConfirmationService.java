@@ -50,7 +50,7 @@ public class HealthConfirmationService {
         try {
             LocalDate startDate = LocalDate.parse(data.getQuote().getPayment().getDetails().getStart(), AUS_FORMAT);
             String providerName = data.getQuote().getApplication().getProviderName();
-            final String productSelected = selectedProductService.getMinimalistProductXML(
+            final String productSelected = selectedProductService.getProductXML(
                         data.getTransactionId(),
                         Long.parseLong(data.getQuote().getApplication().getProductId().replaceAll("\\D",""))
             );
