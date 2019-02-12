@@ -64,7 +64,15 @@ public class HealthSelectedProductService {
 			if (productJSON != null) {
 				JsonNode price = productJSON.path("price").get(0);
 				if (!price.isMissingNode()) {
-					((ObjectNode) price.path("custom").path("reform").path("tab1")).remove("benefits");
+					if(!price.path("custom").isMissingNode() && !price.path("custom").path("reform").isMissingNode()) {
+						JsonNode reform = price.path("custom").path("reform");
+						if(!reform.path("tab1").isMissingNode()) {
+							((ObjectNode) reform.path("tab1")).remove("benefits");
+						}
+						if(!reform.path("tab2").isMissingNode()) {
+							((ObjectNode) reform.path("tab2")).remove("benefits");
+						}
+					}
 					JsonNode hospital = price.path("hospital");
 					if (!hospital.isMissingNode()) {
 						((ObjectNode) hospital).remove("benefits");
