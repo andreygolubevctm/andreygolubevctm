@@ -1,6 +1,10 @@
 package com.ctm.web.health.model.form;
 
+import java.time.format.DateTimeFormatter;
+
 public class Insured {
+
+    public static final DateTimeFormatter DOB_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private String dob;
 
