@@ -952,9 +952,8 @@
 
         Results.getReturnedResults().forEach(function(result) {
             var date = meerkat.modules.healthResultsTemplate.parseChangeDate(result.custom.reform ? result.custom.reform.changeDate : null);
-            var serverDate = meerkat.site.serverDate;
 
-            if(!date || serverDate < date) {
+            if(!date) {
                 hasSubjectToChangeProduct = true;
             }
         });
