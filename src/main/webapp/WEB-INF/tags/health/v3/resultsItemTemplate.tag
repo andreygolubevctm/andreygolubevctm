@@ -29,7 +29,7 @@
 
                     <div class="benefit-container">
                         <div class="benefit-container-item {{= ft.labelInColumnContentClass }}">
-                            {{ if(ft.beforeChangeDate && coverDate !== 'Future State') { }}
+                            {{ if(ft.beforeChangeDate && coverDate) { }}
                                 <span {{= ft.labelInColumnContentClassApril }}>Now</span>
                             {{ } }}
                             <span class="benefit-icon" />
