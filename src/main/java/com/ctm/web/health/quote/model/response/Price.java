@@ -1,6 +1,7 @@
 package com.ctm.web.health.quote.model.response;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public class Price {
 
@@ -28,7 +29,7 @@ public class Price {
 
     private BigDecimal payableAmount;
 
-    private Integer abd;
+    private int abd;
     private BigDecimal abdValue;
 
     private Price() {
@@ -46,7 +47,7 @@ public class Price {
                  BigDecimal lhcFreeAmount,
                  BigDecimal baseAndLHC,
                  BigDecimal payableAmount,
-                  Integer abdPercentage,
+                  int abdPercentage,
                   BigDecimal abdAmount) {
         this.grossPremium = grossPremium;
         this.hospitalValue = hospitalValue;
@@ -128,11 +129,11 @@ public class Price {
         return payableAmount;
     }
 
-    public Integer getAbd() {
+    public int getAbd() {
         return abd;
     }
 
     public BigDecimal getAbdValue() {
-        return abdValue;
+        return Optional.ofNullable(abdValue).orElse(BigDecimal.ZERO);
     }
 }

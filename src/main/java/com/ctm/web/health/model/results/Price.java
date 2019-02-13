@@ -38,7 +38,7 @@ public class Price {
 
     private String base;
 
-    private Integer abd;
+    private int abd;
     private BigDecimal abdValue;
 
     public String getDiscounted() {
@@ -177,11 +177,11 @@ public class Price {
         this.base = base;
     }
 
-    public Integer getAbd() {
+    public int getAbd() {
         return abd;
     }
 
-    public void setAbd(Integer abd) {
+    public void setAbd(int abd) {
         this.abd = abd;
     }
 
