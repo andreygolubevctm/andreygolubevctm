@@ -399,11 +399,6 @@
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
-                $("#journeyEngineSlidesContainer").css('opacity', '0');
-                $('.results-pagination, .results-filters-frequency').addClass('invisible');
-
-                meerkat.modules.journeyEngine.loadingShow("");
-
 
                 if (event.isForward && meerkat.site.isCallCentreUser) {
                     $('#journeyEngineSlidesContainer .journeyEngineSlide')
@@ -422,6 +417,11 @@
                 meerkat.modules.paymentGateway.disable();
 
                 if (event.isForward) {
+                    $("#journeyEngineSlidesContainer").css('opacity', '0');
+                    $('.results-pagination, .results-filters-frequency').addClass('invisible');
+    
+                    meerkat.modules.journeyEngine.loadingShow("");
+
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
                         if (meerkat.modules.coupon.doRenderAfterAds() === false) {
@@ -433,6 +433,8 @@
                     }, 1000);
 
                     meerkat.modules.healthLHC.resetNewLHC();
+                }else{
+                    $('.results-pagination, .results-filters-frequency').removeClass('invisible');
                 }
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
