@@ -38,6 +38,9 @@ public class Price {
 
     private String base;
 
+    private Integer abd;
+    private BigDecimal abdValue;
+
     public String getDiscounted() {
         return discounted;
     }
@@ -172,5 +175,21 @@ public class Price {
 
     public void setBase(String base) {
         this.base = base;
+    }
+
+    public Integer getAbd() {
+        return abd;
+    }
+
+    public void setAbd(Integer abd) {
+        this.abd = abd;
+    }
+
+    public BigDecimal getAbdValue() {
+        return abdValue;
+    }
+
+    public void setAbdValue(BigDecimal abdValue) {
+        this.abdValue = abdValue;
     }
 }

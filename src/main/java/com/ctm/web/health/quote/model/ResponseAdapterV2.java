@@ -271,6 +271,9 @@ public class ResponseAdapterV2 {
         price.setLhcPercentage(healthQuote.getLoading());
         price.setLhc(formatCurrency(lhcAmount, true, true));
         price.setGrossPremium(formatCurrency(quotePrice.getGrossPremium(), true, true));
+
+        price.setAbd(quotePrice.getAbd());
+        price.setAbdValue(quotePrice.getAbdValue());
         return price;
     }
 

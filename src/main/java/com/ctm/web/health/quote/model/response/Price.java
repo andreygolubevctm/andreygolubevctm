@@ -28,6 +28,9 @@ public class Price {
 
     private BigDecimal payableAmount;
 
+    private Integer abd;
+    private BigDecimal abdValue;
+
     private Price() {
     }
 
@@ -42,7 +45,9 @@ public class Price {
                  BigDecimal basePremium,
                  BigDecimal lhcFreeAmount,
                  BigDecimal baseAndLHC,
-                 BigDecimal payableAmount) {
+                 BigDecimal payableAmount,
+                  Integer abdPercentage,
+                  BigDecimal abdAmount) {
         this.grossPremium = grossPremium;
         this.hospitalValue = hospitalValue;
         this.discountAmount = discountAmount;
@@ -55,6 +60,8 @@ public class Price {
         this.lhcFreeAmount = lhcFreeAmount;
         this.baseAndLHC = baseAndLHC;
         this.payableAmount = payableAmount;
+        this.abd = abdPercentage;
+        this.abdValue = abdAmount;
     }
 
     public static final Price DEFAULT_PRICE = new Price(
@@ -69,6 +76,8 @@ public class Price {
             BigDecimal.ZERO,
             BigDecimal.ZERO,
             BigDecimal.ZERO,
+            BigDecimal.ZERO,
+            0,
             BigDecimal.ZERO);
 
     public BigDecimal getGrossPremium() {
@@ -117,5 +126,13 @@ public class Price {
 
     public BigDecimal getPayableAmount() {
         return payableAmount;
+    }
+
+    public Integer getAbd() {
+        return abd;
+    }
+
+    public BigDecimal getAbdValue() {
+        return abdValue;
     }
 }
