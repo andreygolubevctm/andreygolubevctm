@@ -130,10 +130,12 @@ public class Price {
     }
 
     public int getAbd() {
-        return abd;
+        return 5;
+        //return abd;
     }
 
     public BigDecimal getAbdValue() {
-        return Optional.ofNullable(abdValue).orElse(BigDecimal.ZERO);
+        return new BigDecimal(250);
+        //return Optional.ofNullable(abdValue).orElse(BigDecimal.ZERO);
     }
 }
