@@ -49,7 +49,7 @@
 			    });
 		    });
 	    }
-        return pauseRecordingOverrideEnabled ? true : meerkat.modules.healthAppCompliance.callback(state);
+        return pauseRecordingOverrideEnabled || meerkat.modules.healthAppCompliance.callback(state);
     }
 
     function toggle($_obj) {
