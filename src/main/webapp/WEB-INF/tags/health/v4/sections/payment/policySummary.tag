@@ -11,7 +11,6 @@
 <health_v1:dual_pricing_settings />
 
 <div class="sidebar-box<c:if test="${isDualPriceActive eq true}"> hasDualPricing</c:if> policySummary-sidebar">
-<c:if test="${isDualPriceActive eq false}">
     <div class="policySummaryContainer ${className}">
         <c:choose>
             <c:when test="${isAltView}">
@@ -28,7 +27,6 @@
             </c:otherwise>
         </c:choose>
     </div>
-</c:if>
 
 <c:if test="${isDualPriceActive eq true}">
     <h1 class="hidden-xs">Your quote details</h1>
@@ -41,6 +39,7 @@
     <div class="sidebar-box sidebarFrequency hidden-xs"></div>
     <div class="sidebar-box">
 </c:if>
+
 <c:if test="${showProductDetails == true}">
     <div class="productSummaryDetails">
         <c:if test="${isAltView}">
