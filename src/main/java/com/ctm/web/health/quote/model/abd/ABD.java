@@ -1,23 +1,31 @@
 package com.ctm.web.health.quote.model.abd;
 
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
+import com.ctm.web.health.quote.model.request.ProductType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
+import static java.util.Arrays.asList;
+
 /**
- * {@link AgeBasedDiscountCalculationSupport} provides support methods/functions for calculating Age Based Discount.
+ * {@link ABD} provides support methods/functions for calculating Age Based Discount.
  */
-public final class AgeBasedDiscountCalculationSupport {
-    private static final Logger logger = LoggerFactory.getLogger(AgeBasedDiscountCalculationSupport.class);
+public final class ABD {
+    /**
+     * Describes the product types for which ABD may be applied.
+     */
+    public static final List<ProductType> APPLICABLE_PRODUCT_TYPES = asList(ProductType.COMBINED, ProductType.HOSPITAL);
+
+    private static final Logger logger = LoggerFactory.getLogger(ABD.class);
     /**
      * The Maximum percentage applicable for Age Based Discount.
      */
@@ -41,7 +49,6 @@ public final class AgeBasedDiscountCalculationSupport {
     /**
      * Utility function to support parsing the date of birth .
      * If the date cannot be parsed, an empty Optional will be returned.
-     *
      */
     public static Function<String, Optional<LocalDate>> safeParseDate = dobString -> {
         try {
@@ -95,15 +102,15 @@ public final class AgeBasedDiscountCalculationSupport {
         Optional<int[]> ages = Optional.ofNullable(agesInYears);
         final int divisor = ages.map(a -> a.length).orElse(1);
         return ages.map(Arrays::stream).orElse(IntStream.empty())
-                .map(AgeBasedDiscountCalculationSupport::calculateAgeBasedDiscountPercentage)
+                .map(ABD::calculateAgeBasedDiscountPercentage)
                 .reduce(Integer::sum).orElse(0) / divisor;
     }
 
     /**
      * Utility function to get the ABD Percentage from a HealthCover instance for a given date
      *
-     * @param primaryDob           the Primary applicant's date of birth.
-     * @param partnerDob           the Partner applicant's date of birth.
+     * @param primaryDob     the Primary applicant's date of birth.
+     * @param partnerDob     the Partner applicant's date of birth.
      * @param assessmentDate the ABD assessment date.
      * @return the Age Based Discount percentage.
      */

@@ -6,8 +6,8 @@ import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
+import com.ctm.web.health.quote.model.abd.ABD;
 import com.ctm.web.health.quote.model.abd.ABDDataDTO;
-import com.ctm.web.health.quote.model.abd.AgeBasedDiscountCalculationSupport;
 import com.ctm.web.health.quote.model.request.*;
 import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
 import org.apache.commons.lang3.BooleanUtils;
@@ -33,8 +33,6 @@ import static java.util.Collections.singletonList;
 public class RequestAdapterV2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapterV2.class);
-    public static final List<ProductType> ABD_APPLICABLE_PRODUCT_TYPES = asList(ProductType.COMBINED, ProductType.HOSPITAL);
-
 
     public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples, final boolean isGiftCardActive) {
 
@@ -146,16 +144,15 @@ public class RequestAdapterV2 {
             quoteRequest.setProductCode(request.getHealth().getProductCode());
         }
 
-        if (ABD_APPLICABLE_PRODUCT_TYPES.contains(quoteRequest.getProductType())) {
+        if (ABD.APPLICABLE_PRODUCT_TYPES.contains(quoteRequest.getProductType())) {
             ABDDataDTO data = ABDDataDTO.create(quote);
             LocalDate assessmentDate = quoteRequest.getSearchDateValue();
-            int abdPercentage = AgeBasedDiscountCalculationSupport.getAbdPercentage(data.getPrimaryApplicantDob(), data.getPartnerApplicantDob(), assessmentDate);
+            int abdPercentage = ABD.getAbdPercentage(data.getPrimaryApplicantDob(), data.getPartnerApplicantDob(), assessmentDate);
             quoteRequest.setAbdPercentage(abdPercentage);
         }
 
         return quoteRequest;
     }
-
 
     protected static void addPrimaryAge(HealthQuoteRequest quoteRequest, HealthCover healthCover) {
         try {
