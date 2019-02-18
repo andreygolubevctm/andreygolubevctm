@@ -37,6 +37,17 @@
 				    value: 'Y'
 			    }).prop('data-attach', true)
 		    );
+		    // Ensure form is written immediately to db (albeit deferred momentarily)
+		    _.defer(function() {
+		    	meerkat.messaging.publish('TRACKING_TOUCH', {
+				    touchType: 'H',
+				    touchComment: 'Override',
+				    includeFormData: true,
+				    productId: null,
+				    callback: null,
+				    customFields: null
+			    });
+		    });
 	    }
         return pauseRecordingOverrideEnabled ? true : meerkat.modules.healthAppCompliance.callback(state);
     }
