@@ -6,6 +6,8 @@ import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
+import com.ctm.web.health.quote.model.abd.ABD;
+import com.ctm.web.health.quote.model.abd.ABDDataDTO;
 import com.ctm.web.health.quote.model.request.*;
 import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
 import org.apache.commons.lang3.BooleanUtils;
@@ -36,7 +38,7 @@ public class RequestAdapterV2 {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
 
-		quoteRequest.setIsSimples(isSimples);
+        quoteRequest.setIsSimples(isSimples);
 
         Filters filters = new Filters();
         quoteRequest.setFilters(filters);
@@ -57,9 +59,9 @@ public class RequestAdapterV2 {
         Situation situation = quote.getSituation();
         addMembership(quoteRequest, situation);
         Map<String, String> benefitsExtras = Optional.ofNullable(quote)
-                                                .map(HealthQuote::getBenefits)
-                                                .map(Benefits::getBenefitsExtras)
-                                                .orElse(emptyMap());
+                .map(HealthQuote::getBenefits)
+                .map(Benefits::getBenefitsExtras)
+                .orElse(emptyMap());
         addProductType(quoteRequest, benefitsExtras);
         addSituationFilter(filters, situation, quoteRequest);
         addHospitalSelection(quoteRequest, filters, benefitsExtras, situation);
@@ -74,9 +76,9 @@ public class RequestAdapterV2 {
             if (quote.getSearchResults() != null) {
                 quoteRequest.setSearchResults(quote.getSearchResults());
             } else {
-                if(isSimples){
+                if (isSimples) {
                     quoteRequest.setSearchResults(18);
-                }else{
+                } else {
                     quoteRequest.setSearchResults(12);
                 }
             }
@@ -124,22 +126,29 @@ public class RequestAdapterV2 {
         quoteRequest.setIncludeGiftCard(isGiftCardActive);
 
         HealthCover cover = quote.getHealthCover();
-        if(cover != null && cover.getPrimary()!= null) {
+        if (cover != null && cover.getPrimary() != null) {
             quoteRequest.setPrimaryHealthCover(toBoolean(cover.getPrimary().getCover()));
         } else {
             quoteRequest.setPrimaryHealthCover(null);
         }
 
-        if(cover != null && cover.getPartner()!= null) {
+        if (cover != null && cover.getPartner() != null) {
             quoteRequest.setPartnerHealthCover(toBoolean(cover.getPartner().getCover()));
-        }else {
+        } else {
             quoteRequest.setPartnerHealthCover(null);
         }
         addPrimaryAge(quoteRequest, cover);
         addFamilyType(quoteRequest, situation);
 
-        if(request.getHealth().getProductCode() != null && !request.getHealth().getProductCode().isEmpty()) {
+        if (request.getHealth().getProductCode() != null && !request.getHealth().getProductCode().isEmpty()) {
             quoteRequest.setProductCode(request.getHealth().getProductCode());
+        }
+
+        if (ABD.APPLICABLE_PRODUCT_TYPES.contains(quoteRequest.getProductType())) {
+            ABDDataDTO data = ABDDataDTO.create(quote);
+            LocalDate assessmentDate = quoteRequest.getSearchDateValue();
+            int abdPercentage = ABD.getAbdPercentage(data.getPrimaryApplicantDob(), data.getPartnerApplicantDob(), assessmentDate);
+            quoteRequest.setAbdPercentage(abdPercentage);
         }
 
         return quoteRequest;
@@ -156,9 +165,9 @@ public class RequestAdapterV2 {
     }
 
     protected static void addFamilyType(HealthQuoteRequest quoteRequest, Situation situation) {
-            if (situation != null) {
-                quoteRequest.setFamilyType(situation.getHealthCvr());
-            }
+        if (situation != null) {
+            quoteRequest.setFamilyType(situation.getHealthCvr());
+        }
     }
 
     protected static void addRebateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {
@@ -376,7 +385,7 @@ public class RequestAdapterV2 {
     }
 
     protected static void addSituationFilter(Filters filters, Situation situation, HealthQuoteRequest quoteRequest) {
-        if(situation != null && StringUtils.isNotBlank(situation.getAccidentOnlyCover())) {
+        if (situation != null && StringUtils.isNotBlank(situation.getAccidentOnlyCover())) {
             filters.setSituationFilter(toBoolean(situation.getAccidentOnlyCover()) &&
                     !(quoteRequest.getProductType() == ProductType.GENERALHEALTH));
         }
@@ -431,7 +440,7 @@ public class RequestAdapterV2 {
     protected static Integer getProductId(Application application) {
         String productId = application.getProductId();
         if (StringUtils.startsWith(application.getProductId(), "PHIO-HEALTH-")) {
-             productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
+            productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
         }
         return Integer.parseInt(productId);
     }

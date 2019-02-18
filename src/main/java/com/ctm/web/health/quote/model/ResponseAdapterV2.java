@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
 import static java.util.Collections.emptyList;
@@ -286,7 +287,7 @@ public class ResponseAdapterV2 {
     private static String getLhcFreePricing(final com.ctm.web.health.model.form.HealthQuote healthQuote, final BigDecimal lhcAmount, final boolean lookingForPrivateHospitalCover) {
         HealthCover healthCover = healthQuote.getHealthCover();
         Insured primary = healthCover.getPrimary();
-        Optional<Insured> partner = Optional.ofNullable(healthCover.getPartner());
+        Optional<Insured> partner = Optional.of(healthCover).map(HealthCover::getPartner).filter(i -> StringUtils.isNotBlank(i.getDob()));
 
         String lhcFreePricing = "";
         if (isInsuredAffectedByLHC(primary, lookingForPrivateHospitalCover) || partner.map(optionalPartner -> ResponseAdapterV2.isInsuredAffectedByLHC(optionalPartner, lookingForPrivateHospitalCover)).orElse(false)) {
