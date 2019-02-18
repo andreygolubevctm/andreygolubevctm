@@ -242,6 +242,16 @@
 			selectedPrices.push(itemPrice);
 		});
 
+		// Create the new dropdown lists (per accessory) used for prices of non-standard accessories also set the select dropdown, if it has one.
+		$.each(vehicleNonStandardAccessories, function(index, vehicleNonStandardAccessory) {
+			var checked = false;
+			var foundSelectedIndex = selectedIndexes.indexOf(index);
+			if (foundSelectedIndex >= 0) {
+				checked = true;
+			}
+			vehicleNonStandardAccessory.checked = checked;
+		});
+
 		var htmlContent = templateAccessories({
 				standardAccessories: standardAccessories,
 				vehicleNonStandardAccessories: vehicleNonStandardAccessories
