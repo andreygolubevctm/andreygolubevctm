@@ -1,12 +1,11 @@
 package com.ctm.web.health.quote.model.abd;
 
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
-import com.ctm.web.health.model.form.HealthCover;
-import com.ctm.web.health.model.form.Insured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -40,12 +39,11 @@ public final class AgeBasedDiscountCalculationSupport {
     public static final LocalDate ABD_INTRO_DATE = LocalDate.of(2019, 4, 1);
 
     /**
-     * Utility function to support parsing the date of birth from an {@link Insured} instance.
+     * Utility function to support parsing the date of birth .
      * If the date cannot be parsed, an empty Optional will be returned.
      *
-     * @see Insured#DOB_FORMATTER
      */
-    private static Function<String, Optional<LocalDate>> safeParseBirthDate = dobString -> {
+    public static Function<String, Optional<LocalDate>> safeParseDate = dobString -> {
         try {
             return Optional.ofNullable(LocalDate.parse(dobString, LocalDateUtils.AUS_FORMAT));
         } catch (DateTimeParseException ex) {
@@ -104,24 +102,21 @@ public final class AgeBasedDiscountCalculationSupport {
     /**
      * Utility function to get the ABD Percentage from a HealthCover instance for a given date
      *
-     * @param cover
-     * @param date
-     * @return
+     * @param primaryDob           the Primary applicant's date of birth.
+     * @param partnerDob           the Partner applicant's date of birth.
+     * @param assessmentDate the ABD assessment date.
+     * @return the Age Based Discount percentage.
      */
-    public static int getAbdPercentage(HealthCover cover, LocalDate date) {
-        Function<Insured, Optional<Integer>> calculateABDAge = insured -> Optional.ofNullable(insured)
-                .map(Insured::getDob)
-                .flatMap(safeParseBirthDate)
-                .map(dob -> calculateAgeInYearsFrom(dob, date));
+    public static int getAbdPercentage(Optional<String> primaryDob, Optional<String> partnerDob, LocalDate assessmentDate) {
+        Function<String, Optional<Integer>> calculateABDAge = applicantDob -> Optional.ofNullable(applicantDob)
+                .flatMap(safeParseDate)
+                .map(dob -> calculateAgeInYearsFrom(dob, assessmentDate));
 
 
-        Optional<Insured> primaryApplicant = Optional.ofNullable(cover).map(HealthCover::getPrimary);
-        Optional<Insured> secondaryApplicant = Optional.ofNullable(cover).map(HealthCover::getPartner);
+        Integer primaryApplicantAge = primaryDob.flatMap(calculateABDAge).orElse(0);
+        Optional<Integer> secondaryApplicantAge = partnerDob.flatMap(calculateABDAge);
 
-        Integer primaryApplicantAge = primaryApplicant.flatMap(calculateABDAge).orElse(0);
-        Optional<Integer> secondaryApplicantAge = secondaryApplicant.flatMap(calculateABDAge);
-
-        return (int) secondaryApplicantAge
+        return secondaryApplicantAge
                 .map(partnerAge -> calculateAgeBasedDiscountPercentage(primaryApplicantAge, partnerAge))
                 .orElseGet(() -> calculateAgeBasedDiscountPercentage(primaryApplicantAge));
     }

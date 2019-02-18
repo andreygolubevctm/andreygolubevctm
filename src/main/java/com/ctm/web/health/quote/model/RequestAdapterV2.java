@@ -6,6 +6,7 @@ import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
+import com.ctm.web.health.quote.model.abd.ABDDataDTO;
 import com.ctm.web.health.quote.model.abd.AgeBasedDiscountCalculationSupport;
 import com.ctm.web.health.quote.model.request.*;
 import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
@@ -146,12 +147,15 @@ public class RequestAdapterV2 {
         }
 
         if (ABD_APPLICABLE_PRODUCT_TYPES.contains(quoteRequest.getProductType())) {
-            int abdPercentage = AgeBasedDiscountCalculationSupport.getAbdPercentage(cover, quoteRequest.getSearchDateValue());
+            ABDDataDTO data = ABDDataDTO.create(quote);
+            LocalDate assessmentDate = quoteRequest.getSearchDateValue();
+            int abdPercentage = AgeBasedDiscountCalculationSupport.getAbdPercentage(data.getPrimaryApplicantDob(), data.getPartnerApplicantDob(), assessmentDate);
             quoteRequest.setAbdPercentage(abdPercentage);
         }
 
         return quoteRequest;
     }
+
 
     protected static void addPrimaryAge(HealthQuoteRequest quoteRequest, HealthCover healthCover) {
         try {
