@@ -4,6 +4,8 @@
 
     var events = {};
 
+    var pauseRecordingOverrideEnabled = false;
+
     function init() {
 
         /**
@@ -11,6 +13,10 @@
          */
         if(!meerkat.site.isCallCentreUser) {
             return;
+        }
+
+        if(meerkat.site.pauseRecordingOverride.enabled) {
+	        pauseRecordingOverrideEnabled = true;
         }
 
         $(document).ready(function () {
@@ -22,7 +28,28 @@
     }
 
     function callback(state) {
-        return meerkat.modules.healthAppCompliance.callback(state);
+    	if(pauseRecordingOverrideEnabled && !$('#health_pauseRecordingOverride').length) {
+		    // Add hidden field to track affected transactions
+		    $('#paymentForm').append(
+			    $('<input/>',{
+				    id: 'health_pauseRecordingOverride',
+				    name: 'health_pauseRecordingOverride',
+				    value: 'Y'
+			    }).prop('data-attach', true)
+		    );
+		    // Ensure form is written immediately to db (albeit deferred momentarily)
+		    _.defer(function() {
+		    	meerkat.messaging.publish('TRACKING_TOUCH', {
+				    touchType: 'H',
+				    touchComment: 'Override',
+				    includeFormData: true,
+				    productId: null,
+				    callback: null,
+				    customFields: null
+			    });
+		    });
+	    }
+        return pauseRecordingOverrideEnabled || meerkat.modules.healthAppCompliance.callback(state);
     }
 
     function toggle($_obj) {
