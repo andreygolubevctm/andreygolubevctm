@@ -28,6 +28,16 @@
     }
 
     function callback(state) {
+    	if(pauseRecordingOverrideEnabled && !$('#health_pauseRecordingOverride').length) {
+		    // Add hidden field to track affected transactions
+		    $('#paymentForm').append(
+			    $('<input/>',{
+				    id: 'health_pauseRecordingOverride',
+				    name: 'health_pauseRecordingOverride',
+				    value: 'Y'
+			    }).prop('data-attach', true)
+		    );
+	    }
         return pauseRecordingOverrideEnabled ? true : meerkat.modules.healthAppCompliance.callback(state);
     }
 
