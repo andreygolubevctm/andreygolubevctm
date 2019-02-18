@@ -4,6 +4,8 @@
 
     var events = {};
 
+    var pauseRecordingOverrideEnabled = false;
+
     function init() {
 
         /**
@@ -11,6 +13,10 @@
          */
         if(!meerkat.site.isCallCentreUser) {
             return;
+        }
+
+        if(meerkat.site.pauseRecordingOverride.enabled) {
+	        pauseRecordingOverrideEnabled = true;
         }
 
         $(document).ready(function () {
@@ -22,7 +28,7 @@
     }
 
     function callback(state) {
-        return meerkat.modules.healthAppCompliance.callback(state);
+        return pauseRecordingOverrideEnabled ? true : meerkat.modules.healthAppCompliance.callback(state);
     }
 
     function toggle($_obj) {
