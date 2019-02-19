@@ -88,18 +88,7 @@
                 return;
             }
 
-            if (frequency === 'annually') {
-                if ($elements.priceCongratsTemplate.length === 1) {
-                    template = _.template($elements.priceCongratsTemplate.html());
-                    obj = {
-                        priceSaved: '$' + (parseFloat(selectedProduct.altPremium[frequency].value - selectedProduct.premium[frequency].value)).toFixed(2),
-                        pricingDateFormatted: pricingDateFormatted
-                    };
-                } else {
-                    $elements.frequencyWarning.slideUp().html("");
-                    return;
-                }
-            } else {
+            if (frequency !== 'annually') {
                 template = _.template($elements.priceFrequencyTemplate.html());
                 obj = {
                     frequency: freqTextMapping[frequency],
@@ -107,9 +96,32 @@
                     premium: selectedProduct.premium[frequency].text,
                     altPremium: selectedProduct.altPremium[frequency].text
                 };
+    
+                $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
+            }else{
+                $elements.frequencyWarning.slideUp().html("");
             }
 
-            $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
+            // if (frequency === 'annually') {
+            //     if ($elements.priceCongratsTemplate.length === 1) {
+            //         template = _.template($elements.priceCongratsTemplate.html());
+            //         obj = {
+            //             priceSaved: '$' + (parseFloat(selectedProduct.altPremium[frequency].value - selectedProduct.premium[frequency].value)).toFixed(2),
+            //             pricingDateFormatted: pricingDateFormatted
+            //         };
+            //     } else {
+            //         $elements.frequencyWarning.slideUp().html("");
+            //         return;
+            //     }
+            // } else {
+            //     template = _.template($elements.priceFrequencyTemplate.html());
+            //     obj = {
+            //         frequency: freqTextMapping[frequency],
+            //         pricingDateFormatted: pricingDateFormatted,
+            //         premium: selectedProduct.premium[frequency].text,
+            //         altPremium: selectedProduct.altPremium[frequency].text
+            //     };
+            // }
         });
 
         $(document).on('click', '.dual-pricing-learn-more', function(e) {
