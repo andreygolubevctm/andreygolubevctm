@@ -18,7 +18,7 @@
             'A': 'annual'
         },
         isActive = null,
-        _aprilFirst = '04/01/2018',
+        _aprilFirst = '04/01/2019',
         _trackModalClose = true;
 
     function initDualPricing() {
