@@ -7,11 +7,14 @@ import com.ctm.web.health.dao.HealthSelectedProductDao;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 import javax.annotation.Resource;
+import javax.json.JsonArray;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,46 +61,79 @@ public class HealthSelectedProductService {
 	 */
 	public String getMinimalistProductXML(final long transactionId, final long productId) throws DaoException {
     	String productXML = getProductXML(transactionId, productId);
+		return minimaliseProductXML(productXML);
+	}
+
+	public String minimaliseProductXML(String productXML) throws DaoException {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode productJSON = mapper.readTree(productXML);
 			if (productJSON != null) {
-				JsonNode price = productJSON.path("price").get(0);
-				if (!price.isMissingNode()) {
-					if(!price.path("custom").isMissingNode() && !price.path("custom").path("reform").isMissingNode()) {
-						JsonNode reform = price.path("custom").path("reform");
-						if(!reform.path("tab1").isMissingNode()) {
-							((ObjectNode) reform.path("tab1")).remove("benefits");
-						}
-						if(!reform.path("tab2").isMissingNode()) {
-							((ObjectNode) reform.path("tab2")).remove("benefits");
+				JsonNode priceList = productJSON.path("price");
+				if(priceList.isArray() && priceList.size() > 0) {
+					// Remove additional product records. They sometimes exist due to a bug
+					// but quicker to ensure they're removed here now and will resolve the
+					// cause seperately. Confirmed 1st product is always the one we want.
+					if(priceList.size() > 1) {
+						for (int i = 1; i < priceList.size(); i++) {
+							JsonNode price = priceList.get(i);
+							List<String> props = new ArrayList<>();
+							price.fields().forEachRemaining(entry -> {
+								props.add(entry.getKey());
+							});
+							props.stream().forEach(x -> {
+								((ObjectNode) price).remove(x);
+							});
 						}
 					}
-					JsonNode hospital = price.path("hospital");
-					if (!hospital.isMissingNode()) {
-						((ObjectNode) hospital).remove("benefits");
-					}
-					JsonNode extras = price.path("extras");
-					if (!extras.isMissingNode()) {
-						List<String> safeProps = new ArrayList<>();
-						safeProps.add("ClassificationGeneralHealth");
-						safeProps.add("PreferredProviderServices");
-						List<String> benefits = new ArrayList<>();
-						extras.fields().forEachRemaining(entry -> {
-							if(!safeProps.contains(entry.getKey())) {
-								benefits.add(entry.getKey());
+					JsonNode price = priceList.get(0);
+					if (!price.isMissingNode()) {
+						// Remove benefits lists from tab1 and tab2 nodes
+						if (!price.path("custom").isMissingNode() && !price.path("custom").path("reform").isMissingNode()) {
+							JsonNode reform = price.path("custom").path("reform");
+							if (!reform.path("tab1").isMissingNode()) {
+								if(!reform.path("tab1").path("benefits").isMissingNode()) {
+									((ObjectNode) reform.path("tab1")).remove("benefits");
+								}
 							}
-						});
-						benefits.stream().forEach(x -> {
-							((ObjectNode) extras).remove(x);
-						});
+							if (!reform.path("tab2").isMissingNode()) {
+								if(!reform.path("tab2").path("benefits").isMissingNode()) {
+									((ObjectNode) reform.path("tab2")).remove("benefits");
+								}
+							}
+						}
+						// Remove benefits from hospital node
+						JsonNode hospital = price.path("hospital");
+						if (!hospital.isMissingNode()) {
+							if(!hospital.path("benefits").isMissingNode()) {
+								((ObjectNode) hospital).remove("benefits");
+							}
+						}
+						// Removed benefits from extras node
+						JsonNode extras = price.path("extras");
+						if (!extras.isMissingNode()) {
+							List<String> safeProps = new ArrayList<>();
+							safeProps.add("ClassificationGeneralHealth");
+							safeProps.add("PreferredProviderServices");
+							List<String> benefits = new ArrayList<>();
+							extras.fields().forEachRemaining(entry -> {
+								if (!safeProps.contains(entry.getKey())) {
+									benefits.add(entry.getKey());
+								}
+							});
+							benefits.stream().forEach(x -> {
+								((ObjectNode) extras).remove(x);
+							});
+						}
 					}
 				}
 				productXML = productJSON.toString();
 			}
 		} catch (IOException e) {
+			LOGGER.error("Exception minifying the productXML {} {}", kv("error",e.getMessage()), kv("productXML",productXML), e);
 			throw new DaoException(e);
 		}
+
 		return productXML;
 	}
 

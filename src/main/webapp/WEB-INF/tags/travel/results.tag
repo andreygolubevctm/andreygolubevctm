@@ -109,7 +109,13 @@
 						<div><span>{{= obj.info.medical }}</span></div>
 					</div>
 					<div class="col-sm-2 col-lg-1 cdxfeeAmount">
-						<div><span>{{= obj.info.cxdfee }}</span></div>
+						<div><span>
+						{{ if(obj.info.cxdfeeValue === 0) { }}
+							$0
+						{{ } else { }}
+							{{= obj.info.cxdfee }}
+						{{ } }}
+						</span></div>
 					</div>
 					<div class="col-sm-2 col-lg-1 luggageAmount">
 						<div><span>{{= obj.info.luggage }}</span></div>
@@ -215,7 +221,11 @@
 						{{= obj.info.medical }}
 					</div>
 					<div class="col-xs-4 cdxfeeAmount">
-						{{= obj.info.cxdfee }}
+						{{ if(obj.info.cxdfeeValue === 0) { }}
+							$0
+						{{ } else { }}
+							{{= obj.info.cxdfee }}
+						{{ } }}
 					</div>
 					<div class="col-xs-4 luggageAmount">
 						{{= obj.info.luggage }}
