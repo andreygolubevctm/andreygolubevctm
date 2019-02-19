@@ -27,6 +27,12 @@
                 <%-- insert fund warning data --%>
         </div>
 
+        <c:if test="${isDualPriceActive eq true}">
+            <div class="alert alert-info text-center">
+                Remember: Premiums will rise from <span class="dropDeadDateText"></span>. You must select a cover start date before <span class="dropDeadDateText"></span> to be eligible for the lower rate.
+            </div>
+        </c:if>
+
         <c:set var="fieldXpath" value="${xpath}/type" />
         <form_v4:row fieldXpath="${fieldXpath}" label="Payment method" className="changes-premium">
             <field_v2:array_radio items="cc=Credit Card,ba=Bank Account" xpath="${fieldXpath}" title="how would you like to pay" required="true" className="health-payment_details-type" id="${name}_type" />
