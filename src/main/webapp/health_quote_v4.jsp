@@ -6,6 +6,8 @@
 <session:new verticalCode="HEALTH" authenticated="true" />
 <c:set var="comparisonMode" scope="request"><content:get key="comparisonMode" /></c:set>
 <c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
+<c:set var="reformsBannerText" scope="request"><content:get key="reformsBanner" /></c:set>
+
 <jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
 <agg_v1:remember_me_settings vertical="health" />
 
@@ -149,6 +151,16 @@
                         </div>
                     </div>
                 </div>
+
+
+                <c:if test="${not empty reformsBannerText}">
+                <div id="reforms-banner" class="reforms-banner hidden">
+                    <div class="reforms-banner-icon"><span class="icon icon-info"></span></div>
+                    <div class="reforms-banner-text">${reformsBannerText}</div>
+                    <div class="reforms-banner-dismiss"></div>
+                </div>
+                </c:if>
+
                 <div class="navbar-affix results-control-container">
                     <div class="container">
                         <div class="row">
