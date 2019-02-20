@@ -365,7 +365,7 @@
     }
 
     function getClassificationDate(obj) {
-        var dateParsed = parseChangeDate(obj.custom.reform ? obj.custom.reform.changeDate : null);
+        var dateParsed = obj.custom.reform ? parseChangeDate(obj.custom.reform.changeDate) : null;
         var curDate = window.meerkat.site.serverDate;
 
         if(!dateParsed || curDate.getTime() > dateParsed.getTime()) {
@@ -407,7 +407,7 @@
     }
 
     function getCoverDate(obj) {
-        var dateParsed = parseChangeDate(obj.custom.reform ? obj.custom.reform.changeDate : null);
+        var dateParsed = obj.custom.reform ? parseChangeDate(obj.custom.reform.changeDate) : null;
         var curDate = window.meerkat.site.serverDate;
 
         if(!dateParsed || curDate.getTime() > dateParsed.getTime()) {
