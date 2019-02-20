@@ -320,7 +320,7 @@
                 .addClass('inbound');
         }
         else if(healthContactTypeSelection === 'nextgen') {
-            $healthContactType.val('outbound');
+            $healthContactType.val('inbound');
             $healthContactTypeTrial.val('nextgen');
 
             $body
