@@ -147,7 +147,7 @@ public class RequestAdapterV2 {
         if (ABD.APPLICABLE_PRODUCT_TYPES.contains(quoteRequest.getProductType())) {
             ABDDataDTO data = ABDDataDTO.create(quote);
             LocalDate assessmentDate = quoteRequest.getSearchDateValue();
-            int abdPercentage = ABD.getAbdPercentage(data.getPrimaryApplicantDob(), data.getPartnerApplicantDob(), assessmentDate);
+            int abdPercentage = ABD.calculateAgeBasedDiscount(data.getPrimaryApplicantDob(), data.getPartnerApplicantDob(), assessmentDate);
             quoteRequest.setAbdPercentage(abdPercentage);
         }
 

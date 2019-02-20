@@ -3,14 +3,18 @@ package com.ctm.web.health.quote.model.abd;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
-import static com.ctm.web.health.quote.model.abd.ABD.*;
+import static com.ctm.web.health.quote.model.abd.ABD.ABD_INTRO_DATE;
+import static com.ctm.web.health.quote.model.abd.ABD.FOURTY_ONE;
+import static com.ctm.web.health.quote.model.abd.ABD.THIRTY;
 import static org.junit.Assert.assertEquals;
 
 public class ABDTest {
 
     public static final LocalDate TEST_DATE = LocalDate.of(2019, 3, 15);
     public static final LocalDate TEST_DATE_OF_BIRTH = LocalDate.of(1981, 3, 31);
+
 
     @Test
     public void givenDateAndDateOfBirth_thenCalculateAgeInYears() {
@@ -34,6 +38,20 @@ public class ABDTest {
     }
 
     @Test
+    public void givenAge16_thenReturn0ABD() {
+        int ageInYears = ABD.calculateAgeInYearsFrom(LocalDate.of(2002, 4, 30), LocalDate.of(2019, 2, 28));
+        assertEquals(16, ageInYears);
+        assertCorrectABDPercentage(0, ageInYears);
+    }
+
+    @Test
+    public void givenAgeLessThan18_thenReturnZeroABD() {
+        for (int age = 0; age < 18; age++) {
+            assertCorrectABDPercentage(0, age);
+        }
+    }
+
+    @Test
     public void givenDateAndDateOfBirth_whenAgeBelowZero_thenReturnZero() {
         LocalDate bornTomorrow = LocalDate.now().plusDays(1);
         long ageInYears = ABD.calculateAgeInYearsFrom(bornTomorrow, LocalDate.now());
@@ -44,6 +62,13 @@ public class ABDTest {
     public void givenAgeBetween18and25_thenReturn10() {
         for (int age = 18; age <= 25; age++) {
             assertCorrectABDPercentage(10, age);
+        }
+    }
+
+    @Test
+    public void givenAgeBetween30and41_thenReturn0() {
+        for (int age = THIRTY; age <= FOURTY_ONE; age++) {
+            assertCorrectABDPercentage(0, age);
         }
     }
 
@@ -67,13 +92,6 @@ public class ABDTest {
     @Test
     public void givenAge29_thenReturn2() {
         assertCorrectABDPercentage(2, 29);
-    }
-
-    @Test
-    public void givenAgeBetween30and41_thenReturn0() {
-        for (int age = THIRTY; age <= FOURTY_ONE; age++) {
-            assertCorrectABDPercentage(0, age);
-        }
     }
 
     @Test
@@ -135,12 +153,12 @@ public class ABDTest {
     @Test
     public void givenTwoAges_whenBothAgedTheSame_thenReturnTheSameAsOnePerson() {
         for (int age = 0; age <= FOURTY_ONE; age++) {
-            int expected = ABD.calculateAgeBasedDiscountPercentage(age);
+            int expected = ABD.getAgeBasedDiscount(age);
             assertCorrectABDPercentage(expected, age, age);
         }
     }
 
     private static void assertCorrectABDPercentage(int expected, int... age) {
-        assertEquals(String.format("Age '%1$s' should yield ABD of %2$s%%", age, expected), expected, ABD.calculateAgeBasedDiscountPercentage(age));
+        assertEquals(String.format("Age '%1$s' should yield ABD of %2$s%%", Arrays.toString(age), expected), expected, ABD.getAgeBasedDiscount(age));
     }
 }
