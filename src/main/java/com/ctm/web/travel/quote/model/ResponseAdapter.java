@@ -183,8 +183,19 @@ public class ResponseAdapter {
                 info.setLuggageValue(travelQuote.getBenefitValue("luggage"));
                 info.setMedical(travelQuote.getBenefit("medical"));
                 info.setMedicalValue(travelQuote.getBenefitValue("medical"));
-                info.setRentalVehicle(travelQuote.getBenefitByLabel("rental vehicle excess"));
-                info.setRentalVehicleValue(travelQuote.getBenefitValueByLabel("rental vehicle excess"));
+
+                String[] rentalVehicleExcessLabelsArray = {
+                        "rental vehicle excess",
+                        "rental vehicle excess#*",
+                        "<sup>*</sup> rental vehicle excess",
+                        "rental vehicle excess waiver",
+                        "rental car excess waiver",
+                        "rental vehicle insurance excess",
+                        "Return of Rental Vehicle"
+                };
+
+                info.setRentalVehicle(travelQuote.getBenefitByLabelArray(rentalVehicleExcessLabelsArray));
+                info.setRentalVehicleValue(travelQuote.getBenefitValueByLabelArray(rentalVehicleExcessLabelsArray));
 
                 result.setInfo(info);
 

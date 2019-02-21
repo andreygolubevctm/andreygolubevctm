@@ -362,15 +362,12 @@
 	}
 
 	function isDomestic() {
-		var isDomestic = false;
-
+		
 		if (meerkat.modules.travel.getVerticalFilter() === 'Single Trip') {
-			isDomestic = $('#travel_destination').val() === 'AUS';
-		} else {
-			isDomestic = $('#travel_filter_domestic:checked').val() === "D";
+			return $('#travel_destination').val() === 'AUS';
 		}
 
-		return isDomestic;
+		return $('#travel_filter_domestic:checked').val() === "D";
 	}
 
 	function denoteDisclaimer(isDomestic) {
