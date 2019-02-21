@@ -65,7 +65,7 @@
 			</c:choose>
 		</c:set>
         <c:if test="${logrocketEnabled eq 'Y' && !param['automated-test']}">
-            <script src="https://cdn.logrocket.com/LogRocket.min.js"></script>
+            <script src="https://cdn.logrocket.io/LogRocket.min.js"></script>
             <script>window.LogRocket && window.LogRocket.init('compare-the-market/web-ctm');</script>
         </c:if>
 	</jsp:attribute>
