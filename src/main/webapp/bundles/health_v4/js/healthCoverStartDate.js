@@ -82,7 +82,16 @@
 
     function flush() {
 	    $elements.input.val('');
-    }
+	}
+	
+	function isAfterMarch() {
+		var coverDateString = getVal();
+		var dates = coverDateString.split("/");
+		var coverDate = new Date(dates[1] + "/" + dates[0] + "/" + dates[2]);
+		var aprilDate = new Date("04/01/2019");
+
+		return coverDate.getTime() >= aprilDate.getTime();
+	}
 
 	function setCoverStartRange(min, max){
 		var applicationDate = $('#health_searchDate').val();
@@ -184,8 +193,8 @@
 	    updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
 	    resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway,
 		setDaysOfWeekDisabled: setDaysOfWeekDisabled,
-        setToNextDay: setToNextDay
-
+		setToNextDay: setToNextDay,
+		isAfterMarch: isAfterMarch
     });
 
 })(jQuery);
