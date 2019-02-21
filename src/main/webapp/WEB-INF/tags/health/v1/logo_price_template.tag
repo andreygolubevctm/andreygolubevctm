@@ -37,6 +37,8 @@
         {{ var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount) }}
         {{ var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate' }}
         {{ var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount) }}
+        {{ var showABDToolTip = premium.abd > 0; }}
+
         <div class="frequency {{=freq}} {{= obj._selectedFrequency === freq.toLowerCase() ? '' : 'displayNone' }}" data-text="{{= priceText }}" data-lhcfreetext="{{= priceLhcfreetext }}">
             {{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
                         <div class="frequencyAmount">
@@ -61,6 +63,9 @@
             <div class="lhcText">
                 <span>
 					{{= textPricing}}
+                    {{ if(showABDToolTip) { }}
+                        <field_v2:help_icon helpId="643" showText="false" />
+                    {{ } }}
                 </span>
             </div>
         </div>
