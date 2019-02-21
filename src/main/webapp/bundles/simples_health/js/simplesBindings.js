@@ -320,7 +320,7 @@
                 .addClass('inbound');
         }
         else if(healthContactTypeSelection === 'nextgen') {
-            $healthContactType.val('outbound');
+            $healthContactType.val('inbound');
             $healthContactTypeTrial.val('nextgen');
 
             $body
@@ -484,7 +484,7 @@
         } else {
             $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
             $dialogue36.toggle(isInbound);
-            if (brandCodeIsCtm && callType === "trial") {
+            if (brandCodeIsCtm && (callType === "trial" || callType === "nextgen")) {
                 $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(true);
             }
         }
