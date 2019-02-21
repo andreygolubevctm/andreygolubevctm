@@ -47,19 +47,20 @@
 
 {{ var pdsA = '' }}
 {{ var pdsB = '' }}
-{{ var pdsC = '' }}
+{{ var ped = '' }}
 {{ var width = '25' }}
 
 {{ if(obj.productDisclosures != null) { }}
-{{ if(typeof obj.productDisclosures.pdsc != 'undefined') { }}
-{{ if(obj.productDisclosures.pdsc.url != '') { }}
-{{ pdsC = '<a href="'+obj.productDisclosures.pdsc.url+'" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute} style="width: '+width+'%">Part C</a>' }}
+{{ if(typeof obj.productDisclosures.ped != 'undefined') { }}
+{{ if(obj.productDisclosures.ped.url != '') { }}
+{{ ped = '<a href="'+obj.productDisclosures.ped.url+'" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute} style="width: '+width+'%">Part PED</a>' }}
 {{ } else { }}
 {{ width = '45' }}
 {{ } }}
 {{ } else { }}
 {{ width = '45' }}
 {{ } }}
+
 
 {{ if(typeof obj.productDisclosures.pdsb != 'undefined') { }}
 {{ pdsB = '<a href="'+obj.productDisclosures.pdsb.url+'" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute} style="width: '+width+'%">Part B</a>' }}
@@ -71,7 +72,7 @@
 {{ pdsA = '<a href="'+obj.productDisclosures.pdsa.url+'" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute} style="width: '+width+'%">Part A</a>' }}
 {{ } }}
 
-{{ displayValue = '<div class="btnContainer">'+pdsA+pdsB+pdsC+'</div>' }}
+{{ displayValue = '<div class="btnContainer">'+pdsA+pdsB+ped+'</div>' }}
 {{ } }}
 
 <%-- View more info --%>

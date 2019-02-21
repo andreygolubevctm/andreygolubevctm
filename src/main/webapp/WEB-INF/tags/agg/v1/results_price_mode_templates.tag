@@ -60,8 +60,8 @@
         {{ } else { }}
         <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS A </a>
         <a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS B</a>
-        {{ if(obj.productDisclosures.hasOwnProperty('pdsc')) { }}
-        <a href="{{= obj.productDisclosures.pdsc.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS C</a>
+        {{ if(obj.productDisclosures.hasOwnProperty('ped')) { }}
+        <a href="{{= obj.productDisclosures.ped.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PED</a>
         {{ } }}
         {{ } }}
         {{ } }}
