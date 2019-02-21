@@ -58,9 +58,15 @@
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
-        <c:if test="${(envKey eq 'DEV' || env eq 'NXQ') && !param['automated-test']}">
-            <%-- <script src="https://cdn.logrocket.com/LogRocket.min.js"></script>
-            <script>window.LogRocket && window.LogRocket.init('compare-the-market/web-ctm');</script> --%>
+		<c:set var="logrocketEnabled">
+			<c:choose>
+				<c:when test="${pageSettings.hasSetting('enableLogRocket')}">${pageSettings.getSetting('enableLogRocket')}</c:when>
+				<c:otherwise>N</c:otherwise>
+			</c:choose>
+		</c:set>
+        <c:if test="${logrocketEnabled eq 'Y' && !param['automated-test']}">
+            <script src="https://cdn.logrocket.io/LogRocket.min.js"></script>
+            <script>window.LogRocket && window.LogRocket.init('compare-the-market/web-ctm');</script>
         </c:if>
 	</jsp:attribute>
 
