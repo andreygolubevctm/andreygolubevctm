@@ -29,6 +29,16 @@
 					<field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." />
 				</form_v2:row>
 
+        <c:set var="fieldXpath" value="${xpath}/primary/abd" />
+        <form_v2:row smRowOverride="7" label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger">
+	        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details" id="primary_abd_health_cover" />
+        </form_v2:row>
+
+        <c:set var="fieldXpath" value="${xpath}/primary/abdPolicyStart" />
+        <form_v2:row smRowOverride="7" fieldXpath="${fieldXpath}" label="What was the policy start date?" id="primary_abd_start_date" className="cover-start-date-row changes-premium hidden">
+            <field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
+        </form_v2:row>
+
 				<c:set var="fieldXpath" value="${xpath}/primary/authority" />
 				<form_v2:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden" helpId="522">
 					<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="I authorise <span>the fund</span> to contact my previous fund to obtain a clearance certificate" label="I authorise <span>the fund</span> to contact my previous fund to obtain a transfer certificate" required="false" customAttribute=" data-attach='true' " />
