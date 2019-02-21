@@ -44,7 +44,8 @@
 						cxdfee: "info.cxdfeeValue",
 						excess: "info.excessValue",
 						medical: "info.medicalValue",
-						luggage: "info.luggageValue"
+						luggage: "info.luggageValue",
+						rentalVehicle: "info.rentalVehicleValue"
 					},
 					availability: {
 						product: "available"
@@ -131,7 +132,7 @@
 		 var isBase = cxdfeeValue < 5000 || luggageValue < 2500;
 		 var destinationsValue = getDestinationsValue(isAus, isComprehensive);
 		 var level;
-		 
+
 		 if (isComprehensive && medicalValue >= destinationsValue) {
 			 level = 'C';
 			 meerkat.modules.coverLevelTabs.incrementCount(level);
@@ -264,19 +265,14 @@
 			$(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
 
 			// update disclaimer and heading text as required
-			var isDomestic = false;
+			var domestic = isDomestic();
 
-			if (meerkat.modules.travel.getVerticalFilter() === 'Single Trip') {
-				isDomestic = $('#travel_destination').val() === 'AUS';
-			} else {
-				isDomestic = $('#travel_filter_domestic:checked').val();
-			}
-
-			denoteDisclaimer(isDomestic);
+			denoteDisclaimer(domestic);
 		});
 
 		// Start fetching results
 		$(document).on("resultsFetchStart", function onResultsFetchStart() {
+			$(".travelResultsDisclaimerHeader").hide();
 			meerkat.modules.journeyEngine.loadingShow('...getting your quotes...');
 			$component.removeClass('hidden');
 
@@ -291,6 +287,7 @@
 			$(Results.settings.elements.page).show();
 
 			meerkat.modules.journeyEngine.loadingHide();
+			$(".travelResultsDisclaimerHeader").show();
 
 			if (Results.getDisplayMode() !== 'price') {
 				// Show pagination
@@ -353,10 +350,27 @@
 			} else {
 				meerkat.modules.salesTracking.addPHGImpressionTracking();
 			}
+
+			//set visibility of os medical and rental vehicle columns
+			var domestic = isDomestic();
+
+			setColVisibilityAndStylesByTravelType(domestic);
 		});
 
 		// Handle result row click
 		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
+	}
+
+	function isDomestic() {
+		var isDomestic = false;
+
+		if (meerkat.modules.travel.getVerticalFilter() === 'Single Trip') {
+			isDomestic = $('#travel_destination').val() === 'AUS';
+		} else {
+			isDomestic = $('#travel_filter_domestic:checked').val() === "D";
+		}
+
+		return isDomestic;
 	}
 
 	function denoteDisclaimer(isDomestic) {
@@ -377,6 +391,22 @@
 		$(".oSMedical2ColText").html(oSMedical2ColText);
 		$(".cancelFeeColText").html(cancelFeeColText);
 		$(".luggageColText").html(luggageColText);
+
+		setColVisibilityAndStylesByTravelType(isDomestic);
+	}
+
+	function setColVisibilityAndStylesByTravelType(isDomestic) {
+		//set visibility of os medical and rental vehicle columns
+		$(".medicalTitle").toggle(!isDomestic);
+		$(".medicalAmount").toggle(!isDomestic);
+		$(".os-medical-col").toggle(!isDomestic);
+		$(".rentalVehicleTitle").toggle(isDomestic);
+		$(".rentalVehicle").toggle(isDomestic);
+		$(".rental-vehicle-col").toggle(isDomestic);
+
+		// alter background colour for every second column
+		$(".luggageAmount").toggleClass("evenRow", !isDomestic);
+		$(".cdxfeeAmount").toggleClass("evenRow", isDomestic);
 	}
 
 	function launchOfferTerms(event) {
@@ -419,6 +449,7 @@
 			data["best_price_medical" + position] = typeof product.info.medical !== 'undefined' ? product.info.medical : 0;
 			data["best_price_cxdfee" + position] = typeof product.info.cxdfee !== 'undefined' ? product.info.cxdfee : 0;
 			data["best_price_luggage" + position] = typeof product.info.luggage !== 'undefined' ? product.info.luggage : 0;
+			data["best_price_rentalVehicle" + position] = typeof product.info.rentalVehicle !== 'undefined' ? product.info.rentalVehicle : 0;
 			data["best_price_service" + position] = product.service;
 			data["best_price_url" + position] = product.quoteUrl;
 		}

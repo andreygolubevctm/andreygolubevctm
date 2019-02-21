@@ -105,9 +105,11 @@
 							{{ } }}
 						</span></div>
 					</div>
+
 					<div class="col-sm-2 col-lg-1 medicalAmount">
 						<div><span>{{= obj.info.medical }}</span></div>
 					</div>
+
 					<div class="col-sm-2 col-lg-1 cdxfeeAmount">
 						<div><span>
 						{{ if(obj.info.cxdfeeValue === 0) { }}
@@ -119,6 +121,10 @@
 					</div>
 					<div class="col-sm-2 col-lg-1 luggageAmount">
 						<div><span>{{= obj.info.luggage }}</span></div>
+					</div>
+
+					<div class="col-sm-2 col-lg-1 rentalVehicle">
+						<div><span>{{= obj.info.rentalVehicle }}</span></div>
 					</div>
 
 					<div class="col-sm-2 col-lg-2 priceAmount">
@@ -215,6 +221,9 @@
 					<div class="col-xs-4 luggageTitle">
 						Luggage
 					</div>
+					<div class="col-xs-4 rentalVehicleTitle">
+						Rental Car
+					</div>
 				</div>
 				<div class="row mainBenefitsPricing">
 					<div class="col-xs-4 medicalAmount">
@@ -229,6 +238,9 @@
 					</div>
 					<div class="col-xs-4 luggageAmount">
 						{{= obj.info.luggage }}
+					</div>
+					<div class="col-xs-4 rentalVehicle">
+						{{= obj.info.rentalVehicle }}
 					</div>
 				</div>
 			</div><%-- /mainBenefitsContainer --%>

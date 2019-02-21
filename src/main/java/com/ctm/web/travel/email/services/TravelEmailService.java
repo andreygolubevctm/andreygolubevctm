@@ -208,6 +208,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			bestPriceRanking.setExcess(rankingDetail.getProperty("excess"));
 			bestPriceRanking.setLuggage(rankingDetail.getProperty("luggage"));
 			bestPriceRanking.setCancellation(rankingDetail.getProperty("cxdfee"));
+			bestPriceRanking.setRentalVehicle(rankingDetail.getProperty("rentalVehicle"));
 			bestPriceRanking.setCoverLevelType(rankingDetail.getProperty("coverLevelType"));
 			bestPriceRanking.setSmallLogo(rankingDetail.getProperty("service") + ".png");
 
