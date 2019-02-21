@@ -1612,6 +1612,14 @@
 
 			adjustLayout();
 
+			try {
+				if (!!window.LogRocket) {
+					window.LogRocket.identify(meerkat.modules.transactionId.get());
+				}
+			} catch(e) {
+				meerkat.logging.error("Exception thrown launching logrocket: " + e.message);
+			}
+
 		});
 
 
