@@ -53,7 +53,7 @@
 {{ if(obj.productDisclosures != null) { }}
 {{ if(typeof obj.productDisclosures.ped != 'undefined') { }}
 {{ if(obj.productDisclosures.ped.url != '') { }}
-{{ ped = '<a href="'+obj.productDisclosures.ped.url+'" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute} style="width: '+width+'%">Part PED</a>' }}
+{{ ped = '<a href="'+obj.productDisclosures.ped.url+'" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute} style="width: '+width+'%">PED</a>' }}
 {{ } else { }}
 {{ width = '45' }}
 {{ } }}
