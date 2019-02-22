@@ -196,7 +196,8 @@ public class ResponseAdapterV2 {
                         "rental vehicle excess waiver",
                         "rental car excess waiver",
                         "rental vehicle insurance excess",
-                        "Return of Rental Vehicle"
+                        "Return of Rental Vehicle",
+                        "Rental Vehicle Insurance Excess#*"
                 };
 
                 info.setRentalVehicle(travelQuote.getBenefitByLabelArray(rentalVehicleExcessLabelsArray));
