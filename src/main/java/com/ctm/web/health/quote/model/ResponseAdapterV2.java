@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
 import static java.util.Collections.emptyList;
@@ -246,9 +247,15 @@ public class ResponseAdapterV2 {
         price.setDiscountAmount(formatCurrency(quotePrice.getDiscountAmount(), true, true));
         price.setDiscountPercentage(quotePrice.getDiscountPercentage());
 
+        String abdSuffix = "";
+        if (quotePrice.getAbd() > 0) {
+            abdSuffix ="Includes age based discount.";
+        }
+
         final BigDecimal lhcAmount = quotePrice.getLhcAmount();
-        price.setPricing("Includes rebate of " + rebateValue + " & LHC loading of " +
-                formatCurrency(lhcAmount, true, true));
+
+        String pricingText = String.format("Includes rebate of %1$s & LHC loading of %2$s. %3$s", rebateValue, formatCurrency(lhcAmount, true, true), abdSuffix).trim();
+        price.setPricing(pricingText);
 
         final BigDecimal lhcFreeAmount = calculateLHCFreeAmount(rebatePercentage, quotePrice.getBasePremium(), quotePrice.getLhcFreeAmount());
         price.setLhcfreetext(formatCurrency(lhcFreeAmount, true, true) + (hasDiscount ? "*" : ""));
@@ -258,8 +265,8 @@ public class ResponseAdapterV2 {
         price.setText(formatCurrency(payableAmount, true, true) + (hasDiscount ? "*" : ""));
         price.setValue(payableAmount);
 
-        //If changing/remove span tag underneath, make sure to change HealthModelTranslator premiumlabel translation accordingly.
-        price.setLhcfreepricing(getLhcFreePricing(healthQuote, lhcAmount, lookingForPrivateHospitalCover) + "<br> inc " + rebateValue + " Govt Rebate");
+        String lhcFreePricingText = String.format("%1$s <br> inc %2$s Govt Rebate. %3$s", getLhcFreePricing(healthQuote, lhcAmount, lookingForPrivateHospitalCover), rebateValue, abdSuffix).trim();
+        price.setLhcfreepricing(lhcFreePricingText);
 
         price.setRebateValue(rebateValue);
 
@@ -271,13 +278,16 @@ public class ResponseAdapterV2 {
         price.setLhcPercentage(healthQuote.getLoading());
         price.setLhc(formatCurrency(lhcAmount, true, true));
         price.setGrossPremium(formatCurrency(quotePrice.getGrossPremium(), true, true));
+
+        price.setAbd(quotePrice.getAbd());
+        price.setAbdValue(quotePrice.getAbdValue());
         return price;
     }
 
     private static String getLhcFreePricing(final com.ctm.web.health.model.form.HealthQuote healthQuote, final BigDecimal lhcAmount, final boolean lookingForPrivateHospitalCover) {
         HealthCover healthCover = healthQuote.getHealthCover();
         Insured primary = healthCover.getPrimary();
-        Optional<Insured> partner = Optional.ofNullable(healthCover.getPartner());
+        Optional<Insured> partner = Optional.of(healthCover).map(HealthCover::getPartner).filter(i -> StringUtils.isNotBlank(i.getDob()));
 
         String lhcFreePricing = "";
         if (isInsuredAffectedByLHC(primary, lookingForPrivateHospitalCover) || partner.map(optionalPartner -> ResponseAdapterV2.isInsuredAffectedByLHC(optionalPartner, lookingForPrivateHospitalCover)).orElse(false)) {

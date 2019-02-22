@@ -98,7 +98,7 @@
         product.showAltPremium = false;
         product.priceBreakdown = meerkat.modules.healthPriceBreakdown.showBreakdown();
 
-        if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
+        if (!meerkat.modules.healthCoverStartDate.isAfterMarch() && meerkat.modules.healthDualPricing.isDualPricingActive()) {
             product.displayLogo = false;
             if (typeof product.dropDeadDate === 'undefined') {
                 var selectedProduct = Results.getSelectedProduct();
@@ -106,6 +106,12 @@
                 product.dropDeadDateFormatted = selectedProduct.dropDeadDateFormatted;
                 product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
             }
+
+            $policySummaryContainer.addClass('hidden');
+            $('.policySummary.dualPricing').removeClass('hidden');
+            $('.policySummary-sidebar h1').removeClass('hidden');
+            $('.quoterefTemplateHolder').removeClass('hidden');
+
             meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
         } else {
             product.displayLogo = true;
@@ -117,6 +123,11 @@
             var aboutHtml = _.has(Results.getSelectedProduct(), 'aboutFund') ? _.template(aboutTemplate)() : '';
             var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "")
                 + lhcHtml(product) + logoHtmlTemplate(product) + aboutHtml + priceHtmlTemplate(product);
+
+            $policySummaryContainer.removeClass('hidden');
+            $('.policySummary.dualPricing').addClass('hidden');
+            $('.policySummary-sidebar h1').addClass('hidden');
+            $('.quoterefTemplateHolder').addClass('hidden');
 
             $policySummaryTemplateHolder.html(htmlString);
             $policySummaryContainer.find(".policyPriceWarning").hide();

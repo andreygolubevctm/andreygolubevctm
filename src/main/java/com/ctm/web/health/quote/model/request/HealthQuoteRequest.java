@@ -11,8 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-public class HealthQuoteRequest
-{
+public class HealthQuoteRequest {
 
     private boolean isSimples;
 
@@ -60,6 +59,8 @@ public class HealthQuoteRequest
     private Boolean includeSummary;
 
     private List<PaymentType> paymentTypes;
+
+    private int abdPercentage;
 
     public boolean getIsSimples() {
         return isSimples;
@@ -227,5 +228,13 @@ public class HealthQuoteRequest
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
+    }
+
+    public void setAbdPercentage(int abdPercentage) {
+        this.abdPercentage = abdPercentage;
+    }
+
+    public int getAbdPercentage() {
+        return abdPercentage;
     }
 }
