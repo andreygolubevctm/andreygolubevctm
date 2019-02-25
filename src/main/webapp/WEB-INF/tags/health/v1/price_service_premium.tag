@@ -27,7 +27,6 @@ ${premiumCalculator.setRebate(rebate)}
 <c:choose>
     <c:when test="${premiumCalculator.getDiscountValue() > 0}">
         <c:set var="isDiscounted">Y</c:set>
-        <c:set var="star">*</c:set>
     </c:when>
     <c:otherwise>
         <c:set var="isDiscounted">N</c:set>
@@ -40,13 +39,13 @@ ${premiumCalculator.setRebate(rebate)}
 <c:set var="formattedLhcFreeCurrency"><c:out value="${go:formatCurrencyPrecise(lhcFreeValue, true, true )}"  /></c:set>
 
 <c:set var="pricing">Includes rebate of ${formattedRebate} &amp; LHC loading of ${formattedLoading}</c:set>
-<c:set var="lhcfreetext">${formattedLhcFreeCurrency}${star}</c:set>
+<c:set var="lhcfreetext">${formattedLhcFreeCurrency}</c:set>
 <c:set var="lhcfreepricing">+ ${formattedLoading} LHC inc ${formattedRebate} Government Rebate</c:set>
 
 <discounted>${isDiscounted}</discounted>
 <discountAmount>${go:formatCurrency(discountAmount, true, true)}</discountAmount>
 <discountPercentage>${discountPercentage}</discountPercentage>
-<text>${formattedPremiumWithRebateAndLHC}${star}</text>
+<text>${formattedPremiumWithRebateAndLHC}</text>
 <value>${go:formatCurrencyPrecise(premiumWithRebateAndLHC, false, false)}</value>
 <pricing>${pricing}</pricing>
 <lhcfreetext>${lhcfreetext}</lhcfreetext>
