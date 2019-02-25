@@ -64,15 +64,10 @@ public class ResponseAdapterV2 {
 
                 final Optional<BigDecimal> rebateChangeover = Optional.empty();
 
-//                        Optional.ofNullable(request.getQuote().getRebateChangeover())
-//                                                                .map(BigDecimal::new);
-
-                final boolean isSimplesUser;
-                if (request.getHealth().getSimples() != null) {
-                    isSimplesUser = true;
-                } else {
-                    isSimplesUser = false;
-                }
+                final boolean isSimplesUser = Optional.ofNullable(request)
+                        .map(HealthRequest::getHealth)
+                        .map(com.ctm.web.health.model.form.HealthQuote::getSimples)
+                        .isPresent();
 
                 for (final HealthQuote quote : quoteResponse.getQuotes()) {
                     final HealthQuoteResult result = new HealthQuoteResult();
