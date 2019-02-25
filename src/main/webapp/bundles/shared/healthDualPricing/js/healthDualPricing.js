@@ -300,18 +300,22 @@
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
         var affixedHeaderTemplate = '';
         product.renderedPriceTemplate = htmlTemplate(product);
+
         if($elements.affixedHeaderLogoPriceTemplate.html()) {
             affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
             product.renderedAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
-            product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
         }
-        
+
         product.showAltPremium = _.has(product, 'altPremium');
         product.displayLogo = false;
         product.showCurrPremText = false;
         product.showRisingTag = false;
 
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
+
+        if($elements.affixedHeaderLogoPriceTemplate.html()) {
+            product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
+        }
 
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
