@@ -687,7 +687,7 @@
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 				<div class="col-xs-12 col-md-6 extrasCover">
 					{{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab2.limited  !== null) { }}
-						<div class="checkbox"><input type="checkbox" name="health_simples_dialogue-radio-810-1" id="limited_cover_scripting_tab_2" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required">
+						<div class="checkbox scripting-text"><input type="checkbox" name="health_simples_dialogue-radio-810-1" id="limited_cover_scripting_tab_2" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="" required="required">
 							<label for="limited_cover_scripting_tab_2">{{= custom.reform.tab2.limited }}</label>
 						</div><br/>
 					{{ } else { }}

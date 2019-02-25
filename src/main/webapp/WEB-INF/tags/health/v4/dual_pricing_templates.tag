@@ -80,9 +80,6 @@
 						{{= renderedAltPriceTemplate }}
 					</div>
 				</div>
-				{{ if (obj.showAltPremium === true) { }}
-				<div class="rateRiseDisclaimer">*Prices are changing due to the Government rate rise</div>
-				{{ } }}
 			</div>
 		</div>
 	</div>
