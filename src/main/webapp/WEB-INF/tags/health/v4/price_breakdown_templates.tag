@@ -14,7 +14,7 @@
         {{ var showDiscountRow = obj.premium[obj.frequency].discounted === 'Y'; }}
         {{ var showABDRow = obj.premium[obj.frequency].abd > 0; }}
 
-        {{ if (showLHCRow || showRebateRow || showDiscountRow) { }}
+        {{ if (showLHCRow || showRebateRow || showDiscountRow || showABDRow) { }}
         <p>How your premium is calculated:</p>
         <hr />
         <div class="row">
