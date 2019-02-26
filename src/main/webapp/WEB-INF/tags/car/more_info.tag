@@ -29,8 +29,8 @@
 		{{ } else { }}
 			<a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute}>Product Disclosure A</a>
 			<a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute}>Product Disclosure B</a>
-			{{ if(obj.productDisclosures.hasOwnProperty('pdsc')) { }}
-				<a href="{{= obj.productDisclosures.pdsc.url }}" target="_blank" class="showDoc btn btn-sm btn-download btn-download-pds-c" ${navBtnAnalAttribute}>Product Disclosure C</a>
+			{{ if(obj.productDisclosures.hasOwnProperty('ped')) { }}
+				<a href="{{= obj.productDisclosures.ped.url }}" target="_blank" class="showDoc btn btn-sm btn-download btn-download-ped" ${navBtnAnalAttribute}>{{= obj.productDisclosures.ped.title }}</a>
 			{{ } }}
 		{{ } }}
 	{{ } }}
