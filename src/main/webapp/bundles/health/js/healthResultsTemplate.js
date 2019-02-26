@@ -233,7 +233,8 @@
     
             ft.displayItem = ft.type != 'section';
             ft.isBenefit = obj.featuresStructureIndexToUse === "4";
-            ft.beforeChangeDate = !isSelectedBenefit && !afterChangeDate;
+            ft.beforeChangeDate = !afterChangeDate;
+            ft.isSelectedBenefit = isSelectedBenefit;
 
             ft.classStringForInlineLabelCover = "";
             
@@ -477,10 +478,9 @@
 
     function getCoverDate(obj) {
         var dateParsed = obj.custom.reform ? parseChangeDate(obj.custom.reform.changeDate) : null;
-        var curDate = window.meerkat.site.serverDate;
 
-        if(!dateParsed || curDate.getTime() > dateParsed.getTime()) {
-            return '';
+        if(!dateParsed) {
+            return 'Future State';
         }
 
         var day = dateParsed.getDate();
