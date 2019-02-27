@@ -44,11 +44,10 @@
 					$travellerNumControls[hideMethod]();
                     $single_parent.find("#travel_singleParent_N").prop('checked', true).trigger('change');
 					$travel_adults.val(1);
-                    $('#travel_childrenSelect').val("");
 					break;
 				case 'C':
 					$children_row[hideMethod]();
-					$('#travel_childrenSelect').val("");
+					$('#travel_childrenSelect').val(0);
 					$single_parent_row[hideMethod]();
                     $travellerNumControls[hideMethod]();
                     $travel_adults.val(2);
@@ -69,7 +68,7 @@
 					$children_row[hideMethod]();
 					$single_parent_row[hideMethod]();
                     $travellerNumControls[showMethod]();
-                    $('#travel_childrenSelect').val("");
+                    $('#travel_childrenSelect').val(0);
 					break;
 				default:
                     $single_parent_row[hideMethod]();
