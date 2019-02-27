@@ -33,7 +33,7 @@
             <span class="frequencyAmount">
                             {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
                             {{ premiumSplit = premiumSplit.split(".") }}
-                            <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}{{ if (obj.showAltPremium === true) { }}&#42;{{ } }}</span>
+                            <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
                         </span>
             <div class="frequencyTitle">
                 {{= freq === 'halfyearly' ? 'Half yearly' : freq.charAt(0).toUpperCase() + freq.slice(1) }}

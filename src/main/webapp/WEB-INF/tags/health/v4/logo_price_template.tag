@@ -44,12 +44,14 @@
 				{{ var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount) }}
 				{{ var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate' }}
 				{{ var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount) }}
+				{{ var showABDToolTip = premium.abd > 0; }}
+
 				<div class="frequency {{=freq}} {{= obj._selectedFrequency === freq.toLowerCase() ? '' : 'displayNone' }}" data-text="{{= priceText }}" data-lhcfreetext="{{= priceLhcfreetext }}">
 					{{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
                         <span class="frequencyAmount">
                             {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
                             {{ premiumSplit = premiumSplit.split(".") }}
-                            <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}{{ if (obj.showAltPremium === true) { }}&#42;{{ } }}</span>
+                            <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
 													    <div class="frequencyTitle">
                                 {{= freq === 'annually' ? 'per year' : '' }}
                                 {{= freq.toLowerCase() === 'halfyearly' ? 'per half year' : '' }}
@@ -63,6 +65,9 @@
                     	<div class="lhcText hide-on-affix">
                     	    <span>
 								{{= textLhcFreePricing}}
+								{{ if(showABDToolTip) { }}
+               						 <field_v2:help_icon helpId="643" showText="false" />
+            					{{ } }}
                     	    </span>
                     	</div>
                 		{{ } else { }}
