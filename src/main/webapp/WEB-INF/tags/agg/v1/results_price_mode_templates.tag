@@ -51,17 +51,17 @@
         <a class="small priceDisclaimer" href="javascript:;">{{= priceDisclaimer }}</a>
         <div class="priceDisclaimer-content hidden"><p class="priceDisclaimer-para">{{= obj.disclaimer }}</p></div>
         {{ } }}
-
-        <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}">More Info </a>
-
+        <div>
+            <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}">More Info </a>
+        </div>
         {{ if (obj.productDisclosures != null) { }}
         {{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false) { }}
-        <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS</a>
+        <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> PDS</a>
         {{ } else { }}
-        <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS A </a>
+        <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> PDS A </a>
         <a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS B</a>
-        {{ if(obj.productDisclosures.hasOwnProperty('pdsc')) { }}
-        <a href="{{= obj.productDisclosures.pdsc.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PDS C</a>
+        {{ if(obj.productDisclosures.hasOwnProperty('ped')) { }}
+        <a href="{{= obj.productDisclosures.ped.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> | PED</a>
         {{ } }}
         {{ } }}
         {{ } }}

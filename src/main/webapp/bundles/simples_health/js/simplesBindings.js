@@ -298,7 +298,8 @@
 	    var contactType = $healthContactTypeField.val();
 	    if(!_.isUndefined(contactType) && !_.isEmpty(contactType)) {
 	        var optin = _.indexOf(affiliatesOptinBlacklist, contactType) === -1 ? "Y" : "N";
-		    $optin_email.add($optin_phone).add($optin_privacy).add($optin_optin).add($optin_email_app).val(optin);
+	        // Set any marketing optins to NO
+		    $optin_email.add($optin_phone).add($optin_email_app).val(optin);
         }
     }
 
@@ -319,8 +320,8 @@
                 .addClass('inbound');
         }
         else if(healthContactTypeSelection === 'nextgen') {
-            $healthContactType.val('nextgen');
-            $healthContactTypeTrial.val('');
+            $healthContactType.val('inbound');
+            $healthContactTypeTrial.val('nextgen');
 
             $body
                 .removeClass('outbound trial')
@@ -483,7 +484,7 @@
         } else {
             $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
             $dialogue36.toggle(isInbound);
-            if (brandCodeIsCtm && callType === "trial") {
+            if (brandCodeIsCtm && (callType === "trial" || callType === "nextgen")) {
                 $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(true);
             }
         }

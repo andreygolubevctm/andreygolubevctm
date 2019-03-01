@@ -305,5 +305,8 @@
 	fundDiscounts : {
 		AUF : "${AUFDiscount}"
 	},
-	africaComp: <c:out value="${africaComp}" />
+	africaComp: <c:out value="${africaComp}" />,
+	pauseRecordingOverride : {
+		enabled : <c:out value="${pageSettings.getSetting('pauseRecordingOverride') eq 'Y'}"/>
+	}
 }

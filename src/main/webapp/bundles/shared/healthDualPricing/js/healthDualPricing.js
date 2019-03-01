@@ -18,7 +18,7 @@
             'A': 'annual'
         },
         isActive = null,
-        _aprilFirst = '04/01/2018',
+        _aprilFirst = '04/01/2019',
         _trackModalClose = true;
 
     function initDualPricing() {
@@ -74,7 +74,8 @@
             var coverStartDateTime = meerkat.modules.dateUtils.parse($("#health_payment_details_start").val(), 'DD/MM/YYYY').getTime(),
                 aprilFirstTime = new Date(_aprilFirst).getTime(),
                 frequency = $(this).val().toLowerCase(),
-                selectedProduct = Results.getSelectedProduct(),
+                selectedProduct = meerkat.modules.healthResults.getSelectedProduct(),
+                selectedPayment = meerkat.modules.healthPaymentStep.getPaymentMethodNode(),
                 pricingDate = new Date(selectedProduct.pricingDate),
                 pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"),
                 template = null,
@@ -91,8 +92,10 @@
             if (frequency === 'annually') {
                 if ($elements.priceCongratsTemplate.length === 1) {
                     template = _.template($elements.priceCongratsTemplate.html());
+                    var priceCalc = (parseFloat(selectedProduct.paymentTypeAltPremiums[selectedPayment][frequency].value - selectedProduct.paymentTypePremiums[selectedPayment][frequency].value)).toFixed(2);
                     obj = {
-                        priceSaved: '$' + (parseFloat(selectedProduct.altPremium[frequency].value - selectedProduct.premium[frequency].value)).toFixed(2),
+                        priceSaved: '$' + Math.abs(priceCalc),
+                        beforeAfterText: priceCalc < 0 ? 'after' : 'before',
                         pricingDateFormatted: pricingDateFormatted
                     };
                 } else {
@@ -104,8 +107,8 @@
                 obj = {
                     frequency: freqTextMapping[frequency],
                     pricingDateFormatted: pricingDateFormatted,
-                    premium: selectedProduct.premium[frequency].text,
-                    altPremium: selectedProduct.altPremium[frequency].text
+                    premium: selectedProduct.paymentTypePremiums[selectedPayment][frequency].text,
+                    altPremium: selectedProduct.paymentTypeAltPremiums[selectedPayment][frequency].text
                 };
             }
 
@@ -288,18 +291,22 @@
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
         var affixedHeaderTemplate = '';
         product.renderedPriceTemplate = htmlTemplate(product);
+
         if($elements.affixedHeaderLogoPriceTemplate.html()) {
             affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
             product.renderedAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
-            product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
         }
-        
+
         product.showAltPremium = _.has(product, 'altPremium');
         product.displayLogo = false;
         product.showCurrPremText = false;
         product.showRisingTag = false;
 
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
+
+        if($elements.affixedHeaderLogoPriceTemplate.html()) {
+            product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
+        }
 
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);

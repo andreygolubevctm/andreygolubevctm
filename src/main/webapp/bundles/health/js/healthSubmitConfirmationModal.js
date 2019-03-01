@@ -253,7 +253,7 @@
             dob = _getDobFormatted($fields[person].dob),
             gender = _getGender($fields[person]),
             data = [
-                { label: 'Full name' + ( person === 'primary' && '<span class="payment-confirm-warning-text">as it appears on your Medicare card</span>') , value: fullName },
+                { label: 'Full name' + ( person === 'primary' ? '<span class="payment-confirm-warning-text">as it appears on your Medicare card</span>' : '') , value: fullName },
                 { label: 'Date of birth', value: dob },
                 { label: 'Gender', value: gender }
             ];

@@ -12,7 +12,7 @@
 <core_v1:js_template id="price-congratulations-template">
 	<div class="price-congratulations-copy">
 		<h4>Congratulations</h4>
-		<p>Paying annually means you will save <span class="priceSaved">{{= priceSaved }}!</span> You must choose a payment date before <span class="text-bold">{{= pricingDateFormatted }}</span> to lock in this premium.</p>
+		<p>Paying annually means you will save <span class="priceSaved">{{= priceSaved }}!</span> You must choose a payment date <span class="text-bold">{{= beforeAfterText }} {{= pricingDateFormatted }}</span> to lock in this premium.</p>
 	</div>
 </core_v1:js_template>
 
@@ -80,9 +80,6 @@
 						{{= renderedAltPriceTemplate }}
 					</div>
 				</div>
-				{{ if (obj.showAltPremium === true) { }}
-				<div class="rateRiseDisclaimer">*Prices are changing due to the Government rate rise</div>
-				{{ } }}
 			</div>
 		</div>
 	</div>

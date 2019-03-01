@@ -12,8 +12,9 @@
         {{ var showLHCRow = meerkat.modules.healthPriceBreakdown.showLHC(obj, obj.frequency); }}
         {{ var showRebateRow = obj.premium[obj.frequency].rebate > 0; }}
         {{ var showDiscountRow = obj.premium[obj.frequency].discounted === 'Y'; }}
+        {{ var showABDRow = obj.premium[obj.frequency].abd > 0; }}
 
-        {{ if (showLHCRow || showRebateRow || showDiscountRow) { }}
+        {{ if (showLHCRow || showRebateRow || showDiscountRow || showABDRow) { }}
         <p>How your premium is calculated:</p>
         <hr />
         <div class="row">
@@ -40,6 +41,13 @@
         <div class="row">
             <div class="col-xs-12 col-md-8">Fund discount {{= obj.premium[obj.frequency].discountPercentage }}% {{= obj.frequency }}:</div>
             <div class="col-xs-12 col-md-4 text-right">-{{= obj.premium[obj.frequency].discountAmount }}</div>
+        </div>
+        {{ } }}
+
+        {{ if (showABDRow) { }}
+        <div class="row">
+            <div class="col-xs-12 col-md-8">Age Based Discount {{= obj.premium[obj.frequency].abd }}% <field_v2:help_icon helpId="643" showText="false" /></div>
+            <div class="col-xs-12 col-md-4 text-right">-{{= '$' + obj.premium[obj.frequency].abdValue }}</div>
         </div>
         {{ } }}
 
