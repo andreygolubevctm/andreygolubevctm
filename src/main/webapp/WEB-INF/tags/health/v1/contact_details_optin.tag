@@ -175,6 +175,16 @@
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your health cover loading" required="true" id="${name}_health_cover_loading" className="loading"/>
             </form_v3:row>
 
+            <c:set var="fieldXpath" value="${xpath}/primary/abd" />
+            <form_v3:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger">
+	            <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details" id="primary_abd_health_cover" />
+            </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/primary/abdPolicyStart" />
+            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="primary_abd_start_date" className="cover-start-date-row changes-premium hidden">
+                <field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
+            </form_v3:row>
+
             <c:if test="${callCentre}">
                 <c:set var="fieldXpath" value="${xpath}/primary/lhc" />
                 <form_v2:row label="Applicant's LHC" fieldXpath="${fieldXpath}" helpId="287">
@@ -202,6 +212,16 @@
             <c:set var="fieldXpath" value="${xpath}/partner/healthCoverLoading" />
             <form_v3:row label="Has your partner had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group text-danger" helpId="239" additionalHelpAttributes="data-content-replace='{{year}},${continuousCoverYear}'">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading"/>
+            </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/partner/abd" />
+            <form_v3:row label="Does your partner currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="partner_abd" className="lhcRebateCalcTrigger">
+              <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your partner currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details" id="partner_abd_health_cover" />
+            </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/partner/abdPolicyStart" />
+            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="partner_abd_start_date" className="cover-start-date-row changes-premium hidden">
+                <field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
             </form_v3:row>
 
             <c:if test="${callCentre}">
