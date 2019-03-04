@@ -181,7 +181,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/abdPolicyStart" />
-            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="primary_abd_start_date" className="cover-start-date-row changes-premium hidden">
+            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="primary_abd_start_date" className="changes-premium hidden">
                 <field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
             </form_v3:row>
 
@@ -220,7 +220,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/abdPolicyStart" />
-            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="partner_abd_start_date" className="cover-start-date-row changes-premium hidden">
+            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="partner_abd_start_date" className="changes-premium hidden">
                 <field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
             </form_v3:row>
 

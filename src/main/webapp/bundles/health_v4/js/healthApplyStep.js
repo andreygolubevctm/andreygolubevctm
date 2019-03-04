@@ -197,6 +197,12 @@
             }
         });
 
+        $elements[applicant].ageBasedDiscountPolicyStartRow.find(':input').on('change', function(event) {
+            if(event.target.value) { 
+                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+            }
+        });
+
         $elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find(':input').on('change', function() {
             _toggleCurrentlyHaveAnyKindOfCover(applicant);
             if(event.target.value === 'Y') {
@@ -251,6 +257,10 @@
 
       if(age >= 18 && age < 45) {
         $elements[applicant].recievesAgeBasedDiscountRow.removeClass('hidden');
+        var hasABD = $elements[applicant].recievesAgeBasedDiscount.find(':checked').val();
+        if(hasABD === 'Y') {
+            $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+        }
       }else{
         $elements[applicant].recievesAgeBasedDiscountRow.addClass('hidden');
         $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
@@ -298,7 +308,6 @@
                 }
             }
         } else {
-            $elements[applicant].recievesAgeBasedDiscount.filter(':checked').val('');
             $elements[applicant].currentlyHaveAnyKindOfCoverPreResultsBtnGroup.find("input[value='N']").prop('checked', true).trigger('change');
 
             if ($elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N') {
