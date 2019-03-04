@@ -18,7 +18,7 @@
 	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 	<c:set var="prefix" value="best_price_" />
-	<c:set var="suffixes" value="productId,providerName,service,productName,excess,medical,cxdfee,luggage,price,url,coverLevelType" />
+	<c:set var="suffixes" value="productId,providerName,service,productName,excess,medical,cxdfee,luggage,rentalVehicle,price,url,coverLevelType" />
 	<c:set var="search" value="'" />
 	<c:set var="replace" value="\\'" />
 

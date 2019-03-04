@@ -790,7 +790,8 @@ var ResultsModel = {
             EXCESS: 0,
             LUGGAGE: 0,
             CXDFEE: 0,
-            MEDICAL: 0
+            MEDICAL: 0,
+			RENTALVEHICLE: 0
         };
         var _modelFilters = Results.model.travelFilters;
 
@@ -810,6 +811,9 @@ var ResultsModel = {
                         case 'MEDICAL':
                             _filters.MEDICAL = benefit.value;
                             break;
+                        case 'RENTALVEHICLE':
+                            _filters.RENTALVEHICLE = benefit.value;
+                            break;
                     }
                 });
 
@@ -818,6 +822,7 @@ var ResultsModel = {
 						((_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
                         (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
                         (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
+                        (_filters.RENTALVEHICLE >= _modelFilters.RENTALVEHICLE) &&
                         (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
                         finalProducts.push(product);
                     }
@@ -825,7 +830,8 @@ var ResultsModel = {
                     if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
 						((_filters.LUGGAGE >= _modelFilters.LUGGAGE) ||
                         (_filters.CXDFEE >= _modelFilters.CXDFEE) ||
-                        (_filters.MEDICAL >= _modelFilters.MEDICAL)) &&
+                        (_filters.MEDICAL >= _modelFilters.MEDICAL) ||
+                        (_filters.RENTALVEHICLE >= _modelFilters.RENTALVEHICLE)) &&
                         (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1)) {
                         finalProducts.push(product);
                     }

@@ -128,6 +128,16 @@
             _displaySliderValue("MEDICAL", $(this).val());
         });
 
+        // update the results as per the overseas medical filter
+        $('input[name="rentalVehicleRangeSlider"]').change(function () {
+            _displaySliderValue("RENTALVEHICLE", $(this).val());
+            _updateTravelResults("RENTALVEHICLE", parseInt($(this).val()));
+        });
+
+        $('input[name="rentalVehicleRangeSlider"]').on('input', function() {
+            _displaySliderValue("RENTALVEHICLE", $(this).val());
+        });
+
         // display the filtered results
         $('.more-filters-results-btn').click(function () {
             $('#moreFiltersDropdownBtn').dropdown('toggle');
@@ -220,6 +230,11 @@
                 Results.model.travelFilters = _filters;
                 _displayCustomResults(true, true);
                 break;
+            case 'RENTALVEHICLE':
+                _filters.RENTALVEHICLE = value;
+                Results.model.travelFilters = _filters;
+                _displayCustomResults(true, true);
+                break;
             case 'PROVIDERS':
                 if (_filters.PROVIDERS.indexOf(value) == -1) {
                     _filters.PROVIDERS.push(value);
@@ -297,6 +312,10 @@
             case 'MEDICAL':
                 $('.overseas-medical-range-value').empty().text('$' + Number(value / 1000000) + ' million');
                 break;
+
+            case 'RENTALVEHICLE':
+                $('.rental-vehicle-range-value').empty().text('$' + Number(value / 1000000) + ' million');
+                break;
         }
     }
 
@@ -366,6 +385,7 @@
 
         $('input[name="overseasMedicalRangeSlider"]').val(_filters.MEDICAL);
         _displaySliderValue("MEDICAL", _filters.MEDICAL);
+
         meerkat.modules.customRangeSlider.init();
         $('#travel_filter_excess_200').trigger('click');
         $('[data-provider-code]').prop('checked', true);
