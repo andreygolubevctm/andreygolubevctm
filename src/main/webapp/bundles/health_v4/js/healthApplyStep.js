@@ -192,8 +192,12 @@
         $elements[applicant].recievesAgeBasedDiscount.find(':input').on('change', function(event) {
             if(event.target.value === 'Y') {
                 $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+                if($elements[applicant].ageBasedDiscountPolicyStartRow.find(':input').val()) {
+                    meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                }
             }else{
                 $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
             }
         });
 
