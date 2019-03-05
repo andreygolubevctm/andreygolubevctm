@@ -4,7 +4,7 @@ package com.ctm.life.quote.model.request;
 import com.ctm.interfaces.common.aggregator.request.QuoteRequest;
 import com.ctm.life.model.request.Applicants;
 import com.ctm.life.model.request.ContactDetails;
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+// import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 import javax.validation.constraints.NotNull;
 
@@ -16,7 +16,7 @@ public class LifeQuoteRequest implements QuoteRequest {
     @NotNull
     private ContactDetails contactDetails;
 
-    @SuppressWarnings("unused")
+    // @SuppressWarnings("unused")
     private LifeQuoteRequest(){}
 
     private LifeQuoteRequest(Builder builder) {
