@@ -81,18 +81,27 @@
     }
   }
   .callCentreNumber-container {
-    color: @theme-secondary;
+    color: @gray-base;
     display: inline-block;
-    font-size: 24px;
+    font-size: 20px;
+
+    &:hover {
+      color: #164AD9;
+    }
+
+    a {
+      color: @gray-base;
+
+      &:hover {
+        color: #164AD9;
+        text-decoration: none;
+      }
+    }
+
     .icon-phone {
       margin-top: 4px;
     }
-    a {
-      color: @theme-secondary;
-    }
-    @media (@lg) {
-      font-size: 30px;
-    }
+
   }
 }
 .journeyEngineSlide {

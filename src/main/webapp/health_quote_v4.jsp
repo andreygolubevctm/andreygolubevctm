@@ -56,7 +56,7 @@
 
         <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
-        
+
         <c:choose>
             <c:when test="${comparisonMode eq 'PHIO'}">
                 <c:set var="onlineCategoryVersion" value="health_v4" />
@@ -97,22 +97,17 @@
                 <c:if test="${not empty callCentreNumber}">
                     <div class="navbar-collapse header-collapse-contact collapse online-results-control-container" data-online-category-version="${onlineCategoryVersion}">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-                            <li class="navbar-text hidden-sm call-opening-text">
-                                ${desktopOpenText}
-                            </li>
                             <li>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
                                     <div class="callCentreNumber-container">
-                                        <span class="hidden-md hidden-lg call-opening-text">
-                                            ${tabletOpenText}
-                                        </span>
                                         <span class="icon icon-phone"></span> <a href="javascript:;" data-toggle="dialog"
                                                    data-content="#view_all_hours"
                                                    data-dialog-hash-id="view_all_hours"
                                                    data-title="Call Centre Hours" data-cache="true">
                                         <span class="noWrap callCentreNumber">${callCentreNumber}</span>
                                         <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span></a>
-                                    </div> or <health_v4:callback_link /> ${callCentreCBModal}
+                                    </div>
+                                    <%--</div> or <health_v4:callback_link /> ${callCentreCBModal}--%>
                                 </div>
 
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>

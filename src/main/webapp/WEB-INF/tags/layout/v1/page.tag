@@ -211,32 +211,36 @@ ${newPage.init(pageContext.request, pageSettings)}
 									</c:if>
 									<c:if test="${pageSettings.getVerticalCode() eq 'travel'}">
 										<div class="navbar__travel-filters">
-											<a class="edit-details-travel-mobile" href="javascript:;">Edit details</a>
-											<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
 
-											<div class="row navbar-mobile coverLevelTabs visible-xs hidden-sm hidden-md hidden-lg">
-												<div class="col-xs-5 clt-trip-filter mobile-cover-type">
-													<div class="dropdown cover-type-mobile-active">
-														<a type="button" id="coverTypeDropdownBtn"
-														   data-toggle="dropdown" aria-haspopup="true"
-														   aria-expanded="false">
-															<span class="mobile-active-cover-type"></span>
-															<i class="icon icon-angle-down"></i>
-														</a>
-														<div class="dropdown-menu dropdown-menu-excess-filter dropdown-menu-mobile-cover-types"
-															 aria-labelledby="coverTypeDropdownBtn">
-															<div class="mobile-cover-types"></div>
+											<div class="navbar-mobile coverLevelTabs visible-xs hidden-sm hidden-md hidden-lg">
+												<div class="filters-row">
+													<a class="edit-details-travel-mobile" href="javascript:;">Edit details</a>
+													<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
+												</div>
+												<div class="row">
+													<div class="col-xs-5 clt-trip-filter mobile-cover-type">
+														<div class="dropdown cover-type-mobile-active">
+															<a type="button" id="coverTypeDropdownBtn"
+															   data-toggle="dropdown" aria-haspopup="true"
+															   aria-expanded="false">
+																<span class="mobile-active-cover-type"></span>
+																<i class="icon icon-angle-down"></i>
+															</a>
+															<div class="dropdown-menu dropdown-menu-excess-filter dropdown-menu-mobile-cover-types"
+																 aria-labelledby="coverTypeDropdownBtn">
+																<div class="mobile-cover-types"></div>
+															</div>
 														</div>
 													</div>
-												</div>
-												<div class="col-xs-7 clt-trip-filter amt-filter">
-													<travel_results_filter_types:amt_filter />
-												</div>
-												<div class="col-xs-2 clt-trip-filter">
-													<travel_results_filter_types:more_filters/>
-												</div>
-												<div class="col-xs-4 clt-trip-filter">
-													<travel_results_filter_types:excess_filter/>
+													<div class="col-xs-7 clt-trip-filter amt-filter">
+														<travel_results_filter_types:amt_filter />
+													</div>
+													<div class="col-xs-2 clt-trip-filter">
+														<travel_results_filter_types:more_filters/>
+													</div>
+													<div class="col-xs-4 clt-trip-filter">
+														<travel_results_filter_types:excess_filter/>
+													</div>
 												</div>
 											</div>
 										</div>
