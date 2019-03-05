@@ -97,6 +97,7 @@
                 <c:if test="${not empty callCentreNumber}">
                     <div class="navbar-collapse header-collapse-contact collapse online-results-control-container" data-online-category-version="${onlineCategoryVersion}">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
+
                             <li>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
                                     <div class="callCentreNumber-container">
@@ -107,13 +108,10 @@
                                         <span class="noWrap callCentreNumber">${callCentreNumber}</span>
                                         <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span></a>
                                     </div>
-                                    <%--</div> or <health_v4:callback_link /> ${callCentreCBModal}--%>
+                                    ${callCentreCBModal}
                                 </div>
-
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
                             </li>
-
-
                         </ul>
                     </div>
                 </c:if>
