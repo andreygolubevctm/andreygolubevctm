@@ -21,7 +21,7 @@
 		<div class="travelResultsDisclaimerHeader"></div>
 
 		<div class="hidden-xs resultsSummaryContainer" data-livechat="target">
-			<span class="hidden-sm resultsSummaryHeading">Your quote is based on</span>
+			<span class="hidden-xs resultsSummaryHeading"></span>
 			<span class="resultsSummary">
 				<span class="resultsSummaryPlaceholder"></span>
 			</span>

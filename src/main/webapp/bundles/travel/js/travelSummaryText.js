@@ -17,15 +17,15 @@
 
 		var adults = $adults.val(),
 		children = $children.val();
-		
+
 		if (adults < 3) {
 			// adults
 			txt += adults + ' adult' + (adults == 1 ? '' : 's');
 		} else {
 			txt += adults;
 		}
-		
-		
+
+
 		// children
 		if (children > 0)
 		{
@@ -36,7 +36,7 @@
 		if ($("input[name=travel_policyType]:checked").val() == 'S') {
 			// in case a user did an AMT quote and now wants a single trip quote
 			$summaryHeader.html('Your quote is based on');
-			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
+			txt +='</span> <span>travelling</span> <span class="md-block">to <span class="highlight">';
 
 			// update the country text for single trip
 			if ($selectedTags.children().length == 1) {
@@ -50,8 +50,7 @@
 			txt += "</span> for <span class='highlight'>"+days+" days</span>";
 		} else {
 			$summaryHeader.html('Your Annual Multi Trip (AMT) quote is based on');
-			var blockClass = children > 1 ? 'sm-md-block' : 'sm-block';
-			txt+="</span> travelling <span class='highlight "+blockClass+"'>multiple times in one year";
+			txt+="</span> travelling <span class='highlight md-block'>multiple times in one year";
 		}
 
 		if (meerkat.modules.tripType.exists()) {
@@ -65,7 +64,7 @@
 					}
 				}
 			}
-			txt+=". </span><em class=\"hidden-xs hidden-sm\"><br></em>Covered for <span class='highlight'>" + copy.join(", ");
+			txt+=". </span>Covered for <span class='highlight'>" + copy.join(", ");
 		}
 
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
@@ -81,7 +80,7 @@
 			$adults = $('#travel_adults'),
 			$children = $('#travel_children'),
 			$policytype = $('#travel_policyType');
-			$summaryHeader = $('.resultsSummaryContainer h5');
+			$summaryHeader = $('.resultsSummaryHeading');
 			$selectedTags = $('.selected-tags');
 
 			applyEventListeners();
