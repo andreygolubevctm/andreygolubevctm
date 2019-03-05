@@ -228,7 +228,9 @@
             var changeDate = parseChangeDate(obj.custom.reform ? obj.custom.reform.changeDate : null);
 
             if(changeDate) {
-                afterChangeDate = changeDate.getTime() < meerkat.site.serverDate.getTime(); 
+                var timeToCheck = getApplicationDateTime();
+
+                afterChangeDate = changeDate.getTime() < timeToCheck; 
             }
     
             ft.displayItem = ft.type != 'section';
@@ -434,11 +436,26 @@
         return new Date(Date.parse(dayNumbers + ' ' + month + ' ' + year));
     }
 
+    function getApplicationDateTime() {
+        var applicationDate = $('#health_searchDate').val();
+        var applicationDateString = ''; 
+
+        if(applicationDate) {
+            var dateSplit = applicationDate.split('/');
+            var year = dateSplit[2];
+            var month = dateSplit[1];
+            var day = dateSplit[0];
+            applicationDateString = year + '-' + month + '-' + day;
+        }
+
+        return timeToCheck = applicationDate ? new Date(applicationDateString).getTime() :  meerkat.site.serverDate.getTime();
+    }
+
     function getClassificationDate(obj) {
         var dateParsed = obj.custom.reform ? parseChangeDate(obj.custom.reform.changeDate) : null;
-        var curDate = window.meerkat.site.serverDate;
+        var curDateTime = getApplicationDateTime();
 
-        if(!dateParsed || curDate.getTime() > dateParsed.getTime()) {
+        if(!dateParsed || curDateTime > dateParsed.getTime()) {
             return '';
         }
 
