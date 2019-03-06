@@ -33,9 +33,6 @@
                                 <span {{= ft.labelInColumnContentClassApril }}>Now</span>
                             {{ } }}
                             <span class="benefit-icon" />
-                            {{ if(ft.isBenefit && !coverDate && ft.beforeChangeDate) { }}
-                                <span class="benefit-container-item-date">* subject to change</span>
-                            {{ } }}
                         </div>
                         {{ if(ft.beforeChangeDate && coverDate) { }}
                             <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
