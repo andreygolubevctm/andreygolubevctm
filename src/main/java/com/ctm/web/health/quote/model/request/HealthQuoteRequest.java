@@ -61,6 +61,9 @@ public class HealthQuoteRequest {
     private List<PaymentType> paymentTypes;
 
     private int abdPercentage;
+    private int rabdPercentage;
+
+    private AbdSummary abdSummary;
 
     public boolean getIsSimples() {
         return isSimples;
@@ -236,5 +239,21 @@ public class HealthQuoteRequest {
 
     public int getAbdPercentage() {
         return abdPercentage;
+    }
+
+    public int getRabdPercentage() {
+        return rabdPercentage;
+    }
+
+    public void setRabdPercentage(int rabdPercentage) {
+        this.rabdPercentage = rabdPercentage;
+    }
+
+    public AbdSummary getAbdSummary() {
+        return abdSummary;
+    }
+
+    public void setAbdSummary(AbdSummary abdSummary) {
+        this.abdSummary = abdSummary;
     }
 }

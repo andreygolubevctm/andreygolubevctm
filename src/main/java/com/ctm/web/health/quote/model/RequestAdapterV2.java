@@ -5,9 +5,17 @@ import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
-import com.ctm.web.health.model.form.*;
+import com.ctm.web.health.model.form.Application;
+import com.ctm.web.health.model.form.Benefits;
+import com.ctm.web.health.model.form.Filter;
+import com.ctm.web.health.model.form.HealthCover;
+import com.ctm.web.health.model.form.HealthQuote;
+import com.ctm.web.health.model.form.HealthRequest;
+import com.ctm.web.health.model.form.Payment;
+import com.ctm.web.health.model.form.PaymentDetails;
+import com.ctm.web.health.model.form.Situation;
 import com.ctm.web.health.quote.model.abd.ABD;
-import com.ctm.web.health.quote.model.abd.ABDDataDTO;
+import com.ctm.web.health.quote.model.abd.ABDDataAdapter;
 import com.ctm.web.health.quote.model.request.*;
 import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
 import org.apache.commons.lang3.BooleanUtils;
@@ -25,7 +33,10 @@ import java.util.Optional;
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
 import static com.ctm.web.health.model.HospitalSelection.BOTH;
 import static com.ctm.web.health.model.HospitalSelection.PRIVATE_HOSPITAL;
-import static com.ctm.web.health.model.ProductStatus.*;
+import static com.ctm.web.health.model.ProductStatus.CALL_CENTRE;
+import static com.ctm.web.health.model.ProductStatus.EXPIRED;
+import static com.ctm.web.health.model.ProductStatus.NOT_AVAILABLE;
+import static com.ctm.web.health.model.ProductStatus.ONLINE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
@@ -144,15 +155,41 @@ public class RequestAdapterV2 {
             quoteRequest.setProductCode(request.getHealth().getProductCode());
         }
 
-        if (ABD.APPLICABLE_PRODUCT_TYPES.contains(quoteRequest.getProductType())) {
-            ABDDataDTO data = ABDDataDTO.create(quote);
+        ABDDataAdapter data = ABDDataAdapter.create(quote, request, isSimples);
+        Optional<LocalDate> optionalPrimaryApplicantDateOfBirth = data.getPrimaryApplicantDob();
+        if (ABD.APPLICABLE_PRODUCT_TYPES.contains(quoteRequest.getProductType()) && optionalPrimaryApplicantDateOfBirth.isPresent()) {
+            LocalDate primaryApplicantDateOfBirth = optionalPrimaryApplicantDateOfBirth.get();
             LocalDate assessmentDate = quoteRequest.getSearchDateValue();
-            int abdPercentage = ABD.calculateAgeBasedDiscount(data.getPrimaryApplicantDob(), data.getPartnerApplicantDob(), assessmentDate);
+
+
+            Optional<LocalDate> primaryABDStart = data.getPrimaryPreviousPolicyStart();
+            AbdDetails primaryABD = ABD.processABD(primaryApplicantDateOfBirth, assessmentDate, primaryABDStart);
+
+            Optional<LocalDate> partnerABDStart = data.getPartnerPreviousPolicyStart();
+            Optional<AbdDetails> partnerABD = data.getPartnerApplicantDob().map(dob -> ABD.processABD(dob, assessmentDate, partnerABDStart));
+
+            int abdPercentage = Math.min((primaryABD.getAgeBasedDiscountPercentage() + partnerABD.map(AbdDetails::getAgeBasedDiscountPercentage).orElse(0)) / (partnerABD.isPresent() ? 2 : 1), 0);
+
+            int rabdPercentage = Math.min(((primaryABD.getAgeBasedDiscountPercentage() - primaryABD.getRetainedAgeBasedDiscountPercentage()) + (partnerABD.map(a -> a.getAgeBasedDiscountPercentage() - a.getRetainedAgeBasedDiscountPercentage()).orElse(0))) / (partnerABD.isPresent() ? 2 : 1), 0);
+
+            AbdSummary abdSummary = new AbdSummary();
+            abdSummary.setAbd(abdPercentage);
+            abdSummary.setRabd(rabdPercentage);
+            abdSummary.setAssessmentDate(assessmentDate);
+            abdSummary.setPrimary(primaryABD);
+            partnerABD.ifPresent(abdSummary::setPartner);
+
+
+            quoteRequest.setAbdSummary(abdSummary);
+
             quoteRequest.setAbdPercentage(abdPercentage);
+            quoteRequest.setRabdPercentage(rabdPercentage);
+
         }
 
         return quoteRequest;
     }
+
 
     protected static void addPrimaryAge(HealthQuoteRequest quoteRequest, HealthCover healthCover) {
         try {
