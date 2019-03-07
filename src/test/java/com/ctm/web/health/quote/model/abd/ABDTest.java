@@ -1,14 +1,18 @@
 package com.ctm.web.health.quote.model.abd;
 
+import com.ctm.web.health.quote.model.request.AbdDetails;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static com.ctm.web.health.quote.model.abd.ABD.ABD_INTRO_DATE;
 import static com.ctm.web.health.quote.model.abd.ABD.FOURTY_ONE;
 import static com.ctm.web.health.quote.model.abd.ABD.THIRTY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ABDTest {
 
@@ -18,14 +22,14 @@ public class ABDTest {
 
     @Test
     public void givenDateAndDateOfBirth_thenCalculateAgeInYears() {
-        long ageInYears = ABD.calculateAgeInYearsFrom(TEST_DATE_OF_BIRTH, TEST_DATE);
+        long ageInYears = ABD.getCertifiedDiscountAge(TEST_DATE_OF_BIRTH, TEST_DATE);
         assertEquals(38, ageInYears);
     }
 
     @Test
     public void givenDateAndDateOfBirth_whenCalculatingBeforeApril12019_thenUseABDIntroDate() {
-        long ageInYearsUsingABDDate = ABD.calculateAgeInYearsFrom(TEST_DATE_OF_BIRTH, ABD_INTRO_DATE);
-        long ageInYears = ABD.calculateAgeInYearsFrom(TEST_DATE_OF_BIRTH, TEST_DATE);
+        long ageInYearsUsingABDDate = ABD.getCertifiedDiscountAge(TEST_DATE_OF_BIRTH, ABD_INTRO_DATE);
+        long ageInYears = ABD.getCertifiedDiscountAge(TEST_DATE_OF_BIRTH, TEST_DATE);
         assertEquals(38, ageInYearsUsingABDDate);
         assertEquals("If the Test Date is prior to the ABD Intro Date, always use the ABD Intro Date", ageInYears, ageInYearsUsingABDDate);
     }
@@ -33,13 +37,13 @@ public class ABDTest {
     @Test
     public void givenDateOfBirth_thenCalculateAgeInYears() {
         LocalDate turnedOneToday = LocalDate.now().minusYears(1);
-        long ageInYears = ABD.calculateAgeInYearsFrom(turnedOneToday, LocalDate.now());
+        long ageInYears = ABD.getCertifiedDiscountAge(turnedOneToday, LocalDate.now());
         assertEquals(1, ageInYears);
     }
 
     @Test
     public void givenAge16_thenReturn0ABD() {
-        int ageInYears = ABD.calculateAgeInYearsFrom(LocalDate.of(2002, 4, 30), LocalDate.of(2019, 2, 28));
+        int ageInYears = ABD.getCertifiedDiscountAge(LocalDate.of(2002, 4, 30), LocalDate.of(2019, 2, 28));
         assertEquals(16, ageInYears);
         assertCorrectABDPercentage(0, ageInYears);
     }
@@ -54,7 +58,7 @@ public class ABDTest {
     @Test
     public void givenDateAndDateOfBirth_whenAgeBelowZero_thenReturnZero() {
         LocalDate bornTomorrow = LocalDate.now().plusDays(1);
-        long ageInYears = ABD.calculateAgeInYearsFrom(bornTomorrow, LocalDate.now());
+        long ageInYears = ABD.getCertifiedDiscountAge(bornTomorrow, LocalDate.now());
         assertEquals(0, ageInYears);
     }
 
@@ -160,5 +164,47 @@ public class ABDTest {
 
     private static void assertCorrectABDPercentage(int expected, int... age) {
         assertEquals(String.format("Age '%1$s' should yield ABD of %2$s%%", Arrays.toString(age), expected), expected, ABD.getAgeBasedDiscount(age));
+    }
+
+
+    @Test
+    public void givenRABD_thenStuff() {
+        LocalDate primaryApplicantDOB = LocalDate.of(1992, Month.MARCH, 9);
+        LocalDate currentAssessmentDate = LocalDate.of(2033, Month.DECEMBER, 31);
+        Optional<LocalDate> primaryPreviousPolicyStart = Optional.of(LocalDate.of(2019, Month.APRIL, 10));
+
+        AbdDetails details = ABD.processABD(primaryApplicantDOB, currentAssessmentDate, primaryPreviousPolicyStart);
+
+        assertNotNull(details);
+    }
+
+
+    @Test
+    public void givenRABD_thenStuffA() {
+        LocalDate assessmentDate = LocalDate.of(2033, Month.DECEMBER, 31);
+        LocalDate applicantDOB = LocalDate.of(2004, Month.MARCH, 15);
+        Optional<LocalDate> abdPolicyStart = Optional.empty();
+
+        AbdDetails abdData = ABD.processABD(applicantDOB, assessmentDate, abdPolicyStart);
+
+        assertNotNull(abdData);
+    }
+
+    @Test
+    public void givenCombinedRABD_thenStuff() {
+        LocalDate primaryApplicantDOB = LocalDate.of(1992, Month.MARCH, 9);
+        LocalDate currentAssessmentDate = LocalDate.of(2033, Month.DECEMBER, 31);
+        Optional<LocalDate> primaryPreviousPolicyStart = Optional.of(LocalDate.of(2019, Month.APRIL, 10));
+
+        AbdDetails primaryABD = ABD.processABD(primaryApplicantDOB, currentAssessmentDate, primaryPreviousPolicyStart);
+
+        LocalDate partnerDateOfBirth = LocalDate.of(2004, Month.MARCH, 15);
+        AbdDetails partnerABD = ABD.processABD(partnerDateOfBirth, currentAssessmentDate, Optional.empty());
+
+        int abdPercentage = (primaryABD.getAgeBasedDiscountPercentage() + partnerABD.getAgeBasedDiscountPercentage()) / 2;
+
+        int rabdPercentage = ((primaryABD.getAgeBasedDiscountPercentage() - primaryABD.getRetainedAgeBasedDiscountPercentage()) + (partnerABD.getAgeBasedDiscountPercentage() - partnerABD.getRetainedAgeBasedDiscountPercentage())) / 2 ;
+
+        assertNotNull(primaryABD);
     }
 }
