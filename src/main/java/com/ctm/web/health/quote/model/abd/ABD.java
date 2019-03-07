@@ -63,9 +63,9 @@ public final class ABD {
             .build();
 
     /**
-     * Pre-calculated list of applicable Retained Age Based Discount Percentages by age in years.
+     * Pre-calculated list of applicable Retained Age Based Discount Percentage reduction by age in years.
      */
-    public static final Map<Integer, Integer> RABD_PERCENTAGES = ImmutableMap.<Integer, Integer>builder()
+    public static final Map<Integer, Integer> RABD_PERCENTAGE_DEDUCTIONS = ImmutableMap.<Integer, Integer>builder()
             .put(18, 0)
             .put(19, 0)
             .put(20, 0)
@@ -178,34 +178,13 @@ public final class ABD {
      * @param certifiedDiscountAges a variadic param containing the ages in years from which to calculate the Age Based Discount
      * @return the Age Based Discount percentage considering all ages.
      */
+    @Deprecated
     public static int getAgeBasedDiscount(int... certifiedDiscountAges) {
         Optional<int[]> ages = Optional.ofNullable(certifiedDiscountAges);
         final int divisor = ages.map(a -> a.length).orElse(1);
         return ages.map(Arrays::stream).orElse(IntStream.empty())
                 .map(ABD::getAgeBasedDiscount)
                 .reduce(Integer::sum).orElse(0) / divisor;
-    }
-
-    /**
-     * Utility function to get the ABD Percentage from a HealthCover instance for a given date
-     *
-     * @param primaryDob     the Primary applicant's date of birth.
-     * @param partnerDob     the Partner applicant's date of birth.
-     * @param assessmentDate the ABD assessment date.
-     * @return the Age Based Discount percentage.
-     */
-    public static int calculateAgeBasedDiscount(Optional<String> primaryDob, Optional<String> partnerDob, LocalDate assessmentDate) {
-        Function<String, Optional<Integer>> calculateCertifiedDiscountAge = applicantDob -> Optional.ofNullable(applicantDob)
-                .flatMap(safeParseDate)
-                .map(dob -> getCertifiedDiscountAge(dob, assessmentDate));
-
-
-        Integer primaryCDA = primaryDob.flatMap(calculateCertifiedDiscountAge).orElse(0);
-        Optional<Integer> secondaryCDA = partnerDob.flatMap(calculateCertifiedDiscountAge);
-
-        return secondaryCDA
-                .map(partnerAge -> getAgeBasedDiscount(primaryCDA, partnerAge))
-                .orElseGet(() -> getAgeBasedDiscount(primaryCDA));
     }
 
     /**
@@ -219,14 +198,14 @@ public final class ABD {
      * @param abdPolicyStartDate an optional date describing the start of a previously started policy which applies age based discount.
      * @return
      */
-    public static AbdDetails processABD(LocalDate dateOfBirth, LocalDate assessmentDate, Optional<LocalDate> abdPolicyStartDate) {
+    public static AbdDetails calculateAgeBasedDiscount(LocalDate dateOfBirth, LocalDate assessmentDate, Optional<LocalDate> abdPolicyStartDate) {
 
         int currentAge = getCurrentAge(dateOfBirth, assessmentDate);
         int certifiedDiscountAge = getCertifiedDiscountAge(dateOfBirth, abdPolicyStartDate.orElse(assessmentDate));
 
         int ageBasedDiscount = getAgeBasedDiscount(certifiedDiscountAge);
         int retainedAgeBasedDiscount = abdPolicyStartDate
-                .map(ignored -> ABD.RABD_PERCENTAGES.getOrDefault(currentAge, MAX_ABD_PERCENTAGE)).orElse(0);
+                .map(ignored -> ABD.RABD_PERCENTAGE_DEDUCTIONS.getOrDefault(currentAge, MAX_ABD_PERCENTAGE)).orElse(0);
 
         return new AbdDetails(dateOfBirth, abdPolicyStartDate.orElse(assessmentDate), ageBasedDiscount, retainedAgeBasedDiscount, certifiedDiscountAge, currentAge);
 

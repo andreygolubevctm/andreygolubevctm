@@ -173,7 +173,7 @@ public class ABDTest {
         LocalDate currentAssessmentDate = LocalDate.of(2033, Month.DECEMBER, 31);
         Optional<LocalDate> primaryPreviousPolicyStart = Optional.of(LocalDate.of(2019, Month.APRIL, 10));
 
-        AbdDetails details = ABD.processABD(primaryApplicantDOB, currentAssessmentDate, primaryPreviousPolicyStart);
+        AbdDetails details = ABD.calculateAgeBasedDiscount(primaryApplicantDOB, currentAssessmentDate, primaryPreviousPolicyStart);
 
         assertNotNull(details);
     }
@@ -185,7 +185,7 @@ public class ABDTest {
         LocalDate applicantDOB = LocalDate.of(2004, Month.MARCH, 15);
         Optional<LocalDate> abdPolicyStart = Optional.empty();
 
-        AbdDetails abdData = ABD.processABD(applicantDOB, assessmentDate, abdPolicyStart);
+        AbdDetails abdData = ABD.calculateAgeBasedDiscount(applicantDOB, assessmentDate, abdPolicyStart);
 
         assertNotNull(abdData);
     }
@@ -196,10 +196,10 @@ public class ABDTest {
         LocalDate currentAssessmentDate = LocalDate.of(2033, Month.DECEMBER, 31);
         Optional<LocalDate> primaryPreviousPolicyStart = Optional.of(LocalDate.of(2019, Month.APRIL, 10));
 
-        AbdDetails primaryABD = ABD.processABD(primaryApplicantDOB, currentAssessmentDate, primaryPreviousPolicyStart);
+        AbdDetails primaryABD = ABD.calculateAgeBasedDiscount(primaryApplicantDOB, currentAssessmentDate, primaryPreviousPolicyStart);
 
         LocalDate partnerDateOfBirth = LocalDate.of(2004, Month.MARCH, 15);
-        AbdDetails partnerABD = ABD.processABD(partnerDateOfBirth, currentAssessmentDate, Optional.empty());
+        AbdDetails partnerABD = ABD.calculateAgeBasedDiscount(partnerDateOfBirth, currentAssessmentDate, Optional.empty());
 
         int abdPercentage = (primaryABD.getAgeBasedDiscountPercentage() + partnerABD.getAgeBasedDiscountPercentage()) / 2;
 
