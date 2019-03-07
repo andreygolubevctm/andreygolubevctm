@@ -97,9 +97,8 @@
                 <c:if test="${not empty callCentreNumber}">
                     <div class="navbar-collapse header-collapse-contact collapse online-results-control-container" data-online-category-version="${onlineCategoryVersion}">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-
                             <li>
-                                <div class="navbar-text hidden-xs" data-livechat="target">
+                                <div class="hidden-xs" data-livechat="target">
                                     <div class="callCentreNumber-container">
                                         <span class="icon icon-phone"></span> <a href="javascript:;" data-toggle="dialog"
                                                    data-content="#view_all_hours"

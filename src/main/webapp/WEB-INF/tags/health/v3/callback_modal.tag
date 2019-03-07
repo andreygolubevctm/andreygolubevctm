@@ -16,7 +16,7 @@
 <div id="health-callback" callbackModal="true">
 	<div class="row">
 		<div class="col-sm-12">
-			<h3 class="hidden-xs">Talk to our experts</h3>
+			<h3 class="hidden-xs">Talk to our poopies</h3>
 			<div class="quote-ref hidden-xs">Quote Ref: <c:out value="${data['current/transactionId']}"/></div>
 			<h3 class="quote-ref-xs text-center visible-xs">Quote Ref: <c:out value="${data['current/transactionId']}"/></h3>
 		</div>

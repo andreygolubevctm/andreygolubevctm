@@ -161,21 +161,22 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 			<div class="header-top dropdown-interactive-base navMenu-row-fixed">
 
-			<div class="dynamicTopHeaderContent">
-				<content:get key="topHeaderContent" />
-				<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
-				<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
-					<content:get key="competitionApplicationTopHeaderContent" />
-				</c:if>
+			<%-- Commenting this out as it will no longer be allowed to display here, but someone might want to move it in the future --%>
+			<%--<div class="dynamicTopHeaderContent">--%>
+				<%--<content:get key="topHeaderContent" />--%>
+				<%--<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>--%>
+				<%--<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">--%>
+					<%--<content:get key="competitionApplicationTopHeaderContent" />--%>
+				<%--</c:if>--%>
 
-					<c:set var="premiumIncreaseEnabledSetting"><content:get key="premiumIncreaseEnabled"/></c:set>
-					<c:if test="${premiumIncreaseEnabledSetting eq 'Y' and not callCentre}">
-						<content:get key="premiumIncreaseContent" />
-					</c:if>
+					<%--<c:set var="premiumIncreaseEnabledSetting"><content:get key="premiumIncreaseEnabled"/></c:set>--%>
+					<%--<c:if test="${premiumIncreaseEnabledSetting eq 'Y' and not callCentre}">--%>
+						<%--<content:get key="premiumIncreaseContent" />--%>
+					<%--</c:if>--%>
 
-				<ad_containers:main_top />
-				<coupon:banner />
-			</div>
+				<%--<ad_containers:main_top />--%>
+				<%--<coupon:banner />--%>
+			<%--</div>--%>
 
 				<div class="container">
 
@@ -203,12 +204,12 @@ ${newPage.init(pageContext.request, pageSettings)}
 								</c:when>
 								<c:otherwise>
 									<%-- Show only if it's not health OR it's health and the call back functionality is disabled --%>
-									<c:if test="${ (pageSettings.getVerticalCode() ne 'health' and pageSettings.getVerticalCode() ne 'travel') or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">
+									<%--<c:if test="${ (pageSettings.getVerticalCode() ne 'health' and pageSettings.getVerticalCode() ne 'travel') or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">--%>
 										<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
 											<span class="sr-only">Toggle Navigation</span>
 											<span class="icon icon-reorder"></span>
 										</button>
-									</c:if>
+									<%--</c:if>--%>
 									<c:if test="${pageSettings.getVerticalCode() eq 'travel'}">
 										<div class="navbar__travel-filters">
 
@@ -256,8 +257,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 									data-dialog-hash-id="view_all_hours_cb"
 									data-title="Request a Call" data-cache="true"
 									${analyticsAttr}>
-									<span class="icon icon-phone" ${analyticsAttr}></span>
-									<span ${analyticsAttr}>${mobileOpenText}</span>
+									<div class="mobile-help-text">
+										<span class="icon icon-phone" ${analyticsAttr}></span>
+										<span ${analyticsAttr}>Need help?</span>
+									</div>
 								</a>
 							</c:if>
 
