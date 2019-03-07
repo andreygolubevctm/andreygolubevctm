@@ -1,6 +1,7 @@
 package com.ctm.web.health.quote.model.abd;
 
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
+import com.ctm.web.health.quote.model.request.AbdDetails;
 import com.ctm.web.health.quote.model.request.ProductType;
 import org.elasticsearch.common.collect.ImmutableMap;
 import org.slf4j.Logger;
@@ -61,6 +62,40 @@ public final class ABD {
             .put(29, 2)
             .build();
 
+    /**
+     * Pre-calculated list of applicable Retained Age Based Discount Percentage reduction by age in years.
+     */
+    public static final Map<Integer, Integer> RABD_PERCENTAGE_DEDUCTIONS = ImmutableMap.<Integer, Integer>builder()
+            .put(18, 0)
+            .put(19, 0)
+            .put(20, 0)
+            .put(21, 0)
+            .put(22, 0)
+            .put(23, 0)
+            .put(24, 0)
+            .put(25, 0)
+            .put(26, 0)
+            .put(27, 0)
+            .put(28, 0)
+            .put(29, 0)
+            .put(30, 0)
+            .put(31, 0)
+            .put(32, 0)
+            .put(33, 0)
+            .put(34, 0)
+            .put(35, 0)
+            .put(36, 0)
+            .put(37, 0)
+            .put(38, 0)
+            .put(39, 0)
+            .put(40, 0)
+            .put(41, 2)
+            .put(42, 4)
+            .put(43, 6)
+            .put(44, 8)
+            .put(45, MAX_ABD_PERCENTAGE)
+            .build();
+
 
     /**
      * The First Date from which ABD may be calculated.
@@ -81,35 +116,57 @@ public final class ABD {
     };
 
     /**
-     * Calculate the number of years from {@code dateOfBirth} until {@code untilDay}.
-     * If a the {@code dateOfBirth} is not before {@code untilDay}, zero will be returned.
+     * Calculate the number of years from {@code dateOfBirth} until {@code assessmentDate}.
+     * If a the {@code dateOfBirth} is not before {@code assessmentDate}, zero will be returned.
      * <p>
-     * NB: ABD is not introduced until {@link #ABD_INTRO_DATE}, if untilDay is prior to {@link #ABD_INTRO_DATE}, then
+     * NB: ABD is not introduced until {@link #ABD_INTRO_DATE}, if assessmentDate is prior to {@link #ABD_INTRO_DATE}, then
      * we use {@link #ABD_INTRO_DATE} (01-Apr-2019).
      *
-     * @param dateOfBirth the date a person was born.
-     * @param untilDay    the date on which to calculate a person's age.
-     * @return the number of whole years from {@code dateOfBirth} until {@code untilDay}.
+     * @param dateOfBirth    the date a person was born.
+     * @param assessmentDate the date on which to calculate a person's age.
+     * @return the number of whole years from {@code dateOfBirth} until {@code assessmentDate},
+     * or the {@link #ABD_INTRO_DATE} - whichever is
      */
-    public static int calculateAgeInYearsFrom(LocalDate dateOfBirth, LocalDate untilDay) {
-        if (!dateOfBirth.isBefore(untilDay)) {
+    public static int getCertifiedDiscountAge(LocalDate dateOfBirth, LocalDate assessmentDate) {
+        if (!dateOfBirth.isBefore(assessmentDate)) {
             return 0;
         }
 
-        final LocalDate calculationDay = Optional.of(untilDay)
+        final LocalDate abdAssessmentDate = Optional.of(assessmentDate)
                 .filter(ABD_INTRO_DATE::isBefore)
                 .orElse(ABD_INTRO_DATE);
-        return Long.valueOf(ChronoUnit.YEARS.between(dateOfBirth, calculationDay)).intValue();
+        return getCurrentAge(dateOfBirth, abdAssessmentDate);
     }
+
+    /**
+     * Calculate the number of years from {@code dateOfBirth} until {@code assessmentDate}.
+     * If a the {@code dateOfBirth} is not before {@code assessmentDate}, zero will be returned.
+     * <p>
+     * NB: ABD is not introduced until {@link #ABD_INTRO_DATE}, if assessmentDate is prior to {@link #ABD_INTRO_DATE}, then
+     * we use {@link #ABD_INTRO_DATE} (01-Apr-2019).
+     *
+     * @param dateOfBirth    the date a person was born.
+     * @param assessmentDate the date on which to calculate a person's age.
+     * @return the number of whole years from {@code dateOfBirth} until {@code assessmentDate},
+     * or the {@link #ABD_INTRO_DATE} - whichever is
+     */
+    public static int getCurrentAge(LocalDate dateOfBirth, LocalDate assessmentDate) {
+        if (!dateOfBirth.isBefore(assessmentDate)) {
+            return 0;
+        }
+
+        return Long.valueOf(ChronoUnit.YEARS.between(dateOfBirth, assessmentDate)).intValue();
+    }
+
 
     /**
      * Returns the applicable Age Based Discount for the specified age.
      *
-     * @param ageInYears the ageInYears from which to calculate the Age Based Discount
+     * @param certifiedDiscountAge the certifiedDiscountAge from which to calculate the Age Based Discount
      * @return the Age Based Discount percentage
      */
-    public static int getAgeBasedDiscount(int ageInYears) {
-        return ABD_PERCENTAGES.getOrDefault(ageInYears, 0);
+    public static int getAgeBasedDiscount(int certifiedDiscountAge) {
+        return ABD_PERCENTAGES.getOrDefault(certifiedDiscountAge, 0);
     }
 
     /**
@@ -118,11 +175,12 @@ public final class ABD {
      * This algorithm uses {@link #getAgeBasedDiscount(int)}, for each age, and then takes the average.
      * In practice, this will either only be one, or two age elements, but this function will accept more.
      *
-     * @param agesInYears a variadic param containing the ages in years from which to calculate the Age Based Discount
+     * @param certifiedDiscountAges a variadic param containing the ages in years from which to calculate the Age Based Discount
      * @return the Age Based Discount percentage considering all ages.
      */
-    public static int getAgeBasedDiscount(int... agesInYears) {
-        Optional<int[]> ages = Optional.ofNullable(agesInYears);
+    @Deprecated
+    public static int getAgeBasedDiscount(int... certifiedDiscountAges) {
+        Optional<int[]> ages = Optional.ofNullable(certifiedDiscountAges);
         final int divisor = ages.map(a -> a.length).orElse(1);
         return ages.map(Arrays::stream).orElse(IntStream.empty())
                 .map(ABD::getAgeBasedDiscount)
@@ -130,24 +188,26 @@ public final class ABD {
     }
 
     /**
-     * Utility function to get the ABD Percentage from a HealthCover instance for a given date
+     * Function to calculate the Age Based Discount details given the specified parameters.
+     * <p>
+     * NB: ABD is not introduced until {@link #ABD_INTRO_DATE}, if assessmentDate is prior to {@link #ABD_INTRO_DATE}, then
+     * we use {@link #ABD_INTRO_DATE} (01-Apr-2019).
      *
-     * @param primaryDob     the Primary applicant's date of birth.
-     * @param partnerDob     the Partner applicant's date of birth.
-     * @param assessmentDate the ABD assessment date.
-     * @return the Age Based Discount percentage.
+     * @param dateOfBirth        the applicant's date of birth.
+     * @param assessmentDate     the date on which to calculate a person's certified discount age.
+     * @param abdPolicyStartDate an optional date describing the start of a previously started policy which applies age based discount.
+     * @return
      */
-    public static int calculateAgeBasedDiscount(Optional<String> primaryDob, Optional<String> partnerDob, LocalDate assessmentDate) {
-        Function<String, Optional<Integer>> calculateABDAge = applicantDob -> Optional.ofNullable(applicantDob)
-                .flatMap(safeParseDate)
-                .map(dob -> calculateAgeInYearsFrom(dob, assessmentDate));
+    public static AbdDetails calculateAgeBasedDiscount(LocalDate dateOfBirth, LocalDate assessmentDate, Optional<LocalDate> abdPolicyStartDate) {
 
+        int currentAge = getCurrentAge(dateOfBirth, assessmentDate);
+        int certifiedDiscountAge = getCertifiedDiscountAge(dateOfBirth, abdPolicyStartDate.orElse(assessmentDate));
 
-        Integer primaryApplicantAge = primaryDob.flatMap(calculateABDAge).orElse(0);
-        Optional<Integer> secondaryApplicantAge = partnerDob.flatMap(calculateABDAge);
+        int ageBasedDiscount = getAgeBasedDiscount(certifiedDiscountAge);
+        int retainedAgeBasedDiscount = abdPolicyStartDate
+                .map(ignored -> ABD.RABD_PERCENTAGE_DEDUCTIONS.getOrDefault(currentAge, MAX_ABD_PERCENTAGE)).orElse(0);
 
-        return secondaryApplicantAge
-                .map(partnerAge -> getAgeBasedDiscount(primaryApplicantAge, partnerAge))
-                .orElseGet(() -> getAgeBasedDiscount(primaryApplicantAge));
+        return new AbdDetails(dateOfBirth, abdPolicyStartDate.orElse(assessmentDate), ageBasedDiscount, retainedAgeBasedDiscount, certifiedDiscountAge, currentAge);
+
     }
 }

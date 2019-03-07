@@ -8,6 +8,8 @@ public class Fund {
 
     private String authority;
 
+    private String abdPolicyStart;
+
     public String getFundName() {
         return fundName;
     }
@@ -30,5 +32,13 @@ public class Fund {
 
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    public String getAbdPolicyStart() {
+        return abdPolicyStart;
+    }
+
+    public void setAbdPolicyStart(String abdPolicyStart) {
+        this.abdPolicyStart = abdPolicyStart;
     }
 }
