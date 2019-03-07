@@ -181,30 +181,27 @@
         <%
             productIdSets.clear();
             for(String code : productCodes) { %>
-        SET @<%= code.replaceAll("-", "_") %>_property_product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%= code %>'); <br/>
-        <%  productIdSets.add("@" + code.replaceAll("-", "_") + "_property_product_id");
+        SET @<%= code.replaceAll("-", "_") %>_product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%= code %>'); <br/>
+        <%  productIdSets.add("@" + code.replaceAll("-", "_") + "_product_id");
         }
         %>
 
         DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>);<br/><br/>
-        <br/><br/>/* Insert product properties */<br/><br/>
+        <br/><br/>/* Insert product properties  */<br/><br/>
         <%
-
             for (HashMap<String, String> property : propertiesArray){
-            String propertyProductIdSet = "@" + property.get("productCode").replaceAll("-", "_") + "_property_product_id";
-
         %>
-        INSERT INTO ctm.product_properties VALUES(
-        <%=propertyProductIdSet%>,
+        INSERT INTO ctm.product_properties (ProductId, PropertyId, SequenceNo, Value, Text, Date, EffectiveStart, EffectiveEnd, Status, benefitOrder) VALUES(
+        '<%=property.get("productCode")%>',
         '<%=property.get("propertyId")%>',
         0,
-        <%=property.get("value")%>,
+        '<%=property.get("value")%>',
         '<%=property.get("text")%>',
         NULL,
         @start,
         @finish,
         '',
-        <%=property.get("order")%>
+        '<%=property.get("order")%>'
         );
         <br/>
         <%
@@ -212,7 +209,7 @@
             }
 
         %>
-        <br/><br/>/* Insert product properties pricing A*/<br/><br/>
+        <br/><br/>/* Insert product properties pricing */<br/><br/>
         <%
         }else{
             initialResultCount = ratesImporter.getToProductPropertiesCount(productIds);
@@ -234,7 +231,7 @@
 
         /* Delete existing prices in product properties */<br/>
         DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br/><br/>
-        /* Insert product properties pricing B */<br/>
+        /* Insert product properties pricing */<br/>
         <%
             }
             BufferedReader in = ratesImporter.getReader();
