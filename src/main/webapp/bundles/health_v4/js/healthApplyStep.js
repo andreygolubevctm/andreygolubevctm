@@ -199,11 +199,7 @@
 
         $elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find(':input').on('change', function() {
             _toggleCurrentlyHaveAnyKindOfCover(applicant);
-            if(event.target.value === 'Y') {
-                $elements[applicant].recievesAgeBasedDiscountRow.removeClass('hidden');
-            }else{
-                $elements[applicant].recievesAgeBasedDiscountRow.addClass('hidden');
-            }
+            _toggleAgeBasedDiscountQuestion(applicant);
         });
 
         $elements[applicant].everHadPrivateHospitalRow_1.find(':input').on('change', function() {
