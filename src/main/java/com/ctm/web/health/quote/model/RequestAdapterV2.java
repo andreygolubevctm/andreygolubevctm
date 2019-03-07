@@ -163,10 +163,10 @@ public class RequestAdapterV2 {
 
 
             Optional<LocalDate> primaryABDStart = data.getPrimaryPreviousPolicyStart();
-            AbdDetails primaryABD = ABD.processABD(primaryApplicantDateOfBirth, assessmentDate, primaryABDStart);
+            AbdDetails primaryABD = ABD.calculateAgeBasedDiscount(primaryApplicantDateOfBirth, assessmentDate, primaryABDStart);
 
             Optional<LocalDate> partnerABDStart = data.getPartnerPreviousPolicyStart();
-            Optional<AbdDetails> partnerABD = data.getPartnerApplicantDob().map(dob -> ABD.processABD(dob, assessmentDate, partnerABDStart));
+            Optional<AbdDetails> partnerABD = data.getPartnerApplicantDob().map(dob -> ABD.calculateAgeBasedDiscount(dob, assessmentDate, partnerABDStart));
 
             int abdPercentage = Math.min((primaryABD.getAgeBasedDiscountPercentage() + partnerABD.map(AbdDetails::getAgeBasedDiscountPercentage).orElse(0)) / (partnerABD.isPresent() ? 2 : 1), 0);
 
