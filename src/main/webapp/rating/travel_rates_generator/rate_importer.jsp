@@ -10,7 +10,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${log:getLogger('jsp.unsubscribe')}" />
+<c:set var="logger" value="${log:getLogger('jsp.rate_importer')}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -32,8 +32,10 @@
     </c:when>
     <c:otherwise>
 
-        <h1>Import: ${param.file}</h1>
+        <h1>-- Import: ${param.file}</h1>
         <br/>
+	    SET @start = CURRENT_DATE;<br/>
+	    SET @finish = @finish;<br/><br/>
         <%
             RatesImporter ratesImporter = new RatesImporter();
             int LINE_TYPE_COLUMN_NUMBER = 0;
@@ -132,7 +134,7 @@
             if(part[PRODUCT_ADD_ACTION_COLUMN_NUMBER].equals("1")) {
         %>
         /* Add new product master */<br/>
-        INSERT INTO ctm.product_master (ProductCat, ProductCode, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES ('TRAVEL', '<%=product.get("productCode") %>', <%=providerId %>, '<%=providerShortName %>&nbsp;<%=product.get("name") %>', '<%=providerName %>&nbsp;<%=product.get("name") %>', curdate(), '2040-12-31');
+        INSERT INTO ctm.product_master (ProductCat, ProductCode, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES ('TRAVEL', '<%=product.get("productCode") %>', <%=providerId %>, '<%=providerShortName %>&nbsp;<%=product.get("name") %>', '<%=providerName %>&nbsp;<%=product.get("name") %>', @start, @finish);
         <br/>
         <br/>
         <%
@@ -167,14 +169,9 @@
                             property.put("productCode", part[PROPERTY_PRODUCT_CODE_COLUMN_NUMBER]);
                             propertiesArray.add(property);
                         }
-
-
                     }
-
                 }
-
                 metaLineNo++;
-
             }
             metaDoc.close();
 
@@ -204,8 +201,8 @@
         <%=property.get("value")%>,
         '<%=property.get("text")%>',
         NULL,
-        curdate(),
-        '2040-12-31',
+        @start,
+        @finish,
         '',
         <%=property.get("order")%>
         );
@@ -215,7 +212,7 @@
             }
 
         %>
-        <br/><br/>/* Insert product properties pricing*/<br/><br/>
+        <br/><br/>/* Insert product properties pricing A*/<br/><br/>
         <%
         }else{
             initialResultCount = ratesImporter.getToProductPropertiesCount(productIds);
@@ -237,7 +234,7 @@
 
         /* Delete existing prices in product properties */<br/>
         DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br/><br/>
-        /* Insert product properties pricing*/<br/>
+        /* Insert product properties pricing B */<br/>
         <%
             }
             BufferedReader in = ratesImporter.getReader();
@@ -256,7 +253,8 @@
             while((line = in.readLine()) != null) {
                 %>
                 <%--Enable this logger when you want to see it printing lines that it's processing--%>
-                <%--logger.debug("Processing line " + <%=line %>);--%>
+                <%--Processing lineNo: <%= lineNo %><br />--%>
+                <%--Processing line: <%= line %><br />--%>
                 <%
                 lineNo++;
                 int productId = -1;
@@ -314,20 +312,22 @@
                                         newResultCount++;
                                         if(newResultCount == 1) {
         %>
-        INSERT INTO ctm.product_properties VALUES
-        <% } %>
-        (
+        INSERT INTO ctm.product_properties (ProductId, PropertyId, SequenceNo, Value, Text, Date, EffectiveStart, EffectiveEnd, Status, benefitOrder) VALUES<br>
+	    (
+        <% } else { %>
+	    ,(
+	    <% } %>
         <%=productIdSet%>,
         '<%=key%>',
         <%=ratesImporter.getSequenceNo()%>,
         <%=part[idx]%>,
         '<%=currency%>',
         NULL,
-        CURDATE(),
-        '2040-12-31',
+        @start,
+        @finish,
         '',
         0
-        ),
+        )
         <% ratesImporter.handleCount(newResultCount,initialResultCount);%>
         <br />
         <%
@@ -343,10 +343,10 @@
             in.close();
 
         %>
-        <br /><br />
+        ;<br /><br />
         -- ========= AFTER INSERT TESTS ==============<br />
         -- When this is run after the insert statements on the ctm.product_properties table, query should return <%= (newResultCount) %> rows<br />
-        SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br />
+        SELECT COUNT(*) AS 'Found', '<%= (newResultCount) %>' AS 'Expected' FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br />
         -- ================ =====================<br /><br />
     </c:otherwise>
 </c:choose>
