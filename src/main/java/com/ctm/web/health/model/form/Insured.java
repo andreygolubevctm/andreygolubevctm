@@ -12,6 +12,8 @@ public class Insured {
 
     private String abdPolicyStart;
 
+    private String abd;
+
     public String getDob() {
         return dob;
     }
@@ -48,5 +50,14 @@ public class Insured {
 
     public void setAbdPolicyStart(String abdPolicyStart) {
         this.abdPolicyStart = abdPolicyStart;
+    }
+
+
+    public String getAbd() {
+        return abd;
+    }
+
+    public void setAbd(String abd) {
+        this.abd = abd;
     }
 }

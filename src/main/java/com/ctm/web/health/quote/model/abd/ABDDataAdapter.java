@@ -9,6 +9,7 @@ import com.ctm.web.health.model.form.Insured;
 import com.ctm.web.health.model.form.Person;
 import com.ctm.web.health.model.form.PreviousFund;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -20,6 +21,8 @@ public class ABDDataAdapter {
     private final Optional<LocalDate> partner;
     private final Optional<LocalDate> primaryPreviousPolicyStart;
     private final Optional<LocalDate> partnerPreviousPolicyStart;
+    private final boolean primaryPreviousPolicyHasABD;
+    private final boolean partnerPreviousPolicyHasABD;
 
     /**
      * Factory method for selecting the correct dates of birth for use when calculating ABD.
@@ -43,35 +46,45 @@ public class ABDDataAdapter {
         final Optional<LocalDate> primary;
         final Optional<LocalDate> partner;
 
+        Optional<Insured> primaryInsured = cover.map(HealthCover::getPrimary);
+        Optional<Insured> partnerInsured = cover.map(HealthCover::getPartner);
         if (application.isPresent()) {
             primary = application.map(Application::getPrimary).map(Person::getDob).flatMap(ABD.safeParseDate);
             partner = application.map(Application::getPartner).map(Person::getDob).flatMap(ABD.safeParseDate);
         } else {
-            primary = cover.map(HealthCover::getPrimary).map(Insured::getDob).flatMap(ABD.safeParseDate);
-            partner = cover.map(HealthCover::getPartner).map(Insured::getDob).flatMap(ABD.safeParseDate);
+            primary = primaryInsured.map(Insured::getDob).flatMap(ABD.safeParseDate);
+            partner = partnerInsured.map(Insured::getDob).flatMap(ABD.safeParseDate);
         }
 
         final Optional<LocalDate> primaryABDStart;
         final Optional<LocalDate> partnerABDStart;
+        final Optional<Boolean> primaryHasABD;
+        final Optional<Boolean> partnerHasABD;
 
         if (isSimples) {
-            primaryABDStart = cover.map(HealthCover::getPrimary).map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
-            partnerABDStart = cover.map(HealthCover::getPartner).map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            primaryABDStart = primaryInsured.map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            primaryHasABD = primaryInsured.map(Insured::getAbd).map(BooleanUtils::toBoolean);
+            partnerABDStart = partnerInsured.map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            partnerHasABD = partnerInsured.map(Insured::getAbd).map(BooleanUtils::toBoolean);
         } else {
             Optional<PreviousFund> previousFund = Optional.of(request)
                     .map(HealthRequest::getQuote)
                     .map(HealthQuote::getPreviousfund);
             primaryABDStart = previousFund.map(PreviousFund::getPrimary).map(Fund::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            primaryHasABD = previousFund.map(PreviousFund::getPrimary).map(Fund::getAbd).map(BooleanUtils::toBoolean);
             partnerABDStart = previousFund.map(PreviousFund::getPartner).map(Fund::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            partnerHasABD = previousFund.map(PreviousFund::getPartner).map(Fund::getAbd).map(BooleanUtils::toBoolean);
         }
-        return new ABDDataAdapter(primary, partner, primaryABDStart, partnerABDStart);
+        return new ABDDataAdapter(primary, partner, primaryABDStart, partnerABDStart, primaryHasABD.orElse(false), partnerHasABD.orElse(false));
     }
 
-    public ABDDataAdapter(Optional<LocalDate> primary, Optional<LocalDate> partner, Optional<LocalDate> primaryPreviousPolicyStart, Optional<LocalDate> partnerPreviousPolicyStart) {
+    public ABDDataAdapter(Optional<LocalDate> primary, Optional<LocalDate> partner, Optional<LocalDate> primaryPreviousPolicyStart, Optional<LocalDate> partnerPreviousPolicyStart, boolean primaryPreviousPolicyHasABD, boolean partnerPreviousPolicyHasABD) {
         this.primary = primary;
         this.partner = partner;
         this.primaryPreviousPolicyStart = primaryPreviousPolicyStart;
         this.partnerPreviousPolicyStart = partnerPreviousPolicyStart;
+        this.primaryPreviousPolicyHasABD = primaryPreviousPolicyHasABD;
+        this.partnerPreviousPolicyHasABD = partnerPreviousPolicyHasABD;
     }
 
 
@@ -89,5 +102,13 @@ public class ABDDataAdapter {
 
     public Optional<LocalDate> getPartnerPreviousPolicyStart() {
         return partnerPreviousPolicyStart;
+    }
+
+    public boolean isPrimaryPreviousPolicyHasABD() {
+        return primaryPreviousPolicyHasABD;
+    }
+
+    public boolean isPartnerPreviousPolicyHasABD() {
+        return partnerPreviousPolicyHasABD;
     }
 }
