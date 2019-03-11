@@ -339,12 +339,17 @@
 				} else {
 					var fromDateElement = document.getElementById('travel_dates_fromDate');
 					var fromDates = fromDateElement.value.split('/');
-					var fromDate = new Date(fromDates[1] + '/' + fromDates[0] + '/' + fromDates[2]);
-					var todayDate = meerkat.site.serverDate;
-					if (fromDate < todayDate) {
-						// quote is old that's why there's no results
-						invalidQuoteDueToDate();
-					} else {
+					
+					if(fromDates && fromDates.length === 3) {
+						var fromDate = new Date(fromDates[1] + '/' + fromDates[0] + '/' + fromDates[2]);
+						var todayDate = meerkat.site.serverDate;
+						if (fromDate < todayDate) {
+							// quote is old that's why there's no results
+							invalidQuoteDueToDate();
+						} else {
+							showNoResults();
+						}
+					}else{
 						showNoResults();
 					}
 				}
