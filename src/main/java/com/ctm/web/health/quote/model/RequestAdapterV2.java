@@ -1,5 +1,8 @@
 package com.ctm.web.health.quote.model;
 
+import com.ctm.healthcommon.abd.ABD;
+import com.ctm.healthcommon.abd.CombinedAbdSummary;
+import com.ctm.healthcommon.abd.IndividualAbdSummary;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.health.model.Frequency;
@@ -14,7 +17,6 @@ import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Payment;
 import com.ctm.web.health.model.form.PaymentDetails;
 import com.ctm.web.health.model.form.Situation;
-import com.ctm.web.health.quote.model.abd.ABD;
 import com.ctm.web.health.quote.model.abd.ABDDataAdapter;
 import com.ctm.web.health.quote.model.request.*;
 import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
@@ -44,6 +46,11 @@ import static java.util.Collections.singletonList;
 public class RequestAdapterV2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapterV2.class);
+    /**
+     * Describes the product types for which ABD may be applied.
+     */
+    public static final List<ProductType> ABD_APPLICABLE_PRODUCT_TYPES = asList(ProductType.COMBINED, ProductType.HOSPITAL);
+
 
     public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples, final boolean isGiftCardActive) {
 
@@ -157,36 +164,22 @@ public class RequestAdapterV2 {
 
         ABDDataAdapter data = ABDDataAdapter.create(quote, request, isSimples);
         Optional<LocalDate> optionalPrimaryApplicantDateOfBirth = data.getPrimaryApplicantDob();
-        if (ABD.APPLICABLE_PRODUCT_TYPES.contains(quoteRequest.getProductType()) && optionalPrimaryApplicantDateOfBirth.isPresent()) {
+        if (ABD_APPLICABLE_PRODUCT_TYPES.contains(quoteRequest.getProductType()) && optionalPrimaryApplicantDateOfBirth.isPresent()) {
             LocalDate primaryApplicantDateOfBirth = optionalPrimaryApplicantDateOfBirth.get();
-            LocalDate assessmentDate = quoteRequest.getSearchDateValue();
-
+            LocalDate currentAssessmentDate = quoteRequest.getSearchDateValue();
 
             Optional<LocalDate> primaryABDStart = data.getPrimaryPreviousPolicyStart().filter(ignored -> data.isPrimaryPreviousPolicyHasABD());
-            AbdDetails primaryABD = ABD.calculateAgeBasedDiscount(primaryApplicantDateOfBirth, assessmentDate, primaryABDStart);
-
             Optional<LocalDate> partnerABDStart = data.getPartnerPreviousPolicyStart().filter(ignored -> data.isPartnerPreviousPolicyHasABD());
 
-            Optional<AbdDetails> partnerABD = data.getPartnerApplicantDob().map(dob -> ABD.calculateAgeBasedDiscount(dob, assessmentDate, partnerABDStart));
+            IndividualAbdSummary primaryABD = ABD.calculateAgeBasedDiscount(primaryApplicantDateOfBirth, currentAssessmentDate, primaryABDStart);
+            Optional<IndividualAbdSummary> partnerABD = data.getPartnerApplicantDob().map(dob -> ABD.calculateAgeBasedDiscount(dob, currentAssessmentDate, partnerABDStart));
 
-            int rawABDPercentage = (primaryABD.getAgeBasedDiscountPercentage() + partnerABD.map(AbdDetails::getAgeBasedDiscountPercentage).orElse(0)) / (partnerABD.isPresent() ? 2 : 1);
-            final int abdPercentage = Math.max(0, Math.min(rawABDPercentage, ABD.MAX_ABD_PERCENTAGE));
+            CombinedAbdSummary combinedABDSummary = ABD.combine(currentAssessmentDate, primaryABD, partnerABD);
 
-            int rawRABDPercentage = ((primaryABD.getAgeBasedDiscountPercentage() - primaryABD.getRetainedAgeBasedDiscountPercentage()) + (partnerABD.map(a -> a.getAgeBasedDiscountPercentage() - a.getRetainedAgeBasedDiscountPercentage()).orElse(0))) / (partnerABD.isPresent() ? 2 : 1);
-            int rabdPercentage = Math.max(0, Math.min(rawRABDPercentage, ABD.MAX_ABD_PERCENTAGE));
+            quoteRequest.setAbdSummary(combinedABDSummary);
 
-            AbdSummary abdSummary = new AbdSummary();
-            abdSummary.setAbd(abdPercentage);
-            abdSummary.setRabd(rabdPercentage);
-            abdSummary.setAssessmentDate(assessmentDate);
-            abdSummary.setPrimary(primaryABD);
-            partnerABD.ifPresent(abdSummary::setPartner);
-
-
-            quoteRequest.setAbdSummary(abdSummary);
-
-            quoteRequest.setAbdPercentage(abdPercentage);
-            quoteRequest.setRabdPercentage(rabdPercentage);
+            quoteRequest.setAbdPercentage(combinedABDSummary.getAbd());
+            quoteRequest.setRabdPercentage(combinedABDSummary.getRabd());
 
         }
 

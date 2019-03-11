@@ -1,5 +1,6 @@
 package com.ctm.web.health.quote.model.abd;
 
+import com.ctm.healthcommon.abd.ABD;
 import com.ctm.web.health.model.form.Application;
 import com.ctm.web.health.model.form.Fund;
 import com.ctm.web.health.model.form.HealthCover;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class ABDDataAdapter {
+public final class ABDDataAdapter {
 
     private final Optional<LocalDate> primary;
     private final Optional<LocalDate> partner;
