@@ -162,15 +162,18 @@ public class RequestAdapterV2 {
             LocalDate assessmentDate = quoteRequest.getSearchDateValue();
 
 
-            Optional<LocalDate> primaryABDStart = data.getPrimaryPreviousPolicyStart();
+            Optional<LocalDate> primaryABDStart = data.getPrimaryPreviousPolicyStart().filter(ignored -> data.isPrimaryPreviousPolicyHasABD());
             AbdDetails primaryABD = ABD.calculateAgeBasedDiscount(primaryApplicantDateOfBirth, assessmentDate, primaryABDStart);
 
-            Optional<LocalDate> partnerABDStart = data.getPartnerPreviousPolicyStart();
+            Optional<LocalDate> partnerABDStart = data.getPartnerPreviousPolicyStart().filter(ignored -> data.isPartnerPreviousPolicyHasABD());
+
             Optional<AbdDetails> partnerABD = data.getPartnerApplicantDob().map(dob -> ABD.calculateAgeBasedDiscount(dob, assessmentDate, partnerABDStart));
 
-            int abdPercentage = Math.min((primaryABD.getAgeBasedDiscountPercentage() + partnerABD.map(AbdDetails::getAgeBasedDiscountPercentage).orElse(0)) / (partnerABD.isPresent() ? 2 : 1), 0);
+            int rawABDPercentage = (primaryABD.getAgeBasedDiscountPercentage() + partnerABD.map(AbdDetails::getAgeBasedDiscountPercentage).orElse(0)) / (partnerABD.isPresent() ? 2 : 1);
+            final int abdPercentage = Math.max(0, Math.min(rawABDPercentage, ABD.MAX_ABD_PERCENTAGE));
 
-            int rabdPercentage = Math.min(((primaryABD.getAgeBasedDiscountPercentage() - primaryABD.getRetainedAgeBasedDiscountPercentage()) + (partnerABD.map(a -> a.getAgeBasedDiscountPercentage() - a.getRetainedAgeBasedDiscountPercentage()).orElse(0))) / (partnerABD.isPresent() ? 2 : 1), 0);
+            int rawRABDPercentage = ((primaryABD.getAgeBasedDiscountPercentage() - primaryABD.getRetainedAgeBasedDiscountPercentage()) + (partnerABD.map(a -> a.getAgeBasedDiscountPercentage() - a.getRetainedAgeBasedDiscountPercentage()).orElse(0))) / (partnerABD.isPresent() ? 2 : 1);
+            int rabdPercentage = Math.max(0, Math.min(rawRABDPercentage, ABD.MAX_ABD_PERCENTAGE));
 
             AbdSummary abdSummary = new AbdSummary();
             abdSummary.setAbd(abdPercentage);
