@@ -32,6 +32,7 @@
 		    // Add hidden field to track affected transactions
 		    $('#paymentForm').append(
 			    $('<input/>',{
+			    	type: 'hidden',
 				    id: 'health_pauseRecordingOverride',
 				    name: 'health_pauseRecordingOverride',
 				    value: 'Y'
