@@ -178,7 +178,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 				<%--<coupon:banner />--%>
 			<%--</div>--%>
 
-				<div class="container">
+				<div>
 
 					<div class="col-sm-12">
 						<%-- Brand and toggle get grouped for better mobile display --%>
