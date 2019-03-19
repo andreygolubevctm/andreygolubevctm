@@ -203,13 +203,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 									</ul>
 								</c:when>
 								<c:otherwise>
-									<%-- Show only if it's not health OR it's health and the call back functionality is disabled --%>
-									<%--<c:if test="${ (pageSettings.getVerticalCode() ne 'health' and pageSettings.getVerticalCode() ne 'travel') or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">--%>
-										<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
-											<span class="sr-only">Toggle Navigation</span>
-											<span class="icon icon-reorder"></span>
-										</button>
-									<%--</c:if>--%>
 									<c:if test="${pageSettings.getVerticalCode() eq 'travel'}">
 										<div class="navbar__travel-filters">
 
