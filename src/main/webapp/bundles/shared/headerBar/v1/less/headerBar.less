@@ -7,9 +7,9 @@ body > div > header {
   > .header-top { background-color: @header-bg; }
 
   //The header needs to take up space, lest the content be hidden underneath by accident once the header is position fixed or docking.
-  height: @navbar-height;
+  min-height: @navbar-height;
   @media (@xs-only) {
-    height: @navbar-height-xs; //xs
+    min-height: @navbar-height-xs; //xs
   }
 
   //This alters a default for things in the header.
