@@ -8,6 +8,7 @@ public class TravelBestPriceRanking extends BestPriceRanking {
 	private String cancellation;
 	private String luggage;
 	private String coverLevelType;
+	private String rentalVehicle;
 
 	public void setMedical(String medical) {
 		this.medical = medical;
@@ -32,6 +33,15 @@ public class TravelBestPriceRanking extends BestPriceRanking {
 	public String getLuggage() {
 		return luggage;
 	}
+
+	public void setRentalVehicle(String rentalVehicle) {
+		this.rentalVehicle = rentalVehicle;
+	}
+
+	public String getRentalVehicle() {
+		return rentalVehicle;
+	}
+
 
 	public void setCoverLevelType(String coverLevelType) {
 		this.coverLevelType = coverLevelType;

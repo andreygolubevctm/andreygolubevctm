@@ -363,6 +363,7 @@
 						});
 					}, 1000);
 				}
+				toggleRebate();
 				webChatHideFields();
 				incrementTranIdBeforeEnteringSlide();
 
