@@ -885,14 +885,6 @@
         $("#reforms-banner").removeClass("hidden");
     }
 
-    function hideReformsBanner() {
-        $("#reforms-banner").addClass("hidden");
-    }
-
-    function showReformsBanner() {
-        $("#reforms-banner").removeClass("hidden");
-    }
-
     meerkat.modules.register("health", {
         init: initHealth,
         events: moduleEvents,
