@@ -176,7 +176,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/abd" />
-            <form_v3:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger">
+            <form_v3:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger hidden">
 	            <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details" id="primary_abd_health_cover" />
             </form_v3:row>
 
