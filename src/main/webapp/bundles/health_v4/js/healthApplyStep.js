@@ -230,6 +230,9 @@
 
     function _toggleAgeBasedDiscountQuestion(applicant) {
       var dob = convertDate($elements[applicant].healthApplicationDOB.val());
+
+      if(!dob) return;
+
       var coverDate = convertDate(meerkat.modules.healthCoverStartDate.getVal());
 
       var curDate = (meerkat.site.serverDate.getTime() != coverDate.getTime()) ? coverDate : meerkat.site.serverDate;

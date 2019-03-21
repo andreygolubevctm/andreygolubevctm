@@ -196,6 +196,8 @@
 	function _toggleAgeBasedDiscountQuestion(applicant) {
 		var dob = convertDate($abdElements[applicant].healthApplicationDOB.val());
 
+		if(!dob) return;
+
 		var curDate = meerkat.site.serverDate;
 		var privateHospitalValue = $primaryCurrentCover.find('input').filter(':checked').val();
 
