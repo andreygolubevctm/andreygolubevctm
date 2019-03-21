@@ -77,14 +77,14 @@
 		$healthSituation = $('input[name="health_situation_healthSitu"]');
 		$abdElements = {
 			primary: {
-					recievesAgeBasedDiscountRow: $('#primary_abd'),
-					recievesAgeBasedDiscount: $('#primary_abd_health_cover'),
+					receivesAgeBasedDiscountRow: $('#primary_abd'),
+					receivesAgeBasedDiscount: $('#primary_abd_health_cover'),
 					ageBasedDiscountPolicyStartRow: $('#primary_abd_start_date'),
 					healthApplicationDOB: $('#health_application_primary_dob'),
 			},
 			partner: {
-					recievesAgeBasedDiscountRow: $('#partner_abd'),
-					recievesAgeBasedDiscount: $('#partner_abd_health_cover'),
+					receivesAgeBasedDiscountRow: $('#partner_abd'),
+					receivesAgeBasedDiscount: $('#partner_abd_health_cover'),
 					ageBasedDiscountPolicyStartRow: $('#partner_abd_start_date'),
 					healthApplicationDOB: $('#health_application_partner_dob')
 			}
@@ -116,7 +116,7 @@
 				_toggleAgeBasedDiscountQuestion('partner');
 		});
 
-		$abdElements.primary.recievesAgeBasedDiscount.find(':input').on('change', function(event) {
+		$abdElements.primary.receivesAgeBasedDiscount.find(':input').on('change', function(event) {
 				if(event.target.value === 'Y') {
 						$abdElements.primary.ageBasedDiscountPolicyStartRow.removeClass('hidden');
 				}else{
@@ -124,7 +124,7 @@
 				}
 		});
 
-		$abdElements.partner.recievesAgeBasedDiscount.find(':input').on('change', function(event) {
+		$abdElements.partner.receivesAgeBasedDiscount.find(':input').on('change', function(event) {
 				if(event.target.value === 'Y') {
 						$abdElements.partner.ageBasedDiscountPolicyStartRow.removeClass('hidden');
 				}else{
@@ -186,7 +186,11 @@
 
 	function convertDate(date) {
 		var dobSplit = date.split('/');
-		return new Date(dobSplit[1] + '/' + dobSplit[0] + '/' + dobSplit[2]);
+		if(dobSplit.length === 3) {
+			return new Date(dobSplit[1] + '/' + dobSplit[0] + '/' + dobSplit[2]);
+		}
+
+		return date;
 	}
 
 	function _toggleAgeBasedDiscountQuestion(applicant) {
@@ -202,13 +206,13 @@
 		var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
 
 		if(age >= 18 && age < 45 && privateHospitalValue === 'Y') {
-			$abdElements[applicant].recievesAgeBasedDiscountRow.removeClass('hidden');
-			var hasABD = $abdElements[applicant].recievesAgeBasedDiscount.find(':checked').val();
+			$abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
+			var hasABD = $abdElements[applicant].receivesAgeBasedDiscount.find(':checked').val();
 			if(hasABD === 'Y') {
 					$abdElements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
 			}
 		}else{
-			$abdElements[applicant].recievesAgeBasedDiscountRow.addClass('hidden');
+			$abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
 			$abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
 		}
 	}

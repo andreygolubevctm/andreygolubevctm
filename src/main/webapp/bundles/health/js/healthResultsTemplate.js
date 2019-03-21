@@ -442,13 +442,15 @@
 
         if(applicationDate) {
             var dateSplit = applicationDate.split('/');
-            var year = dateSplit[2];
-            var month = dateSplit[1];
-            var day = dateSplit[0];
-            applicationDateString = year + '-' + month + '-' + day;
+            if(dateSplit.length == 3) {
+                var year = dateSplit[2];
+                var month = dateSplit[1];
+                var day = dateSplit[0];
+                applicationDateString = year + '-' + month + '-' + day;
+            }
         }
 
-        return timeToCheck = applicationDate ? new Date(applicationDateString).getTime() :  meerkat.site.serverDate.getTime();
+        return timeToCheck = applicationDateString ? new Date(applicationDateString).getTime() :  meerkat.site.serverDate.getTime();
     }
 
     function getClassificationDate(obj) {

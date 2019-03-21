@@ -68,8 +68,8 @@
             iDontKnowMyDateRangesRow:  $('#' + applicant + 'LhcDatesUnsureApplyFullLHC'),
             iDontKnowMyDateRanges:  $('input[name=health_previousfund_' + applicant + '_fundHistory_dates_unsure]'),
             iDontKnowMyDateRangesPromptText: $('#' + applicant + 'LhcDatesUnsureApplyFullLHC .applyFullLHCAdditionalText'),
-            recievesAgeBasedDiscountRow: $('#' + applicant + '_abd'),
-            recievesAgeBasedDiscount: $('#' + applicant + '_abd_health_cover'),
+            receivesAgeBasedDiscountRow: $('#' + applicant + '_abd'),
+            receivesAgeBasedDiscount: $('#' + applicant + '_abd_health_cover'),
             ageBasedDiscountPolicyStartRow: $('#' + applicant + '_abd_start_date')
         };
 
@@ -189,7 +189,7 @@
             _toggleAgeBasedDiscountQuestion(applicant);
         });
 
-        $elements[applicant].recievesAgeBasedDiscount.find(':input').on('change', function(event) {
+        $elements[applicant].receivesAgeBasedDiscount.find(':input').on('change', function(event) {
             if(event.target.value === 'Y') {
                 $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
             }else{
@@ -240,19 +240,19 @@
       if(selectedProduct.custom.reform) {
           var abdValue = selectedProduct.custom.reform.yad;
           if(abdValue !== 'R') {
-            $elements[applicant].recievesAgeBasedDiscountRow.addClass('hidden');
+            $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
             return;
           }
       }
 
       if(age >= 18 && age < 45) {
-        $elements[applicant].recievesAgeBasedDiscountRow.removeClass('hidden');
-        var hasABD = $elements[applicant].recievesAgeBasedDiscount.find(':checked').val();
+        $elements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
+        var hasABD = $elements[applicant].receivesAgeBasedDiscount.find(':checked').val();
         if(hasABD === 'Y') {
             $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
         }
       }else{
-        $elements[applicant].recievesAgeBasedDiscountRow.addClass('hidden');
+        $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
         $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
       }
     }
