@@ -16,6 +16,8 @@
 
 <health_v4:opening_text />
 
+<c:set var="onlineCategoryVersion" value="health_v5" />
+
 <%-- Redirect call centre consultants out of V4 --%>
 <c:if test="${callCentre && journeyOverride eq true}">
     <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
