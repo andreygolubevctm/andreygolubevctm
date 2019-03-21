@@ -22,27 +22,10 @@
 	<jsp:attribute name="header">
 	</jsp:attribute>
 
-	<jsp:attribute name="progress_bar">
-      <div class="progress-bar-row collapse navbar-collapse">
-          <div class="container">
-              <ul class="journeyProgressBar_v2"></ul>
-          </div>
-      </div>
-    </jsp:attribute>
-
-	<jsp:attribute name="navbar">
-		<ul class="nav navbar-nav" role="menu">
-            <core_v2:offcanvas_header />
-            <li class="slide-feature-back">
-                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span
-                        class="icon icon-arrow-left"></span> <span>Revise Details</span></a>
-            </li>
-        </ul>
-	</jsp:attribute>
 
 	<jsp:attribute name="navbar_outer">
-        <div class="row sortbar-container navbar-inverse">
-            <div class="container">
+        <div class="container">
+            <div class="row sortbar-container navbar-inverse">
                 <ul class="sortbar-parent nav navbar-nav navbar-inverse col-sm-12 row">
                     <li class="visible-xs">
                         <a href="javascript:;" class="">
@@ -50,12 +33,19 @@
                         </a>
                     </li>
                     <li class="container row sortbar-children">
+
                         <ul class="nav navbar-nav navbar-inverse col-sm-12">
-                            <li class="hidden-xs col-sm-2 col-lg-4">
+                            <core_v2:offcanvas_header />
+                            <li class="hidden-xs col-sm-2 col-lg-2">
+                                <a href="javascript:;" data-slide-control="previous" class="borderless">
+                                     <span class="icon icon-arrow-left"></span> <span>Revise Details</span>
+                                </a>
+                            </li>
+                            <li class="hidden-xs col-sm-1 col-lg-2">
                         <%--<span class="navbar-brand">Sort <span class="optional-lg">your</span> <span
                                 class="optional-md">results</span> by</span>--%>
                             </li>
-                            <li class="col-sm-3 col-lg-2 hidden-xs">
+                            <li class="col-sm-2 col-lg-2 hidden-xs">
                                 <a href="javascript:;" class="sortbar-title force-no-hover">
                                     <span class="icon"></span> <span>Towing <br class="hidden-sm hidden-md"/>Limits</span>
                                 </a>
