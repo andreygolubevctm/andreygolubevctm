@@ -26,7 +26,7 @@
                 healthProductHospitalClass: $('#health_application_productClassification_hospital'),
                 healthProductExtrasClass: $('#health_application_productClassification_extras'),
                 primary: _createFieldReferences('primary'),
-                partner: _createFieldReferences('partner')
+                partner: _createFieldReferences('partner')                
             };
 
             $unitElements = {
@@ -67,7 +67,10 @@
             healthContinuousCover:  $('input[name=health_healthCover_' + applicant + '_healthCoverLoading]'),
             iDontKnowMyDateRangesRow:  $('#' + applicant + 'LhcDatesUnsureApplyFullLHC'),
             iDontKnowMyDateRanges:  $('input[name=health_previousfund_' + applicant + '_fundHistory_dates_unsure]'),
-            iDontKnowMyDateRangesPromptText: $('#' + applicant + 'LhcDatesUnsureApplyFullLHC .applyFullLHCAdditionalText')
+            iDontKnowMyDateRangesPromptText: $('#' + applicant + 'LhcDatesUnsureApplyFullLHC .applyFullLHCAdditionalText'),
+            receivesAgeBasedDiscountRow: $('#' + applicant + '_abd'),
+            receivesAgeBasedDiscount: $('#' + applicant + '_abd_health_cover'),
+            ageBasedDiscountPolicyStartRow: $('#' + applicant + '_abd_start_date')
         };
 
         if (applicant === 'primary') {
@@ -101,14 +104,23 @@
 
         _toggleSelectGender('primary');
         _toggleCurrentlyHaveAnyKindOfCover('primary');
+        _toggleAgeBasedDiscountQuestion('primary');
 
         if (meerkat.modules.healthChoices.hasPartner()) {
             _toggleSelectGender('partner');
             _toggleCurrentlyHaveAnyKindOfCover('partner');
+            _toggleAgeBasedDiscountQuestion('partner');
         }
 
         setHospitalCoverClass();
         setExtrasCoverClass();
+
+        meerkat.messaging.subscribe(meerkatEvents.TRIGGER_UPDATE_PREMIUM, function triggerUpdatePremium(){
+            _toggleAgeBasedDiscountQuestion('primary');
+            if (meerkat.modules.healthChoices.hasPartner()) {
+                _toggleAgeBasedDiscountQuestion('partner');
+            }
+		});
     }
 
     function onInitialise() {
@@ -174,10 +186,20 @@
 
         $elements[applicant].healthApplicationDOB.on('change', function() {
             _toggleCurrentlyHaveAnyKindOfCover(applicant);
+            _toggleAgeBasedDiscountQuestion(applicant);
+        });
+
+        $elements[applicant].receivesAgeBasedDiscount.find(':input').on('change', function(event) {
+            if(event.target.value === 'Y') {
+                $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+            }else{
+                $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+            }
         });
 
         $elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find(':input').on('change', function() {
             _toggleCurrentlyHaveAnyKindOfCover(applicant);
+            _toggleAgeBasedDiscountQuestion(applicant);
         });
 
         $elements[applicant].everHadPrivateHospitalRow_1.find(':input').on('change', function() {
@@ -199,6 +221,40 @@
             _toggleFundHistory(applicant);
         });
 
+    }
+
+    function convertDate(date) {
+        var dobSplit = date.split('/');
+        return new Date(dobSplit[1] + '/' + dobSplit[0] + '/' + dobSplit[2]);
+    }
+
+    function _toggleAgeBasedDiscountQuestion(applicant) {
+      var dob = convertDate($elements[applicant].healthApplicationDOB.val());
+      var coverDate = convertDate(meerkat.modules.healthCoverStartDate.getVal());
+
+      var curDate = (meerkat.site.serverDate.getTime() != coverDate.getTime()) ? coverDate : meerkat.site.serverDate;
+
+      var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
+      var selectedProduct = Results.getSelectedProduct();
+
+      if(selectedProduct.custom.reform) {
+          var abdValue = selectedProduct.custom.reform.yad;
+          if(abdValue !== 'R') {
+            $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+            return;
+          }
+      }
+
+      if(age >= 18 && age < 45) {
+        $elements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
+        var hasABD = $elements[applicant].receivesAgeBasedDiscount.find(':checked').val();
+        if(hasABD === 'Y') {
+            $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+        }
+      }else{
+        $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+        $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+      }
     }
 
     function _toggleCurrentlyHaveAnyKindOfCover(applicant) {

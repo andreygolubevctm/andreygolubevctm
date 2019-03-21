@@ -7,6 +7,7 @@
     {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(obj.featuresStructureIndexToUse); }}
     {{ var module = meerkat.modules.healthResultsTemplate; }}
     {{ var coverDate = module.getCoverDate(obj); }}
+
     {{ for(var i = 0; i < featureIterator.length; i++) { var ft = module.getItem(obj, featureIterator[i]); }}
     {{ if(ft.classStringForInlineLabel.indexOf('more-info-only') != -1) { continue; } }}
     <div class="cell {{= ft.classString }}" title="Click on each benefit to learn about what level of cover this policy offers.">
@@ -21,6 +22,7 @@
         {{          benefitGroup = 'extras'; }}
         {{      } }}
         {{ } }}
+
         <div class="labelInColumn {{= ft.classStringForInlineLabel }} {{= ft.classStringForInlineLabelCover }}">
             <div class="content" data-featureId="{{= ft.id }}">
                 <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
@@ -29,13 +31,20 @@
                     </div>
                     <div class="benefit-container">
                         <div class="benefit-container-item {{= ft.labelInColumnContentClass }}">
-                            <span {{= ft.labelInColumnContentClassApril }}>Now</span>
+                            {{ if(ft.beforeChangeDate && coverDate) { }}
+                                <span {{= ft.labelInColumnContentClassApril }}>Now</span>
+                            {{ } }}
                             <span class="benefit-icon" />
+                            {{ if(ft.isBenefit && !coverDate && ft.beforeChangeDate) { }}
+                                <span class="benefit-container-item-date">* subject to change</span>
+                            {{ } }}
                         </div>
-                        <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
-                            <span class="benefit-container-item-date">{{= coverDate}}</span>
-                            <span class="benefit-icon" />
-                        </div>
+                        {{ if(ft.beforeChangeDate && coverDate) { }}
+                            <div class="benefit-container-item april {{= ft.labelInColumnContentClassApril }}">
+                                <span class="benefit-container-item-date">{{= coverDate}}</span>
+                                <span class="benefit-icon" />
+                            </div>
+                        {{ } }}
                     </div>
                 </div>
             </div>
