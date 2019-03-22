@@ -915,7 +915,6 @@ a{
 // LOGO MAGIC
 // --------------------------------------------------
 #logo {
-
 	background-repeat: no-repeat;
 	padding: 0;
 
@@ -925,32 +924,17 @@ a{
 	display: inline-block;
 
 	//XS Mobile first base
-	width: 43px;
-	height: 32px;
-
-	margin: 0px auto 0 8px;
-	@media only screen and (@xs-only) {
-		margin-left: 20px;
-		line-height: @font-size-small;
-		font-size: 0;
-		.header_button_left & {
-			margin: 9px auto 0 3px;
-		}
-	}
-
-	background-size: 43px 32px;
+	width: 44px;
+	height: 44px;
+	background-size: 44px 44px;
 	.highResImgContain('../graphics/logo-dollar-xs.png?new'; '../graphics/logo-dollar-xs@2x.png?new');
 
-	@media only screen and (min-width: @screen-sm-min) {
-		width: 216px;
-		height: 28px;
-		margin: 24px 0 10px 0;
-		background-size: 216px 28px;
-		.highResImgContain('../graphics/logo-sm.png?new'; '../graphics/logo-sm@2x.png?new'; ~"");
+	&.stuck {
+		height: 35px;
+		transition: all 200ms ease;
 	}
 
-	//Scale up override for MD & LG logo and retina support
-	@media (min-width: @screen-md-min) {
+	@media (min-width: @screen-sm-min) {
 		width: 343px;
 		height: 44px;
 		margin: 0px;

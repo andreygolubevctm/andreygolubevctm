@@ -807,22 +807,12 @@ a {
   display: inline-block;
 
   //XS Mobile first base
-  width: 43px; // for the hidden text.
-  height: 32px;
-  margin: 0px auto 0 8px;
-  @media only screen and (@xs-only) {
-    margin-left: 20px;
-    line-height: @font-size-small;
-    font-size: 0;
-    .header_button_left & {
-      margin: 9px auto 0 3px;
-    }
-  }
-
-  background-size: 43px 32px;
+  width: 44px; // for the hidden text.
+  height: 44px;
+  background-size: 44px 44px;
   .highResImgContain('../graphics/logo-dollar-xs.png?new'; '../graphics/logo-dollar-xs@2x.png?new');
 
-  //Scale up override for SM +
+
   @media (min-width: @screen-sm-min) {
     width: 343px;
     height: 44px;

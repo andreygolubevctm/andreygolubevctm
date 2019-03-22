@@ -31,11 +31,13 @@
 			$travel_adults = $('#travel_adults'),
 			$travel_dates_toDate = $("#travel_dates_toDate");
 
+			initStickyHeader();
+
 
 			$policyTypeBtn = $("input[name=travel_policyType]");
 			meerkat.modules.travelYourCover.initTravelCover();
 
-			initProgressBar(true);
+			initProgressBar(false);
 
 			// Initialise the journey engine
 			var startStepId = null;
@@ -90,6 +92,19 @@
 			}
 
 		});
+	}
+
+	function initStickyHeader() {
+        $(window).scroll(function() {
+            var windowYOffset = window.pageYOffset;
+            if (windowYOffset >= 16) {
+				$('.header-wrap').addClass('stuck');
+				$('#logo').addClass('stuck');
+            } else {
+                $('.header-wrap').removeClass('stuck');
+                $('#logo').removeClass('stuck');
+			}
+        });
 	}
 
 	/**

@@ -20,6 +20,8 @@
             if (meerkat.site.vertical !== "fuel")
                 return false;
 
+            initStickyHeader();
+
             //meerkat.modules.fuelPrefill.setHashArray();
 
             // Init common stuff
@@ -29,6 +31,19 @@
                 meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
             }
             applyEventListeners();
+        });
+    }
+
+    function initStickyHeader() {
+        $(window).scroll(function() {
+            var windowYOffset = window.pageYOffset;
+            if (windowYOffset >= 16) {
+                $('.header-wrap').addClass('stuck');
+                $('#logo').addClass('stuck');
+            } else {
+                $('.header-wrap').removeClass('stuck');
+                $('#logo').removeClass('stuck');
+            }
         });
     }
 
