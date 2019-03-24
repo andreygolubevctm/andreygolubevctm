@@ -204,6 +204,7 @@
 
         $elements[applicant].everHadPrivateHospitalRow_1.find(':input').on('change', function() {
             _toggleFundHistory(applicant);
+            _toggleAgeBasedDiscountQuestion(applicant);
 
             meerkat.messaging.publish(meerkatEvents.healthPreviousFund['POPULATE_' + applicant.toUpperCase()], ($elements[applicant].everHadPrivateHospital_1.filter(':checked').val() === 'Y' ? 'Y' : 'N' ));
         });
@@ -229,35 +230,42 @@
     }
 
     function _toggleAgeBasedDiscountQuestion(applicant) {
-      var dob = convertDate($elements[applicant].healthApplicationDOB.val());
+        var dob = convertDate($elements[applicant].healthApplicationDOB.val());
 
-      if(!dob) return;
+        if(!dob) return;
 
-      var coverDate = convertDate(meerkat.modules.healthCoverStartDate.getVal());
+        var coverDate = convertDate(meerkat.modules.healthCoverStartDate.getVal());
 
-      var curDate = (meerkat.site.serverDate.getTime() != coverDate.getTime()) ? coverDate : meerkat.site.serverDate;
+        var curDate = (meerkat.site.serverDate.getTime() != coverDate.getTime()) ? coverDate : meerkat.site.serverDate;
 
-      var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
-      var selectedProduct = Results.getSelectedProduct();
+        var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
+        var selectedProduct = Results.getSelectedProduct();
 
-      if(selectedProduct.custom.reform) {
-          var abdValue = selectedProduct.custom.reform.yad;
-          if(abdValue !== 'R') {
-            $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
-            return;
-          }
-      }
-
-      if(age >= 18 && age < 45) {
-        $elements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
-        var hasABD = $elements[applicant].receivesAgeBasedDiscount.find(':checked').val();
-        if(hasABD === 'Y') {
-            $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+        if(selectedProduct.custom.reform) {
+            var abdValue = selectedProduct.custom.reform.yad;
+            if(abdValue !== 'R') {
+              $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+              $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+              return;
+            }
         }
-      }else{
-        $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
-        $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
-      }
+
+        if($elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N') {
+            $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+            $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+            return;
+        }
+
+        if(age >= 18 && age < 45) {
+          $elements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
+          var hasABD = $elements[applicant].receivesAgeBasedDiscount.find(':checked').val();
+          if(hasABD === 'Y') {
+              $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+          }
+        }else{
+          $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+          $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+        }
     }
 
     function _toggleCurrentlyHaveAnyKindOfCover(applicant) {
