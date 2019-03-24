@@ -99,10 +99,9 @@
                     <! -- The order of these options are important, changing these will also require changes in ResultAdapter2.java -->
                     <option id="health_healthCover_excess_1" value="1">$0</option>
                     <option id="health_healthCover_excess_2" value="2">$1 - $250</option>
-                    <option id="health_healthCover_excess_3" value="3">$251 - $500</option>
-                    <option id="health_healthCover_excess_5" value="5">$501 - $750</option>
-                    <option id="health_healthCover_excess_6" value="6">$751+</option>
+                    <option id="health_healthCover_excess_3" value="3">$251 - $500</option>.
                     <option id="health_healthCover_excess_4" value="4">All</option>
+                    <option id="health_healthCover_excess_5" value="5">$501 - $750</option>
                 </select>
             </div>
         </div>
