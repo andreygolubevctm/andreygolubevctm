@@ -10,6 +10,7 @@
 <c:set var="simplesHealthReformMessaging" scope="request"><content:get key="simplesHealthReformMessaging" /></c:set>
 
 <health_v1:redirect_rules />
+<c:set var="simplesCategoryVersion" value="health2018" />
 
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />

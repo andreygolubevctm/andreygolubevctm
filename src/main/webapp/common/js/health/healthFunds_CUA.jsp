@@ -46,38 +46,6 @@ set: function () {
 		meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa': true, 'mc': true, 'amex':false, 'diners':false });
 		meerkat.modules.healthCreditCard.render();
 
-		<c:if test="${data.health.situation.healthCvr == 'S' || data.health.situation.healthCvr == 'SM' || data.health.situation.healthCvr == 'SF'}">
-			<c:set var="htmlPrimary">
-				<form_v1:row label="" className="ifExpectingMessage" id="ifExpectingMessage">
-					<div>
-						For your baby to be eligible for benefits immediately upon birth, the mother must have contributed to a family or single parent policy for at least two calendar months prior to the infant\'s birth.
-					</div>
-				</form_v1:row>
-			</c:set>
-			$('#health_application_primary_genderRow').after('<c:out value="${htmlPrimary}" escapeXml="false" />');
-
-			<c:choose>
-				<c:when test="${data.health.application.primary.gender == 'F'}">
-					$(".ifExpectingMessage").addClass("female");
-				</c:when>
-				<c:otherwise>
-					$(".ifExpectingMessage").addClass("male");
-				</c:otherwise>
-			</c:choose>
-
-			$('#health_application_primary_gender').on('change', function () {
-				if( $('input[name=health_application_primary_gender]:checked').val() == 'F' ) {
-					if($('#ifExpectingMessage').is(':hidden')){
-						$('#ifExpectingMessage').slideDown();
-					}
-				} else {
-					if(!$('#ifExpectingMessage').is(':hidden') ){
-						$('#ifExpectingMessage').slideUp();
-					}
-				};
-			});
-		</c:if>
-
 		healthFunds_CUA.$paymentType.on('change.CUA', function renderPaymentDaysPaymentType(){
 			healthFunds_CUA.renderPaymentDays();
 		});

@@ -874,7 +874,15 @@
      * Get the simples category version as per the comparison mode in the content control table ie. health2016/health2018
      */
     function getOnlineCategoryVersion() {
-        return onlineCategoryVersion;
+        return onlineCategoryVersion || 'health_v5';
+    }
+
+    function hideReformsBanner() {
+        $("#reforms-banner").addClass("hidden");
+    }
+
+    function showReformsBanner() {
+        $("#reforms-banner").removeClass("hidden");
     }
 
     meerkat.modules.register("health", {
@@ -882,7 +890,9 @@
         events: moduleEvents,
         initProgressBar: initProgressBar,
         getTrackingFieldsObject: getTrackingFieldsObject,
-        getOnlineCategoryVersion: getOnlineCategoryVersion
+        getOnlineCategoryVersion: getOnlineCategoryVersion,
+        showReformsBanner: showReformsBanner,
+        hideReformsBanner: hideReformsBanner
     });
 
 

@@ -1,5 +1,6 @@
 package com.ctm.web.health.quote.model.request;
 
+import com.ctm.healthcommon.abd.CombinedAbdSummary;
 import com.ctm.web.health.model.HospitalSelection;
 import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
@@ -61,6 +62,9 @@ public class HealthQuoteRequest {
     private List<PaymentType> paymentTypes;
 
     private int abdPercentage;
+    private int rabdPercentage;
+
+    private CombinedAbdSummary abdSummary;
 
     public boolean getIsSimples() {
         return isSimples;
@@ -236,5 +240,21 @@ public class HealthQuoteRequest {
 
     public int getAbdPercentage() {
         return abdPercentage;
+    }
+
+    public int getRabdPercentage() {
+        return rabdPercentage;
+    }
+
+    public void setRabdPercentage(int rabdPercentage) {
+        this.rabdPercentage = rabdPercentage;
+    }
+
+    public CombinedAbdSummary getAbdSummary() {
+        return abdSummary;
+    }
+
+    public void setAbdSummary(CombinedAbdSummary abdSummary) {
+        this.abdSummary = abdSummary;
     }
 }
