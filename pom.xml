@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.ctm.pom</groupId>
         <artifactId>uber-pom</artifactId>
-        <version>1.18.0</version>
+        <version>1.23.0</version>
     </parent>
 
     <groupId>com.ctm.web</groupId>
@@ -23,7 +23,7 @@
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
         <life-common.version>1.1.0-RC1</life-common.version>
         <reward-model.version>1.9.0</reward-model.version>
-        <health-common.version>1.11.1-RC2</health-common.version>
+        <health-common.version>1.14.0-RC1</health-common.version>
         <emails-utils.version>1.21.1-RC1</emails-utils.version>
 
         <!-- 3rd party -->
@@ -317,7 +317,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

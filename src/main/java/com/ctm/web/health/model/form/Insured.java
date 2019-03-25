@@ -10,6 +10,10 @@ public class Insured {
 
     private String everHadCover;
 
+    private String abdPolicyStart;
+
+    private String abd;
+
     public String getDob() {
         return dob;
     }
@@ -39,4 +43,21 @@ public class Insured {
     }
 
     public void setEverHadCover(String everHadCover) { this.everHadCover = everHadCover; }
+
+    public String getAbdPolicyStart() {
+        return abdPolicyStart;
+    }
+
+    public void setAbdPolicyStart(String abdPolicyStart) {
+        this.abdPolicyStart = abdPolicyStart;
+    }
+
+
+    public String getAbd() {
+        return abd;
+    }
+
+    public void setAbd(String abd) {
+        this.abd = abd;
+    }
 }
