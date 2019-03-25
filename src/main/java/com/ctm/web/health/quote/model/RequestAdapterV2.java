@@ -343,10 +343,6 @@ public class RequestAdapterV2 {
                     boundedExcessFilter.setExcessMax(750);
                     boundedExcessFilter.setExcessMin(501);
                     break;
-                case "6":
-                    boundedExcessFilter.setExcessMax(99999);
-                    boundedExcessFilter.setExcessMin(751);
-                    break;
                 default:
                     boundedExcessFilter.setExcessMax(99999);
                     boundedExcessFilter.setExcessMin(0);

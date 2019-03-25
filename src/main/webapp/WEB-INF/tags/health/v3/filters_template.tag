@@ -101,7 +101,6 @@
                     <option id="health_healthCover_excess_2" value="2">$1 - $250</option>
                     <option id="health_healthCover_excess_3" value="3">$251 - $500</option>
                     <option id="health_healthCover_excess_5" value="5">$501 - $750</option>
-                    <option id="health_healthCover_excess_6" value="6">$751+</option>
                     <option id="health_healthCover_excess_4" value="4">All</option>
                 </select>
             </div>
