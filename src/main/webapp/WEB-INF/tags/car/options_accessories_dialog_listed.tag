@@ -23,38 +23,24 @@
 					</div>
 					<div id="injectIntoHeader">
 						<div class="row accessoriesHeader">
-							<div class="col-xs-5">
+							<div class="col-xs-12">
 								<p>
 									Accessory
 								</p>
 							</div>
-							<div class="col-xs-7">
-								<p>
-									Included or approximate Purchase Price
-								</p>
-							</div>
 						</div>
 					</div>
+					<div class="row accessoryRow">
 					{{ $.each(vehicleNonStandardAccessories, function(index, vehicleNonStandardAccessory) { }}
-						<div class="row accessoryRow">
-							<div class="col-xs-5">
-								{{ if (vehicleNonStandardAccessory.checked) { }}
-									<field_v2:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}' checked='checked'" />
-								{{ } else { }}
-									<field_v2:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}'" />
-								{{ } }}
-							</div>
-							<div class="col-xs-7">
-								{{ if (vehicleNonStandardAccessory.checked) { }}
-									<select class="form-control nonStandardAccessorySelect" required itemIndex="{{= index }}">
-								{{ } else { }}
-									<select class="form-control nonStandardAccessorySelect" required itemIndex="{{= index }}" disabled="true">
-								{{ } }}
-									{{= vehicleNonStandardAccessory.priceDropdown }}
-								</select>
-							</div>
+						<div class="col-xs-6 col-lg-4">
+							{{ if (vehicleNonStandardAccessory.checked) { }}
+								<field_v2:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}' checked='checked'" />
+							{{ } else { }}
+								<field_v2:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}'" />
+							{{ } }}
 						</div>
 					{{ }); }}
+					</div>
 				</div>
 			</form_v2:fieldset>
 		</div>

@@ -102,6 +102,7 @@ public class TravelModelTranslator implements EmailTranslator {
         List<String> luggage = getRankingProperties(ranking,"luggage");
         List<String> cancellation = getRankingProperties(ranking,"cxdfee");
         List<String> medical = getRankingProperties(ranking,"medical");
+        List<String> rentalVehicle = getRankingProperties(ranking,"rentalVehicle");
         List<String> excesses = getRankingProperties(ranking,"excess");
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/travel/");
         List<String> providerNames = providerCodes.stream()

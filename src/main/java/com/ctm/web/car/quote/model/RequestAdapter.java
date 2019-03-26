@@ -104,11 +104,6 @@ public class RequestAdapter {
 
     private static NonStandardAccessory createAccessory(Acc acc) {
         NonStandardAccessory accessory = new NonStandardAccessory();
-        final boolean includedInPurchasePrice = convertToBoolean(acc.getInc());
-        accessory.setIncludedInPurchasePrice(includedInPurchasePrice);
-        if (!includedInPurchasePrice) {
-            accessory.setPrice(new BigDecimal(acc.getPrc()));
-        }
         accessory.setCode(acc.getSel());
         return accessory;
     }

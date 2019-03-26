@@ -390,8 +390,9 @@
 											</div>
 										</div>
 										{{ } }}
+										<%-- Refer to https://ctmaus.atlassian.net/browse/HREFORM-529. We are hiding naturopathy until this value is no longer sent from PHIO --%>
 										{{ _.each(product.extras, function(benefit, key){ }}
-										{{ if(!benefit) { }}
+										{{ if(!benefit || key.toLowerCase() === 'naturopathy') { }}
 											{{ return; }}
 										{{ } }}
 										{{ if (typeof benefit === 'object') { }}

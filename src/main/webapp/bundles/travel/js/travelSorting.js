@@ -14,6 +14,7 @@
 			'benefits.medical' : 'desc',
 			'benefits.cxdfee' : 'desc',
 			'benefits.luggage' : 'desc',
+			'benefits.rentalVehicle' : 'desc',
 			'price.premium' : 'asc'
 		},
 		initialised = false;
