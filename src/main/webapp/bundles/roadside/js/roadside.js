@@ -22,6 +22,8 @@
             if (meerkat.site.vertical !== "roadside")
                 return false;
 
+            initStickyHeader();
+
             // Init common stuff
             initJourneyEngine();
 
@@ -33,6 +35,19 @@
 
         });
 
+    }
+
+    function initStickyHeader() {
+        $(window).scroll(function() {
+            var windowYOffset = window.pageYOffset;
+            if (windowYOffset >= 16) {
+                $('.header-wrap').addClass('stuck');
+                $('#logo').addClass('stuck');
+            } else {
+                $('.header-wrap').removeClass('stuck');
+                $('#logo').removeClass('stuck');
+            }
+        });
     }
 
     function eventDelegates() {
