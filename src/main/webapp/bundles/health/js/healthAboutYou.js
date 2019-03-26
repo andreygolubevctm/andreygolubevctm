@@ -38,14 +38,12 @@
             meerkat.modules.healthCoverDetails.setIncomeBase(true);
 			meerkat.modules.healthTiers.setTiers(true);
 
-			_toggleAgeBasedDiscountQuestion('primary');
-
-			if (meerkat.modules.healthChoices.hasSpouse()) {
-					_toggleAgeBasedDiscountQuestion('partner');
-			}
-
 			eventSubscriptions();
 			toggleMlsMessage();
+		});
+
+		$(window).load(function() {
+	 		setRabdQuestions();
 		});
 	}
 
@@ -207,6 +205,12 @@
 
 		var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
 
+		if(meerkat.modules.healthBenefitsStep.getCoverType() === 'e') {
+			$abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+			$abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+			return;
+		}
+
 		if(age >= 18 && age < 45 && privateHospitalValue === 'Y') {
 			$abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
 			var hasABD = $abdElements[applicant].receivesAgeBasedDiscount.find(':checked').val();
@@ -349,11 +353,20 @@
 		return $('#health_situation_healthCvr').val();
 	}
 
+	function setRabdQuestions() {
+		_toggleAgeBasedDiscountQuestion('primary');
+
+		if (meerkat.modules.healthChoices.hasSpouse()) {
+				_toggleAgeBasedDiscountQuestion('partner');
+		}
+	}
+
 	meerkat.modules.register('healthAboutYou', {
 		init: init,
 		getPartnerCurrentCover : getPartnerCurrentCover,
 		getPrimaryCurrentCover : getPrimaryCurrentCover,
-		getSituation : getSituation
+		getSituation : getSituation,
+		setRabdQuestions: setRabdQuestions
 	});
 
 })(jQuery);

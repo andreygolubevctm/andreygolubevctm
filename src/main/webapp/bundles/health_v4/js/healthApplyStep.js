@@ -104,14 +104,13 @@
 
         _toggleSelectGender('primary');
         _toggleCurrentlyHaveAnyKindOfCover('primary');
-        _toggleAgeBasedDiscountQuestion('primary');
 
         if (meerkat.modules.healthChoices.hasPartner()) {
             _toggleSelectGender('partner');
             _toggleCurrentlyHaveAnyKindOfCover('partner');
-            _toggleAgeBasedDiscountQuestion('partner');
         }
 
+        setRabdQuestions();
         setHospitalCoverClass();
         setExtrasCoverClass();
 
@@ -670,12 +669,21 @@
         return $elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val();
     }
 
+	function setRabdQuestions() {
+		_toggleAgeBasedDiscountQuestion('primary');
+
+        if (meerkat.modules.healthChoices.hasPartner()) {
+	        _toggleAgeBasedDiscountQuestion('partner');
+	    }
+	}
+
     meerkat.modules.register('healthApplyStep', {
         init: init,
         onBeforeEnter: onBeforeEnter,
         onInitialise: onInitialise,
         testStatesParity: testStatesParity,
-        getPrimaryFirstname: getPrimaryFirstname
+        getPrimaryFirstname: getPrimaryFirstname,
+        setRabdQuestions: setRabdQuestions
     });
 
 })(jQuery);
