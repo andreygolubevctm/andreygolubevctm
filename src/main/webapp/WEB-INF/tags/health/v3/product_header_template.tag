@@ -6,7 +6,7 @@
 
 <div class="result">
     <div class="resultInsert">
-        {{ if(Results.getFrequency() && obj.premium[Results.getFrequency()].discountPercentage > 0) { }}
+        {{ if((Results.getFrequency() && obj.premium[Results.getFrequency()].discountPercentage > 0) || (!_.isEmpty(obj.promo) && !_.isEmpty(obj.promo.discountText))) { }}
             {{ var panelClass = ''; }}
             {{ if (!_.isEmpty(obj.promo) && _.isEmpty(obj.promo.discountText)) { }}
                 {{ panelClass = 'noDiscount'; }}

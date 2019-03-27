@@ -81,6 +81,12 @@
   }
 }
 
+.noDiscount {
+  &:before {
+    background: @discount-triangle-color;
+  }
+}
+
 .priceTooltips.discount {
   @media (@sm) {
     width: 146px;
