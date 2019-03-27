@@ -7,8 +7,10 @@ import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
 import com.ctm.web.health.model.form.Application;
 import com.ctm.web.health.model.form.Fund;
+import com.ctm.web.health.model.form.HealthCover;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
+import com.ctm.web.health.model.form.Insured;
 import com.ctm.web.health.model.form.Person;
 import com.ctm.web.health.model.form.PreviousFund;
 import org.apache.commons.lang3.StringUtils;
@@ -43,11 +45,24 @@ public class RequestAdapterV2 {
             LocalDate primaryDob = optionalPrimaryDob.get();
             LocalDate assessmentDate = policyStartDate.get();
 
-            Optional<LocalDate> primaryPreviousPolicyStartDate = Optional.of(healthRequest).map(HealthRequest::getHealth).map(HealthQuote::getPreviousfund).map(PreviousFund::getPrimary).map(Fund::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            boolean isSimples = StringUtils.isNotBlank(operator);
+            final Optional<LocalDate> primaryPreviousPolicyStartDate;
+
+            if (isSimples) {
+                primaryPreviousPolicyStartDate = Optional.of(healthRequest).map(HealthRequest::getHealth).map(HealthQuote::getHealthCover).map(HealthCover::getPrimary).map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            } else {
+                primaryPreviousPolicyStartDate = Optional.of(healthRequest).map(HealthRequest::getHealth).map(HealthQuote::getPreviousfund).map(PreviousFund::getPrimary).map(Fund::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            }
 
             Optional<LocalDate> optionalPartnerDob = quote.map(HealthQuote::getApplication).map(Application::getPartner).flatMap(lookupDateOfBirth);
-            Optional<LocalDate> partnerPreviousPolicyStartDate = Optional.of(healthRequest).map(HealthRequest::getHealth).map(HealthQuote::getPreviousfund).map(PreviousFund::getPartner).map(Fund::getAbdPolicyStart).flatMap(ABD.safeParseDate);
 
+            final Optional<LocalDate> partnerPreviousPolicyStartDate;
+
+            if (isSimples) {
+                partnerPreviousPolicyStartDate = Optional.of(healthRequest).map(HealthRequest::getHealth).map(HealthQuote::getHealthCover).map(HealthCover::getPartner).map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            } else {
+                partnerPreviousPolicyStartDate = Optional.of(healthRequest).map(HealthRequest::getHealth).map(HealthQuote::getPreviousfund).map(PreviousFund::getPartner).map(Fund::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+            }
 
             IndividualAbdSummary primaryABDSummary = ABD.calculateAgeBasedDiscount(primaryDob, assessmentDate, primaryPreviousPolicyStartDate);
             Optional<IndividualAbdSummary> partnerABDSummary = optionalPartnerDob.map(dob -> ABD.calculateAgeBasedDiscount(dob, assessmentDate, partnerPreviousPolicyStartDate));
