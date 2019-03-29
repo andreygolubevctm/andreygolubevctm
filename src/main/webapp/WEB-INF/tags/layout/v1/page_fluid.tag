@@ -171,7 +171,8 @@ ${newPage.init(pageContext.request, pageSettings)}
                                 <c:set var="exitUrl" value="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}"/>
                             </c:if>
 
-                            <c:if test="${not empty exitUrl}"><a id="js-logo-link" href="https://www.comparethemarket.com.au" title="Compare The Market Australia"></c:if>
+                            <c:if test="${not empty exitUrl}"><a id="js-logo-link" href="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}"
+                                                                 title="${pageSettings.getSetting('windowTitle')}"></c:if>
                             <span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
                             <c:if test="${not empty exitUrl}"></a></c:if>
                         </nav>

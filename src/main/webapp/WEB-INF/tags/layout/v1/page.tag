@@ -178,7 +178,14 @@ ${newPage.init(pageContext.request, pageSettings)}
 				<%--<coupon:banner />--%>
 			<%--</div>--%>
 
-				<div class="container-fluid">
+				<c:choose>
+					<c:when test="${pageSettings.getBrandCode() eq 'ctm'}">
+						<div class="container-fluid">
+					</c:when>
+					<c:otherwise>
+						<div class="container">
+					</c:otherwise>
+				</c:choose>
 
 					<div class="col-sm-12">
 						<%-- Brand and toggle get grouped for better mobile display --%>
@@ -273,7 +280,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							<c:set var="exitUrl" value="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" />
 							</c:if>
 
-							<c:if test="${not empty exitUrl}"><a id="js-logo-link" href="https://www.comparethemarket.com.au" title="Compare The Market Australia"></c:if>
+							<c:if test="${not empty exitUrl}"><a id="js-logo-link" href="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" title="${pageSettings.getSetting('windowTitle')}"></c:if>
 							<span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
 							<c:if test="${not empty exitUrl}"></a></c:if>
 						</nav>
