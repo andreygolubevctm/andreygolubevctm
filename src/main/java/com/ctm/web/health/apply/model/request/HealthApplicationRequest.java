@@ -1,5 +1,6 @@
 package com.ctm.web.health.apply.model.request;
 
+import com.ctm.healthcommon.abd.CombinedAbdSummary;
 import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
 import com.ctm.web.health.apply.model.request.contactDetails.ContactDetails;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
@@ -31,8 +32,11 @@ public class HealthApplicationRequest {
     public List<String> providerFilter;
 
     private String operator;
-	private String cid;
+    private String cid;
     private String trialCampaign;
+
+    private CombinedAbdSummary abdSummary;
+
 
     private HealthApplicationRequest(Builder builder) {
         contactDetails = builder.contactDetails;
@@ -41,8 +45,9 @@ public class HealthApplicationRequest {
         applicants = builder.applicants;
         providerFilter = builder.providerFilter;
         operator = builder.operator;
-		cid = builder.cid;
-		trialCampaign = builder.trialCampaign;
+        cid = builder.cid;
+        trialCampaign = builder.trialCampaign;
+        abdSummary = builder.abdSummary;
     }
 
     public static Builder newBuilder() {
@@ -74,12 +79,16 @@ public class HealthApplicationRequest {
         return operator;
     }
 
-	public String getCid() {
-		return cid;
-	}
+    public String getCid() {
+        return cid;
+    }
 
     public String getTrialCampaign() {
         return trialCampaign;
+    }
+
+    public CombinedAbdSummary getAbdSummary() {
+        return abdSummary;
     }
 
     public static final class Builder {
@@ -89,8 +98,9 @@ public class HealthApplicationRequest {
         private ApplicationGroup applicants;
         private List<String> providerFilter;
         private String operator;
-		private String cid;
+        private String cid;
         private String trialCampaign;
+        private CombinedAbdSummary abdSummary;
 
         private Builder() {
         }
@@ -125,13 +135,18 @@ public class HealthApplicationRequest {
             return this;
         }
 
-		public Builder cid(String val) {
-			cid = val;
-			return this;
-		}
+        public Builder cid(String val) {
+            cid = val;
+            return this;
+        }
 
         public Builder trialCampaign(String val) {
-			trialCampaign = val;
+            trialCampaign = val;
+            return this;
+        }
+
+        public Builder abdSummary(CombinedAbdSummary val) {
+            this.abdSummary = val;
             return this;
         }
 

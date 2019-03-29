@@ -363,6 +363,7 @@
 						});
 					}, 1000);
 				}
+
 				webChatHideFields();
 				incrementTranIdBeforeEnteringSlide();
 
@@ -1674,7 +1675,7 @@
      * Get the simples category version as per the comparison mode in the content control table ie. health2016/health2018
      */
   function getSimplesCategoryVersion() {
-			return simplesCategoryVersion;
+			return simplesCategoryVersion || 'health2018';
 	}
 
 	meerkat.modules.register("health", {

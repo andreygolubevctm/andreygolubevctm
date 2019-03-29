@@ -57,8 +57,8 @@
       line-height: 15px;
       margin-top: -80px;
     }
-
   }
+  
   span.text {
     position: absolute;
     color: @discount-text-color;
@@ -78,6 +78,12 @@
       margin-left: 2px;
       line-height: 14px;
     }
+  }
+}
+
+.noDiscount {
+  &:before {
+    background: @discount-triangle-color;
   }
 }
 

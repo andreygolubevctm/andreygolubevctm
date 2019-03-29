@@ -27,7 +27,8 @@
 		$partnersDetails,
 		$lhcContainers,
 		$medicare,
-		$healthSituation;
+		$healthSituation,
+		$abdElements;
 
 	function init(){
 		$(document).ready(function () {
@@ -39,6 +40,10 @@
 
 			eventSubscriptions();
 			toggleMlsMessage();
+		});
+
+		$(window).load(function() {
+	 		setRabdQuestions();
 		});
 	}
 
@@ -68,6 +73,20 @@
 		$lhcContainers = $('#health-contact-fieldset, #partner-health-cover, #australian-government-rebate'),
 		$medicare = $('.health-medicare_details'),
 		$healthSituation = $('input[name="health_situation_healthSitu"]');
+		$abdElements = {
+			primary: {
+					receivesAgeBasedDiscountRow: $('#primary_abd'),
+					receivesAgeBasedDiscount: $('#primary_abd_health_cover'),
+					ageBasedDiscountPolicyStartRow: $('#primary_abd_start_date'),
+					healthApplicationDOB: $('#health_application_primary_dob'),
+			},
+			partner: {
+					receivesAgeBasedDiscountRow: $('#partner_abd'),
+					receivesAgeBasedDiscount: $('#partner_abd_health_cover'),
+					ageBasedDiscountPolicyStartRow: $('#partner_abd_start_date'),
+					healthApplicationDOB: $('#health_application_partner_dob')
+			}
+	};
 
 
 		if (!meerkat.modules.healthChoices.hasSpouse()) {
@@ -85,6 +104,30 @@
 
 		$tierDropdowns.on('change', function updateRebateTiers(){
 			meerkat.modules.healthTiers.setTiers();
+		});
+
+		$abdElements.primary.healthApplicationDOB.on('change', function() {
+				_toggleAgeBasedDiscountQuestion('primary');
+		});
+
+		$abdElements.partner.healthApplicationDOB.on('change', function() {
+				_toggleAgeBasedDiscountQuestion('partner');
+		});
+
+		$abdElements.primary.receivesAgeBasedDiscount.find(':input').on('change', function(event) {
+				if(event.target.value === 'Y') {
+						$abdElements.primary.ageBasedDiscountPolicyStartRow.removeClass('hidden');
+				}else{
+						$abdElements.primary.ageBasedDiscountPolicyStartRow.addClass('hidden');
+				}
+		});
+
+		$abdElements.partner.receivesAgeBasedDiscount.find(':input').on('change', function(event) {
+				if(event.target.value === 'Y') {
+						$abdElements.partner.ageBasedDiscountPolicyStartRow.removeClass('hidden');
+				}else{
+						$abdElements.partner.ageBasedDiscountPolicyStartRow.addClass('hidden');
+				}
 		});
 
 		$healthCoverDependants.on('change', function setRebateTiers(){
@@ -115,6 +158,12 @@
 			togglePrimaryContinuousCover();
 			togglePartnerContinuousCover();
 
+			_toggleAgeBasedDiscountQuestion('primary');
+
+			if (meerkat.modules.healthChoices.hasSpouse()) {
+					_toggleAgeBasedDiscountQuestion('partner');
+			}
+
 			// update rebate
 			if ($this.valid()) {
 				setRebate();
@@ -131,6 +180,60 @@
                 updateDynamicIncomeFieldText();
             });
         }
+	}
+
+	function convertDate(date) {
+		var dobSplit = date.split('/');
+		if(dobSplit.length === 3) {
+			return new Date(dobSplit[1] + '/' + dobSplit[0] + '/' + dobSplit[2]);
+		}
+
+		return date;
+	}
+
+	function _toggleAgeBasedDiscountQuestion(applicant) {
+		var dob = convertDate($abdElements[applicant].healthApplicationDOB.val());
+
+		if(!dob) return;
+
+		var applicationDate = $('#health_searchDate').val();
+		var applicationDateString = ''; 
+
+		if(applicationDate) {
+				var dateSplit = applicationDate.split('/');
+				if(dateSplit.length == 3) {
+						var year = dateSplit[2];
+						var month = dateSplit[1];
+						var day = dateSplit[0];
+						applicationDateString = year + '-' + month + '-' + day;
+				}
+		}
+
+		var curDate = applicationDateString ? new Date(applicationDateString) : meerkat.site.serverDate;
+		var privateHospitalValue = $primaryCurrentCover.find('input').filter(':checked').val();
+
+		if(applicant === 'partner') {
+			privateHospitalValue = $partnerCurrentCover.find('input').filter(':checked').val();
+		}
+
+		var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
+
+		if(meerkat.modules.healthBenefitsStep.getCoverType() === 'e') {
+			$abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+			$abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+			return;
+		}
+
+		if(age >= 18 && age < 45 && privateHospitalValue === 'Y') {
+			$abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
+			var hasABD = $abdElements[applicant].receivesAgeBasedDiscount.find(':checked').val();
+			if(hasABD === 'Y') {
+					$abdElements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+			}
+		}else{
+			$abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+			$abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+		}
 	}
 
 	function updateDynamicIncomeFieldText() {
@@ -263,11 +366,20 @@
 		return $('#health_situation_healthCvr').val();
 	}
 
+	function setRabdQuestions() {
+		_toggleAgeBasedDiscountQuestion('primary');
+
+		if (meerkat.modules.healthChoices.hasSpouse()) {
+				_toggleAgeBasedDiscountQuestion('partner');
+		}
+	}
+
 	meerkat.modules.register('healthAboutYou', {
 		init: init,
 		getPartnerCurrentCover : getPartnerCurrentCover,
 		getPrimaryCurrentCover : getPrimaryCurrentCover,
-		getSituation : getSituation
+		getSituation : getSituation,
+		setRabdQuestions: setRabdQuestions
 	});
 
 })(jQuery);

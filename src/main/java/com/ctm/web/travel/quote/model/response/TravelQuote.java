@@ -138,10 +138,52 @@ public class TravelQuote {
         }
         return "";
     }
+
+    public String getBenefitByLabel(String label) {
+        for(Benefit benefit : benefits){
+            if(benefit.getLabel() != null && benefit.getLabel().equalsIgnoreCase(label)){
+                return benefit.getText();
+            }
+        }
+        return "$0";
+    }
+
+    public String getBenefitByLabelArray(String[] labels) {
+        for (String label : labels) {
+            for(Benefit benefit : benefits){
+                if(benefit.getLabel() != null && benefit.getLabel().equalsIgnoreCase(label)){
+                    return benefit.getText();
+                }
+            }
+        }
+
+        return "$0";
+    }
+
     public BigDecimal getBenefitValue(String type){
         for(Benefit benefit : benefits){
             if(benefit.getType().equalsIgnoreCase(type)){
                 return benefit.getValue();
+            }
+        }
+        return new BigDecimal(0);
+    }
+
+    public BigDecimal getBenefitValueByLabel(String label){
+        for(Benefit benefit : benefits){
+            if(benefit.getLabel() != null && benefit.getLabel().equalsIgnoreCase(label)){
+                return benefit.getValue();
+            }
+        }
+        return new BigDecimal(0);
+    }
+
+    public BigDecimal getBenefitValueByLabelArray(String[] labels){
+        for (String label : labels) {
+            for(Benefit benefit : benefits){
+                if(benefit.getLabel() != null && benefit.getLabel().equalsIgnoreCase(label)){
+                    return benefit.getValue();
+                }
             }
         }
         return new BigDecimal(0);

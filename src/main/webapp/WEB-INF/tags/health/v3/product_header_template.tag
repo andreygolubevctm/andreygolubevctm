@@ -6,10 +6,14 @@
 
 <div class="result">
     <div class="resultInsert">
-        {{ if (!_.isEmpty(obj.promo) && !_.isEmpty(obj.promo.discountText)) { }}
-        <div class="discountPanel">
-            <span class="text">Discount<br />Available</span>
-        </div>
+        {{ if((Results.getFrequency() && obj.premium[Results.getFrequency()].discountPercentage > 0) || (!_.isEmpty(obj.promo) && !_.isEmpty(obj.promo.discountText))) { }}
+            {{ var panelClass = ''; }}
+            {{ if (!_.isEmpty(obj.promo) && _.isEmpty(obj.promo.discountText)) { }}
+                {{ panelClass = 'noDiscount'; }}
+            {{ } }}
+            <div class="discountPanel {{= panelClass}}">
+                <span class="text">Discount<br />Available</span>
+            </div>
         {{ } }}
         <div class="result-header-utility-bar">
             {{ if( info.restrictedFund === 'Y' ) { }}
