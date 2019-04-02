@@ -1,5 +1,11 @@
 body {
-  padding-top: 60px;
+  padding-top: 96px !important;
+  @media(@md-only) {
+    padding-top: 78px !important;
+  }
+  @media(@xs-only) {
+    padding-top: 60px !important;
+  }
 }
 
 .header-wrap {
@@ -13,4 +19,9 @@ body {
     transition: all 200ms ease;
     box-shadow: rgba(0, 0, 0, .1) 0px 10px 40px 0px;
   }
+}
+
+.modal {
+  z-index: 21000;
+  padding-right: 0px !important;
 }

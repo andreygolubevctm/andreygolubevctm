@@ -98,10 +98,10 @@
         $(window).scroll(function() {
             var windowYOffset = window.pageYOffset;
             if (windowYOffset >= 16) {
-				$('.header-wrap').addClass('stuck');
+				$('.navbar__travel-filters').addClass('stuck');
 				$('#logo').addClass('stuck');
             } else {
-                $('.header-wrap').removeClass('stuck');
+                $('.navbar__travel-filters').removeClass('stuck');
                 $('#logo').removeClass('stuck');
 			}
         });
