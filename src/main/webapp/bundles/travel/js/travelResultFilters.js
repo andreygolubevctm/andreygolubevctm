@@ -386,7 +386,7 @@
             $cancellationSlider.each(function() {
                 $(this).prop('min', 0);
                 $(this).prop('max', 10000);
-                $(this).prop('step', 2000);
+                $(this).prop('step', 2500);
             });
             $cancellationSliderMax.each(function() {
                 $(this).text("$10,000");
