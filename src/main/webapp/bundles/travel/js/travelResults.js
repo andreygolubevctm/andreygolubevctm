@@ -275,6 +275,7 @@
 			$(".travelResultsDisclaimerHeader").hide();
 			meerkat.modules.journeyEngine.loadingShow('...getting your quotes...');
 			$component.removeClass('hidden');
+			meerkat.modules.travelResultFilters.updateFilterForDestination();
 
 			// Hide pagination
 			Results.pagination.hide();
@@ -546,6 +547,7 @@
 		rankingCallback: rankingCallback,
 		publishExtraTrackingEvents: publishExtraTrackingEvents,
 		invalidQuoteDueToDate: invalidQuoteDueToDate,
+		setColVisibilityAndStylesByTravelType: setColVisibilityAndStylesByTravelType
 	});
 
 })(jQuery);

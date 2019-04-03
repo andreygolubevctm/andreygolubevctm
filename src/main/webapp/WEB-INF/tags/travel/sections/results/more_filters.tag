@@ -31,11 +31,20 @@
                         <field_v2:help_icon helpId="581" tooltipClassName=""/>
                     </div>
                     <travel_results_filters:minimum_cancellation/>
-                    <div class="dropdown-item range-filter">
-                        <b>Minimum overseas medical cover</b>
-                        <field_v2:help_icon helpId="582" tooltipClassName=""/>
+                    <div name="minimum_overseas_medical_filter">
+                        <div class="dropdown-item range-filter">
+                            <b>Minimum overseas medical cover</b>
+                            <field_v2:help_icon helpId="582" tooltipClassName=""/>
+                        </div>
+                        <travel_results_filters:minimum_overseas_medical/>
                     </div>
-                    <travel_results_filters:minimum_overseas_medical/>
+                    <div name="minimum_rental_vehicle_filter">
+                        <div class="dropdown-item range-filter">
+                            <b>Minimum rental vehicle excess cover</b>
+                            <field_v2:help_icon helpId="644" tooltipClassName=""/>
+                        </div>
+                        <travel_results_filters:minimum_rental_vehicle/>
+                    </div>
                 </div>
                 <div class="col-xs-12 col-sm-5 col-md-7 text-left filter-section">
                     <div class="row">
