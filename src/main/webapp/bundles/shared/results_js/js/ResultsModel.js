@@ -784,19 +784,25 @@ var ResultsModel = {
     },
 
     travelResultFilter: function (renderView, doNotGoToStart, matchAllFilters) {
-        var initialProducts = Results.model.sortedProducts.slice();
+				var initialProducts = Results.model.sortedProducts.slice();
+				var destination = $('#travel_destination').val();
+
         var finalProducts = [];
         var _filters = {
             EXCESS: 0,
             LUGGAGE: 0,
             CXDFEE: 0,
             MEDICAL: 0,
-			RENTALVEHICLE: 0
+						RENTALVEHICLE: 0
         };
         var _modelFilters = Results.model.travelFilters;
 
         $.each(initialProducts, function (productIndex, product) {
             if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
+
+							// Reset the Rental vehicle benfit value
+							_filters.RENTALVEHICLE = 0;
+
                 $.each(product.benefits, function (index, benefit) {
                     switch (benefit.type) {
                         case 'EXCESS':
@@ -811,9 +817,19 @@ var ResultsModel = {
                         case 'MEDICAL':
                             _filters.MEDICAL = benefit.value;
                             break;
-                        case 'RENTALVEHICLE':
+                        case 'RENTALVEH':
                             _filters.RENTALVEHICLE = benefit.value;
-                            break;
+														break;
+												case 'RENTAL_EXCESS':
+														_filters.RENTALVEHICLE = benefit.value;
+														break;
+												case 'CUSTOM':
+														if(benefit.label.toLowerCase().indexOf('rental car') > -1 ||
+															 benefit.label.toLowerCase().indexOf('rental vehicle') > -1) {
+															_filters.RENTALVEHICLE = benefit.value;
+														}
+														break;
+
                     }
                 });
 
@@ -821,8 +837,8 @@ var ResultsModel = {
                     if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
 						((_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
                         (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
-                        (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
-                        (_filters.RENTALVEHICLE >= _modelFilters.RENTALVEHICLE) &&
+                        (destination === 'AUS' || (destination !== 'AUS' && _filters.MEDICAL >= _modelFilters.MEDICAL)) &&
+                        (destination !== 'AUS' || (destination === 'AUS' && _filters.RENTALVEHICLE >= _modelFilters.RENTALVEHICLE)) &&
                         (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
                         finalProducts.push(product);
                     }

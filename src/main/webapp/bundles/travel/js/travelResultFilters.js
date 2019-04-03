@@ -128,7 +128,7 @@
             _displaySliderValue("MEDICAL", $(this).val());
         });
 
-        // update the results as per the overseas medical filter
+        // update the results as per the rental vehicle filter
         $('input[name="rentalVehicleRangeSlider"]').change(function () {
             _displaySliderValue("RENTALVEHICLE", $(this).val());
             _updateTravelResults("RENTALVEHICLE", parseInt($(this).val()));
@@ -253,21 +253,26 @@
      * @private
      */
     function _updateTravelResultsByCoverType(cover) {
+        var destination = $('#travel_destination').val();
+
         var _coverTypeValues = {
             C: {
                 LUGGAGE: 5000,
-                CXDFEE: 20000,
-                MEDICAL: 20000000
+                CXDFEE: destination === 'AUS' ? 10000 : 20000,
+                MEDICAL: 20000000,
+                RENTALVEHICLE: 0
             },
             M: {
                 LUGGAGE: 2500,
                 CXDFEE: 5000,
-                MEDICAL: 10000000
+                MEDICAL: 10000000,
+                RENTALVEHICLE: 0
             },
             B: {
                 LUGGAGE: 0,
                 CXDFEE: 0,
-                MEDICAL: 5000000
+                MEDICAL: 5000000,
+                RENTALVEHICLE: 0
             }
         };
 
@@ -275,6 +280,8 @@
         _filters.LUGGAGE = _coverTypeValues[cover].LUGGAGE;
         _filters.CXDFEE = _coverTypeValues[cover].CXDFEE;
         _filters.MEDICAL = _coverTypeValues[cover].MEDICAL;
+        _filters.MEDICAL = _coverTypeValues[cover].MEDICAL;
+        _filters.RENTALVEHICLE = _coverTypeValues[cover].RENTALVEHICLE;
 
         // update luggage filter
         $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
@@ -287,6 +294,10 @@
         // update overseas medical filter
         $('input[name="overseasMedicalRangeSlider"]').val(_filters.MEDICAL);
         _displaySliderValue("MEDICAL", _filters.MEDICAL);
+
+                // update overseas medical filter
+        $('input[name="rentalVehicleRangeSlider"]').val(_filters.RENTALVEHICLE);
+        _displaySliderValue("RENTALVEHICLE", _filters.RENTALVEHICLE);
 
         meerkat.modules.customRangeSlider.init();
         Results.model.travelFilters = _filters;
@@ -314,7 +325,7 @@
                 break;
 
             case 'RENTALVEHICLE':
-                $('.rental-vehicle-range-value').empty().text('$' + Number(value / 1000000) + ' million');
+                $('.rental-vehicle-range-value').empty().text('$' + Number(value).toLocaleString('en'));
                 break;
         }
     }
@@ -363,15 +374,63 @@
         }
     }
 
+    function updateFilterForDestination() {
+        var $cancellationSlider = $('input[name="cancellationRangeSlider"]');
+        var $cancellationSliderMax = $('[name="cancellationRangeSliderMax"]');
+        var $overseasMedicalFilter = $('[name="minimum_overseas_medical_filter"]');
+        var $rentalVehicleFilter = $('[name="minimum_rental_vehicle_filter"]');
+
+        var destination = $('#travel_destination').val();
+
+        if(destination === 'AUS') {
+            $cancellationSlider.each(function() {
+                $(this).prop('min', 0);
+                $(this).prop('max', 10000);
+                $(this).prop('step', 2000);
+            });
+            $cancellationSliderMax.each(function() {
+                $(this).text("$10,000");
+            });
+
+            $overseasMedicalFilter.each(function() {
+                $(this).hide();
+            });
+
+            $rentalVehicleFilter.each(function() {
+                $(this).show();
+            });
+        }else{
+            $cancellationSlider.each(function() {
+                $(this).prop('min', 0);
+                $(this).prop('max', 30000);
+                $(this).prop('step', 5000);
+            });
+            $cancellationSliderMax.each(function() {
+                $(this).text("$30,000");
+            });
+
+            $overseasMedicalFilter.each(function() {
+                $(this).show();
+            });
+
+            $rentalVehicleFilter.each(function() {
+                $(this).hide();
+            });
+        }
+    }
+
     /**
      * Reset all the custom filter functionality
      */
     function resetCustomFilters() {
+        var destination = $('#travel_destination').val();
+
         Results.model.travelFilters = {
             EXCESS: 200,
             LUGGAGE: 5000,
-            CXDFEE: 20000,
+            CXDFEE: destination === 'AUS' ? 10000 : 20000,
             MEDICAL: 20000000,
+            RENTALVEHICLE: 0,
             PROVIDERS: []
         };
         Results.model.travelFilteredProductsCount = 0;
@@ -386,6 +445,9 @@
         $('input[name="overseasMedicalRangeSlider"]').val(_filters.MEDICAL);
         _displaySliderValue("MEDICAL", _filters.MEDICAL);
 
+        $('input[name="rentalVehicleRangeSlider"]').val(_filters.RENTALVEHICLE);
+        _displaySliderValue("RENTALVEHICLE", _filters.RENTALVEHICLE);
+
         meerkat.modules.customRangeSlider.init();
         $('#travel_filter_excess_200').trigger('click');
         $('[data-provider-code]').prop('checked', true);
@@ -393,6 +455,7 @@
 
     meerkat.modules.register("travelResultFilters", {
         init: init,
-        resetCustomFilters: resetCustomFilters
+        resetCustomFilters: resetCustomFilters,
+        updateFilterForDestination: updateFilterForDestination
     });
 })(jQuery);
