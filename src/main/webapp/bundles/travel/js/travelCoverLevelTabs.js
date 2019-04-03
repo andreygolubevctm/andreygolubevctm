@@ -107,7 +107,6 @@
 				hasMultipleTabTypes: true,
 				verticalMapping: tabMapping(),
 				callback: function () {
-                    var destination = $('#travel_destination').val();
                     // hide filters for mobile, tablet & AMT
                     if (isAMT()) {
                         $('.clt-trip-filter').hide();

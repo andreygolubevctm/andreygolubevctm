@@ -31,9 +31,9 @@ var Results = {
             EXCESS: 200,
             LUGGAGE: 5000,
             CXDFEE: 20000,
-						MEDICAL: 20000000,
-						RENTALVEHICLE: 0,
-						PROVIDERS: []
+            MEDICAL: 20000000,
+            RENTALVEHICLE: 0,
+            PROVIDERS: []
         };
 
 		var settings = {
