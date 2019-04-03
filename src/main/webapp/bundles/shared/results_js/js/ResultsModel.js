@@ -837,8 +837,8 @@ var ResultsModel = {
                     if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
                        ((_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
                         (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
-												((destination !== 'AUS' && _filters.MEDICAL >= _modelFilters.MEDICAL) || 
-												 (destination === 'AUS' && _filters.RENTALVEHICLE >= _modelFilters.RENTALVEHICLE)) &&
+                        ((destination !== 'AUS' && _filters.MEDICAL >= _modelFilters.MEDICAL) || 
+                         (destination === 'AUS' && _filters.RENTALVEHICLE >= _modelFilters.RENTALVEHICLE)) &&
                         (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
                         finalProducts.push(product);
                     }
