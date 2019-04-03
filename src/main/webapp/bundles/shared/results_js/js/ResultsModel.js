@@ -784,8 +784,8 @@ var ResultsModel = {
     },
 
     travelResultFilter: function (renderView, doNotGoToStart, matchAllFilters) {
-				var initialProducts = Results.model.sortedProducts.slice();
-				var destination = $('#travel_destination').val();
+        var initialProducts = Results.model.sortedProducts.slice();
+        var destination = $('#travel_destination').val();
 
         var finalProducts = [];
         var _filters = {
@@ -793,15 +793,15 @@ var ResultsModel = {
             LUGGAGE: 0,
             CXDFEE: 0,
             MEDICAL: 0,
-						RENTALVEHICLE: 0
+            RENTALVEHICLE: 0
         };
         var _modelFilters = Results.model.travelFilters;
 
         $.each(initialProducts, function (productIndex, product) {
             if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
 
-							// Reset the Rental vehicle benfit value
-							_filters.RENTALVEHICLE = 0;
+              // Reset the Rental vehicle benfit value
+              _filters.RENTALVEHICLE = 0;
 
                 $.each(product.benefits, function (index, benefit) {
                     switch (benefit.type) {
@@ -819,16 +819,16 @@ var ResultsModel = {
                             break;
                         case 'RENTALVEH':
                             _filters.RENTALVEHICLE = benefit.value;
-														break;
-												case 'RENTAL_EXCESS':
-														_filters.RENTALVEHICLE = benefit.value;
-														break;
-												case 'CUSTOM':
-														if(benefit.label.toLowerCase().indexOf('rental car') > -1 ||
-															 benefit.label.toLowerCase().indexOf('rental vehicle') > -1) {
-															_filters.RENTALVEHICLE = benefit.value;
-														}
-														break;
+                            break;
+                        case 'RENTAL_EXCESS':
+                            _filters.RENTALVEHICLE = benefit.value;
+                            break;
+                        case 'CUSTOM':
+                            if(benefit.label.toLowerCase().indexOf('rental car') > -1 ||
+                            	 benefit.label.toLowerCase().indexOf('rental vehicle') > -1) {
+                            	_filters.RENTALVEHICLE = benefit.value;
+                            }
+                            break;
 
                     }
                 });
@@ -857,7 +857,8 @@ var ResultsModel = {
         });
 
         Results.model.filteredProducts = finalProducts;
-        Results.model.travelFilteredProductsCount = finalProducts.length;
+				Results.model.travelFilteredProductsCount = finalProducts.length;
+				meerkat.modules.travelResults.setColVisibilityAndStylesByTravelType(destination === 'AUS');
 
         if (typeof Compare !== "undefined") Compare.applyFilters();
 
@@ -872,7 +873,6 @@ var ResultsModel = {
                 }
                 Results.pagination.gotoStart(true);
             }
-
         }
     },
 

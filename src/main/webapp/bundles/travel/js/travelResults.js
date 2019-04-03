@@ -547,6 +547,7 @@
 		rankingCallback: rankingCallback,
 		publishExtraTrackingEvents: publishExtraTrackingEvents,
 		invalidQuoteDueToDate: invalidQuoteDueToDate,
+		setColVisibilityAndStylesByTravelType: setColVisibilityAndStylesByTravelType
 	});
 
 })(jQuery);
