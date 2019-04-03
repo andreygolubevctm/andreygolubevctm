@@ -226,7 +226,7 @@ public class ProviderDao {
 
 			if (conn != null) {
 				stmt = dbSource.getConnection().prepareStatement(
-						"SELECT * FROM ctm.stylecode_providers WHERE verticalCode = ? AND stylecodeId = ? AND providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM ctm.stylecode_products WHERE productCat = ?) ORDER BY `Name`"
+						"SELECT * FROM ctm.stylecode_providers WHERE verticalCode = ? AND stylecodeId = ? AND Status != 'X' AND providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM ctm.stylecode_products WHERE productCat = ?) ORDER BY `Name`"
 				);
 
 				stmt.setString(1, verticalType);
