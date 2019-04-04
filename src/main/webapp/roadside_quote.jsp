@@ -25,7 +25,7 @@
 
 	<jsp:attribute name="navbar_outer">
         <div class="container">
-            <div class="row sortbar-container navbar-inverse">
+            <div class="sortbar-container navbar-inverse">
                 <ul class="sortbar-parent nav navbar-nav navbar-inverse col-sm-12 row">
                     <li class="visible-xs">
                         <a href="javascript:;" class="">
