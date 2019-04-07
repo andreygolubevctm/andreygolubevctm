@@ -126,11 +126,15 @@
 		}
 	}
 
-	function updateProductSummaryDetails(product, startDateString, displayMoreInfoLink){
+	function updateProductSummaryDetails(product, startDateString, displayMoreInfoLink){		
 		$policySummaryDetailsComponents.find(".name").text((product.info.providerName ? product.info.providerName : product.info.fundName) + " " + product.info.name);
 		$policySummaryDetailsComponents.find(".startDate").text(startDateString);
 		if (typeof product.hospital.inclusions !== 'undefined') {
-			$policySummaryDetailsComponents.find(".excess").html(product.hospital.inclusions.excess);
+			if(product.custom != 'undefined' && product.custom.reform.tab1 !== 'undefined' && product.custom.reform.tab1.excess) {
+				$policySummaryDetailsComponents.find(".excess").html(product.custom.reform.tab1.excess);
+			}else{
+				$policySummaryDetailsComponents.find(".excess").html(product.hospital.inclusions.excess);
+			}
 			$policySummaryDetailsComponents.find(".excessWaivers").html(product.hospital.inclusions.waivers);
 			$policySummaryDetailsComponents.find(".copayment").html(product.hospital.inclusions.copayment);
 		}
