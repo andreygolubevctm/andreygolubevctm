@@ -34,7 +34,7 @@ public class ProviderCodesDao {
 			if(conn != null) {
 
 				stmt = dbSource.getConnection().prepareStatement(
-					"SELECT providerCode FROM ctm.stylecode_providers WHERE verticalCode = ? AND stylecodeId = ? AND providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM ctm.stylecode_products WHERE productCat = ?) AND Status != 'X'"
+					"SELECT providerCode FROM ctm.stylecode_providers WHERE verticalCode = ? AND stylecodeId = ? AND providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM ctm.stylecode_products WHERE productCat = ?) AND Status != 'X' AND CURRENT_DATE BETWEEN EffectiveStart AND effectiveEnd"
 				);
 
 				stmt.setString(1, verticalType);
