@@ -23,7 +23,7 @@
 				<field_v2:currency xpath="${fieldXpath}"
 					required="true"
 					decimal="${false}"
-					minValue="120000"
+					minValue="150000"
 					maxValue="1500000"
 					title="The total cost to rebuild the home"
 					additionalAttributes="${analyticsAttr}" />
@@ -42,7 +42,7 @@
 
 	<jsp:body>
 		<form_v2:fieldset legend="">
-			
+
 					<div class="notLandlord">
 						<%-- Contents Cost --%>
 						<c:set var="fieldXpath" value="${xpath}/replaceContentsCost" />
@@ -71,9 +71,9 @@
 								additionalLabelAttributes="${analyticsAttr}" />
 						</form_v2:row>
 					</div>
-			
-			
-			
+
+
+
 		<div class="isLandlord">
 			<%-- Contents Cost --%>
 			<c:set var="fieldXpath" value="${xpath}/replaceContentsCost" />
