@@ -40,10 +40,10 @@
         <c:choose>
             <c:when test="${comparisonMode eq 'PHIO'}">
                 <c:set var="simplesCategoryVersion" value="health2016" />
-            </c:when>    
+            </c:when>
             <c:otherwise>
                 <c:set var="simplesCategoryVersion" value="health2018" />
-            </c:otherwise> 
+            </c:otherwise>
         </c:choose>
 
         <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure(simplesCategoryVersion)}" scope="request"  />
@@ -100,9 +100,14 @@
 	</jsp:attribute>
 
         <jsp:attribute name="progress_bar">
-          <div class="progress-bar-row collapse navbar-collapse">
-              <div class="container">
-                  <ul class="journeyProgressBar_v2"></ul>
+          <div class="progress-bar-row navbar-collapse">
+              <div class="container-fluid">
+                  <div class="row">
+                      <div class="progress-bar-bg"></div>
+                      <div class="container progress-bar-container">
+                        <ul class="journeyProgressBar_v2"></ul>
+                    </div>
+                  </div>
               </div>
           </div>
         </jsp:attribute>

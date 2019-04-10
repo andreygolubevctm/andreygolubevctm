@@ -427,7 +427,7 @@
                 if (event.isForward) {
                     $("#journeyEngineSlidesContainer").css('opacity', '0');
                     $('.results-pagination, .results-filters-frequency').addClass('invisible');
-    
+
                     meerkat.modules.journeyEngine.loadingShow("");
 
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
@@ -604,11 +604,11 @@
     // @todo review this during progress bar refactor
     function configureProgressBar(isJourney) {
         var labels = {
-                startStep : 'About<span class="hidden-xs"> You</span>',
-                benefitStep : '<span class="hidden-xs">Your </span>Cover',
-                contactStep : '<span class="hidden-xs">Your </span>Details',
-                resultsStep : 'Compare<span class="hidden-xs"> Cover</span>',
-                applyStep : 'Purchase<span class="hidden-xs"> Cover</span>'
+                startStep : 'About You',
+                benefitStep : 'Your Cover',
+                contactStep : 'Your Details',
+                resultsStep : 'Compare Cover',
+                applyStep : 'Purchase Cover'
             },
             barSteps = [
 	            {
@@ -630,7 +630,11 @@
 	            {
 		            label: labels.applyStep,
 		            navigationId: steps.applyStep.navigationId
-	            }
+	            },
+                {
+                    label: '',
+                    navigationId: steps.paymentStep.navigationId
+                }
             ],
             phase = isJourney ? 'journey' : 'application',
             progressBarSteps = {
@@ -640,6 +644,7 @@
 
         // Better progressBar just works...
         meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar[data-phase='+phase+']');
+        meerkat.modules.journeyProgressBar.setEndPadding()
         meerkat.modules.journeyProgressBar.configure(progressBarSteps[phase]);
     }
 

@@ -6,58 +6,113 @@
 	IT IS OVERRIDING THE EXISTING ONE. MAYBE THIS WILL BE SUCCESSFUL... MAYBE NOT
 	IF IT IS THEN WE WILL NEED TO RUN BOTH OR MIGRATE ALL VERTICALS OVER
  ******************************************** */
+
+.progress-bar-bg-confirmation {
+  width: 100%;
+  height: 40px;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cfefc2+0,c3e4cf+100 */
+  background: #cfefc2; /* Old browsers */
+  background: -moz-linear-gradient(left, #cfefc2 0%, #c3e4cf 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, #cfefc2 0%,#c3e4cf 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, #cfefc2 0%,#c3e4cf 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cfefc2', endColorstr='#c3e4cf',GradientType=1 ); /* IE6-9 */
+}
+
+//
+// journeyProgressBar
+// --------------------------------------------------
 .progress-bar-row {
-  border-top: 1px solid @body-bg;
+
+  .container-fluid {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+
   background-color: @body-bg;
-  margin-top: 30px;
   min-height: 26px;
+
+  .progress-bar-container {
+    height: 0;
+  }
   //
   // journeyProgressBar
   // --------------------------------------------------
-
   .journeyProgressBar_v2 {
+    position: relative;
+    top: -39px;
     list-style: none;
-    padding: 0 0 10px 0;
-    margin-bottom: @journeyProgressBar-margin-bottom;
-    margin-top: @journeyProgressBar-margin-top;
-    width: ~"calc(100% - 40px)";
-
-    ul {
-      counter-reset: section;
+    padding: 0;
+    height: 0;
+    @media (@sm) {
+      padding: 0 0 10px 0;
     }
+
+    margin-bottom: 0;
+
 
     li {
       white-space: nowrap;
-      counter-increment: section;
-      line-height: @journeyProgressBar-lineheight;
+
+      @media(min-width: @screen-md) {
+        counter-increment: section;
+      }
+
+      text-align: center;
+      line-height: 20px;
       display: inline-block;
-      font-size: @journeyProgressBar-size;
-      font-family: @font-family-theme-bold;
+      font-size: 13px;
+      @media (@sm) {
+        font-size: 14px;
+        line-height: 18px;
+      }
       position: relative;
-      height: 28px;
-      &.end{
+      height: 22px;
+      @media(@sm) {
+        height: 28px;
+      }
+      &.end {
         width: 1%;
         div { width: 0 }
       }
-      span {
+
+      div > span {
         margin-left: 13px;
+        position: relative;
+        top: 9px;
+      }
+    }
+
+    :not(.end) {
+      a, div {
+        &:before {
+          @media (min-width: @screen-md) {
+            content: counters(section, ".") "\A";
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+
+    .current {
+      a, div {
+        &:before {
+          background-color: @gray-base;
+        }
       }
     }
 
     a, div {
-      color: @journeyProgressBar-color;
+      font-weight: 600;
       text-decoration: none;
-      border-bottom: @journeyProgressBar-border-size @journeyProgressBar-border-style @journeyProgressBar-border-color;
       display: inline-block;
       text-indent: -9px;
       position: absolute;
-      left: 8px;
-      right: @journeyProgressBar-horizontal-push;
+      left: 9px;
+      right: -2px;
       height: 21px;
+
       &:before {
-        content: counters(section, ".") "\A";
-        border-radius: 50%;
-        border: @journeyProgressBar-border-size @journeyProgressBar-border-style;
+        border: 3px solid;
         font-size: 20px;
         display: block;
         float: left;
@@ -71,53 +126,75 @@
         padding-bottom: 7px;
         line-height: 1;
         text-align: center;
-        color: @journeyProgressBar-color;
-        background-color: #FFF;
+        background-color: transparent;
         box-sizing: border-box;
+        font-weight: 600;
+
+        @media(min-width: @screen-md) {
+          font-size: 12px;
+          margin-top: 4px;
+          padding: 5px 8px 7px 17px;
+        }
+
       }
     }
-    a{
-      &:focus{
+    a {
+      &:focus {
         outline: none;
       }
     }
-    .complete{
+    .complete {
       a, div {
-        color: @journeyProgressBar-color-complete;
-        border-color: @journeyProgressBar-border-color-complete;
-        border-bottom: @journeyProgressBar-border-size @journeyProgressBar-border-style;
+        color: @gray-base;
+        border-color: @gray-base;
+
+        &.progress-step-disabled {
+          color: @theme-default;
+          border-color: @theme-default;
+        }
+
         &:before {
-          content: "\e600";
-          font-family: 'framework_font';
-          padding: 7px;
-          padding-left: 16px;
-          color: @journeyProgressBar-separator-color-complete;
-          border-color: @journeyProgressBar-border-color-complete;
+          color: inherit;
+
+          @media(min-width: @screen-md) {
+            border-color: inherit;
+            background-color: transparent;
+            font-size: 12px;
+          }
+        }
+
+        > span {
+          margin-left: 13px;
+          position: relative;
+          top: 9px;
         }
       }
-      &.end{
-        a, div {
-          &:before{
-            color: @journeyProgressBar-separator-color-current;
 
+
+      &.end {
+        a, div {
+          &:before {
+            color: @journeyProgressBar-separator-color-current;
           }
         }
       }
     }
+
     .current {
       div {
         color: @journeyProgressBar-color-current;
         border-color: @journeyProgressBar-border-color-current;
-        &:before{
-          color: @journeyProgressBar-separator-color-current;
-          border-color: @journeyProgressBar-border-color-current;
+        &:before {
+          color: white;
+          border-color: @gray-base;
         }
       }
     }
+
     a {
       &:hover {
-        span{
-          color: @journeyProgressBar-color-hover;
+        span {
+          color: @theme-tertiary;
         }
       }
     }

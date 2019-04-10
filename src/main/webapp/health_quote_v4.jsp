@@ -124,23 +124,12 @@
 
                 <div class="progress-bar-row navbar-affix">
                   <competition:mobileFooter vertical="health"/>
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-9">
+                            <div class="progress-bar-bg"></div>
+                            <div class="container progress-bar-container">
                                 <ul class="journeyProgressBar" data-phase="journey"></ul>
                                 <ul class="journeyProgressBar" data-phase="application"></ul>
-                            </div>
-                            <div class="hidden-xs col-sm-3">
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you" data-slide-control="next"
-                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />><span class="hidden-md hidden-lg">Preferences</span><span class="hidden-sm">Insurance preferences</span> <span class="icon icon-arrow-right"></span></a>
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-insurance-preferences" data-slide-control="next"
-                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Next step <span class="icon icon-arrow-right"></span></a>
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices" data-slide-control="next"
-                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-proceed-to-payment" data-slide-control="next"
-                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Proceed to Payment <span class="icon icon-arrow-right"></span></a>
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-submit-application" data-slide-control="next"
-                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Submit Application <span class="icon icon-arrow-right"></span></a>
                             </div>
                         </div>
                     </div>

@@ -18,8 +18,8 @@
 
 			meerkat.modules.health.initProgressBar(true);
 
-			meerkat.modules.journeyProgressBar.setComplete();
-			meerkat.modules.journeyProgressBar.disable();
+            meerkat.modules.journeyProgressBar.setComplete();
+            meerkat.modules.journeyProgressBar.disable();
 
 			if(_.isObject(result) && _.has(result,'ConfirmationData')) {
 				result.data = result.ConfirmationData;

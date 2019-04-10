@@ -620,33 +620,37 @@
     function configureProgressBar() {
         // Changing the location of the progressBar for v2 only as it needs to be moved from its default location
         meerkat.modules.journeyProgressBar.changeTargetElement(".journeyProgressBar_v2");
-        //Better progressBar just works...
-        meerkat.modules.journeyProgressBar.setWidth(100);
-        meerkat.modules.journeyProgressBar.setNodeWidth(37);
-        meerkat.modules.journeyProgressBar.setEndPadding(false);
-        meerkat.modules.journeyProgressBar.setEndCollapsed(true);
-        meerkat.modules.journeyProgressBar.configure([
+        var labels = {
+            startStep : 'About<span class="hidden-xs"> You</span>',
+            benefitStep : '<span class="hidden-xs">Your </span>Cover',
+            contactStep : '<span class="hidden-xs">Your </span>Details',
+            resultsStep : 'Compare<span class="hidden-xs"> Cover</span>',
+            applyStep : 'Purchase<span class="hidden-xs"> Cover</span>'
+        };
+        var barSteps = [
             {
-                label: 'About you',
+                label: labels.startStep,
                 navigationId: steps.startStep.navigationId
             },
             {
-                label: 'Your cover',
+                label: labels.benefitStep,
                 navigationId: steps.benefitsStep.navigationId
             },
             {
-                label: 'Your details',
+                label: labels.contactStep,
                 navigationId: steps.contactStep.navigationId
             },
             {
-                label: 'Compare',
+                label: labels.resultsStep,
                 navigationId: steps.resultsStep.navigationId
             },
             {
-                label: 'Purchase',
+                label: labels.applyStep,
                 navigationId: steps.applyStep.navigationId
             }
-        ]);
+        ];
+
+        meerkat.modules.journeyProgressBar.configure(barSteps);
 
     }
 

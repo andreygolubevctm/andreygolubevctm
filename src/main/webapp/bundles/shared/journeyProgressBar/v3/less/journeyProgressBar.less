@@ -1,22 +1,46 @@
 @journeyProgressBar-color-hover: lighten(@theme-tertiary, 40%);
 
+
+.progress-bar-bg {
+  width: 0%;
+  height: 40px;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cfefc2+0,c3e4cf+100 */
+  background: #cfefc2; /* Old browsers */
+  background: -moz-linear-gradient(left, #cfefc2 0%, #c3e4cf 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, #cfefc2 0%,#c3e4cf 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, #cfefc2 0%,#c3e4cf 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cfefc2', endColorstr='#c3e4cf',GradientType=1 ); /* IE6-9 */
+  border-top-right-radius: 9999px;
+  border-bottom-right-radius: 9999px;
+}
+
 //
 // journeyProgressBar
 // --------------------------------------------------
 .progress-bar-row {
-  background-color: @body-bg;
-  padding: 5px 0 0 0;
-  @media (@sm) {
-    padding: 5px 0 20px 0;
+
+
+  .container-fluid {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
   }
+
+  background-color: @body-bg;
   min-height: 26px;
+
+  .progress-bar-container {
+    height: 0;
+  }
 
   //
   // journeyProgressBar
   // --------------------------------------------------
   .journeyProgressBar {
+    position: relative;
+    top: -39px;
     list-style: none;
     padding: 0;
+    height: 0;
     @media (@sm) {
       padding: 0 0 10px 0;
     }
@@ -24,8 +48,8 @@
     margin-bottom: 0;
 
     li {
-      white-space: nowrap;
-      
+      @white-space: nowrap;
+
       @media(min-width: @screen-md) {
         counter-increment: section;
       }
@@ -47,8 +71,11 @@
         width: 1%;
         div { width: 0 }
       }
+
       div > span {
         margin-left: 13px;
+        position: relative;
+        top: 9px;
       }
     }
 
@@ -63,14 +90,22 @@
       }
     }
 
+    .current {
+      a, div {
+        &:before {
+          background-color: @gray-base;
+        }
+      }
+    }
+
     a, div {
       color: @journeyProgressBar-color;
+      font-weight: @journeyProgressBar-font-weight;
       text-decoration: none;
-      border-bottom: @journeyProgressBar-border-size @journeyProgressBar-border-style @journeyProgressBar-border-color;
       display: inline-block;
       text-indent: -9px;
       position: absolute;
-      left: 8px;
+      left: 9px;
       right: @journeyProgressBar-horizontal-push;
       height: 21px;
 
@@ -90,8 +125,9 @@
         line-height: 1;
         text-align: center;
         color: @journeyProgressBar-color;
-        background-color: #ffffff;
+        background-color: transparent;
         box-sizing: border-box;
+        font-weight: @journeyProgressBar-font-weight;
 
         @media(min-width: @screen-md) {
           font-size: 12px;
@@ -99,6 +135,11 @@
           padding: 5px 8px 7px 17px;
         }
 
+        @media(@xs-only) {
+          text-indent: 0;
+          position: relative;
+          left: -1px;
+        }
       }
     }
     a {
@@ -110,23 +151,24 @@
       a, div {
         color: @journeyProgressBar-color-complete;
         border-color: @journeyProgressBar-border-color-complete;
-        border-bottom: @journeyProgressBar-border-size @journeyProgressBar-border-style;
         &:before {
           color: @journeyProgressBar-separator-color-complete;
 
           @media(min-width: @screen-md) {
-            content: "\e931";
-            font-family: 'framework_font';
-            padding: 6px;
-            padding-left: 16px;
             border-color: @journeyProgressBar-border-color-complete;
-            background-color: @journeyProgressBar-border-color-complete;
-            color: #ffffff;
+            background-color: transparent;
             font-size: 12px;
           }
+        }
 
+        > span {
+          margin-left: 13px;
+          position: relative;
+          top: 9px;
         }
       }
+
+
       &.end {
         a, div {
           &:before {
@@ -140,8 +182,23 @@
         color: @journeyProgressBar-color-current;
         border-color: @journeyProgressBar-border-color-current;
         &:before {
-          color: @journeyProgressBar-separator-color-current;
-          border-color: @journeyProgressBar-border-color-current;
+          color: @white;
+          border-color: @gray-base;
+        }
+
+        @media(@xs-only) {
+          text-indent: 0;
+          > span {
+            border-radius: 50%;
+            border-color: @gray-base;
+            background-color: @gray-base;
+            color: @white;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            top: 4px;
+            left: 10px;
+          }
         }
       }
     }

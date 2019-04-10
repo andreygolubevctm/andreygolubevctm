@@ -27,6 +27,9 @@
 		$(document).ready(function() {
 			$target = $(".journeyProgressBar_v2");
 		});
+
+		window.addEventListener('resize', setProgressBarAndStepWidth);
+
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit( step ){
 			currentStepNavigationId = step.navigationId;
 			$(document).ready(function() {
@@ -117,7 +120,13 @@
 				closeTag = 'a';
 			}
 
-			html += '<li class="' + className + '"><' + openTag + '><span>' + progressBarStep.label + '</span></' + closeTag + '></li>';
+			if (isDisabled) {
+				openTag += ' class="progress-step-disabled"'
+			}
+
+			if (progressBarStep.label != '') {
+				html += '<li class="' + className + '"><' + openTag + '><span class="hidden-xs">' + progressBarStep.label + '</span><span class="visible-xs">' + (index+1) + '</span></' + closeTag + '></li>';
+			}
 
 			if( index == lastIndex && includeEndPadding ){
 				className = "";
@@ -130,15 +139,63 @@
 
 		$target.html( html );
 
-		$target.find('li').not('.end').css("width", progressBarElementWidthPercentage + "%");
+		setProgressBarAndStepWidth();
+
 		if (includeEndPadding) { $target.find('li:last-child').css("width", "");}
 
-
 		if(fireEvent){
-			meerkat.messaging.publish(moduleEvents.INIT);	
+			meerkat.messaging.publish(moduleEvents.INIT);
 		}
 
 	}
+
+	function setProgressBarAndStepWidth() {
+		var visibleSteps = progressBarSteps.filter(function(step) { return step.label !== ''}).length;
+		var stepNumber = $target.find('li.complete').length + 1;
+		if (stepNumber > visibleSteps || !stepNumber) {
+			stepNumber = visibleSteps;
+		}
+
+        var innerContainerWidth  = $target.closest('.container').width();
+        var outerContainerWidth = $target.closest('.container-fluid').innerWidth();
+        var preBar = (outerContainerWidth - innerContainerWidth) / 2;
+        var stepWidth = (innerContainerWidth / visibleSteps) - 9; // fixes issues with 110% zoom & simples layout
+        if (innerContainerWidth === outerContainerWidth) {
+        	stepWidth = stepWidth - 10;
+		}
+
+
+        var progressBarWidth = preBar + (stepWidth*stepNumber);
+        if (currentStepNavigationId === 'payment') {
+        	// 'half step' - add half a stepWidth to the progress bar
+			progressBarWidth = progressBarWidth + (stepWidth / 2);
+		}
+
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            progressBarWidth += 20;
+        }
+
+        console.table({
+			stepNumber: stepNumber,
+			outerContainerWidth: outerContainerWidth,
+			innerContainerWidth: innerContainerWidth,
+			preBar: preBar,
+			stepWidth: stepWidth,
+			progressBarWidth: progressBarWidth,
+			progressBarSteps: progressBarSteps,
+			visibleSteps: visibleSteps
+		});
+
+        if (progressBarWidth >= outerContainerWidth) {
+        	progressBarWidth = outerContainerWidth;
+            $target.closest('.row').find('.progress-bar-bg').css("border-radius-top", '0px');
+            $target.closest('.row').find('.progress-bar-bg').css("border-radius-bottom", '0px');
+		}
+
+        $target.closest('.row').find('.progress-bar-bg').css("width", progressBarWidth);
+        $target.find('li').not('.end').css("width", stepWidth);
+    }
+
 	function showSteps() {
 		return progressBarSteps;
 	}
