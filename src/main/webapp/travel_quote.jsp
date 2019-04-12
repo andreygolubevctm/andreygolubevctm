@@ -75,7 +75,7 @@
 								<a href="javascript:;" data-sort-type="benefits.luggage" data-sort-dir="desc"><span class="luggageColText results-benefits-luggage">Luggage</span></a>
 							</li>
 							<li class="col-sm-2 col-lg-1 rental-vehicle-col">
-								<a href="javascript:;" data-sort-type="benefits.rentalVehicle" data-sort-dir="desc"><span class="RentalVehicleColText results-benefits-rental-vehicle">Rental Vehicle <span class="">Excess</span></span></a>
+								<a href="javascript:;" data-sort-type="benefits.rentalVehicle" data-sort-dir="desc"><span class="RentalVehicleColText results-benefits-rental-vehicle">Rental Vehicle <span class="">Excess Cover</span></span></a>
 							</li>
 							<li class="col-sm-2 col-lg-2 active">
 								<a href="javascript:;" data-sort-type="price.premium" data-sort-dir="asc"><span>Price</span></a>

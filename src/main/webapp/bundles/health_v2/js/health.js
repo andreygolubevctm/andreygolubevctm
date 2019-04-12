@@ -339,6 +339,7 @@
                         });
                     }, 1000);
                 }
+                meerkat.modules.healthAboutYou.setRabdQuestion();
                 incrementTranIdBeforeEnteringSlide();
             },
             onAfterEnter: function enteredContactStep(event) {

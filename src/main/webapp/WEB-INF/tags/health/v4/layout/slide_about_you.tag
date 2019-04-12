@@ -35,20 +35,6 @@
                         <%-- PROVIDER TESTING --%>
                         <health_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" />
 
-
-                        <c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
-
-                        <c:choose>
-                        <c:when test="${onlineHealthReformMessaging eq 'Y'}">
-                            <div class="reform-messaging">
-                                <h3 class="reform-messaging-title">A few important things before you get started.</h3>
-                                To align with the Australian government health insurance reforms that will come into effect from April 2019, we have made it simple for you to find a health insurance policy that suits your needs.                                
-                                <br>
-                                <br>
-                                Each quote we provide includes details on your cover options leading up to April 2019 as well as beyond, allowing you to make the choice that's right for you.                            </div>
-                        </c:when>
-                        </c:choose>
-
                         <c:set var="legend">
                             <c:choose>
                                 <c:when test="${isRememberMe and hasUserVisitedInLast30Minutes}">

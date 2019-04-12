@@ -53,7 +53,12 @@
 	<div class="bridgingContainer"></div>
 	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
 
-		<div class="travelResultsDisclaimerHeader"></div>
+    <div id="travel-banner" class="travel-disclaimer-banner">
+        <div class="travel-disclaimer-banner-icon"><span class="icon icon-info"></span></div>
+        <div class="travelResultsDisclaimerHeader"></div>
+        <div class="travel-disclaimer-banner-dismiss"></div>
+    </div>
+		<div class=""></div>
 
 		<div class="hidden-xs resultsSummaryContainer" data-livechat="target">
 			<span class="hidden-xs resultsSummaryHeading"></span>

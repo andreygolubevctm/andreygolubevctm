@@ -38,14 +38,12 @@
             meerkat.modules.healthCoverDetails.setIncomeBase(true);
 			meerkat.modules.healthTiers.setTiers(true);
 
-			_toggleAgeBasedDiscountQuestion('primary');
-
-			if (meerkat.modules.healthChoices.hasSpouse()) {
-					_toggleAgeBasedDiscountQuestion('partner');
-			}
-
 			eventSubscriptions();
 			toggleMlsMessage();
+		});
+
+		$(window).load(function() {
+	 		setRabdQuestions();
 		});
 	}
 
@@ -198,7 +196,20 @@
 
 		if(!dob) return;
 
-		var curDate = meerkat.site.serverDate;
+		var applicationDate = $('#health_searchDate').val();
+		var applicationDateString = ''; 
+
+		if(applicationDate) {
+				var dateSplit = applicationDate.split('/');
+				if(dateSplit.length == 3) {
+						var year = dateSplit[2];
+						var month = dateSplit[1];
+						var day = dateSplit[0];
+						applicationDateString = year + '-' + month + '-' + day;
+				}
+		}
+
+		var curDate = applicationDateString ? new Date(applicationDateString) : meerkat.site.serverDate;
 		var privateHospitalValue = $primaryCurrentCover.find('input').filter(':checked').val();
 
 		if(applicant === 'partner') {
@@ -206,6 +217,12 @@
 		}
 
 		var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
+
+		if(meerkat.modules.healthBenefitsStep.getCoverType() === 'e') {
+			$abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+			$abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+			return;
+		}
 
 		if(age >= 18 && age < 45 && privateHospitalValue === 'Y') {
 			$abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
@@ -349,11 +366,20 @@
 		return $('#health_situation_healthCvr').val();
 	}
 
+	function setRabdQuestions() {
+		_toggleAgeBasedDiscountQuestion('primary');
+
+		if (meerkat.modules.healthChoices.hasSpouse()) {
+				_toggleAgeBasedDiscountQuestion('partner');
+		}
+	}
+
 	meerkat.modules.register('healthAboutYou', {
 		init: init,
 		getPartnerCurrentCover : getPartnerCurrentCover,
 		getPrimaryCurrentCover : getPrimaryCurrentCover,
-		getSituation : getSituation
+		getSituation : getSituation,
+		setRabdQuestions: setRabdQuestions
 	});
 
 })(jQuery);

@@ -534,6 +534,8 @@
                     meerkat.modules.healthAGRModal.onBeforeEnterApply();
                     meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
+
+                meerkat.modules.healthApplyStep.setRabdQuestions();
             },
             onAfterEnter: function afterEnterApplyStep(event) {
                 meerkat.modules.coupon.dealWithAddedCouponHeight();
