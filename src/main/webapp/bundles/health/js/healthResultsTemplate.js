@@ -230,7 +230,7 @@
             if(changeDate) {
                 var timeToCheck = getApplicationDateTime();
 
-                afterChangeDate = changeDate.getTime() < timeToCheck; 
+                afterChangeDate = changeDate.getTime() <= timeToCheck; 
             }
     
             ft.displayItem = ft.type != 'section';
@@ -457,7 +457,7 @@
         var dateParsed = obj.custom.reform ? parseChangeDate(obj.custom.reform.changeDate) : null;
         var curDateTime = getApplicationDateTime();
 
-        if(!dateParsed || curDateTime > dateParsed.getTime()) {
+        if(!dateParsed || curDateTime >= dateParsed.getTime()) {
             return '';
         }
 
