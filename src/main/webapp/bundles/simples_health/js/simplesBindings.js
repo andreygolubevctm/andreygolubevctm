@@ -332,8 +332,9 @@
         else {
             $body
                 .removeClass('inbound trial')
-                .removeClass('nextgen')
+	            .toggleClass('nextgen', healthContactTypeSelection === 'nextgenOutbound')
                 .addClass('outbound');
+
 
             var contatTypeTrialRegex = new RegExp('trial','i');
             var isTrialContactType = contatTypeTrialRegex.test(healthContactTypeSelection);
@@ -343,20 +344,22 @@
             }
 
             if ((healthContactTypeSelection === 'outbound') || isTrialContactType) {
-                //contact type is set to outbound when Outbound or a trial is selected
-                $healthContactType.val('outbound');
+	            //contact type is set to outbound when Outbound or a trial is selected
+	            $healthContactType.val('outbound');
 
-                if (healthContactTypeSelection === 'outbound') {
-                    $healthContactTypeTrial.val('');
-                } else {
-                    $healthContactTypeTrial.val($healthContactTypeSelectOption.filter(':selected').text().trim());
-                }
-
+	            if (healthContactTypeSelection === 'outbound') {
+		            $healthContactTypeTrial.val('');
+	            } else {
+		            $healthContactTypeTrial.val($healthContactTypeSelectOption.filter(':selected').text().trim());
+	            }
+            } else if(healthContactTypeSelection === 'nextgenOutbound') {
+	            $healthContactType.val('outbound');
+	            $healthContactTypeTrial.val('nextgen');
             } else {
                 $healthContactTypeTrial.val('');
 
                 if (healthContactTypeSelection === 'webchat') {
-                    $healthContactType.val('webchat');
+	                $healthContactType.val('webchat');
                 } else {
                     // cli outbound
                     $healthContactType.val('cli');
