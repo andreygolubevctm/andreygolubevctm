@@ -214,7 +214,7 @@
 
 	<c:if test="${coverType == 'Hospital'}">
 		<simples:dialogue id="50" className="simples-dialogue-extras-cover" vertical="health" />
-		<simples:dialogue id="119" className="simples-dialogue-extras-cover" vertical="health" />
+		<simples:dialogue id="119" className="simples-dialogue-extras-cover simples-dialog-nextgenoutbound" vertical="health" />
 		<simples:dialogue id="82" className="simples-dialogue-extras-cover" vertical="health" />
 	</c:if>
 </c:if>

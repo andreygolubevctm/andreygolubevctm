@@ -317,6 +317,8 @@
             $body
                 .removeClass('outbound trial')
                 .removeClass('nextgen')
+	            .removeClass('nextgenoutbound')
+	            .removeClass('nextgencli')
                 .addClass('inbound');
         }
         else if(healthContactTypeSelection === 'nextgen') {
@@ -330,9 +332,10 @@
         }
         // Outbound
         else {
+	        var healthContactTypeSelectionStr = healthContactTypeSelection.toLowerCase();
             $body
-                .removeClass('inbound trial')
-	            .toggleClass('nextgen', healthContactTypeSelection === 'nextgenOutbound')
+                .removeClass('inbound trial nextgen nextgenoutbound nextgencli')
+	            .toggleClass(healthContactTypeSelectionStr, isOutboundNextGenContactType(healthContactTypeSelection))
                 .addClass('outbound');
 
 
@@ -352,9 +355,10 @@
 	            } else {
 		            $healthContactTypeTrial.val($healthContactTypeSelectOption.filter(':selected').text().trim());
 	            }
-            } else if(healthContactTypeSelection === 'nextgenOutbound') {
+            } else if(isOutboundNextGenContactType(healthContactTypeSelection)) {
+                $body.addClass(healthContactTypeSelectionStr);
 	            $healthContactType.val('outbound');
-	            $healthContactTypeTrial.val('nextgen');
+	            $healthContactTypeTrial.val(healthContactTypeSelectionStr);
             } else {
                 $healthContactTypeTrial.val('');
 
@@ -367,6 +371,10 @@
             }
 
         }
+    }
+
+    function isOutboundNextGenContactType(type) {
+        return _.indexOf(['nextgenoutbound', 'nextgencli'], type.toLowerCase()) >= 0;
     }
 
     function getRawCallType() {
@@ -404,7 +412,7 @@
         // Set the calltype variables
         callType = getCallType();
         if (!_.isEmpty(callType)) {
-            isValidCallType = _.indexOf(['outbound','inbound','cli', 'nextgen'],callType) >= 0;
+            isValidCallType = _.indexOf(['outbound','inbound','cli','nextgen','nextgenoutbound','nextgencli'], callType) >= 0;
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
@@ -449,7 +457,7 @@
 	// Toggle visibility on referral call dialogs based on if NOT inbound call
 	function toggleReferralCallDialog() {
     	var callType = getRawCallType();
-    	var validCallType = !_.isEmpty(callType) && callType !== 'inbound' && callType !== 'nextgen';
+    	var validCallType = !_.isEmpty(callType) && _.indexOf(['inbound','nextgen','nextgenoutbound','nextgencli'], callType) < 0;
 		$referralCallCheckboxDialogue.toggle(validCallType);
 		if(!validCallType && $referralCallCheckbox.is(':checked')) {
 			$referralCallCheckbox.prop("checked", null).trigger("change");
@@ -487,7 +495,7 @@
         } else {
             $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
             $dialogue36.toggle(isInbound);
-            if (brandCodeIsCtm && (callType === "trial" || callType === "nextgen")) {
+            if (brandCodeIsCtm && _.indexOf(["trial","nextgen","nextgenoutbound","nextgencli"], callType) >= 0) {
                 $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(true);
             }
         }
