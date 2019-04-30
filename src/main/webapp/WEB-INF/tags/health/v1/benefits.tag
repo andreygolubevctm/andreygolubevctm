@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <simples:dialogue id="46" vertical="health" />
-                        <simples:dialogue id="118" vertical="health" />
+                        <simples:dialogue id="118" vertical="health" className="simples-dialog-nextgenoutbound" />
                     </div>
                 </div>
 

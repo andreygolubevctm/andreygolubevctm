@@ -538,34 +538,32 @@
     }
 
     function toggleBenefitsDialogue() {
-        var $hospitalScripts = $('.simples-dialogue-hospital-cover'),
+	    var $body = $('body'),
+            $hospitalScripts = $('.simples-dialogue-hospital-cover'),
             $hospitalNonPublic = $hospitalScripts.filter('.classification-nonPublic'),
             $hospitalPublic = $hospitalScripts.filter('.classification-public'),
-            $extrasScripts = $('.simples-dialogue-extras-cover'),
             selectedProduct = Results.getSelectedProduct(),
             isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'hospital') &&
                 _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public';
 
+	    $body.removeClass('cover-type-c cover-type-h cover-type-e');
+
         switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
-                $hospitalScripts.show();
+                $body.addClass('cover-type-c');
                 $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
                 $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
-                $extrasScripts.show();
                 break;
             case 'h':
-                $hospitalScripts.show();
-                $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
+	            $body.addClass('cover-type-h');
+                 $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
                 $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
-                $extrasScripts.hide();
                 break;
             case 'e':
-                $hospitalScripts.hide();
-                $extrasScripts.show();
+	            $body.addClass('cover-type-e');
                 break;
             default:
-                $hospitalScripts.hide();
-                $extrasScripts.hide();
+                // ignore
                 break;
         }
     }
