@@ -377,6 +377,11 @@
         return _.indexOf(['nextgenoutbound', 'nextgencli'], type.toLowerCase()) >= 0;
     }
 
+    function isContactTypeNextGenOutbound() {
+        var $type = $healthContactTypeField.val() || "";
+        return $type.toLowerCase() === "nextgenoutbound";
+    }
+
     function getRawCallType() {
         var healthContactTypeSelection = $healthContactTypeField.val();
         var callTypeToBeReturned = $healthContactTypeSelectOption.is(':selected') ? (healthContactTypeSelection != "" ? healthContactTypeSelection : null) : null;
@@ -542,29 +547,43 @@
             $hospitalScripts = $('.simples-dialogue-hospital-cover'),
             $hospitalNonPublic = $hospitalScripts.filter('.classification-nonPublic'),
             $hospitalPublic = $hospitalScripts.filter('.classification-public'),
+		    $extrasScripts = $('.simples-dialogue-extras-cover'),
             selectedProduct = Results.getSelectedProduct(),
             isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'hospital') &&
                 _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public';
 
-	    $body.removeClass('cover-type-c cover-type-h cover-type-e');
-
-        switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
+	    switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
-                $body.addClass('cover-type-c');
+	            toggleCoverTypeScripts($hospitalScripts, true);
                 $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
                 $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
+	            toggleCoverTypeScripts($extrasScripts, true);
                 break;
             case 'h':
-	            $body.addClass('cover-type-h');
-                 $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
-                $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
+	            toggleCoverTypeScripts($hospitalScripts, true);
+	            $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
+	            $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
+	            toggleCoverTypeScripts($extrasScripts, false);
                 break;
             case 'e':
-	            $body.addClass('cover-type-e');
+	            toggleCoverTypeScripts($hospitalScripts, false);
+	            toggleCoverTypeScripts($extrasScripts, true);
                 break;
             default:
-                // ignore
+	            toggleCoverTypeScripts($hospitalScripts, false);
+	            toggleCoverTypeScripts($extrasScripts, false);
                 break;
+        }
+    }
+
+    function toggleCoverTypeScripts($elements, show) {
+        $elements.hide();
+        if(show) {
+	        if(isContactTypeNextGenOutbound()) {
+                $elements.filter('.simples-dialog-nextgenoutbound').show();
+	        } else {
+		        $elements.not('.simples-dialog-nextgenoutbound').show();
+            }
         }
     }
 

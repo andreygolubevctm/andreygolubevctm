@@ -85,8 +85,6 @@
             <simples:dialogue id="116" vertical="health" className="simples-dialog-nextgenoutbound" />
             <simples:dialogue id="122" vertical="health" className="simples-dialog-nextgencli" />
             <simples:dialogue id="49" vertical="health" />
-            <simples:dialogue id="117" vertical="health" className="simples-dialog-nextgenoutbound" />
-            <simples:dialogue id="123" vertical="health" className="simples-dialog-nextgencli" />
             <simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
             <simples:dialogue id="36" vertical="health" mandatory="true" className="simples-dialog-inbound show-nextgen" />
 
