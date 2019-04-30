@@ -64,6 +64,12 @@
 }
 
 .simples {
+
+	.simples-dialogue-hospital-cover,
+	.simples-dialogue-extras-cover {
+		display: none;
+	}
+
 	.simples-dialogue-70,
 	.simples-dialogue-71 {
 		a {
@@ -73,12 +79,21 @@
 			font-weight:bold;
 		}
 	}
+	.simples-dialogue-49,
+	.simples-dialogue-52,
+	.simples-dialogue-63 {
+		display:block;
+	}
 
-	.simples-dialog-nextgen {
+	.simples-dialog-nextgen,
+	.simples-dialog-nextgenoutbound,
+	.simples-dialog-nextgencli {
 		display: none;
 	}
 
-	&.nextgen {
+	&.nextgen,
+	&.nextgenoutbound,
+	&.nextgencli {
 		&[data-step=start] {
 			#pageContent {
 				background-color: whitesmoke;
@@ -94,21 +109,47 @@
 
 		.simples-dialog-inbound {
 			&.show-nextgen {
-				display: block !important;
+				display: none;
 			}
 
 			display: none;
 		}
 
-		.simples-dialog-outbound {
+		.simples-dialog-outbound,
+		.simples-dialog-cli,
+		.simples-dialog-nextgen,
+		.simples-dialog-nextgenoutbound,
+		.simples-dialog-nextgencli,
+		.simples-dialogue-63,
+		.simples-dialogue-49,
+		.simples-dialogue-52
+		{
 			display: none;
 		}
-
-		.simples-dialog-cli {
-			display: none;
+	}
+	&.nextgen {
+		.simples-dialog-inbound {
+			&.show-nextgen {
+				display: block !important;
+			}
 		}
-
-		.simples-dialog-nextgen {
+		.simples-dialogue-63,
+		.simples-dialog-nextgen,
+		.simples-dialogue-49,
+		.simples-dialogue-52 {
+			display: block;
+		}
+	}
+	&.nextgenoutbound {
+		.simples-dialog-nextgenoutbound {
+			display: block;
+		}
+		.simples-dialogue-48 {
+			display: none !important;
+		}
+	}
+	&.nextgencli {
+		.simples-dialog-nextgencli {
 			display: block;
 		}
 	}
