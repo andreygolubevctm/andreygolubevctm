@@ -49,6 +49,7 @@
     <jsp:body>
 
         <simples:dialogue id="52" vertical="health" />
+        <simples:dialogue id="120" vertical="health" className="simples-dialog-nextgenoutbound" />
 
         <c:set var="subText" value="" />
         <c:if test="${not callCentre}">

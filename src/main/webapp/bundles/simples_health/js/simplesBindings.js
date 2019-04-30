@@ -317,6 +317,8 @@
             $body
                 .removeClass('outbound trial')
                 .removeClass('nextgen')
+	            .removeClass('nextgenoutbound')
+	            .removeClass('nextgencli')
                 .addClass('inbound');
         }
         else if(healthContactTypeSelection === 'nextgen') {
@@ -330,10 +332,12 @@
         }
         // Outbound
         else {
+	        var healthContactTypeSelectionStr = healthContactTypeSelection.toLowerCase();
             $body
-                .removeClass('inbound trial')
-                .removeClass('nextgen')
+                .removeClass('inbound trial nextgen nextgenoutbound nextgencli')
+	            .toggleClass(healthContactTypeSelectionStr, isOutboundNextGenContactType(healthContactTypeSelection))
                 .addClass('outbound');
+
 
             var contatTypeTrialRegex = new RegExp('trial','i');
             var isTrialContactType = contatTypeTrialRegex.test(healthContactTypeSelection);
@@ -343,20 +347,23 @@
             }
 
             if ((healthContactTypeSelection === 'outbound') || isTrialContactType) {
-                //contact type is set to outbound when Outbound or a trial is selected
-                $healthContactType.val('outbound');
+	            //contact type is set to outbound when Outbound or a trial is selected
+	            $healthContactType.val('outbound');
 
-                if (healthContactTypeSelection === 'outbound') {
-                    $healthContactTypeTrial.val('');
-                } else {
-                    $healthContactTypeTrial.val($healthContactTypeSelectOption.filter(':selected').text().trim());
-                }
-
+	            if (healthContactTypeSelection === 'outbound') {
+		            $healthContactTypeTrial.val('');
+	            } else {
+		            $healthContactTypeTrial.val($healthContactTypeSelectOption.filter(':selected').text().trim());
+	            }
+            } else if(isOutboundNextGenContactType(healthContactTypeSelection)) {
+                $body.addClass(healthContactTypeSelectionStr);
+	            $healthContactType.val('outbound');
+	            $healthContactTypeTrial.val(healthContactTypeSelectionStr);
             } else {
                 $healthContactTypeTrial.val('');
 
                 if (healthContactTypeSelection === 'webchat') {
-                    $healthContactType.val('webchat');
+	                $healthContactType.val('webchat');
                 } else {
                     // cli outbound
                     $healthContactType.val('cli');
@@ -364,6 +371,15 @@
             }
 
         }
+    }
+
+    function isOutboundNextGenContactType(type) {
+        return _.indexOf(['nextgenoutbound', 'nextgencli'], type.toLowerCase()) >= 0;
+    }
+
+    function isContactTypeNextGenOutbound() {
+        var $type = $healthContactTypeField.val() || "";
+        return $type.toLowerCase() === "nextgenoutbound";
     }
 
     function getRawCallType() {
@@ -401,7 +417,7 @@
         // Set the calltype variables
         callType = getCallType();
         if (!_.isEmpty(callType)) {
-            isValidCallType = _.indexOf(['outbound','inbound','cli', 'nextgen'],callType) >= 0;
+            isValidCallType = _.indexOf(['outbound','inbound','cli','nextgen','nextgenoutbound','nextgencli'], callType) >= 0;
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
@@ -446,7 +462,7 @@
 	// Toggle visibility on referral call dialogs based on if NOT inbound call
 	function toggleReferralCallDialog() {
     	var callType = getRawCallType();
-    	var validCallType = !_.isEmpty(callType) && callType !== 'inbound' && callType !== 'nextgen';
+    	var validCallType = !_.isEmpty(callType) && _.indexOf(['inbound','nextgen','nextgenoutbound','nextgencli'], callType) < 0;
 		$referralCallCheckboxDialogue.toggle(validCallType);
 		if(!validCallType && $referralCallCheckbox.is(':checked')) {
 			$referralCallCheckbox.prop("checked", null).trigger("change");
@@ -484,7 +500,7 @@
         } else {
             $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
             $dialogue36.toggle(isInbound);
-            if (brandCodeIsCtm && (callType === "trial" || callType === "nextgen")) {
+            if (brandCodeIsCtm && _.indexOf(["trial","nextgen","nextgenoutbound","nextgencli"], callType) >= 0) {
                 $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(true);
             }
         }
@@ -527,35 +543,47 @@
     }
 
     function toggleBenefitsDialogue() {
-        var $hospitalScripts = $('.simples-dialogue-hospital-cover'),
+	    var $body = $('body'),
+            $hospitalScripts = $('.simples-dialogue-hospital-cover'),
             $hospitalNonPublic = $hospitalScripts.filter('.classification-nonPublic'),
             $hospitalPublic = $hospitalScripts.filter('.classification-public'),
-            $extrasScripts = $('.simples-dialogue-extras-cover'),
+		    $extrasScripts = $('.simples-dialogue-extras-cover'),
             selectedProduct = Results.getSelectedProduct(),
             isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'hospital') &&
                 _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public';
 
-        switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
+	    switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
-                $hospitalScripts.show();
+	            toggleCoverTypeScripts($hospitalScripts, true);
                 $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
                 $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
-                $extrasScripts.show();
+	            toggleCoverTypeScripts($extrasScripts, true);
                 break;
             case 'h':
-                $hospitalScripts.show();
-                $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
-                $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
-                $extrasScripts.hide();
+	            toggleCoverTypeScripts($hospitalScripts, true);
+	            $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
+	            $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
+	            toggleCoverTypeScripts($extrasScripts, false);
                 break;
             case 'e':
-                $hospitalScripts.hide();
-                $extrasScripts.show();
+	            toggleCoverTypeScripts($hospitalScripts, false);
+	            toggleCoverTypeScripts($extrasScripts, true);
                 break;
             default:
-                $hospitalScripts.hide();
-                $extrasScripts.hide();
+	            toggleCoverTypeScripts($hospitalScripts, false);
+	            toggleCoverTypeScripts($extrasScripts, false);
                 break;
+        }
+    }
+
+    function toggleCoverTypeScripts($elements, show) {
+        $elements.hide();
+        if(show) {
+	        if(isContactTypeNextGenOutbound()) {
+                $elements.filter('.simples-dialog-nextgenoutbound').show();
+	        } else {
+		        $elements.not('.simples-dialog-nextgenoutbound').show();
+            }
         }
     }
 
