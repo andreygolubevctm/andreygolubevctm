@@ -218,6 +218,7 @@
             toggleReferralCallDialog();
             toggleWebChatDialog();
             toggleAfricaCompDialog();
+	        toggleBenefitsDialogue();
             cleanupOptins();
         });
         // Handle callback checkbox 68
@@ -579,10 +580,10 @@
     function toggleCoverTypeScripts($elements, show) {
         $elements.hide();
         if(show) {
-	        if(isContactTypeNextGenOutbound()) {
+            if(isContactTypeNextGenOutbound()) {
                 $elements.filter('.simples-dialog-nextgenoutbound').show();
-	        } else {
-		        $elements.not('.simples-dialog-nextgenoutbound').show();
+            } else {
+                $elements.not('.simples-dialog-nextgenoutbound').show();
             }
         }
     }
