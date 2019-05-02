@@ -375,6 +375,7 @@
     }
 
     function isOutboundNextGenContactType(type) {
+        type = type || $healthContactTypeField.val() || "";
         return _.indexOf(['nextgenoutbound', 'nextgencli'], type.toLowerCase()) >= 0;
     }
 
@@ -382,6 +383,11 @@
         var $type = $healthContactTypeField.val() || "";
         return $type.toLowerCase() === "nextgenoutbound";
     }
+
+	function isContactTypeNextGenCli() {
+		var $type = $healthContactTypeField.val() || "";
+		return $type.toLowerCase() === "nextgencli";
+	}
 
     function getRawCallType() {
         var healthContactTypeSelection = $healthContactTypeField.val();
@@ -496,16 +502,19 @@
 
         var isReferral = callType !== false && isInbound === false && $referralCallCheckbox.is(':checked');
 
-        if (!isInbound && isReferral) {
-            $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(isReferral);
+        if(isOutboundNextGenContactType()) {
+	        $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).show();
         } else {
-            $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
-            $dialogue36.toggle(isInbound);
-            if (brandCodeIsCtm && _.indexOf(["trial","nextgen","nextgenoutbound","nextgencli"], callType) >= 0) {
-                $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(true);
-            }
+	        if (!isInbound && isReferral) {
+	            $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(isReferral);
+	        } else {
+	            $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
+	            $dialogue36.toggle(isInbound);
+	            if (brandCodeIsCtm && _.indexOf(["trial","nextgen","nextgenoutbound","nextgencli"], callType) >= 0) {
+	                $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(true);
+	            }
+	        }
         }
-
 	}
 
 	function toggleWebChatDialog() {
@@ -580,10 +589,10 @@
     function toggleCoverTypeScripts($elements, show) {
         $elements.hide();
         if(show) {
-            if(isContactTypeNextGenOutbound()) {
-                $elements.filter('.simples-dialog-nextgenoutbound').show();
+            if(isContactTypeNextGenOutbound() || isContactTypeNextGenCli()) {
+                $elements.filter('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
             } else {
-                $elements.not('.simples-dialog-nextgenoutbound').show();
+                $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
             }
         }
     }
