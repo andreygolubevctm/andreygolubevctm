@@ -190,6 +190,17 @@
 		}
 	}
 
+	&.nextgenoutbound,
+	&.nextgencli {
+		&[data-step=results].moreInfoVisible,
+		&[data-step=payment],
+		&[data-step=apply] {
+			#pageContent {
+				background-color: #ccffcc;
+			}
+		}
+	}
+
 	&.inbound {
 		.simples-dialog-outbound {
 			display: none;

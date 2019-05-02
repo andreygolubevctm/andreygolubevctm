@@ -384,6 +384,11 @@
         return $type.toLowerCase() === "nextgenoutbound";
     }
 
+	function isContactTypeNextGenCli() {
+		var $type = $healthContactTypeField.val() || "";
+		return $type.toLowerCase() === "nextgencli";
+	}
+
     function getRawCallType() {
         var healthContactTypeSelection = $healthContactTypeField.val();
         var callTypeToBeReturned = $healthContactTypeSelectOption.is(':selected') ? (healthContactTypeSelection != "" ? healthContactTypeSelection : null) : null;
@@ -584,10 +589,10 @@
     function toggleCoverTypeScripts($elements, show) {
         $elements.hide();
         if(show) {
-            if(isContactTypeNextGenOutbound()) {
-                $elements.filter('.simples-dialog-nextgenoutbound').show();
+            if(isContactTypeNextGenOutbound() || isContactTypeNextGenCli()) {
+                $elements.filter('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
             } else {
-                $elements.not('.simples-dialog-nextgenoutbound').show();
+                $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
             }
         }
     }
