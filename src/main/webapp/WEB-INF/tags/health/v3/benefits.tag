@@ -61,7 +61,7 @@
 		</form_v2:fieldset>
 
         <simples:dialogue id="46" className="simples-dialogue-hospital-cover" vertical="health" />
-		<simples:dialogue id="118" className="simples-dialogue-hospital-cover simples-dialog-nextgenoutbound" vertical="health" />
+		<simples:dialogue id="118" className="simples-dialogue-hospital-cover simples-dialog-nextgenoutbound simples-dialog-nextgencli" vertical="health" />
 
 		<simples:dialogue id="81" className="simples-dialogue-hospital-cover" vertical="health" />
 

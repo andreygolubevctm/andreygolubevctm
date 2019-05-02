@@ -143,7 +143,6 @@
 		}
 	}
 	&.nextgencli {
-		.simples-dialogue-52,
 		.simples-dialog-nextgencli {
 			display: block;
 		}
@@ -188,6 +187,17 @@
 
 		.simples-dialog-inbound {
 			display: none;
+		}
+	}
+
+	&.nextgenoutbound,
+	&.nextgencli {
+		&[data-step=results].moreInfoVisible,
+		&[data-step=payment],
+		&[data-step=apply] {
+			#pageContent {
+				background-color: #ccffcc;
+			}
 		}
 	}
 
