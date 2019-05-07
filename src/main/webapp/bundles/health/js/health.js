@@ -421,9 +421,6 @@
 			onBeforeEnter:function enterResultsStep(event){
 				meerkat.modules.sessionCamHelper.stop();
 				meerkat.modules.healthDependants.resetConfig();
-				if(event.isForward && meerkat.site.isCallCentreUser) {
-					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
-				}
 				if(meerkat.site.isCallCentreUser) {
 					// For Simples we need to only unload healthFund specific changes
                     meerkat.modules.healthFunds.unload();
