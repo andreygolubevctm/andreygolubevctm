@@ -593,6 +593,7 @@
         if(show) {
             if(isContactTypeNextGenOutbound() || isContactTypeNextGenCli()) {
                 $elements.filter('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
+                $dialogue97.show();
             } else {
                 $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
             }
