@@ -27,6 +27,7 @@
 	    $referralCallCheckbox,
 	    $referralCallPaymentStepDialogue1,
 	    $referralCallPaymentStepDialogue2,
+        $dialogue97,
         $cliCallCheckboxDialogue,
         $nonCliCallCheckboxDialogue,
         $outboundFollowupDialogue,
@@ -99,6 +100,7 @@
 	        $referralCallCheckbox = $('#health_simples_dialogue-checkbox-93');
 	        $referralCallPaymentStepDialogue1 = $('.simples-dialogue-94');
 	        $referralCallPaymentStepDialogue2 = $('.simples-dialogue-95');
+	        $dialogue97 = $('.simples-dialogue-97');
             $cliCallCheckboxDialogue = $('.simples-dialogue-78');
             $nonCliCallCheckboxDialogue = $('.simples-dialogue-20');
             $outboundFollowupDialogue = $('.simples-dialogue-69');
@@ -503,7 +505,7 @@
         var isReferral = callType !== false && isInbound === false && $referralCallCheckbox.is(':checked');
 
         if(isOutboundNextGenContactType()) {
-	        $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).show();
+	        $dialogue36.add($dialogue97).add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).show();
         } else {
 	        if (!isInbound && isReferral) {
 	            $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(isReferral);
