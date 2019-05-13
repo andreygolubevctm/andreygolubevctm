@@ -40,8 +40,8 @@ public class HealthRebateTest {
         int income = 2;
         healthRebate.calcRebate( rebateChoice,  commencementDate,  age,  income);
         assertEquals("8.930" ,healthRebate.getPreviousRebate());
-        assertEquals("26.791" ,healthRebate.getRebateTier0Previous());
-        assertEquals("17.861" ,healthRebate.getRebateTier1Previous());
+        assertEquals("26.790" ,healthRebate.getRebateTier0Previous());
+        assertEquals("17.860" ,healthRebate.getRebateTier1Previous());
         assertEquals("8.930" ,healthRebate.getRebateTier2Previous());
         assertEquals("0" ,healthRebate.getRebateTier3Previous());
     }
@@ -56,8 +56,8 @@ public class HealthRebateTest {
         assertEquals("8.644" ,healthRebate.getCurrentRebate());
         assertEquals("8.644" ,healthRebate.getFutureRebate());
 
-        assertEquals("25.934" ,healthRebate.getRebateTier0Current());
-        assertEquals("25.934" ,healthRebate.getRebateTier0Future());
+        assertEquals("25.933" ,healthRebate.getRebateTier0Current());
+        assertEquals("25.933" ,healthRebate.getRebateTier0Future());
 
         assertEquals("17.289" ,healthRebate.getRebateTier1Current());
         assertEquals("17.289" ,healthRebate.getRebateTier1Future());
@@ -78,7 +78,7 @@ public class HealthRebateTest {
         int income = 2;
         healthRebate.calcRebate( rebateChoice,  commencementDate,  age,  income);
         assertEquals("12.966" ,healthRebate.getCurrentRebate());
-        assertEquals("30.256" ,healthRebate.getRebateTier0Current());
+        assertEquals("30.255" ,healthRebate.getRebateTier0Current());
         assertEquals("21.612" ,healthRebate.getRebateTier1Current());
         assertEquals("12.966" ,healthRebate.getRebateTier2Current());
         assertEquals("0" ,healthRebate.getRebateTier3Current());
@@ -94,7 +94,7 @@ public class HealthRebateTest {
         healthRebate.calcRebate( rebateChoice,  commencementDate,  age,  income);
         assertEquals("17.289" ,healthRebate.getCurrentRebate());
         assertEquals("34.579" ,healthRebate.getRebateTier0Current());
-        assertEquals("25.934" ,healthRebate.getRebateTier1Current());
+        assertEquals("25.933" ,healthRebate.getRebateTier1Current());
         assertEquals("17.289" ,healthRebate.getRebateTier2Current());
         assertEquals("0" ,healthRebate.getRebateTier3Current());
 
