@@ -90,7 +90,7 @@ public class HealthRebate {
         } else  if (age >= 70) {
             rebate = rebateTier.add(new BigDecimal(10));
         }
-        String rebatePercentage= rebate.multiply(multiplier).setScale(3, BigDecimal.ROUND_HALF_DOWN).toString();
+        String rebatePercentage= rebate.multiply(multiplier).setScale(3, BigDecimal.ROUND_FLOOR).toString();
         //hardcoding as there is no common formula to get exact decimal precision value
 
         // Pre April 2018
@@ -102,11 +102,13 @@ public class HealthRebate {
             rebatePercentage = "21.612";
         else if(rebatePercentage.equals("8.645"))
             rebatePercentage = "8.644";
-        // Post April 2018
+            // Post April 2018
         else if(rebatePercentage.equals("8.472"))
             rebatePercentage = "8.471";
         else if(rebatePercentage.equals("21.179"))
             rebatePercentage = "21.180";
+        else if(rebatePercentage.equals("8.353"))
+            rebatePercentage = "8.352";
 
         return rebatePercentage;
     }
