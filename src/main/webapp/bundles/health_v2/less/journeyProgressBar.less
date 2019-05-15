@@ -7,11 +7,10 @@
 	IF IT IS THEN WE WILL NEED TO RUN BOTH OR MIGRATE ALL VERTICALS OVER
  ******************************************** */
 .progress-bar-row {
-  border-top: 1px solid @border-color;
   background-color: @main-bg-colour;
 }
 
-@media(@sm-only) {
+@media(@sm-only) {  //@sm-only   @xs-only
   .progress-bar-row {
     .journeyProgressBar_v2 {
       li.end {
@@ -23,17 +22,84 @@
   }
 }
 
-@media(@md) {
+@media(@progress-lg) {
   .progress-bar-row {
     .journeyProgressBar_v2 {
+      &.complete{
+        li.complete {
+          & div > span,
+          & a > span {
+            margin-left: 18px;
+            float: left;
+          }
+        }
+        li:nth-child(5) {
+          & div {
+            & > span {
+              font-family: 'SourceSansProBold';
+              color: #000000;
+            }
+            &:before {
+              color: #FFFFFF;
+              border-color: #000000;
+            }
+          }
+          & a:before,
+          & div:before{
+            background-color: #000000;
+          }
+        }
+      }
       li {
         span {
           position: relative;
-          left: -50px;
-          top: -25px;
           font-size: 14px;
         }
       }
     }
   }
+}
+
+@media(@progress-sm) {
+  .progress-bar-row {
+    .journeyProgressBar_v2 {
+      &.complete{
+        li:nth-child(5) {
+          & div {
+            & > span{
+              color: #FFFFFF;
+              border-color: #000000;
+              background-color: #000000;
+              border-radius: 50%;
+              width: 30px;
+              height: 29px;
+              padding-left: 10px;
+              padding-top: 5px;
+              margin-top: -5px;
+              margin-left: auto;
+              margin-right: auto;
+
+            }
+          }
+        }
+      }
+    }
+  }
+  .mobileViewStepText {
+    display: none;
+
+    &.loaded {
+      display: block;
+      font-size: 16px;
+      font-weight: 600;
+      padding-left: 30px;
+      padding-top: 14px;
+      background-color: whitesmoke;
+      padding-bottom: 22px;
+    }
+  }
+  #pageContent {
+    margin-top: 90px;
+  }
+
 }

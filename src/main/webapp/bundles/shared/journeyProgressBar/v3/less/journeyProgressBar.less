@@ -1,4 +1,4 @@
-@journeyProgressBar-color-hover: lighten(@theme-tertiary, 40%);
+@journeyProgressBar-color-hover: #000000;
 
 
 .progress-bar-bg {
@@ -25,8 +25,15 @@
     padding-right: 0px !important;
   }
 
-  background-color: @body-bg;
   min-height: 26px;
+
+  background-color: #ffffff;
+  &.loaded {
+    background-color: @journeyProgressBar-border-color-not-complete;
+    &.affix {
+      background-color: #ffffff;
+    }
+  }
 
   .progress-bar-container {
     height: 0;
@@ -50,7 +57,7 @@
     li {
       @white-space: nowrap;
 
-      @media(min-width: @screen-md) {
+      @media(min-width: @screen-xs-max) {
         counter-increment: section;
       }
 
@@ -73,16 +80,21 @@
       }
 
       div > span {
-        margin-left: 13px;
+        margin-left: 20px;
         position: relative;
         top: 9px;
+        float: left;
+
+        @media(@xs-only) {
+          margin-left: 31px;
+        }
       }
     }
 
     :not(.end) {
       a, div {
         &:before {
-          @media (min-width: @screen-md) {
+          @media (min-width: @screen-xs-max) {
             content: counters(section, ".") "\A";
             border-radius: 50%;
           }
@@ -129,10 +141,10 @@
         box-sizing: border-box;
         font-weight: @journeyProgressBar-font-weight;
 
-        @media(min-width: @screen-md) {
+        @media(min-width: @screen-xs-max) {
           font-size: 12px;
           margin-top: 4px;
-          padding: 5px 8px 7px 17px;
+          padding: 5px 7px 6px 16px;
         }
 
         @media(@xs-only) {
@@ -144,7 +156,10 @@
     }
     a {
       &:focus {
-        outline: none;
+      outline: none;
+        font-size: 15px;
+        margin-left: -1px;
+        top: .5px;
       }
     }
     .complete {
@@ -154,7 +169,7 @@
         &:before {
           color: @journeyProgressBar-separator-color-complete;
 
-          @media(min-width: @screen-md) {
+          @media(min-width: @screen-xs-max) {
             border-color: @journeyProgressBar-border-color-complete;
             background-color: transparent;
             font-size: 12px;
@@ -162,12 +177,25 @@
         }
 
         > span {
-          margin-left: 13px;
+          margin-left: 20px;
           position: relative;
           top: 9px;
+          float: left;
+          @media(@xs-only) {
+            margin-left: 31px;
+          }
+
+          &:hover {
+            font-size: 15px;
+            margin-left: 19px;
+            top: 9.5px;
+
+            @media(@xs-only) {
+              margin-left: 30px;
+            }
+          }
         }
       }
-
 
       &.end {
         a, div {
@@ -179,6 +207,7 @@
     }
     .current {
       div {
+        font-family: 'SourceSansProBold';
         color: @journeyProgressBar-color-current;
         border-color: @journeyProgressBar-border-color-current;
         &:before {
@@ -198,6 +227,7 @@
             line-height: 30px;
             top: 4px;
             left: 10px;
+            margin-left: 0;
           }
         }
       }
@@ -208,6 +238,38 @@
           color: @journeyProgressBar-color-hover;
         }
       }
+    }
+  }
+}
+
+.mobileViewStepText.loaded {
+  display: none;
+
+  &.loaded {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    padding-left: 15px;
+    padding-top: 14px;
+  }
+}
+
+body.health{
+  &[data-step="results"] {
+    .mobileViewStepText.loaded {
+      padding-top: 0px;
+      padding-bottom: 18px;
+    }
+  }
+  &[data-step="benefits"] {
+    .mobileViewStepText.loaded {
+      padding-bottom: 0;
+      margin-bottom: -19px;
+    }
+  }
+  &[data-step="apply"] {
+    .mobileViewStepText.loaded {
+      padding-bottom: 22px;
     }
   }
 }

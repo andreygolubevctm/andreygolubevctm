@@ -57,3 +57,21 @@
 		@media(@md) {top: 1.25em !important;}
 	}
 }
+
+body.car,
+body.home {
+  .progress-bar-row {
+	  .journeyProgressBar_v2 {
+		  li.current {
+			  div {
+				  &:before {
+					  color: @theme-primary;
+					  border-color: @theme-primary;
+				  }
+				  border-bottom-color: @theme-primary;
+				  color: @theme-dark;
+			  }
+		  }
+	  }
+  }
+}

@@ -43,7 +43,7 @@
     list-style: none;
     padding: 0;
     height: 0;
-    @media (@sm) {
+    @media (@progress-sm) {
       padding: 0 0 10px 0;
     }
 
@@ -53,7 +53,7 @@
     li {
       white-space: nowrap;
 
-      @media(min-width: @screen-md) {
+      @media(min-width: @screen-xs-max) {
         counter-increment: section;
       }
 
@@ -61,13 +61,13 @@
       line-height: 20px;
       display: inline-block;
       font-size: 13px;
-      @media (@sm) {
-        font-size: 14px;
+      @media (@progress-sm) {
+        font-size: 13px;
         line-height: 18px;
       }
       position: relative;
       height: 22px;
-      @media(@sm) {
+      @media(@progress-sm) {
         height: 28px;
       }
       &.end {
@@ -85,9 +85,10 @@
     :not(.end) {
       a, div {
         &:before {
-          @media (min-width: @screen-md) {
+          @media (min-width: @screen-xs-max) {
             content: counters(section, ".") "\A";
             border-radius: 50%;
+            font-size: 12px;
           }
         }
       }
@@ -112,7 +113,7 @@
       height: 21px;
 
       &:before {
-        border: 3px solid;
+        border: 2px solid;
         font-size: 20px;
         display: block;
         float: left;
@@ -123,17 +124,17 @@
         padding: 12px;
         padding-top: 6px;
         padding-left: 21px;
-        padding-bottom: 7px;
+        padding-bottom: 6px;
         line-height: 1;
         text-align: center;
         background-color: transparent;
         box-sizing: border-box;
         font-weight: 600;
 
-        @media(min-width: @screen-md) {
+        @media(min-width: @screen-xs-max) {
           font-size: 12px;
           margin-top: 4px;
-          padding: 5px 8px 7px 17px;
+          padding: 5px 7px 5px 16px;
         }
 
       }
@@ -144,6 +145,11 @@
       }
     }
     .complete {
+
+      @media(min-width: @screen-xs-max) {
+        font-size: 13px;
+      }
+
       a, div {
         color: @gray-base;
         border-color: @gray-base;
@@ -156,10 +162,9 @@
         &:before {
           color: inherit;
 
-          @media(min-width: @screen-md) {
+          @media(min-width: @screen-xs-max) {
             border-color: inherit;
             background-color: transparent;
-            font-size: 12px;
           }
         }
 
@@ -198,5 +203,19 @@
         }
       }
     }
+  }
+}
+
+.navbar-header.header-buttons-logos {
+  @media (@progress-sm) {
+    margin-top: 14px;
+  }
+}
+
+.mobile-help-text > span+span {
+  @media (@progress-sm) {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 25px;
   }
 }

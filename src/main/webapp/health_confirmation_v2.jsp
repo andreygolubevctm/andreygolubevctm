@@ -54,11 +54,12 @@
 			  <div class="row">
 				  <div class="progress-bar-bg-confirmation"></div>
 				  <div class="container progress-bar-container">
-					  <ul class="journeyProgressBar_v2" data-phase="journey"></ul>
+					  <ul class="journeyProgressBar_v2 v4confirmation" data-phase="journey"></ul>
 				  </div>
 			  </div>
 		  </div>
 	  </div>
+	  <div class="mobileViewStepText visible-xs">Purchase Cover</div>
     </jsp:attribute>
 
 	<jsp:attribute name="navbar">

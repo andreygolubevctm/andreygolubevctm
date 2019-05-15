@@ -22,6 +22,7 @@
 	var isVisible = true;
 	var endCollapsed = 0;
 	var nodeWidth = 36;
+	var notifyElementsOnceLoaded = ".progress-bar-row, .mobileViewStepText";
 
 	function init() {
 		$(document).ready(function() {
@@ -84,9 +85,11 @@
 
 		if(isVisible) {
 			$target.removeClass('invisible');
+			$(notifyElementsOnceLoaded).addClass("loaded");
 		}
 		else {
 			$target.addClass('invisible');
+			$(notifyElementsOnceLoaded).addClass("loaded");
 		}
 
 		_.each( progressBarSteps, function(progressBarStep, index){
@@ -100,6 +103,9 @@
 			if( isCurrentStep ) {
 				className = 'current';
 				foundCurrent = true;
+				if (progressBarStep.label != '') {
+					$('.mobileViewStepText').html(progressBarStep.label);
+                }
 			} else {
 				// if later step
 				if(foundCurrent){
@@ -121,7 +127,7 @@
 			}
 
 			if (isDisabled) {
-				openTag += ' class="progress-step-disabled"'
+				openTag += ' class="progress-step-disabled"';
 			}
 
 			if (progressBarStep.label != '') {
@@ -141,7 +147,9 @@
 
 		setProgressBarAndStepWidth();
 
-		if (includeEndPadding) { $target.find('li:last-child').css("width", "");}
+		if (includeEndPadding) {
+			$target.find('li:last-child').css("width", "");
+		}
 
 		if(fireEvent){
 			meerkat.messaging.publish(moduleEvents.INIT);
@@ -150,8 +158,9 @@
 	}
 
 	function setProgressBarAndStepWidth() {
-		var visibleSteps = progressBarSteps.filter(function(step) { return step.label !== ''}).length;
+		var visibleSteps = progressBarSteps.filter(function(step) { return step.label !== '';}).length;
 		var stepNumber = $target.find('li.complete').length + 1;
+
 		if (stepNumber > visibleSteps || !stepNumber) {
 			stepNumber = visibleSteps;
 		}
@@ -173,6 +182,10 @@
 
         if (meerkat.modules.deviceMediaState.get() === 'xs') {
             progressBarWidth += 20;
+
+			if ($(".v4confirmation")[0]){
+				progressBarWidth = progressBarWidth + (stepWidth / 2);
+			}
         }
 
         console.table({

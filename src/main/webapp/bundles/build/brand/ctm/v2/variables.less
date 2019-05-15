@@ -1477,6 +1477,7 @@
 @border-color: @gray-lighter;
 @header-color: #162f8a;
 @required-color: #a90000;
+@progress-background-Grey-color: #F1F1F1;
 
 //** Default & Disabled State
 @journeyProgressBar-color: @theme-default;
@@ -1487,6 +1488,9 @@
 @journeyProgressBar-color-complete: @gray-base;
 @journeyProgressBar-separator-color-complete: @gray-base;
 @journeyProgressBar-border-color-complete: @gray-base;
+
+//** not completed State
+@journeyProgressBar-border-color-not-complete: @progress-background-Grey-color;
 
 //** Current State
 @journeyProgressBar-color-current: @gray-base;
@@ -1505,7 +1509,7 @@
 @journeyProgressBar-horizontal-push: -2px;
 @journeyProgressBar-margin-bottom: 0;
 @journeyProgressBar-margin-top: -21px;
-@journeyProgressBar-border-size: 3px;
+@journeyProgressBar-border-size: 2px;
 @journeyProgressBar-border-style: solid;
 
 @journeyProgressBar-separator: "\25cf"; //"●"
@@ -1615,6 +1619,12 @@
 
 @lg: ~'min-width: @{screen-lg-min}';
 @lg-only: @lg;
+
+@screen-xs-max: (@screen-sm-min - 1);
+@progress-lg: ~'min-width: @{screen-xs-max}';
+
+@progress-sm-max-size: (@screen-xs-max - 1);
+@progress-sm: ~'max-width: @{progress-sm-max-size}';
 
 //== RESULTS PAGE Component
 //

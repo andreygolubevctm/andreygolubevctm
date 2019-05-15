@@ -134,7 +134,7 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="mobileViewStepText visible-xs"></div>
 
                 <c:if test="${not empty reformsBannerText}">
                 <div id="reforms-banner" class="reforms-banner hidden">

@@ -811,8 +811,12 @@ a {
   height: 44px;
   background-size: 44px 44px;
   margin-left: -7px;
-  .highResImgContain('../graphics/logo-dollar-xs.png?new'; '../graphics/logo-dollar-xs@2x.png?new');
+  .highResImgContain('../graphics/logo-dollar.svg?new'; '../graphics/logo-dollar.svg?new');
 
+  &.stuck {
+      height: 35px;
+      transition: all 200ms ease;
+  }
 
   @media (@sm) {
     width: 343px;
@@ -820,7 +824,7 @@ a {
     margin: 0px 0px 0px -18px;
     background-size: contain;
 
-    .highResImgContain('../graphics/logo.png?new'; '../graphics/logo@2x.png?new'; ~"");
+    .highResImgContain('../graphics/logo.svg?new'; '../graphics/logo.svg?new'; ~"");
   }
 
   @media (@md) {
@@ -829,7 +833,7 @@ a {
     margin: 0px 0px 0px -6px;
     background-size: contain;
 
-    .highResImgContain('../graphics/logo.png?new'; '../graphics/logo@2x.png?new'; ~"");
+    .highResImgContain('../graphics/logo.svg?new'; '../graphics/logo.svg?new'; ~"");
   }
 
   @media print {

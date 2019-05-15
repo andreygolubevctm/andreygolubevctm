@@ -646,7 +646,7 @@
 
         // Better progressBar just works...
         meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar[data-phase='+phase+']');
-        meerkat.modules.journeyProgressBar.setEndPadding()
+        meerkat.modules.journeyProgressBar.setEndPadding();
         meerkat.modules.journeyProgressBar.configure(progressBarSteps[phase]);
     }
 
