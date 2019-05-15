@@ -77,8 +77,8 @@ public class PhoneController extends CommonQuoteRouter {
             }
         }
         // Logic if we're using the InIn dialler
+        String authName = null;
         if (inInEnabled) {
-            String authName = null;
             if (request.getSession() != null) {
                 AuthenticatedData authenticatedData = getSessionDataServiceBean().getAuthenticatedSessionData(request);
                 if (authenticatedData != null) {
@@ -87,7 +87,9 @@ public class PhoneController extends CommonQuoteRouter {
             }
             if (StringUtils.isEmpty(authName)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return PauseResumeResponse.fail("Unauthorised to access this feature");
+                String message = "Unauthorised to access this feature";
+                logFailedPauseResumeRequest(message, authName, response);
+                return PauseResumeResponse.fail(message);
             } else {
                 if (action == PauseRecord) {
                     pauseResumeResponse = inInIcwsService.pause(authName, Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
@@ -110,8 +112,13 @@ public class PhoneController extends CommonQuoteRouter {
 
         if (!pauseResumeResponse.isSuccess()) {
             response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            logFailedPauseResumeRequest(pauseResumeResponse.getErrors().getMessage(), authName,  response);
         }
         return pauseResumeResponse;
+    }
+
+    private void logFailedPauseResumeRequest(String message, String consultant, HttpServletResponse response) {
+        LOGGER.error("Simples pause/resume recording request failed", kv("message", message), kv("consultant", consultant), response);
     }
 
     @RequestMapping(

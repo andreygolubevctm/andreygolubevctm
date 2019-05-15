@@ -30,29 +30,48 @@
     }
 
     function callback(state) {
+    	// Handle when db override turns off pause recording checks
     	if(pauseRecordingOverrideEnabled && !$('#health_pauseRecordingOverride').length) {
-		    // Add hidden field to track affected transactions
-		    $('#paymentForm').append(
-			    $('<input/>',{
-			    	type: 'hidden',
-				    id: 'health_pauseRecordingOverride',
-				    name: 'health_pauseRecordingOverride',
-				    value: 'Y'
-			    }).prop('data-attach', true)
-		    );
-		    // Ensure form is written immediately to db (albeit deferred momentarily)
-		    _.defer(function() {
-		    	meerkat.messaging.publish('TRACKING_TOUCH', {
-				    touchType: 'H',
-				    touchComment: 'Override',
-				    includeFormData: true,
-				    productId: null,
-				    callback: null,
-				    customFields: null
-			    });
-		    });
+		    injectTrackingElement('health_pauseRecordingOverride');
+		    triggerTouchEvent('Pause Recording Override');
+		    return pauseRecordingOverrideEnabled;
+	    } else {
+		    // Attempt pause recording check
+		    var callbackResult = meerkat.modules.healthAppCompliance.callback(state);
+		    if($('#health_pauseRecordingFAILED').length) {
+		    	// Always remove any existing tracking element
+		    	$('#health_pauseRecordingFAILED').remove();
+		    }
+		    if (callbackResult !== true) {
+			    injectTrackingElement('health_pauseRecordingFAILED');
+			    triggerTouchEvent('Pause Recording Failed');
+		    }
+		    return callbackResult;
 	    }
-        return pauseRecordingOverrideEnabled || meerkat.modules.healthAppCompliance.callback(state);
+    }
+
+    function injectTrackingElement(id) {
+	    $('#paymentForm').append(
+		    $('<input/>',{
+			    type: 'hidden',
+			    id: id,
+			    name: id,
+			    value: 'Y'
+		    }).prop('data-attach', true)
+	    );
+    }
+
+    function triggerTouchEvent(comment) {
+	    _.defer(function() {
+		    meerkat.messaging.publish('TRACKING_TOUCH', {
+			    touchType: 'H',
+			    touchComment: comment,
+			    includeFormData: true,
+			    productId: null,
+			    callback: null,
+			    customFields: null
+		    });
+	    });
     }
 
     function toggle($_obj) {
