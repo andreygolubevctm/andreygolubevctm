@@ -18,6 +18,8 @@
 	<jsp:body>
 
 		<simples:dialogue id="49" vertical="health" />
+		<simples:dialogue id="117" vertical="health" className="simples-dialog-nextgenoutbound" />
+		<simples:dialogue id="123" vertical="health" className="simples-dialog-nextgencli" />
 
 		<form_v2:fieldset legend="Choose Your Cover" postLegend="">
 			<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="medium" />
@@ -59,6 +61,7 @@
 		</form_v2:fieldset>
 
         <simples:dialogue id="46" className="simples-dialogue-hospital-cover" vertical="health" />
+		<simples:dialogue id="118" className="simples-dialogue-hospital-cover simples-dialog-nextgenoutbound simples-dialog-nextgencli" vertical="health" />
 
 		<simples:dialogue id="81" className="simples-dialogue-hospital-cover" vertical="health" />
 
