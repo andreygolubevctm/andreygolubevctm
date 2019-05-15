@@ -6,6 +6,8 @@
 
     var pauseRecordingOverrideEnabled = false;
 
+    var togglePrivacyClass = "privacy-off";
+
     function init() {
 
         /**
@@ -55,27 +57,27 @@
 
     function toggle($_obj) {
         var $_parent = $($_obj).closest('.agg_privacy');
-        var $_container = $($_parent).find('.agg_privacy_container');
-        var state = $_container.hasClass("invisible");
+        var $_body = $('body');
+        var state = !$_body.hasClass(togglePrivacyClass);
         //Check the callback
         if (callback(state) !== true) {
             return false;
         }
         // This turns on/off the privacy control
         if (state === true) {
-            show($_parent, $_container);
+            show($_parent, $_body);
         } else {
-            hide($_parent, $_container);
+            hide($_parent, $_body);
         }
     }
 
-    function show($_parent, $_container) {
-        $_container.removeClass('invisible');
+    function show($_parent, $_body) {
+        $_body.addClass(togglePrivacyClass);
         $_parent.find('.agg_privacy_button span').html('Resume Recording');
     }
 
-    function hide($_parent, $_container) {
-        $_container.addClass('invisible');
+    function hide($_parent, $_body) {
+        $_body.removeClass(togglePrivacyClass);
         $_parent.find('.agg_privacy_button span').html('Pause Recording');
     }
 

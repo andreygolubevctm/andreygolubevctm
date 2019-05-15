@@ -39,7 +39,7 @@
 				<span class="payment-complete-text">Payment details are complete</span>
 			</c:if>
 
-			<div class="agg_privacy_container invisible">
+			<div class="agg_privacy_container">
 				<jsp:doBody />
 			</div>
 
