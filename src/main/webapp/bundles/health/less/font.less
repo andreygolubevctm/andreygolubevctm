@@ -24,7 +24,8 @@
 }
 
 .healthBenefits input + label:before ,
-.health-situation-healthCvrType label:before {
+.health-situation-healthCvrType label:before,
+.flexi-extras-icons input + label:before {
 	font-family: 'ctm-health';
 }
 
@@ -42,7 +43,8 @@
 
 .benefitClass(@class, @labelClass, @content) {
 	.@{class} label,
-	li.@{class} {
+	li.@{class},
+	.@{class}.checkbox label {
 		& when not (@labelClass = '') {
 			.@{labelClass}:before {
 				content: @content;
