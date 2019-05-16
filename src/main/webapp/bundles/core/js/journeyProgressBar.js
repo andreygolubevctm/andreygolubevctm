@@ -188,17 +188,6 @@
 			}
         }
 
-        console.table({
-			stepNumber: stepNumber,
-			outerContainerWidth: outerContainerWidth,
-			innerContainerWidth: innerContainerWidth,
-			preBar: preBar,
-			stepWidth: stepWidth,
-			progressBarWidth: progressBarWidth,
-			progressBarSteps: progressBarSteps,
-			visibleSteps: visibleSteps
-		});
-
         if (progressBarWidth >= outerContainerWidth) {
         	progressBarWidth = outerContainerWidth;
             $target.closest('.row').find('.progress-bar-bg').css("border-radius-top", '0px');
