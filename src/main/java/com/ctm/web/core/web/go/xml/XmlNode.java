@@ -6,7 +6,6 @@
 package com.ctm.web.core.web.go.xml;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.elasticsearch.common.collect.HashMultiset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,7 @@
 package com.ctm.web.health.lhc.calculation;
 
 import com.ctm.web.health.lhc.model.query.CoverDateRange;
-import org.elasticsearch.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList;
 
 import java.time.LocalDate;
 import java.time.Month;

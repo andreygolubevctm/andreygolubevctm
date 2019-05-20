@@ -50,6 +50,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.CacheControl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import rx.schedulers.Schedulers;
@@ -70,7 +71,6 @@ import java.util.Optional;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
-import static org.elasticsearch.common.netty.handler.codec.http.HttpHeaders.Values.NO_CACHE;
 
 @Component
 public class CarQuoteService extends CommonRequestServiceV2 {
@@ -423,7 +423,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.set(HttpHeaders.AUTHORIZATION, getDataRobotBasicAuthHeaderValue());
-        headers.setCacheControl(NO_CACHE);
+        headers.setCacheControl(CacheControl.noCache().getHeaderValue());
         headers.set(DATA_ROBOT_KEY, dataRobotKey);
 
         final HttpEntity<List<CarQuotePropensityScoreRequest>> entity = new HttpEntity(Arrays.asList(carQuotePropensityScoreRequest), headers);

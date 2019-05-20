@@ -8,9 +8,11 @@ import com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class ElasticClientProvider {
 
@@ -22,7 +24,7 @@ public class ElasticClientProvider {
 	 * @return
 	 * @throws ElasticSearchConfigurationException
 	 */
-	public static Client createClient() throws ElasticSearchConfigurationException {
+	public static Client createClient() throws ElasticSearchConfigurationException, UnknownHostException {
 		ServiceConfiguration serviceConfig = null;
 
 		try {
@@ -37,15 +39,17 @@ public class ElasticClientProvider {
 
 		int portNumber = Integer.parseInt(portNumberString);
 
-		Settings settings = ImmutableSettings.settingsBuilder()
+		Settings settings = Settings.settingsBuilder()
 				.put("cluster.name", clusterName)
 				.put("client.transport.sniff", true)
 				.build();
 
 		// destroy client if exists - for safety as this should not be called multiple times.
 		destroy();
-		transportClient = new TransportClient(settings);
-		return transportClient.addTransportAddress(new InetSocketTransportAddress(transportAddress, portNumber));
+		transportClient = TransportClient.builder()
+				.settings(settings)
+				.build();
+		return transportClient.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(transportAddress), portNumber));
 	}
 
 	/**
