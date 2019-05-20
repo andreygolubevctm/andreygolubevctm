@@ -26,3 +26,4 @@
 LOG_FILE_IS_UNDEFINED
 /touch_restart.txt
 .DS_Stores
+.factorypath

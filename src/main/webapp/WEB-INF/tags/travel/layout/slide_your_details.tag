@@ -114,6 +114,11 @@
 					<travel:trip_type />
 				</form_v2:fieldset>
 
+				<%-- PRE EXISTING MEDICAL SECTION --%>
+				<form_v2:fieldset legend="Pre-Exisiting Conditions" id="preexistingmedical">
+					<travel:pre_existing_medical />
+				</form_v2:fieldset>
+
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_v2:fieldset legend="${fieldSetHeading}Contact Details" id="contactDetails">
 					<travel:contact_details />
