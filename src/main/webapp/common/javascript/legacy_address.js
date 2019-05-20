@@ -541,11 +541,6 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 	});
 
 	streetFld.keydown(function(event) {
-        if (event.target.name === "health_application_address_streetSearch") {
-            if (nonInputKey(event))  {
-            	return;
-            }
-        }
 		reset();
 	});
 
@@ -811,106 +806,6 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 		}
 		streetNumFldLastSelected = null;
 		window.selectedAddressObj[getType()] = {hasUnits: false};
-	};
-
-	var nonInputKey = function(eventObj) {
-		var returnVal = false;
-
-		if (!eventObj.key) {
-
-            var UnicodeKeyCode = eventObj.which || eventObj.keyCode;
-
-            switch (UnicodeKeyCode) {
-				case 13:
-				case 9:
-				case 16:
-				case 17:
-				case 39:
-				case 37:
-				case 20:
-				case 18:
-				case 91:
-				case 144:
-				case 33:
-				case 34:
-				case 36:
-				case 45:
-				case 35:
-				case 27:
-				case 19:
-				case 145:
-				case 181:
-				case 183:
-				case 182:
-				case 0:
-				case 93:
-				case 112:
-				case 113:
-				case 114:
-				case 115:
-				case 116:
-				case 117:
-				case 118:
-				case 119:
-				case 120:
-				case 121:
-				case 122:
-				case 123:
-                    returnVal = true;
-                    break;
-                default:
-                    returnVal = false;
-			}
-
-		} else {
-            switch (eventObj.key) {
-                case "Enter":
-                case "Tab":
-                case "Shift":
-                case "Control":
-                case "ArrowRight":
-                case "ArrowLeft":
-                case "CapsLock":
-                case "Alt":
-                case "Meta":
-                case "NumLock":
-                case "PageUp":
-                case "PageDown":
-                case "Home":
-                case "Insert":
-                case "End":
-                case "Escape":
-                case "Pause":
-                case "Cancel":
-                case "ScrollLock":
-                case "AudioVolumeMute":
-                case "AudioVolumeUp":
-                case "AudioVolumeDown":
-                case "MediaPlayPause":
-                case "MediaStop":
-                case "MediaTrackPrevious":
-                case "MediaTrackNext":
-                case "ContextMenu":
-                case "F1":
-                case "F2":
-                case "F3":
-                case "F4":
-                case "F5":
-                case "F6":
-                case "F7":
-                case "F8":
-                case "F9":
-                case "F10":
-                case "F11":
-                case "F12":
-                    returnVal = true;
-                    break;
-                default:
-                    returnVal = false;
-            }
-		}
-
-        return returnVal;
 	};
 
 	var removeValidationOnStdSearchForm = function() {
