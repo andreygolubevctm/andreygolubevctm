@@ -161,22 +161,24 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 			<div class="header-top dropdown-interactive-base navMenu-row-fixed">
 
-			<%-- Commenting this out as it will no longer be allowed to display here, but someone might want to move it in the future --%>
-			<%--<div class="dynamicTopHeaderContent">--%>
-				<%--<content:get key="topHeaderContent" />--%>
-				<%--<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>--%>
-				<%--<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">--%>
-					<%--<content:get key="competitionApplicationTopHeaderContent" />--%>
-				<%--</c:if>--%>
+				<%-- Banner content - START --%>
+				<%-- Banner content will no longer be allowed to display here - it will need to be moved at some point in the future--%>
+				<div class="dynamicTopHeaderContent">
+					<content:get key="topHeaderContent" />
+					<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
+					<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
+						<content:get key="competitionApplicationTopHeaderContent" />
+					</c:if>
 
-					<%--<c:set var="premiumIncreaseEnabledSetting"><content:get key="premiumIncreaseEnabled"/></c:set>--%>
-					<%--<c:if test="${premiumIncreaseEnabledSetting eq 'Y' and not callCentre}">--%>
-						<%--<content:get key="premiumIncreaseContent" />--%>
-					<%--</c:if>--%>
+						<c:set var="premiumIncreaseEnabledSetting"><content:get key="premiumIncreaseEnabled"/></c:set>
+						<c:if test="${premiumIncreaseEnabledSetting eq 'Y' and not callCentre}">
+							<content:get key="premiumIncreaseContent" />
+						</c:if>
 
-				<%--<ad_containers:main_top />--%>
-				<%--<coupon:banner />--%>
-			<%--</div>--%>
+					<ad_containers:main_top />
+					<coupon:banner />
+				</div>
+				<%-- Banner content - END --%>
 
 				<c:choose>
 					<c:when test="${pageSettings.getBrandCode() eq 'ctm'}">
@@ -187,7 +189,15 @@ ${newPage.init(pageContext.request, pageSettings)}
 					</c:otherwise>
 				</c:choose>
 
-					<div class="col-sm-12">
+					<c:choose>
+						<c:when test="${pageSettings.getVerticalCode() eq 'travel'}">
+							<div class="col-sm-12 non-transparent-background">
+						</c:when>
+						<c:otherwise>
+							<div class="col-sm-12">
+						</c:otherwise>
+					</c:choose>
+
 						<%-- Brand and toggle get grouped for better mobile display --%>
 						<jsp:invoke var="header_button_left_class" fragment="header_button_left" />
 						<nav class="navbar-header header-buttons-logos<c:if test='${not empty header_button_left_class}'> header_button_left</c:if>" role="navigation">

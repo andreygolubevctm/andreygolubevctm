@@ -44,7 +44,18 @@ body {
 		position: static;
 	}
 
+}
 
+body.travel:not([data-step="results"]) {
+	.non-transparent-background {
+		width: 100%;
+		background-color: #fff;
+		z-index: 100;
+	}
+
+	#pageContent {
+		padding-top: 20px;
+	}
 }
 
 

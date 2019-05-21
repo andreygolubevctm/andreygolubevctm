@@ -1661,6 +1661,23 @@ body.simples.health.callCentre {
 					}
 				}
 			}
+			li.complete {
+				a {
+					color: @theme-tertiary;
+					border-color: @theme-tertiary;
+					border-bottom: 2px solid;
+					&:hover {
+						span {
+							color: @theme-secondary;
+						}
+					}
+					span {
+						margin-left: 15px;
+						position: static;
+					}
+				}
+
+			}
 		}
 
 		:not(.v4confirmation):not(.confirmation).journeyProgressBar_v2 {

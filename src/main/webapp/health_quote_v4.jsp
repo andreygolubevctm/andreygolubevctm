@@ -105,7 +105,7 @@
                                 <div class="hidden-xs" data-livechat="target">
                                     <div class="callCentreNumber-container">
                                         <span class="icon icon-phone"></span> <a href="javascript:;" data-toggle="dialog"
-                                                   data-content="#view_all_hours"
+                                                   data-content="#view_all_hours_cb"
                                                    data-dialog-hash-id="view_all_hours"
                                                    data-title="Call Centre Hours" data-cache="true">
                                         <span class="noWrap callCentreNumber">${callCentreNumber}</span>
