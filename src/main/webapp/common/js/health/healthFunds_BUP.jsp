@@ -42,23 +42,23 @@ var healthFunds_BUP = {
 						<div class="flexi-message">You have selected <span class="flexi-selected text-tertiary"></span> of your <span class="flexi-available text-tertiary">4</span> <span class="text-tertiary">available</span> extras cover inclusions, <strong class="text-warning"><span class="flexi-remaining"></span> more selections remaining</strong></div>
 						<div class="flexi-message-complete hidden">You have selected all of your <span class="flexi-available">4</span> available extras cover inclusions.</div>
 
-						<ul class="flexi-extras-icons">
+						<div class="flexi-extras-icons">
 							<%-- TODO - confirm all help text  --%>
-							<li class="flexi-icon HLTicon-general-dental" data-value="general-dental"><field_v2:help_icon helpId="269" /><br />General Dental</li>
-							<li class="flexi-icon HLTicon-major-dental"  data-value="major-dental"><field_v2:help_icon helpId="270" /><br />Major Dental</li>
-							<%-- TODO - confirm data-value --%>
-							<li class="flexi-icon HLTicon-orthodontic" data-value="orthodontics"><field_v2:help_icon helpId="272" /><br />Orthodontics</li>
-							<li class="flexi-icon HLTicon-optical" data-value="optical"><field_v2:help_icon helpId="273" /><br />Optical</li>
-							<li class="flexi-icon HLTicon-physiotherapy" data-value="physiotherapy"><field_v2:help_icon helpId="274" /><br />Physiotherapy</li>
-							<%-- TODO - confirm data-value and helpId --%>
-							<li class="flexi-icon HLTicon-chiropractor" data-value="chiropractic_osteopath"><field_v2:help_icon helpId="567" /><br />Chiropractic/ Osteopath</li>
-							<li class="flexi-icon HLTicon-naturopathy" data-value="natural-therapies"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
-							<li class="flexi-icon HLTicon-podiatry" data-value="podiatry"><field_v2:help_icon helpId="276" /><br />Podiatry</li>
-							<li class="flexi-icon HLTicon-non-pbs-pharm" data-value="pharmacy"><field_v2:help_icon helpId="283" /><br />Pharmacy</li>
-							<%-- TODO - confirm data-value and helpId --%>
-							<li class="flexi-icon HLTicon-speech-therapy" data-value="speech_eye_occupational-therapies"><field_v2:help_icon helpId="568" /><br />Speech/Eye/ Occupational Therapies</li>
-							<li class="flexi-icon HLTicon-lifestyle-products" data-value="health_management"><field_v2:help_icon helpId="570" /><br />Health Management</li>
-						</ul>
+							<field_v2:checkbox xpath="general-dental" value="general-dental" required="false" label="true" title="General Dental" helpId="269" className="flexi-icon HLTicon-general-dental"/>
+							<field_v2:checkbox xpath="major-dental" value="major-dental" required="false" label="true" title="Major Dental" helpId="270" className="flexi-icon HLTicon-major-dental"/>
+							<%--&lt;%&ndash; TODO - confirm data-value &ndash;%&gt;--%>
+							<field_v2:checkbox xpath="orthodontics" value="orthodontics" required="false" label="true" title="Orthodontics" helpId="272" className="flexi-icon HLTicon-orthodontic"/>
+							<field_v2:checkbox xpath="optical" value="optical" required="false" label="true" title="Optical" helpId="273" className="flexi-icon HLTicon-optical"/>
+							<field_v2:checkbox xpath="physiotherapy" value="physiotherapy" required="false" label="true" title="Physiotherapy" helpId="274" className="flexi-icon HLTicon-physiotherapy"/>
+							<%--&lt;%&ndash; TODO - confirm data-value and helpId &ndash;%&gt;--%>
+							<field_v2:checkbox xpath="chiropractic_osteopath" value="chiropractic_osteopath" required="false" label="true" title="Chiropractic/ Osteopath" helpId="567" className="flexi-icon HLTicon-chiropractor"/>
+							<field_v2:checkbox xpath="natural-therapies" value="natural-therapies" required="false" label="true" title="Natural Therapies" helpId="278" className="flexi-icon HLTicon-naturopathy"/>
+							<field_v2:checkbox xpath="podiatry" value="podiatry" required="false" label="true" title="Podiatry" helpId="276" className="flexi-icon HLTicon-podiatry"/>
+							<field_v2:checkbox xpath="pharmacy" value="pharmacy" required="false" label="true" title="Pharmacy" helpId="283" className="flexi-icon HLTicon-non-pbs-pharm"/>
+							<%--&lt;%&ndash; TODO - confirm data-value and helpId &ndash;%&gt;--%>
+							<field_v2:checkbox xpath="speech_eye_occupational-therapies" value="speech_eye_occupational-therapies" required="false" label="true" title="Speech/Eye/ Occupational Therapies" helpId="568" className="flexi-icon HLTicon-speech-therapy"/>
+							<field_v2:checkbox xpath="health_management" value="health_management" required="false" label="true" title="Health Management" helpId="570" className="flexi-icon HLTicon-lifestyle-products"/>
+						</div>
 						<field_v2:validatedHiddenField xpath="health/application/bup/flexiextras" additionalAttributes=' data-rule-flexiExtras="true"' />
 					</form_v2:fieldset>
 				</c:set>
@@ -71,29 +71,41 @@ var healthFunds_BUP = {
 			var $bup_flexi_extras = $('#bup_flexi_extras'),
 				$flexiExtrasHidden = $('#health_application_bup_flexiextras');
 
+			$bup_flexi_extras.find('.flexi-extras-icons').each(function () {
+				var $this = $(this);
+
+				<%-- // fix positioning of label and help --%>
+				$this.find('.flexi-icon[class*="HLTicon-"] label').each(function () {
+					var $el = $(this);
+                    var labelTxt = $("<span/>").addClass('iconLabel').append($.trim($el.text().replace('Need Help?', '')));
+                    var helpLnk = $el.find('a').detach();
+					$el.empty().append(helpLnk).append("<br>").append(labelTxt);
+				});
+			});
+
 			<%-- TODO - pull flexi-available value from ratesheet data --%>
 			$bup_flexi_extras.find('.flexi-available').text('4');  <%-- set the number of extras you can choose here --%>
 
-			$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').on('click.BUP', function onFlexiExtraClick() {
+			<%-- Obeserve the state change of the checkbox --%>
+			$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon input[type="checkbox"]').change(function onFlexiExtraClick() {
 				var $this = $(this);
-				if ($this.hasClass('disabled')) {return;}
-				toggleFlexiExtra($this.data('value'), !$this.hasClass('active'))
+				toggleFlexiExtra($this.val(), $this.prop("checked"))
 			});
 
 			<%-- preload --%>
 			updateFromHiddenField();
 
 			function toggleFlexiExtra(value, state){
-				$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').filter(function filterByValue() {
-					return $(this).data('value')=== value;
-				}).toggleClass('active', state);
+				$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon input[type="checkbox"]').filter(function filterByValue() {
+					return $(this).val() === value;
+				}).prop('checked', state);
 
 				return updateHiddenField();
 			}
 
 			function updateHiddenField() {
-				var selectedExtrasArray = $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.active').map(function() {
-						return $(this).data('value');
+				var selectedExtrasArray = $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon input[type="checkbox"]:checked').map(function() {
+						return $(this).val();
 					}).get(),
 					selectedCount = selectedExtrasArray.length,
 					availableCount = $bup_flexi_extras.find('.flexi-available:first').text(),
@@ -102,20 +114,18 @@ var healthFunds_BUP = {
 				$flexiExtrasHidden.val(selectedExtrasArray.join());
 
 				if (remainingCount > 0) {
-					$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.disabled').removeClass('disabled');
+					$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon input[type="checkbox"]').attr('disabled', false);
 					$bup_flexi_extras.find('.flexi-message-complete').addClass('hidden');
 					$bup_flexi_extras.find('.flexi-message').removeClass('hidden');
 					$bup_flexi_extras.find('.flexi-selected').text(selectedCount);
 					$bup_flexi_extras.find('.flexi-remaining').text(remainingCount);
 				} else if (remainingCount === 0){
-					$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon:not(.active)').addClass('disabled');
+					$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon input[type="checkbox"]:not(:checked)').attr('disabled', true);
 					$bup_flexi_extras.find('.flexi-message-complete').removeClass('hidden');
 					$bup_flexi_extras.find('.flexi-message').addClass('hidden');
 					$flexiExtrasHidden.valid();
 				} else {
-					<%-- remainingCount < 0, reset, only happens when user selected Flexi extra then go back selects Saver --%>
-					$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.active').removeClass('active');
-					$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.disabled').removeClass('disabled');
+					$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon input[type="checkbox"]:not(:checked)').attr('disabled', false);
 					$bup_flexi_extras.find('.flexi-message-complete').addClass('hidden');
 					$bup_flexi_extras.find('.flexi-message').removeClass('hidden');
 					$bup_flexi_extras.find('.flexi-selected').text(0);
@@ -129,14 +139,14 @@ var healthFunds_BUP = {
 			function updateFromHiddenField() {
 				var values = $flexiExtrasHidden.val().split(',');
 
-				$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').each(function() {
-					var value = $(this).data('value');
+				$bup_flexi_extras.find('.flexi-extras-icons .flexi-icon input[type="checkbox"]').each(function() {
+					var value = $(this).val();
 					return toggleFlexiExtra(value, $.inArray( value, values ) > -1);
 				});
 			}
 
 			$.validator.addMethod('flexiExtras', function() {
-				var isValid = $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.active').length - $bup_flexi_extras.find('.flexi-available:first').text() === 0;
+				var isValid = $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon input[type="checkbox"]:checked').length - $bup_flexi_extras.find('.flexi-available:first').text() === 0;
 				$bup_flexi_extras.toggleClass('has-error', !isValid);
 				return isValid;
 			});
@@ -246,7 +256,6 @@ var healthFunds_BUP = {
         <%-- Authority Fund Name --%>
         var $bup_flexi_extras = $('#bup_flexi_extras');
         <%-- Hide Fund specific questions --%>
-        $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').off('click.BUP');
         $bup_flexi_extras.hide();
 
 
@@ -286,7 +295,7 @@ var healthFunds_BUP = {
 		healthFunds_BUP.$paymentStartDate.off("changeDate.BUP");
 
 		$('.bup-payment-legend').remove();
-		
+
 		<%-- Fix name field widths to account for removal of middleName field --%>
 		healthFunds_BUP.$primaryFirstname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
 		healthFunds_BUP.$primarySurname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
