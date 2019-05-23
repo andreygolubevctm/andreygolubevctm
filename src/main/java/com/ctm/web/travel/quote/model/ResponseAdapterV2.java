@@ -200,7 +200,8 @@ public class ResponseAdapterV2 {
                         "Rental Vehicle Insurance Excess#*",
                         "Rental Vehicle Excess#^^",
                         "Rental Vehicle Excess *",
-                        "Rental Vehicle"
+                        "Rental Vehicle",
+                        "Car Hire Excess"
                 };
 
                 info.setRentalVehicle(travelQuote.getBenefitByLabelArray(rentalVehicleExcessLabelsArray));
