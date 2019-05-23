@@ -8,41 +8,67 @@
   }
 
   .error-field {
-    display: none!important;
+    display: none !important;
   }
 
   h2 {
     font-size: 28px;
   }
 
-  .no-padding{
+  .no-padding {
     padding: 0;
   }
 
   .flexi-message,
-  .flexi-message-complete{
+  .flexi-message-complete {
     clear: both;
-    font-size:@font-size-large;
+    font-size: @font-size-large;
     padding: 20px 0;
 
-    .text-tertiary{
+    .text-tertiary {
       font-weight: bold;
     }
   }
+
   .flexi-extras-icons {
     overflow: hidden;
     list-style: none;
     padding: 0;
     margin: 0;
 
-    > li {
+    > .checkbox {
+      position: relative;
+      padding-left: unset;
+
+      &.disabled {
+        cursor: default;
+
+        input + label:before {
+          color: #8a8a8a;
+        }
+      }
+
+      input:checked + label {
+        color: @gray-dark;
+
+        &:before {
+          background-color: @icon-bg-checked-color;
+          border-color: @icon-border-checked-color;
+          color: #ffffff;
+        }
+      }
+    }
+
+    > .checkbox input + label {
       text-align: center;
       line-height: 1.1;
       cursor: pointer;
 
       &:before {
         display: block;
+        margin: 0;
         margin-bottom: 10px;
+        padding: 0;
         border-radius: 50%;
         background-color: @icon-bg-color;
         border: 1px solid @icon-border-color;
@@ -51,40 +77,24 @@
         text-align: center;
       }
 
-      &.disabled {
-        cursor: default;
-        &:before {
-          color: #8A8A8A;
-        }
-      }
-
-      &.active {
-        color: @gray-dark;
-
-        &:before {
-          background-color: @icon-bg-checked-color;
-          border-color: @icon-border-checked-color;
-          color: #fff;
-        }
-      }
-
       &:hover,
       &:focus {
         text-decoration: none;
       }
     }
 
+    @checkbox: .checkbox;
     @media (@xs) {
-      .roundIconSize(50px, @font-size-base, 0, 44, li);
+      .flexiCheckbox(50px, @font-size-base, 0, 44, @checkbox);
     }
     @media (@sm) {
-      .roundIconSize(40px, @font-size-small, 1, 44, li);
+      .flexiCheckbox(40px, @font-size-small, 1, 44, @checkbox);
     }
     @media (@md) {
-      .roundIconSize(55px, @font-size-base, 0, 44, li);
+      .flexiCheckbox(55px, @font-size-base, 0, 44, @checkbox);
     }
     @media (@lg) {
-      .roundIconSize(60px, @font-size-base, 7, 44, li);
+      .flexiCheckbox(60px, @font-size-base, 7, 44, @checkbox);
     }
   }
 }

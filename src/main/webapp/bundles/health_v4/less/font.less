@@ -24,7 +24,8 @@
 }
 
 .healthBenefits input + label:before ,
-.health-situation-healthCvrType label:before {
+.health-situation-healthCvrType label:before,
+.flexi-extras-icons input + label:before {
 	font-family: 'ctm-health';
 }
 
@@ -50,7 +51,8 @@
 	}
 	& when (@isLiElement = 'Y') {
 		.@{class} label,
-		li.@{class} {
+		li.@{class},
+		.@{class}.checkbox label {
 			.setContent(@labelClass, @content);
 		}
 	}
