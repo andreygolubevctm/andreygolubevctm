@@ -149,13 +149,6 @@ Your personal information (but not your sensitive information) may be held by so
 			}
 		</c:when>
 
-		<%-- HOMELOAN --%>
-		<c:when test="${vertical eq 'homeloan'}">
-			#${name}-row label {
-				margin-left: 0;
-			}
-		</c:when>
-
 		<%-- FUEL --%>
 		<c:when test="${vertical eq 'fuel'}">
 			#quickForm .terms.${suffix} {

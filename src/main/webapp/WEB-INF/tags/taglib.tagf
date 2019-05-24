@@ -76,8 +76,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/home"				    prefix="home" %>
 <%@ taglib tagdir="/WEB-INF/tags/home/property"		    prefix="home_property" %>
 <%@ taglib tagdir="/WEB-INF/tags/home/layout"		    prefix="home_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/homeloan"				prefix="homeloan" %>
-<%@ taglib tagdir="/WEB-INF/tags/homeloan/layout"		prefix="homeloan_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
 <%@ taglib tagdir="/WEB-INF/tags/css"					prefix="css" %>
 <%@ taglib tagdir="/WEB-INF/tags/security"				prefix="security" %>

@@ -289,27 +289,6 @@
 			<c:set var="optinMarketing" value ="marketing=${data['home/policyHolder/marketing']}"/>
 		</c:if>
 	</c:when>
-	<c:when test="${rootPath eq 'homeloan'}">
-		<c:if test="${not empty data['homeloan/privacyoptin'] and data['homeloan/privacyoptin'] eq 'Y'}">
-			<c:set var="hasPrivacyOptin">${true}</c:set>
-		</c:if>
-
-		<c:set var="emailAddress">
-			<c:choose>
-				<c:when test="${not empty data['homeloan/enquiry/contact/email']}">${data['homeloan/enquiry/contact/email']}</c:when>
-				<c:otherwise>${data['homeloan/contact/email']}</c:otherwise>
-			</c:choose>
-		</c:set>
-
-		<c:set var="firstName" value="${data['homeloan/contact/firstName']}" />
-		<c:set var="lastName" value="${data['homeloan/contact/lastName']}" />
-		<c:if test="${not empty data['homeloan/contact/contactNumber']}">
-			<c:set var="optinPhone" value=",okToCall=Y" />
-		</c:if>
-		<c:if test="${not empty data['homeloan/contact/optIn']}">
-			<c:set var="optinMarketing" value ="marketing=${data['homeloan/contact/optIn']}"/>
-		</c:if>
-	</c:when>
 	<c:when test="${rootPath eq 'creditcard'}">
 		<c:if test="${not empty data['creditcard/privacyoptin'] and data['creditcard/privacyoptin'] eq 'Y'}">
 			<c:set var="hasPrivacyOptin">${true}</c:set>

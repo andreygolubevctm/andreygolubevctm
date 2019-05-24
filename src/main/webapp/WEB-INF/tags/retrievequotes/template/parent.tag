@@ -8,7 +8,6 @@
 <retrievequotes_template:ip/>
 <retrievequotes_template:health/>
 <retrievequotes_template:home/>
-<retrievequotes_template:homeloan/>
 <retrievequotes_template:utilities/>
 
 <core_v1:js_template id="retrieve-quotes-container-template">
