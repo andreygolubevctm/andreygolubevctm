@@ -14,17 +14,7 @@
 <c:set var="error_text" value="Please confirm you have read the privacy statement" />
 <c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${name}InfoDialog.open()'>privacy statement</a>" />
 <c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
-<c:choose>
-	<c:when test="${vertical eq 'utilities'}">
-		<c:set var="label_text">
-			I understand ${brandedName} compares energy plans based on peak tariffs from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide.
-			I confirm that I have read the <form_v1:link_privacy_statement/>.</c:set>
-	</c:when>
-
-	<c:otherwise>
-		<c:set var="label_text" value="I have read the ${privacyLink}" />
-	</c:otherwise>
-</c:choose>
+<c:set var="label_text" value="I have read the ${privacyLink}" />
 
 <%-- HTML --%>
 <c:choose>
