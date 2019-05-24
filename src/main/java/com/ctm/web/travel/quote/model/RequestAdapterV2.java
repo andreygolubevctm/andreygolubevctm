@@ -42,6 +42,7 @@ public class RequestAdapterV2 {
                 .forEach(travellers::add);
 
         quoteRequest.setTravellers(travellers);
+        quoteRequest.setPreExistingMedicalCondition(quote.getPreExistingMedicalCondition());
 
         if (quote.getPolicyType().equals("S")) {
             quoteRequest.setPolicyType(PolicyType.SINGLE);
