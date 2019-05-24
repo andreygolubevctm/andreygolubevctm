@@ -12,7 +12,6 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.email.MarketingAutomationEmailService;
 import com.ctm.web.health.email.services.HealthEmailService;
 import com.ctm.web.health.services.ProviderContentService;
-import com.ctm.web.life.dao.OccupationsDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +23,6 @@ public class EmailServiceFactoryTest {
 
     @Mock
 	private IPAddressHandler ipHandler;
-	@Mock
-	private OccupationsDao occupationsDao;
     @Mock
     private TransactionDetailsDao transactionDetailsDao;
     @Mock
@@ -42,7 +39,7 @@ public class EmailServiceFactoryTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-		 emailServiceFactory = new EmailServiceFactory(occupationsDao, ipHandler,transactionDetailsDao,applicationService, generalDao, providerContentService, marketingAutomationEmailService);
+		 emailServiceFactory = new EmailServiceFactory(ipHandler,transactionDetailsDao,applicationService, generalDao, providerContentService, marketingAutomationEmailService);
     }
 
     @Test

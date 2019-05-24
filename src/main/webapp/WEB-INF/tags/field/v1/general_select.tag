@@ -31,23 +31,10 @@
 <%-- HTML --%>
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
-<c:choose>
-	<c:when test="${not empty type && type eq 'occupation'}">
-		<sql:query var="result">
-			SELECT occupationCode AS code, title AS description, hannover AS hannoverCode
-			FROM ctm.lifebroker_occupations
-			JOIN ctm.tal_hannover_mappings ON lifebroker_occupations.talCode = tal_hannover_mappings.tal
-			WHERE occupationCode != '' 
-			ORDER BY description ASC
-		</sql:query>
-	</c:when>
-	<c:otherwise>
-		<sql:query var="result">
-			SELECT code, description FROM aggregator.general WHERE type = ?  AND (status IS NULL OR status != 0) ORDER BY orderSeq
-			<sql:param>${type}</sql:param>
-		</sql:query>
-	</c:otherwise>
-</c:choose>
+<sql:query var="result">
+	SELECT code, description FROM aggregator.general WHERE type = ?  AND (status IS NULL OR status != 0) ORDER BY orderSeq
+	<sql:param>${type}</sql:param>
+</sql:query>
 
 <c:if test="${value == ''}">
 	<c:set var="sel" value="selected" />
