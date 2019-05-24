@@ -119,7 +119,6 @@ public class ConfirmationService {
 
 				switch (details.getVerticalCode()) {
 					case "health":
-					case "utilities":
 						confirmationUrl.append(details.getVerticalCode());
 						confirmationUrl.append("_confirmation.jsp?action=confirmation");
 						confirmationUrl.append("&transactionId=" + details.getTransactionId());
