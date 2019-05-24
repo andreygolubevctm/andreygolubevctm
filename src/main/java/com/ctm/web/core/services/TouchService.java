@@ -4,7 +4,6 @@ import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.TouchProductProperty;
-import com.ctm.web.core.model.TouchLifebrokerProperty;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,13 +35,6 @@ public class TouchService {
         touchProductProperty.setProductCode(productCode);
         touch.setTouchProductProperty(touchProductProperty);
         return recordTouch(request, touch);
-    }
-
-    public boolean recordTouchWithLifebrokerReference(final Touch touch, String clientReference){
-        final TouchLifebrokerProperty touchLifebrokerProperty = new TouchLifebrokerProperty();
-        touchLifebrokerProperty.setClientReference(clientReference);
-        touch.setTouchLifebrokerProperty(touchLifebrokerProperty);
-        return recordTouch(touch);
     }
 
     /**
