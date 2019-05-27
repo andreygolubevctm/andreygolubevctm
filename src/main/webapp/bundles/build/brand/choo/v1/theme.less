@@ -72,6 +72,29 @@ body.home {
 				  color: @theme-dark;
 			  }
 		  }
+		  li.complete {
+			  a {
+				  color: @theme-tertiary;
+				  border-color: @theme-tertiary;
+				  border-bottom: 2px solid;
+				  &:hover {
+					  span {
+						  color: @theme-secondary;
+					  }
+				  }
+				  &:before {
+					  content: "\e600";
+					  font-family: framework_font;
+					  padding: 7px;
+					  padding-left: 16px;
+				  }
+				  span {
+					  margin-left: 15px;
+					  position: static;
+				  }
+			  }
+
+		  }
 	  }
   }
 }

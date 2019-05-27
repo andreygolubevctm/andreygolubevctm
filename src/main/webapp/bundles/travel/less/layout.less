@@ -46,7 +46,132 @@ body {
 
 }
 
+body.travel {
+	@media(@sm) {
+		.col-sm-12.non-transparent-background {
+			&.affix,
+			&.stuck{
+				padding-left: 9px;
+			}
+		}
+	}
+}
+body.travel[data-step="results"] {
+	@media(@md) {
+		#logo {
+			margin-top: -6px;
+		}
+		#js-logo-link{
+			font-size: 2px;
+		}
+		.header-top {
+			nav.navbar-header.header-buttons-logos {
+				padding-bottom: 8px;
+				height: 60px;
+			}
+		}
+		.col-sm-12.non-transparent-background.stuck{
+			margin-top: -8px;
+		}
+	}
+	@media(@sm) {
+		.col-sm-12.non-transparent-background:not(.stuck){
+			margin-top: -8px;
+			nav.navbar-header.header-buttons-logos {
+				padding-bottom: 8px;
+				#js-logo-link{
+					font-size: 2px;
+					#logo {
+						margin-top: -6px;
+					}
+				}
+			}
+		}
+	}
+	@media(@sm) and (max-width: @screen-sm-max) {
+		.col-sm-12.non-transparent-background.stuck {
+			padding-left: 21px;
+			nav.navbar-header.header-buttons-logos {
+				margin-top: -8px;
+				padding-bottom: 8px;
+				height: 60px;
+				#js-logo-link{
+					font-size: 2px;
+				}
+			}
+		}
+	}
+	@media(min-width: 990px) and (max-width: 991px) {
+		.col-sm-12.non-transparent-background.stuck {
+			padding-left: 21px;
+		}
+	}
+}
+
 body.travel:not([data-step="results"]) {
+	@media(@xs-only) {
+		.col-sm-12.non-transparent-background.affix:not(.stuck) {
+			height: 60px;
+			nav.navbar-header.header-buttons-logos {
+				height: 60px;
+				margin-top: -6px;
+				#js-logo-link{
+					font-size: 2px;
+				}
+			}
+		}
+		.col-sm-12.non-transparent-background.affix.stuck {
+			padding-bottom: 8px;
+			nav.navbar-header.header-buttons-logos {
+				height: 44px;
+				margin-top: -8px;
+				padding-bottom: 6px;
+				#js-logo-link{
+					font-size: 2px;
+					#logo {
+						height: 32px;
+						background-size: 32px 32px;
+					}
+				}
+			}
+		}
+	}
+	@media(@sm) {
+		.col-sm-12.non-transparent-background.affix:not(.stuck){
+			margin-top: -8px;
+			padding-bottom: 8px;
+			nav.navbar-header.header-buttons-logos {
+				height: 52px;
+				padding-bottom: 0;
+				#js-logo-link{
+					font-size: 6px;
+					#logo {
+						margin-top: -6px;
+					}
+				}
+			}
+		}
+		.col-sm-12.non-transparent-background.affix.stuck {
+			height: 44px;
+			nav.navbar-header.header-buttons-logos {
+				margin-top: -9px;
+				padding-bottom: 6px;
+				#js-logo-link{
+					font-size: 2px;
+					#logo {
+						margin-top: 6px;
+						height: 32px;
+					}
+				}
+			}
+		}
+	}
+	@media(@sm) and (max-width: @screen-sm-max) {
+		.col-sm-12.non-transparent-background.affix{
+			padding-left: 21px;
+		}
+	}
+
 	.non-transparent-background {
 		width: 100%;
 		background-color: #fff;

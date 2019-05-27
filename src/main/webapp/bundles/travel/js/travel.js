@@ -102,9 +102,11 @@
             if (windowYOffset >= 16) {
 				$('.navbar__travel-filters').addClass('stuck');
 				$('#logo').addClass('stuck');
+				$('.col-sm-12.non-transparent-background.affix').addClass('stuck');
             } else {
                 $('.navbar__travel-filters').removeClass('stuck');
                 $('#logo').removeClass('stuck');
+                $('.col-sm-12.non-transparent-background.affix').removeClass('stuck');
 			}
         });
 	}

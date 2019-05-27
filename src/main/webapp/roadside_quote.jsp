@@ -23,10 +23,21 @@
 	</jsp:attribute>
 
 
+	<jsp:attribute name="navbar">
+		<ul class="nav navbar-nav" role="menu">
+            <core_v2:offcanvas_header />
+        </ul>
+	</jsp:attribute>
+
 	<jsp:attribute name="navbar_outer">
         <div class="container">
-            <div class="sortbar-container navbar-inverse">
+            <div class="row sortbar-container navbar-inverse">
                 <ul class="sortbar-parent nav navbar-nav navbar-inverse col-sm-12 row">
+                    <li class="row visible-xs col-sm-2 col-lg-2">
+                        <a href="javascript:;" data-slide-control="previous" class="borderless">
+                             <span class="icon icon-arrow-left"></span> <span>Revise Details</span>
+                        </a>
+                    </li>
                     <li class="visible-xs">
                         <a href="javascript:;" class="">
                             <span class="icon icon-filter"></span> <span>Sort Results By</span>
@@ -35,12 +46,14 @@
                     <li class="container row sortbar-children">
 
                         <ul class="nav navbar-nav navbar-inverse col-sm-12">
-                            <core_v2:offcanvas_header />
+
                             <li class="hidden-xs col-sm-2 col-lg-2">
                                 <a href="javascript:;" data-slide-control="previous" class="borderless">
                                      <span class="icon icon-arrow-left"></span> <span>Revise Details</span>
                                 </a>
                             </li>
+
+
                             <li class="hidden-xs col-sm-1 col-lg-2">
                         <%--<span class="navbar-brand">Sort <span class="optional-lg">your</span> <span
                                 class="optional-md">results</span> by</span>--%>

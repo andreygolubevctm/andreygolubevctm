@@ -303,3 +303,35 @@ body > div > header {
   }
 
 }
+
+body.roadside {
+  &[data-step="results"] {
+    .navMenu-row.navMenu-offcanvas.navMenu-right.active {
+      .header-top {
+        .navbar-toggle {
+          .icon {
+            color: #ffffff;
+          }
+        }
+      }
+    }
+  }
+  .header-top {
+    .navbar-toggle {stuck
+      &.collapsed {
+        font-size: 28px;
+        margin-top: 8px;
+      }
+    }
+  }
+}
+
+body.roadside,
+body.travel {
+  &:not([data-step="results"]) {
+    #logo.stuck {
+      height: 44px;
+      transition: all 200ms ease;
+    }
+  }
+}
