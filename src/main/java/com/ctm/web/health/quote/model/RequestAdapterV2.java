@@ -206,14 +206,14 @@ public class RequestAdapterV2 {
     protected static void addRebateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {
         if (quote.getRebate() != null) {
             final Rebates rebates = new Rebates();
-            rebates.setCurrentRebate(new BigDecimal(quote.getRebate()));
+            rebates.setCurrentRebate(new BigDecimal(String.valueOf(quote.getRebate())));
 
             if (quote.getRebateChangeover() != null) {
-                rebates.setFutureRebate(new BigDecimal(quote.getRebateChangeover()));
+                rebates.setFutureRebate(new BigDecimal(String.valueOf(quote.getRebateChangeover())));
             }
 
             if (quote.getPreviousRebate() != null) {
-                rebates.setPreviousRebate(new BigDecimal(quote.getPreviousRebate()));
+                rebates.setPreviousRebate(new BigDecimal(String.valueOf(quote.getPreviousRebate())));
             }
 
             quoteRequest.setRebates(rebates);
