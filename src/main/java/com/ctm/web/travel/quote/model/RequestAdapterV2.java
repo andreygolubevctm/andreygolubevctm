@@ -42,19 +42,21 @@ public class RequestAdapterV2 {
                 .forEach(travellers::add);
 
         quoteRequest.setTravellers(travellers);
-
+        quoteRequest.setDestinations(quote.getDestinations());
         if (quote.getPolicyType().equals("S")) {
             quoteRequest.setPolicyType(PolicyType.SINGLE);
             SingleTripDetails details = new SingleTripDetails();
-            details.setDestinations(quote.getDestinations());
+
 
             details.setToDate(parseAUSLocalDate(quote.getDates().getToDate()));
             details.setFromDate(parseAUSLocalDate(quote.getDates().getFromDate()));
 
             quoteRequest.setSingleTripDetails(details);
+            quoteRequest.setAmtDuration(1);
 
         } else {
             quoteRequest.setPolicyType(PolicyType.MULTI);
+            quoteRequest.setAmtDuration(quote.getAmtDuration());
         }
 
         if (quote.getRenderingMode() != null && quote.getRenderingMode().equalsIgnoreCase("XS")) {

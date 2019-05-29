@@ -7,6 +7,7 @@ import com.ctm.web.core.validation.Name;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Map web_ctm front end travel quote to Java object (with validation)
@@ -25,7 +26,7 @@ public class TravelQuote {
     private String unknownDestinations; // For logging destinations the user has entered which did not match any
     private String gaClientId;
     private TripType tripType;
-
+    private Integer amtDuration;
 
     @Destinations
     private String destination; // comma delimited list.
@@ -50,7 +51,6 @@ public class TravelQuote {
     private Travellers travellers;
 
     private ArrayList<String> destinations;
-
 
     public TravelQuote(){
         filter = new Filter();
@@ -215,4 +215,13 @@ public class TravelQuote {
     public void setTripType(TripType tripType) {
         this.tripType = tripType;
     }
+
+    public Integer getAmtDuration() {
+        return amtDuration;
+    }
+
+    public void setAmtDuration(Integer amtDuration) {
+        this.amtDuration = amtDuration;
+    }
+
 }
