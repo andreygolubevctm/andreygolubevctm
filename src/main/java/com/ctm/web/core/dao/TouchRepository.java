@@ -23,9 +23,6 @@ public class TouchRepository {
     public static final String INSERT_TOUCH_COMMENT_PROPERTY =
             "INSERT INTO ctm.touches_comments (touchesId, comment) " +
             "VALUES (:touchesId, :comment)";
-    public static final String INSERT_TOUCH_LIFEBROKER_PROPERTY =
-            "INSERT INTO ctm.touches_lifebroker (touchesId, clientReference) " +
-                    "VALUES (:touchesId, :clientReference)";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -41,7 +38,6 @@ public class TouchRepository {
         storeTouch(touch);
         storeTouchProductProperty(touch);
         storeTouchCommentProperty(touch);
-        storeTouchLifebrokerProperty(touch);
         return touch;
     }
 
@@ -68,19 +64,6 @@ public class TouchRepository {
                             .addValue("productCode", touch.getTouchProductProperty().getProductCode()),
                     touchProductPropertyKeyHolder);
             touch.getTouchProductProperty().setId(touchProductPropertyKeyHolder.getKey().longValue());
-        }
-    }
-
-    private void storeTouchLifebrokerProperty(Touch touch) {
-        if (touch.getTouchLifebrokerProperty() != null) {
-            final GeneratedKeyHolder touchLifebrokerPropertyKeyHolder = new GeneratedKeyHolder();
-            jdbcTemplate.update(
-                    INSERT_TOUCH_LIFEBROKER_PROPERTY,
-                    new MapSqlParameterSource()
-                            .addValue("touchesId", touch.getId())
-                            .addValue("clientReference", touch.getTouchLifebrokerProperty().getClientReference()),
-                    touchLifebrokerPropertyKeyHolder);
-            touch.getTouchLifebrokerProperty().setId(touchLifebrokerPropertyKeyHolder.getKey().longValue());
         }
     }
 
