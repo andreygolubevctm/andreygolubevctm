@@ -106,7 +106,8 @@
 	meerkat.modules.register('tripType', {
 		init: init,
 		get: get,
-		exists: exists
+		exists: exists,
+		toggleActiveState: toggleActiveState
 	});
 
 })(jQuery);
