@@ -101,7 +101,7 @@
 			// hide the amt and default blue bubble copy
 			$detailsForm.find('.well-chatty > .amt, .well-chatty > .default').hide();
 			// hide amt 
-			$amtDuration[hideMethod]()
+			$amtDuration[hideMethod]();
 			$destinationfs.add($datestravellersfs).add($travelDatePicker)[showMethod](); 
 
 			// update section header name for dates & travellers section
@@ -114,7 +114,7 @@
 			// show the amt blue bubble copy
 			$detailsForm.find('.well-chatty > .amt').show();
 			// show amt 
-			$amtDuration.add(datestravellersfs)[showMethod]()
+			$amtDuration.add(datestravellersfs)[showMethod]();
 			$travelDatePicker[hideMethod]();
 
 			// update section header name for dates & travellers section
