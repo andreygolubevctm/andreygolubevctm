@@ -19,7 +19,7 @@
 
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
-			<ul class="nav navbar-nav navbar-right">
+			<ul class="nav navbar-nav">
 				<li class="navbar-text slide-feature-back push-top">
 					<a href="javascript:;" data-slide-control="previous" class="btn btn-back">
 						<span class="icon icon-arrow-left"></span> <span>Revise <span class="hidden-sm">Your</span> Details</span>
