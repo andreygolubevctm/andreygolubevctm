@@ -10,16 +10,20 @@
         $amtRegionInputs,
         $amtRegionLabels;
 
-
     function initAmtDurations() {
 
         $amtDurationsfs = $("#amtDurationsfs");
         $amtRegionInputs = $amtDurationsfs.find('input');
         $amtRegionLabels = $amtRegionInputs.siblings('label');
 
-        // borrow functionality from travelTripType.js for the selected states on the region checkboxes
         $amtRegionLabels.on('click', function() {
-            meerkat.modules.tripType.toggleActiveState($(this).siblings('input'));
+            
+            $amtRegionLabels.removeClass('active');
+            $amtRegionLabels.siblings('input').prop('checked', false);
+
+            $(this).addClass('active');
+            $(this).siblings('input').prop('checked', true);
+
         });
     }
 
