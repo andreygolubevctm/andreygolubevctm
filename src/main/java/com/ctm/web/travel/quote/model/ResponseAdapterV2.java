@@ -262,20 +262,14 @@ public class ResponseAdapterV2 {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 
-                    System.out.println("userRegion ---> " + userRegion + "productRegion: ---> " + productRegion + " TITLE: " + result.getDes());
-
                     if (productRegion == "worldwide" && !userRegion.contains("wwExAmericas")) {
-                        System.out.println("region is WORLDWIDE, continue");
                         continue;
                     } else if (productRegion == "wwExAmericas" && userRegion.contains("wwExAmericas")) {
-                        System.out.println("region is wwExAmericas, continue");
                         continue;
                     } else if (productRegion == "apac" && userRegion.contains("asia") || userRegion.contains("pacific")) {
-                        System.out.println("region is apac, continue");
                         continue;
                     }
                     if (!userRegion.contains(productRegion)) {
-                        System.out.println("userRegion ---> " + userRegion + "productRegion: ---> " + productRegion + " no match, removing result");
                         result.setAvailable(AvailableType.N);
                         continue;
                     }
@@ -349,9 +343,7 @@ public class ResponseAdapterV2 {
         String flatRegions = String.join(" ", regions);
         String resultString = "";
         Integer regionCount = 0;
-        System.out.println("------------------------------------------------------------- raw region passed into parseRegion is: " + regions);
-        System.out.println("------------------------------------------------------------- flatRegions: " + flatRegions);
-        System.out.println("------------------------------------------------------------- regionlength: " + regions.size());
+
         // build the user region string & track count of regions
         if (bali.matcher(flatRegions).find()) {
             resultString+= "bali ";
@@ -388,8 +380,6 @@ public class ResponseAdapterV2 {
         } else {
             resultString+= "worldwide ";
         }
-
-        System.out.println("------------------------------------------------------------- resultString: " + resultString + " regionCount: " + regionCount);
 
         return resultString;
     }
