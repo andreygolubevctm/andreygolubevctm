@@ -27,9 +27,11 @@
 	function init() {
 		$(document).ready(function() {
 			$target = $(".journeyProgressBar_v2");
+			$(".v4confirmation").parent().parent().parent().parent().parent().toggleClass("v4confirmationHeaderTop", true);
 		});
 
 		window.addEventListener('resize', setProgressBarAndStepWidth);
+		window.addEventListener('scroll', addScrollSpecificClasses);
 
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit( step ){
 			currentStepNavigationId = step.navigationId;
@@ -155,6 +157,13 @@
 			meerkat.messaging.publish(moduleEvents.INIT);
 		}
 
+	}
+
+	function addScrollSpecificClasses() {
+
+		var affixedTop = $(".v4confirmationHeaderTop > .progress-bar-row.loaded.navbar-affix.affix-top")[0];
+		$(".v4confirmationHeaderTop").toggleClass("onlyAffixProgressBar", !affixedTop);
+		$(".v4confirmationHeaderTop").parent().parent().find('#pageContent').toggleClass("affixedPageContentTopMargin", !affixedTop);
 	}
 
 	function setProgressBarAndStepWidth() {

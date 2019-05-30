@@ -1475,3 +1475,24 @@ header .transactionIdContainer.small {
     display: none !important;
   }
 }
+
+body.health {
+	@media (@progress-sm) {
+      &:not([data-step="results"]) {
+        .progress-bar-row.navbar-affix.v4ProgressBar.loaded.affix {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+        }
+      }
+      &[data-step="results"] {
+        .v4ProgressBar ~ .results-control-container.navbar-affix.affix {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+        }
+      }
+    }
+}

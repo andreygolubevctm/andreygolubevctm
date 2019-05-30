@@ -1693,3 +1693,19 @@ body.simples.health.callCentre {
 		}
 	}
 }
+
+body.health {
+	@media (@progress-sm) {
+		.v4confirmationHeaderTop.onlyAffixProgressBar {
+			position: relative;
+			.progress-bar-row.navbar-affix.loaded.affix:not(.affix-top) {
+				position: fixed;
+				width: 100%;
+				top: 0px;
+			}
+		}
+		#pageContent.affixedPageContentTopMargin {
+			margin-top: 30px;
+		}
+	}
+}

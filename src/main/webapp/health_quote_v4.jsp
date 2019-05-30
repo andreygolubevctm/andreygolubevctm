@@ -122,7 +122,7 @@
 
             <jsp:attribute name="progress_bar">
 
-                <div class="progress-bar-row navbar-affix">
+                <div class="progress-bar-row navbar-affix v4ProgressBar">
                   <competition:mobileFooter vertical="health"/>
                     <div class="container-fluid">
                         <div class="row">
