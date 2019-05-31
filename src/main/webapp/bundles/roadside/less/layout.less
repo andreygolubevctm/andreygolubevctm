@@ -185,3 +185,21 @@ body:not([data-step="results"]) {
   z-index: 21000;
   padding-right: 0px !important;
 }
+
+body.roadside.gtmPromoBanner:not([data-step="results"]) {
+    #pageContent {
+        padding-top: 70px;
+    }
+}
+
+body.roadside.gtmPromoBanner[data-step="results"] {
+    #pageContent {
+        padding-top: 80px;
+    }
+    header.header-wrap.stuck ~ #pageContent {
+        padding-top: 0;
+    }
+	.ad-main-top.adStuck {
+		display: none;
+	}
+}
