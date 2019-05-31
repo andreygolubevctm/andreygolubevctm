@@ -22,7 +22,6 @@
                 health: $("#retrieve-health-template").html(),
                 life: $("#retrieve-life-template").html(),
                 ip: $("#retrieve-ip-template").html(),
-                homeloan: $("#retrieve-homeloan-template").html(),
                 home: $("#retrieve-home-template").html(),
                 utilities: $("#retrieve-utilities-template").html()
             };
@@ -323,36 +322,6 @@
         return outList.join(', ');
     }
 
-    function getHomeloanSituation (situation) {
-        switch(situation) {
-            case "F":
-                return "A First Home Buyer";
-            case "E":
-                return "An Existing Home Owner";
-        }
-
-        return "";
-    }
-
-    function getHomeloanGoal (goal) {
-        switch(goal) {
-            case "FH":
-                return "Buy my first home";
-            case "APL":
-                return "Buy another property to live in";
-            case "IP":
-                return "Buy an investment property";
-            case "REP":
-                return "Renovate my existing property";
-            case "CD":
-                return "Consolidate my debt";
-            case "CL":
-                return "Compare better home loan options";
-        }
-
-        return "";
-    }
-
     meerkat.modules.register("retrievequotesListQuotes", {
         init: initRetrievequotesListQuotes,
         renderQuotes: renderQuotes,
@@ -362,9 +331,7 @@
 
         getGenderString: getGenderString,
         carFormatNcd: carFormatNcd,
-        healthBenefitsList: healthBenefitsList,
-        getHomeloanSituation: getHomeloanSituation,
-        getHomeloanGoal: getHomeloanGoal
+        healthBenefitsList: healthBenefitsList
     });
 
 })(jQuery);

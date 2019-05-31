@@ -4,7 +4,6 @@ import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.dao.*;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.mapping.EmailDetailsMappings;
-import com.ctm.web.core.email.mapping.LifeEmailDetailMappings;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailDetailsService;
 import com.ctm.web.core.email.services.EmailServiceHandler;
@@ -20,7 +19,6 @@ import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
@@ -29,9 +27,6 @@ import com.ctm.web.email.MarketingAutomationEmailService;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import com.ctm.web.health.email.services.HealthEmailService;
 import com.ctm.web.health.services.ProviderContentService;
-import com.ctm.web.life.dao.OccupationsDao;
-import com.ctm.web.life.email.services.LifeEmailDataService;
-import com.ctm.web.life.email.services.LifeEmailService;
 import com.ctm.web.travel.email.services.TravelEmailService;
 import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +35,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailServiceFactory {
 
-	private final OccupationsDao occupationsDao;
-    private final IPAddressHandler ipAddressHandler;
+	private final IPAddressHandler ipAddressHandler;
     private final TransactionDetailsDao transactionDetailsDao;
     private final ApplicationService applicationService;
 	private final GeneralDao generalDao;
@@ -49,15 +43,13 @@ public class EmailServiceFactory {
 	private final MarketingAutomationEmailService marketingAutomationEmailService;
 
     @Autowired
-	EmailServiceFactory(OccupationsDao occupationsDao,
-                        IPAddressHandler ipAddressHandler,
+	EmailServiceFactory(IPAddressHandler ipAddressHandler,
                         TransactionDetailsDao transactionDetailsDao,
                         ApplicationService applicationService,
 						GeneralDao generalDao,
 						ProviderContentService providerContentService,
 						MarketingAutomationEmailService marketingAutomationEmailService) {
-		this.occupationsDao = occupationsDao;
-        this.ipAddressHandler = ipAddressHandler;
+		this.ipAddressHandler = ipAddressHandler;
         this.transactionDetailsDao = transactionDetailsDao;
         this.applicationService = applicationService;
 		this.generalDao = generalDao;
@@ -77,9 +69,6 @@ public class EmailServiceFactory {
 				break;
 			case TRAVEL:
 				emailService = getTravelEmailService(pageSettings, mode, data , vertical);
-				break;
-			case LIFE:
-				emailService = getLifeEmailService(pageSettings, mode, data, vertical);
 				break;
 			case HOME:
 				// TODO: refactor this
@@ -118,17 +107,6 @@ public class EmailServiceFactory {
 				vertical);
 		EmailUrlServiceOld urlServiceOld = createEmailUrlServiceOld(pageSettings, vertical);
 		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data, urlServiceOld, IPAddressHandler.getInstance());
-	}
-	
-	private LifeEmailService getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data,
-														VerticalType vertical) throws SendEmailException {
-		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new LifeEmailDetailMappings());
-		LifeEmailDataService lifeEmailDataService = new LifeEmailDataService( new RankingDetailsDao(),
-                transactionDetailsDao, occupationsDao);
-		return new LifeEmailService(pageSettings, mode, emailDetailsService,
-				 lifeEmailDataService,
-				new ServiceConfigurationServiceBean(),
-                applicationService, ipAddressHandler);
 	}
 
 	public static EmailDetailsService createEmailDetailsService(
