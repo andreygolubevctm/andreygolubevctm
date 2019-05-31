@@ -28,7 +28,7 @@
 
 			if (banner1 || banner2) {
 				$('body').toggleClass('gtmPromoBanner', true);
-				$('#ad-main-top').toggleClass('gtmPromoBannerContainer', true);
+				$('.ad-main-top').toggleClass('gtmPromoBannerContainer', true);
 			}
 
             initStickyHeader();

@@ -183,4 +183,21 @@ body.travel:not([data-step="results"]) {
 	}
 }
 
+body.travel.gtmPromoBanner:not([data-step="results"]) {
+	header.header-wrap {
+		.header-top {
+			.col-sm-12.non-transparent-background.affix.stuck {
+				top: 0;
+				@media(min-width: 768px) {
+					padding-left: 30px;
+					margin-left: -20px;
+				}
+			}
+		}
+		#pageContent {
+			padding-top: 60px;
+		}
+	}
+}
+
 
