@@ -33,8 +33,15 @@
 			$travel_dates_toDate = $("#travel_dates_toDate");
 			$sticky_header1 = $('.non-transparent-background');
 
-			initStickyHeader();
+			var urlVar = getUrlVar();
+			var banner1 = decodeUriComponent(urlVar.banners);
+			var banner2 = decodeUriComponent(urlVar.gtmBanners);
 
+			if (banner1 || banner2) {
+				$('body').toggleClass("gtmPromoBanner", true);
+			}
+
+			initStickyHeader();
 
 			$policyTypeBtn = $("input[name=travel_policyType]");
 			meerkat.modules.travelYourCover.initTravelCover();
@@ -109,6 +116,24 @@
                 $('.col-sm-12.non-transparent-background.affix').removeClass('stuck');
 			}
         });
+	}
+
+	function getUrlVar() {
+		var vars = {};
+		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+			vars[key] = value;
+		});
+		return vars;
+	}
+
+	function decodeUriComponent(component) {
+		if(window.useLoopedTransferringURIDecoding) {
+			do {
+				component = decodeURIComponent(component);
+			} while (component.match(/%[0-9a-f]{2}/i));
+		}
+
+		return component;
 	}
 
 	/**

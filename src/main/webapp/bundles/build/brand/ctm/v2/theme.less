@@ -1499,3 +1499,36 @@ body.health {
         height: 40px;
     }
 }
+
+body.travel.gtmPromoBanner:not([data-step="results"]) {
+	.navMenu-row.navMenu-offcanvas.navMenu-right {
+		header.header-wrap {
+			.header-top {
+				.container-fluid {
+					.col-sm-12.non-transparent-background.affix.stuck {
+						top: 0;
+						@media(min-width: 768px) {
+							padding-left: 30px;
+							margin-left: -20px;
+						}
+					}
+				}
+			}
+			#pageContent {
+				padding-top: 60px;
+			}
+		}
+	}
+}
+
+body.travel.gtmPromoBanner:not([data-step="results"]) {
+    #pageContent {
+        padding-top: 70px;
+    }
+}
+
+body.roadside.gtmPromoBanner[data-step="results"] {
+	#ad-main-top.adStuck {
+		display: none;
+	}
+}
