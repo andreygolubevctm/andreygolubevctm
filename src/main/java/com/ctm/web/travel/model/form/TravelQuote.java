@@ -7,7 +7,6 @@ import com.ctm.web.core.validation.Name;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Map web_ctm front end travel quote to Java object (with validation)
