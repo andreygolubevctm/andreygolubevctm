@@ -281,7 +281,7 @@
 
         if (success) {
             // If comparison is open, filter the results immediately
-            if (getComparedProducts().length === 2 && meerkat.site.vertical !== 'homeloan') {
+            if (getComparedProducts().length === 2) {
                 meerkat.messaging.publish(moduleEvents.TOGGLE_CHECKBOXES);
             }
             

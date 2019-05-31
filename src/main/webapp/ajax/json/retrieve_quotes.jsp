@@ -240,11 +240,6 @@
 									</c:if>
 								</c:if>
 
-								<c:if test="${fn:toLowerCase(row.productType) eq 'homeloan' and fn:startsWith(row.xpath, 'homeloan/')}">
-									<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/${row.xpath}" value="${row.textValue}" />
-									
-								</c:if>
-
 								<c:if test="${fn:toLowerCase(row.productType) eq 'health'}">
 									<c:choose>
 										<%-- Replace the health situation code with description --%>
