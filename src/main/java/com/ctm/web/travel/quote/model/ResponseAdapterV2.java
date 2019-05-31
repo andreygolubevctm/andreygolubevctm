@@ -14,7 +14,10 @@ import com.ctm.web.travel.quote.model.response.TravelQuote;
 import com.ctm.web.travel.quote.model.response.TravelResponseV2;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -262,16 +265,18 @@ public class ResponseAdapterV2 {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 
-                    if (productRegion == "worldwide" && !userRegion.contains("wwExAmericas")) {
-                        continue;
-                    } else if (productRegion == "wwExAmericas" && userRegion.contains("wwExAmericas")) {
-                        continue;
-                    } else if (productRegion == "apac" && userRegion.contains("asia") || userRegion.contains("pacific")) {
-                        continue;
-                    }
-                    if (!userRegion.contains(productRegion)) {
-                        result.setAvailable(AvailableType.N);
-                        continue;
+                    if (productRegion != null) {
+                        if (productRegion == "worldwide" && !userRegion.contains("wwExAmericas")) {
+                            continue;
+                        } else if (productRegion == "wwExAmericas" && userRegion.contains("wwExAmericas")) {
+                            continue;
+                        } else if (productRegion == "apac" && userRegion.contains("asia") || userRegion.contains("pacific")) {
+                            continue;
+                        }
+                        if (!userRegion.contains(productRegion)) {
+                            result.setAvailable(AvailableType.N);
+                            continue;
+                        }
                     }
                 }
             }
@@ -279,27 +284,21 @@ public class ResponseAdapterV2 {
         return results;
     }
 
-    private static String getDurationFromTitle(Product product) {
+    private static Integer getDurationFromTitle(Product product) {
         Pattern p = Pattern.compile("\\d+");
         Matcher m = p.matcher(product.getLongTitle());
         while(m.find()) {
-            return m.group();
+            return Integer.valueOf(m.group());
         }
-        return "NaN";
+        return null;
     }
 
     // maxTripDuration is NOT always populated - check the long title otherwise return null
     private static Integer parseDuration(Product product) {
-        try {
-            if (StringUtils.isEmpty(product.getMaxTripDuration())) {
-                String durationResult = getDurationFromTitle(product);
-                return Integer.valueOf(durationResult);
-            } else {
-                Integer durationResult = Integer.valueOf(product.getMaxTripDuration());
-                return durationResult;
-            }
-        } catch (NumberFormatException nfe ) {
-            return null;
+        if (StringUtils.isEmpty(product.getMaxTripDuration())) {
+            return getDurationFromTitle(product);
+        } else {
+            return Integer.valueOf(product.getMaxTripDuration());
         }
     }
 
@@ -327,7 +326,7 @@ public class ResponseAdapterV2 {
         } else if (s.contains("bali")) {
             return "bali";
         }
-        return "NO MATCH FOUND - original string was: " + product.getLongTitle();
+        return null;
     }
 
     // pass in the users destination(s)
