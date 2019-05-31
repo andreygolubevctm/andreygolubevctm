@@ -204,7 +204,27 @@
 		}
 
         $target.closest('.row').find('.progress-bar-bg').css("width", progressBarWidth);
-        $target.find('li').not('.end').css("width", stepWidth);
+
+		if ($(".v4ProgressBar")[0]) {
+            $target.find('li').not('.end').css("width", stepWidth);
+            if (outerContainerWidth >= 767 && outerContainerWidth < 991) {
+                stepWidth = stepWidth + 20;
+                $target.find('li:last-child').not('.end').css("width", stepWidth);
+                $target.find('li:nth-last-child(2)').not('.end').css("width", stepWidth);
+            }
+        } else if ($(".v4confirmation")[0]) {
+            $target.find('li').not('.end').css("width", stepWidth);
+
+            if (outerContainerWidth >= 767 && outerContainerWidth < 991) {
+
+                stepWidth = stepWidth + 20;
+                $target.find('li:nth-last-child(2)').not('.end').css("width", stepWidth);
+                $target.find('li:nth-last-child(3)').not('.end').css("width", stepWidth);
+            }
+
+		} else {
+			$target.find('li').not('.end').css("width", stepWidth);
+		}
     }
 
 	function showSteps() {
