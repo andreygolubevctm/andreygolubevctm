@@ -295,10 +295,16 @@ public class ResponseAdapterV2 {
 
     // maxTripDuration is NOT always populated - check the long title otherwise return null
     private static Integer parseDuration(Product product) {
-        if (StringUtils.isEmpty(product.getMaxTripDuration())) {
-            return getDurationFromTitle(product);
-        } else {
-            return Integer.valueOf(product.getMaxTripDuration());
+        try {
+            if (StringUtils.isEmpty(product.getMaxTripDuration())) {
+
+                return Integer.valueOf(getDurationFromTitle(product));
+            } else {
+
+                return Integer.valueOf(product.getMaxTripDuration());
+            }
+        } catch (NumberFormatException nfe ) {
+            return null;
         }
     }
 
