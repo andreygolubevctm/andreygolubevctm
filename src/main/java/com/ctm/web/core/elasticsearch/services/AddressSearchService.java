@@ -7,8 +7,6 @@ import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.UnknownHostException;
-
 public class AddressSearchService extends ElasticSearchService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddressSearchService.class);
@@ -26,7 +24,7 @@ public class AddressSearchService extends ElasticSearchService {
 			try {
 				elasticClient = ElasticClientProvider.createClient();
 				LOGGER.debug("[ElasticSearch] Address Search client has been initialised");
-			} catch (Exception e) {
+			} catch (ElasticSearchConfigurationException e) {
 				initialised = false;
 				LOGGER.error("[ElasticSearch] Could not initialise ElasticSearch client", e);
 				fatalErrorService.logFatalError(e, 0, "AddressSearchService", false, "");

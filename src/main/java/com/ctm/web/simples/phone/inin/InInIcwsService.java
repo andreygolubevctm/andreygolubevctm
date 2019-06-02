@@ -44,9 +44,9 @@ public class InInIcwsService {
 	public static final List<String> SUBSCRIPTION_ATTRIBUTES = asList("Eic_CallIdKey", "Eic_State", "Eic_CallStateString");
 	public static final String CIC_URL = "cicUrl";
 	private static final String CONNECTION_URL = "${cicUrl}/connection";
-	private static final String QUEUE_SUBSCRIPTION_URL = "${cicUrl}/${sessionId}/messaging/subscriptions/queues/${subscriptionName}";
-	private static final String MESSAGES_URL = "${cicUrl}/${sessionId}/messaging/messages";
-	private static final String SECURE_PAUSE_URL = "${cicUrl}/${sessionId}/interactions/${interactionId}/secure-pause";
+	private static final String QUEUE_SUBSCRIPTION_URL = "${cicUrl}/${anonymousId}/messaging/subscriptions/queues/${subscriptionName}";
+	private static final String MESSAGES_URL = "${cicUrl}/${anonymousId}/messaging/messages";
+	private static final String SECURE_PAUSE_URL = "${cicUrl}/${anonymousId}/interactions/${interactionId}/secure-pause";
 	public static final int DELAY = 500;
 	public static final int ATTEMPTS = 2;
 	public static final String XPATH_CURRENT_INTERACTION_ID = "current/icwsInteractionId";

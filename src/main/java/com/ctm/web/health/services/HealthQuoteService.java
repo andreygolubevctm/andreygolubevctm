@@ -22,6 +22,7 @@ import com.ctm.web.core.providers.model.Request;
 import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.health.dao.HealthTransactionDao;
@@ -74,6 +75,9 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
     private CouponDao couponDao;
 
     @Autowired
+    private TransactionDao transactionDao;
+
+    @Autowired
     private ContentService contentService;
 
     @Autowired
@@ -86,8 +90,18 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
         super(providerFilterDAO, serviceConfigurationServiceBean);
     }
 
-    public ResponseAdapterModel getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent, boolean isSimples, final Content payYourRateRise) throws Exception {
+    public ResponseAdapterModel getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent,
+                                          boolean isSimples, final Content payYourRateRise) throws Exception {
+        Long transactionId = data.getTransactionId(); //transactionId cannot be empty
+        String anonymousId=data.getAnonymousId();
+        String userId=data.getUserId();
+
         setFilter(data.getQuote().getSituation());
+
+
+        if (anonymousId!=null || userId!=null) {
+            transactionDao.writeAuthIDs(transactionId,anonymousId,userId);
+        }
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthQuoteServiceBER", brand, HEALTH.getCode(), ofNullable(data.getEnvironmentOverride()));
 
@@ -100,11 +114,14 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
 
             final HealthQuoteRequest quoteRequest = RequestAdapterV2.adapt(data, alternatePricingContent, isSimples, isGiftCardActive);
 
+
             final RatesheetOutgoingRequest<HealthQuoteRequest> request = RatesheetOutgoingRequest.<HealthQuoteRequest>newBuilder()
                     .transactionId(data.getTransactionId())
                     .brandCode(brand.getCode())
                     .requestAt(data.getRequestAt())
                     .payload(quoteRequest)
+                    .anonymousId(anonymousId)
+                    .userId(userId)
                     .build();
 
             LOGGER.info("Attempting to call clientQuotesV2.post (HealthResponseV2)  {} {} {}", kv("url", properties.getServiceUrl()+"/quote"), kv("timeout", properties.getTimeout()), kv("request", request.getPayload().toString()));

@@ -14,12 +14,18 @@ public class ApplicationOutgoingRequest<PAYLOAD> {
 
     private PAYLOAD payload;
 
+    private String anonymousId;
+
+    private String userId;
+
     private ApplicationOutgoingRequest(Builder<PAYLOAD> builder) {
         transactionId = builder.transactionId;
         requestAt = builder.requestAt;
         brandCode = builder.brandCode;
         providerFilter = builder.providerFilter;
         payload = builder.payload;
+        anonymousId = builder.anonymousId;
+        userId = builder.userId;
     }
 
     public static <PAYLOAD> Builder<PAYLOAD> newBuilder() {
@@ -53,6 +59,8 @@ public class ApplicationOutgoingRequest<PAYLOAD> {
         private String brandCode;
         private String providerFilter;
         private PAYLOAD payload;
+        private String anonymousId;
+        private String userId;
 
         private Builder() {
         }
@@ -69,6 +77,16 @@ public class ApplicationOutgoingRequest<PAYLOAD> {
 
         public Builder brandCode(String val) {
             brandCode = val;
+            return this;
+        }
+
+        public Builder sessionId(String val) {
+            anonymousId = val;
+            return this;
+        }
+
+        public Builder userId(String val) {
+            userId = val;
             return this;
         }
 

@@ -3,7 +3,7 @@ package com.ctm.web.core.model;
 
 
 public class LogAudit {
-	
+
 	public enum Result {
 		FAIL ("FAIL"),
 		SUCCESS ("SUCCESS");
@@ -18,7 +18,7 @@ public class LogAudit {
 			return value;
 		}
 	}
-	
+
 	public enum Action {
 		LOG_IN ("LOG IN"),
 		SUCCESS ("LOG OUT"),
