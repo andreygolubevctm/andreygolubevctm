@@ -33,6 +33,14 @@ public class AggregateOutgoingRequest<PAYLOAD> {
         return transactionId;
     }
 
+    public String getAnonymousId() {
+        return anonymousId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
     public LocalDateTime getRequestAt() {
         return requestAt;
     }

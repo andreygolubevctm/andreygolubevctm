@@ -52,6 +52,13 @@ public class ApplicationOutgoingRequest<PAYLOAD> {
         return payload;
     }
 
+    public String getAnonymousId() {
+        return anonymousId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
 
     public static final class Builder<PAYLOAD> {
         private Long transactionId;
