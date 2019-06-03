@@ -256,9 +256,11 @@ public class ResponseAdapterV2 {
                  * always returned
                  * */
                 // compare the duration retrieved from the returned products with the user request
-                if (request.getPolicyType() == PolicyType.MULTI && (request.getAmtDuration() > 1 && parseDuration(travelQuote.getProduct()) < request.getAmtDuration())) {
-                    result.setAvailable(AvailableType.N);
-                    continue;
+                if (request.getPolicyType() == PolicyType.MULTI && request.getAmtDuration() > 1 && parseDuration(travelQuote.getProduct()) != null) {
+                    if (parseDuration(travelQuote.getProduct()) < request.getAmtDuration()) {
+                        result.setAvailable(AvailableType.N);
+                        continue;
+                    }
                 }
                 // check if the region retrieved from the returned products is equal to the parsed user request
                 if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0) {
@@ -297,11 +299,9 @@ public class ResponseAdapterV2 {
     private static Integer parseDuration(Product product) {
         try {
             if (StringUtils.isEmpty(product.getMaxTripDuration())) {
-
-                return Integer.valueOf(getDurationFromTitle(product));
+                return getDurationFromTitle(product);
             } else {
-
-                return Integer.valueOf(product.getMaxTripDuration());
+                return product.getMaxTripDuration();
             }
         } catch (NumberFormatException nfe ) {
             return null;
