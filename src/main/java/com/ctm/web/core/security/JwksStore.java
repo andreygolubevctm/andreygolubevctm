@@ -25,7 +25,7 @@ public class JwksStore {
     public static final String ANON_V1_KID_HEADER = "ANON_V1";
     public static final String ANON_V2_KID_HEADER = "ANON_V2";
 
-    private static final long MAX_KEYS_CACHED= 10l; //we currently only have 3 keys. 10 should be sufficient
+    private static final long MAX_KEYS_CACHED= 10L; //we currently only have 3 keys. 10 should be sufficient
 
 
     // this value represents the amount of days that the keys will be cached for (should be set to how often will keys be rotated)
