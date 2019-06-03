@@ -205,20 +205,19 @@
 			</c:choose>
 		</div>
 
+		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return benefit.selected; }); }}
+		{{ if(meerkat.modules.healthContactType.is('outbound')) { }}
+			{{ if(selectedBenefits.length > 0) { }}
+				<simples:dialogue id="126" vertical="health" dynamic="true" />
+			{{ } else { }}
+				<simples:dialogue id="127" vertical="health" dynamic="true" />
+			{{ } }}
+		{{ } }}
+
 		{{ if (['A', 'B1', 'B2', 'C'].includes(custom.reform.scripting)) { }}
 		<div class="simplesReformScriptingBox row">
 			<div class="col-sm-12 no-padding">
-				{{ if (['A', 'B1'].includes(custom.reform.scripting)) { }}
-				<p>So with the hospital cover, we have made sure <strong>everything you</strong> mentioned as important will be covered, like most policies there are some additional services covered as well as services that are excluded or restricted. We will send those across in a welcome pack, I can either read the exclusions and restrictions now or are you happy to just look through those in your own time?</p>
-				{{ } }}
-
-				{{ if (['B2'].includes(custom.reform.scripting)) { }}
-				<p>So with the hospital cover, we have made sure <strong>everything</strong> mentioned as important will be covered, like most policies there are some services that are excluded or restricted, <strong>nothing</strong> you’ve mentioned as important, we will send those across in a welcome pack, I can either read them now or are you happy to just look through those in your own time?</p>
-				{{ } }}
-
-				{{ if (['C'].includes(custom.reform.scripting)) { }}
-				<p>So with this hospital policy, <strong>everything</strong> mentioned as important is covered. This policy will have <strong>some</strong> changes on {{= custom.reform.changeDate }}  to services that you <strong>haven’t</strong> mentioned as important. We will send those changes across in a welcome pack and I can read these for you now, or keeping in mind that the <strong>important</strong> services will continue to be covered, are you happy to just look through those in your own time?</p>
-				{{ } }}
+				<p>So with the hospital cover, we have made sure anything you mentioned as important will be covered, like most policies there are some services that are excluded or restricted. We will send those across in a welcome pack, I can either read the exclusions and restrictions now or are you happy to just look through those in your own time?</p>
 			</div>
 			<div class="scriptingOptions col-sm-12 no-padding">
 				<div class="row">
@@ -296,13 +295,21 @@
 								{{ } }}
 							{{ }); }}
 							every other category is covered.</span><br/><br/>
+							(If customer objects or asks about adding services in the future): <br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
+							<br/><br/>
+							{{ if(obj.hospital.inclusions.excesses.perPerson) { }} 
+								There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital. This helps reduce the price of your cover.
+							{{ } }}
 						</div>
 					</div>
 					{{ } }}
 
 					<div class="readWelcomeFlag row">
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
+						{{ if(obj.hospital.inclusions.excesses.perPerson) { }} 
+						<br/><br/>	There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital. This helps reduce the price of your cover.
+						{{ } }}
 					</div>
 				{{ } }}
 
@@ -751,6 +758,10 @@
 			</c:if>
 		</div>
     </c:if>
+
+		{{ if(meerkat.modules.healthBenefitsStep.getCoverType() === 'c') { }}
+			<simples:dialogue id="128" vertical="health" />
+		{{ } }}
 		
 		{{ if (['c', 'e'].includes(meerkat.modules.healthBenefitsStep.getCoverType())) { }}
 		<div class="row extrasCoverSection">
@@ -823,6 +834,10 @@
 		</div>
 		{{ } }}
 
+		{{ if(meerkat.modules.healthBenefitsStep.getCoverType() === 'c' || meerkat.modules.healthBenefitsStep.getCoverType() === 'e') { }}
+			<simples:dialogue id="130" vertical="health" dynamic="true" />
+		{{ } }}
+
         <div class="row ambulanceCoverSection">
             <h2 class="text-dark">Ambulance cover</h2>
             <div class="col-xs-12 benefitTable">
@@ -846,7 +861,11 @@
         </div>
 
 		<div>
-			<simples:dialogue id="99" vertical="health" />
+			{{ if(meerkat.modules.healthContactType.is('outbound')) { }}
+				<simples:dialogue id="129" vertical="health" dynamic="true" />
+			{{ } else { }}
+				<simples:dialogue id="99" vertical="health" />
+			{{ } }}
 		</div>
 
 		<div class="row policyBrochures">
