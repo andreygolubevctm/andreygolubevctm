@@ -60,6 +60,10 @@
 			} else {
 				for(var rs = 0; rs < regionTags.length; rs++) {
 					regionStr += $(regionTags[rs]).text();
+					if (rs == regionTags.length-1) {
+						regionStr += '';
+						continue;
+					}
 					if (rs !== regionTags.length-2) {
 						regionStr += ', ';
 					} else {
