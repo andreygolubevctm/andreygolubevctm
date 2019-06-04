@@ -7,6 +7,10 @@ public class AggregateOutgoingRequest<PAYLOAD> {
 
     private Long transactionId;
 
+    private String anonymousId;
+
+    private String userId;
+
     private LocalDateTime requestAt;
 
     private String brandCode;
@@ -17,6 +21,8 @@ public class AggregateOutgoingRequest<PAYLOAD> {
 
     private AggregateOutgoingRequest(Builder<PAYLOAD> builder) {
         transactionId = builder.transactionId;
+        anonymousId = builder.anonymousId;
+        userId = builder.userId;
         requestAt = builder.requestAt;
         brandCode = builder.brandCode;
         providerFilter = builder.providerFilter;
@@ -25,6 +31,14 @@ public class AggregateOutgoingRequest<PAYLOAD> {
 
     public Long getTransactionId() {
         return transactionId;
+    }
+
+    public String getAnonymousId() {
+        return anonymousId;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public LocalDateTime getRequestAt() {
@@ -49,6 +63,8 @@ public class AggregateOutgoingRequest<PAYLOAD> {
 
     public static final class Builder<PAYLOAD> {
         private Long transactionId;
+        private String anonymousId;
+        private String userId;
         private LocalDateTime requestAt;
         private String brandCode;
         private List<String> providerFilter;
@@ -59,6 +75,16 @@ public class AggregateOutgoingRequest<PAYLOAD> {
 
         public Builder transactionId(Long val) {
             transactionId = val;
+            return this;
+        }
+
+        public Builder anonymousId(String val) {
+            anonymousId = val;
+            return this;
+        }
+
+        public Builder userId(String val) {
+            userId = val;
             return this;
         }
 
