@@ -42,8 +42,7 @@
 		<servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
 		<init-param>
 			<param-name>jaxrs.serviceClasses</param-name>
-			<param-value>com.ctm.web.car.router.CarRouter,
-				com.ctm.web.life.router.LifeRouter
+			<param-value>com.ctm.web.car.router.CarRouter
 			</param-value>
 		</init-param>
 		<init-param>
