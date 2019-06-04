@@ -88,8 +88,8 @@ set: function () {
 		$('#medicareCoveredRow .help_icon').attr("id","help_520");
 
 		<%-- Disable Credit Card as a payment option --%>
-		healthFunds_CUA.$paymentDetailsType.first("label").addClass("disabled");
-		healthFunds_CUA.$paymentDetailsType.first("input").prop("disabled", true);
+		healthFunds_CUA.$paymentDetailsType.find("label").first().addClass("disabled");
+		healthFunds_CUA.$paymentDetailsType.find("input").first().prop("disabled", true);
 
 		meerkat.modules.paymentGateway.setup({
 			"paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
@@ -154,8 +154,8 @@ set: function () {
 		$('#medicareCoveredRow .help_icon').attr("id","help_520");
 
 		<%-- Enable Credit Card as a payment option --%>
-		healthFunds_CUA.$paymentDetailsType.first("label").removeClass("disabled");
-		healthFunds_CUA.$paymentDetailsType.first("input").prop("disabled", false);
+		healthFunds_CUA.$paymentDetailsType.find("label").first().removeClass("disabled");
+		healthFunds_CUA.$paymentDetailsType.find("input").first().prop("disabled", false);
 	}
 };
 </c:set>
