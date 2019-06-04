@@ -75,13 +75,10 @@
 			var durationVal = $('#amtDurationsfs').find('.active').text().trim();
 			var travelTxt = 'to ';
 
-			if (regionTags.length > 1 && regionStr.indexOf('pacific') || regionStr.indexOf('united') || regionStr.indexOf('cook')) {
+			if (regionTags[0].textContent.indexOf('pacific') !== -1 || regionTags[0].textContent.indexOf('united') !== -1) {
 				travelTxt = 'to the ';
-			} else if (regionStr === 'worldwide' || regionStr === 'wwExAmericas' || regionStr === 'asia' || regionStr === 'europe') {
+			} else if (regionStr === 'worldwide' || regionStr === 'asia' || regionStr === 'europe') {
 				travelTxt = '';
-				if (regionStr === 'wwExAmericas') {
-					regionStr = 'Worldwide, excluding Americas';
-				}
 			}
 			txt+="</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of <span class='highlight'>"+durationVal+".</span>" +
 				 "\nWe have also inlcuded products that cover longer trips as they may be of greater value.";
