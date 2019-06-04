@@ -47,7 +47,7 @@ public class AddressSearchService extends ElasticSearchService {
 
 	/**
 	 * Formats a provided input in a consistent format suitable for querying ElasticSearch
-	 * 
+	 *
 	 * @param query
 	 * @return
 	 */
@@ -66,7 +66,7 @@ public class AddressSearchService extends ElasticSearchService {
 			return "";
 		}
 	}
-	
+
 	/**
 	 * Query the ES nodes
 	 *
