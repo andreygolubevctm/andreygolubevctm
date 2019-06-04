@@ -81,7 +81,7 @@
 				travelTxt = '';
 			}
 			txt+="</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of <span class='highlight'>"+durationVal+".</span>" +
-				 "\nWe have also inlcuded products that cover longer trips as they may be of greater value.";
+				 "\nWe have also included products that cover longer trips as they may be of greater value.";
 		}
 
 		if (meerkat.modules.tripType.exists()) {
