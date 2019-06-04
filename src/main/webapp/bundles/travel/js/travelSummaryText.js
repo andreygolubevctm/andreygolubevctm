@@ -64,7 +64,7 @@
 						regionStr += '';
 						continue;
 					}
-					if (rs !== regionTags.length-2) {
+					if (regionTags.length > 1 && rs !== regionTags.length-2 ) {
 						regionStr += ', ';
 					} else {
 						regionStr += ' & ';
@@ -75,7 +75,7 @@
 			var durationVal = $('#amtDurationsfs').find('.active').text().trim();
 			var travelTxt = 'to ';
 
-			if (regionStr === 'pacific') {
+			if (regionTags.length > 1 && regionStr.indexOf('pacific') || regionSt.indexOf('united') || regionSt.indexOf('cook')) {
 				travelTxt = 'to the ';
 			} else if (regionStr === 'worldwide' || regionStr === 'wwExAmericas' || regionStr === 'asia' || regionStr === 'europe') {
 				travelTxt = '';
@@ -83,7 +83,7 @@
 					regionStr = 'Worldwide, excluding Americas';
 				}
 			}
-			txt+="</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+" </span> for a maximum single trip duration of <span class='highlight'>"+durationVal+".</span>" +
+			txt+="</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of <span class='highlight'>"+durationVal+".</span>" +
 				 "\nWe have also inlcuded products that cover longer trips as they may be of greater value.";
 		}
 
