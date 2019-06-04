@@ -136,11 +136,6 @@
 				obj[id] = {};
 				obj[id] = results[i].home;
 			}
-			else if (results[i].hasOwnProperty('homeloan')) {
-				id = results[i].id + " - Home Loan";
-				obj[id] = {};
-				obj[id] = results[i].homeloan;
-			}
 			else {
 				id = results[i].id + " - Unhandled vertical";
 				obj[id] = {};

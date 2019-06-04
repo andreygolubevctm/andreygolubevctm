@@ -13,12 +13,9 @@ public class CtmWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SpringFormParamMapInInterceptor()).addPathPatterns("/rest/energy/**");
         registry.addInterceptor(new SpringFormParamMapInInterceptor()).addPathPatterns("/rest/car/**");
         registry.addInterceptor(new SpringFormParamMapInInterceptor()).addPathPatterns("/rest/home/**");
         registry.addInterceptor(new SpringFormParamMapInInterceptor()).addPathPatterns("/rest/travel/**");
-        registry.addInterceptor(new SpringFormParamMapInInterceptor()).addPathPatterns("/rest/life/quote/**");
-        registry.addInterceptor(new SpringFormParamMapInInterceptor()).addPathPatterns("/rest/life/apply/**");
         registry.addInterceptor(new SpringHealthFormParamMapInInterceptor()).addPathPatterns("/rest/health/**");
     }
 
