@@ -267,18 +267,16 @@ public class ResponseAdapterV2 {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 
-                    if (productRegion != null) {
-                        if (productRegion == "worldwide" && !userRegion.contains("wwExAmericas")) {
-                            continue;
-                        } else if (productRegion == "wwExAmericas" && userRegion.contains("wwExAmericas")) {
-                            continue;
-                        } else if (productRegion == "apac" && userRegion.contains("asia") || userRegion.contains("pacific")) {
-                            continue;
-                        }
-                        if (!userRegion.contains(productRegion)) {
-                            result.setAvailable(AvailableType.N);
-                            continue;
-                        }
+                    if (productRegion == "worldwide" && !userRegion.contains("wwExAmericas")) {
+                        continue;
+                    } else if (productRegion == "wwExAmericas" && userRegion.contains("wwExAmericas")) {
+                        continue;
+                    } else if (productRegion == "apac" && userRegion.contains("asia") || userRegion.contains("pacific")) {
+                        continue;
+                    }
+                    if (!userRegion.contains(productRegion)) {
+                        result.setAvailable(AvailableType.N);
+                        continue;
                     }
                 }
             }
@@ -332,7 +330,7 @@ public class ResponseAdapterV2 {
         } else if (s.contains("bali")) {
             return "bali";
         }
-        return null;
+        return "No Region";
     }
 
     // pass in the users destination(s)
