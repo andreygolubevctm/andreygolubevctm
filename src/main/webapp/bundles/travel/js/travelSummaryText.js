@@ -75,7 +75,7 @@
 			var durationVal = $('#amtDurationsfs').find('.active').text().trim();
 			var travelTxt = 'to ';
 
-			if (regionTags.length > 1 && regionStr.indexOf('pacific') || regionSt.indexOf('united') || regionSt.indexOf('cook')) {
+			if (regionTags.length > 1 && regionStr.indexOf('pacific') || regionStr.indexOf('united') || regionStr.indexOf('cook')) {
 				travelTxt = 'to the ';
 			} else if (regionStr === 'worldwide' || regionStr === 'wwExAmericas' || regionStr === 'asia' || regionStr === 'europe') {
 				travelTxt = '';
