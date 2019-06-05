@@ -270,7 +270,10 @@ public class ResponseAdapterV2 {
                         continue;
                     } else if (productRegion.equals("wwExAmericas") && userRegion.contains("wwExAmericas")) {
                         continue;
-                    } else if (productRegion.equals("apac") && userRegion.contains("asia") || productRegion.equals("apac") && userRegion.contains("pacific") || productRegion.equals("apac") && userRegion.contains("new zealand")) {
+                    } else if (productRegion.equals("pacific") && userRegion.contains("new zealand")) {
+                        continue;
+                    } else if (productRegion.equals("apac") && userRegion.contains("asia") ||
+                               productRegion.equals("apac") && userRegion.contains("pacific")) {
                         continue;
                     }
                     if (!userRegion.contains(productRegion)) {
@@ -308,13 +311,13 @@ public class ResponseAdapterV2 {
         String s = product.getLongTitle().toLowerCase();
 
         // some partners don't say worldwide but infer it, so check for america in the longTitle
-        if (s.contains("worldwide") || s.contains("america")){
+        if (s.contains("worldwide") || s.contains("america")) {
             if (s.contains("excl ") || s.contains("exc ") || s.contains("excluding ")) {
                 return "wwExAmericas";
             } else {
                 return "worldwide";
             }
-        } else if (s.contains("pacific")) {
+        } else if (s.contains("pacific") || s.contains("new zealand")) {
             // double check for partners that bundle pacific/asia
             if (s.contains("asia")) {
                 return "apac";
