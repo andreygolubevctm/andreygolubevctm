@@ -266,17 +266,15 @@ public class ResponseAdapterV2 {
                 if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0) {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
-
-                    if (productRegion == "worldwide" && !userRegion.contains("wwExAmericas")) {
+                    if (productRegion.equals("worldwide") && !userRegion.contains("wwExAmericas")) {
                         continue;
-                    } else if (productRegion == "wwExAmericas" && userRegion.contains("wwExAmericas")) {
+                    } else if (productRegion.equals("wwExAmericas") && userRegion.contains("wwExAmericas")) {
                         continue;
-                    } else if (productRegion == "apac" && userRegion.contains("asia") || userRegion.contains("pacific")) {
+                    } else if (productRegion.equals("apac") && userRegion.contains("asia") || productRegion.equals("apac") && userRegion.contains("pacific") || productRegion.equals("apac") && userRegion.contains("new zealand")) {
                         continue;
                     }
                     if (!userRegion.contains(productRegion)) {
                         result.setAvailable(AvailableType.N);
-                        continue;
                     }
                 }
             }
@@ -316,7 +314,7 @@ public class ResponseAdapterV2 {
             } else {
                 return "worldwide";
             }
-        } else if (s.contains("pacific") || s.contains("new zealand")) {
+        } else if (s.contains("pacific")) {
             // double check for partners that bundle pacific/asia
             if (s.contains("asia")) {
                 return "apac";

@@ -54,6 +54,7 @@
 
 			// build the destination string
 			var regionTags = $('#destinationsfs').find('.selected-tag');
+			var durationTag = $('#amtDurationsfs').find('.active').text();
 			var regionStr = '';
 			if (regionTags.length === 1) {
 				regionStr = regionTags.text();
@@ -77,11 +78,14 @@
 
 			if (regionTags[0].textContent.toLowerCase().indexOf('pacific') !== -1 || regionTags[0].textContent.toLowerCase().indexOf('united') !== -1) {
 				travelTxt = 'to the ';
-			} else if (regionStr === 'worldwide' || regionStr === 'asia' || regionStr === 'europe') {
+			} else if (regionTags[0].textContent.toLowerCase().indexOf('worldwide') !== -1) {
 				travelTxt = '';
 			}
-			txt+="</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of <span class='highlight'>"+durationVal+".</span>" +
-				 "\nWe have also included products that cover longer trips as they may be of greater value.";
+
+			var endStr = "\nWe have also included products that cover longer trips as they may be of greater value.";
+			
+			txt+= "</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of <span class='highlight'>"+durationVal+".</span>";
+			txt+= durationTag.indexOf('61+ days') !== -1 ? '' : endStr;
 		}
 
 		if (meerkat.modules.tripType.exists()) {

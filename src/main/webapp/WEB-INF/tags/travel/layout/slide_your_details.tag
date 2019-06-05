@@ -83,7 +83,7 @@
 				<%-- DURATION SELECTION --%>
                 <form_v2:fieldset legend="Duration" className="travel_maxDuration" id="amtDurationsfs">
                     <form_v2:row label="What is the maximum number of days you will be away from home for any single journey?" className="smallWidth">
-                        <field_v2:array_radio items="1=1 - 15 days,16=16 - 30 days,31=31 - 45 days,46=46 - 60 days,61=61 - 90 days" xpath="travel/amtDuration" title="max trip duration" required="true" className="radio" style="radio-green" />
+                        <field_v2:array_radio items="1=1 - 15 days,16=16 - 30 days,31=31 - 45 days,46=46 - 60 days,61=61+ days" xpath="travel/amtDuration" title="max trip duration" required="true" className="radio" style="radio-green" />
                     </form_v2:row>
                 </form_v2:fieldset>
 
