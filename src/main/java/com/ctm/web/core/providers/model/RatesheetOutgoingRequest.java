@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 
 public class RatesheetOutgoingRequest<PAYLOAD> {
 
+    private String anonymousId;
+
+    private String userId;
+
     private Long transactionId;
 
     private LocalDateTime requestAt;
@@ -17,6 +21,8 @@ public class RatesheetOutgoingRequest<PAYLOAD> {
         requestAt = builder.requestAt;
         brandCode = builder.brandCode;
         payload = builder.payload;
+        anonymousId = builder.anonymousId;
+        userId = builder.userId;
     }
 
     public Long getTransactionId() {
@@ -35,6 +41,10 @@ public class RatesheetOutgoingRequest<PAYLOAD> {
         return payload;
     }
 
+    public String getAnonymousId() { return anonymousId;}
+
+    public String getUserId() { return userId;}
+
     public static <PAYLOAD> Builder<PAYLOAD> newBuilder() {
         return new Builder<>();
     }
@@ -44,6 +54,8 @@ public class RatesheetOutgoingRequest<PAYLOAD> {
         private LocalDateTime requestAt;
         private String brandCode;
         private PAYLOAD payload;
+        private String anonymousId;
+        private String userId;
 
         private Builder() {
         }
@@ -65,6 +77,16 @@ public class RatesheetOutgoingRequest<PAYLOAD> {
 
         public Builder payload(PAYLOAD val) {
             payload = val;
+            return this;
+        }
+
+        public Builder anonymousId(String val) {
+            anonymousId = val;
+            return this;
+        }
+
+        public Builder userId(String val) {
+            userId = val;
             return this;
         }
 

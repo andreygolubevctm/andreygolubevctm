@@ -12,6 +12,10 @@ public abstract class RequestImpl implements Request {
 
     private Long transactionId;
 
+    private String anonymousId;
+
+    private String userId;
+
     private LocalDateTime requestAt;
 
     public Long getTransactionId() {
@@ -52,5 +56,21 @@ public abstract class RequestImpl implements Request {
 
     public void setRequestAt(LocalDateTime requestAt) {
         this.requestAt = requestAt;
+    }
+
+    public String getAnonymousId() {
+        return anonymousId;
+    }
+
+    public void setAnonymousId(String anonymousId) {
+        this.anonymousId = anonymousId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
