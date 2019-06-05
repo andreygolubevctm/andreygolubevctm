@@ -24,8 +24,13 @@ body {
     @media(@xs-only) {
       padding-top: 60px !important;
 
+      #pageContent{
+        padding-top: 9px;
+      }
+
       .header-top .navbar-toggle.collapsed.hamburger {
         padding-top: 5px;
+
 
         .icon {
           font-size: 28px;
@@ -101,6 +106,12 @@ body {
 }
 
 body:not([data-step="results"]) {
+
+  @media(@xs-only) {
+      #pageContent{
+        padding-top: 8px;
+      }
+  }
 
   .header-top {
     @media (@sm) {
