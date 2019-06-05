@@ -13,6 +13,7 @@ import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.ResultsService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.results.TravelResult;
@@ -48,6 +49,9 @@ public class TravelService extends CommonRequestServiceV2 {
     private Client<AggregateOutgoingRequest<TravelQuoteRequest>, TravelResponseV2> clientQuotesV2;
 
     @Autowired
+    private TransactionDao transactionDao;
+
+    @Autowired
     public TravelService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean) {
         super(providerFilterDAO, serviceConfigurationServiceBean);
     }
@@ -63,6 +67,13 @@ public class TravelService extends CommonRequestServiceV2 {
 
         // Get quote from Form Request
         final TravelQuote quote = data.getQuote();
+
+        Long transactionId = data.getTransactionId(); // cannot be null
+        String anonymousId = data.getAnonymousId();
+        String userId = data.getUserId();
+        if (anonymousId!=null||userId!=null) {
+            transactionDao.writeAuthIDs(transactionId,anonymousId,userId);
+        }
 
         setFilter(quote.getFilter());
 
@@ -81,6 +92,8 @@ public class TravelService extends CommonRequestServiceV2 {
                     .requestAt(data.getRequestAt())
                     .providerFilter(quote.getFilter().getProviders())
                     .payload(travelQuoteRequest)
+                    .userId(userId)
+                    .anonymousId(anonymousId)
                     .build();
 
             final TravelResponseV2 travelResponse = clientQuotesV2.post(RestSettings.<AggregateOutgoingRequest<TravelQuoteRequest>>builder()

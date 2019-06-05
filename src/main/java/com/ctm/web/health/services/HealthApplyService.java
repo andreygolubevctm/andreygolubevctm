@@ -37,6 +37,8 @@ import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
+import static com.ctm.web.core.security.AuthorisationConstants.TOKEN_REQUEST_PARAM_ANONYMOUS_ID;
+import static com.ctm.web.core.security.AuthorisationConstants.TOKEN_REQUEST_PARAM_USER_ID;
 
 @Component
 public class HealthApplyService extends CommonRequestServiceV2 {
@@ -64,6 +66,16 @@ public class HealthApplyService extends CommonRequestServiceV2 {
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthApplyService", brand, HEALTH.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
+        Long transactionId = data.getTransactionId(); // transactionId cannot be null.
+
+        // The two IDs below gets populated by the AuthenticationFilter, which extracts them from the relevant JWT token
+        final String anonymousId = Optional.ofNullable(httpServletRequest.getAttribute(TOKEN_REQUEST_PARAM_ANONYMOUS_ID)).map(Object::toString).orElse(null);
+        final String userId = Optional.ofNullable(httpServletRequest.getAttribute(TOKEN_REQUEST_PARAM_USER_ID)).map(Object::toString).orElse(null);
+
+        if (anonymousId!=null||userId!=null) {
+            transactionDao.writeAuthIDs(transactionId,anonymousId,userId);
+        }
+
         if (properties.getServiceUrl().matches(".*://.*/health-apply-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
             LOGGER.info("Calling health-apply v2");
 
@@ -79,11 +91,13 @@ public class HealthApplyService extends CommonRequestServiceV2 {
 
             // Version 2
             final ApplicationOutgoingRequest<HealthApplicationRequest> request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
-                    .transactionId(data.getTransactionId())
+                    .transactionId(transactionId)
                     .brandCode(brand.getCode())
                     .requestAt(data.getRequestAt())
                     .providerFilter(data.getQuote().getApplication().getProvider())
                     .payload(RequestAdapterV2.adapt(data, operator, cid, trialCampaign))
+                    .sessionId(anonymousId)
+                    .userId(userId)
                     .build();
 
             // Getting RootId from the transactionId

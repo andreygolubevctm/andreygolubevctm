@@ -22,6 +22,7 @@ var healthFunds_CUA = {
 	$paymentType : $('#health_payment_details_type input'),
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
+	$paymentDetailsType: $("#health_payment_details_type"),
 set: function () {
 	"use strict";
 		<%-- Previous fund authority --%>
@@ -102,6 +103,12 @@ set: function () {
 			"paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
 				"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
 		});
+
+		_.defer(function() {
+			<%-- Disable Credit Card as a payment option --%>
+			healthFunds_CUA.$paymentDetailsType.find("label").first().addClass("disabled-by-fund disabled");
+			healthFunds_CUA.$paymentDetailsType.find("input").first().addClass("disabled-by-fund").prop("disabled", true);
+		});
 	},
 	renderPaymentDays: function (){
 		meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28});
@@ -146,6 +153,13 @@ set: function () {
 		meerkat.modules.healthCreditCard.render();
 		$('#medicareCoveredRow .help_icon').attr("id",meerkat.modules.healthFunds.getMedicareCoverHelpId());
 		meerkat.modules.paymentGateway.reset();
+		$('#medicareCoveredRow .help_icon').attr("id","help_520");
+
+		<%-- Enable Credit Card as a payment option --%>
+		_.defer(function(){
+			healthFunds_CUA.$paymentDetailsType.find("label").first().removeClass("disabled-by-fund disabled");
+			healthFunds_CUA.$paymentDetailsType.find("input").first().removeClass("disabled-by-fund").prop("disabled", false);
+		});
 	}
 };
 </c:set>
