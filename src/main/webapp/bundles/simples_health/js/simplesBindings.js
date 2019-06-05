@@ -595,7 +595,11 @@
                 $elements.filter('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
                 $dialogue97.show();
             } else {
-                $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
+                if(meerkat.modules.healthContactType.is('outbound')) {
+                    $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-inbound').show();
+                }else{
+                    $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-outbound').show();
+                }
             }
         }
     }
