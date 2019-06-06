@@ -12,8 +12,9 @@
     {
       text: '%DYNAMIC_HOSPITALBENEFITS%', 
       get: function(product) {
+        var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
         var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) {
-          return benefit.selected;
+          return selectedBenefitsList.indexOf(benefit.value) > -1;
         });
 
         var html = '';
@@ -53,8 +54,9 @@
     {
       text: '%DYNAMIC_EXTRASBENEFITS%', 
       get: function(product) {
+        var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
         var selectedBenefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel().filter(function(benefit) {
-          return benefit.selected;
+          return selectedBenefitsList.indexOf(benefit.value) > -1;
         });
 
         var html = '';
@@ -109,6 +111,15 @@
       }
     },
     {
+      text: '%DYNAMIC_PROVIDER_SPECIFIC_CONTENT%', 
+      get: function(product) {
+        var content = meerkat.modules.healthResults.getProviderSpecificPopoverData(product.info.FundCode);
+        if(content.length === 0) { return ''; }
+
+        return content[0].providerBlurb; 
+      }
+    },
+    {
       text: '%DYNAMIC_FREQUENCYAMOUNT%',
       get: function(product) {
         return '<strong>' + product.premium[product._selectedFrequency].text + '</strong>';
@@ -146,7 +157,7 @@
           var extra = product.extras[keys[i]];
           if(extra) {
             var waitingPeriod = extra.waitingPeriod ? extra.waitingPeriod.split(' ') : '';
-            if(extra.covered !== 'N' && waitingPeriod > 2 && extra.name && extra.name.toLowerCase() != 'optical' && extra.name.toLowerCase() != 'major dental') {
+            if(extra.covered !== 'N' && waitingPeriod[0] > 2 && extra.name && extra.name.toLowerCase() != 'optical' && extra.name.toLowerCase() != 'major dental') {
               text += extra.waitingPeriod + ' for ' + extra.name + ', ';
             }
           }
@@ -167,7 +178,9 @@
 
         for(var i = 0; i < dynamicValues.length; i++) {
           var value = dynamicValues[i];
-          html = html.replace(new RegExp(value.text, 'g'), value.get(product));
+          if(html.indexOf(value.text) > -1) {
+            html = html.replace(new RegExp(value.text, 'g'), value.get(product));
+          }
         }
 
         dialogue.html(html);

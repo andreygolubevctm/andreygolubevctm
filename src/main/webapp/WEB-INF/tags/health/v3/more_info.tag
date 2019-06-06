@@ -304,7 +304,7 @@
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
 							<br/><br/>
 							{{ if(isOutbound && obj.hospital.inclusions.excesses.perPerson) { }} 
-								There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital. This helps reduce the price of your cover.
+								<span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital. This helps reduce the price of your cover.</span>
 							{{ } }}
 						</div>
 					</div>
@@ -313,7 +313,7 @@
 					<div class="readWelcomeFlag row">
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
 						{{ if(isOutbound && obj.hospital.inclusions.excesses.perPerson) { }} 
-						<br/><br/>	There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital. This helps reduce the price of your cover.
+						<br/><br/><span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital. This helps reduce the price of your cover.</span>
 						{{ } }}
 					</div>
 				{{ } }}
