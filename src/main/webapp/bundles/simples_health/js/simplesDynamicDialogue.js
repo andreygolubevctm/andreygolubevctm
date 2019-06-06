@@ -113,7 +113,7 @@
           }
         }
 
-        if(!hasMajorWaiting) {
+        if(text && !hasMajorWaiting) {
           text = 'The extras waiting periods are only ' + text;  
         }
 
