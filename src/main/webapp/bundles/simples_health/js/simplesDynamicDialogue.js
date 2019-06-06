@@ -12,84 +12,19 @@
     {
       text: '%DYNAMIC_HOSPITALBENEFITS%', 
       get: function(product) {
-        var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
-        var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) {
-          return selectedBenefitsList.indexOf(benefit.value) > -1;
-        });
-
-        var html = '';
-        if(selectedBenefits.length > 0) {
-          for(var i = 0; i < selectedBenefits.length; i++) {
-            var benefit = selectedBenefits[i];
-            html += '<li>' + benefit.label + '</li>';
-          }
-        }else{
-          html += 'A number of clinical categories like ';
-          var keys = Object.keys(product.hospital.benefits);
-          var found = 0;
-          for(var j = 0; j < keys.length; j++) {
-            var hospital = product.hospital.benefits[keys[j]];
-              if(hospital.covered === 'Y' || hospital.covered === 'YY') {
-                if(found > 0 && found < 2) {
-                  html += ', ';
-                }
-
-                if(found === 2) {
-                  html += ' and ';
-                }
-
-                html += hospital.name;
-                found++;
-              }
-
-              if(found === 3) {
-                break;
-              }
-          }
-        }
-
-        return html;
+        var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
+        var productBenefits = product.hospital.benefits;
+        var listText = 'A number of clinical categories like ';
+        return getBenefitsList(benefits, productBenefits, listText);
       }
     },
     {
       text: '%DYNAMIC_EXTRASBENEFITS%', 
       get: function(product) {
-        var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
-        var selectedBenefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel().filter(function(benefit) {
-          return selectedBenefitsList.indexOf(benefit.value) > -1;
-        });
-
-        var html = '';
-        if(selectedBenefits.length > 0) {
-          for(var i = 0; i < selectedBenefits.length; i++) {
-            var benefit = selectedBenefits[i];
-            html += '<li>' + benefit.label + '</li>';
-          }
-        }else{
-          html += 'A number of extras benefits like ';
-          var keys = Object.keys(product.extras);
-          var found = 0;
-          for(var j = 0; j < keys.length; j++) {
-            var extra = product.extras[keys[j]];
-              if(extra.covered === 'Y' || extra.covered === 'YY') {
-                if(found > 0 && found < 2) {
-                  html += ', ';
-                }
-
-                if(found === 2) {
-                  html += ' and ';
-                }
-                html += extra.name;
-                found++;
-              }
-
-              if(found === 3) {
-                break;
-              }
-          }
-        }
-
-        return html;
+        var benefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel();
+        var productBenefits = product.extras;
+        var listText = 'A number of extras benefits like ';
+        return getBenefitsList(benefits, productBenefits, listText);
       }
     },
     {
@@ -128,16 +63,22 @@
     {
       text: '%DYNAMIC_PRODUCT_PROMOTION%',
       get: function(product) {
-        return product.promo.promoText;
+        if(! product.promo.promoText) { 
+          return ''; 
+        }
+
+        return '(Discuss promotions)' + '<p>' + product.promo.promoText + '</p>';
       }
     },
     {
       text: '%DYNAMIC_MAJOR_WAITING%',
       get: function(product) {
+      var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
+
        var majorDental = product.extras['DentalMajor'];
-       var majorDentalText = majorDental.covered === 'Y' ? majorDental.waitingPeriod + ' for Major Dental, ' : '';
+       var majorDentalText = selectedBenefitsList.indexOf('DentalMajor') > -1 ? majorDental.waitingPeriod + ' for Major Dental, ' : '';
        var optical = product.extras['Optical'];
-       var opticalText = optical.covered === 'Y' ? optical.waitingPeriod + '  for Optical, ' : '';
+       var opticalText = selectedBenefitsList.indexOf('Optical') > -1 ? optical.waitingPeriod + '  for Optical, ' : '';
        var startText = 'The extras waiting periods are only ';
        
        if(!opticalText && !majorDentalText) {
@@ -150,24 +91,120 @@
     {
       text: '%DYNAMIC_WAITING_OVER2%',
       get: function(product) {
+        var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
         var keys = Object.keys(product.extras);
+        var text = '';
+        var hasMajorWaiting = false;
+
+        for(var i = 0; i < keys.length; i++) {
+          var extra = product.extras[keys[i]];
+          if(extra) {
+            var waitingPeriod = extra.waitingPeriod ? extra.waitingPeriod.split(' ')[0] : '';
+            if(selectedBenefitsList.indexOf(keys[i]) > -1) {
+              if(extra.name.toLowerCase() == 'optical' || extra.name.toLowerCase() == 'major dental') {
+                hasMajorWaiting = true;
+                continue;
+              }else {
+                if(waitingPeriod > 2) {
+                  text += extra.waitingPeriod + ' for ' + extra.name + ', ';
+                }
+              }
+            }
+          }
+        }
+
+        if(!hasMajorWaiting) {
+          text = 'The extras waiting periods are only ' + text;  
+        }
+
+        return text;
+      }
+    }, 
+    {
+      text: '%DYNAMIC_REMAINING_WAITING%',
+      get: function(product) {
+        var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
+        var keys = Object.keys(product.extras);
+        var hasMajorWaiting = false;
+        var has2MonthGreaterWaiting = false;
         var text = '';
 
         for(var i = 0; i < keys.length; i++) {
           var extra = product.extras[keys[i]];
           if(extra) {
-            var waitingPeriod = extra.waitingPeriod ? extra.waitingPeriod.split(' ') : '';
-            if(extra.covered !== 'N' && waitingPeriod[0] > 2 && extra.name && extra.name.toLowerCase() != 'optical' && extra.name.toLowerCase() != 'major dental') {
-              text += extra.waitingPeriod + ' for ' + extra.name + ', ';
+            if(selectedBenefitsList.indexOf(keys[i]) > -1 && extra.name) {
+              if(extra.name.toLowerCase() == 'optical' || extra.name.toLowerCase() == 'major dental') {
+                hasMajorWaiting = true;
+                continue;
+              }else {
+                var waitingPeriod = extra.waitingPeriod ? extra.waitingPeriod.split(' ')[0] : '';
+
+                if(waitingPeriod > 2) {
+                  has2MonthGreaterWaiting = true;
+                }else {
+                  text = '2 months for all other services that we discussed are important to you.';
+                }
+              }
             }
+          }
+        }
+        if(text) {
+          if(hasMajorWaiting || has2MonthGreaterWaiting) {
+            text = ' and ' + text;
+          }
+
+          if(!hasMajorWaiting && !has2MonthGreaterWaiting) {
+            text = 'The extras waiting periods are 2 months for all the services that we discussed are important to you.';
           }
         }
 
         return text;
-      }
+
+      }  
     }
   ];
-    
+
+  function getBenefitsList(benefits, productBenefits, listStartText) {
+    var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
+    var selectedBenefits = benefits.filter(function(benefitItem) {
+      return selectedBenefitsList.indexOf(benefitItem.value) > -1;
+    });
+    var benefit;
+
+    var html = '';
+    if(selectedBenefits.length > 0) {
+      for(var i = 0; i < selectedBenefits.length; i++) {
+        benefit = selectedBenefits[i];
+        html += '<li>' + benefit.label + '</li>';
+      }
+    }else{
+      var keys = Object.keys(productBenefits);
+      html += listStartText;
+      var found = 0;
+      for(var j = 0; j < keys.length; j++) {
+        benefit = productBenefits[keys[j]];
+          if(benefit.covered === 'Y' || benefit.covered === 'YY') {
+            if(found > 0 && found < 2) {
+              html += ', ';
+            }
+
+            if(found === 2) {
+              html += ' and ';
+            }
+
+            html += benefit.name;
+            found++;
+          }
+
+          if(found === 3) {
+            break;
+          }
+      }
+    }
+
+    return html;
+  }
+
     function parse(id) {
       if(!id) return;
 
