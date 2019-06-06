@@ -39,6 +39,16 @@ body {
 
     }
     .header-wrap {
+      @media(@sm) {
+        // fix IE issue with header size
+        nav div.container div.row ul li ul li {
+          max-height: 60px;
+           a:hover {
+             max-height: 60px;
+           }
+        }
+      }
+
       &:not(.stuck){
         @media(@sm) {
           .header-top.dropdown-interactive-base.navMenu-row-fixed{
