@@ -10,7 +10,6 @@
 <%
     RewardService rewardService = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
     request.setAttribute("rewardService", rewardService);
-    System.out.println (rewardService.encrypt("10417"));
 %>
 
 <%-- GET rewardOrder from encryptedOrderLineId Token --%>
