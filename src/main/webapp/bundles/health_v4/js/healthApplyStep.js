@@ -643,7 +643,8 @@
                         if  ($('select[name=health_previousfund_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length === 1) {
                             // if there are no duplicate entries on the about you(primary)/insurance preferences(partner) page
                             if ($('select[name=health_healthCover_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length == 1)  {
-
+                                // ensure no other fields are selected
+                                $('select[name=health_previousfund_' + applicant + '_fundName]').find('option').attr("selected", false);
                                 //populate field
                                 $('select[name=health_previousfund_' + applicant + '_fundName]').find('option[value="' + selectedFieldCurrentVal + '"]').attr("selected", true);
                             }
