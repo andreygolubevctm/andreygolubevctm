@@ -42,7 +42,7 @@
         var benefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel();
         var productBenefits = product ? product.extras : [];
         var listText = '<li>NO EXTRAS SELECTED</li>';
-        return getBenefitsList(benefits, productBenefits, listText, true);
+        return getBenefitsList(benefits, productBenefits, listText, false);
       }
     },
     {
