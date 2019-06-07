@@ -48,8 +48,11 @@ import javax.ws.rs.core.Context;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static com.ctm.web.core.security.AuthorisationConstants.TOKEN_REQUEST_PARAM_ANONYMOUS_ID;
+import static com.ctm.web.core.security.AuthorisationConstants.TOKEN_REQUEST_PARAM_USER_ID;
 
 @Api(basePath = "/rest/health", value = "Health Quote")
 @RestController
@@ -91,6 +94,14 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
         // Initialise request
         Brand brand = initRouter(request);
+
+        // The two IDs below gets populated by the AuthenticationFilter, which extracts them from the relevant JWT token
+        final String anonymousId = Optional.ofNullable(request.getAttribute(TOKEN_REQUEST_PARAM_ANONYMOUS_ID)).map(Object::toString).orElse(null);
+        final String userId = Optional.ofNullable(request.getAttribute(TOKEN_REQUEST_PARAM_USER_ID)).map(Object::toString).orElse(null);
+
+        data.setAnonymousId(anonymousId);
+        data.setUserId(userId);
+
         updateTransactionIdAndClientIP(request, data);
         updateApplicationDate(request, data);
         HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService(ipAddressHandler);
@@ -130,7 +141,8 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
         final boolean competitionEnabled = StringUtils.equalsIgnoreCase(contentService.getContentValueNonStatic(request, "competitionEnabled"), "Y");
 
-        final ResponseAdapterModel quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive, isCallCentre, payYourRateRise);
+        final ResponseAdapterModel quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive,
+                isCallCentre, payYourRateRise);
 
         if (quotes.getResults().isEmpty()) {
             return handleEmptyResults(request, data, healthQuoteTokenService, info);

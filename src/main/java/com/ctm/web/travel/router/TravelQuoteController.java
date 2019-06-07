@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+
+import static com.ctm.web.core.security.AuthorisationConstants.TOKEN_REQUEST_PARAM_ANONYMOUS_ID;
+import static com.ctm.web.core.security.AuthorisationConstants.TOKEN_REQUEST_PARAM_USER_ID;
 
 @RestController
 @RequestMapping("/rest/travel")
@@ -39,6 +43,12 @@ public class TravelQuoteController extends CommonQuoteRouter<TravelRequest> {
     public ResultsWrapper getTravelQuote(@Valid final TravelRequest data, HttpServletRequest request) throws Exception {
 
         Vertical.VerticalType vertical = Vertical.VerticalType.TRAVEL;
+
+        // The two IDs below gets populated by the AuthenticationFilter, which extracts them from the relevant JWT token
+        final String anonymousId = Optional.ofNullable(request.getAttribute(TOKEN_REQUEST_PARAM_ANONYMOUS_ID)).map(Object::toString).orElse(null);
+        final String userId = Optional.ofNullable(request.getAttribute(TOKEN_REQUEST_PARAM_USER_ID)).map(Object::toString).orElse(null);
+        data.setAnonymousId(anonymousId);
+        data.setUserId(userId);
 
         // Initialise request
         Brand brand = initRouter(request, vertical);
