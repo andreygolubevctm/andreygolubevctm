@@ -266,6 +266,10 @@ public class ResponseAdapterV2 {
                 if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0) {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
+
+                    System.out.println("userRegion   : " + userRegion);
+                    System.out.println("productRegion: " + productRegion);
+
                     if (productRegion.equals("worldwide") && !userRegion.contains("wwExAmericas")) {
                         continue;
                     } else if (productRegion.equals("wwExAmericas") && userRegion.contains("wwExAmericas")) {
@@ -343,11 +347,16 @@ public class ResponseAdapterV2 {
         Pattern asia = Pattern.compile("AS|AFG|ARM|AZE|BHR|BGD|BTN|BRN|KHM|CHN|CYP|GEO|IND|IDN|IRN|IRQ|ISR|JPN|JOR|KAZ|KWT|KGZ|LAO|LBN|MYS|MDV|MNG|MMR|NPL|PRK|OMN|PAK|PSE|PHL|QAT|SAU|SGP|KOR|LKA|SYR|TWN|TJK|THA|TLS|TUR|TKM|ARE|UZB|VNM|YEM");
         Pattern pacific = Pattern.compile("PC|AUS|NZL|FJI|VUT|COK|NCL|MHL|NRU|SLB|TON|WLF|TUV|TKL|WSM|ASM|NIU|PYF|PCN");
         Pattern bali = Pattern.compile("BAL");
+        Pattern worldwide = Pattern.compile("WW");
 
         String flatRegions = String.join(" ", regions);
         String resultString = "";
         Integer regionCount = 0;
 
+        // build the user region string & track count of regions
+        if (worldwide.matcher(flatRegions).find()) {
+            regionCount++;
+        }
         // build the user region string & track count of regions
         if (bali.matcher(flatRegions).find()) {
             resultString+= "bali ";
@@ -372,15 +381,14 @@ public class ResponseAdapterV2 {
         }
         // if more than one region selected, switch to worldwide products
         if ( regionCount > 1) {
-            // check for americas
-            if (!americas.matcher(flatRegions).find()) {
-                resultString = "wwExAmericas worldwide ";
-            } else {
-                resultString = "worldwide ";
-            }
+            resultString = "worldwide ";
         // otherwise add to string
         } else if (!americas.matcher(flatRegions).find()) {
-            resultString+= "wwExAmericas worldwide ";
+            if (worldwide.matcher(flatRegions).find()) {
+                resultString = "worldwide ";
+            } else {
+                resultString+= "wwExAmericas worldwide ";
+            }
         } else {
             resultString+= "worldwide ";
         }
