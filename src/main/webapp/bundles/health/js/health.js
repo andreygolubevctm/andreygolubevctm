@@ -483,7 +483,7 @@
                                     $('#health_application_wfd_heardAbout').val($('#health_application_wfd_heardAboutSelect').val());
                                 }
 							}
-							});
+						});
 					}
 				}
 
