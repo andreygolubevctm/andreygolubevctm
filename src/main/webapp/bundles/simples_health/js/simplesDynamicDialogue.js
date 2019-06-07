@@ -13,18 +13,36 @@
       text: '%DYNAMIC_HOSPITALBENEFITS%', 
       get: function(product) {
         var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
-        var productBenefits = product.hospital.benefits;
-        var listText = 'A number of clinical categories like ';
-        return getBenefitsList(benefits, productBenefits, listText);
+        var productBenefits = product ? product.hospital.benefits : [];
+        var listText = 'A number of clinical categories like Brain and Nervous System, Kidney and Bladder and Digestive System, just to name a few';
+        return getBenefitsList(benefits, productBenefits, listText, false);
+      }
+    },
+    {
+      text: '%DYNAMIC_HOSPITALBENEFITS_NO_BLURB%', 
+      get: function(product) {
+        var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
+        var productBenefits = product ? product.hospital.benefits : [];
+        var listText = '<li>NO HOSPITAL BENEFITS SELECTED</li>';
+        return getBenefitsList(benefits, productBenefits, listText, false);
       }
     },
     {
       text: '%DYNAMIC_EXTRASBENEFITS%', 
       get: function(product) {
         var benefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel();
-        var productBenefits = product.extras;
+        var productBenefits = product ? product.extras : [];
         var listText = 'A number of extras benefits like ';
-        return getBenefitsList(benefits, productBenefits, listText);
+        return getBenefitsList(benefits, productBenefits, listText, true);
+      }
+    },
+    {
+      text: '%DYNAMIC_EXTRASBENEFITS_NO_BLURB%', 
+      get: function(product) {
+        var benefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel();
+        var productBenefits = product ? product.extras : [];
+        var listText = '<li>NO EXTRAS SELECTED</li>';
+        return getBenefitsList(benefits, productBenefits, listText, true);
       }
     },
     {
@@ -164,7 +182,7 @@
     }
   ];
 
-  function getBenefitsList(benefits, productBenefits, listStartText) {
+  function getBenefitsList(benefits, productBenefits, listStartText, renderList) {
     var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
     var selectedBenefits = benefits.filter(function(benefitItem) {
       return selectedBenefitsList.indexOf(benefitItem.value) > -1;
@@ -181,31 +199,37 @@
       var keys = Object.keys(productBenefits);
       html += listStartText;
       var found = 0;
-      for(var j = 0; j < keys.length; j++) {
-        benefit = productBenefits[keys[j]];
-          if(benefit.covered === 'Y' || benefit.covered === 'YY') {
-            if(found > 0 && found < 2) {
-              html += ', ';
+      if(renderList) {
+        for(var j = 0; j < keys.length; j++) {
+          benefit = benefits.find(function(benefit) {
+            return benefit.value === keys[j];
+          });
+          var productBenefit = productBenefits[keys[j]];
+
+            if(benefit && productBenefit.covered === 'Y' || productBenefit.covered === 'YY') {
+              if(found > 0 && found < 2) {
+                html += ', ';
+              }
+
+              if(found === 2) {
+                html += ' and ';
+              }
+
+              html += benefit.label;
+              found++;
             }
 
-            if(found === 2) {
-              html += ' and ';
+            if(found === 3) {
+              break;
             }
-
-            html += benefit.name;
-            found++;
-          }
-
-          if(found === 3) {
-            break;
-          }
+        }
       }
     }
 
     return html;
   }
 
-    function parse(id) {
+    function parse(id, onParse) {
       if(!id) return;
 
       _.defer(function () {
@@ -221,6 +245,9 @@
         }
 
         dialogue.html(html);
+        if(onParse && typeof onParse === 'function') { 
+          onParse();
+        }
     });
     }
 

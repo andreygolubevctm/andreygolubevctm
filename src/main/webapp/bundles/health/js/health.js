@@ -452,6 +452,7 @@
 								closeWindow:false
 							}],
 							onOpen : function(modalId) {
+							meerkat.modules.simplesDynamicDialogue.parse(62, function() {
 								var $modal = $('#' + modalId);
 								$modal.find('.simples-dialogue').removeClass('hidden');
 								meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $modal.find('#complianceForm') );
@@ -463,6 +464,8 @@
 									}
 								});
 
+								meerkat.modules.dialogs.resizeDialog(modalId);
+							});
 								// Check dynamic checkboxes depending on hidden values
 								$('#health_simples_dialogue-checkbox-62-modal')
 									.prop('checked', $('#health_simples_dialogue-checkbox-62').val() === 'Y');
@@ -480,7 +483,7 @@
                                     $('#health_application_wfd_heardAbout').val($('#health_application_wfd_heardAboutSelect').val());
                                 }
 							}
-						});
+							});
 					}
 				}
 
