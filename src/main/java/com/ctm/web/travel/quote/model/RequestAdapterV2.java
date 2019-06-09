@@ -52,7 +52,7 @@ public class RequestAdapterV2 {
             details.setFromDate(parseAUSLocalDate(quote.getDates().getFromDate()));
 
             quoteRequest.setSingleTripDetails(details);
-            quoteRequest.setAmtDuration(1);
+            quoteRequest.setAmtDuration(0);
 
         } else {
             quoteRequest.setPolicyType(PolicyType.MULTI);
