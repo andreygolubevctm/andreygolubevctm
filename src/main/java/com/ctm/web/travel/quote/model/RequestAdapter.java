@@ -30,19 +30,23 @@ public class RequestAdapter {
         quoteRequest.setTravellersAge(quote.getTravellers().getTravellersAge());
         quoteRequest.setNumberOfAdults(quote.getAdults());
         quoteRequest.setNumberOfChildren(quote.getChildren());
+        quoteRequest.setDestinations(quote.getDestinations());
 
         if(quote.getPolicyType().equals("S")){
             quoteRequest.setPolicyType(PolicyType.SINGLE);
             SingleTripDetails details = new SingleTripDetails();
-            details.setDestinations(quote.getDestinations());
+
 
             details.setToDate(parseAUSLocalDate(quote.getDates().getToDate()));
             details.setFromDate(parseAUSLocalDate(quote.getDates().getFromDate()));
 
             quoteRequest.setSingleTripDetails(details);
+            quoteRequest.setAmtDuration(0);
 
         }else{
             quoteRequest.setPolicyType(PolicyType.MULTI);
+            quoteRequest.setAmtDuration(quote.getAmtDuration());
+
         }
 
         if(quote.getFilter().getSingleProvider() != null && !quote.getFilter().getSingleProvider().equals("")){

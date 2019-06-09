@@ -31,11 +31,6 @@
         $fromTravelDates = $('#travel_dates_fromDateInputD, #travel_dates_fromDateInputM, #travel_dates_fromDateInputY');
         initTravelPopularDestPopover();
         eventSubscriptions();
-        eventListeners();
-    }
-    
-    function eventListeners() {
-      $travel_policyType_A.on('click', _hideDestPopover);
     }
 
     function eventSubscriptions() {
@@ -86,27 +81,17 @@
                     }
                 });
 
-                if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 0 && $destinationsfs.is(':visible') && $travel_policyType_S.prop('checked')) {
+                if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 0 && $travel_policyType_S.is(':focus')) {
                     showTravelPopularDestPopover();
                 }
-            });
-
-            // Show TravelPopularDestPopover when Single Trip is clicked
-            $travel_policyType_S.on('click', function () {
-                showTravelPopularDestPopover();
             });
         }
     }
 
     function showTravelPopularDestPopover() {
-        $travelDestinations.focus();
         showTravelDestTimeout = setTimeout(function() {
             $travelDestinations.qtip('toggle', true);
         }, 750);
-    }
-    
-    function _hideDestPopover() {
-      clearTimeout(showTravelDestTimeout);
     }
 
     function applyTravelDestinationDisplayListeners(api) {

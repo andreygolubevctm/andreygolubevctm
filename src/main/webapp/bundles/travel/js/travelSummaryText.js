@@ -13,8 +13,8 @@
 	function updateSummaryText() {
 		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
 		// Build the summary text based on the entered information.
+		
 		var txt= '<span class="highlight">';
-
 		var adults = $adults.val(),
 		children = $children.val();
 		
@@ -24,7 +24,6 @@
 		} else {
 			txt += adults;
 		}
-		
 		
 		// children
 		if (children > 0)
@@ -49,9 +48,44 @@
 			var days = meerkat.modules.travelDatepicker.getDateDifference();
 			txt += "</span> for <span class='highlight'>"+days+" days</span>";
 		} else {
+
 			$summaryHeader.html('Your Annual Multi Trip (AMT) quote is based on');
 			var blockClass = children > 1 ? 'sm-md-block' : 'sm-block';
-			txt+="</span> travelling <span class='highlight "+blockClass+"'>multiple times in one year";
+
+			// build the destination string
+			var regionTags = $('#destinationsfs').find('.selected-tag');
+			var durationTag = $('#amtDurationsfs').find('.active').text();
+			var regionStr = '';
+			if (regionTags.length === 1) {
+				regionStr = regionTags.text();
+			} else {
+				for(var rs = 0; rs < regionTags.length; rs++) {
+					regionStr += $(regionTags[rs]).text();
+					if (rs == regionTags.length-1) {
+						regionStr += '';
+						continue;
+					}
+					if (regionTags.length > 1 && rs !== regionTags.length-2 ) {
+						regionStr += ', ';
+					} else {
+						regionStr += ' & ';
+					}
+				}
+			}
+
+			var durationVal = $('#amtDurationsfs').find('.active').text().trim();
+			var travelTxt = 'to ';
+
+			if (regionTags[0].textContent.toLowerCase().indexOf('pacific') !== -1 || regionTags[0].textContent.toLowerCase().indexOf('united') !== -1) {
+				travelTxt = 'to the ';
+			} else if (regionTags[0].textContent.toLowerCase().indexOf('worldwide') !== -1) {
+				travelTxt = '';
+			}
+
+			var endStr = "\nWe have also included products that cover longer trips as they may be of greater value.";
+			
+			txt+= "</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of <span class='highlight'>"+durationVal+".</span>";
+			txt+= durationTag.indexOf('61+ days') !== -1 ? '' : endStr;
 		}
 
 		if (meerkat.modules.tripType.exists()) {

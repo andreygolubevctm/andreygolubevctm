@@ -70,6 +70,10 @@
 	<c:when test="${style == 'radio-as-checkbox'}">
 		<c:set var="classVar" value="radio-as-checkbox ${classLabel}" />
 	</c:when>
+	<c:when test="${style == 'radio-green'}">
+		<c:set var="classVar" value="radio btn-group-split ${classLabel}" />
+		<c:set var="className" value='btn-group  ${className}" data-toggle="radio' />
+	</c:when>
 
 	<c:otherwise>
 		<c:set var="classVar" value="btn btn-form-inverse ${classLabel}" />
@@ -125,6 +129,17 @@
 							<c:if test="${wrapCopyInSpan}"><c:out value="</span>" escapeXml="false" /></c:if>
 						</label>
 					</div>
+				</div>
+			</c:when>
+			<%-- FOR CUSTOM GREEN RADIOS --%>
+			<c:when test="${style == 'radio-green'}">
+				<div class="${classVar} ${active} ${outerWrapperClassName}">
+					<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
+					<label ${additionalLabelAttributes}>
+						<c:if test="${wrapCopyInSpan}"><c:out value="<span>" escapeXml="false" /></c:if>
+						<c:out value="${des}" escapeXml="false" />
+						<c:if test="${wrapCopyInSpan}"><c:out value="</span>" escapeXml="false" /></c:if>
+					</label>
 				</div>
 			</c:when>
 			<%-- FOR NORMAL OR INLINE --%>

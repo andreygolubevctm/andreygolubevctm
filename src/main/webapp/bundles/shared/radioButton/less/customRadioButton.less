@@ -57,3 +57,25 @@
     transform: scale(1);
   }
 }
+
+.btn-group-split {
+  float: left;
+  min-width: 96px;
+  &:nth-child(even) {
+    margin-left: 20px;
+  }
+}
+
+@media screen and (@xs-only) {
+	.btn-group-split {
+    margin-left: 20px;
+	}
+}
+
+@media screen and (@lg) {
+	.btn-group-split {
+    &:nth-child(even) {
+      margin-left:120px;
+    }
+	}
+}
