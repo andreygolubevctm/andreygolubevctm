@@ -142,6 +142,8 @@
             toggleFollowupCallDialog();
 	        toggleReferralCallDialog();
             initNaturpathyDialog();
+            togglePrimaryCoverDialogue();
+            togglePartnerCoverDialogue();
 
             applyEventListeners();
             eventSubscriptions();
@@ -612,11 +614,21 @@
     }
 
     function togglePrimaryCoverDialogue() {
-        $dialoguePrimaryCover.toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
+        if(meerkat.modules.healthContactType.is('outbound')) {
+            $dialoguePrimaryCover.not('.simples-dialogue-53').toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
+
+        }else{
+            $dialoguePrimaryCover.not('.simples-dialogue-134').toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
+        }
     }
 
     function togglePartnerCoverDialogue() {
-        $dialoguePartnerCover.toggleClass('hidden', $healthPartnerCover.filter(':checked').val() !== "Y");
+        if(meerkat.modules.healthContactType.is('outbound')) {
+            $dialoguePartnerCover.not('.simples-dialogue-53').toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
+
+        }else{
+            $dialoguePartnerCover.not('.simples-dialogue-134').toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
+        }
     }
 
     function toggleAffiliateRewardsDialogue() {
