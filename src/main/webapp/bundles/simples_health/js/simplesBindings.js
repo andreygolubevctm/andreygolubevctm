@@ -142,8 +142,6 @@
             toggleFollowupCallDialog();
 	        toggleReferralCallDialog();
             initNaturpathyDialog();
-            togglePrimaryCoverDialogue();
-            togglePartnerCoverDialogue();
 
             applyEventListeners();
             eventSubscriptions();
@@ -614,20 +612,26 @@
     }
 
     function togglePrimaryCoverDialogue() {
-        if(meerkat.modules.healthContactType.is('outbound')) {
-            $dialoguePrimaryCover.not('.simples-dialogue-53').toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
-
-        }else{
-            $dialoguePrimaryCover.not('.simples-dialogue-134').toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
+        if($healthPrimaryCover.filter(':checked').val() === "Y") {
+            if(meerkat.modules.healthContactType.is('outbound')) {
+                $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', true);
+                $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', false);
+            }else{
+                $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', false);
+                $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', true);
+            }
         }
     }
 
     function togglePartnerCoverDialogue() {
-        if(meerkat.modules.healthContactType.is('outbound')) {
-            $dialoguePartnerCover.not('.simples-dialogue-53').toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
-
-        }else{
-            $dialoguePartnerCover.not('.simples-dialogue-134').toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
+        if($healthPartnerCover.filter(':checked').val() === "Y") {
+            if(meerkat.modules.healthContactType.is('outbound')) {
+                $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', true);
+                $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', false);
+            }else{
+                $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', false);
+                $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', true);
+            }
         }
     }
 

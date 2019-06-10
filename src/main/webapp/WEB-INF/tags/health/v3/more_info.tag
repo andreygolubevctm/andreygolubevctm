@@ -212,10 +212,12 @@
 
 		{{ if(isOutbound) { }}
 		{{ scriptTerm = 'anything'; }}
-			{{ if(coverType === 'c' || coverType === 'h') { }}
-				<simples:dialogue id="126" vertical="health" dynamic="true" />
-			{{ } else { }}
-				<simples:dialogue id="127" vertical="health" dynamic="true" />
+			{{ if(meerkat.modules.healthBenefitsStep.getLimitedCover() !== 'Y') { }}
+				{{ if(coverType === 'c' || coverType === 'h') { }}
+					<simples:dialogue id="126" vertical="health" dynamic="true" />
+				{{ } else { }}
+					<simples:dialogue id="127" vertical="health" dynamic="true" />
+				{{ } }}
 			{{ } }}
 		{{ } }}
 
@@ -519,7 +521,7 @@
 					</div>
 					<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
-							A limited hospital product is one that coves only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
+							A limited hospital product is one that covers only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
 							</span><br/><br/>
 					</div>
 				</div>
@@ -673,7 +675,7 @@
 					</div>
 					<div class="col-sm-11 no-padding">
 						<span class="clinicalCatInfo">
-							A limited hospital product is one that coves only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
+							A limited hospital product is one that covers only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
 						</span><br/><br/>
 					</div>
 				</div>
