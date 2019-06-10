@@ -612,27 +612,19 @@
     }
 
     function togglePrimaryCoverDialogue() {
-        if($healthPrimaryCover.filter(':checked').val() === "Y") {
-            if(meerkat.modules.healthContactType.is('outbound')) {
-                $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', true);
-                $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', false);
-            }else{
-                $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', false);
-                $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', true);
-            }
-        }
+        var isChecked = $healthPrimaryCover.filter(':checked').val() === "Y";
+        var isOutbound = meerkat.modules.healthContactType.is('outbound');
+
+        $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || !isChecked);
+        $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', !isOutbound || !isChecked);
     }
 
     function togglePartnerCoverDialogue() {
-        if($healthPartnerCover.filter(':checked').val() === "Y") {
-            if(meerkat.modules.healthContactType.is('outbound')) {
-                $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', true);
-                $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', false);
-            }else{
-                $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', false);
-                $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', true);
-            }
-        }
+        var isChecked = $healthPartnerCover.filter(':checked').val() === "Y";
+        var isOutbound = meerkat.modules.healthContactType.is('outbound');
+
+        $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || !isChecked);
+        $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', !isOutbound || !isChecked);
     }
 
     function toggleAffiliateRewardsDialogue() {

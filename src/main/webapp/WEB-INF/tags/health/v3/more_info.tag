@@ -212,7 +212,7 @@
 
 		{{ if(isOutbound) { }}
 		{{ scriptTerm = 'anything'; }}
-			{{ if(meerkat.modules.healthBenefitsStep.getLimitedCover() !== 'Y') { }}
+			{{ if(custom.reform.scripting !== 'D') { }}
 				{{ if(coverType === 'c' || coverType === 'h') { }}
 					<simples:dialogue id="126" vertical="health" dynamic="true" />
 				{{ } else { }}
