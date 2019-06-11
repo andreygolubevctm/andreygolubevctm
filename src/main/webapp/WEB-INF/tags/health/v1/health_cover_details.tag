@@ -88,6 +88,7 @@
 					</form_v2:row>
 				</c:if>
 			</form_v2:fieldset>
+			  <simples:dialogue id="134" vertical="health" className="simples-dialog-outbound" />
 				<simples:dialogue id="26" vertical="health" mandatory="true" />
 		</jsp:body>
 
