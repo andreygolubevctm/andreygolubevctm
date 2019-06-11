@@ -66,7 +66,7 @@
     {
       text: '%DYNAMIC_PROVIDER_SPECIFIC_CONTENT%', 
       get: function(product) {
-        var content = meerkat.modules.healthResults.getProviderSpecificPopoverData(product.info.FundCode);
+        var content = meerkat.modules.healthResults.getProviderSpecificPopoverData(product.info.provider);
         if(content.length === 0) { return ''; }
 
         return content[0].providerBlurb; 
