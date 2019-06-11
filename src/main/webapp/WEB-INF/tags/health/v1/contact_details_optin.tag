@@ -199,6 +199,7 @@
         <%--dynamic script--%>
         <%--if customer has cover--%>
         <simples:dialogue id="53" vertical="health" className="simples-dialogue-primary-current-cover hidden" />
+        <simples:dialogue id="134" vertical="health" className="simples-dialog-outbound simples-dialogue-primary-current-cover hidden" />
 
         <form_v3:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
             <c:set var="fieldXpath" value="${xpath}/partner/dob" />
@@ -237,6 +238,7 @@
         <%--dynamic script--%>
         <%--if customer has cover--%>
         <simples:dialogue id="53" vertical="health" className="simples-dialogue-partner-current-cover hidden" />
+        <simples:dialogue id="134" vertical="health" className="simples-dialog-outbound simples-dialogue-partner-current-cover hidden" />
         <simples:dialogue id="26" vertical="health" mandatory="true" />
 
         <form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">

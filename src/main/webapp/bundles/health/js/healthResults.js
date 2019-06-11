@@ -1293,7 +1293,8 @@
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
         hideNavigationLink: hideNavigationLink,
-        getProvidersReturned : getProvidersReturned
+        getProvidersReturned : getProvidersReturned,
+        getProviderSpecificPopoverData: getProviderSpecificPopoverData
     });
 
 })(jQuery);
