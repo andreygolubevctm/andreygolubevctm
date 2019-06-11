@@ -11,11 +11,13 @@
 <%@ attribute name="vertical"		required="true"	 	rtexprvalue="true" 	description="Vertical to associate this dialogue with e.g. health" %>
 <%@ attribute name="className" 		required="false"	rtexprvalue="true" 	description="Additional css class (colour variations are green/red/purple)" %>
 <%@ attribute name="mandatory" 		required="false"	rtexprvalue="true" 	description="Flag for whether the prompt is a mandatory tickbox" %>
+<%@ attribute name="dynamic" 		required="false"	rtexprvalue="true" 	description="Flag for whether the dialogue box has dynamic values" %>
 
 <%@ attribute fragment="true" required="false" name="body_start" %>
 
 <c:if test="${callCentre}">
 	<jsp:useBean id="financialYearUtils" class="com.ctm.web.health.utils.FinancialYearUtils" />
+
 	<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
 	<%-- VARIABLES --%>
@@ -63,7 +65,12 @@
 				${dialogueText}
 			</c:otherwise>
 		</c:choose>
-
 		<jsp:doBody />
+
+		<c:choose>
+			<c:when test="${not empty dynamic && dynamic == true}">
+				{{= meerkat.modules.simplesDynamicDialogue.parse(${id}) }}
+			</c:when>
+		</c:choose>
 	</div>
 </c:if>

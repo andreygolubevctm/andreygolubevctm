@@ -166,7 +166,7 @@
 
 			</div>
 			{{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-			{{ var isExtrasOnly = meerkat.modules.health.getCoverType() === 'E'; }}
+			{{ var isExtrasOnly = coverType === 'E'; }}
       {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
 
 			<c:choose>
@@ -205,20 +205,26 @@
 			</c:choose>
 		</div>
 
+		{{ var coverType = meerkat.modules.healthBenefitsStep.getCoverType(); }}
+		{{ var isOutbound = meerkat.modules.healthContactType.is('outbound'); }}
+		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return benefit.selected; }); }}
+		{{ var scriptTerm = 'everything'; }}
+
+		{{ if(isOutbound) { }}
+		{{ scriptTerm = 'anything'; }}
+			{{ if(custom.reform.scripting !== 'D') { }}
+				{{ if(coverType === 'c' || coverType === 'h') { }}
+					<simples:dialogue id="126" vertical="health" dynamic="true" />
+				{{ } else { }}
+					<simples:dialogue id="127" vertical="health" dynamic="true" />
+				{{ } }}
+			{{ } }}
+		{{ } }}
+
 		{{ if (['A', 'B1', 'B2', 'C'].includes(custom.reform.scripting)) { }}
 		<div class="simplesReformScriptingBox row">
 			<div class="col-sm-12 no-padding">
-				{{ if (['A', 'B1'].includes(custom.reform.scripting)) { }}
-				<p>So with the hospital cover, we have made sure <strong>everything you</strong> mentioned as important will be covered, like most policies there are some additional services covered as well as services that are excluded or restricted. We will send those across in a welcome pack, I can either read the exclusions and restrictions now or are you happy to just look through those in your own time?</p>
-				{{ } }}
-
-				{{ if (['B2'].includes(custom.reform.scripting)) { }}
-				<p>So with the hospital cover, we have made sure <strong>everything</strong> mentioned as important will be covered, like most policies there are some services that are excluded or restricted, <strong>nothing</strong> you’ve mentioned as important, we will send those across in a welcome pack, I can either read them now or are you happy to just look through those in your own time?</p>
-				{{ } }}
-
-				{{ if (['C'].includes(custom.reform.scripting)) { }}
-				<p>So with this hospital policy, <strong>everything</strong> mentioned as important is covered. This policy will have <strong>some</strong> changes on {{= custom.reform.changeDate }}  to services that you <strong>haven’t</strong> mentioned as important. We will send those changes across in a welcome pack and I can read these for you now, or keeping in mind that the <strong>important</strong> services will continue to be covered, are you happy to just look through those in your own time?</p>
-				{{ } }}
+				<p>So with the hospital cover, we have made sure  <strong>{{= scriptTerm }}</strong> you mentioned as important will be covered, like most policies there are some services that are excluded or restricted. We will send those across in a welcome pack, I can either read the exclusions and restrictions now or are you happy to just look through those in your own time?</p>
 			</div>
 			<div class="scriptingOptions col-sm-12 no-padding">
 				<div class="row">
@@ -296,13 +302,34 @@
 								{{ } }}
 							{{ }); }}
 							every other category is covered.</span><br/><br/>
+							(If customer objects or asks about adding services in the future): <br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
+							<br/><br/>
+							{{ if(isOutbound && (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
+							{{ if(obj.hospital.inclusions.excesses.perPerson) { }} 
+								<span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital.</span>
+							{{ } }}
+							{{ if(obj.hospital.inclusions.copayment != 'No Co-Payment') { }} 
+								<span class="clinicalCatInfo"> {{= obj.hospital.inclusions.copayment }}</span>
+							{{ } }}
+							<span class="clinicalCatInfo"> This helps reduce the price of your cover.</span>
+							{{ } }}
 						</div>
 					</div>
 					{{ } }}
 
 					<div class="readWelcomeFlag row">
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
+						<br/><br/>
+						{{ if(isOutbound && (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
+							{{ if(obj.hospital.inclusions.excesses.perPerson) { }} 
+								<span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital.</span>
+							{{ } }}
+							{{ if(obj.hospital.inclusions.copayment != 'No Co-Payment') { }} 
+								<span class="clinicalCatInfo"> {{= obj.hospital.inclusions.copayment }}</span>
+							{{ } }}
+							<span class="clinicalCatInfo"> This helps reduce the price of your cover.</span>
+							{{ } }}
 					</div>
 				{{ } }}
 
@@ -494,7 +521,7 @@
 					</div>
 					<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
-							A limited hospital product is one that coves only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
+							A limited hospital product is one that covers only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
 							</span><br/><br/>
 					</div>
 				</div>
@@ -648,7 +675,7 @@
 					</div>
 					<div class="col-sm-11 no-padding">
 						<span class="clinicalCatInfo">
-							A limited hospital product is one that coves only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
+							A limited hospital product is one that covers only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and in some instances will only cover treatment as a result of an accident. Considering what we have discussed would you be comfortable with this level of cover?
 						</span><br/><br/>
 					</div>
 				</div>
@@ -751,8 +778,12 @@
 			</c:if>
 		</div>
     </c:if>
+
+		{{ if(isOutbound && coverType === 'c') { }}
+			<simples:dialogue id="128" vertical="health" />
+		{{ } }}
 		
-		{{ if (['c', 'e'].includes(meerkat.modules.healthBenefitsStep.getCoverType())) { }}
+		{{ if (['c', 'e'].includes(coverType)) { }}
 		<div class="row extrasCoverSection">
 			<h2 class="text-dark">Extras cover</h2>
 			<h3 class="text-dark">(&nbsp;<img src="assets/brand/ctm/images/icons/selected_extras_fav.svg" width="26" height="26" />&nbsp;selected extras)</h3>
@@ -823,6 +854,10 @@
 		</div>
 		{{ } }}
 
+		{{ if(isOutbound && (coverType === 'c' || coverType === 'e')) { }}
+			<simples:dialogue id="130" vertical="health" dynamic="true" />
+		{{ } }}
+ 
         <div class="row ambulanceCoverSection">
             <h2 class="text-dark">Ambulance cover</h2>
             <div class="col-xs-12 benefitTable">
@@ -846,7 +881,11 @@
         </div>
 
 		<div>
-			<simples:dialogue id="99" vertical="health" />
+			{{ if(isOutbound) { }}
+				<simples:dialogue id="129" vertical="health" dynamic="true" />
+			{{ } else { }}
+				<simples:dialogue id="99" vertical="health" />
+			{{ } }}
 		</div>
 
 		<div class="row policyBrochures">

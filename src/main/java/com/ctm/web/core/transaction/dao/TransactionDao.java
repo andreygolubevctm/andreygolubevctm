@@ -199,6 +199,36 @@ public class TransactionDao {
 		}
 	}
 
+	/**
+	 * Update transaction header with the anonymousId and / or userId
+	 * @param transactionId transactionId
+	 */
+	public void writeAuthIDs(long transactionId,String anonymousId, String userId) throws DaoException {
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+
+		try {
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+					"UPDATE aggregator.transaction_header " +
+							"SET AnonymousId = ?, UserId = ? " +
+							"WHERE TransactionId = ?;"
+			);
+			stmt.setString(1, anonymousId);
+			stmt.setString(2, anonymousId);
+			stmt.setLong(3, transactionId);
+
+			stmt.executeUpdate();
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+	}
+
+
 	public Long getMostRecentRelatedTransactionId(long transactionId) throws DaoException {
 		long relatedTransactionId = 0;
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
