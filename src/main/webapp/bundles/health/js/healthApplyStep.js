@@ -11,7 +11,9 @@
         $unitElements,
         $personName,
         $primaryName,
-        _postalNonStdStreetRegexRule;
+        _postalNonStdStreetRegexRule,
+        $primaryMemberNumber,
+        $partnerMemberNumber;
 
     function init(){
         $(document).ready(function () {
@@ -39,6 +41,9 @@
                     last: $('#health_payment_medicare_surname')
                 }
             };
+
+            $primaryMemberNumber = $('#health_previousfund_primary_memberID');
+            $partnerMemberNumber = $('#health_previousfund_partner_memberID');
 
             _postalNonStdStreetRegexRule = $unitElements.appPostalNonStdStreet.attr('data-rule-regex');
         });
@@ -124,6 +129,19 @@
         $primaryName.last.on('blur.apply', function(){
             $primaryName.medicare.last.val($primaryName.last.val());
         });
+
+        $primaryMemberNumber.on('keyup', function() {
+            var input = $(this);
+            var value = input.val().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+            input.val(value);
+        });
+
+        $partnerMemberNumber.on('keyup', function() {
+            var input = $(this);
+            var value = input.val().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+            input.val(value);
+        });
+
     }
 
     function _changeStreetNoLabel(unitType) {
