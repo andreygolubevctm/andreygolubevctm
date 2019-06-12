@@ -419,6 +419,9 @@
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
+				$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('rule-digits', false);
+				$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('msg-digits', '');
+
 				meerkat.modules.sessionCamHelper.stop();
 				meerkat.modules.healthDependants.resetConfig();
 				if(meerkat.site.isCallCentreUser) {
