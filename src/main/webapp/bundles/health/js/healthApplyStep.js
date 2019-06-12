@@ -132,13 +132,13 @@
 
         $primaryMemberNumber.on('keyup', function() {
             var input = $(this);
-            var value = input.val().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+            var value = input.val().replace(/[\W_]+/g, '');
             input.val(value);
         });
 
         $partnerMemberNumber.on('keyup', function() {
             var input = $(this);
-            var value = input.val().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+            var value = input.val().replace(/[\W_]+/g, '');
             input.val(value);
         });
 
