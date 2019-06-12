@@ -390,6 +390,7 @@
                 meerkat.modules.healthDualPricing.initDualPricing();
             },
             onBeforeEnter: function enterResultsStep(event) {
+                $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr({'maxlength': '', 'data-rule-digits': '', 'data-msg-digits': ''});
                 meerkat.modules.sessionCamHelper.stop();
                 meerkat.modules.healthDependants.resetConfig();
                 if (event.isForward && meerkat.site.isCallCentreUser) {

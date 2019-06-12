@@ -407,6 +407,7 @@
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
+                $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr({'maxlength': '', 'data-rule-digits': '', 'data-msg-digits': ''});
 
                 if (event.isForward && meerkat.site.isCallCentreUser) {
                     $('#journeyEngineSlidesContainer .journeyEngineSlide')
