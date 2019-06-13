@@ -57,7 +57,7 @@
 				</form_v2:fieldset>
 
 				<%-- COUNTRY SECTION --%>
-				<form_v2:fieldset showHelpText="true" legend="What countries are you going to?"
+				<form_v2:fieldset showHelpText="true" legend="Regions"
 													className="travel_details_destinations" id="destinationsfs">
 
 						<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService"
@@ -71,15 +71,21 @@
 										variableListArray="${locationsService.getCountrySelectionList()}"
 										xpath="travel/destinations"
 										xpathhidden="travel/destination"
-										label="Your selected Countries"
+										label="Which countries or regions will you be visiting in the next 12 months (excluding stopovers of less than 48 hours)?"
                                         additionalAttributes="autocomplete='no'"
-										title="Where are you travelling?"
+										title="Regions"
 										validationErrorPlacementSelector=".travel_details_destinations"
-										helpId="213"
 										source="/${pageSettings.getContextFolder()}isolocations/search.json?search="
 						/>
 						<field_v1:hidden xpath="travel/unknownDestinations"/>
 				</form_v2:fieldset>
+
+				<%-- DURATION SELECTION --%>
+                <form_v2:fieldset legend="Duration" className="travel_maxDuration" id="amtDurationsfs">
+                    <form_v2:row label="What is the maximum number of days you will be away from home for any single journey?" className="smallWidth">
+                        <field_v2:array_radio items="1=1 - 15 days,16=16 - 30 days,31=31 - 45 days,46=46 - 60 days,61=61+ days" xpath="travel/amtDuration" title="max trip duration" required="true" className="radio" style="radio-green" />
+                    </form_v2:row>
+                </form_v2:fieldset>
 
 				<%-- DATES AND TRAVELLERS SECTION --%>
 				<form_v2:fieldset legend="Dates" className="travel_details_datesTravellers" id="travelDatePicker">

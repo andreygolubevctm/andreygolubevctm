@@ -107,15 +107,12 @@
 				hasMultipleTabTypes: true,
 				verticalMapping: tabMapping(),
 				callback: function () {
-                    // hide filters for mobile, tablet & AMT
+					// hide filters for mobile, tablet & AMT
+					$('.clt-trip-filter').show();
                     if (isAMT()) {
-                        $('.clt-trip-filter').hide();
-                        $('.mobile-cover-type').show();
-                    } else {
-                        $('.clt-trip-filter').show();
+						$('.mobile-cover-type').show();
+						$($('.clt-trip-filter')[0]).hide();
                     }
-                    // show amt filter if in AMT journey
-                    $('.amt-filter').toggle(isAMT());
                 }
 			};
 			meerkat.modules.coverLevelTabs.initCoverLevelTabs(options, reInit);

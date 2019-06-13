@@ -254,6 +254,8 @@
      */
     function _updateTravelResultsByCoverType(cover) {
         var destination = $('#travel_destination').val();
+        // when we're on AMT (which didn't have filters before) - the cover string passed in has an extra char, removing so the obj matches up
+        cover.length > 1 ? cover = cover.slice(0, cover.length-1) : cover;
 
         var _coverTypeValues = {
             C: {
