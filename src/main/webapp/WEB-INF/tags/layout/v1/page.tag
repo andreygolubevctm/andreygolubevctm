@@ -161,25 +161,43 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 			<div class="header-top dropdown-interactive-base navMenu-row-fixed">
 
-			<div class="dynamicTopHeaderContent">
-				<content:get key="topHeaderContent" />
-				<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
-				<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
-					<content:get key="competitionApplicationTopHeaderContent" />
-				</c:if>
-
-					<c:set var="premiumIncreaseEnabledSetting"><content:get key="premiumIncreaseEnabled"/></c:set>
-					<c:if test="${premiumIncreaseEnabledSetting eq 'Y' and not callCentre}">
-						<content:get key="premiumIncreaseContent" />
+				<%-- Banner content - START --%>
+				<%-- Banner content will no longer be allowed to display here - it will need to be moved at some point in the future--%>
+				<div class="dynamicTopHeaderContent">
+					<content:get key="topHeaderContent" />
+					<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
+					<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
+						<content:get key="competitionApplicationTopHeaderContent" />
 					</c:if>
 
-				<ad_containers:main_top />
-				<coupon:banner />
-			</div>
+						<c:set var="premiumIncreaseEnabledSetting"><content:get key="premiumIncreaseEnabled"/></c:set>
+						<c:if test="${premiumIncreaseEnabledSetting eq 'Y' and not callCentre}">
+							<content:get key="premiumIncreaseContent" />
+						</c:if>
 
-				<div class="container">
+					<ad_containers:main_top />
+					<coupon:banner />
+				</div>
+				<%-- Banner content - END --%>
 
-					<div class="col-sm-12">
+				<c:choose>
+					<c:when test="${pageSettings.getBrandCode() eq 'ctm'}">
+						<div class="container-fluid">
+					</c:when>
+					<c:otherwise>
+						<div class="container">
+					</c:otherwise>
+				</c:choose>
+
+					<c:choose>
+						<c:when test="${pageSettings.getVerticalCode() eq 'travel'}">
+							<div class="col-sm-12 non-transparent-background">
+						</c:when>
+						<c:otherwise>
+							<div class="col-sm-12">
+						</c:otherwise>
+					</c:choose>
+
 						<%-- Brand and toggle get grouped for better mobile display --%>
 						<jsp:invoke var="header_button_left_class" fragment="header_button_left" />
 						<nav class="navbar-header header-buttons-logos<c:if test='${not empty header_button_left_class}'> header_button_left</c:if>" role="navigation">
@@ -204,42 +222,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 								<c:otherwise>
 									<%-- Show only if it's not health OR it's health and the call back functionality is disabled --%>
 									<c:if test="${ (pageSettings.getVerticalCode() ne 'health' and pageSettings.getVerticalCode() ne 'travel') or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">
-										<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
-											<span class="sr-only">Toggle Navigation</span>
-											<span class="icon icon-reorder"></span>
-										</button>
-									</c:if>
-									<c:if test="${pageSettings.getVerticalCode() eq 'travel'}">
-										<div class="navbar__travel-filters">
-											<a class="edit-details-travel-mobile" href="javascript:;">Edit details</a>
-											<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
-
-											<div class="row navbar-mobile coverLevelTabs visible-xs hidden-sm hidden-md hidden-lg">
-												<div class="col-xs-5 clt-trip-filter mobile-cover-type">
-													<div class="dropdown cover-type-mobile-active">
-														<a type="button" id="coverTypeDropdownBtn"
-														   data-toggle="dropdown" aria-haspopup="true"
-														   aria-expanded="false">
-															<span class="mobile-active-cover-type"></span>
-															<i class="icon icon-angle-down"></i>
-														</a>
-														<div class="dropdown-menu dropdown-menu-excess-filter dropdown-menu-mobile-cover-types"
-															 aria-labelledby="coverTypeDropdownBtn">
-															<div class="mobile-cover-types"></div>
-														</div>
-													</div>
-												</div>
-												<div class="col-xs-7 clt-trip-filter amt-filter">
-													<travel_results_filter_types:amt_filter />
-												</div>
-												<div class="col-xs-2 clt-trip-filter">
-													<travel_results_filter_types:more_filters/>
-												</div>
-												<div class="col-xs-4 clt-trip-filter">
-													<travel_results_filter_types:excess_filter/>
-												</div>
-											</div>
-										</div>
+									<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
+										<span class="sr-only">Toggle Navigation</span>
+										<span class="icon icon-reorder"></span>
+									</button>
 									</c:if>
 								</c:otherwise>
 							</c:choose>
@@ -252,8 +238,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 									data-dialog-hash-id="view_all_hours_cb"
 									data-title="Request a Call" data-cache="true"
 									${analyticsAttr}>
-									<span class="icon icon-phone" ${analyticsAttr}></span>
-									<span ${analyticsAttr}>${mobileOpenText}</span>
+									<div class="mobile-help-text">
+										<span class="icon icon-phone" ${analyticsAttr}></span>
+										<span ${analyticsAttr}>Need help?</span>
+									</div>
 								</a>
 							</c:if>
 
@@ -269,6 +257,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							<c:if test="${not empty exitUrl}"><a id="js-logo-link" href="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" title="${pageSettings.getSetting('windowTitle')}"></c:if>
 							<span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
 							<c:if test="${not empty exitUrl}"></a></c:if>
+
 						</nav>
 						<c:if test="${pageSettings.getVerticalCode() eq 'home'}">
 							<competition:navSection vertical="home and/or contents" />

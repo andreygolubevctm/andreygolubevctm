@@ -7,12 +7,9 @@ body > div > header {
   > .header-top { background-color: @header-bg; }
 
   //The header needs to take up space, lest the content be hidden underneath by accident once the header is position fixed or docking.
-  /*min-height: @navbar-height; //XS*/
-  @media (@sm) {
-    min-height: @header-min-height-sm; //SM
-  }
-  @media (@md) {
-    min-height: @header-min-height-md; //MD and LG
+  min-height: @navbar-height;
+  @media (@xs-only) {
+    min-height: @navbar-height-xs; //xs
   }
 
   //but the buttons are getting overriden by accident due to their lower specificity.
@@ -207,6 +204,24 @@ body > div > header {
     @media (max-width: @grid-float-breakpoint-max) {
       margin: 0;
     }
+  }
+
+  .header-buttons-logos {
+    padding-bottom: 1rem;
+  }
+
+  .mobile-help-text {
+    color: @gray-base;
+    font-size: 16px;
+    text-decoration: none;
+    margin-top: 5px;
+    font-weight: 600;
+    line-height: 44px;
+
+    &:hover {
+      color: #164AD9;
+    }
+
   }
 
   //
