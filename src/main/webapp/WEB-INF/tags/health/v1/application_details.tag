@@ -117,10 +117,10 @@
 		<field_v1:hidden xpath="${xpath}/productName" className="health_application_details_productNumber" />
 		<field_v1:hidden xpath="${xpath}/productTitle" className="health_application_details_productTitle" />
 		<field_v1:hidden xpath="${xpath}/providerName" className="health_application_details_providerName" />
-		<field_v1:hidden xpath="${xpath}/providerName" className="health_application_details_excessPerAdmission" />
-		<field_v1:hidden xpath="${xpath}/providerName" className="health_application_details_excessPerPerson" />
-		<field_v1:hidden xpath="${xpath}/providerName" className="health_application_details_excessPerPolicy" />
-		<field_v1:hidden xpath="${xpath}/providerName" className="health_application_details_tier" />
+		<field_v1:hidden xpath="${xpath}/excessPerAdmission" className="health_application_details_excessPerAdmission" />
+		<field_v1:hidden xpath="${xpath}/excessPerAdmission" className="health_application_details_excessPerPerson" />
+		<field_v1:hidden xpath="${xpath}/excessPerPolicy" className="health_application_details_excessPerPolicy" />
+		<field_v1:hidden xpath="${xpath}/tier" className="health_application_details_tier" />
 
 	</form_v2:fieldset>
 
