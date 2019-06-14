@@ -1,14 +1,5 @@
 //All breakpoints - sorting icon directions.
 .sortbar-children {
-  .borderless {
-    .icon {
-      line-height: initial;
-      padding-top: 2px;
-      &:before {
-        content: '\e604' !important;
-      }
-    }
-  }
   .icon {
     .icon-angle-right();
     display: inline-block;
@@ -23,10 +14,6 @@
       .icon-angle-up();
     }
   }
-}
-
-.navbar-default {
-  background-color: inherit;
 }
 
 //XS modes:
@@ -128,9 +115,6 @@
           a:active,
           &.open > a:focus {
             border-right: 1px solid @navbar-inverse-sortbar-border-color;
-            &.borderless {
-              border-right: none;
-            }
             &:hover {
               border-color: @navbar-inverse-sortbar-border-color;
             }

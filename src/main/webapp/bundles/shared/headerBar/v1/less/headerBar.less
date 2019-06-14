@@ -7,9 +7,12 @@ body > div > header {
   > .header-top { background-color: @header-bg; }
 
   //The header needs to take up space, lest the content be hidden underneath by accident once the header is position fixed or docking.
-  min-height: @navbar-height;
-  @media (@xs-only) {
-    min-height: @navbar-height-xs; //xs
+  min-height: @navbar-height; //XS
+  @media (@sm) {
+    min-height: @header-min-height-sm; //SM
+  }
+  @media (@md) {
+    min-height: @header-min-height-md; //MD and LG
   }
 
   //This alters a default for things in the header.
@@ -174,11 +177,12 @@ body > div > header {
 
   .navbar-toggle {
     border-radius: 0;
-    width: 44px;
-    height: 44px;
-    background-color: @navbar-default-toggle-icon-bar-bg;
+    width: 40px;
+    height: 40px;
+    line-height: 21px; //Needs to match the bumped up font size as specified below
+    background-color: @navbar-default-toggle-hover-bg;
     margin: 0;
-    color: @navbar-default-link-hover-color;
+    color: @navbar-default-toggle-icon-bar-bg;
 
     &.wide {
       width: auto;
@@ -189,22 +193,23 @@ body > div > header {
     }
     .icon-bar {
       width: auto;
+      background-color: @navbar-default-toggle-icon-bar-bg;
     }
     .icon {
       display: none;
-      color: @navbar-default-link-hover-color;
+      color: @navbar-default-toggle-icon-bar-bg;
     }
     .icon-cross {
       display: block;
       font-size: 18px;
     }
     &.collapsed { //Actually the default state
-      background-color: @navbar-default-toggle-icon-bar-bg;
+      background-color: @navbar-default-toggle-bg;
       .icon { display: block; font-size: 21px; }
       .icon-cross { display: none; }
 
       &.phone {
-        background-color: @navbar-default-toggle-icon-bar-bg;
+        background-color: @navbar-secondary-toggle-bg;
       }
     }
     &.disabled {
@@ -235,10 +240,6 @@ body > div > header {
     }
   }
 
-  .header-buttons-logos {
-    padding-bottom: 1rem;
-  }
-
   //
   // This is a hack which makes the desktop elements come back in from the sides
   //
@@ -258,6 +259,10 @@ body > div > header {
     .fixedInPlace;
     top: 0; //Overlap the padding top on the body with this.
     z-index: (@zindex-dropdown-interactive-base - 100);
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: @theme-light;
+    outline-color: rgba(0, 0, 0, 0.1);
 
     .benefits-component {
       .scrollable {
@@ -302,36 +307,4 @@ body > div > header {
     outline: none;
   }
 
-}
-
-body.roadside {
-  &[data-step="results"] {
-    .navMenu-row.navMenu-offcanvas.navMenu-right.active {
-      .header-top {
-        .navbar-toggle {
-          .icon {
-            color: #ffffff;
-          }
-        }
-      }
-    }
-  }
-  .header-top {
-    .navbar-toggle {stuck
-      &.collapsed {
-        font-size: 28px;
-        margin-top: 8px;
-      }
-    }
-  }
-}
-
-body.roadside,
-body.travel {
-  &:not([data-step="results"]) {
-    #logo.stuck {
-      height: 44px;
-      transition: all 200ms ease;
-    }
-  }
 }

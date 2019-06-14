@@ -22,17 +22,6 @@
             if (meerkat.site.vertical !== "roadside")
                 return false;
 
-			var urlVar = getUrlVar();
-			var banner1 = decodeUriComponent(urlVar.banners);
-			var banner2 = decodeUriComponent(urlVar.gtmBanners);
-
-			if (banner1 || banner2) {
-				$('body').toggleClass('gtmPromoBanner', true);
-				$('.ad-main-top').toggleClass('gtmPromoBannerContainer', true);
-			}
-
-            initStickyHeader();
-
             // Init common stuff
             initJourneyEngine();
 
@@ -45,39 +34,6 @@
         });
 
     }
-
-    function initStickyHeader() {
-        $(window).scroll(function() {
-            var windowYOffset = window.pageYOffset;
-            if (windowYOffset >= 16) {
-                $('.header-wrap').addClass('stuck');
-                $('#logo').addClass('stuck');
-                $('.gtmPromoBannerContainer').addClass('adStuck');
-            } else {
-                $('.header-wrap').removeClass('stuck');
-                $('#logo').removeClass('stuck');
-                $('.gtmPromoBannerContainer').removeClass('adStuck');
-            }
-        });
-    }
-
-	function getUrlVar() {
-		var vars = {};
-		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-			vars[key] = value;
-		});
-		return vars;
-	}
-
-	function decodeUriComponent(component) {
-		if(window.useLoopedTransferringURIDecoding) {
-			do {
-				component = decodeURIComponent(component);
-			} while (component.match(/%[0-9a-f]{2}/i));
-		}
-
-		return component;
-	}
 
     function eventDelegates() {
 

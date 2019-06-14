@@ -7,8 +7,7 @@
 		$travel_dates_fromDate_button,
 		$travel_dates_fromDate,
 		$travel_dates_toDate_button,
-		$travel_adults,
-		$sticky_header1;
+		$travel_adults;
 
 	var moduleEvents = {
 			traveldetails: {
@@ -31,22 +30,12 @@
 			$travel_dates_toDate_button = $('#travel_dates_toDate_button').trigger("click"),
 			$travel_adults = $('#travel_adults'),
 			$travel_dates_toDate = $("#travel_dates_toDate");
-			$sticky_header1 = $('.non-transparent-background');
 
-			var urlVar = getUrlVar();
-			var banner1 = decodeUriComponent(urlVar.banners);
-			var banner2 = decodeUriComponent(urlVar.gtmBanners);
-
-			if (banner1 || banner2) {
-				$('body').toggleClass("gtmPromoBanner", true);
-			}
-
-			initStickyHeader();
 
 			$policyTypeBtn = $("input[name=travel_policyType]");
 			meerkat.modules.travelYourCover.initTravelCover();
 
-			initProgressBar(false);
+			initProgressBar(true);
 
 			// Initialise the journey engine
 			var startStepId = null;
@@ -101,39 +90,6 @@
 			}
 
 		});
-	}
-
-	function initStickyHeader() {
-        $(window).scroll(function() {
-            var windowYOffset = window.pageYOffset;
-            if (windowYOffset >= 16) {
-				$('.navbar__travel-filters').addClass('stuck');
-				$('#logo').addClass('stuck');
-				$('.col-sm-12.non-transparent-background.affix').addClass('stuck');
-            } else {
-                $('.navbar__travel-filters').removeClass('stuck');
-                $('#logo').removeClass('stuck');
-                $('.col-sm-12.non-transparent-background.affix').removeClass('stuck');
-			}
-        });
-	}
-
-	function getUrlVar() {
-		var vars = {};
-		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-			vars[key] = value;
-		});
-		return vars;
-	}
-
-	function decodeUriComponent(component) {
-		if(window.useLoopedTransferringURIDecoding) {
-			do {
-				component = decodeURIComponent(component);
-			} while (component.match(/%[0-9a-f]{2}/i));
-		}
-
-		return component;
 	}
 
 	/**
@@ -194,7 +150,6 @@
 
 				meerkat.modules.travelAdultAges.initAdultAges();
 				meerkat.modules.travelParameters.noOfTravellersDisplayLogic();
-				$sticky_header1.toggleClass('affix', true);
 
 
 			},
@@ -231,7 +186,6 @@
 				meerkat.modules.travelSummaryText.updateText();
 				meerkat.modules.travelSorting.resetToDefaultSort();
 				meerkat.modules.travelCoverLevelTabs.updateSettings();
-				$sticky_header1.toggleClass( 'affix', false );
 			},
 			onAfterEnter: function afterEnterResults(event) {
 				meerkat.modules.travelResults.get();
@@ -240,7 +194,6 @@
 				if(event.isBackward) {
 					meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
 				}
-				$sticky_header1.toggleClass('affix', true);
 			}
 		};
 

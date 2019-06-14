@@ -23,7 +23,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<div class="navbar-collapse header-collapse-contact collapse online-results-control-container">
+		<div class="navbar-collapse header-collapse-contact collapse confirmation">
 			<ul class="nav navbar-nav navbar-right">
 				<c:if test="${not empty callCentreNumberApplication}">
 					<li>
@@ -48,18 +48,11 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="progress_bar">
-		<competition:mobileFooter vertical="health"/>
-	  <div class="progress-bar-row navbar-affix">
-		  <div class="container-fluid">
-			  <div class="row">
-				  <div class="progress-bar-bg-confirmation"></div>
-				  <div class="container progress-bar-container">
-					  <ul class="journeyProgressBar_v2 v4confirmation" data-phase="journey"></ul>
-				  </div>
-			  </div>
+      <div class="progress-bar-row collapse navbar-collapse confirmation">
+		  <div class="container">
+			  <ul class="journeyProgressBar_v2"></ul>
 		  </div>
 	  </div>
-	  <div class="mobileViewStepText visible-xs">Purchase Cover</div>
     </jsp:attribute>
 
 	<jsp:attribute name="navbar">

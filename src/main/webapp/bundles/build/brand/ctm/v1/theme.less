@@ -797,7 +797,7 @@ a{
 		max-width: 900px;
 		width: 100%;
 		transition: bottom 0.6s ease-out;
-
+		
 		.navbar-right {
 			margin: 0;
 			display: flex;
@@ -898,11 +898,11 @@ a{
 				padding-left: 5px;
 			}
 		}
-
+	
 		.compare-basket {
 			width: 100%;
 		}
-
+	
 		li > a {
 				border-color: @navbar-additional-link-active-bg;
 				line-height: @font-size-base;
@@ -915,6 +915,7 @@ a{
 // LOGO MAGIC
 // --------------------------------------------------
 #logo {
+
 	background-repeat: no-repeat;
 	padding: 0;
 
@@ -924,28 +925,36 @@ a{
 	display: inline-block;
 
 	//XS Mobile first base
-	width: 44px;
-	height: 44px;
-	background-size: 44px 44px;
-	margin-left: -7px;
-	.highResImgContain('../graphics/logo-dollar.svg?new'; '../graphics/logo-dollar.svg?new');
+	width: 43px;
+	height: 32px;
 
-	@media (@sm) {
-		width: 343px;
-		height: 44px;
-		margin: 0px 0px 0px -18px;
-		background-size: contain;
-
-		.highResImgContain('../graphics/logo.svg?new'; '../graphics/logo.svg?new'; ~"");
+	margin: 0px auto 0 8px;
+	@media only screen and (@xs-only) {
+		line-height: @font-size-small;
+		font-size: 0;
+		.header_button_left & {
+			margin: 9px auto 0 3px;
+		}
 	}
 
-	@media (@md) {
-		width: 343px;
-		height: 44px;
-		margin: 14px 0px 0px -6px;
-		background-size: contain;
+	background-size: 43px 32px;
+	.highResImgContain('../graphics/logo-dollar-xs.png?new'; '../graphics/logo-dollar-xs@2x.png?new');
 
-		.highResImgContain('../graphics/logo.svg?new'; '../graphics/logo.svg?new'; ~"");
+	@media only screen and (min-width: @screen-sm-min) {
+		width: 216px;
+		height: 28px;
+		margin: 24px 0 10px 0;
+		background-size: 216px 28px;
+		.highResImgContain('../graphics/logo-sm.png?new'; '../graphics/logo-sm@2x.png?new'; ~"");
+	}
+
+	//Scale up override for MD & LG logo and retina support
+	@media (min-width: @screen-md-min) {
+		width: 273px;
+		height: 35px;
+		margin: 24px 0 18px 0;
+		background-size: contain;
+		.highResImgContain('../graphics/logo.png?new'; '../graphics/logo@2x.png?new'; ~"");
 	}
 
 	@media print {
@@ -1603,109 +1612,3 @@ select.text-placeholder-color {
 		display: none;
   	}
   }
-
-body.car,
-body.home,
-body.simples.health.callCentre {
-  .progress-bar-row {
-    :not(.v4confirmation).journeyProgressBar_v2 {
-		margin-top: 18px;
-
-		a, div {
-			&:before {
-			  @media (min-width: @screen-xs-max) {
-				content: counters(section, ".") "\A";
-				border-radius: 50%;
-				font-size: 20px;
-				padding: 6px 12px 7px 21px;
-				background-color: white;
-			  }
-			}
-		}
-
-		li{
-			text-align: left;
-
-			div {
-				border-bottom: 2px solid;
-				color: @theme-default;
-
-				&:before {
-				    color: @theme-default;
-				    border-color: @theme-default;
-			    }
-
-				& > span {
-					margin-left: 15px;
-					position: static;
-				}
-			}
-		}
-    }
-  }
-}
-
-body.simples.health.callCentre {
-	.callCentreNumberSection {
-		padding-bottom: 10px;
-	}
-	.progress-bar-row {
-		:not(.v4confirmation).journeyProgressBar_v2 {
-			li.current {
-				div {
-					border-bottom-color: @theme-secondary;
-					color: @theme-secondary;
-					&:before {
-						color: @theme-secondary;
-						border-color: @theme-secondary;
-					}
-				}
-			}
-			li.complete {
-				a {
-					color: @theme-tertiary;
-					border-color: @theme-tertiary;
-					border-bottom: 2px solid;
-					&:hover {
-						span {
-							color: @theme-secondary;
-						}
-					}
-					&:before {
-						content: "\e600";
-						font-family: framework_font;
-						padding: 7px;
-						padding-left: 16px;
-					}
-					span {
-						margin-left: 15px;
-						position: static;
-					}
-				}
-
-			}
-		}
-
-		:not(.v4confirmation):not(.confirmation).journeyProgressBar_v2 {
-			&:before {
-				margin-bottom: 10px;
-			}
-		}
-	}
-}
-
-body.health {
-	@media (@progress-sm) {
-		.v4confirmationHeaderTop.onlyAffixProgressBar {
-			position: relative;
-			.progress-bar-row.navbar-affix.loaded.affix:not(.affix-top) {
-				position: fixed;
-				width: 100%;
-				top: 0px;
-			}
-		}
-		#pageContent.affixedPageContentTopMargin {
-			margin-top: 30px;
-		}
-	}
-}

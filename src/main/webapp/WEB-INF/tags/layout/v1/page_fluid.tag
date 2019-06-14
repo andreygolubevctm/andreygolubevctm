@@ -133,7 +133,7 @@ ${newPage.init(pageContext.request, pageSettings)}
     <div class="navMenu-row">
 
         <!-- body content -->
-        <header class="header-wrap">
+        <header class="header-wrap small">
 
             <div class="header-top dropdown-interactive-base navMenu-row-fixed">
 

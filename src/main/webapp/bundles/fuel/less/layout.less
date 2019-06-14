@@ -1,41 +1,9 @@
-body {
-  padding-top: 60px;
-}
-#js-logo-link {
-    font-size: 2px;
-}
-
 .header-wrap {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 20000;
-
-  nav.navbar-header.header-buttons-logos {
-    padding-bottom: 8px;
-    line-height: 2px;
+  @media (@sm) {
+    min-height: 80px; //SM
   }
-
-
-  &.stuck {
-    height: 44px;
-    transition: all 200ms ease;
-    box-shadow: rgba(0, 0, 0, .1) 0px 10px 40px 0px;
-    nav.navbar-header.header-buttons-logos {
-      padding-bottom: 6px;
-    }
-  }
-
-
-  #logo {
-    margin-top: 8px;
-    &.stuck {
-      margin-top: 6px;
-      height: 32px;
-      @media(@xs-only) {
-        background-size: 32px 32px;
-      }
-    }
+  @media (@md) {
+    min-height: 110px; //MD and LG
   }
 }
 
@@ -85,6 +53,7 @@ body {
     margin-bottom: 0;
     padding: 0;
     background-color: #EDEDED;
+    z-index: 999;
   }
   .fuel-fields-widget {
     .change-location-fuel-text {

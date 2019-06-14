@@ -60,7 +60,7 @@
 
         <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
-
+        
         <c:choose>
             <c:when test="${comparisonMode eq 'PHIO'}">
                 <c:set var="onlineCategoryVersion" value="health_v4" />
@@ -101,20 +101,28 @@
                 <c:if test="${not empty callCentreNumber}">
                     <div class="navbar-collapse header-collapse-contact collapse online-results-control-container" data-online-category-version="${onlineCategoryVersion}">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
+                            <li class="navbar-text hidden-sm call-opening-text">
+                                ${desktopOpenText}
+                            </li>
                             <li>
-                                <div class="hidden-xs" data-livechat="target">
+                                <div class="navbar-text hidden-xs" data-livechat="target">
                                     <div class="callCentreNumber-container">
+                                        <span class="hidden-md hidden-lg call-opening-text">
+                                            ${tabletOpenText}
+                                        </span>
                                         <span class="icon icon-phone"></span> <a href="javascript:;" data-toggle="dialog"
-                                                   data-content="#view_all_hours_cb"
+                                                   data-content="#view_all_hours"
                                                    data-dialog-hash-id="view_all_hours"
                                                    data-title="Call Centre Hours" data-cache="true">
                                         <span class="noWrap callCentreNumber">${callCentreNumber}</span>
                                         <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span></a>
-                                    </div>
-                                    ${callCentreCBModal}
+                                    </div> or <health_v4:callback_link /> ${callCentreCBModal}
                                 </div>
+
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
                             </li>
+
+
                         </ul>
                     </div>
                 </c:if>
@@ -122,19 +130,30 @@
 
             <jsp:attribute name="progress_bar">
 
-                <div class="progress-bar-row navbar-affix v4ProgressBar">
+                <div class="progress-bar-row navbar-affix">
                   <competition:mobileFooter vertical="health"/>
-                    <div class="container-fluid">
+                    <div class="container">
                         <div class="row">
-                            <div class="progress-bar-bg"></div>
-                            <div class="container progress-bar-container">
+                            <div class="col-xs-12 col-sm-9">
                                 <ul class="journeyProgressBar" data-phase="journey"></ul>
                                 <ul class="journeyProgressBar" data-phase="application"></ul>
+                            </div>
+                            <div class="hidden-xs col-sm-3">
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you" data-slide-control="next"
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />><span class="hidden-md hidden-lg">Preferences</span><span class="hidden-sm">Insurance preferences</span> <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-insurance-preferences" data-slide-control="next"
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Next step <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices" data-slide-control="next"
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-proceed-to-payment" data-slide-control="next"
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Proceed to Payment <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-submit-application" data-slide-control="next"
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Submit Application <span class="icon icon-arrow-right"></span></a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="mobileViewStepText visible-xs"></div>
+
 
                 <c:if test="${not empty reformsBannerText}">
                 <div id="reforms-banner" class="reforms-banner hidden">

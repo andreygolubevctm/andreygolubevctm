@@ -13,18 +13,18 @@
 	function updateSummaryText() {
 		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
 		// Build the summary text based on the entered information.
-
+		
 		var txt= '<span class="highlight">';
 		var adults = $adults.val(),
 		children = $children.val();
-
+		
 		if (adults < 3) {
 			// adults
 			txt += adults + ' adult' + (adults == 1 ? '' : 's');
 		} else {
 			txt += adults;
 		}
-
+		
 		// children
 		if (children > 0)
 		{
@@ -35,7 +35,7 @@
 		if ($("input[name=travel_policyType]:checked").val() == 'S') {
 			// in case a user did an AMT quote and now wants a single trip quote
 			$summaryHeader.html('Your quote is based on');
-			txt +='</span> <span>travelling</span> <span class="md-block">to <span class="highlight">';
+			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
 
 			// update the country text for single trip
 			if ($selectedTags.children().length == 1) {
@@ -50,6 +50,7 @@
 		} else {
 
 			$summaryHeader.html('Your Annual Multi Trip (AMT) quote is based on');
+			var blockClass = children > 1 ? 'sm-md-block' : 'sm-block';
 
 			// build the destination string
 			var regionTags = $('#destinationsfs').find('.selected-tag');
@@ -82,7 +83,7 @@
 			}
 
 			var endStr = "\nWe have also included products that cover longer trips as they may be of greater value.";
-
+			
 			txt+= "</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of <span class='highlight'>"+durationVal+".</span>";
 			txt+= durationTag.indexOf('61+ days') !== -1 ? '' : endStr;
 		}
@@ -98,7 +99,7 @@
 					}
 				}
 			}
-			txt+=". </span>Covered for <span class='highlight'>" + copy.join(", ");
+			txt+=". </span><em class=\"hidden-xs hidden-sm\"><br></em>Covered for <span class='highlight'>" + copy.join(", ");
 		}
 
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
@@ -114,7 +115,7 @@
 			$adults = $('#travel_adults'),
 			$children = $('#travel_children'),
 			$policytype = $('#travel_policyType');
-			$summaryHeader = $('.resultsSummaryHeading');
+			$summaryHeader = $('.resultsSummaryContainer h5');
 			$selectedTags = $('.selected-tags');
 
 			applyEventListeners();
