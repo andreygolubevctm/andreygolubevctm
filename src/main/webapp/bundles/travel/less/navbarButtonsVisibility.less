@@ -21,6 +21,10 @@
 		display: none;
 	}
 
+	#navbar-main {
+		z-index: 600;
+	}
+
 	@media screen and (@sm) {
 		#navbar-main {
 			.transition(~"max-height 60ms");
@@ -61,15 +65,23 @@
 			}
 		}
 
-		@media screen and (@xs-only) {
-			.navbar__travel-filters {
-				display: block;
 
-				.navbar-mobile {
-					border-top: 1px solid @theme-light;
-				}
+		.navbar__travel-filters {
+			background-color: #fff;
+			&.stuck {
+				display: block;
+				position: fixed;
+				z-index: 600;
+				width:100%;
+				top: 0;
+				left: 0;
+				transition: all 200ms ease;
+				box-shadow: rgba(0, 0, 0, .1) 0px 10px 40px 0px;
 			}
 		}
 	}
 
+	.navbar-mobile {
+		border-bottom: none;
+	}
 }

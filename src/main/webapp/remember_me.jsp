@@ -28,9 +28,8 @@
         <c:if test="${not empty callCentreNumber}">
             <div class="navbar-collapse header-collapse-contact collapse">
                 <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-                    <li class="navbar-text call-opening-text">${desktopOpenText}</li>
                     <li>
-                        <div class="navbar-text hidden-xs" data-livechat="target">
+                        <div class="hidden-xs" data-livechat="target">
                             <div class="callCentreNumber-container">
                                 <span class="icon icon-phone"></span>
                                 <a href="javascript:;" data-toggle="dialog"

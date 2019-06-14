@@ -22,11 +22,17 @@
 	var isVisible = true;
 	var endCollapsed = 0;
 	var nodeWidth = 36;
+	var notifyElementsOnceLoaded = ".progress-bar-row, .mobileViewStepText";
 
 	function init() {
 		$(document).ready(function() {
 			$target = $(".journeyProgressBar_v2");
+			$(".v4confirmation").parent().parent().parent().parent().parent().toggleClass("v4confirmationHeaderTop", true);
 		});
+
+		window.addEventListener('resize', setProgressBarAndStepWidth);
+		window.addEventListener('scroll', addScrollSpecificClasses);
+
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit( step ){
 			currentStepNavigationId = step.navigationId;
 			$(document).ready(function() {
@@ -81,9 +87,11 @@
 
 		if(isVisible) {
 			$target.removeClass('invisible');
+			$(notifyElementsOnceLoaded).addClass("loaded");
 		}
 		else {
 			$target.addClass('invisible');
+			$(notifyElementsOnceLoaded).addClass("loaded");
 		}
 
 		_.each( progressBarSteps, function(progressBarStep, index){
@@ -97,6 +105,9 @@
 			if( isCurrentStep ) {
 				className = 'current';
 				foundCurrent = true;
+				if (progressBarStep.label != '') {
+					$('.mobileViewStepText').html(progressBarStep.label);
+                }
 			} else {
 				// if later step
 				if(foundCurrent){
@@ -117,7 +128,13 @@
 				closeTag = 'a';
 			}
 
-			html += '<li class="' + className + '"><' + openTag + '><span>' + progressBarStep.label + '</span></' + closeTag + '></li>';
+			if (isDisabled) {
+				openTag += ' class="progress-step-disabled"';
+			}
+
+			if (progressBarStep.label != '') {
+				html += '<li class="' + className + '"><' + openTag + '><span class="hidden-xs">' + progressBarStep.label + '</span><span class="visible-xs">' + (index+1) + '</span></' + closeTag + '></li>';
+			}
 
 			if( index == lastIndex && includeEndPadding ){
 				className = "";
@@ -130,15 +147,86 @@
 
 		$target.html( html );
 
-		$target.find('li').not('.end').css("width", progressBarElementWidthPercentage + "%");
-		if (includeEndPadding) { $target.find('li:last-child').css("width", "");}
+		setProgressBarAndStepWidth();
 
+		if (includeEndPadding) {
+			$target.find('li:last-child').css("width", "");
+		}
 
 		if(fireEvent){
-			meerkat.messaging.publish(moduleEvents.INIT);	
+			meerkat.messaging.publish(moduleEvents.INIT);
 		}
 
 	}
+
+	function addScrollSpecificClasses() {
+
+		var affixedTop = $(".v4confirmationHeaderTop > .progress-bar-row.loaded.navbar-affix.affix-top")[0];
+		$(".v4confirmationHeaderTop").toggleClass("onlyAffixProgressBar", !affixedTop);
+		$(".v4confirmationHeaderTop").parent().parent().find('#pageContent').toggleClass("affixedPageContentTopMargin", !affixedTop);
+	}
+
+	function setProgressBarAndStepWidth() {
+		var visibleSteps = progressBarSteps.filter(function(step) { return step.label !== '';}).length;
+		var stepNumber = $target.find('li.complete').length + 1;
+
+		if (stepNumber > visibleSteps || !stepNumber) {
+			stepNumber = visibleSteps;
+		}
+
+        var innerContainerWidth  = $target.closest('.container').width();
+        var outerContainerWidth = $target.closest('.container-fluid').innerWidth();
+        var preBar = (outerContainerWidth - innerContainerWidth) / 2;
+        var stepWidth = (innerContainerWidth / visibleSteps) - 9; // fixes issues with 110% zoom & simples layout
+        if (innerContainerWidth === outerContainerWidth) {
+        	stepWidth = stepWidth - 10;
+		}
+
+
+        var progressBarWidth = preBar + (stepWidth*stepNumber);
+        if (currentStepNavigationId === 'payment') {
+        	// 'half step' - add half a stepWidth to the progress bar
+			progressBarWidth = progressBarWidth + (stepWidth / 2);
+		}
+
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            progressBarWidth += 20;
+
+			if ($(".v4confirmation")[0]){
+				progressBarWidth = progressBarWidth + (stepWidth / 2);
+			}
+        }
+
+        if (progressBarWidth >= outerContainerWidth) {
+        	progressBarWidth = outerContainerWidth;
+            $target.closest('.row').find('.progress-bar-bg').css("border-radius-top", '0px');
+            $target.closest('.row').find('.progress-bar-bg').css("border-radius-bottom", '0px');
+		}
+
+        $target.closest('.row').find('.progress-bar-bg').css("width", progressBarWidth);
+
+		if ($(".v4ProgressBar")[0]) {
+            $target.find('li').not('.end').css("width", stepWidth);
+            if (outerContainerWidth >= 767 && outerContainerWidth < 991) {
+                stepWidth = stepWidth + 20;
+                $target.find('li:last-child').not('.end').css("width", stepWidth);
+                $target.find('li:nth-last-child(2)').not('.end').css("width", stepWidth);
+            }
+        } else if ($(".v4confirmation")[0]) {
+            $target.find('li').not('.end').css("width", stepWidth);
+
+            if (outerContainerWidth >= 767 && outerContainerWidth < 991) {
+
+                stepWidth = stepWidth + 20;
+                $target.find('li:nth-last-child(2)').not('.end').css("width", stepWidth);
+                $target.find('li:nth-last-child(3)').not('.end').css("width", stepWidth);
+            }
+
+		} else {
+			$target.find('li').not('.end').css("width", stepWidth);
+		}
+    }
+
 	function showSteps() {
 		return progressBarSteps;
 	}
