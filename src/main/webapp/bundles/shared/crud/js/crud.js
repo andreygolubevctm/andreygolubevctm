@@ -25,7 +25,8 @@
 			"</div>"
 		],
 		$loadingOverlay,
-		blurElements = "#page, #dynamic_dom";
+		blurElements = "#page, #dynamic_dom",
+		notifyElementsOnceLoaded = ".progress-bar-row, .mobileViewStepText";
 	var crudModel;
 	
 	function init() {
@@ -48,6 +49,7 @@
 	function _hideLoading() {
 		$(blurElements).removeClass("blur");
 		$loadingOverlay.stop().fadeOut();
+		$(notifyElementsOnceLoaded).addClass("loaded");
 	}
 	
 	function dataCRUD(settings) {

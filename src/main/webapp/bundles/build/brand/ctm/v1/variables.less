@@ -896,6 +896,7 @@
 
 // Basics of a navbar default or inverse
 @navbar-height: 40px;
+@navbar-height-xs: 44px;
 @navbar-margin-bottom: 0;
 @navbar-border-radius: 0; //@border-radius-base;
 @navbar-padding-horizontal: (floor(@grid-gutter-width / 2));
@@ -1590,6 +1591,10 @@
 
 @lg: ~'min-width: @{screen-lg-min}';
 @lg-only: @lg;
+
+@progress-sm-max-size: (@screen-xs-max - 1);
+@progress-sm: ~'max-width: @{progress-sm-max-size}';
+@progress-lg: ~'min-width: @{screen-xs-max}';
 
 //== RESULTS PAGE Component
 //

@@ -20,6 +20,7 @@
 		$travelDatePicker,
 		$detailsForm,
 		$resultsContainer,
+		$amtDuration,
 		modalId = null,
 		initialised = false;
 
@@ -40,9 +41,10 @@
 			$travelDatePicker = $('#travelDatePicker');
 			$detailsForm = $('#detailsForm');
 			$resultsContainer = $('.resultsContainer');
+			$amtDuration = $('#amtDurationsfs');
 
 			// hide the destinations section, travellers section, leave date and return date
-			$destinationfs.hide();
+			$amtDuration.hide();
 			$datestravellersfs.hide();
 			$travelDatePicker.hide(); 
 
@@ -98,7 +100,8 @@
 			$detailsForm.find('.well-info, .well-chatty > .single').show();
 			// hide the amt and default blue bubble copy
 			$detailsForm.find('.well-chatty > .amt, .well-chatty > .default').hide();
-
+			// hide amt 
+			$amtDuration[hideMethod]();
 			$destinationfs.add($datestravellersfs).add($travelDatePicker)[showMethod](); 
 
 			// update section header name for dates & travellers section
@@ -110,15 +113,9 @@
 			$detailsForm.find('.well-info, .well-chatty > .single, .well-chatty > .default').hide();
 			// show the amt blue bubble copy
 			$detailsForm.find('.well-chatty > .amt').show();
-
-			// check if desination is visiable
-			if ($destinationfs.is(':visible'))
-			{
-				$destinationfs.add($travelDatePicker)[hideMethod]();
-			} else {
-				// on first load
-				$datestravellersfs.slideDown();
-			}
+			// show amt 
+			$amtDuration.add(datestravellersfs)[showMethod]();
+			$travelDatePicker[hideMethod]();
 
 			// update section header name for dates & travellers section
 			$datestravellersfs.find('h2').text("Travellers");

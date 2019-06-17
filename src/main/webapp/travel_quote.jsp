@@ -18,33 +18,8 @@
 	<jsp:attribute name="header_button_left"></jsp:attribute>
 
 	<jsp:attribute name="header">
-		<div class="navbar-collapse header-collapse-contact collapse">
-			<ul class="nav navbar-nav navbar-right">
-				<li class="navbar-text slide-feature-back push-top">
-					<a href="javascript:;" data-slide-control="previous" class="btn btn-back">
-						<span class="icon icon-arrow-left"></span> <span>Revise <span class="hidden-sm">Your</span> Details</span>
-					</a>
-				</li>
-				<li class="navbar-text push-top">
-					<div class="hidden-xs resultsSummaryContainer" data-livechat="target">
-						<h5 class="hidden-sm">Your quote is based on</h5>
-						<div class="resultsSummary">
-							<div class="resultsSummaryPlaceholder"></div>
-						</div>
-					</div>
-					<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
-				</li>
-			</ul>
-		</div>
-	</jsp:attribute>
 
-	<jsp:attribute name="progress_bar">
-      <div class="progress-bar-row collapse navbar-collapse">
-		  <div class="container">
-			  <ul class="journeyProgressBar_v2"></ul>
-		  </div>
-	  </div>
-    </jsp:attribute>
+	</jsp:attribute>
 
 	<jsp:attribute name="navbar">
 		<ul class="nav navbar-nav" role="menu">
@@ -55,7 +30,12 @@
 			</li>
 		</ul>
 
-		<div class="navbar-desktop coverLevelTabs hidden-xs">
+		<div class="navbar-desktop coverLevelTabs hidden-xs" style="display: flex; align-items: center">
+			<div>
+				<a href="javascript:;" data-slide-control="previous">
+					<span class="icon icon-arrow-left"></span> <span>Revise details</span>
+				</a>
+			</div>
 			<div class="col-sm-8 col-md-9 currentTabsContainer"></div>
 			<div class="col-xs-5 col-sm-4 col-md-3 clt-trip-filter amt-filter hidden-xs">
 				<travel_results_filter_types:amt_filter />
@@ -112,7 +92,7 @@
 	<jsp:attribute name="footer">
 		<core_v1:whitelabeled_footer />
 	</jsp:attribute>
-			
+
 	<jsp:attribute name="vertical_settings">
 		<travel:settings />
 	</jsp:attribute>
@@ -120,7 +100,7 @@
 	<jsp:attribute name="body_end">
 
 	</jsp:attribute>
-				
+
 	<jsp:body>
 		<travel:parameter/>
 		<%-- Slides --%>
@@ -137,5 +117,5 @@
 		    <core_v2:excluded_providers_list/>
 		</div>
 	</jsp:body>
-	
+
 </layout_v1:journey_engine_page>

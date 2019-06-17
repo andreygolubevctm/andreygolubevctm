@@ -23,6 +23,8 @@ public class TravelQuoteRequest {
     private String lastName;
 
     private List<Traveller> travellers;
+    private Integer amtDuration;
+    private List<String> destinations = new ArrayList<>();
 
     @Deprecated
     private boolean mobileUrls = false;
@@ -70,6 +72,14 @@ public class TravelQuoteRequest {
 
     public void setTravellers(List<Traveller> travellers) {
         this.travellers = travellers;
+    }
+
+    public void setDestinations(List<String> destinations) {
+        this.destinations = destinations;
+    }
+
+    public List<String> getDestinations() {
+        return destinations;
     }
 
     public boolean getMobileUrls() {
@@ -150,5 +160,13 @@ public class TravelQuoteRequest {
 
     public void setTripType(TripType tripType) {
         this.tripType = tripType;
+    }
+
+    public Integer getAmtDuration() {
+        return amtDuration;
+    }
+
+    public void setAmtDuration(Integer amtDuration) {
+        this.amtDuration = amtDuration;
     }
 }
