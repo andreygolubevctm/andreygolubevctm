@@ -196,7 +196,7 @@
         html += '<li>' + benefit.label + '</li>';
       }
     }else{
-      var keys = Object.keys(productBenefits);
+      var keys = Object.keys(productBenefits || []);
       html += listStartText;
       var found = 0;
       if(renderList) {
