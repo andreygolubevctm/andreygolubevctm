@@ -120,6 +120,7 @@
 	}
 }
 
+
 .result {
 	.trip-type-list {
 		display:block;
@@ -155,11 +156,26 @@
 	}
 }
 
+.resultsSummaryContainer {
+	padding-bottom: 15px;
+}
+.resultsSummaryHeading {
+	font-weight: bold;
+	font-size: @font-size-h5;
+}
 
 //-------------------------------------------------------------------------------------------
 //XS ONLY breakpoints
 
 @media(@xs-only) {
+
+	.travelQuoteSummary {
+		padding: 10px;
+
+		.resultsSummaryPlaceholder {
+			padding-bottom: 20px;
+		}
+	}
 
 	//@companyLogoImgHeight:  55px;
 	@priceSize: @font-size-h3;
@@ -335,6 +351,7 @@
 			display:none;
 		}
 	}
+
 }
 
 //-------------------------------------------------------------------------------------------

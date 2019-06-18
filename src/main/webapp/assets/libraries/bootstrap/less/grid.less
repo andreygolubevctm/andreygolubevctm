@@ -21,6 +21,21 @@
   }
 }
 
+body.health {
+    .v4ProgressBar {
+        .progress-bar-container.container {
+            @media (min-width: @screen-sm-min) {
+                width: 100%;
+            }
+            @media (min-width: @screen-md-min) {
+              width: @container-md;
+            }
+            @media (min-width: @screen-lg-min) {
+              width: @container-lg;
+            }
+        }
+	}
+}
 
 // Fluid container
 //

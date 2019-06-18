@@ -870,9 +870,11 @@
             if($ele.attr('data-active') !== '1'){
                 $ele.removeClass('displayBlock');
                 $ele.find('.message').text( $ele.find('.message').attr('data-oldtext') );
+                $('.progress-bar-row, .mobileViewStepText').addClass("loaded");
             }
         },speed);
         $('#loading-footer').remove();
+        $('.progress-bar-row, .mobileViewStepText').addClass("loaded");
     }
 
     function updateCurrentStepHiddenField( step ){

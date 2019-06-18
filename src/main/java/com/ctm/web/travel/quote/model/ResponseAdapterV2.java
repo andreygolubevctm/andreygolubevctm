@@ -9,10 +9,17 @@ import com.ctm.web.travel.model.results.TravelResult;
 import com.ctm.web.travel.quote.model.request.PolicyType;
 import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
 import com.ctm.web.travel.quote.model.response.Benefit;
+import com.ctm.web.travel.quote.model.response.Product;
 import com.ctm.web.travel.quote.model.response.TravelQuote;
 import com.ctm.web.travel.quote.model.response.TravelResponseV2;
+import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ResponseAdapterV2 {
 
@@ -44,6 +51,8 @@ public class ResponseAdapterV2 {
                 if (!travelQuote.isAvailable()) {
                     continue;
                 }
+
+
                 result.setName(travelQuote.getProduct().getShortTitle());
                 result.setInfoDes(travelQuote.getProduct().getDescription());
                 result.setSubTitle(travelQuote.getProduct().getPdsUrl());
@@ -51,7 +60,6 @@ public class ResponseAdapterV2 {
                 result.setPrice(travelQuote.getPrice());
                 result.setPriceText(travelQuote.getPriceText());
                 result.setIsDomestic(travelQuote.getIsDomestic());
-
 
                 // Override product names based on arbitrary rules.
 
@@ -240,10 +248,151 @@ public class ResponseAdapterV2 {
 
                 result.setEncodeUrl(travelQuote.isEncodeQuoteUrl() ? "Y" : "N");
 
-            }
+                /*
+                 * Filter out AMT fields by Duration / region
+                 * Duration checks if the product has a getMaxTripDuration value, if it doesn't it checks the getLongTitle value, if both fail duration is not filtered
+                 * Region checks user inputs against ISO codes and groups them into regions. In the product side the getLongTitle value is checked for regions
+                 * Worldwide is always returned along with the single region the user selects (if the America(s) are not selected, then Worldwide excluding Americas are also
+                 * always returned
+                 * */
+                // compare the duration retrieved from the returned products with the user request
+                if (request.getPolicyType() == PolicyType.MULTI && request.getAmtDuration() > 1 && parseDuration(travelQuote.getProduct()) != null) {
+                    if (parseDuration(travelQuote.getProduct()) < request.getAmtDuration()) {
+                        result.setAvailable(AvailableType.N);
+                        continue;
+                    }
+                }
+                // check if the region retrieved from the returned products is equal to the parsed user request
+                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0) {
+                    String userRegion = parseRegion(request.getDestinations());
+                    String productRegion = parseLongtitle(travelQuote.getProduct());
 
+                    System.out.println("userRegion   : " + userRegion);
+                    System.out.println("productRegion: " + productRegion);
+
+                    if (productRegion.equals("worldwide") && !userRegion.contains("wwExAmericas")) {
+                        continue;
+                    } else if (productRegion.equals("wwExAmericas") && userRegion.contains("wwExAmericas")) {
+                        continue;
+                    } else if (productRegion.equals("pacific") && userRegion.contains("new zealand")) {
+                        continue;
+                    } else if (productRegion.equals("apac") && userRegion.contains("asia") ||
+                               productRegion.equals("apac") && userRegion.contains("pacific")) {
+                        continue;
+                    }
+                    if (!userRegion.contains(productRegion)) {
+                        result.setAvailable(AvailableType.N);
+                    }
+                }
+            }
+        }
+        return results;
+    }
+
+    private static Integer getDurationFromTitle(Product product) {
+        Pattern p = Pattern.compile("\\d+");
+        Matcher m = p.matcher(product.getLongTitle());
+        while(m.find()) {
+            return Integer.valueOf(m.group());
+        }
+        return null;
+    }
+
+    // maxTripDuration is NOT always populated - check the long title otherwise return null
+    private static Integer parseDuration(Product product) {
+        try {
+            if (StringUtils.isEmpty(product.getMaxTripDuration())) {
+                return getDurationFromTitle(product);
+            } else {
+                return product.getMaxTripDuration();
+            }
+        } catch (NumberFormatException nfe ) {
+            return null;
+        }
+    }
+
+    private static String parseLongtitle(Product product) {
+        String s = product.getLongTitle().toLowerCase();
+
+        // some partners don't say worldwide but infer it, so check for america in the longTitle
+        if (s.contains("worldwide") || s.contains("america")) {
+            if (s.contains("excl ") || s.contains("exc ") || s.contains("excluding ")) {
+                return "wwExAmericas";
+            } else {
+                return "worldwide";
+            }
+        } else if (s.contains("pacific") || s.contains("new zealand")) {
+            // double check for partners that bundle pacific/asia
+            if (s.contains("asia")) {
+                return "apac";
+            } else {
+                return "pacific";
+            }
+        } else if (s.contains("europe")) {
+            return "europe";
+        } else if (s.contains("asia")) {
+            return "asia";
+        } else if (s.contains("bali")) {
+            return "bali";
+        }
+        return "No Region";
+    }
+
+    // pass in the users destination(s)
+    // check if the region includes Worldwide, Worldwide excluding Americas, Europe, Asia, Pacific/New Zealand, Bali ISO codes
+    private static String parseRegion(List<String> regions) {
+
+        Pattern americas = Pattern.compile("USA|AQ|ARG|BOL|BRA|CHL|COL|ECU|GUY|PRY|PER|SUR|URY|VEN|ATG|BHS|BRB|BLZ|CAN|CRI|CUB|DMA|DOM|SLV|GRD|GTM|HTI|HND|JAM|MEX|NIC|PAN|KNA|LCA|VCT|TTO");
+        Pattern europe = Pattern.compile("EU|ALB|AND|ARM|AUT|AZE|BLR|BEL|BIH|BGR|HRV|CYP|CZE|DNK|EST|FIN|FRA|GEO|DEU|GRC|HUN|ISL|IRL|ITA|KAZ|LVA|LIE|LTU|LUX|MLT|MDA|MCO|MNE|NLD|MKD|NOR|POL|PRT|ROU|RUS|SMR|SRB|SVK|SVN|ESP|SWE|CHE|TUR|UKR|GBR");
+        Pattern asia = Pattern.compile("AS|AFG|ARM|AZE|BHR|BGD|BTN|BRN|KHM|CHN|CYP|GEO|IND|IDN|IRN|IRQ|ISR|JPN|JOR|KAZ|KWT|KGZ|LAO|LBN|MYS|MDV|MNG|MMR|NPL|PRK|OMN|PAK|PSE|PHL|QAT|SAU|SGP|KOR|LKA|SYR|TWN|TJK|THA|TLS|TUR|TKM|ARE|UZB|VNM|YEM");
+        Pattern pacific = Pattern.compile("PC|AUS|NZL|FJI|VUT|COK|NCL|MHL|NRU|SLB|TON|WLF|TUV|TKL|WSM|ASM|NIU|PYF|PCN");
+        Pattern bali = Pattern.compile("BAL");
+        Pattern worldwide = Pattern.compile("WW");
+
+        String flatRegions = String.join(" ", regions);
+        String resultString = "";
+        Integer regionCount = 0;
+
+        // build the user region string & track count of regions
+        if (worldwide.matcher(flatRegions).find()) {
+            regionCount++;
+        }
+        // build the user region string & track count of regions
+        if (bali.matcher(flatRegions).find()) {
+            resultString+= "bali ";
+            regionCount++;
+        }
+        if (pacific.matcher(flatRegions).find() && asia.matcher(flatRegions).find()) {
+            resultString+= "apac ";
+            regionCount++;
+        } else {
+            if (pacific.matcher(flatRegions).find()) {
+                resultString+= "pacific ";
+                regionCount++;
+            }
+            if (asia.matcher(flatRegions).find()) {
+                resultString+= "asia ";
+                regionCount++;
+            }
+        }
+        if (europe.matcher(flatRegions).find()) {
+            resultString+= "europe ";
+            regionCount++;
+        }
+        // if more than one region selected, switch to worldwide products
+        if ( regionCount > 1) {
+            resultString = "worldwide ";
+        // otherwise add to string
+        } else if (!americas.matcher(flatRegions).find()) {
+            if (worldwide.matcher(flatRegions).find()) {
+                resultString = "worldwide ";
+            } else {
+                resultString+= "wwExAmericas worldwide ";
+            }
+        } else {
+            resultString+= "worldwide ";
         }
 
-        return results;
+        return resultString;
     }
 }
