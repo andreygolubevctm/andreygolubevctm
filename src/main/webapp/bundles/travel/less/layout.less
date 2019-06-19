@@ -57,6 +57,15 @@ body.travel {
 	}
 }
 body.travel[data-step="results"] {
+
+	#navbar-main div.row {
+		div.container {
+			div.navbar-desktop.coverLevelTabs.hidden-xs {
+				display: flex;
+			}
+		}
+	}
+
 	@media(@xs-only) {
 		.header-top {
 			nav.navbar-header.header-buttons-logos:not(.stuck) {
@@ -119,24 +128,24 @@ body.travel[data-step="results"] {
 	}
 
 	@supports (-moz-appearance:none) {
-		#navbar-main div.row {
+		#navbar-main > div.row:first-child {
 			height: 47px;
+			div.container {
+				div.navbar-desktop.coverLevelTabs.hidden-xs {
+					display: block;
 
-			div.container div.navbar-desktop.coverLevelTabs.hidden-xs {
-				display: block;
-
-				div:first-child {
-					width: 17.6px;
-
-					a {
-						height: 30px;
-						display: inline-block;
-						padding-top: 15px;
+					& > div:first-child {
+						a {
+							height: 30px;
+							display: inline-block;
+							padding-top: 15px;
+						}
 					}
-				}
-				div:nth-child(2) {
-					margin-left: 95px;
-					margin-top: -77px;
+					& > div:nth-child(2) {
+						float: none;
+						margin-left: 95px;
+						margin-top: -77px;
+					}
 				}
 			}
 		}
