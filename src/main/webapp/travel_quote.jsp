@@ -30,7 +30,7 @@
 			</li>
 		</ul>
 
-		<div class="navbar-desktop coverLevelTabs hidden-xs" style="display: flex; align-items: center">
+		<div class="navbar-desktop coverLevelTabs hidden-xs" style="align-items: center">
 			<div>
 				<a href="javascript:;" data-slide-control="previous">
 					<span class="icon icon-arrow-left"></span> <span>Revise details</span>

@@ -267,9 +267,6 @@ public class ResponseAdapterV2 {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 
-                    System.out.println("userRegion   : " + userRegion);
-                    System.out.println("productRegion: " + productRegion);
-
                     if (productRegion.equals("worldwide") && !userRegion.contains("wwExAmericas")) {
                         continue;
                     } else if (productRegion.equals("wwExAmericas") && userRegion.contains("wwExAmericas")) {
