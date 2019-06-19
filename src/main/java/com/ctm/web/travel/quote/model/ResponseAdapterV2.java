@@ -267,17 +267,18 @@ public class ResponseAdapterV2 {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 
-                    System.out.println("userRegion   : " + userRegion);
-                    System.out.println("productRegion: " + productRegion);
-
                     if (productRegion.equals("worldwide") && !userRegion.contains("wwExAmericas")) {
+                        System.out.println("continue 1");
                         continue;
                     } else if (productRegion.equals("wwExAmericas") && userRegion.contains("wwExAmericas")) {
+                        System.out.println("continue 2");
                         continue;
                     } else if (productRegion.equals("pacific") && userRegion.contains("new zealand")) {
+                        System.out.println("continue 3");
                         continue;
                     } else if (productRegion.equals("apac") && userRegion.contains("asia") ||
-                               productRegion.equals("apac") && userRegion.contains("pacific")) {
+                            productRegion.equals("apac") && userRegion.contains("pacific")) {
+                        System.out.println("continue 4");
                         continue;
                     }
                     if (!userRegion.contains(productRegion)) {
@@ -342,6 +343,8 @@ public class ResponseAdapterV2 {
     // check if the region includes Worldwide, Worldwide excluding Americas, Europe, Asia, Pacific/New Zealand, Bali ISO codes
     private static String parseRegion(List<String> regions) {
 
+        System.out.println("regions : " + regions);
+
         Pattern americas = Pattern.compile("USA|AQ|ARG|BOL|BRA|CHL|COL|ECU|GUY|PRY|PER|SUR|URY|VEN|ATG|BHS|BRB|BLZ|CAN|CRI|CUB|DMA|DOM|SLV|GRD|GTM|HTI|HND|JAM|MEX|NIC|PAN|KNA|LCA|VCT|TTO");
         Pattern europe = Pattern.compile("EU|ALB|AND|ARM|AUT|AZE|BLR|BEL|BIH|BGR|HRV|CYP|CZE|DNK|EST|FIN|FRA|GEO|DEU|GRC|HUN|ISL|IRL|ITA|KAZ|LVA|LIE|LTU|LUX|MLT|MDA|MCO|MNE|NLD|MKD|NOR|POL|PRT|ROU|RUS|SMR|SRB|SVK|SVN|ESP|SWE|CHE|TUR|UKR|GBR");
         Pattern asia = Pattern.compile("AS|AFG|ARM|AZE|BHR|BGD|BTN|BRN|KHM|CHN|CYP|GEO|IND|IDN|IRN|IRQ|ISR|JPN|JOR|KAZ|KWT|KGZ|LAO|LBN|MYS|MDV|MNG|MMR|NPL|PRK|OMN|PAK|PSE|PHL|QAT|SAU|SGP|KOR|LKA|SYR|TWN|TJK|THA|TLS|TUR|TKM|ARE|UZB|VNM|YEM");
@@ -362,6 +365,10 @@ public class ResponseAdapterV2 {
             resultString+= "bali ";
             regionCount++;
         }
+        if (americas.matcher(flatRegions).find()) {
+            resultString+= "americas ";
+            regionCount++;
+        }
         if (pacific.matcher(flatRegions).find() && asia.matcher(flatRegions).find()) {
             resultString+= "apac ";
             regionCount++;
@@ -379,19 +386,27 @@ public class ResponseAdapterV2 {
             resultString+= "europe ";
             regionCount++;
         }
+
         // if more than one region selected, switch to worldwide products
         if ( regionCount > 1) {
-            resultString = "worldwide ";
-        // otherwise add to string
+            if (!americas.matcher(flatRegions).find()) {
+                resultString = "wwExAmericas worldwide ";
+            } else {
+                resultString = "worldwide ";
+            }
+            // otherwise add to string
         } else if (!americas.matcher(flatRegions).find()) {
             if (worldwide.matcher(flatRegions).find()) {
-                resultString = "worldwide ";
+                resultString += "worldwide ";
             } else {
-                resultString+= "wwExAmericas worldwide ";
+                resultString += "wwExAmericas worldwide ";
             }
         } else {
             resultString+= "worldwide ";
         }
+
+        System.out.println("resultString   : " + resultString);
+        System.out.println("regionCount    : " + regionCount);
 
         return resultString;
     }
