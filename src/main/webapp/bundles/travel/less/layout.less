@@ -120,7 +120,25 @@ body.travel[data-step="results"] {
 
 	@supports (-moz-appearance:none) {
 		#navbar-main div.row {
-			height: 0;
+			height: 47px;
+
+			div.container div.navbar-desktop.coverLevelTabs.hidden-xs {
+				display: block;
+
+				div:first-child {
+					width: 17.6px;
+
+					a {
+						height: 30px;
+						display: inline-block;
+						padding-top: 15px;
+					}
+				}
+				div:nth-child(2) {
+					margin-left: 95px;
+					margin-top: -77px;
+				}
+			}
 		}
 	}
 }
