@@ -339,7 +339,7 @@
                 $('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[currentTabIndex].rankingFilter] + ' ' + settings.activeTabSet[currentTabIndex].label.toLowerCase().replace('cover', 'plans'));
             }
 			var ranking = $(tab).data('ranking-filter');
-			$(tab).find('.tabCount').empty().html('(' + counts[ranking] || 0 + ')');
+			$(tab).find('.tabCount').empty().html('(' + (counts[ranking] || 0) + ')');
 		});
 
 		updateCustomTabCount();
