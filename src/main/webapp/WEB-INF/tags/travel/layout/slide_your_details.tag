@@ -73,7 +73,7 @@
 										xpathhidden="travel/destination"
 										label="Which countries or regions will you be visiting in the next 12 months (excluding stopovers of less than 48 hours)?"
                                         additionalAttributes="autocomplete='no'"
-										title="Regions"
+										title="Where are you travelling?"
 										validationErrorPlacementSelector=".travel_details_destinations"
 										source="/${pageSettings.getContextFolder()}isolocations/search.json?search="
 						/>
