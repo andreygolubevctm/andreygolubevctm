@@ -65,7 +65,7 @@
 		<div class=""></div>
 
 		<div class="hidden-xs resultsSummaryContainer" data-livechat="target">
-			<span class="hidden-xs resultsSummaryHeading"></span>
+			<div class="hidden-xs resultsSummaryHeading"></div>
 			<span class="resultsSummary">
 				<span class="resultsSummaryPlaceholder"></span>
 			</span>
