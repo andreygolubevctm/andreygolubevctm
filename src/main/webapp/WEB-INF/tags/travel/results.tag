@@ -56,7 +56,11 @@
     <div id="travel-banner" class="travel-disclaimer-banner">
         <div class="travel-disclaimer-banner-icon"><span class="icon icon-info"></span></div>
         <div class="travelResultsDisclaimerHeader"></div>
-        <div class="travel-disclaimer-banner-dismiss"></div>
+        <div class="travel-disclaimer-banner-dismiss">
+				<div class="icon-container">
+					<span class="icon icon-cross">
+				</div>
+				</div>
     </div>
 		<div class=""></div>
 
