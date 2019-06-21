@@ -81,10 +81,14 @@
 				travelTxt = '';
 			}
 
-			var endStr = "\nWe have also included products that cover longer trips as they may be of greater value.";
+			var is61Duration = durationVal.indexOf("61") > -1;
 
-			txt+= "</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of <span class='highlight'>"+durationVal+".</span>";
-			txt+= durationTag.indexOf('61+ days') !== -1 ? '' : endStr;
+			var amtDurationSpan = "<span class='" + (is61Duration ? 'highlight' : 'amt-highlight') + "'>"+durationVal+".</span>";
+			if(!is61Duration) {
+				amtDurationSpan = "<a href='javascript:void(0);' class='help-icon' data-content='helpid:645' data-toggle='popover'>" + amtDurationSpan + "</a>";
+			}
+
+			txt+= "</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of " + amtDurationSpan;
 		}
 
 		if (meerkat.modules.tripType.exists()) {
