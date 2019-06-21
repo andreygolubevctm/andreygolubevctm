@@ -6,6 +6,7 @@ public class StringUtils {
     public static final String REPLACEMENT_CHAR = "\uFFFD";
 
     public static String toValid3ByteUtf8String(String str)  {
+        if(str == null) return str;
         final int length = str.length();
         StringBuilder validStringBuilder = new StringBuilder(length);
         for (int offset = 0; offset < length; ) {
