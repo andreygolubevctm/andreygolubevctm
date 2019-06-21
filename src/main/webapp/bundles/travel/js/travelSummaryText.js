@@ -13,19 +13,18 @@
 	function updateSummaryText() {
 		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
 		// Build the summary text based on the entered information.
-		var txt= '<span class="highlight">';
 
+		var txt= '<span class="highlight">';
 		var adults = $adults.val(),
 		children = $children.val();
-		
+
 		if (adults < 3) {
 			// adults
 			txt += adults + ' adult' + (adults == 1 ? '' : 's');
 		} else {
 			txt += adults;
 		}
-		
-		
+
 		// children
 		if (children > 0)
 		{
@@ -36,7 +35,7 @@
 		if ($("input[name=travel_policyType]:checked").val() == 'S') {
 			// in case a user did an AMT quote and now wants a single trip quote
 			$summaryHeader.html('Your quote is based on');
-			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
+			txt +='</span> <span>travelling</span> <span class="md-block">to <span class="highlight">';
 
 			// update the country text for single trip
 			if ($selectedTags.children().length == 1) {
@@ -49,9 +48,47 @@
 			var days = meerkat.modules.travelDatepicker.getDateDifference();
 			txt += "</span> for <span class='highlight'>"+days+" days</span>";
 		} else {
+
 			$summaryHeader.html('Your Annual Multi Trip (AMT) quote is based on');
-			var blockClass = children > 1 ? 'sm-md-block' : 'sm-block';
-			txt+="</span> travelling <span class='highlight "+blockClass+"'>multiple times in one year";
+
+			// build the destination string
+			var regionTags = $('#destinationsfs').find('.selected-tag');
+			var durationTag = $('#amtDurationsfs').find('.active').text();
+			var regionStr = '';
+			if (regionTags.length === 1) {
+				regionStr = regionTags.text();
+			} else {
+				for(var rs = 0; rs < regionTags.length; rs++) {
+					regionStr += $(regionTags[rs]).text();
+					if (rs == regionTags.length-1) {
+						regionStr += '';
+						continue;
+					}
+					if (regionTags.length > 1 && rs !== regionTags.length-2 ) {
+						regionStr += ', ';
+					} else {
+						regionStr += ' & ';
+					}
+				}
+			}
+
+			var durationVal = $('#amtDurationsfs').find('.active').text().trim();
+			var travelTxt = 'to ';
+
+			if (regionTags[0].textContent.toLowerCase().indexOf('pacific') !== -1 || regionTags[0].textContent.toLowerCase().indexOf('united') !== -1) {
+				travelTxt = 'to the ';
+			} else if (regionTags[0].textContent.toLowerCase().indexOf('worldwide') !== -1) {
+				travelTxt = '';
+			}
+
+			var is61Duration = durationVal.indexOf("61") > -1;
+
+			var amtDurationSpan = "<span class='" + (is61Duration ? 'highlight' : 'amt-highlight') + "'>"+durationVal+".</span>";
+			if(!is61Duration) {
+				amtDurationSpan = "<a href='javascript:void(0);' class='help-icon' data-content='helpid:645' data-toggle='popover'>" + amtDurationSpan + "</a>";
+			}
+
+			txt+= "</span> travelling multiple times in one year "+travelTxt+"<span class='highlight'>"+regionStr+"</span> for a maximum single trip duration of " + amtDurationSpan;
 		}
 
 		if (meerkat.modules.tripType.exists()) {
@@ -65,7 +102,7 @@
 					}
 				}
 			}
-			txt+=". </span><em class=\"hidden-xs hidden-sm\"><br></em>Covered for <span class='highlight'>" + copy.join(", ");
+			txt+=". </span>Covered for <span class='highlight'>" + copy.join(", ");
 		}
 
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
@@ -81,7 +118,7 @@
 			$adults = $('#travel_adults'),
 			$children = $('#travel_children'),
 			$policytype = $('#travel_policyType');
-			$summaryHeader = $('.resultsSummaryContainer h5');
+			$summaryHeader = $('.resultsSummaryHeading');
 			$selectedTags = $('.selected-tags');
 
 			applyEventListeners();

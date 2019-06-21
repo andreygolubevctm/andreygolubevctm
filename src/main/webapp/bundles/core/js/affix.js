@@ -72,19 +72,26 @@
 		//Because of the odd race conditions that the journeyEngine's journeyProgress bar now suffers from, I'm waiting for its init event before using affix on the navbar below it.
 		meerkat.messaging.subscribe(meerkatEvents.journeyProgressBar.INIT, function affixNavbar(step) {
 
-			// If on XS, defer the affixing until/if the breakpoint increases
-			if (meerkat.modules.deviceMediaState.get() === 'xs') {
-				// Subscribe
-				var messagingId = meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function affixXsBreakpointLeave() {
-					// Unsubscribe (one-off event)
-					meerkat.messaging.unsubscribe(messagingId);
+			var dockAlwaysOnConfirmation = $(".v4confirmation")[0];
+			var dockAlwaysInJourney = $(".v4ProgressBar")[0];
 
-					// Do the affix calcs
-					topDockBasedOnOffset($('.navbar-affix'));
+			if (!dockAlwaysOnConfirmation && !dockAlwaysInJourney) {
+                // If on XS, defer the affixing until/if the breakpoint increases
+                if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                    // Subscribe
+                    var messagingId = meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function affixXsBreakpointLeave() {
+                        // Unsubscribe (one-off event)
+                        meerkat.messaging.unsubscribe(messagingId);
 
-				});
-			}
-			else {
+                        // Do the affix calcs
+                        topDockBasedOnOffset($('.navbar-affix'));
+
+                    });
+                }
+                else {
+                    topDockBasedOnOffset($('.navbar-affix'));
+                }
+            } else {
 				topDockBasedOnOffset($('.navbar-affix'));
 			}
 		});

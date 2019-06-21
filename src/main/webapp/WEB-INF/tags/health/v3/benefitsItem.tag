@@ -213,7 +213,8 @@
 	</form_v2:fieldset>
 
 	<c:if test="${coverType == 'Hospital'}">
-		<simples:dialogue id="50" className="simples-dialogue-extras-cover" vertical="health" />
+		<simples:dialogue id="50" className="simples-dialogue-extras-cover simples-dialog-inbound" vertical="health" />
+		<simples:dialogue id="131" className="simples-dialogue-extras-cover simples-dialog-outbound" vertical="health" />
 		<simples:dialogue id="119" className="simples-dialogue-extras-cover simples-dialog-nextgenoutbound simples-dialog-nextgencli" vertical="health" />
 		<simples:dialogue id="82" className="simples-dialogue-extras-cover" vertical="health" />
 	</c:if>

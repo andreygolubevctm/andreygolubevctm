@@ -3,6 +3,9 @@ body.travel {
     background-color: @theme-light;
   }
 
+  .navbar-header {
+    width: 100%;
+  }
   .coverLevelTabs {
     .clt-action {
       padding: 8px 0;
@@ -14,7 +17,9 @@ body.travel {
       border: 1px solid @theme-tertiary;
       background-color: transparent;
       color: @theme-tertiary;
-
+      white-space: nowrap;
+      width: auto;
+      min-width: 130px;
     }
     .active, .clt-action:hover {
       border: 1px solid @theme-secondary;
@@ -172,19 +177,20 @@ body.travel {
       }
     }
 
-    .travelQuoteSummary {
-      padding: 10px;
-
-      .resultsSummaryPlaceholder {
-        padding-bottom: 20px;
-      }
+    .filters-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
     }
 
-    .sort-results-travel-mobile, .edit-details-travel-mobile {
-      float: right;
+    .sort-results-travel-mobile, .edit-details-travel-mobile, .revise-details-mobile {
       line-height: 21px;
       padding: 9px 10px;
       text-decoration: none;
+    }
+
+    .currentTabsContainer {
+      padding-left: 10px;
     }
   }
 }

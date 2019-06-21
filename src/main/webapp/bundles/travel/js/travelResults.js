@@ -257,6 +257,10 @@
 			}
 		});
 
+		$('.travel-disclaimer-banner-dismiss').click(function() {
+			$(".travel-disclaimer-banner").hide();
+		});
+
 		// Scroll to the top when results come back
 		$(document).on("resultsReturned", function(){
 			meerkat.modules.utils.scrollPageTo($("header"));

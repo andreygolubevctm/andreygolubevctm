@@ -103,6 +103,7 @@
 	        $dialogue97 = $('.simples-dialogue-97');
             $cliCallCheckboxDialogue = $('.simples-dialogue-78');
             $nonCliCallCheckboxDialogue = $('.simples-dialogue-20');
+            $outboundIntroDialogue = $('.simples-dialogue-135');
             $outboundFollowupDialogue = $('.simples-dialogue-69');
             $inboundQuestionsetFollowupDialogue = $('.simples-dialogue-70');
             $inboundQuestionsetFollowupToggles = $inboundQuestionsetFollowupDialogue.find('a');
@@ -423,6 +424,7 @@
         var callType = false;
         var isValidCallType = false;
         var isFollowupCall = $followupCallCheckbox.is(':checked');
+        var isOutbound = meerkat.modules.healthContactType.is('outbound');
         // Set the calltype variables
         callType = getCallType();
         if (!_.isEmpty(callType)) {
@@ -431,7 +433,12 @@
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
         $cliCallCheckboxDialogue.toggleClass('hidden',(getCallType()=== null ? true : isValidCallType));
-        $nonCliCallCheckboxDialogue.toggleClass('hidden',!(getCallType() === null ? true : isValidCallType));
+        $outboundIntroDialogue.toggleClass('hidden', !isOutbound);
+        if(isOutbound) {
+            $nonCliCallCheckboxDialogue.toggleClass('hidden', true);
+        }else{
+            $nonCliCallCheckboxDialogue.toggleClass('hidden',!(getCallType() === null ? true : isValidCallType));
+        }
         if (isFollowupCall && isValidCallType) {
             if (_.indexOf(['outbound','cli'], callType) >= 0) {
                 // Hide inbound dialogs and show outbound
@@ -595,17 +602,29 @@
                 $elements.filter('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
                 $dialogue97.show();
             } else {
-                $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
+                if(meerkat.modules.healthContactType.is('outbound')) {
+                    $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-inbound').show();
+                }else{
+                    $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-outbound').show();
+                }
             }
         }
     }
 
     function togglePrimaryCoverDialogue() {
-        $dialoguePrimaryCover.toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
+        var isChecked = $healthPrimaryCover.filter(':checked').val() === "Y";
+        var isOutbound = meerkat.modules.healthContactType.is('outbound');
+
+        $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || !isChecked);
+        $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', !isOutbound || !isChecked);
     }
 
     function togglePartnerCoverDialogue() {
-        $dialoguePartnerCover.toggleClass('hidden', $healthPartnerCover.filter(':checked').val() !== "Y");
+        var isChecked = $healthPartnerCover.filter(':checked').val() === "Y";
+        var isOutbound = meerkat.modules.healthContactType.is('outbound');
+
+        $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || !isChecked);
+        $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', !isOutbound || !isChecked);
     }
 
     function toggleAffiliateRewardsDialogue() {
