@@ -19,6 +19,23 @@
       }
     },
     {
+      text: '%DYNAMIC_N_AND_R_HOSPITALBENEFITS%',
+      get: function(product) {
+        var productBenefits = product ? product.custom.reform.tab1.benefits : [];
+        var html = '';
+
+        for(let i = 0; i < productBenefits.length; i++) {
+          var benefit = productBenefits[i];
+
+          if(['N', 'R'].indexOf(benefit.covered) > -1) {
+            html += '<li>' + benefit.category + '</li>';
+          }
+        }
+
+        return html;
+      }
+    },
+    {
       text: '%DYNAMIC_HOSPITALBENEFITS_NO_BLURB%', 
       get: function(product) {
         var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
@@ -196,17 +213,26 @@
         html += '<li>' + benefit.label + '</li>';
       }
     }else{
-      var keys = Object.keys(productBenefits || []);
-      html += listStartText;
-      var found = 0;
-      if(renderList) {
-        for(var j = 0; j < keys.length; j++) {
-          benefit = benefits.find(function(benefit) {
-            return benefit.value === keys[j];
-          });
-          var productBenefit = productBenefits[keys[j]];
+        html += getProductBenefitList(benefits, productBenefits, renderList, listStartText, ['Y', 'YY'], false);
+    }
 
-            if(benefit && productBenefit.covered === 'Y' || productBenefit.covered === 'YY') {
+    return html;
+  }
+
+  function getProductBenefitList(benefits, productBenefits, renderList, listStartText, coveredCheck, isOrderedList) {
+    var html = '';
+    var keys = Object.keys(productBenefits || []);
+    html += listStartText;
+    var found = 0;
+    if(renderList) {
+      for(var j = 0; j < keys.length; j++) {
+        benefit = benefits.find(function(benefit) {
+          return benefit.value === keys[j];
+        });
+        var productBenefit = productBenefits[keys[j]];
+
+          if(benefit && coveredCheck.indexOf(productBenefit.covered) > -1) {
+            if(!isOrderedList) { 
               if(found > 0 && found < 2) {
                 html += ', ';
               }
@@ -216,16 +242,16 @@
               }
 
               html += benefit.label;
-              found++;
-            }
-
-            if(found === 3) {
-              break;
-            }
+          }else{
+            html += '<li>' + benefit.label + '</li>';
+          }
         }
+
+          if(found === 3) {
+            break;
+          }
       }
     }
-
     return html;
   }
 

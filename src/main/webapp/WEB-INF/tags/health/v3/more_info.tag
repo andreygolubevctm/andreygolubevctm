@@ -209,12 +209,16 @@
 		{{ var isOutbound = meerkat.modules.healthContactType.is('outbound'); }}
 		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return benefit.selected; }); }}
 		{{ var scriptTerm = 'everything'; }}
-
+		{{ var isBasic = custom.reform.tier.toLowerCase().indexOf('basic') > -1; }}
 		{{ if(isOutbound) { }}
 		{{ scriptTerm = 'anything'; }}
 			{{ if(custom.reform.scripting !== 'D') { }}
 				{{ if(coverType === 'c' || coverType === 'h') { }}
-					<simples:dialogue id="126" vertical="health" dynamic="true" />
+					{{ if(isBasic) { }}
+						<simples:dialogue id="136" vertical="health" dynamic="true" />
+					{{ }else { }} 
+						<simples:dialogue id="126" vertical="health" dynamic="true" />
+					{{ } }}
 				{{ } else { }}
 					<simples:dialogue id="127" vertical="health" dynamic="true" />
 				{{ } }}
