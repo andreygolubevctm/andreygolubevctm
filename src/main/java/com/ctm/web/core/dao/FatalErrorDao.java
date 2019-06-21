@@ -3,6 +3,7 @@ package com.ctm.web.core.dao;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.FatalError;
+import com.ctm.web.core.utils.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +35,8 @@ public class FatalErrorDao {
 				stmt.setString(2, fatalError.getProperty());
 				stmt.setString(3, fatalError.getpage());
 				stmt.setString(4, fatalError.getmessage());
-				stmt.setString(5, fatalError.getDescription());
-				stmt.setString(6, data);
+				stmt.setString(5, StringUtils.toValid3ByteUtf8String(fatalError.getDescription()));
+				stmt.setString(6, StringUtils.toValid3ByteUtf8String(data));
 				stmt.setString(7, fatalError.getSessionId());
 				stmt.setString(8, fatalError.getTransactionId());
 				stmt.setString(9, fatalError.getFatal());
