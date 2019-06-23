@@ -214,7 +214,7 @@
 		{{ scriptTerm = 'anything'; }}
 			{{ if(custom.reform.scripting !== 'D') { }}
 				{{ if(coverType === 'c' || coverType === 'h') { }}
-					{{ if(isBasic) { }}
+					{{ if(isBasic && selectedBenefits.length === 0) { }}
 						<simples:dialogue id="136" vertical="health" dynamic="true" />
 					{{ }else { }} 
 						<simples:dialogue id="126" vertical="health" dynamic="true" />

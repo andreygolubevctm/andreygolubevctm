@@ -19,7 +19,7 @@
       }
     },
     {
-      text: '%DYNAMIC_N_AND_R_HOSPITALBENEFITS%',
+      text: '%DYNAMIC_Y_HOSPITALBENEFITS%',
       get: function(product) {
         var productBenefits = product ? product.custom.reform.tab1.benefits : [];
         var html = '';
@@ -27,7 +27,7 @@
         for(let i = 0; i < productBenefits.length; i++) {
           var benefit = productBenefits[i];
 
-          if(['N', 'R'].indexOf(benefit.covered) > -1) {
+          if(benefit.covered === 'Y') {
             html += '<li>' + benefit.category + '</li>';
           }
         }
