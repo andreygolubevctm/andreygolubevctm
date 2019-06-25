@@ -803,17 +803,21 @@
             // Set hidden fields with selected product info.
             var $_main = $('#mainform');
             if (product === null) {
-                $_main.find('.health_application_details_provider').val("");
-                $_main.find('.health_application_details_productId').val("");
-                $_main.find('.health_application_details_productNumber').val("");
-                $_main.find('.health_application_details_productTitle').val("");
-                $_main.find('.health_application_details_providerName').val("");
+	            _.each(['provider','productId','productNumber','productTitle','providerName','excessPerAdmission','excessPerPerson','excessPerPolicy','tier'], function(suffix) {
+		            $_main.find('.health_application_details_' + suffix).val("");
+	            });
             } else {
                 $_main.find('.health_application_details_provider').val(selectedProduct.info.provider);
                 $_main.find('.health_application_details_productId').val(selectedProduct.productId);
                 $_main.find('.health_application_details_productNumber').val(selectedProduct.info.productCode);
                 $_main.find('.health_application_details_productTitle').val(selectedProduct.info.productTitle);
                 $_main.find('.health_application_details_providerName').val(selectedProduct.info.providerName);
+
+	            var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(selectedProduct);
+	            $_main.find('.health_application_details_excessPerAdmission').val(excessesAndCoPayment.excessPerAdmission);
+	            $_main.find('.health_application_details_excessPerPerson').val(excessesAndCoPayment.excessPerPerson);
+	            $_main.find('.health_application_details_excessPerPolicy').val(excessesAndCoPayment.excessPerPolicy);
+	            $_main.find('.health_application_details_tier').val(selectedProduct.custom.reform.tier);
 
                 meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
                 if (!meerkat.site.skipResultsPopulation) {
