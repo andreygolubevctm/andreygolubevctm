@@ -273,8 +273,10 @@ public class ResponseAdapterV2 {
                         continue;
                     } else if (productRegion.equals("pacific") && userRegion.contains("new zealand")) {
                         continue;
+                    } else if (productRegion.equals("new zealand") && userRegion.contains("new zealand")) {
+                        continue;
                     } else if (productRegion.equals("apac") && userRegion.contains("asia") ||
-                               productRegion.equals("apac") && userRegion.contains("pacific")) {
+                            productRegion.equals("apac") && userRegion.contains("pacific")) {
                         continue;
                     }
                     if (!userRegion.contains(productRegion)) {
@@ -318,7 +320,7 @@ public class ResponseAdapterV2 {
             } else {
                 return "worldwide";
             }
-        } else if (s.contains("pacific") || s.contains("new zealand")) {
+        } else if (s.contains("pacific")) {
             // double check for partners that bundle pacific/asia
             if (s.contains("asia")) {
                 return "apac";
@@ -331,6 +333,8 @@ public class ResponseAdapterV2 {
             return "asia";
         } else if (s.contains("bali")) {
             return "bali";
+        } else if (s.contains("new zealand")) {
+            return "new zealand";
         }
         return "No Region";
     }
@@ -342,8 +346,9 @@ public class ResponseAdapterV2 {
         Pattern americas = Pattern.compile("USA|AQ|ARG|BOL|BRA|CHL|COL|ECU|GUY|PRY|PER|SUR|URY|VEN|ATG|BHS|BRB|BLZ|CAN|CRI|CUB|DMA|DOM|SLV|GRD|GTM|HTI|HND|JAM|MEX|NIC|PAN|KNA|LCA|VCT|TTO");
         Pattern europe = Pattern.compile("EU|ALB|AND|ARM|AUT|AZE|BLR|BEL|BIH|BGR|HRV|CYP|CZE|DNK|EST|FIN|FRA|GEO|DEU|GRC|HUN|ISL|IRL|ITA|KAZ|LVA|LIE|LTU|LUX|MLT|MDA|MCO|MNE|NLD|MKD|NOR|POL|PRT|ROU|RUS|SMR|SRB|SVK|SVN|ESP|SWE|CHE|TUR|UKR|GBR");
         Pattern asia = Pattern.compile("AS|AFG|ARM|AZE|BHR|BGD|BTN|BRN|KHM|CHN|CYP|GEO|IND|IDN|IRN|IRQ|ISR|JPN|JOR|KAZ|KWT|KGZ|LAO|LBN|MYS|MDV|MNG|MMR|NPL|PRK|OMN|PAK|PSE|PHL|QAT|SAU|SGP|KOR|LKA|SYR|TWN|TJK|THA|TLS|TUR|TKM|ARE|UZB|VNM|YEM");
-        Pattern pacific = Pattern.compile("PC|AUS|NZL|FJI|VUT|COK|NCL|MHL|NRU|SLB|TON|WLF|TUV|TKL|WSM|ASM|NIU|PYF|PCN");
+        Pattern pacific = Pattern.compile("PC|AUS|FJI|VUT|COK|NCL|MHL|NRU|SLB|TON|WLF|TUV|TKL|WSM|ASM|NIU|PYF|PCN");
         Pattern bali = Pattern.compile("BAL");
+        Pattern newZealand = Pattern.compile("NZL");
         Pattern worldwide = Pattern.compile("WW");
 
         String flatRegions = String.join(" ", regions);
@@ -354,42 +359,58 @@ public class ResponseAdapterV2 {
         if (worldwide.matcher(flatRegions).find()) {
             regionCount++;
         }
-        // build the user region string & track count of regions
         if (bali.matcher(flatRegions).find()) {
             resultString+= "bali ";
+            regionCount++;
+        }
+        if (newZealand.matcher(flatRegions).find()) {
+            resultString+= "new zealand ";
+            regionCount++;
+        }
+        if (americas.matcher(flatRegions).find()) {
+            resultString+= "americas ";
             regionCount++;
         }
         if (pacific.matcher(flatRegions).find() && asia.matcher(flatRegions).find()) {
             resultString+= "apac ";
             regionCount++;
-        } else {
-            if (pacific.matcher(flatRegions).find()) {
-                resultString+= "pacific ";
-                regionCount++;
-            }
-            if (asia.matcher(flatRegions).find()) {
-                resultString+= "asia ";
-                regionCount++;
-            }
+        }
+        if (pacific.matcher(flatRegions).find()) {
+            resultString+= "pacific ";
+            regionCount++;
+        }
+        if (asia.matcher(flatRegions).find()) {
+            resultString+= "asia ";
+            regionCount++;
         }
         if (europe.matcher(flatRegions).find()) {
             resultString+= "europe ";
             regionCount++;
         }
+
         // if more than one region selected, switch to worldwide products
         if ( regionCount > 1) {
-            resultString = "worldwide ";
-        // otherwise add to string
+            // exception for singular countries that we're adding into the mix that belong to regions we search for
+            // then switch to wwExAmericas + worldwide and worldwide checks if they aren't present
+            if (resultString.contains("new zealand") && !resultString.contains("bali") && !resultString.contains("asia") && !resultString.contains("americas") && !resultString.contains("europe")) {
+                resultString = "pacific apac wwExAmericas worldwide ";
+            } else if (resultString.contains("bali") && !resultString.contains("new zealand") && !resultString.contains("pacific") && !resultString.contains("americas") && !resultString.contains("europe")) {
+                resultString = "asia apac wwExAmericas worldwide ";
+            } else if (!americas.matcher(flatRegions).find()) {
+                resultString = "wwExAmericas worldwide ";
+            } else {
+                resultString = "worldwide ";
+            }
+            // otherwise add to string
         } else if (!americas.matcher(flatRegions).find()) {
             if (worldwide.matcher(flatRegions).find()) {
-                resultString = "worldwide ";
+                resultString += "worldwide ";
             } else {
-                resultString+= "wwExAmericas worldwide ";
+                resultString += "wwExAmericas worldwide ";
             }
         } else {
             resultString+= "worldwide ";
         }
-
         return resultString;
     }
 }
