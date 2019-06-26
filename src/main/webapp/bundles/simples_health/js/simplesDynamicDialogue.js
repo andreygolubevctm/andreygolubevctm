@@ -92,7 +92,7 @@
     {
       text: '%DYNAMIC_FREQUENCYAMOUNT%',
       get: function(product) {
-        return '<strong>' + product.premium[product._selectedFrequency].text + '</strong>';
+        return '<strong>' + product.premium[product._selectedFrequency].text + ' ' + product._selectedFrequency + '</strong>';
       }
     },
     {
