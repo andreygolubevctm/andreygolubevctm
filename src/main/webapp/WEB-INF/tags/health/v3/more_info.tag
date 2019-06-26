@@ -207,7 +207,8 @@
 
 		{{ var coverType = meerkat.modules.healthBenefitsStep.getCoverType(); }}
 		{{ var isOutbound = meerkat.modules.healthContactType.is('outbound'); }}
-		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return benefit.selected; }); }}
+		{{ var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits(); }}
+		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return selectedBenefitsList.indexOf(benefit.value) > -1; }); }}
 		{{ var scriptTerm = 'everything'; }}
 		{{ var isBasic = custom.reform.tier.toLowerCase().indexOf('basic') > -1; }}
 		{{ if(isOutbound) { }}
