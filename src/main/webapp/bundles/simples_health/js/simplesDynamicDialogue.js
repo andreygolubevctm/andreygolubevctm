@@ -24,7 +24,7 @@
         var productBenefits = product ? product.custom.reform.tab1.benefits : [];
         var html = '';
 
-        for(let i = 0; i < productBenefits.length; i++) {
+        for(var i = 0; i < productBenefits.length; i++) {
           var benefit = productBenefits[i];
 
           if(benefit.covered === 'Y') {
