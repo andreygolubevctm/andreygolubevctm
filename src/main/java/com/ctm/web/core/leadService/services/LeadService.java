@@ -98,16 +98,16 @@ public abstract class LeadService {
 
                         LeadServiceUtil.sendRequest(leadData, url);
                     } else {
-                        LOGGER.info("[lead ignored] Lead failed 'canSend' check: {}", kv("data", data));
+                        LOGGER.info("[lead ignored] Lead failed 'canSend' check: {}", kv("leadData", leadData));
                     }
                 } else {
-                    LOGGER.warn("[lead ignored] Leads service has been disabled: {}", kv("data", data));
+                    LOGGER.warn("[lead ignored] Leads service has been disabled");
                 }
             } catch (Throwable e) {
-                LOGGER.error("Error sending lead request {}", kv("data", data), e);
+                LOGGER.error("Exception triggered sending lead request: {}", kv("message", e.getMessage()), e);
             }
         } else {
-			LOGGER.info("[lead ignored] Lead failed initial sanity checks: {} {} {}", kv("Is Consultant",SessionUtils.isCallCentre(request.getSession())), kv("Call Type Inbound or CLI", asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)), kv("data", data));
+			LOGGER.info("[lead ignored] Lead failed initial sanity checks: {} {}", kv("Is Consultant",SessionUtils.isCallCentre(request.getSession())), kv("Call Type Inbound or CLI", asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)));
 		}
     }
 
