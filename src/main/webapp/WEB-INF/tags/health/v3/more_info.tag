@@ -207,14 +207,19 @@
 
 		{{ var coverType = meerkat.modules.healthBenefitsStep.getCoverType(); }}
 		{{ var isOutbound = meerkat.modules.healthContactType.is('outbound'); }}
-		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return benefit.selected; }); }}
+		{{ var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits(); }}
+		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return selectedBenefitsList.indexOf(benefit.value) > -1; }); }}
 		{{ var scriptTerm = 'everything'; }}
-
+		{{ var isBasic = custom.reform.tier && custom.reform.tier.toLowerCase().indexOf('basic') > -1; }}
 		{{ if(isOutbound) { }}
 		{{ scriptTerm = 'anything'; }}
 			{{ if(custom.reform.scripting !== 'D') { }}
 				{{ if(coverType === 'c' || coverType === 'h') { }}
-					<simples:dialogue id="126" vertical="health" dynamic="true" />
+					{{ if(isBasic && selectedBenefits.length === 0) { }}
+						<simples:dialogue id="136" vertical="health" dynamic="true" />
+					{{ }else { }}
+						<simples:dialogue id="126" vertical="health" dynamic="true" />
+					{{ } }}
 				{{ } else { }}
 					<simples:dialogue id="127" vertical="health" dynamic="true" />
 				{{ } }}
@@ -306,10 +311,10 @@
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
 							<br/><br/>
 							{{ if(isOutbound && (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
-							{{ if(obj.hospital.inclusions.excesses.perPerson) { }} 
+							{{ if(obj.hospital.inclusions.excesses.perPerson) { }}
 								<span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital.</span>
 							{{ } }}
-							{{ if(obj.hospital.inclusions.copayment != 'No Co-Payment') { }} 
+							{{ if(obj.hospital.inclusions.copayment != 'No Co-Payment') { }}
 								<span class="clinicalCatInfo"> {{= obj.hospital.inclusions.copayment }}</span>
 							{{ } }}
 							<span class="clinicalCatInfo"> This helps reduce the price of your cover.</span>
@@ -322,10 +327,10 @@
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
 						<br/><br/>
 						{{ if(isOutbound && (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
-							{{ if(obj.hospital.inclusions.excesses.perPerson) { }} 
+							{{ if(obj.hospital.inclusions.excesses.perPerson) { }}
 								<span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital.</span>
 							{{ } }}
-							{{ if(obj.hospital.inclusions.copayment != 'No Co-Payment') { }} 
+							{{ if(obj.hospital.inclusions.copayment != 'No Co-Payment') { }}
 								<span class="clinicalCatInfo"> {{= obj.hospital.inclusions.copayment }}</span>
 							{{ } }}
 							<span class="clinicalCatInfo"> This helps reduce the price of your cover.</span>
@@ -472,7 +477,7 @@
 						</div>
 						<div class="col-sm-11 no-padding">
 							<span class="clinicalCatInfo">
-								So prior to the changes on {{= custom.reform.changeDate }} 
+								So prior to the changes on {{= custom.reform.changeDate }}
 
 								{{ var exclusions = ''; var exclusionsIndex = 0; }}
 								{{ var restrictions = ''; var restrictionsIndex = 0; }}
@@ -686,7 +691,7 @@
 				<div class="col-xs-12 col-md-6 hospitalCover">
 					{{ if(typeof hospital.inclusions !== 'undefined') { }}
 					<h2>Hospital cover</h2>
-				
+
 						<p>
 							<strong>Hospital Excess:</strong><br>
 							{{ if(custom.reform.tab2.excess !== custom.reform.tab1.excess) { }}
@@ -695,7 +700,7 @@
 								<span>{{= custom.reform.tab2.excess }}</span>
 							{{ } }}
 						</p>
-						
+
 						<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
 					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
 
@@ -782,7 +787,7 @@
 		{{ if(isOutbound && coverType === 'c') { }}
 			<simples:dialogue id="128" vertical="health" />
 		{{ } }}
-		
+
 		{{ if (['c', 'e'].includes(coverType)) { }}
 		<div class="row extrasCoverSection">
 			<h2 class="text-dark">Extras cover</h2>
@@ -828,7 +833,7 @@
 						{{ } }}
 					{{ } }}
 				{{ }); }}
-				
+
 				{{ _.each(extras, function(benefit, key){ }}
 					<%-- Refer to https://ctmaus.atlassian.net/browse/HREFORM-529. We are hiding naturopathy until this value is no longer sent from PHIO --%>
 					{{ if(!benefit || key.toLowerCase() === 'naturopathy') { }}
@@ -857,7 +862,7 @@
 		{{ if(isOutbound && (coverType === 'c' || coverType === 'e')) { }}
 			<simples:dialogue id="130" vertical="health" dynamic="true" />
 		{{ } }}
- 
+
         <div class="row ambulanceCoverSection">
             <h2 class="text-dark">Ambulance cover</h2>
             <div class="col-xs-12 benefitTable">
