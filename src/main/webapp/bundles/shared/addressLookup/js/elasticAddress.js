@@ -343,36 +343,32 @@
             address.postCode = typeof postcode == 'undefined' ? "" : postcode.toUpperCase();
             if (address.suburbSequence !== "" && address.streetName !== "") {
                 meerkat.modules.comms.post({
-                    url: this.options.baseURL + "ajax/json/address/get_address.jsp",
-                    data: {
-                        postCode: address.postCode,
-                        suburbSequence: address.suburbSequence,
-                        street: address.streetName.toUpperCase(),
-                        houseNo: address.houseNo,
-                        unitNo: address.unitNo,
-                        unitType: address.unitType
-                    },
+                    url: 'https://dev.comparethemarket.com.au/api/address/streetsuburb',
+                    data: JSON.stringify({
+                        addressLine: context.getFullAddressLineOne(),
+                        postCodeOrSuburb: address.suburb
+                    }),
                     errorLevel: "silent",
                     useDefaultErrorHandling: false,
                     dataType: "json",
+                    contentType: "application/json",
                     async: true,
                     cache: false,
                     timeout: 6000
                 }).done(function (jsonResult) {
-                    if (jsonResult.foundAddress) {
-                        address = jsonResult;
+                    if (jsonResult.length === 1) {
+                        address = jsonResult[0];
                         context.setUnitType();
-                        if (jsonResult.fullAddress === "") {
-                            jsonResult.fullAddress = context.getFullAddress(jsonResult);
+                        if (jsonResult.text === "") {
+                            jsonResult.text = context.getFullAddress(address);
                             jsonResult.fullAddressLineOne = context.getFullAddressLineOne();
                         }
-                        elements.lookupDpIdHidden.val(jsonResult.dpId);
-                        elements.fullAddressHidden.val(jsonResult.fullAddress);
-                        elements.fullAddressLineOneHidden.val(jsonResult.fullAddressLineOne);
+                        elements.fullAddressHidden.val(context.getFullAddress(address));
+                        elements.fullAddressLineOneHidden.val(context.getFullAddressLineOne());
                     } else {
                         address.streetName = _getFormattedStreet(elements.lookupStreetNameHidden.val(), false);
                         address.fullAddressLineOne = context.getFullAddressLineOne();
-                        elements.fullAddressLineOneHidden.val(address.fullAddressLineOne);
+                        elements.fullAddressLineOneHidden.val(context.getFullAddressLineOne());
                         elements.fullAddressHidden.val(context.getFullAddress(address));
                     }
                 }).fail(function (obj, txt, errorThrown) {
@@ -410,14 +406,20 @@
             context.elements.fullAddressLineOneHidden.val(address.fullAddressLineOne);
         },
         getFullAddress: function (jsonAddress) {
+            var unitType = this.address.unitType;
 
             this.address = _.extend(this.address, jsonAddress);
+
+            if(!jsonAddress.unitType && unitType) {
+                this.address.unitType = unitType;
+            }
+
             var fullAddressLineOne = jsonAddress.fullAddressLineOne;
             if (this.isNonStdAddress() || typeof fullAddressLineOne == 'undefined' || fullAddressLineOne === "") {
                 fullAddressLineOne = this.getFullAddressLineOne();
             }
 
-            return fullAddressLineOne + ", " + jsonAddress.suburb + " " + jsonAddress.state + " " + jsonAddress.postCode;
+            return fullAddressLineOne + ", " + (jsonAddress.suburb || jsonAddress.suburbName) + " " + jsonAddress.state + " " + jsonAddress.postCode;
         },
         getFullAddressLineOne: function () {
 
@@ -482,7 +484,7 @@
                 dataType: 'json',
                 errorLevel: "silent",
                 useDefaultErrorHandling: false,
-                data: "postCode=" + code + "&excludePostBoxes=" + this.isResidential()
+                data: "postCode=" + code
             }).done(function (data, textStatus, xhr) {
                 getSuburbsSuccess.apply(self, [data, callback]);
             });
@@ -606,7 +608,7 @@
         for (var i = 0; i < suburbs.length; i++) {
             var sel = suburbs.length == 1 || (typeof suburbSeqNo !== 'undefined' && suburbSeqNo !== null && suburbs[i].id == suburbSeqNo)
                 ? " selected='selected'" : "";
-            options += '<option value="' + suburbs[i].id + '"' + sel + '>' + suburbs[i].des + '</option>';
+            options += '<option value="' + suburbs[i].suburb + '"' + sel + '>' + suburbs[i].suburb + '</option>';
         }
         return options;
     }
@@ -619,8 +621,8 @@
     var getSuburbsSuccess = function (data, callback) {
 
         var elements = this.elements;
-        if (data.suburbs && data.suburbs.length > 0) {
-            elements.nonStdSuburbInput.removeAttr("disabled").html(buildSuburbOptionList(data.suburbs, this.options.suburbSeqNo));
+        if (data && data.length > 0) {
+            elements.nonStdSuburbInput.removeAttr("disabled").html(buildSuburbOptionList(data, this.options.suburbSeqNo));
             if (typeof callback == 'function') {
                 callback(true);
             }
@@ -634,7 +636,7 @@
                 callback(false);
             }
         }
-        elements.lookupStateHidden.val((data.state && data.state.length > 0 ? data.state : ""));
+        elements.lookupStateHidden.val((data.length > 0 ? data[0].state : ""));
         this.setSuburbName();
     };
 
