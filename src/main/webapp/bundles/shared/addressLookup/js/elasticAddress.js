@@ -342,16 +342,15 @@
             address.suburbSequence = typeof suburb == 'undefined' ? "" : suburb.toUpperCase();
             address.postCode = typeof postcode == 'undefined' ? "" : postcode.toUpperCase();
             if (address.suburbSequence !== "" && address.streetName !== "") {
-                meerkat.modules.comms.post({
-                    url: 'https://dev.comparethemarket.com.au/api/address/streetsuburb',
-                    data: JSON.stringify({
+                meerkat.modules.comms.get({
+                    url: "spring/rest/address/streetsuburb/get.json",
+                    data: {
                         addressLine: context.getFullAddressLineOne(),
                         postCodeOrSuburb: address.suburb
-                    }),
+                    },
                     errorLevel: "silent",
                     useDefaultErrorHandling: false,
                     dataType: "json",
-                    contentType: "application/json",
                     async: true,
                     cache: false,
                     timeout: 6000
@@ -479,12 +478,12 @@
 
             var self = this;
             meerkat.modules.comms.get({
-                url: this.options.baseURL + "ajax/json/address/get_suburbs.jsp",
+                url: "spring/rest/address/suburbs/get.json",
                 cache: true,
                 dataType: 'json',
                 errorLevel: "silent",
                 useDefaultErrorHandling: false,
-                data: "postCode=" + code
+                data: { postCode: code }
             }).done(function (data, textStatus, xhr) {
                 getSuburbsSuccess.apply(self, [data, callback]);
             });
