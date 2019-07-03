@@ -26,6 +26,7 @@
 	function getAddressData(addressFieldData) {
 		addressFieldId = addressFieldData.addressFieldId;
 		var dpId = addressFieldData.dpid;
+		var data = addressFieldData.data;
 
 		// If a get details request takes too long and the user reselects cached address data, it will load in the ajax's
 		// response instead of the cached data.
@@ -45,7 +46,7 @@
 			// Lock Journey
 			// Don't lock on home, as the address is on the first slide and the next button is directly after the question.
 			// If this address question moves it might be worth removing this condition.
-			if (meerkat.site.vertical != 'home') {
+			if (meerkat.site.vertical != 'home' && meerkat.site.vertical != 'car') {
 				meerkat.modules.loadingAnimation.showInside($navButton);
 				meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, { source: 'address_lookup' });
 			}
@@ -96,6 +97,8 @@
 						meerkat.modules.loadingAnimation.hide($navButton);
 					}
 				});
+			}else if(meerkat.site.vertical === 'car') {
+				setAddressDataFields(data);
 			}
 		}
 

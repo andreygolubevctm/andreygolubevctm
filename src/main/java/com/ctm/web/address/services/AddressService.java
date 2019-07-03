@@ -40,4 +40,18 @@ public class AddressService {
 
     return response;
   }
+
+  public AddressSuburb[] getStreet(AddressSuburbRequest request) {
+    RestTemplate restTemplate = new RestTemplate();
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+    headers.setContentType(MediaType.APPLICATION_JSON);
+
+    HttpEntity<AddressSuburbRequest> requestEntity = new HttpEntity<AddressSuburbRequest>(request, headers);
+
+    String requestUrl = url + "/street";
+    AddressSuburb[] response = restTemplate.postForObject(requestUrl, requestEntity, AddressSuburb[].class);
+
+    return response;
+  }
 }
