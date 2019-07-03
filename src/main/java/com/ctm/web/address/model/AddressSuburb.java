@@ -1,7 +1,7 @@
 package com.ctm.web.address.model;
 
 public class AddressSuburb {
-	  private String errorString;
+    private String errorString;
     private String gnafId;
     private String houseNoSel;
     private String postCode;
