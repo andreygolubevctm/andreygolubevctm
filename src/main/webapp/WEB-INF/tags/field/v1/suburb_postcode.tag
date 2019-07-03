@@ -38,13 +38,13 @@
 			if( !format.test( locationField.val() ) ){
 
 				$.ajax({
-					url: "spring/rest/address/suburbs/get.json",
+					url: "ajax/json/get_suburbs.jsp",
 					jsonpCallback: 'get_suburbs_callback',
 					dataType: "jsonp",
 					jsonp: 'callback',
 					type: "GET",
 					data: {
-							postCode: request.term
+							term: request.term
 					},
 					cache: false,
 					beforeSend : function(xhr,setting) {
@@ -55,7 +55,6 @@
 						setting.url = url;
 					},
 					success: function( data ) {
-						console.log(data);
 						response( $.map( data, function( item ) {
 							if( item.length != undefined ){
 								if(appendId) {
