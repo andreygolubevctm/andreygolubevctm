@@ -62,7 +62,7 @@ public class AddressSuburb {
 
   public String getSuburbName() {
 		return suburbName;
-	}
+  }
 
 	public void setSuburbName(String suburbName) {
 		this.suburbName = suburbName;
