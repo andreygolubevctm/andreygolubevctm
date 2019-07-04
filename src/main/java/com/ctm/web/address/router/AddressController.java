@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,31 +27,23 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
 
-    @RequestMapping(value = "/suburbs/get.json",
-                    method = RequestMethod.GET,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/suburbs/get.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Address[] getSuburbs(HttpServletRequest request) {
         String postcode = request.getParameter("postCode");
         return addressService.getSuburbs(postcode);
     }
 
-    @RequestMapping(value = "/suburbsflat/get.json",
-                    method = RequestMethod.GET,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/suburbsflat/get.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String[] getSuburbsFlatArray(HttpServletRequest request) {
         String postcode = request.getParameter("postCode");
         Address[] suburbs = addressService.getSuburbs(postcode);
 
-        ArrayList<String> flatSuburbs = new ArrayList<String>();
-        for(Integer i = 0; i < suburbs.length; i++) {
-            Address suburb = suburbs[i];
-            flatSuburbs.add(suburb.getSuburb() + " " + suburb.getPostCode() + " " + suburb.getState());
-        }
+        List<String> flatSuburbs = Arrays.asList(suburbs)
+                                    .stream()
+                                    .map(a -> String.format("%s %s %s", a.getSuburb(), a.getPostCode(), a.getState()))
+                                    .collect(Collectors.toList());
 
-        String[] flatSuburbsArr = new String[flatSuburbs.size()];
-        flatSuburbsArr = flatSuburbs.toArray(flatSuburbsArr);
-
-        return flatSuburbsArr;
+        return flatSuburbs.stream().toArray(String[]::new);
     }
 
     @RequestMapping(value = "/streetsuburb/get.json",
