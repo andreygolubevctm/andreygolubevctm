@@ -1,5 +1,6 @@
 package com.ctm.web.health.quote.model;
 
+import com.ctm.health.common.model.filter.ProductCodeFilter;
 import com.ctm.healthcommon.abd.ABD;
 import com.ctm.healthcommon.abd.CombinedAbdSummary;
 import com.ctm.healthcommon.abd.IndividualAbdSummary;
@@ -109,6 +110,7 @@ public class RequestAdapterV2 {
             quoteRequest.setSearchResults(1);
             Application application = quote.getApplication();
             if (application != null) {
+                addProductCodeFilter(filters, application);
                 addProductTitleSearchExactFilter(filters, application);
                 addProductIdSameExcessAmountFilter(filters, application);
                 addSingleProviderFilterFromApplication(filters, application);
@@ -298,6 +300,14 @@ public class RequestAdapterV2 {
             productTitleFilter.setExact(true);
             productTitleFilter.setProductTitle(application.getProductTitle());
             filters.setProductTitleFilter(productTitleFilter);
+        }
+    }
+
+    protected static void addProductCodeFilter(Filters filters, Application application) {
+        if(StringUtils.isNotBlank(application.getProductName())) {
+            ProductCodeFilter productCodeFilter = new ProductCodeFilter();
+            productCodeFilter.setProductCode(application.getProductName());
+            filters.setProductCodeFilter(productCodeFilter);
         }
     }
 
