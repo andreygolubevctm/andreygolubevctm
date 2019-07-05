@@ -97,7 +97,7 @@
 						meerkat.modules.loadingAnimation.hide($navButton);
 					}
 				});
-			}else if(meerkat.site.vertical === 'car') {
+			}else if(meerkat.site.vertical === 'car' || meerkat.site.vertical === 'home') {
 				setAddressDataFields(data);
 			}
 		}
