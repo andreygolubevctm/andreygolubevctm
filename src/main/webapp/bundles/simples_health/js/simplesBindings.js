@@ -30,6 +30,7 @@
         $dialogue97,
         $cliCallCheckboxDialogue,
         $nonCliCallCheckboxDialogue,
+        $outboundIntroDialogue,
         $outboundFollowupDialogue,
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
@@ -67,7 +68,9 @@
 	        "trialcampaignJackMedia",
 	        "trialcampaignMicrosite",
 	        "trialcampaignOmnilead",
-	        "trialcampaignOptimise"
+	        "trialcampaignOptimise",
+	        "nextgenOutbound",
+	        "nextgenCli"
         ]
     ;
 
