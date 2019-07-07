@@ -70,7 +70,7 @@
 	        "trialcampaignOmnilead",
 	        "trialcampaignOptimise",
 	        "nextgenOutbound",
-	        "nextgenCli"
+	        "nextgenCLI"
         ]
     ;
 
