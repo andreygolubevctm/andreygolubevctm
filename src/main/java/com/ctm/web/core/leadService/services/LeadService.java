@@ -93,21 +93,24 @@ public abstract class LeadService {
                     String previousValues = (String) request.getSession().getAttribute(LAST_LEAD_SERVICE_VALUES);
                     String currentValues = leadData.getValues();
 
-                    if (canSend(leadData) && !currentValues.equals(previousValues)) {
+                    boolean canSendCheck = canSend(leadData);
+                    boolean uniqueRequest = !currentValues.equals(previousValues);
+
+                    if (canSendCheck && uniqueRequest) {
                         request.getSession().setAttribute(LAST_LEAD_SERVICE_VALUES, currentValues);
 
                         LeadServiceUtil.sendRequest(leadData, url);
                     } else {
-                        LOGGER.info("[lead ignored] Lead failed 'canSend' check: {}", kv("data", data));
+                        LOGGER.info("[lead ignored] Lead failed canSend check: {}, {}, {}", kv("canSend", canSendCheck), kv("uniqueRequest", uniqueRequest), kv("leadData", leadData));
                     }
                 } else {
-                    LOGGER.warn("[lead ignored] Leads service has been disabled: {}", kv("data", data));
+                    LOGGER.warn("[lead ignored] Leads service has been disabled");
                 }
             } catch (Throwable e) {
-                LOGGER.error("Error sending lead request {}", kv("data", data), e);
+                LOGGER.error("[lead ignored] Exception triggered sending lead request: {}", kv("message", e.getMessage()), e);
             }
         } else {
-			LOGGER.info("[lead ignored] Lead failed initial sanity checks: {} {} {}", kv("Is Consultant",SessionUtils.isCallCentre(request.getSession())), kv("Call Type Inbound or CLI", asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)), kv("data", data));
+			LOGGER.info("[lead ignored] Lead failed initial sanity checks: {} {}", kv("Is Consultant",SessionUtils.isCallCentre(request.getSession())), kv("Call Type Inbound or CLI", asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)));
 		}
     }
 

@@ -1,5 +1,6 @@
 package com.ctm.web.health.quote.model.request;
 
+import com.ctm.health.common.model.filter.ProductCodeFilter;
 import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public class Filters {
     private Integer tierExtrasFilter;
 
     private ProductTitleFilter productTitleFilter;
+
+    private ProductCodeFilter productCodeFilter;
 
     private List<String> preferencesFilter;
 
@@ -89,6 +92,14 @@ public class Filters {
 
     public void setProductTitleFilter(ProductTitleFilter productTitleFilter) {
         this.productTitleFilter = productTitleFilter;
+    }
+
+    public ProductCodeFilter getProductCodeFilter() {
+        return productCodeFilter;
+    }
+
+    public void setProductCodeFilter(ProductCodeFilter productCodeFilter) {
+        this.productCodeFilter = productCodeFilter;
     }
 
     public List<String> getPreferencesFilter() {
