@@ -40,7 +40,6 @@
         $simplesMedicareCoverForm = null,
         $simplesinternationalStudentForm = null,
         $applicantWrappers = {},
-        currentFamilyType = null,
         $limitedCoverHidden,
         $dialogue111,
         $dialogue112,
@@ -54,8 +53,7 @@
         $pricePromisePromotionDialogue,
         $affiliatesDialogue,
         $dialogue106,
-        $dialogue109,
-	    $optin_email,
+        $optin_email,
 	    $optin_email_app,
         $optin_phone,
         $optin_privacy,
@@ -424,7 +422,6 @@
 
     // Toggle visibility on follow call dialogs based on call type and whether is a followup call
     function toggleFollowupCallDialog() {
-        var callType = false;
         var isValidCallType = false;
         var isFollowupCall = $followupCallCheckbox.is(':checked');
         var isOutbound = meerkat.modules.healthContactType.is('outbound');
@@ -565,8 +562,7 @@
     }
 
     function toggleBenefitsDialogue() {
-	    var $body = $('body'),
-            $hospitalScripts = $('.simples-dialogue-hospital-cover'),
+	    var $hospitalScripts = $('.simples-dialogue-hospital-cover'),
             $hospitalNonPublic = $hospitalScripts.filter('.classification-nonPublic'),
             $hospitalPublic = $hospitalScripts.filter('.classification-public'),
 		    $extrasScripts = $('.simples-dialogue-extras-cover'),
