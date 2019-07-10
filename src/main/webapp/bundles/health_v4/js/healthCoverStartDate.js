@@ -81,7 +81,13 @@
 	}
 
     function flush() {
-	    $elements.input.val('');
+    	if($elements.input) {
+		    $elements.input.val('');
+	    } else {
+		    _.defer(function () {
+			    $elements.input.val('');
+		    });
+	    }
 	}
 	
 	function isAfterMarch() {
