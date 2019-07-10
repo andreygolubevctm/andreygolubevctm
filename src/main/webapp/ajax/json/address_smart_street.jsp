@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.simples.ajax.address_smart_street')}" />
+
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
@@ -36,6 +38,8 @@
 <c:set var="showHouseNumber" value="${fn:length(houseNo) != 0}" />
 <c:set var="showUnitNumber" value="${fn:length(unitNo) != 0}" />
 <c:set var="street" value="${param.street}"/>
+
+${logger.info('get address by street: {}' , log:kv('streetSuburbSearch', street + " and " + postCode ))}
 
 <c:choose>
 		<c:when test="${showHouseNumber && showUnitNumber}">
