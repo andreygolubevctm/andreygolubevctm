@@ -3,7 +3,11 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.simples.ajax.json.address.get_suburbs')}" />
+
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
+
+${logger.info('get address by suburb or postcode: {}' , log:kv('suburbPostcodeSearch', param.postCode ))}
 
 <sql:query var="result">
 	SELECT suburb, count(street) as streetCount, suburbSeq, state, street
