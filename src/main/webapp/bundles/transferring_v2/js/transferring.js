@@ -27,7 +27,7 @@ function transferError(description, data) {
     });
 }
 
-$(window).load(function () {
+$(window).on("load", function () {
 	var redirectionDisabled = false;
 	var delay = 1000;
 

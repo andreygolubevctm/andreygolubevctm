@@ -40,8 +40,8 @@
 			<script>window.jQuery && window.jQuery.each || document.write('<script src="framework/jquery/lib/jquery-1.10.2.min.js"><\/script>')</script>
 		<![endif]-->
 		<!--[if gte IE 9]><!-->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="framework/jquery/lib/jquery-3.4.1.min.js">\x3C/script>')</script>
 		<!--<![endif]-->
 
 		<style>

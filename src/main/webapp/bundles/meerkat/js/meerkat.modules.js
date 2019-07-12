@@ -65,7 +65,11 @@
 
 			//log('[modules]', 'initialising ' + moduleName);
 
-			modules[moduleName].init();
+			if(modules.hasOwnProperty(moduleName)) {
+				modules[moduleName].init();
+			} else {
+				log("[modules]", "Failed to initialise " + moduleName + " (not in modules list)");
+			}
 		}
 	}
 

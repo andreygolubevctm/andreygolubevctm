@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}" />
+<c:set var="logger" value="${log:getLogger('jsp.simples.ajax.json.get_suburbs')}" />
 
 <c:set var="location">${fn:trim(param.term)}</c:set>
 <c:set var="callback">${fn:trim(param.callback)}</c:set>
@@ -18,6 +19,7 @@
 	</c:when>
 
 	<c:otherwise>
+	${logger.info('get address by suburb or postcode: {}' , log:kv('suburbPostcodeSearch',location ))}
 		<%-- Crazy Way to test for a number --%>
 		<c:catch var="error">
 			<c:set var="number"><fmt:parseNumber value="${location}" type="number" integerOnly="true" /></c:set>
