@@ -126,8 +126,7 @@
 					x: settings.element.attr('data-adjust-x') ? parseInt(settings.element.attr('data-adjust-x')) : 0,
 					y: settings.element.attr('data-adjust-y') ? parseInt(settings.element.attr('data-adjust-y')) : 0,
 					scroll: settings.element.attr('data-scroll') != 'false'
-				},
-				viewport: $(window)
+				}
 			},
 			show: {
 			    solo: showSolo,
