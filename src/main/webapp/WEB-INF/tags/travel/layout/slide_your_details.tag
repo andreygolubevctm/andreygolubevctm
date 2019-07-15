@@ -57,7 +57,7 @@
 				</form_v2:fieldset>
 
 				<%-- COUNTRY SECTION --%>
-				<form_v2:fieldset showHelpText="true" legend="Regions"
+				<form_v2:fieldset showHelpText="true" legend="Destinations"
 													className="travel_details_destinations" id="destinationsfs">
 
 						<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService"
@@ -71,7 +71,7 @@
 										variableListArray="${locationsService.getCountrySelectionList()}"
 										xpath="travel/destinations"
 										xpathhidden="travel/destination"
-										label="Which countries or regions will you be visiting in the next 12 months (excluding stopovers of less than 48 hours)?"
+										label="Which countries or regions will you be visiting on your trip (excluding stopovers of less than 48 hours)?"
                                         additionalAttributes="autocomplete='no'"
 										title="Where are you travelling?"
 										validationErrorPlacementSelector=".travel_details_destinations"
