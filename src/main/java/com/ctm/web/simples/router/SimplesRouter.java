@@ -94,6 +94,7 @@ import static javax.servlet.http.HttpServletResponse.*;
         //get
         "/simples/admin/cappingLimits/getAllRecords.json",
         "/simples/transaction/get.json",
+
         "/simples/admin/productCappingLimits/getSummary.json"
 })
 public class SimplesRouter extends HttpServlet {
@@ -427,16 +428,23 @@ public class SimplesRouter extends HttpServlet {
     }
 
     private void getTransaction(final PrintWriter writer, final HttpServletRequest request, final HttpServletResponse response, final AuthenticatedData authenticatedData) throws IOException {
-        int simplesUid = authenticatedData.getSimplesUid();
         try {
             Optional<String> transactionId = Optional.ofNullable(request.getParameter("transactionId"));
             if (transactionId.map(StringUtils::isNotBlank).orElse(false) && transactionId.map(StringUtils::isNumeric).orElse(false)) {
                 objectMapper.writeValue(writer, TransactionService.getTransaction(Long.parseLong(transactionId.get().trim())));
             }
         } catch (final DaoException e) {
-            LOGGER.error("Could not get next simples message {}", kv("simplesUid", simplesUid), e);
             response.setStatus(SC_INTERNAL_SERVER_ERROR);
-            objectMapper.writeValue(writer, errors(e));
+            objectMapper.writeValue(
+                writer,
+                jsonObjectNode("errors",
+                        singletonList(String.format(
+                                "No results found for \"%s\" please make sure you're using a valid Transaction ID/Reference Number",
+                                request.getParameter("transactionId")
+                                )
+                        )
+                )
+            );
         }
     }
 
