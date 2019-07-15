@@ -57,7 +57,7 @@
 				</form_v2:fieldset>
 
 				<%-- COUNTRY SECTION --%>
-				<form_v2:fieldset showHelpText="true" legend="Regions"
+				<form_v2:fieldset showHelpText="true" legend="Destinations"
 													className="travel_details_destinations" id="destinationsfs">
 
 						<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService"
