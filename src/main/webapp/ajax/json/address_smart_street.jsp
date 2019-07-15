@@ -39,7 +39,7 @@
 <c:set var="showUnitNumber" value="${fn:length(unitNo) != 0}" />
 <c:set var="street" value="${param.street}"/>
 
-${logger.info('get address by street: {}' , log:kv('streetSuburbSearch', street + " and " + postCode ))}
+${logger.info('get address by street: health application search')}
 
 <c:choose>
 		<c:when test="${showHouseNumber && showUnitNumber}">
