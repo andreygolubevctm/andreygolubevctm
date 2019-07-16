@@ -197,8 +197,11 @@
 				setCurrentMessage(json);
 			}
 		})
-		.fail(function onError(obj, txt, errorThrown) {
-			var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
+		.fail(function onError(obj) {
+			var json = {"errors":[]};
+			obj.responseJSON.errors.forEach(function(errorMessage){
+				json.errors.push({"message": errorMessage});
+			});
 			$messageDetailsContainer.html( templateMessageDetail(json) );
 		});
 	}

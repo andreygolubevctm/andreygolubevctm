@@ -103,6 +103,7 @@
 			// hide amt 
 			$amtDuration[hideMethod]();
 			$destinationfs.add($datestravellersfs).add($travelDatePicker)[showMethod](); 
+			$destinationfs.find('.control-label').text('Which countries or regions will you be visiting on your trip (excluding stopovers of less than 48 hours)?');
 
 			// update section header name for dates & travellers section
 			$datestravellersfs.find('h2').text("Travellers");
@@ -116,6 +117,7 @@
 			// show amt 
 			$amtDuration.add($datestravellersfs)[showMethod]();
 			$travelDatePicker[hideMethod]();
+			$destinationfs.find('.control-label').text('Which countries or regions will you be visiting in the next 12 months (excluding stopovers of less than 48 hours)?');
 
 			// update section header name for dates & travellers section
 			$datestravellersfs.find('h2').text("Travellers");
