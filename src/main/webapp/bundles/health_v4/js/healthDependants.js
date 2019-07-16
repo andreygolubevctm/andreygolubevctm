@@ -578,19 +578,17 @@
             "VU": "Victoria University",
             "WA": "Western Australia-High Schools",
             "WAT": "WA TAFE"
-        },
-        cachedList;
+        };
 
     function getEducationalInstitutionsOptions() {
-        if (cachedList) {
-            return cachedList;
-        }
-        cachedList = '';
-        var keys = _.keys(educationalInstitutions);
+        var options = '';
+        var keys = Object.keys(educationalInstitutions);
         for (var i = 0; i < keys.length; i++) {
-            cachedList += '<option value="' + keys[i] + '">' + educationalInstitutions[keys[i]] + '</option>';
+            var key = keys[i];
+            options += '<option value="' + key + '">' + educationalInstitutions[key] + '</option>';
         }
-        return cachedList;
+
+        return options;
     }
 
     meerkat.modules.register("healthDependants", {
