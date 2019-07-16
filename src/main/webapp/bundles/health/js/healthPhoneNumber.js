@@ -17,7 +17,7 @@
 	};
 
 	function init() {
-		$(document).on('ready',function(){
+		$(document).ready(function(){
 			$callCentreFields = $(callCentreNumber);
 			$callCentreHelpFields = $('.callCentreHelpNumber');
 			$callCentreHelpDefaultContainers = $('.callCentreHelp').find('.default-content'),
