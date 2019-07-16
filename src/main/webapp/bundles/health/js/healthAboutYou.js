@@ -3,6 +3,7 @@
 	// TODO: write unit test once DEVOPS-31 goes live
 
 	var meerkat = window.meerkat,
+		log = meerkat.logging.info,
 		$primaryCurrentCover,
 		$primaryContinuousCoverContainer,
 		$partnerContainer,
@@ -35,16 +36,14 @@
 			initFields();
 
 			meerkat.modules.healthTiers.initHealthTiers();
-            meerkat.modules.healthCoverDetails.setIncomeBase(true);
+			meerkat.modules.healthCoverDetails.setIncomeBase(true);
 			meerkat.modules.healthTiers.setTiers(true);
 
 			eventSubscriptions();
 			toggleMlsMessage();
 		});
 
-		$(window).load(function() {
-	 		setRabdQuestions();
-		});
+		$(window).on("load", setRabdQuestions);
 	}
 
 	function initFields() {

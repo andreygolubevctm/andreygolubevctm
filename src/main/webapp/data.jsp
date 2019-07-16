@@ -7,11 +7,9 @@
 <c:set var="logger" value="${log:getLogger('jsp.data')}"/>
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
-<c:set var="buildIdentifier"><core_v1:buildIdentifier></core_v1:buildIdentifier></c:set>
 
 <jsp:useBean id="sessionDataService" class="com.ctm.web.core.services.SessionDataService" scope="application"/>
 <jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="page"/>
-
 
 <core_v1:doctype/>
 <html>
@@ -19,11 +17,14 @@
     <link rel='stylesheet' type='text/css' href='common/data.css'/>
 </head>
 <body>
-<p id="buildIdentifierRow"><strong>Build Identifier: </strong><span id="buildIdentifier"><c:out
-        value="${buildIdentifier}"/></span></p>
 
 <%-- SECURITY  FEATURE --%>
 <c:if test="${ipAddressHandler.isLocalRequest(pageContext.request)}">
+
+    <%-- BUILD IDENTIFIER --%>
+    <c:set var="buildIdentifier"><core_v1:buildIdentifier></core_v1:buildIdentifier></c:set>
+    <p id="buildIdentifierRow"><strong>Build Identifier: </strong><span id="buildIdentifier"><c:out
+            value="${buildIdentifier}"/></span></p>
 
     <%-- APPLICATION DATE OVERRIDE --%>
     <p>

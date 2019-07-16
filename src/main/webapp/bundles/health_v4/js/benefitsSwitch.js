@@ -36,8 +36,10 @@
         var hasHospitalCover = hospitalVal === 'Y' || (!hasProductCode && !hospitalVal),
             hasExtrasCover = extrasVal  === 'Y' || (!hasProductCode && !extrasVal);
 
-        $elements.hospitalSwitch.bootstrapSwitch('setState', hasHospitalCover);
-        $elements.extrasSwitch.bootstrapSwitch('setState', hasExtrasCover);
+        _.defer(function(){
+            $elements.hospitalSwitch.bootstrapSwitch('setState', hasHospitalCover);
+            $elements.extrasSwitch.bootstrapSwitch('setState', hasExtrasCover);
+        });
 
         _onBenefitsSwitch('hospital', hasHospitalCover, false);
         _onBenefitsSwitch('extras', hasExtrasCover);

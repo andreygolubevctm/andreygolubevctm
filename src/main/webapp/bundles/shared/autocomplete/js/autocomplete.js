@@ -50,20 +50,18 @@
 			$component.data("addressfieldid", addressFieldId);
 
 			if (elasticSearch) {
-				url = baseURL + 'address/search.json';
+				url = 'spring/rest/address/street/get.json';
 				params = {
 					name: $component.attr('name'),
 					remote: {
 						beforeSend: function(jqXhr, settings) {
 							autocompleteBeforeSend($component);
-							jqXhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-							settings.type = "POST";
-							settings.hasContent = true;
-							settings.url = url;
-
+							settings.type = "GET";
 							var $addressField = $('#' + addressFieldId + '_autofilllessSearch');
 							var query = $addressField.val();
-							settings.data = $.param({ query: decodeURI(query) });
+
+							settings.url = url + "?addressLine=" + decodeURI(query);
+							settings.dataType = "json";
 						},
 						filter: function(parsedResponse) {
 							autocompleteComplete($component);
@@ -175,10 +173,9 @@
 
 					if (elasticSearch) {
 						$.each(parsedResponse, function(index, addressObj) {
-							if(addressObj.hasOwnProperty('text') && addressObj.hasOwnProperty('payload')) {
+							if(addressObj.hasOwnProperty('text')) {
 								addressObj.value = addressObj.text;
 								addressObj.highlight = addressObj.text;
-								addressObj.dpId = addressObj.payload;
 							}
 						});
 					}
@@ -203,7 +200,8 @@
 
 					} else if (elasticSearch) {
 						meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, {
-							dpid:			datum.dpId,
+							data: datum,
+							dpid:	datum.dpId,
 							addressFieldId:	addressFieldId
 						});
 						// Validate the element now the user has made a selection.
