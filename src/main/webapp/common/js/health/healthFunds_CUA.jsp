@@ -144,7 +144,6 @@ set: function () {
 		<%--credit card options--%>
 		meerkat.modules.healthCreditCard.resetConfig();
 		meerkat.modules.healthCreditCard.render();
-		$('#medicareCoveredRow .help_icon').attr("id",meerkat.modules.healthFunds.getMedicareCoverHelpId());
 		meerkat.modules.paymentGateway.reset();
 	}
 };
