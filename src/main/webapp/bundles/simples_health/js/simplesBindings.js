@@ -594,21 +594,46 @@
         }
     }
 
+
     function toggleCoverTypeScripts($elements, show) {
         $elements.hide();
-        if(show) {
-            if(isContactTypeNextGenOutbound() || isContactTypeNextGenCli()) {
-                $elements.filter('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli').show();
+        switch ($healthContactTypeField.val()) {
+            case 'nextgenCLI':
+                $elements.filter('.simples-dialog-nextgencli').show();
+                $dialogue97.show();
+                break;
+            case 'nextgenOutbound':
+                $elements.filter('.simples-dialog-nextgenoutbound').show();
+                $dialogue97.show();
+                break;
+            case 'outbound':
+                $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-inbound').show();
+                break;
+            default:
+                $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-outbound').show();
+        }
+    }
+
+    /*
+    function toggleCoverTypeScripts($elements, show) {
+        $elements.hide();
+        if (show) {
+            if (meerkat.modules.healthContactType.is('nextgenCLI')) {
+                $elements.filter('.simples-dialog-nextgencli').show();
+                $dialogue97.show();
+            } else if (meerkat.modules.healthContactType.is('nextgenOutbound')) {
+                $elements.filter('.simples-dialog-nextgenoutbound').show();
                 $dialogue97.show();
             } else {
-                if(meerkat.modules.healthContactType.is('outbound')) {
+                if (meerkat.modules.healthContactType.is('outbound')) {
                     $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-inbound').show();
-                }else{
+                } else {
                     $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-outbound').show();
                 }
             }
         }
     }
+     */
 
     function togglePrimaryCoverDialogue() {
         var isChecked = $healthPrimaryCover.filter(':checked').val() === "Y";

@@ -48,7 +48,7 @@
 
     <jsp:body>
 
-        <simples:dialogue id="52" vertical="health" />
+        <simples:dialogue id="52"  vertical="health" />
         <simples:dialogue id="120" vertical="health" className="simples-dialog-nextgenoutbound" />
 	    <simples:dialogue id="124" vertical="health" className="simples-dialog-nextgencli" />
 
