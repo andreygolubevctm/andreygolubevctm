@@ -44,7 +44,7 @@
             _calculateRequestData.partner = null;
         }
 
-        getBaseDates().done(function(res) {
+        getBaseDates().then(function(res) {
 
             if (_isBuyingPrivateHospitalCover()) {
 
@@ -71,7 +71,7 @@
                     }
                 }
 
-                getLHC().done(function() {
+                getLHC().then(function() {
                     meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
                 });
 
