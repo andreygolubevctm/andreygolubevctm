@@ -597,43 +597,24 @@
 
     function toggleCoverTypeScripts($elements, show) {
         $elements.hide();
-        switch ($healthContactTypeField.val()) {
-            case 'nextgenCLI':
-                $elements.filter('.simples-dialog-nextgencli').show();
-                $dialogue97.show();
-                break;
-            case 'nextgenOutbound':
-                $elements.filter('.simples-dialog-nextgenoutbound').show();
-                $dialogue97.show();
-                break;
-            case 'outbound':
-                $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-inbound').show();
-                break;
-            default:
-                $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-outbound').show();
-        }
-    }
-
-    /*
-    function toggleCoverTypeScripts($elements, show) {
-        $elements.hide();
-        if (show) {
-            if (meerkat.modules.healthContactType.is('nextgenCLI')) {
-                $elements.filter('.simples-dialog-nextgencli').show();
-                $dialogue97.show();
-            } else if (meerkat.modules.healthContactType.is('nextgenOutbound')) {
-                $elements.filter('.simples-dialog-nextgenoutbound').show();
-                $dialogue97.show();
-            } else {
-                if (meerkat.modules.healthContactType.is('outbound')) {
+        if(show) {
+            switch ($healthContactTypeField.val()) {
+                case 'nextgenCLI':
+                    $elements.filter('.simples-dialog-nextgencli').show();
+                    $dialogue97.show();
+                    break;
+                case 'nextgenOutbound':
+                    $elements.filter('.simples-dialog-nextgenoutbound').show();
+                    $dialogue97.show();
+                    break;
+                case 'outbound':
                     $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-inbound').show();
-                } else {
+                    break;
+                default:
                     $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-outbound').show();
-                }
             }
         }
     }
-     */
 
     function togglePrimaryCoverDialogue() {
         var isChecked = $healthPrimaryCover.filter(':checked').val() === "Y";
@@ -641,6 +622,9 @@
 
         $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || !isChecked);
         $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', !isOutbound || !isChecked);
+
+        // Outbound, No Cover -> Hidden
+        //
     }
 
     function togglePartnerCoverDialogue() {
