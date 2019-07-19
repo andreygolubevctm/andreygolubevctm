@@ -75,9 +75,7 @@
 
 	<jsp:body>
 		<div id="pageContent">
-
 			<article class="container">
-
 				<div id="journeyEngineContainer">
 					<div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
 						<span id="logo" class="navbar-brand text-hide">Compare The Market Australia</span>
@@ -105,17 +103,7 @@
 					</div>
 				</div>
 			</article>
-
 		</div>
-
-		<%-- Test the tracking codes --%>
-		<c:if test="${ (not empty param.trackCode) && (param.trackCode != 'undefined')}">
-			<fmt:parseNumber var="trackCode" type="number" value="${param.trackCode}" integerOnly="true" />
-			<c:if test="${not empty trackCode}">
-				<img src="https://partners.comparethemarket.com.au/z/${trackCode}/CD1/${transactionId}" />
-			</c:if>
-		</c:if>
-
 		<input type="hidden" id="generic_currentJourney" />
 	</jsp:body>
 
