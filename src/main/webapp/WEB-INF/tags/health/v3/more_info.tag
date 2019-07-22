@@ -230,7 +230,7 @@
 		{{ if(isNextGenOutbound) { }}
 		  {{ scriptTerm = 'anything';}}
 		  {{ if(!limitedCover) { }}
-			<simples:dialogue id="140" vertical="health" dynamic="true" />
+			<simples:dialogue id="136" vertical="health" dynamic="true" />
 		  {{ } }}
 		{{ } }}
 
@@ -894,10 +894,8 @@
         </div>
 
 		<div>
-			{{ if(isOutbound) { }}
+			{{ if(isOutbound || isNextGenOutbound) { }}
 				<simples:dialogue id="129" vertical="health" dynamic="true" />
-			{{ } else if(isNextGenOutbound) { }}
-			    <simples:dialogue id="141" vertical="health" dynamic="true" />
 			{{ } else { }}
 				<simples:dialogue id="99" vertical="health" />
 			{{ } }}

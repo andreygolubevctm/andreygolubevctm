@@ -619,20 +619,19 @@
     function togglePrimaryCoverDialogue() {
         var isChecked = $healthPrimaryCover.filter(':checked').val() === "Y";
         var isOutbound = meerkat.modules.healthContactType.is('outbound');
+        var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound');
 
-        $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || !isChecked);
-        $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', !isOutbound || !isChecked);
-
-        // Outbound, No Cover -> Hidden
-        //
+        $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || isNextGenOutbound || !isChecked);
+        $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', !(isOutbound || isNextGenOutbound) || !isChecked);
     }
 
     function togglePartnerCoverDialogue() {
         var isChecked = $healthPartnerCover.filter(':checked').val() === "Y";
         var isOutbound = meerkat.modules.healthContactType.is('outbound');
+        var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound');
 
-        $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || !isChecked);
-        $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', !isOutbound || !isChecked);
+        $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || isNextGenOutbound || !isChecked);
+        $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', !(isOutbound || isNextGenOutbound) || !isChecked);
     }
 
     function toggleAffiliateRewardsDialogue() {
