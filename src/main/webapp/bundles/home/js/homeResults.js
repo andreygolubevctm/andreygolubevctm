@@ -2,6 +2,7 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
+		exception = meerket.logging.exception,
 		log = meerkat.logging.info;
 
 	var events = {
@@ -542,9 +543,12 @@
 		var envParam = "";
 		Results.updateAggregatorEnvironment();
 		// Fetch results
-		meerkat.modules.resultsFeatures.fetchStructure('hncamsws_').done(function() {
+		meerkat.modules.resultsFeatures.fetchStructure('hncamsws_').then(function() {
 			Results.get();
-		});
+		})
+		.catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
+		})
 	}
 
 

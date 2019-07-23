@@ -2,6 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        exception = meerkat.logging.exception,
         log = meerkat.logging.info;
 
     var events = {
@@ -362,9 +363,12 @@
 
     // Wrapper around results component, load results data
     function get() {
-        meerkat.modules.resultsFeatures.fetchStructure(meerkat.site.vertical).done(function() {
+        meerkat.modules.resultsFeatures.fetchStructure(meerkat.site.vertical).then(function() {
             Results.get();
-        });
+        })
+        .catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
+		})
     }
 
     function onResultsLoaded() {

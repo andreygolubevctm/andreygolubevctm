@@ -7,6 +7,7 @@
 ;(function($, undefined){
 	
 	var meerkat = window.meerkat,
+		exception = meerkater.logging.exception,
 		log = meerkat.logging.info;
 	
 	var rowTemplate,
@@ -189,13 +190,19 @@
 				}
 			};
 
-			$openingHours.done(function(response) {
+			$openingHours.then(function(response) {
 				setUpTable($('#hours-normal-row-container'), response);
-			});
+			})
+			.catch(function onError(obj, txt, errorThrown) {
+				exception(txt + ': ' + errorThrown);
+			})
 			
-			$specialHours.done(function(response) {
+			$specialHours.then(function(response) {
 				setUpTable($("#hours-special-row-container"), response); 
-			});
+			})
+			.catch(function onError(obj, txt, errorThrown) {
+				exception(txt + ': ' + errorThrown);
+			})
 		}
 	}
 	
@@ -237,13 +244,16 @@
 			// Update the specified table row's DB record
 			var $setHours = _getAjaxPromise("update", data);
 			
-			$setHours.done(function(response) {
+			$setHours.then(function(response) {
 				if(typeof response === "string")
 					response = JSON.parse(response);
 		
 				if(response)
 					$tr.replaceWith(_getHoursRowHtml(response));
-			});
+			})
+			.catch(function onError(obj, txt, errorThrown) {
+				exception(txt + ': ' + errorThrown);
+			})
 		});
 	}
 	
@@ -272,7 +282,7 @@
 			$setHours = _getAjaxPromise("update", data);
 		}
 		
-		$setHours.done(function(response) {
+		$setHours.then(function(response) {
 			if(typeof response === "string")
 				response = JSON.parse(response);
 
@@ -283,7 +293,10 @@
 				if($tr.data("hourstype") === "N")
 					_saveHoursFromSort($tbody, 0); 
 			}
-		});
+		})
+		.catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
+		})
 	}
 	
 	/*
@@ -308,7 +321,7 @@
 				openingHoursId: id
 			});
 			
-			$deleteHours.done(function(response) {
+			$deleteHours.then(function(response) {
 				if(typeof response === "string" && response !== "success")
 					response = JSON.parse(response);
 				
@@ -318,7 +331,10 @@
 					if($tr.data("hourstype") === "N")
 						_saveHoursFromSort($tbody, 0);
 				}
-			});
+			})
+			.catch(function onError(obj, txt, errorThrown) {
+				exception(txt + ': ' + errorThrown);
+			})
 		}
 	}
 	

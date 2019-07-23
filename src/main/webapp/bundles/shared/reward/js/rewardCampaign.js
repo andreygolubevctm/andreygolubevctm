@@ -37,7 +37,7 @@
             errorLevel: 'silent',
             dataType: 'json'
         })
-        .done(function onSuccess(json) {
+        .then(function onSuccess(json) {
             if (json && json.hasOwnProperty('campaigns')) {
                 currentCampaign = json.campaigns.filter(function(campaign) {
                     return campaign.active === true && campaign.visible === true;
@@ -49,7 +49,7 @@
             }
 
         })
-        .fail(function onError(obj, txt, errorThrown) {
+        .catch(function onError(obj, txt, errorThrown) {
             exception(txt + ': ' + errorThrown);
         });
     }

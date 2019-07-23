@@ -1,6 +1,7 @@
 ;(function($, undefined){
 
-	var meerkat = window.meerkat;
+	var meerkat = window.meerkat,
+		exception = meerkat.logging.exception
 
 	var windowTimeout = null,
 		isModalOpen = false,
@@ -26,7 +27,7 @@
 			updateTimeout(meerkat.site.session.windowTimeout);
 
 			// Get the proper timeout as specified by the server
-			poke().done(function firstPokeDone(data) { 
+			poke().then(function firstPokeDone(data) { 
 				firstPoke = false;
 				if(data.timeout < 0 && typeof data.bigIP !== "undefined" && data.bigIP !== meerkat.site.session.bigIP) {
 					meerkat.modules.errorHandling.error({
@@ -45,7 +46,10 @@
 					// Give up and use the default :(
 					updateTimeout(meerkat.site.session.windowTimeout);
 				}
-			});
+			})
+			.catch(function onError(obj, txt, errorThrown) {
+				exception(txt + ': ' + errorThrown);
+			})
 		
 			// Poke / deferred poke when we need to :)
 			$(document).on("click.session", ".poke, .btn:not(.journeyNavButton,.dontPoke), .btn-back, .dropdown-toggle, .btn-pagination", function(e) {
