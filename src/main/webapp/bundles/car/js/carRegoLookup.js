@@ -87,7 +87,7 @@
                 useDefaultErrorHandling: false,
                 onSuccess: _.bind(onLookup, this, data),
                 onError: _.bind(onLookupError, this, data)
-            }).done(function(data) {
+            }).then(function(data) {
                 meerkat.modules.journeyEngine.loadingHide();
                 $elements.prefillRegoNo.addClass('hidden');
                 _toggleRegoFields(false);
@@ -105,7 +105,7 @@
                     }
                 }
             })
-            .fail(meerkat.modules.journeyEngine.loadingHide)
+            .catch(meerkat.modules.journeyEngine.loadingHide)
             .then(function () {
                 $('.rego-text').removeClass('invisible');
             });
