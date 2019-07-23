@@ -2,6 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        exception = meerkat.logging.exception
         attemptCount = 0,
         $elements = {},
         errorTypes = {
@@ -165,7 +166,7 @@
                 showError(errorTypes.INVALID);
             }
 
-            rememberMeGetPromise && rememberMeGetPromise.done(function() {
+            rememberMeGetPromise && rememberMeGetPromise.then(function() {
                 if (attemptCount > 2) {
                     showError(errorTypes.ATTEMPTS);
                     updateErrorRedirectMessage();
@@ -174,6 +175,9 @@
                         deleteCookieAndRedirect('token expired');
                     }, 800);
                 }
+            })
+            .catch(function onError(obj, txt, errorThrown) {
+                exception(txt + ': ' + errorThrown);
             });
         });
     }

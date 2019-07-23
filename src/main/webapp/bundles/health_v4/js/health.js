@@ -6,6 +6,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        exception = meercat.logging.exception
         onlineCategoryVersion = $('.online-results-control-container').data('online-category-version'),
         log = meerkat.logging.info;
 
@@ -417,8 +418,11 @@
                 }
 
                 // Race condition, need to wait for healthFilters module to be ready for Remember Me redirect to results to work
-                meerkat.modules.utils.pluginReady('healthFilters').done(function() {
+                meerkat.modules.utils.pluginReady('healthFilters').then(function() {
                     meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
+                })
+                .catch(function onError(obj, txt, errorThrown) {
+                    exception(txt + ': ' + errorThrown);
                 });
 
                 meerkat.modules.healthPopularProducts.setPopularProducts('N');

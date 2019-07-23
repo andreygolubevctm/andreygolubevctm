@@ -6,6 +6,7 @@ Handling changes to the price range coming back from the ajax
 ;(function($, undefined) {
 
 	var meerkat = window.meerkat,
+	exception = meerkat.logging.exception
 	meerkatEvents = meerkat.modules.events,
 	log = meerkat.logging.info,
 	// default values
@@ -35,9 +36,12 @@ Handling changes to the price range coming back from the ajax
 	}
 
 	function setUp() {
-		meerkat.modules.utils.pluginReady('sliders').done(function() {
+		meerkat.modules.utils.pluginReady('sliders').then(function() {
 			var frequency = meerkat.modules.healthResults.getFrequencyInWords($('#health_filter_frequency').val());
 			$('.health-filter-price .slider-control').trigger(meerkatEvents.sliders.EVENT_UPDATE_RANGE, getPremiumRange(frequency , false));
+		})
+		.catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
 		});
 	}
 

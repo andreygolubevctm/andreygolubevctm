@@ -1,11 +1,12 @@
 ;(function ($, undefined) {
 
     var meerkat = window.meerkat,
+        exception = meerkat.logging.exception
         meerkatEvents = meerkat.modules.events;
 
     function init() {
         $(document).ready(function() {
-            meerkat.modules.utils.pluginReady('popovers').done(function() {
+            meerkat.modules.utils.pluginReady('popovers').then(function() {
                 var $simplesHelpBox = $('#simples-help-box');
 
                 if ($simplesHelpBox.length) {
@@ -23,6 +24,9 @@
                         }
                     });
                 }
+            })
+            .catch(function onError(obj, txt, errorThrown) {
+                exception(txt + ': ' + errorThrown);
             });
         });
     }
