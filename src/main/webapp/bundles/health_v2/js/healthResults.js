@@ -574,8 +574,8 @@
                 Results.updateStaticBranch();
                 Results.get();
             })
-            .catch((error) => {
-                throw new Error(error)
+            .catch(function onError(obj, txt, errorThrown) {
+                exception(txt + ': ' + errorThrown);
             })
         });
     }

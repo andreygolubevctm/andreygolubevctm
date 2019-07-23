@@ -90,7 +90,10 @@
 
                 getLHC().then(function() {
                     meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-                });
+                })
+                .catch(function onError(obj, txt, errorThrown) {
+                    exception(txt + ': ' + errorThrown);
+                })
 
             }
 
