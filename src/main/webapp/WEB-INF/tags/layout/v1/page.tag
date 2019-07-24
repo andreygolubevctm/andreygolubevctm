@@ -253,16 +253,29 @@ ${newPage.init(pageContext.request, pageSettings)}
 				</div>
 				<jsp:invoke fragment="progress_bar" />
 				<c:if test="${displayNavigationBar eq true}">
-                    <nav id="navbar-main" class="navbar navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse navMenu-contents" role="navigation">
-
-                        <div class="row">
-                            <div class="container">
-                                <jsp:invoke fragment="navbar" />
-                            </div>
-                        </div>
-                        <jsp:invoke fragment="navbar_outer" />
-                    </nav>
-			    </c:if>
+					<c:choose>
+						<c:when test="${pageSettings.getVerticalCode() eq 'travel'}">
+							<nav id="navbar-main-travel" class="navbar navbar-affix navbar-default" role="navigationTravel">
+								<div class="row">
+									<div class="container">
+										<jsp:invoke fragment="navbar" />
+									</div>
+								</div>
+								<jsp:invoke fragment="navbar_outer" />
+							</nav>
+						</c:when>
+						<c:otherwise>
+							<nav id="navbar-main" class="navbar navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse navMenu-contents" role="navigation">
+								<div class="row">
+									<div class="container">
+										<jsp:invoke fragment="navbar" />
+									</div>
+								</div>
+								<jsp:invoke fragment="navbar_outer" />
+							</nav>
+						</c:otherwise>
+					</c:choose>
+				</c:if>
 				<jsp:invoke fragment="navbar_additional" />
 
 		</div>

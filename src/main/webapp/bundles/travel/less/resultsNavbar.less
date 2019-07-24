@@ -1,11 +1,30 @@
 body.travel {
   .navbar-inverse {
     background-color: @theme-light;
+    @media screen and (@xs-only) {
+      display: none;
+    }
+  }
+  .opened {
+    .navbar-inverse {
+      @media screen and (@xs-only) {
+        display: block;
+      }
+    }
   }
 
   .navbar-header {
     width: 100%;
   }
+
+  .filters-buttons {
+    > div {
+      &:first-child {
+        margin-right: 5px;
+      }
+    }
+  }
+
   .coverLevelTabs {
     .clt-action {
       padding: 8px 0;
@@ -20,6 +39,11 @@ body.travel {
       white-space: nowrap;
       width: auto;
       min-width: 130px;
+
+      @media screen and (@md-only) {
+        padding-left: inherit;
+      }
+
     }
     .active, .clt-action:hover {
       border: 1px solid @theme-secondary;
@@ -27,6 +51,7 @@ body.travel {
       background-color: @theme-secondary;
 
       @media screen and (@sm) {
+
         &:before {
           position: absolute;
           width: 0;
@@ -43,7 +68,6 @@ body.travel {
       }
     }
     .clt-trip-filter {
-      margin-top: 15px;
       i {
         line-height: normal;
         font-size: 20px;
@@ -155,6 +179,9 @@ body.travel {
         }
       }
     }
+    .main-filter-buttons {
+      padding: 10px 0;
+    }
   }
 }
 
@@ -176,6 +203,9 @@ body.travel {
         }
       }
     }
+    .main-filter-buttons {
+      padding: 10px 0;
+    }
 
     .filters-row {
       display: flex;
@@ -194,3 +224,5 @@ body.travel {
     }
   }
 }
+
+

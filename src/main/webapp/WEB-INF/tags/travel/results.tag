@@ -5,7 +5,7 @@
 <div class="resultsHeadersBg">
 </div>
 
-<div class="navbar__travel-filters">
+<%--<div class="navbar__travel-filters">
 
 	<div class="navbar-mobile coverLevelTabs visible-xs hidden-sm hidden-md hidden-lg">
 		<div class="filters-row">
@@ -27,28 +27,29 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-7 clt-trip-filter amt-filter">
-				<travel_results_filter_types:amt_filter />
-			</div>
-			<div class="col-xs-2 clt-trip-filter">
-				<travel_results_filter_types:more_filters/>
-			</div>
-			<div class="col-xs-4 clt-trip-filter">
-				<travel_results_filter_types:excess_filter/>
-			</div>
+
 		</div>
 	</div>
-</div>
+</div>--%>
 
 <agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 	<travel:more_info />
 
 <%-- RESULTS TABLE --%>
-	<div class="container">
-		<div class="row coverLevelTabs visible-xs">
+<%--	<div class="container visible-xs hidden-sm hidden-md hidden-lg">
+		<div class="row coverLevelTabs">
 			<div class="currentTabsContainer"></div>
 		</div>
-	</div>
+		<div class="col-xs-7 clt-trip-filter amt-filter">
+			<travel_results_filter_types:amt_filter />
+		</div>
+		<div class="col-xs-2 clt-trip-filter">
+			<travel_results_filter_types:more_filters/>
+		</div>
+		<div class="col-xs-4 clt-trip-filter">
+			<travel_results_filter_types:excess_filter/>
+		</div>
+	</div>--%>
 
 	<div class="bridgingContainer"></div>
 	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">

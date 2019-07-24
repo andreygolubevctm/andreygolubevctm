@@ -311,10 +311,11 @@
 		}
 
         $('.reset-travel-filters').empty().html(resetFilters);
-
+		$('.navbar-desktop-travel').empty().html(out);
+		$('.navbar-mobile-travel .mobile-cover-types').empty().html(mobileCoverTypes);
 		if (state != 'xs') {
-            $currentTabContainer.empty().html(out);
-            $('.navbar-mobile').empty();
+			$currentTabContainer.empty().html(out);
+           $('.navbar-mobile').empty();
 		} else {
             $('.mobile-cover-types').empty().html(mobileCoverTypes);
             $('.navbar-desktop').empty();
