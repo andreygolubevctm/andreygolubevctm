@@ -9,7 +9,7 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
-        exception = meetkat.logging.exception,
+        exception = meerkat.logging.exception,
         msg = meerkat.messaging;
 
     var events = {};
