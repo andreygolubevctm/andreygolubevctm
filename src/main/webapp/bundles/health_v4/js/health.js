@@ -6,7 +6,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        exception = meercat.logging.exception,
+        exception = meerkat.logging.exception,
         onlineCategoryVersion = $('.online-results-control-container').data('online-category-version'),
         log = meerkat.logging.info;
 
