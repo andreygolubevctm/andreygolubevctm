@@ -27,13 +27,6 @@
 			<div class="main-filter-buttons flex-center-align">
 				<div class="col-md-8 col-xs-7 col-sm-7">
 					<div class="flex-center-align hidden-xs hidden-sm">
-							<%--<ul class="nav navbar-nav hidden-sm hidden-md hidden-lg visible-xs" role="menu">
-								<core_v2:offcanvas_header />
-								<li class="slide-feature-back">
-									<a href="javascript:;" data-slide-control="previous" class="btn-back">
-										<span class="icon icon-arrow-left"></span> <span>Revise Your Details</span></a>
-								</li>
-							</ul>--%>
 						<div><a href="javascript:;" data-slide-control="previous"><span class="icon icon-arrow-left"></span> <span>Revise details</span></a></div>
 						<div class="col-xs-9 col-md-9">
 							<div class="navbar-desktop-travel coverLevelTabs" style="align-items: center">
