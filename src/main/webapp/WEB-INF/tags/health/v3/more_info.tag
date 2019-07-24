@@ -213,7 +213,7 @@
 		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return selectedBenefitsList.indexOf(benefit.value) > -1; }); }}
 		{{ var scriptTerm = 'everything'; }}
 		{{ var isBasic = custom.reform.tier && custom.reform.tier.toLowerCase().indexOf('basic') > -1; }}
-		{{ if(isOutbound) { }}
+		{{ if(isOutbound || isNextGenOutbound) { }}
 		  {{ scriptTerm = 'anything'; }}
 			{{ if(custom.reform.scripting !== 'D') { }}
 				{{ if(coverType === 'c' || coverType === 'h') { }}
@@ -226,12 +226,6 @@
 					<simples:dialogue id="127" vertical="health" dynamic="true" />
 				{{ } }}
 			{{ } }}
-		{{ } }}
-		{{ if(isNextGenOutbound) { }}
-		  {{ scriptTerm = 'anything';}}
-		  {{ if(!limitedCover) { }}
-			<simples:dialogue id="136" vertical="health" dynamic="true" />
-		  {{ } }}
 		{{ } }}
 
 		{{ if (['A', 'B1', 'B2', 'C'].includes(custom.reform.scripting)) { }}
@@ -318,7 +312,7 @@
 							(If customer objects or asks about adding services in the future): <br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
 							<br/><br/>
-							{{ if(isOutbound && (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
+							{{ if((isOutbound || isNextGenOutbound)&& (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
 							{{ if(obj.hospital.inclusions.excesses.perPerson) { }}
 								<span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital.</span>
 							{{ } }}
@@ -334,7 +328,7 @@
 					<div class="readWelcomeFlag row">
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
 						<br/><br/>
-						{{ if(isOutbound && (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
+						{{ if((isOutbound || isNextGenOutbound)&& (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
 							{{ if(obj.hospital.inclusions.excesses.perPerson) { }}
 								<span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital.</span>
 							{{ } }}
