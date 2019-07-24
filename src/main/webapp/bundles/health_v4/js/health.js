@@ -407,7 +407,9 @@
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
-
+				$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('rule-digits', false);
+				$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('msg-digits', '');
+                
                 if (event.isForward && meerkat.site.isCallCentreUser) {
                     $('#journeyEngineSlidesContainer .journeyEngineSlide')
                         .eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();

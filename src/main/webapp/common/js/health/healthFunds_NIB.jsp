@@ -22,8 +22,9 @@ var healthFunds_NIB = {
         meerkat.modules.healthFunds.showHowToSendInfo('NIB', true);
 
         <%-- Previous funds --%>
-        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr({'maxlength': '10', 'data-rule-digits': true, 'data-msg-digits': 'Letters not allowed'});
-            
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr({'maxlength': '10'});
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('rule-digits', true);
+		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('msg-digits', 'Letters not allowed');    
         <%-- Partner authority--%>
         meerkat.modules.healthFunds._partner_authority(true);
 
