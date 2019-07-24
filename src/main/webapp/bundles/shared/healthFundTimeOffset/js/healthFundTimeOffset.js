@@ -93,7 +93,7 @@
         })
         .catch(function onError(obj, txt, errorThrown) {
 			exception(txt + ': ' + errorThrown);
-		})
+		});
     }
 
     function checkBeforeSubmit(submitCB) {
@@ -159,7 +159,7 @@
         })
         .catch(function onError(obj, txt, errorThrown) {
 			exception(txt + ': ' + errorThrown);
-		})
+		});
     }
 
     function _getFundTimeZone() {

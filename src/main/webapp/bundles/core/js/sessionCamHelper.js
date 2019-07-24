@@ -86,7 +86,7 @@
         })
         .catch(function onError(obj, txt, errorThrown) {
 			exception(txt + ': ' + errorThrown);
-		})
+		});
     }
 
     function setResultsLoadingPage(data, delay) {

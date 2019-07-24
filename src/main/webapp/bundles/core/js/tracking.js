@@ -220,7 +220,7 @@
                 })
                 .catch(function onError(obj, txt, errorThrown) {
                     exception(txt + ': ' + errorThrown);
-                })
+                });
             }
             addGAClientID();
             addGTMInternalUser();
@@ -268,7 +268,7 @@
                 })
                 .catch(function onError(obj, txt, errorThrown) {
                     exception(txt + ': ' + errorThrown);
-                })
+                });
             }
         }
 

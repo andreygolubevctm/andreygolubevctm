@@ -1,7 +1,7 @@
 ;(function ($, undefined) {
 
     var meerkat = window.meerkat,
-        exception = meerkat.logging.exception
+        exception = meerkat.logging.exception,
         meerkatEvents = meerkat.modules.events;
 
     function init() {

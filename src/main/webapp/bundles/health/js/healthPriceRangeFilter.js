@@ -6,7 +6,7 @@ Handling changes to the price range coming back from the ajax
 ;(function($, undefined) {
 
 	var meerkat = window.meerkat,
-	exception = meerkat.logging.exception
+	exception = meerkat.logging.exception,
 	meerkatEvents = meerkat.modules.events,
 	log = meerkat.logging.info,
 	// default values

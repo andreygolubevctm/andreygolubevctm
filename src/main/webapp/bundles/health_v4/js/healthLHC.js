@@ -77,7 +77,7 @@
                 })
                 .catch(function onError(obj, txt, errorThrown) {
                     exception(txt + ': ' + errorThrown);
-                })
+                });
 
             } else {
 
@@ -93,14 +93,14 @@
                 })
                 .catch(function onError(obj, txt, errorThrown) {
                     exception(txt + ': ' + errorThrown);
-                })
+                });
 
             }
 
         })
         .catch(function onError(obj, txt, errorThrown) {
 			exception(txt + ': ' + errorThrown);
-		})
+		});
     }
 
     function _isBuyingPrivateHospitalCover() {

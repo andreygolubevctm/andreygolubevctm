@@ -3,7 +3,7 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
-        exception = meerkat.logging.exception
+        exception = meerkat.logging.exception,
         selectedProduct = null,
         previousBreakpoint,
         best_price_count = 5,
@@ -576,7 +576,7 @@
             })
             .catch(function onError(obj, txt, errorThrown) {
                 exception(txt + ': ' + errorThrown);
-            })
+            });
         });
     }
 

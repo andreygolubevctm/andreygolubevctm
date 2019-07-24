@@ -368,7 +368,7 @@
         })
         .catch(function onError(obj, txt, errorThrown) {
 			exception(txt + ': ' + errorThrown);
-		})
+		});
     }
 
     function onResultsLoaded() {

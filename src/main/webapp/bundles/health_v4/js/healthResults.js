@@ -705,7 +705,7 @@
             })
             .catch(function onError(obj, txt, errorThrown) {
                 exception(txt + ': ' + errorThrown);
-            })
+            });
         };
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
         meerkat.modules.healthRates.loadRates(afterFetchRates);
@@ -724,7 +724,7 @@
             })
             .catch(function onError(obj, txt, errorThrown) {
                 exception(txt + ': ' + errorThrown);
-            })
+            });
         };
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(false, afterFetchRates);

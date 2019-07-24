@@ -195,14 +195,14 @@
 			})
 			.catch(function onError(obj, txt, errorThrown) {
 				exception(txt + ': ' + errorThrown);
-			})
+			});
 			
 			$specialHours.then(function(response) {
 				setUpTable($("#hours-special-row-container"), response); 
 			})
 			.catch(function onError(obj, txt, errorThrown) {
 				exception(txt + ': ' + errorThrown);
-			})
+			});
 		}
 	}
 	
@@ -253,7 +253,7 @@
 			})
 			.catch(function onError(obj, txt, errorThrown) {
 				exception(txt + ': ' + errorThrown);
-			})
+			});
 		});
 	}
 	
@@ -296,7 +296,7 @@
 		})
 		.catch(function onError(obj, txt, errorThrown) {
 			exception(txt + ': ' + errorThrown);
-		})
+		});
 	}
 	
 	/*
@@ -334,7 +334,7 @@
 			})
 			.catch(function onError(obj, txt, errorThrown) {
 				exception(txt + ': ' + errorThrown);
-			})
+			});
 		}
 	}
 	

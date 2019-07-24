@@ -15,7 +15,7 @@
         providersReturned = [],
         extendedFamilyResultsRulesData = {},
         extendedFamilyResultsRules = '',
-        exception = meerkat.logging.exception
+        exception = meerkat.logging.exception;
 
         templates = {
             premiumsPopOver:

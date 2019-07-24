@@ -1,7 +1,7 @@
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
-		exception = meerkat.logging.exception
+		exception = meerkat.logging.exception;
 
 	var windowTimeout = null,
 		isModalOpen = false,
@@ -49,7 +49,7 @@
 			})
 			.catch(function onError(obj, txt, errorThrown) {
 				exception(txt + ': ' + errorThrown);
-			})
+			});
 		
 			// Poke / deferred poke when we need to :)
 			$(document).on("click.session", ".poke, .btn:not(.journeyNavButton,.dontPoke), .btn-back, .dropdown-toggle, .btn-pagination", function(e) {
