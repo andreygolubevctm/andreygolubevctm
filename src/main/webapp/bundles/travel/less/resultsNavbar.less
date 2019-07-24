@@ -198,9 +198,6 @@ body.travel {
       .clt-trip-filter {
         margin-top: 0 !important;
 
-        &:last-of-type {
-          margin-left: 15px !important;
-        }
       }
     }
     .main-filter-buttons {
@@ -208,9 +205,10 @@ body.travel {
     }
 
     .filters-row {
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: flex-end;
+      margin-right: 10px;
     }
 
     .sort-results-travel-mobile, .edit-details-travel-mobile, .revise-details-mobile {
@@ -225,4 +223,8 @@ body.travel {
   }
 }
 
-
+.priceMode {
+  .filters-row {
+    display: flex;
+  }
+}

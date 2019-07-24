@@ -18,21 +18,15 @@
 	<jsp:attribute name="header_button_left"></jsp:attribute>
 
 	<jsp:attribute name="navbar">
-
-			<div class="row">
-				<div class="container">
-					<div class="hidden-sm hidden-md hidden-lg">
-						<div class="filters-row flex-center-align flex-right-align">
-							<a class="edit-details-travel-mobile" href="javascript:;">Edit details</a>
-							<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
-						</div>
-					</div>
+			<div class="hidden-sm hidden-md hidden-lg">
+				<div class="filters-row flex-center-align flex-right-align">
+					<a class="edit-details-travel-mobile" href="javascript:;">Edit details</a>
+					<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
 				</div>
 			</div>
-			<div class="row main-filter-buttons flex-center-align">
-				<div class="container">
-					<div class="col-md-8 col-xs-7 col-sm-7">
-						<div class="flex-center-align hidden-xs hidden-sm">
+			<div class="main-filter-buttons flex-center-align">
+				<div class="col-md-8 col-xs-7 col-sm-7">
+					<div class="flex-center-align hidden-xs hidden-sm">
 							<%--<ul class="nav navbar-nav hidden-sm hidden-md hidden-lg visible-xs" role="menu">
 								<core_v2:offcanvas_header />
 								<li class="slide-feature-back">
@@ -40,41 +34,42 @@
 										<span class="icon icon-arrow-left"></span> <span>Revise Your Details</span></a>
 								</li>
 							</ul>--%>
-							<div><a href="javascript:;" data-slide-control="previous"><span class="icon icon-arrow-left"></span> <span>Revise details</span></a></div>
-							<div class="col-xs-9 col-md-9">
-								<div class="navbar-desktop-travel coverLevelTabs" style="align-items: center">
-									<div class="currentTabsContainer"></div>
-								</div>
+						<div><a href="javascript:;" data-slide-control="previous"><span class="icon icon-arrow-left"></span> <span>Revise details</span></a></div>
+						<div class="col-xs-9 col-md-9">
+							<div class="navbar-desktop-travel coverLevelTabs" style="align-items: center">
+								<div class="currentTabsContainer"></div>
 							</div>
 						</div>
-						<div class="hidden-md hidden-lg">
-							<div class="navbar-mobile-travel coverLevelTabs">
-								<div class="row">
-									<div class="col-xs-5 clt-trip-filter">
-										<div class="dropdown cover-type-mobile-active">
-											<a type="button" id="coverTypeDropdownBtn"
-											   data-toggle="dropdown" aria-haspopup="true"
-											   aria-expanded="false">
-												<span class="mobile-active-cover-type"></span>
-												<i class="icon icon-angle-down"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-excess-filter dropdown-menu-mobile-cover-types" aria-labelledby="coverTypeDropdownBtn">
-												<div class="mobile-cover-types"></div>
-											</div>
+					</div>
+					<div class="hidden-md hidden-lg">
+						<div class="navbar-mobile-travel coverLevelTabs">
+							<div class="row">
+								<div class="col-xs-5 clt-trip-filter">
+									<div class="dropdown cover-type-mobile-active open">
+										<a type="button" id="coverTypeDropdownBtn"
+										   data-toggle="dropdown" aria-haspopup="true"
+										   aria-expanded="false">
+											<span class="mobile-active-cover-type"></span>
+											<i class="icon icon-angle-down"></i>
+										</a>
+										<div class="dropdown-menu dropdown-menu-excess-filter dropdown-menu-mobile-cover-types" aria-labelledby="coverTypeDropdownBtn">
+											<div class="mobile-cover-types"></div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-5 col-md-4 col-sm-5 coverLevelTabs">
-						<div class="navbar-mobile-travel filters-buttons flex-center-align flex-right-align">
-							<div class="clt-trip-filter"><travel_results_filter_types:more_filters /></div>
-							<div class="clt-trip-filter"><travel_results_filter_types:excess_filter /></div>
-						</div>
+				</div>
+				<div class="col-xs-5 col-md-4 col-sm-5 coverLevelTabs">
+					<div class="navbar-mobile-travel filters-buttons flex-center-align flex-right-align">
+						<div class="clt-trip-filter"><travel_results_filter_types:more_filters /></div>
+						<div class="clt-trip-filter"><travel_results_filter_types:excess_filter /></div>
 					</div>
 				</div>
 			</div>
+
+
 
 			<%--<ul class="nav navbar-nav" role="menu">
 				<core_v2:offcanvas_header />
@@ -105,7 +100,7 @@
 
 	<jsp:attribute name="navbar_outer">
 
- 		<div class="row sortbar-container navbar-inverse">
+ 		<div class="sortbar-container navbar-inverse">
 			<div class="container">
 				<ul class="sortbar-parent nav navbar-nav navbar-inverse col-sm-12 row">
 					<li class="container row sortbar-children">
