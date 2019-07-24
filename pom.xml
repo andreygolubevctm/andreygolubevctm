@@ -66,7 +66,9 @@
         <!-- Sentry -->
         <sentry-logback.version>1.7.10</sentry-logback.version>
         <logback.version>1.1.5</logback.version>
+        <schema-model.version>1.2.0-SNAPSHOT</schema-model.version>
 
+        <schema-model.version>1.2.0-SNAPSHOT</schema-model.version>
     </properties>
 
     <dependencyManagement>
@@ -713,8 +715,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>com.ctm.schema</groupId>
+            <artifactId>schema-model</artifactId>
+            <version>${schema-model.version}</version>
+        </dependency>
 
-
+        <dependency>
+            <groupId>com.ctm.schema</groupId>
+            <artifactId>schema-model</artifactId>
+            <version>${schema-model.version}</version>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>
