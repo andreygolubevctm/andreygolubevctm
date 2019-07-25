@@ -461,7 +461,7 @@ var ResultsModel = {
 		Results.model.filter(renderView);
 		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
 		meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY);
-		if (publishResultsDataReady === true) {
+		if (publishResultsDataReady) {
 			_.defer(function() {
 				meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
 			});
