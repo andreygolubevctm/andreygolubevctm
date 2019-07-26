@@ -2,6 +2,7 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
+		exception = meerkat.logging.exception,
 		log = meerkat.logging.info;
 
 	var events = {
@@ -462,12 +463,15 @@
         var envParam = "";
         Results.updateAggregatorEnvironment();
 		meerkat.modules.carContactOptins.validateOptins();
-		meerkat.modules.resultsFeatures.fetchStructure('carws_').done(function() {
+		meerkat.modules.resultsFeatures.fetchStructure('carws_').then(function() {
 			meerkat.modules.carExotic.toggleFamousResultsPage();
 
 			if (!meerkat.modules.carExotic.isExotic()) {
 				Results.get();
 			}
+		})
+		.catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
 		});
 	}
 

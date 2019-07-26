@@ -143,7 +143,7 @@
 			errorLevel: 'silent',
 			useDefaultErrorHandling: false
 		})
-		.done(function onSuccess(json) {
+		.then(function onSuccess(json) {
 			if (!json.hasOwnProperty('message') || !json.message.hasOwnProperty('messageId')) {
 				alert('Failed to load message: invalid response');
 			}
@@ -151,7 +151,7 @@
 				meerkat.modules.simplesMessage.setCurrentMessage(json);
 			}
 		})
-		.fail(function onError(obj, txt, errorThrown) {
+		.catch(function onError(obj, txt, errorThrown) {
 			if (obj.hasOwnProperty('responseJSON') && obj.responseJSON.hasOwnProperty('errors') && obj.responseJSON.errors.length > 0) {
 				alert('Failed to load message\n' + obj.responseJSON.errors[0].message);
 			}
@@ -177,7 +177,7 @@
 			errorLevel: 'silent',
 			useDefaultErrorHandling: false
 		})
-		.done(function onSuccess(json) {
+		.then(function onSuccess(json) {
 			var htmlContent = '';
 
 			if (typeof templatePQ !== 'function') {
@@ -194,7 +194,7 @@
 			// Display the content
 			$container.html( htmlContent );
 		})
-		.fail(function onError(obj, txt, errorThrown) {
+		.catch(function onError(obj, txt, errorThrown) {
 			$container.html('Unsuccessful because: ' + txt + ': ' + errorThrown);
 		});
 	}

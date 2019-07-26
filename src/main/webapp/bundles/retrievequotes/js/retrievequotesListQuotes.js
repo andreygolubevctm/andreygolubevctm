@@ -76,7 +76,7 @@
         };
 
         $ajax
-            .done(function(data) {
+            .then(function(data) {
                 if(typeof data === "string")
                     data = JSON.parse(data);
 
@@ -87,7 +87,7 @@
 
                 onFail();
             })
-            .fail(function() {
+            .catch(function() {
                 onFail();
             });
     }
@@ -213,7 +213,7 @@
         };
 
         $ajax
-            .done(function(data) {
+            .then(function(data) {
                 if(typeof data === "string")
                     data = JSON.parse(data);
 
@@ -233,7 +233,7 @@
 
                 onFail();
             })
-            .fail(function() {
+            .catch(function() {
                 onFail();
             });
     }

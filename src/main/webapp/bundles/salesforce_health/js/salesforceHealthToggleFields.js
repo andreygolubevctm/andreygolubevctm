@@ -24,11 +24,11 @@
             var fundCode = meerkat.site.provider.toUpperCase();
             if(typeof fundCode === 'string' && fundCode.length === 3) {
                 getFundInfo(fundCode)
-                    .done(function () {
+                    .then(function () {
                         window['healthFunds_' + fundCode].set();
                         $('button[data-gateway="launcher"]').trigger('click');
                     })
-                    .fail(function() {
+                    .catch(function() {
                         alert('Could not credit card form for fund');
                     });
             } else {

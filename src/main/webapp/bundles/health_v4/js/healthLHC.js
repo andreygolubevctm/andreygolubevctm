@@ -2,6 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        exception = meerkat.logging.exception,
         _baseDatesRequestData = {
             primaryDOB: null,
             partnerDOB: null
@@ -73,6 +74,9 @@
 
                 getLHC().then(function() {
                     meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                })
+                .catch(function onError(obj, txt, errorThrown) {
+                    exception(txt + ': ' + errorThrown);
                 });
 
             } else {
@@ -84,13 +88,19 @@
                     setCoverDates('partner', "");
                 }
 
-                getLHC().done(function() {
+                getLHC().then(function() {
                     meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                })
+                .catch(function onError(obj, txt, errorThrown) {
+                    exception(txt + ': ' + errorThrown);
                 });
 
             }
 
-        });
+        })
+        .catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
+		});
     }
 
     function _isBuyingPrivateHospitalCover() {

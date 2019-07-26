@@ -402,8 +402,8 @@ var Results = {
 
 	},
 
-	applyFiltersAndSorts:function(){
-		Results.model.filterAndSort(true);
+	applyFiltersAndSorts:function(publishResultsDataReady){
+		Results.model.filterAndSort(true, publishResultsDataReady);
 		Results.view.toggleFrequency(Results.settings.frequency);
 	},
 

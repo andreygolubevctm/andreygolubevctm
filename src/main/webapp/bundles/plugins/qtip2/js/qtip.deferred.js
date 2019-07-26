@@ -633,7 +633,7 @@
 
 			// If imagesLoaded is included, ensure images have loaded and return promise
 			return ( $.fn.imagesLoaded ? element.imagesLoaded() : $.Deferred().resolve([]) )
-				.done(function() { cache.waiting = FALSE; })
+				.then(function() { cache.waiting = FALSE; })
 				.promise();
 		};
 
