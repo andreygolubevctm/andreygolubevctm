@@ -374,7 +374,7 @@
                 $('#health_filter_frequency').val(frequency);
                 Results.setFrequency(meerkat.modules.healthResults.getFrequencyInWords(frequency), false);
                 meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
-                Results.applyFiltersAndSorts();
+                Results.applyFiltersAndSorts(false);
             });
         });
 
