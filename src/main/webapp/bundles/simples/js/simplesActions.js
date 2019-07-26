@@ -350,11 +350,11 @@
 					cache: true,
 					errorLevel: 'silent'
 				})
-				.done(function onSuccess(json) {
+				.then(function onSuccess(json) {
 					json.parentStatusId = parentStatusId;
 					updateModal(json, templatePostpone);
 				})
-				.fail(function onError(obj, txt, errorThrown) {
+				.catch(function onError(obj, txt, errorThrown) {
 					updateModal(null, templatePostpone);
 				})
 				.always(function onComplete() {

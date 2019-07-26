@@ -2,6 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        exception = meerkat.logging.exception,
         _getRequiredFundsAjax = null,
         _funds = {},
         _template = null,
@@ -66,7 +67,7 @@
         _eventUnsubscriptions();
         _unApplyEventListeners();
 
-        _getRequiredFundsAjax && _getRequiredFundsAjax.done(function() {
+        _getRequiredFundsAjax && _getRequiredFundsAjax.then(function() {
             if (isActivated()) {
                 _states.show = true;
                 _states.fetchResults = false;
@@ -74,6 +75,9 @@
                 _eventSubscriptions();
                 _applyEventListeners();
             }
+        })
+        .catch(function onError(obj, txt, errorThrown) {
+            exception(txt + ': ' + errorThrown);
         });
     }
 

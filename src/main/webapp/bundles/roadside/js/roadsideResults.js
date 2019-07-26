@@ -2,6 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        exception = exception.logging.exception,
         log = meerkat.logging.info;
 
     var events = {
@@ -229,9 +230,12 @@
 
         meerkat.modules.roadside.trackHandover();
         meerkat.modules.moreInfo.setProduct(Results.getResult('productId', $resultrow.attr('data-productId')));
-        meerkat.modules.roadsideMoreInfo.retrieveExternalCopy(Results.getSelectedProduct()).done(function () {
+        meerkat.modules.roadsideMoreInfo.retrieveExternalCopy(Results.getSelectedProduct()).then(function () {
             meerkat.modules.journeyEngine.gotoPath('next', $resultrow.find('.btn-apply'));
-        });
+        })
+        .catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
+		});
 
     }
 

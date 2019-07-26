@@ -66,7 +66,7 @@
 			errorLevel: 'silent',
 			useDefaultErrorHandling: false
 		})
-		.done(function onSuccess(json) {
+		.then(function onSuccess(json) {
 			var htmlContent = '';
 
 			if (typeof template !== 'function') {
@@ -92,7 +92,7 @@
 				}
 			});
 		})
-		.fail(function onError(obj, txt, errorThrown) {
+		.catch(function onError(obj, txt, errorThrown) {
 			$containers.each(function() {
 				$(this).html('Unsuccessful because: ' + txt + ': ' + errorThrown);
 			});

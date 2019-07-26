@@ -16,11 +16,11 @@
 			dataType: 'json',
 			useDefaultErrorHandling: false
 		})
-		.done(function onSuccess(json) {
+		.then(function onSuccess(json) {
 			setCurrentSegments(json);
 			hideBySegment();
 		})
-		.fail(function onError(obj, txt, errorThrown) {
+		.catch(function onError(obj, txt, errorThrown) {
 			exception(txt + ': ' + errorThrown);
 		});
 	}

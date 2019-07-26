@@ -2,6 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+		exception = meerkat.logging.exception,
         moduleEvents = {
             healthDependants: {
                 DEPENDANTS_RENDERED: 'DEPENDANTS_RENDERED'
@@ -114,8 +115,11 @@
                 $('.health_dependant_details').each(function() {
                     var $this = $(this);
                     toggleDependantFields($this);
-                }).promise().done(function() {
+                }).promise().then(function() {
                     renderDependants();
+                })
+                .catch(function onError(obj, txt, errorThrown) {
+                    exception(txt + ': ' + errorThrown);
                 });
             }
         });
