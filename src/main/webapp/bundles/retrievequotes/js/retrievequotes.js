@@ -57,7 +57,7 @@
                         callback(true);
                         return;
                     }
-                    meerkat.modules.retrievequotesLogin.doLoginAndRetrieve().done(function (data, textStatus, jqXHR) {
+                    meerkat.modules.retrievequotesLogin.doLoginAndRetrieve().then(function (data, textStatus, jqXHR) {
                         if (typeof data !== 'undefined' && data !== null && data.previousQuotes) {
                             meerkat.site.responseJson = data;
                             callback(true);
@@ -68,7 +68,7 @@
                             }
                             meerkat.modules.retrievequotesLogin.handleLoginFailure(jqXHR, textStatus, "");
                         }
-                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                    }).catch(function (jqXHR, textStatus, errorThrown) {
                         try {
                             callback(false);
                         } catch (e) {

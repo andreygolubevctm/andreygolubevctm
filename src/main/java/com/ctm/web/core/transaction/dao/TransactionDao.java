@@ -212,11 +212,35 @@ public class TransactionDao {
 			stmt = dbSource.getConnection().prepareStatement(
 					"UPDATE aggregator.transaction_header " +
 							"SET AnonymousId = ?, UserId = ? " +
-							"WHERE TransactionId = ?;"
+							"WHERE TransactionId = ? " +
+							"AND AnonymousId IS NOT NULL;"
 			);
 			stmt.setString(1, anonymousId);
-			stmt.setString(2, anonymousId);
+			stmt.setString(2, userId);
 			stmt.setLong(3, transactionId);
+
+			stmt.executeUpdate();
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+	}
+
+	public void updateAuthIDs(String anonymousId, String userId) throws Exception {
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		try {
+			PreparedStatement stmt;
+			stmt = dbSource.getConnection().prepareStatement(
+					"UPDATE aggregator.transaction_header " +
+							"SET UserId = ? " +
+							"WHERE AnonymousId = ?;"
+
+			);
+			stmt.setString(1, userId);
+			stmt.setString(2, anonymousId);
 
 			stmt.executeUpdate();
 		}

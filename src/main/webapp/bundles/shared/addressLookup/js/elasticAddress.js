@@ -2,6 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        exception = meerkat.logging.exception,
         log = meerkat.logging.info;
 
     var events = {
@@ -354,7 +355,7 @@
                     async: true,
                     cache: false,
                     timeout: 6000
-                }).done(function (jsonResult) {
+                }).then(function (jsonResult) {
                     if (jsonResult.length === 1) {
                         address = jsonResult[0];
                         context.setUnitType();
@@ -370,7 +371,7 @@
                         elements.fullAddressLineOneHidden.val(context.getFullAddressLineOne());
                         elements.fullAddressHidden.val(context.getFullAddress(address));
                     }
-                }).fail(function (obj, txt, errorThrown) {
+                }).catch(function (obj, txt, errorThrown) {
                     address.streetName = _getFormattedStreet(elements.lookupStreetNameHidden.val(), false);
                     address.fullAddressLineOne = context.getFullAddressLineOne();
                     elements.fullAddressLineOneHidden.val(address.fullAddressLineOne);
@@ -484,8 +485,11 @@
                 errorLevel: "silent",
                 useDefaultErrorHandling: false,
                 data: { postCode: code }
-            }).done(function (data, textStatus, xhr) {
+            }).then(function (data, textStatus, xhr) {
                 getSuburbsSuccess.apply(self, [data, callback]);
+            })
+            .catch(function onError(obj, txt, errorThrown) {
+                exception(txt + ': ' + errorThrown);
             });
 
         },

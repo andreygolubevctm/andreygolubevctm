@@ -1,6 +1,7 @@
 ;(function ($, undefined) {
 
     var meerkat = window.meerkat,
+        exception = meerkat.logging.exception,
         meerkatEvents = meerkat.modules.events,
         _settings = {
             weekends: true,
@@ -75,7 +76,7 @@
         _formattedUTCToday = meerkat.modules.dateUtils.format(new Date(meerkat.modules.utils.getUTCToday()), 'DD/MM/YYYY');
         _getFundTimeZone();
 
-        _getFundTimeZoneAjax && _getFundTimeZoneAjax.done(function() {
+        _getFundTimeZoneAjax && _getFundTimeZoneAjax.then(function() {
             if (_isWithinTime[typeOfCheck] === false) {
                 _settings.coverStartRange.min++;
                 _settings.coverStartRange.max--;
@@ -89,7 +90,10 @@
                     CoverStartDate[_fn.setValues]();
                 });
             }
-        });
+        })
+        .catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
+		});
     }
 
     function checkBeforeSubmit(submitCB) {
@@ -103,7 +107,7 @@
 
         SubmitApplication.disableSubmitApplication(true);
 
-        _getFundTimeZoneAjax && _getFundTimeZoneAjax.done(function() {
+        _getFundTimeZoneAjax && _getFundTimeZoneAjax.then(function() {
             SubmitApplication.enableSubmitApplication();
 
             if (_isWithinTime['submit'] === false) {
@@ -152,7 +156,10 @@
             } else {
                 submitCB();
             }
-        });
+        })
+        .catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
+		});
     }
 
     function _getFundTimeZone() {

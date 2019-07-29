@@ -20,10 +20,10 @@
                 useDefaultErrorHandling: false,
                 dataType: 'json',
                 cache: false
-            }).done(function () {
+            }).then(function () {
                 $('.postUnsubscribeTextContainer, .preUnsubscribeTextContainer').toggleClass('hidden');
                 $('.unsubscribeButtonContainer').addClass('hidden');
-            }).fail(function (jqXHR, textStatus, errorThrown) {
+            }).catch(function (jqXHR, textStatus, errorThrown) {
                 $('.unsubscribeButtonContainer').removeClass('hidden');
                 var response = $.parseJSON(jqXHR.responseText);
                 meerkat.modules.errorHandling.error({

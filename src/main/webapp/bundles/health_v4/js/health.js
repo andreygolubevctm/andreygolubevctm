@@ -6,6 +6,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        exception = meerkat.logging.exception,
         onlineCategoryVersion = $('.online-results-control-container').data('online-category-version'),
         log = meerkat.logging.info;
 
@@ -407,7 +408,9 @@
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
-
+				$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('rule-digits', false);
+				$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('msg-digits', '');
+                
                 if (event.isForward && meerkat.site.isCallCentreUser) {
                     $('#journeyEngineSlidesContainer .journeyEngineSlide')
                         .eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
@@ -417,8 +420,11 @@
                 }
 
                 // Race condition, need to wait for healthFilters module to be ready for Remember Me redirect to results to work
-                meerkat.modules.utils.pluginReady('healthFilters').done(function() {
+                meerkat.modules.utils.pluginReady('healthFilters').then(function() {
                     meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
+                })
+                .catch(function onError(obj, txt, errorThrown) {
+                    exception(txt + ': ' + errorThrown);
                 });
 
                 meerkat.modules.healthPopularProducts.setPopularProducts('N');

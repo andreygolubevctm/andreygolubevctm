@@ -251,12 +251,12 @@
             useDefaultErrorHandling: false
         });
 
-        getAddressXHR.done(function (jsonResult) {
+        getAddressXHR.then(function (jsonResult) {
             if (jsonResult.foundAddress) {
                 $(element).trigger("validStreetSearchAddressEnteredEvent",
                     [name, jsonResult]);
             }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
+        }).catch(function (jqXHR, textStatus, errorThrown) {
             meerkat.modules.errorHandling.error({
                 message: "An error occurred checking the address: " + errorThrown,
                 page: "ajax/json/address/get_address.jsp",

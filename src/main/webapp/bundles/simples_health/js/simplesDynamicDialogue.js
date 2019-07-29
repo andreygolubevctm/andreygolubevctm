@@ -4,13 +4,13 @@
     log = meerkat.logging.info,
     dynamicValues = [
     {
-      text: '%DYNAMIC_FUNDNAME%', 
+      text: '%DYNAMIC_FUNDNAME%',
       get: function(product) {
         return '<b>' + product.info.providerName + '</b>';
       }
     },
     {
-      text: '%DYNAMIC_HOSPITALBENEFITS%', 
+      text: '%DYNAMIC_HOSPITALBENEFITS%',
       get: function(product) {
         var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
         var productBenefits = product ? product.hospital.benefits : [];
@@ -36,7 +36,7 @@
       }
     },
     {
-      text: '%DYNAMIC_HOSPITALBENEFITS_NO_BLURB%', 
+      text: '%DYNAMIC_HOSPITALBENEFITS_NO_BLURB%',
       get: function(product) {
         var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
         var productBenefits = product ? product.hospital.benefits : [];
@@ -45,7 +45,7 @@
       }
     },
     {
-      text: '%DYNAMIC_EXTRASBENEFITS%', 
+      text: '%DYNAMIC_EXTRASBENEFITS%',
       get: function(product) {
         var benefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel();
         var productBenefits = product ? product.extras : [];
@@ -54,7 +54,7 @@
       }
     },
     {
-      text: '%DYNAMIC_EXTRASBENEFITS_NO_BLURB%', 
+      text: '%DYNAMIC_EXTRASBENEFITS_NO_BLURB%',
       get: function(product) {
         var benefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel();
         var productBenefits = product ? product.extras : [];
@@ -63,7 +63,7 @@
       }
     },
     {
-      text: '%DYNAMIC_LHCTEXT%', 
+      text: '%DYNAMIC_LHCTEXT%',
       get: function(product) {
         var lhc =meerkat.modules.health.getRates().loading;
         if(lhc === "0") return '';
@@ -72,7 +72,7 @@
       }
     },
     {
-      text: '%DYNAMIC_MLSTEXT%', 
+      text: '%DYNAMIC_MLSTEXT%',
       get: function(product) {
         var tier =meerkat.modules.health.getRates().tier;
         if(tier === "0") return '';
@@ -81,12 +81,21 @@
       }
     },
     {
-      text: '%DYNAMIC_PROVIDER_SPECIFIC_CONTENT%', 
+      text: '%DYNAMIC_NEXTGEN_OUTBOUND_SPECIFIC_CONTENT%',
+      get: function(product) {
+        var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound');
+        if (!isNextGenOutbound) return '';
+
+        return ' And you will never re-serve any waiting periods on services you currently have unless upgrading so it&apos;s a really smooth transition.';
+      }
+    },
+    {
+      text: '%DYNAMIC_PROVIDER_SPECIFIC_CONTENT%',
       get: function(product) {
         var content = meerkat.modules.healthResults.getProviderSpecificPopoverData(product.info.provider);
         if(content.length === 0) { return ''; }
 
-        return content[0].providerBlurb; 
+        return content[0].providerBlurb;
       }
     },
     {
@@ -98,8 +107,8 @@
     {
       text: '%DYNAMIC_PRODUCT_PROMOTION%',
       get: function(product) {
-        if(! product.promo.promoText) { 
-          return ''; 
+        if(! product.promo.promoText) {
+          return '';
         }
 
         return '(Discuss promotions)' + '<p>' + product.promo.promoText + '</p>';
@@ -115,7 +124,7 @@
        var optical = product.extras['Optical'];
        var opticalText = selectedBenefitsList.indexOf('Optical') > -1 ? optical.waitingPeriod + '  for Optical, ' : '';
        var startText = 'The extras waiting periods are only ';
-       
+
        if(!opticalText && !majorDentalText) {
          startText = '';
        }
@@ -149,12 +158,12 @@
         }
 
         if(text && !hasMajorWaiting) {
-          text = 'The extras waiting periods are only ' + text;  
+          text = 'The extras waiting periods are only ' + text;
         }
 
         return text;
       }
-    }, 
+    },
     {
       text: '%DYNAMIC_REMAINING_WAITING%',
       get: function(product) {
@@ -195,7 +204,7 @@
 
         return text;
 
-      }  
+      }
     }
   ];
 
@@ -232,7 +241,7 @@
         var productBenefit = productBenefits[keys[j]];
 
           if(benefit && coveredCheck.indexOf(productBenefit.covered) > -1) {
-            if(!isOrderedList) { 
+            if(!isOrderedList) {
               if(found > 0 && found < 2) {
                 html += ', ';
               }
@@ -245,6 +254,7 @@
           }else{
             html += '<li>' + benefit.label + '</li>';
           }
+          found++;
         }
 
           if(found === 3) {
@@ -271,7 +281,7 @@
         }
 
         dialogue.html(html);
-        if(onParse && typeof onParse === 'function') { 
+        if(onParse && typeof onParse === 'function') {
           onParse();
         }
     });
