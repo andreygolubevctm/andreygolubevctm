@@ -7,7 +7,7 @@
 ;(function($, undefined){
 	
 	var meerkat = window.meerkat,
-		exception = meerkater.logging.exception,
+		exception = meerkat.logging.exception,
 		log = meerkat.logging.info;
 	
 	var rowTemplate,
