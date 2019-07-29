@@ -16,6 +16,12 @@
 	function topDockBasedOnOffset($elems) {
 		$elems.each(function(index, val) {
 			$item = $(val);
+
+
+			console.log($('.v4ProgressBar')[0], val);
+			if (val === $('.v4ProgressBar')[0]) {
+				console.log('it matches')
+			}
 			$item.affix({
 				offset: {
 					top: function () {
@@ -71,7 +77,6 @@
 
 		//Because of the odd race conditions that the journeyEngine's journeyProgress bar now suffers from, I'm waiting for its init event before using affix on the navbar below it.
 		meerkat.messaging.subscribe(meerkatEvents.journeyProgressBar.INIT, function affixNavbar(step) {
-
 			var dockAlwaysOnConfirmation = $(".v4confirmation")[0];
 			var dockAlwaysInJourney = $(".v4ProgressBar")[0];
 
@@ -91,7 +96,13 @@
                 else {
                     topDockBasedOnOffset($('.navbar-affix'));
                 }
-            } else {
+			} else if ( dockAlwaysInJourney ) {
+				var windowScrollHeight = window.innerHeight + $('.navbar-header')[0].clientHeight;
+        		var stuckHeight = document.documentElement.scrollHeight - dockAlwaysInJourney.clientHeight;
+        		if (windowScrollHeight <= stuckHeight) {
+					topDockBasedOnOffset($('.navbar-affix'));
+				}
+			} else {
 				topDockBasedOnOffset($('.navbar-affix'));
 			}
 		});
