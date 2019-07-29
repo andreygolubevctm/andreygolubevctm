@@ -27,9 +27,9 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                    	<simples:dialogue id="125" className="simples-dialogue-hospital-cover simples-dialog-outbound"  vertical="health" />
-                        <simples:dialogue id="46"  className="simples-dialogue-hospital-cover simples-dialog-inbound"   vertical="health" />
-                        <simples:dialogue id="118" className="simples-dialog-nextgenoutbound simples-dialog-nextgencli" vertical="health" />
+                    	<simples:dialogue id="125" className="simples-dialogue-hospital-cover simples-dialog-outbound" vertical="health" />
+                        <simples:dialogue id="46" className="simples-dialogue-hospital-cover simples-dialog-inbound" vertical="health" />
+                        <simples:dialogue id="118" vertical="health" className="simples-dialog-nextgenoutbound simples-dialog-nextgencli" />
                     </div>
                 </div>
 
