@@ -70,6 +70,7 @@
 			topDockBasedOnOffset($('.navbar-affix'));
 		} else {
 			var clone = stickyEl.cloneNode(true);
+			clone.classList.remove('affix');
 			stickyEl.after(clone);
 			stickyEl.remove();
 		}
