@@ -6,7 +6,7 @@
 
 	function init() {
 
-		$(document).ready(function() {
+		$(document).on('ready', function() {
 			_.defer(function(){
 				meerkat.modules.commencementDate.initCommencementDate({
 					dateField :		"#home_startDate",
