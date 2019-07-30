@@ -407,7 +407,7 @@ var ResultsModel = {
 
 				if(!isEmptyArray) {
 
-					Results.model.filterAndSort(false);
+					Results.model.filterAndSort(false, true);
 
 					Results.view.show();
 				}
@@ -456,14 +456,16 @@ var ResultsModel = {
 
 	},
 
-	filterAndSort: function(renderView){
+	filterAndSort: function(renderView, publishResultsDataReady){
 		Results.model.sort(renderView);
 		Results.model.filter(renderView);
 		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
 		meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY);
-		_.defer(function() {
-			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
-		});
+		if (publishResultsDataReady) {
+			_.defer(function() {
+				meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+			});
+		}
 	},
 
 	sort: function(renderView) {

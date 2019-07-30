@@ -21,10 +21,10 @@
             errorLevel: 'silent',
             useDefaultErrorHandling: false,
             timeout: 20000
-        }).done(function () {
+        }).then(function () {
             success = true;
             seize(isMuted);
-        }).fail(function (jqXHR, textStatus, errorThrown) {
+        }).catch(function (jqXHR, textStatus, errorThrown) {
             var errorMessage = errorThrown;
 
             try {

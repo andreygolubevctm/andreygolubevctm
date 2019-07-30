@@ -70,7 +70,8 @@
             iDontKnowMyDateRangesPromptText: $('#' + applicant + 'LhcDatesUnsureApplyFullLHC .applyFullLHCAdditionalText'),
             receivesAgeBasedDiscountRow: $('#' + applicant + '_abd'),
             receivesAgeBasedDiscount: $('#' + applicant + '_abd_health_cover'),
-            ageBasedDiscountPolicyStartRow: $('#' + applicant + '_abd_start_date')
+            ageBasedDiscountPolicyStartRow: $('#' + applicant + '_abd_start_date'),
+            previousFundNumber: $('input[name=health_previousfund_' + applicant + '_memberID]')
         };
 
         if (applicant === 'primary') {
@@ -186,6 +187,12 @@
         $elements[applicant].healthApplicationDOB.on('change', function() {
             _toggleCurrentlyHaveAnyKindOfCover(applicant);
             _toggleAgeBasedDiscountQuestion(applicant);
+        });
+
+        $elements[applicant].previousFundNumber.on('keyup', function() {
+            var input = $(this);
+            var value = input.val().replace(/[\W_]+/g, '');
+            input.val(value);
         });
 
         $elements[applicant].receivesAgeBasedDiscount.find(':input').on('change', function(event) {

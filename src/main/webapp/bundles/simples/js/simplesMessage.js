@@ -188,7 +188,7 @@
 				transactionId: searchTransactionId
 			}
 		})
-		.done(function onSuccess(json) {
+		.then(function onSuccess(json) {
 			if (!json.hasOwnProperty('message')) {
 				$messageDetailsContainer.html( templateMessageDetail(json) );
 			}
@@ -197,7 +197,7 @@
 				setCurrentMessage(json);
 			}
 		})
-		.fail(function onError(obj) {
+		.catch(function onError(obj) {
 			var json = {"errors":[]};
 			obj.responseJSON.errors.forEach(function(errorMessage){
 				json.errors.push({"message": errorMessage});
@@ -217,7 +217,7 @@
 			cache: false,
 			errorLevel: 'silent'
 		})
-		.done(function onSuccess(json) {
+		.then(function onSuccess(json) {
 			if (!json.hasOwnProperty('message') || !json.message.hasOwnProperty('messageId') || json.message.messageId === 0) {
 				$messageDetailsContainer.html( templateMessageDetail(json) );
 			}
@@ -226,7 +226,7 @@
 				setCurrentMessage(json);
 			}
 		})
-		.fail(function onError(obj, txt, errorThrown) {
+		.catch(function onError(obj, txt, errorThrown) {
 			var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
 			$messageDetailsContainer.html( templateMessageDetail(json) );
 		})

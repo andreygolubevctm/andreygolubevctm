@@ -40,10 +40,10 @@
 
 
 
-        fetchingFeatures.done(function onSuccess(json) {
+        fetchingFeatures.then(function onSuccess(json) {
             Features.pageStructure = json;
             meerkat.messaging.publish(events.resultsFeatures.STRUCTURE_FETCHED);
-        }).fail(function onError(obj, textStatus, errorThrown) {
+        }).catch(function onError(obj, textStatus, errorThrown) {
             var transactionId = meerkat.modules.transactionId.get();
             meerkat.modules.errorHandling.error({
                 errorLevel: "fatal",

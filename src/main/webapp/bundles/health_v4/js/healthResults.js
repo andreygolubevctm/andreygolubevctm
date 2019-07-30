@@ -3,6 +3,7 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
+        exception = meerkat.logging.exception,
         selectedProduct = null,
         previousBreakpoint,
         best_price_count = 14,
@@ -697,10 +698,13 @@
         var afterFetchRates = function() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
 
-            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getOnlineCategoryVersion()).done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getOnlineCategoryVersion()).then(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
+            })
+            .catch(function onError(obj, txt, errorThrown) {
+                exception(txt + ': ' + errorThrown);
             });
         };
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
@@ -713,10 +717,13 @@
         var afterFetchRates = function() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
 
-            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getOnlineCategoryVersion()).done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getOnlineCategoryVersion()).then(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
+            })
+            .catch(function onError(obj, txt, errorThrown) {
+                exception(txt + ': ' + errorThrown);
             });
         };
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
