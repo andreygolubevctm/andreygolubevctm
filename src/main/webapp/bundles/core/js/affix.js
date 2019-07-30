@@ -17,11 +17,6 @@
 		$elems.each(function(index, val) {
 			$item = $(val);
 
-
-			console.log($('.v4ProgressBar')[0], val);
-			if (val === $('.v4ProgressBar')[0]) {
-				console.log('it matches')
-			}
 			$item.affix({
 				offset: {
 					top: function () {
