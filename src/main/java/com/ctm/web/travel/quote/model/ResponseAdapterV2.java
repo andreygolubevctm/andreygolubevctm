@@ -263,7 +263,7 @@ public class ResponseAdapterV2 {
                     }
                 }
                 // check if the region retrieved from the returned products is equal to the parsed user request
-                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0) {
+                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0 && !travelQuote.getService().equals("BUDD")) {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 
