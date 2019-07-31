@@ -47,7 +47,6 @@
 	// Refresh filters from form/page
 	//
 	function updateFilters() {
-		
 		hideExcessLists();
 		$priceMode.removeClass('active');
 		$featuresMode.removeClass('active');
