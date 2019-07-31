@@ -698,7 +698,7 @@ var ResultsModel = {
 		};
 
 
-		var initialProducts = Results.model.sortedProducts.slice();
+		var initialProducts = _.isArray(Results.model.sortedProducts) && !_.isEmpty(Results.model.sortedProducts) ? Results.model.sortedProducts.slice() : [];
 		Results.model.filteredProducts = getFilteredProducts(initialProducts);
 
 		if( typeof Compare !== "undefined" ) Compare.applyFilters();
@@ -725,7 +725,7 @@ var ResultsModel = {
 
     filterUsingExcess: function( renderView, doNotGoToStart ){
 
-        var initialProducts = Results.model.sortedProducts.slice();
+        var initialProducts = _.isArray(Results.model.sortedProducts) && !_.isEmpty(Results.model.sortedProducts) ? Results.model.sortedProducts.slice() : [];
         var finalProducts = [];
 
         var valid, value;
@@ -786,7 +786,7 @@ var ResultsModel = {
     },
 
     travelResultFilter: function (renderView, doNotGoToStart, matchAllFilters) {
-        var initialProducts = Results.model.sortedProducts.slice();
+        var initialProducts = _.isArray(Results.model.sortedProducts) && !_.isEmpty(Results.model.sortedProducts) ? Results.model.sortedProducts.slice() : [];
         var destination = $('#travel_destination').val();
 
         var finalProducts = [];
