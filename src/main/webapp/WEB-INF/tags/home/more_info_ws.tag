@@ -52,7 +52,7 @@
 <core_v1:js_template id="pds-disclaimer-template">
 	<h5>Product Disclosure Statement</h5>
 	{{ if (obj.productDisclosures != null) { }}
-		{{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false) { }}
+		{{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false || obj.productDisclosures.pdsb.url === '') { }}
 			<a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure Statement</a>
 		{{ } else { }}
 			<a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure A</a>
