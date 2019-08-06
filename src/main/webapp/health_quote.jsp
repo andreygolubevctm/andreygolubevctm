@@ -175,7 +175,7 @@
 
         <jsp:attribute name="additional_meerkat_scripts">
             <c:if test="${callCentre}">
-                <script src="${assetUrl}js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+                <script src="${assetUrl}js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${webUtils.buildRevisionAsQuerystringParam()}"></script>
             </c:if>
         </jsp:attribute>
 
