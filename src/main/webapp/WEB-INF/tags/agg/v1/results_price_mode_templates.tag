@@ -55,7 +55,7 @@
             <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}">More Info </a>
         </div>
         {{ if (obj.productDisclosures != null) { }}
-        {{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false) { }}
+        {{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false || obj.productDisclosures.pdsb.url === '') { }}
         <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> PDS</a>
         {{ } else { }}
         <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="link-more-info" ${navBtnAnalAttribute}> PDS A </a>
