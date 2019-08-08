@@ -94,7 +94,7 @@ public class SimplesSearchService {
             searchTransactionHeaderDetailsAndSave();
             searchTransactionDetailsAndSave();
         } catch (RuntimeException e) {
-            LOGGER.error("Error searching transactions",e);
+            LOGGER.error("Error searching transactions. {}, {}, {}", kv("error", e.getMessage()), kv("searchMode", searchMode.name()), kv("searchTerms", searchString), e);
             error = e.getMessage();
             throw e;
         } finally {
@@ -362,11 +362,15 @@ public class SimplesSearchService {
 
             @Override
             public Object handleResult(ResultSet rs) throws SQLException {
-                while (rs.next()) {
-                    if(rs.getString("src").equals("hot")) {
-                        transactionIDsHot.add(rs.getLong("id"));
-                    } else {
-                        transactionIDsCold.add(rs.getLong("id"));
+                if(rs == null) {
+                    LOGGER.info("handleResult received a ResultSet of null");
+                } else {
+                    while (rs.next()) {
+                        if (rs.getString("src").equals("hot")) {
+                            transactionIDsHot.add(rs.getLong("id"));
+                        } else {
+                            transactionIDsCold.add(rs.getLong("id"));
+                        }
                     }
                 }
                 return null;
