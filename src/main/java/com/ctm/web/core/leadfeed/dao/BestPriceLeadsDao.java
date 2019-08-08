@@ -235,7 +235,7 @@ public class BestPriceLeadsDao {
 															updateLeadFeedDataWithMetadata(leadData, leadConcat[5], propensityScore);
 														} else {
 															//log and skip this lead as its un-processable.
-															LOGGER.error("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("leadConcatLength", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
+															LOGGER.info("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}, {}", kv("leadData", leadData.toString()), kv("transactionId", transactionId), kv("leadConcatLength", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate), leadData);
 															leadData = null;
 														}
 													}
@@ -249,7 +249,7 @@ public class BestPriceLeadsDao {
 											LOGGER.debug("[Lead info] lead skipped as no optin for call {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
 										}
 									} else {
-										LOGGER.error("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("leadConcatLength", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
+										LOGGER.info("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}, {}", kv("leadData", leadData.toString()), kv("transactionId", transactionId), kv("leadConcatLength", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
 									}
 								}
 
