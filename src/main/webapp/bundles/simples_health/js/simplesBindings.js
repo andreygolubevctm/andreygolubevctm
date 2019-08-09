@@ -351,6 +351,10 @@
                 $body.addClass('trial');
             }
 
+            if (healthContactTypeSelection === 'cli') {
+                $body.addClass('cli');
+            }
+
             if ((healthContactTypeSelection === 'outbound') || isTrialContactType) {
 	            //contact type is set to outbound when Outbound or a trial is selected
 	            $healthContactType.val('outbound');
