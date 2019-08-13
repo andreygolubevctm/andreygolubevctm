@@ -14,6 +14,7 @@ import com.ctm.web.travel.quote.model.response.TravelQuote;
 import com.ctm.web.travel.quote.model.response.TravelResponseV2;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +23,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ResponseAdapterV2 {
+
+    // trusted in that we trust the products returned ALL match the destinations selected by the user
+    private static final List<String> PARTNERS_WITH_TRUSTED_AMT_PRODUCTS = Arrays.asList(
+        "WEBJ"
+    );
 
     /**
      * Trave-quote to web_ctm adapter
@@ -263,7 +269,7 @@ public class ResponseAdapterV2 {
                     }
                 }
                 // check if the region retrieved from the returned products is equal to the parsed user request
-                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0) {
+                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0 && !PARTNERS_WITH_TRUSTED_AMT_PRODUCTS.contains(travelQuote.getService())) {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 
@@ -357,6 +363,7 @@ public class ResponseAdapterV2 {
 
         // build the user region string & track count of regions
         if (worldwide.matcher(flatRegions).find()) {
+            resultString+= "worldwide ";
             regionCount++;
         }
         if (bali.matcher(flatRegions).find()) {
@@ -391,8 +398,11 @@ public class ResponseAdapterV2 {
         // if more than one region selected, switch to worldwide products
         if ( regionCount > 1) {
             // exception for singular countries that we're adding into the mix that belong to regions we search for
-            // then switch to wwExAmericas + worldwide and worldwide checks if they aren't present
-            if (resultString.contains("new zealand") && !resultString.contains("bali") && !resultString.contains("asia") && !resultString.contains("americas") && !resultString.contains("europe")) {
+            // then switch to wwExAmericas + worldwide and worldwide checks if they aren't present.
+            // when the user specifies worldwide ignore the rest of the result string.
+            if (resultString.contains("worldwide")) {
+                resultString = "worldwide";
+            } else if (resultString.contains("new zealand") && !resultString.contains("bali") && !resultString.contains("asia") && !resultString.contains("americas") && !resultString.contains("europe")) {
                 resultString = "pacific apac wwExAmericas worldwide ";
             } else if (resultString.contains("bali") && !resultString.contains("new zealand") && !resultString.contains("pacific") && !resultString.contains("americas") && !resultString.contains("europe")) {
                 resultString = "asia apac wwExAmericas worldwide ";

@@ -328,15 +328,16 @@
 			onBeforeEnter: function onBeforeEnterResults(event) {
 				meerkat.modules.journeyProgressBar.hide();
 				$('#resultsPage').addClass('hidden');
-
-				// Sync the filters to the results engine
-				meerkat.modules.homeFilters.updateFilters();
 			},
 			onAfterEnter: function onAfterEnterResults(event) {
-				if(event.isForward === true){
-					meerkat.modules.homeResults.get();
-				}
-				meerkat.modules.homeFilters.show();
+				// Sync the filters to the results engine
+				meerkat.modules.homeFilters.updateFilters();
+				_.defer(function(){
+					if(event.isForward === true){
+						meerkat.modules.homeResults.get();
+					}
+					meerkat.modules.homeFilters.show();
+				});
 			},
 			onBeforeLeave: function onBeforeLeaveResults(event) {
 				// Increment the transactionId
@@ -499,15 +500,15 @@
 			onBeforeEnter: function onBeforeEnterResults(event) {
 				meerkat.modules.journeyProgressBar.hide();
 				$('#resultsPage').addClass('hidden');
-
-				// Sync the filters to the results engine
-				meerkat.modules.homeFilters.updateFilters();
 			},
 			onAfterEnter: function onAfterEnterResults(event) {
-				if(event.isForward === true){
-					meerkat.modules.homeResults.get();
-				}
-				meerkat.modules.homeFilters.show();
+				meerkat.modules.homeFilters.updateFilters();
+				_.defer(function() {
+					if (event.isForward === true) {
+						meerkat.modules.homeResults.get();
+					}
+					meerkat.modules.homeFilters.show();
+				});
 			},
 			onBeforeLeave: function onBeforeLeaveResults(event) {
 				// Increment the transactionId
