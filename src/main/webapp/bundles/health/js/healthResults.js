@@ -15,6 +15,7 @@
         providersReturned = [],
         extendedFamilyResultsRulesData = {},
         extendedFamilyResultsRules = '',
+        exception = meerkat.logging.exception;
 
         templates = {
             premiumsPopOver:
@@ -635,10 +636,13 @@
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {source: 'healthLoadRates'});
         meerkat.modules.health.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
-            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getSimplesCategoryVersion()).done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getSimplesCategoryVersion()).then(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
+            })
+            .catch(function onError(obj, txt, errorThrown) {
+                exception(txt + ': ' + errorThrown);
             });
         });
     }
@@ -649,10 +653,13 @@
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {source: 'healthLoadRates'});
         meerkat.modules.health.loadRatesBeforeResultsPage(false, function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
-            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getSimplesCategoryVersion()).done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure(meerkat.modules.health.getSimplesCategoryVersion()).then(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
+            })
+            .catch(function onError(obj, txt, errorThrown) {
+                exception(txt + ': ' + errorThrown);
             });
         });
     }

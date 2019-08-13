@@ -7,15 +7,15 @@
 	function init() {
 
 		$(document).ready(function() {
-
-			meerkat.modules.commencementDate.initCommencementDate({
-				dateField :		"#home_startDate",
-				getResults :	meerkat.modules.homeResults.get,
-				updateData :	function updateDataWithIcon(data) {
-					_.extend(data, meerkat.modules.homeEditDetails.getFormData());
-				}
+			_.defer(function(){
+				meerkat.modules.commencementDate.initCommencementDate({
+					dateField :		"#home_startDate",
+					getResults :	meerkat.modules.homeResults.get,
+					updateData :	function updateDataWithIcon(data) {
+						_.extend(data, meerkat.modules.homeEditDetails.getFormData());
+					}
+				});
 			});
-
 		});
 	}
 

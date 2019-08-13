@@ -208,7 +208,7 @@
                     settings.events.update.apply(window, [event]);
                 } else {
                     meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
-                    Results.applyFiltersAndSorts();
+                    Results.applyFiltersAndSorts(true);
                 }
                 needToFetchFromServer = false;
             });

@@ -63,6 +63,19 @@
 		});
 	}*/
 
+	function handleProgressBarSticky(stickyEl) {
+		var windowScrollHeight = window.innerHeight + $('.navbar-header')[0].clientHeight;
+		var stuckHeight = document.documentElement.scrollHeight - stickyEl.clientHeight;
+		if (windowScrollHeight <= stuckHeight) {
+			topDockBasedOnOffset($('.navbar-affix'));
+		} else {
+			var clone = stickyEl.cloneNode(true);
+			clone.classList.remove('affix');
+			stickyEl.after(clone);
+			stickyEl.remove();
+		}
+	}
+
 
 	function init() {
 		//Example for multiple item affix
@@ -91,11 +104,17 @@
                 else {
                     topDockBasedOnOffset($('.navbar-affix'));
                 }
-            } else {
+			} else if (dockAlwaysInJourney) {
+				handleProgressBarSticky(dockAlwaysInJourney);
+			} else {
 				topDockBasedOnOffset($('.navbar-affix'));
 			}
 		});
 	}
+
+	$(window).on('resize', function() {
+		handleProgressBarSticky($(".v4ProgressBar")[0]);
+	});
 
 	meerkat.modules.register("affix", {
 		init: init,
