@@ -1055,7 +1055,7 @@
                 usefulLinks.push(
                     {"name" : "Fund Page", "url": "https://ctm.livepro.com.au/goto/cua"},
                     {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/cua-agreement-hospitals-amp-gap-scheme"},
-                    {"name" : "Fund Page", "url": "https://ctm.livepro.com.au/goto/cua-agreement-hospitals-amp-gap-scheme"},
+                    {"name" : "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/cua-agreement-hospitals-amp-gap-scheme"},
                 );
                 break;
             case 'FRA':
