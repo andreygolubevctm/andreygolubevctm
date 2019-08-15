@@ -1010,17 +1010,20 @@
         switch(fundCode){
             case 'AHM':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/ahm1"},
-                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/ahm-agreement-hospitals-amp-gap-scheme"}
+                    {"name" : "Fund Page", "url": "https://ctm.livepro.com.au/goto/ahm1"},
+                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/ahm-agreement-hospitals-amp-gap-scheme"},
+                    {"name" : "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/ahm-agreement-hospitals-amp-gap-scheme"},
+                    {"name" : "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/ahm-no-gap-dental"}
+
                 );
                 break;
             case 'AUF':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/australian-unity1"},
+                    {"name" : "Fund Page", "url": "https://ctm.livepro.com.au/goto/australian-unity1"},
                     {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/australian-unity-agreement-hospitals-amp-gap-scheme"},
-                    {"name" : "Dental Agreement", "url": "http://www.australianunity.com.au/health-insurance/cover/find-a-health-care-provider/national-dental-network"},
-                    {"name" : "Gap Cover Doctors", "url": "http://www.australianunity.com.au/health-insurance/cover/find-a-health-care-provider/find-gap-cover-doctors"},
-                    {"name" : "smile.com.au", "url": "https://www.smile.com.au/"}
+                    {"name" : "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/australian-unity-agreement-hospitals-amp-gap-scheme"},
+                    {"name" : "Dental agreements", "url": "https://ctm.livepro.com.au/goto/australian-unity-dental-agreements"},
+                    {"name" : "Optical Benefits", "url": "https://ctm.livepro.com.au/goto/australian-unity-optical-benefits"}
                 );
                 break;
             case 'BUD':
@@ -1050,20 +1053,25 @@
                 break;
             case 'CUA':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/cua"},
-                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/cua-agreement-hospitals-amp-gap-scheme"}
+                    {"name" : "Fund Page", "url": "https://ctm.livepro.com.au/goto/cua"},
+                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/cua-agreement-hospitals-amp-gap-scheme"},
+                    {"name" : "Fund Page", "url": "https://ctm.livepro.com.au/goto/cua-agreement-hospitals-amp-gap-scheme"},
                 );
                 break;
             case 'FRA':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/frank"},
-                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/frank-agreement-hospitals-amp-gap-scheme"}
+                    {"name" : "Fund Page", "url": "https://ctm.livepro.com.au/goto/frank"},
+                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/frank-agreement-hospitals-amp-gap-scheme"},
+                    {"name" : "Gap Scheme", "url": "https://ctm.livepro.com.au/goto/frank-agreement-hospitals-amp-gap-scheme"},
+                    {"name" : "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/frank-dental-agreements"}
                 );
                 break;
             case 'GMH':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/gmhba1"},
-                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/gmhba-agreement-hospitals-amp-gap-scheme"}
+                    {"name":  "Fund Page", "url": "https://ctm.livepro.com.au/goto/gmhba1"},
+                    {"name":  "Hospital Network", "url": "https://ctm.livepro.com.au/goto/gmhba-agreement-hospitals-amp-gap-scheme"},
+                    {"name":  "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/gmhba-agreement-hospitals-amp-gap-scheme"},
+                    {"name":  "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/gmhba-dental-agreements"}
                 );
                 break;
             case 'HBF':
@@ -1081,16 +1089,19 @@
                 break;
             case 'HIF':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/hif1"},
-                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/hif-agreement-hospitals-amp-gap-scheme"},
-                    {"name" : "Gap Cover Doctors", "url": "https://www.hif.com.au/health-insurance/useful-links/find-a-no-gap-specialist"}
+                    {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/hif1"},
+                    {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/hif-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/hif-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Dental Benefits", "url": "https://ctm.livepro.com.au/goto/hif-dental-benefits"},
+                    {"name": "Optical Benefits", "url": "https://ctm.livepro.com.au/goto/hif-optical-benefits"}
                 );
                 break;
             case 'MYO':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/myown"},
-                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/myown-agreement-hopspitals"},
-                    {"name" : "Gap Cover Doctors", "url": "https://www.ahsa.com.au/web/doctors/information/doctor_search"}
+                    {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/myown"},
+                    {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/myown-agreement-hopspitals"},
+                    {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/myown-agreement-hopspitals"},
+                    {"name": "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/myown-dental-agreements"}
                 );
                 break;
             case 'NHB':
@@ -1102,9 +1113,11 @@
                 break;
             case 'NIB':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/nib"},
-                    {"name" : "Hospital Network", "url": "hhttps://ctm.livepro.com.au/goto/nib-agreement-hospitals-amp-gap-scheme"},
-                    {"name" : "Whitecoat Dentists", "url": "https://www.whitecoat.com.au/preferred-provider/NIB/resident"}
+                    {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/nib"},
+                    {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/nib-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/nib-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/nib-dental-agreements"},
+                    {"name": "Optical Benefits", "url": "https://ctm.livepro.com.au/goto/nib-optical-benefits"}
                 );
                 break;
             case 'QCH':
@@ -1115,18 +1128,20 @@
                 break;
             case 'QTU':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/tuh"},
-                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/tuh-agreement-hospitals-amp-gap-scheme"},
-                    {"name" : "Dental Agreement", "url": "http://tuh.com.au/brisbane-health-hub/"},
-                    {"name" : "Eligibility", "url": "http://tuh.com.au/why-tuh/who-can-join-tuh/"}
+                    {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/tuh"},
+                    {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/tuh-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/tuh-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/tuh-dental-agreements"},
+                    {"name": "Optical Benefits", "url": "https://ctm.livepro.com.au/goto/tuh-optical-benefits"}
                 );
                 break;
             case 'WFD':
                 usefulLinks.push(
-                    {"name" : "Privatehealth.gov.au", "url": "https://ctm.livepro.com.au/goto/westfund1"},
-                    {"name" : "Hospital Network", "url": "https://ctm.livepro.com.au/goto/westfund-agreement-hospital-search"},
-                    {"name" : "Gap Cover Doctors", "url": "https://www.westfund.com.au/health-services/find-a-doctor/"},
-                    {"name" : "Dental Providers", "url": "https://www.westfund.com.au/health-services/provider-of-choice/"}
+                    {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/westfund1"},
+                    {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/westfund-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/westfund-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/westfund-dental-agreements"},
+                    {"name": "Optical Benefits", "url": "https://ctm.livepro.com.au/goto/westfund-optical-benefits"}
                 );
                 break;
             default:
