@@ -243,6 +243,16 @@
                 }
                 Results.model.travelFilters = _filters;
                 _displayCustomResults(false, true);
+
+                var TOTAL_PROVIDERS = 28;
+
+                if(_filters.PROVIDERS.length > 0 && _filters.PROVIDERS.length < TOTAL_PROVIDERS) {
+                    $('.brands-select-toggle').data('brands-toggle', 'none');
+                    $('.brands-select-toggle').empty().text('Select none');
+                }else{
+                    $('.brands-select-toggle').data('brands-toggle', 'all');
+                    $('.brands-select-toggle').empty().text('Select all');
+                }
                 break;
         }
     }
