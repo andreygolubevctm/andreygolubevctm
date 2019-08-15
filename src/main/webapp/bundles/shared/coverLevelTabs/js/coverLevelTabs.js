@@ -52,7 +52,7 @@
 		activeTabSet: [{
 			label: "Comprehensive",
 			rankingFilter: "C",
-			defaultTab: true, 
+			defaultTab: true,
 			showCount: true,
 			/**
 			 * The set of Results filters you want to add to the model based off your tab criteria.
@@ -90,6 +90,9 @@
 	function _coverTypeEvent (element) {
         var $el = $(element),
             tabIndex = $el.attr('data-clt-index');
+
+        var $elSibling = $('[data-clt-index="' + tabIndex + '"]').not($el[0]);
+
         log("[coverleveltabs] click", tabIndex);
 
         if(tabIndex === '' || settings.activeTabIndex === tabIndex) {
@@ -113,7 +116,8 @@
 
             // trigger filter call
             settings.activeTabSet[tabIndex].filter();
-            $el.siblings().removeClass('active').end().addClass('active');
+            $el.siblings().removeClass('active').prop('checked', false).end().addClass('active').prop('checked', true);
+			$elSibling.siblings().removeClass('active').prop('checked', false).end().addClass('active').prop('checked', true);
             settings.activeTabIndex = tabIndex;
             setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
             meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
@@ -180,6 +184,14 @@
 
 		$tabsContainer.off('click', '.clt-action').on('click', '.clt-action', function(e) {
 			_coverTypeEvent(this);
+			var $el = $(this),
+				tabIndex = $el.attr('data-clt-index');
+
+			if (tabIndex) {
+				var coverLevelText = settings.activeTabSet[tabIndex].label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
+				$('.mobile-active-cover-type').empty().text(coverLevelText);
+				$('#coverTypeDropdownBtn').dropdown('toggle');
+			}
 		});
 
         $tabsContainer.off('change', 'input[name="cover-type-mobile-radio-group"]').on('change', 'input[name="cover-type-mobile-radio-group"]', function (e) {
@@ -311,10 +323,11 @@
 		}
 
         $('.reset-travel-filters').empty().html(resetFilters);
-
+		$('.navbar-desktop-travel').empty().html(out);
+		$('.navbar-mobile-travel .mobile-cover-types').empty().html(mobileCoverTypes);
 		if (state != 'xs') {
-            $currentTabContainer.empty().html(out);
-            $('.navbar-mobile').empty();
+			$currentTabContainer.empty().html(out);
+           $('.navbar-mobile').empty();
 		} else {
             $('.mobile-cover-types').empty().html(mobileCoverTypes);
             $('.navbar-desktop').empty();
