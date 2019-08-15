@@ -321,6 +321,7 @@
 
             $body
                 .removeClass('outbound trial')
+                .removeClass('outbount cli')
                 .removeClass('nextgen')
 	            .removeClass('nextgenoutbound')
 	            .removeClass('nextgencli')
@@ -332,6 +333,7 @@
 
             $body
                 .removeClass('outbound trial')
+                .removeClass('outbount cli')
                 .removeClass('inbound')
                 .addClass('nextgen');
         }
