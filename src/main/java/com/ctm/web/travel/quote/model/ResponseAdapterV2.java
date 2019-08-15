@@ -80,16 +80,10 @@ public class ResponseAdapterV2 {
                 } else if(travelQuote.getService().equals("ZUJI")){
                     planDescription = travelQuote.getProduct().getLongTitle();
                 } else if(travelQuote.getService().equals("WEBJ")) {
-                    planDescription = "Webjet ";
-                    switch(request.getPolicyType()) {
-                        case MULTI:
-                            planDescription += travelQuote.getProduct().getLongTitle() + " <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
-                            break;
-                        case SINGLE:
-                            planDescription += travelQuote.getProduct().getLongTitle();
-                            break;
-                    }
-
+                    planDescription = "Webjet " + travelQuote.getProduct().getLongTitle();
+                    if(request.getPolicyType() == PolicyType.MULTI) {
+						planDescription += " <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
+					}
                 }
                 else if(travelQuote.getService().equals("JANE")) {
                     planDescription += "Travel With Jane - "+travelQuote.getProduct().getLongTitle();
