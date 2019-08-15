@@ -351,6 +351,10 @@
                 $body.addClass('trial');
             }
 
+            if (healthContactTypeSelection === 'cli') {
+                $body.addClass('cli');
+            }
+
             if ((healthContactTypeSelection === 'outbound') || isTrialContactType) {
 	            //contact type is set to outbound when Outbound or a trial is selected
 	            $healthContactType.val('outbound');
@@ -567,8 +571,7 @@
             $hospitalPublic = $hospitalScripts.filter('.classification-public'),
 		    $extrasScripts = $('.simples-dialogue-extras-cover'),
             selectedProduct = Results.getSelectedProduct(),
-            isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'hospital') &&
-                _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public';
+            isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'custom') && selectedProduct.custom.reform.tab1.benefits && selectedProduct.custom.reform.tab1.benefits.find(function(benefit) { return benefit.covered === 'Y'}) === undefined && selectedProduct.accident.covered === 'N';
 
 	    switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
