@@ -339,7 +339,7 @@
             _get: function(url, cb) {
                 var that = this;
                 if (belowPendingRequestsThreshold()) {
-                    this._sendRequest(url).done(done);
+                    this._sendRequest(url).then(done);
                 } else {
                     this.onDeckRequestArgs = [].slice.call(arguments, 0);
                 }
@@ -446,7 +446,7 @@
                     });
                     deferred = $.Deferred().resolve();
                 } else {
-                    deferred = $.getJSON(o.url).done(processPrefetchData);
+                    deferred = $.getJSON(o.url).then(processPrefetchData);
                 }
                 return deferred;
                 function processPrefetchData(data) {

@@ -1,6 +1,7 @@
 ;(function ($, undefined) {
 
-    var meerkat = window.meerkat;
+    var meerkat = window.meerkat,
+        exception = meerkat.logging.exception;
 
     var events = {
             tracking: {
@@ -214,8 +215,11 @@
 
             initLastFieldTracking();
             if (typeof meerkat !== 'undefined' && typeof meerkat.site !== 'undefined' && typeof meerkat.site.tracking !== 'undefined' && meerkat.site.tracking.userTrackingEnabled === true) {
-                meerkat.modules.utils.pluginReady('sessionCamRecorder').done(function () {
+                meerkat.modules.utils.pluginReady('sessionCamRecorder').then(function () {
                     initUserTracking();
+                })
+                .catch(function onError(obj, txt, errorThrown) {
+                    exception(txt + ': ' + errorThrown);
                 });
             }
             addGAClientID();
@@ -256,11 +260,14 @@
 
             if (values.email !== null && values.email !== '' && values.emailID === null) {
                 // Reset var deferred to the deferred result of the XHR object
-                deferred = getEmailId(values.email, values.marketOptIn, values.okToCall).done(function (result) {
+                deferred = getEmailId(values.email, values.marketOptIn, values.okToCall).then(function (result) {
                     if (typeof result.emailId !== 'undefined') {
                         values.emailID = result.emailId;
                         values.email = null;
                     }
+                })
+                .catch(function onError(obj, txt, errorThrown) {
+                    exception(txt + ': ' + errorThrown);
                 });
             }
         }

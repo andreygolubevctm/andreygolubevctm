@@ -813,10 +813,10 @@
         });
 
         $(document).on("keydown", function(e) {
-            if (e.ctrlKey && e.keyCode==39) {
+            if (e.altKey && e.keyCode==39) {
                 gotoPath("next");
             }
-            if (e.ctrlKey && e.keyCode==37){
+            if (e.altKey && e.keyCode==37){
                 gotoPath("previous");
             }
         });

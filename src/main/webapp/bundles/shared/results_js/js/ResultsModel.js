@@ -407,7 +407,7 @@ var ResultsModel = {
 
 				if(!isEmptyArray) {
 
-					Results.model.filterAndSort(false);
+					Results.model.filterAndSort(false, true);
 
 					Results.view.show();
 				}
@@ -456,14 +456,16 @@ var ResultsModel = {
 
 	},
 
-	filterAndSort: function(renderView){
+	filterAndSort: function(renderView, publishResultsDataReady){
 		Results.model.sort(renderView);
 		Results.model.filter(renderView);
 		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
 		meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY);
-		_.defer(function() {
-			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
-		});
+		if (publishResultsDataReady) {
+			_.defer(function() {
+				meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+			});
+		}
 	},
 
 	sort: function(renderView) {
@@ -696,7 +698,7 @@ var ResultsModel = {
 		};
 
 
-		var initialProducts = Results.model.sortedProducts.slice();
+		var initialProducts = _.isArray(Results.model.sortedProducts) && !_.isEmpty(Results.model.sortedProducts) ? Results.model.sortedProducts.slice() : [];
 		Results.model.filteredProducts = getFilteredProducts(initialProducts);
 
 		if( typeof Compare !== "undefined" ) Compare.applyFilters();
@@ -723,7 +725,7 @@ var ResultsModel = {
 
     filterUsingExcess: function( renderView, doNotGoToStart ){
 
-        var initialProducts = Results.model.sortedProducts.slice();
+        var initialProducts = _.isArray(Results.model.sortedProducts) && !_.isEmpty(Results.model.sortedProducts) ? Results.model.sortedProducts.slice() : [];
         var finalProducts = [];
 
         var valid, value;
@@ -784,7 +786,7 @@ var ResultsModel = {
     },
 
     travelResultFilter: function (renderView, doNotGoToStart, matchAllFilters) {
-        var initialProducts = Results.model.sortedProducts.slice();
+        var initialProducts = _.isArray(Results.model.sortedProducts) && !_.isEmpty(Results.model.sortedProducts) ? Results.model.sortedProducts.slice() : [];
         var destination = $('#travel_destination').val();
 
         var finalProducts = [];

@@ -9,6 +9,7 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
+        exception = meerkat.logging.exception,
         msg = meerkat.messaging;
 
     var events = {};
@@ -73,7 +74,7 @@
     }
 
     function setInitialPage() {
-        meerkat.modules.utils.pluginReady('sessionCamRecorder').done(function () {
+        meerkat.modules.utils.pluginReady('sessionCamRecorder').then(function () {
             updateVirtualPageFromJourneyEngine(meerkat.modules.journeyEngine.getCurrentStep());
             // If a guid is returned then a cookie 'sc.UserId' is created
             // with that value set for 8760 hours (1 year) and the same value
@@ -82,7 +83,10 @@
             if (window.sessionCamRecorder && _.isFunction(window.sessionCamRecorder.getSessionCamUserId)) {
                 window.sessionCamRecorder.getSessionCamUserId();
             }
-        });
+        })
+        .catch(function onError(obj, txt, errorThrown) {
+			exception(txt + ': ' + errorThrown);
+		});
     }
 
     function setResultsLoadingPage(data, delay) {

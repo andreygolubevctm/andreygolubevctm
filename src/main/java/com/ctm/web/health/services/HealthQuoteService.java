@@ -21,6 +21,7 @@ import com.ctm.web.core.providers.model.RatesheetOutgoingRequest;
 import com.ctm.web.core.providers.model.Request;
 import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.JourneyUpdateService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
@@ -90,6 +91,9 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
         super(providerFilterDAO, serviceConfigurationServiceBean);
     }
 
+    @Autowired
+    private JourneyUpdateService journeyUpdateService;
+
     public ResponseAdapterModel getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent,
                                           boolean isSimples, final Content payYourRateRise) throws Exception {
         Long transactionId = data.getTransactionId(); //transactionId cannot be empty
@@ -101,6 +105,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
 
         if (anonymousId!=null || userId!=null) {
             transactionDao.writeAuthIDs(transactionId,anonymousId,userId);
+            journeyUpdateService.publishInteraction("health", transactionId.toString(), anonymousId, userId);
         }
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthQuoteServiceBER", brand, HEALTH.getCode(), ofNullable(data.getEnvironmentOverride()));

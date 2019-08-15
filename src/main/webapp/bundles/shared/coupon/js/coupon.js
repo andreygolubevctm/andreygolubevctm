@@ -155,7 +155,7 @@
 			dataType: 'json',
 			data: data
 		})
-		.done(function onSuccess(json) {
+		.then(function onSuccess(json) {
 			setCurrentCoupon(json);
 			if (type !== 'simplesCouponLoad') {
 				populateFields();
@@ -165,7 +165,7 @@
 				successCallBack();
 			}
 		})
-		.fail(function onError(obj, txt, errorThrown) {
+		.catch(function onError(obj, txt, errorThrown) {
 			exception(txt + ': ' + errorThrown);
 		});
 	}
@@ -187,11 +187,11 @@
 				couponCode: couponCode
 			}
 		})
-		.done(function onSuccess(json) {
+		.then(function onSuccess(json) {
 			setCurrentCoupon(json);
 			validateField();
 		})
-		.fail(function onError(obj, txt, errorThrown) {
+		.catch(function onError(obj, txt, errorThrown) {
 			exception(txt + ': ' + errorThrown);
 		});
 	}
