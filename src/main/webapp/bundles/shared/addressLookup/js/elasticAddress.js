@@ -479,7 +479,7 @@
 
             var self = this;
             meerkat.modules.comms.get({
-                url: "spring/rest/address/suburbs/get.json",
+                url: "/ctm/spring/rest/address/suburbs/get.json",
                 cache: true,
                 dataType: 'json',
                 errorLevel: "silent",

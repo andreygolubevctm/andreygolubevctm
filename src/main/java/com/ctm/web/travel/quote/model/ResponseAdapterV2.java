@@ -80,16 +80,10 @@ public class ResponseAdapterV2 {
                 } else if(travelQuote.getService().equals("ZUJI")){
                     planDescription = travelQuote.getProduct().getLongTitle();
                 } else if(travelQuote.getService().equals("WEBJ")) {
-                    planDescription = "Webjet";
-                    switch(request.getPolicyType()) {
-                        case MULTI:
-                            planDescription += " AMT <br>Worldwide <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
-                            break;
-                        case SINGLE:
-                            planDescription += " "+travelQuote.getProduct().getLongTitle();
-                            break;
-                    }
-
+                    planDescription = "Webjet " + travelQuote.getProduct().getLongTitle();
+                    if(request.getPolicyType() == PolicyType.MULTI) {
+						planDescription += " <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
+					}
                 }
                 else if(travelQuote.getService().equals("JANE")) {
                     planDescription += "Travel With Jane - "+travelQuote.getProduct().getLongTitle();
@@ -263,7 +257,7 @@ public class ResponseAdapterV2 {
                     }
                 }
                 // check if the region retrieved from the returned products is equal to the parsed user request
-                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0) {
+                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0 ) {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 
