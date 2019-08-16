@@ -321,7 +321,7 @@
 
             $body
                 .removeClass('outbound trial')
-                .removeClass('outbount cli')
+                .removeClass('outbound cli')
                 .removeClass('nextgen')
 	            .removeClass('nextgenoutbound')
 	            .removeClass('nextgencli')
@@ -333,7 +333,7 @@
 
             $body
                 .removeClass('outbound trial')
-                .removeClass('outbount cli')
+                .removeClass('outbound cli')
                 .removeClass('inbound')
                 .addClass('nextgen');
         }
@@ -573,7 +573,7 @@
             $hospitalPublic = $hospitalScripts.filter('.classification-public'),
 		    $extrasScripts = $('.simples-dialogue-extras-cover'),
             selectedProduct = Results.getSelectedProduct(),
-            isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'custom') && selectedProduct.custom.reform.tab1.benefits && selectedProduct.custom.reform.tab1.benefits.find(function(benefit) { return benefit.covered === 'Y'}) === undefined && selectedProduct.accident.covered === 'N';
+            isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'custom') && selectedProduct.custom.reform.tab1.benefits && selectedProduct.custom.reform.tab1.benefits.find(function(benefit) { return benefit.covered === 'Y'; }) === undefined && selectedProduct.accident.covered === 'N';
 
 	    switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
