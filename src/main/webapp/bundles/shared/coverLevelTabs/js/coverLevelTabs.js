@@ -191,6 +191,10 @@
 				var coverLevelText = settings.activeTabSet[tabIndex].label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
 				$('.mobile-active-cover-type').empty().text(coverLevelText);
 				$('#coverTypeDropdownBtn').dropdown('toggle');
+			}else{
+				//Custom tab doesn't have a tab index so its a safe bet thats what we have clicked 
+				$('.mobile-active-cover-type').empty().text('Custom');
+				$('#coverTypeDropdownBtn').dropdown('toggle');
 			}
 		});
 
@@ -232,12 +236,9 @@
 	 */
 	function activateDefault() {
 		var state = meerkat.modules.deviceMediaState.get();
-		if(state === 'xs') {
 			$('.visible-xs .cover-type-mobile.active').click();
 			$('#coverTypeDropdownBtn').dropdown('toggle');
-		} else {
 			$('.hidden-xs .clt-action.active').click();
-		}
 	}
 	
 	function transformTabs(tabs) {
@@ -323,16 +324,12 @@
 		}
 
         $('.reset-travel-filters').empty().html(resetFilters);
-		$('.navbar-desktop-travel').empty().html(out);
-		$('.navbar-mobile-travel .mobile-cover-types').empty().html(mobileCoverTypes);
-		if (state != 'xs') {
-			$currentTabContainer.empty().html(out);
-           $('.navbar-mobile').empty();
-		} else {
-            $('.mobile-cover-types').empty().html(mobileCoverTypes);
-            $('.navbar-desktop').empty();
-            $('.navbar__travel-filters').show();
-		}
+				$('.navbar-mobile-travel .mobile-cover-types').empty().html(mobileCoverTypes);
+				$currentTabContainer.empty().html(out);
+        $('.navbar-mobile').empty();
+        $('.mobile-cover-types').empty().html(mobileCoverTypes);
+        $('.navbar-desktop').empty();
+      	$('.navbar__travel-filters').show();
 
 		meerkat.modules.travelResultFilters.resetCustomFilters();
 
@@ -391,7 +388,6 @@
         $('[data-travel-filter="custom"]').remove();
         $('.clt-action').removeClass('active');
 
-        if (state !== 'xs') {
             customTab += '<div class="col-xs-' + xsCols + ' text-center clt-action active" data-travel-filter="custom">';
             customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')';
             customTab += '</div>';
@@ -402,8 +398,8 @@
                 $(this).siblings().removeClass('active').end().addClass('active');
                 $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
                 Results.model.travelResultFilter(true, true, true);
-            });
-		} else {
+						});
+						
             if ($('[data-travel-filter="custom-mobile"]').length === 0) {
                 customRadioMobile += '<div class="dropdown-item">';
                 customRadioMobile += 	'<div class="radio">';
@@ -412,7 +408,8 @@
                 customRadioMobile += 	'</div>';
                 customRadioMobile += '</div>';
                 $('.mobile-cover-types').append(customRadioMobile);
-			}
+						}
+
             $('.mobile-active-cover-type').empty().text('Custom');
             $('[data-travel-filter="custom-mobile"]').prop("checked", true);
 
@@ -422,7 +419,8 @@
                 Results.model.travelResultFilter(true, true, true);
                 $('#coverTypeDropdownBtn').dropdown('toggle');
 			});
-		}
+
+			applyEventListeners();
 	}
 
 	// return the originating tab value

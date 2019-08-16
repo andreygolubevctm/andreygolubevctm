@@ -25,10 +25,10 @@
 			</div>
 		</div>
 		<div class="main-filter-buttons flex-center-align">
-			<div class="col-md-8 col-xs-7 col-sm-7">
+			<div class="col-md-12 col-xs-7 col-sm-7">
 				<div class="flex-center-align hidden-xs hidden-sm">
 					<div><a href="javascript:;" data-slide-control="previous"><span class="icon icon-arrow-left"></span> <span>Revise details</span></a></div>
-					<div class="col-xs-9 col-md-9">
+					<div class="col-xs-9 col-md-10">
 						<div class="navbar-desktop-travel coverLevelTabs" style="align-items: center">
 							<div class="currentTabsContainer"></div>
 						</div>
@@ -54,7 +54,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-5 col-md-4 col-sm-5 coverLevelTabs">
+			<div class="col-xs-5 col-md-2 col-sm-5 coverLevelTabs">
 				<div class="navbar-mobile-travel filters-buttons flex-center-align flex-right-align">
 					<div class="clt-trip-filter"><travel_results_filter_types:more_filters /></div>
 					<div class="clt-trip-filter"><travel_results_filter_types:excess_filter /></div>
