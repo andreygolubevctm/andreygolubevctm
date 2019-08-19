@@ -11,13 +11,13 @@
             <div class="btn-group btn-group-justified thinner_input trip_type roundedCheckboxIcons">
                 <label class="btn btn-form-inverse icon-trip-type-cruise">
                     <field_v1:hidden xpath="travel/tripType/cruising" />
-                    <input data-attach="true" type="checkbox" tripType="cruising" name="travel_tripType_cruising_uiElement"" id="travel_tripType_cruising_uiElement" value="" data-msg-required="Please choose trip types" aria-required="true">
+                    <input data-attach="true" type="checkbox" tripType="cruising" name="travel_tripType_cruising_uiElement" id="travel_tripType_cruising_uiElement" value="" data-msg-required="Please choose trip types" aria-required="true">
                     Cruising
                 </label>
                 <field_v2:help_icon helpId="577" tooltipClassName="" />
                 <label class="btn btn-form-inverse icon-trip-type-snow">
                     <field_v1:hidden xpath="travel/tripType/snowSports" />
-                    <input data-attach="true" type="checkbox" tripType="snowSports" name="travel_tripType_snowSports_uiElement"" id="travel_tripType_snowSports_uiElement" value="" data-msg-required="Please choose trip types" aria-required="true">
+                    <input data-attach="true" type="checkbox" tripType="snowSports" name="travel_tripType_snowSports_uiElement" id="travel_tripType_snowSports_uiElement" value="" data-msg-required="Please choose trip types" aria-required="true">
                     Snow sports
                 </label>
                 <field_v2:help_icon helpId="576" tooltipClassName="" />

@@ -41,6 +41,9 @@ public class TravelQuote {
     @Name
     private String surname;
 
+    @Name
+    private String preExistingMedicalCondition;
+
     @NotNull(message = "Please choose how many adults")
     private Integer adults;
 
@@ -109,6 +112,14 @@ public class TravelQuote {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getPreExistingMedicalCondition() {
+        return preExistingMedicalCondition;
+    }
+
+    public void setPreExistingMedicalCondition(String preExistingMedicalCondition) {
+        this.preExistingMedicalCondition = preExistingMedicalCondition;
     }
 
     public Integer getChildren() {

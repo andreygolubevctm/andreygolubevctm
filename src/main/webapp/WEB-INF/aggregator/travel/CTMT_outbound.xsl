@@ -15,6 +15,13 @@
 			</xsl:choose>
 		</xsl:variable>
 
+		<xsl:variable name="preExistingMedicalCondition">
+			<xsl:choose>
+				<xsl:when test="preExistingMedicalCondition = 'Y'">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
 		<xsl:variable name="numberOfAdults">
 			<xsl:choose>
 				<xsl:when test="number(adults) = adults"><xsl:value-of select="adults"/></xsl:when>
@@ -81,6 +88,7 @@
 		"clientIp":"<xsl:value-of select="clientIpAddress" />",
 		"payload": {
 			"policyType":"<xsl:value-of select="$policyType"/>",
+			"preExistingMedicalCondition":"<xsl:value-of select="$preExistingMedicalCondition"/>",
 			"mobileUrls":<xsl:value-of select="$mobileUrls" />,
 			"numberOfAdults":<xsl:value-of select="$numberOfAdults"/>,
 			"numberOfChildren":<xsl:value-of select="$numberOfChildren"/>,
