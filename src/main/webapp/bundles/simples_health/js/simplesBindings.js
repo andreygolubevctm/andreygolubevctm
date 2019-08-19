@@ -341,7 +341,7 @@
         else {
 	        var healthContactTypeSelectionStr = healthContactTypeSelection.toLowerCase();
             $body
-                .removeClass('inbound trial nextgen nextgenoutbound nextgencli')
+                .removeClass('inbound cli trial nextgen nextgenoutbound nextgencli')
 	            .toggleClass(healthContactTypeSelectionStr, isOutboundNextGenContactType(healthContactTypeSelection))
                 .addClass('outbound');
 
