@@ -26,8 +26,6 @@ public class TravelQuoteRequest {
     private Integer amtDuration;
     private List<String> destinations = new ArrayList<>();
 
-    private boolean preExistingMedicalCondition;
-
     @Deprecated
     private boolean mobileUrls = false;
 
@@ -154,19 +152,6 @@ public class TravelQuoteRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public boolean getPreExistingMedicalCondition() {
-        return preExistingMedicalCondition;
-    }
-
-    public void setPreExistingMedicalCondition(String preExistingMedicalCondition) {
-        if (preExistingMedicalCondition.equals("Y")) {
-            this.preExistingMedicalCondition = true;
-        }
-        else {
-            this.preExistingMedicalCondition = false;
-        }
     }
 
     public TripType getTripType() {

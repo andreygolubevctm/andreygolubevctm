@@ -43,8 +43,6 @@ public class RequestAdapterV2 {
 
         quoteRequest.setTravellers(travellers);
         quoteRequest.setDestinations(quote.getDestinations());
-        quoteRequest.setPreExistingMedicalCondition(quote.getPreExistingMedicalCondition());
-
         if (quote.getPolicyType().equals("S")) {
             quoteRequest.setPolicyType(PolicyType.SINGLE);
             SingleTripDetails details = new SingleTripDetails();

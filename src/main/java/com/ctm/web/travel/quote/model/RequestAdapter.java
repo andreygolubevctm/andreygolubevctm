@@ -31,7 +31,6 @@ public class RequestAdapter {
         quoteRequest.setNumberOfAdults(quote.getAdults());
         quoteRequest.setNumberOfChildren(quote.getChildren());
         quoteRequest.setDestinations(quote.getDestinations());
-        quoteRequest.setPreExistingMedicalCondition(quote.getPreExistingMedicalCondition());
 
         if(quote.getPolicyType().equals("S")){
             quoteRequest.setPolicyType(PolicyType.SINGLE);
