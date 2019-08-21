@@ -15,6 +15,11 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-3 col-md-2 text-left filter-section">
                     <div class="dropdown-item range-filter">
+                        <b>Medical Conditions</b>
+                        <field_v2:help_icon helpId="583" tooltipClassName=""/>
+                    </div>
+                    <travel_results_filters:medical_conditions_assessed/>
+                    <div class="dropdown-item range-filter">
                         <b>Reset filters</b>
                         <field_v2:help_icon helpId="583" tooltipClassName=""/>
                     </div>

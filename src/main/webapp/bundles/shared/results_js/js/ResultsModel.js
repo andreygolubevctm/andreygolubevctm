@@ -791,6 +791,7 @@ var ResultsModel = {
 
         var finalProducts = [];
         var _filters = {
+        	CONDITIONS: false,
             EXCESS: 0,
             LUGGAGE: 0,
             CXDFEE: 0,
@@ -802,8 +803,11 @@ var ResultsModel = {
         $.each(initialProducts, function (productIndex, product) {
             if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
 
-              // Reset the Rental vehicle benfit value
+              // Reset the Rental vehicle benefit value
               _filters.RENTALVEHICLE = 0;
+
+              // Set CONDITIONS filter to medicalCondsAssessed value
+              _filters.CONDITIONS = product.medicalCondsAssessed;
 
                 $.each(product.benefits, function (index, benefit) {
                     switch (benefit.type) {
@@ -836,7 +840,8 @@ var ResultsModel = {
                 });
 
 				if (matchAllFilters) {
-                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+                    if ((_filters.CONDITIONS === _modelFilters.CONDITIONS) &&
+                    	(_filters.EXCESS <= _modelFilters.EXCESS) &&
                        ((_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
                         (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
                         ((destination !== 'AUS' && _filters.MEDICAL >= _modelFilters.MEDICAL) || 
@@ -845,7 +850,8 @@ var ResultsModel = {
                         finalProducts.push(product);
                     }
 				} else {
-                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+                    if ((_filters.CONDITIONS === _modelFilters.CONDITIONS) &&
+						(_filters.EXCESS <= _modelFilters.EXCESS) &&
                        ((_filters.LUGGAGE >= _modelFilters.LUGGAGE) ||
                         (_filters.CXDFEE >= _modelFilters.CXDFEE) ||
                         (_filters.MEDICAL >= _modelFilters.MEDICAL) ||
@@ -859,8 +865,8 @@ var ResultsModel = {
         });
 
         Results.model.filteredProducts = finalProducts;
-				Results.model.travelFilteredProductsCount = finalProducts.length;
-				meerkat.modules.travelResults.setColVisibilityAndStylesByTravelType(destination === 'AUS');
+        Results.model.travelFilteredProductsCount = finalProducts.length;
+        meerkat.modules.travelResults.setColVisibilityAndStylesByTravelType(destination === 'AUS');
 
         if (typeof Compare !== "undefined") Compare.applyFilters();
 

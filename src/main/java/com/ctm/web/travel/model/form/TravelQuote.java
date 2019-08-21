@@ -42,7 +42,7 @@ public class TravelQuote {
     private String surname;
 
     @Name
-    private String preExistingMedicalCondition;
+    private Boolean medicalCondsAssessed;
 
     @NotNull(message = "Please choose how many adults")
     private Integer adults;
@@ -114,12 +114,12 @@ public class TravelQuote {
         this.surname = surname;
     }
 
-    public String getPreExistingMedicalCondition() {
-        return preExistingMedicalCondition;
+    public Boolean getMedicalCondsAssessed() {
+        return medicalCondsAssessed;
     }
 
-    public void setPreExistingMedicalCondition(String preExistingMedicalCondition) {
-        this.preExistingMedicalCondition = preExistingMedicalCondition;
+    public void setMedicalCondsAssessed(Boolean medicalCondsAssessed) {
+        this.medicalCondsAssessed = medicalCondsAssessed;
     }
 
     public Integer getChildren() {

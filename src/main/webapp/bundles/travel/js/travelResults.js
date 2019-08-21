@@ -240,6 +240,7 @@
 		// This will render the unavailable combined template
 		$(Results.settings.elements.resultsContainer).on("noFilteredResults", function() {
 			Results.view.show();
+			setColVisibilityAndStylesByTravelType(isDomestic());
 		});
 
 		// If error occurs, go back in the journey

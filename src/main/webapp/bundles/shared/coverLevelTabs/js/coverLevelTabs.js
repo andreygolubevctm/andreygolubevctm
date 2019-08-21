@@ -324,8 +324,8 @@
 		}
 
         $('.reset-travel-filters').empty().html(resetFilters);
-				$('.navbar-mobile-travel .mobile-cover-types').empty().html(mobileCoverTypes);
-				$currentTabContainer.empty().html(out);
+		$('.navbar-mobile-travel .mobile-cover-types').empty().html(mobileCoverTypes);
+		$currentTabContainer.empty().html(out);
         $('.navbar-mobile').empty();
         $('.mobile-cover-types').empty().html(mobileCoverTypes);
         $('.navbar-desktop').empty();
