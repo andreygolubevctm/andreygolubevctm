@@ -50,7 +50,7 @@
 			$component.data("addressfieldid", addressFieldId);
 
 			if (elasticSearch) {
-				url = '/ctm/spring/rest/address/street/get.json';
+				url = 'spring/rest/address/street/get.json';
 				params = {
 					name: $component.attr('name'),
 					remote: {
