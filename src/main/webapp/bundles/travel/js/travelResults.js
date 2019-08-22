@@ -367,6 +367,26 @@
 			var domestic = isDomestic();
 
 			setColVisibilityAndStylesByTravelType(domestic);
+
+			$('.medicalCondsAssessed').qtip({
+				content: {
+					text: 'Insurer allows assessment of pre-existing medical conditions.'
+				},
+				show: { event: 'mouseenter click' },
+				position: {
+					my: 'top left',
+					at: 'bottom left',
+					adjust: { x: 4 }
+				},
+				style: {
+					classes: 'qtip-bootstrap',
+					tip: {
+						width: 14,
+						height: 12,
+						mimic: 'center'
+					}
+				}
+			});
 		});
 
 		// Handle result row click

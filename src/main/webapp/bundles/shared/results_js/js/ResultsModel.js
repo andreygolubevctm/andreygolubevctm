@@ -840,7 +840,7 @@ var ResultsModel = {
                 });
 
 				if (matchAllFilters) {
-                    if ((_filters.CONDITIONS === _modelFilters.CONDITIONS) &&
+                    if ((!_modelFilters.CONDITIONS || (_filters.CONDITIONS === _modelFilters.CONDITIONS)) &&
                     	(_filters.EXCESS <= _modelFilters.EXCESS) &&
                        ((_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
                         (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
@@ -850,7 +850,7 @@ var ResultsModel = {
                         finalProducts.push(product);
                     }
 				} else {
-                    if ((_filters.CONDITIONS === _modelFilters.CONDITIONS) &&
+                    if ((!_modelFilters.CONDITIONS || (_filters.CONDITIONS === _modelFilters.CONDITIONS)) &&
 						(_filters.EXCESS <= _modelFilters.EXCESS) &&
                        ((_filters.LUGGAGE >= _modelFilters.LUGGAGE) ||
                         (_filters.CXDFEE >= _modelFilters.CXDFEE) ||
