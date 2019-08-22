@@ -10,7 +10,8 @@
         },
         moduleEvents = events.elasticAddress;
 
-    var baseURL = '';
+    var baseURL = '',
+        context = '';
 
     /**
      * List of elements that are referenced by this plugin
@@ -65,6 +66,18 @@
             $el.elasticAddress(options);
         });
     }
+
+	function getContext() {
+		if(context === '') {
+			var tmpContext = meerkat.site.urls.context;
+			if(!_.isEmpty(tmpContext) && tmpContext.indexOf("app") !== -1) {
+				context = "/app/";
+			} else {
+				context = "/ctm/";
+			}
+		}
+		return context;
+	}
 
     meerkat.modules.register("elasticAddress", {
         init: initElasticAddress,
@@ -479,7 +492,7 @@
 
             var self = this;
             meerkat.modules.comms.get({
-                url: "spring/rest/address/suburbs/get.json",
+                url: getContext() + "spring/rest/address/suburbs/get.json",
                 cache: true,
                 dataType: 'json',
                 errorLevel: "silent",
