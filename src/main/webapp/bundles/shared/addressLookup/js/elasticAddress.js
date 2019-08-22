@@ -10,7 +10,8 @@
         },
         moduleEvents = events.elasticAddress;
 
-    var baseURL = '';
+    var baseURL = '',
+        context = '';
 
     /**
      * List of elements that are referenced by this plugin
@@ -465,6 +466,17 @@
                 postCodeField.toggleClass("invalidPostcode", !valid).valid();
             });
         },
+        getContext: function() {
+            if(context === '') {
+                var tmpContext = meerkat.site.urls.context;
+                if(!_.isEmpty(tmpContext) && tmpContext.indexOf("app") !== -1) {
+                    context = "app";
+                } else {
+                    context = "ctm";
+                }
+            }
+            return "/" + context + "/";
+        },
         updateSuburb: function (code, callback) {
 
             this.resetNonStdFields(false, false);
@@ -479,7 +491,7 @@
 
             var self = this;
             meerkat.modules.comms.get({
-                url: "spring/rest/address/suburbs/get.json",
+                url: getContext() + "spring/rest/address/suburbs/get.json",
                 cache: true,
                 dataType: 'json',
                 errorLevel: "silent",
