@@ -67,6 +67,18 @@
         });
     }
 
+	function getContext() {
+		if(context === '') {
+			var tmpContext = meerkat.site.urls.context;
+			if(!_.isEmpty(tmpContext) && tmpContext.indexOf("app") !== -1) {
+				context = "/app/";
+			} else {
+				context = "/ctm/";
+			}
+		}
+		return context;
+	}
+
     meerkat.modules.register("elasticAddress", {
         init: initElasticAddress,
         setupElasticAddressPlugin: setupElasticAddressPlugin,
@@ -465,17 +477,6 @@
             context.updateSuburb($(event.target).val(), function validatePostCode(valid) {
                 postCodeField.toggleClass("invalidPostcode", !valid).valid();
             });
-        },
-        getContext: function() {
-            if(context === '') {
-                var tmpContext = meerkat.site.urls.context;
-                if(!_.isEmpty(tmpContext) && tmpContext.indexOf("app") !== -1) {
-                    context = "app";
-                } else {
-                    context = "ctm";
-                }
-            }
-            return "/" + context + "/";
         },
         updateSuburb: function (code, callback) {
 

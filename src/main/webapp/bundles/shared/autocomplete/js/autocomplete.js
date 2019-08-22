@@ -40,12 +40,12 @@
 		if(context === '') {
 			var tmpContext = meerkat.site.urls.context;
 			if(!_.isEmpty(tmpContext) && tmpContext.indexOf("app") !== -1) {
-				context = "app";
+				context = "/app/";
 			} else {
-				context = "ctm";
+				context = "/ctm/";
 			}
 		}
-		return "/" + context + "/";
+		return context;
     }
 
 	function setTypeahead() {
