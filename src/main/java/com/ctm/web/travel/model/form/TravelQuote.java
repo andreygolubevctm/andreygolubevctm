@@ -41,7 +41,6 @@ public class TravelQuote {
     @Name
     private String surname;
 
-    @Name
     private Boolean medicalCondsAssessed;
 
     @NotNull(message = "Please choose how many adults")
