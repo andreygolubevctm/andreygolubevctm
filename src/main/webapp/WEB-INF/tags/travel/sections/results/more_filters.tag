@@ -14,16 +14,20 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 col-sm-3 col-md-2 text-left filter-section">
-                    <div class="dropdown-item range-filter">
-                        <b>Medical Conditions</b>
-                        <field_v2:help_icon helpId="646" tooltipClassName=""/>
+                    <div class="col-xs-6 col-sm-12 no-padding">
+                        <div class="dropdown-item range-filter">
+                            <b>Medical Conditions</b>
+                            <field_v2:help_icon helpId="646" tooltipClassName=""/>
+                        </div>
+                        <travel_results_filters:medical_conditions_assessed/>
                     </div>
-                    <travel_results_filters:medical_conditions_assessed/>
-                    <div class="dropdown-item range-filter">
-                        <b>Reset filters</b>
-                        <field_v2:help_icon helpId="583" tooltipClassName=""/>
+                    <div class="col-xs-6 col-sm-12 no-padding">
+                        <div class="dropdown-item range-filter">
+                            <b>Product Groupings</b>
+                            <field_v2:help_icon helpId="583" tooltipClassName=""/>
+                        </div>
+                        <div class="reset-travel-filters"></div>
                     </div>
-                    <div class="reset-travel-filters"></div>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-3 text-left filter-section">
                     <div class="dropdown-item range-filter">

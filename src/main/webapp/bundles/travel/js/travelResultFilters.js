@@ -205,7 +205,7 @@
             }
 
             toggleTimeout = setTimeout(function () {
-                _displayCustomResults(false, true);
+                _displayCustomResults(true);
             }, 1000);
 
         });
@@ -223,27 +223,27 @@
             case 'CONDITIONS':
                 _filters.CONDITIONS = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true, true);
+                _displayCustomResults(true);
                 break;
             case 'LUGGAGE':
                 _filters.LUGGAGE = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true, true);
+                _displayCustomResults(true);
                 break;
             case 'CXDFEE':
                 _filters.CXDFEE = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true, true);
+                _displayCustomResults(true);
                 break;
             case 'MEDICAL':
                 _filters.MEDICAL = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true, true);
+                _displayCustomResults(true);
                 break;
             case 'RENTALVEHICLE':
                 _filters.RENTALVEHICLE = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true, true);
+                _displayCustomResults(true);
                 break;
             case 'PROVIDERS':
                 if (_filters.PROVIDERS.indexOf(value) == -1) {
@@ -252,7 +252,7 @@
                     _filters.PROVIDERS.splice(_filters.PROVIDERS.indexOf(value), 1);
                 }
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(false, true);
+                _displayCustomResults(true);
 
                 var TOTAL_PROVIDERS = 28;
 
@@ -279,21 +279,18 @@
 
         var _coverTypeValues = {
             C: {
-                CONDITIONS: false,
                 LUGGAGE: 5000,
                 CXDFEE: destination === 'AUS' ? 10000 : 20000,
                 MEDICAL: 20000000,
                 RENTALVEHICLE: 0
             },
             M: {
-                CONDITIONS: false,
                 LUGGAGE: 2500,
                 CXDFEE: 5000,
                 MEDICAL: 10000000,
                 RENTALVEHICLE: 0
             },
             B: {
-                CONDITIONS: false,
                 LUGGAGE: 0,
                 CXDFEE: 0,
                 MEDICAL: 5000000,
@@ -329,7 +326,7 @@
 
         meerkat.modules.customRangeSlider.init();
         Results.model.travelFilters = _filters;
-        _displayCustomResults(false, (cover === 'B' ? false : true));
+        _displayCustomResults(cover === 'B' ? false : true);
     }
 
     /**
@@ -388,17 +385,13 @@
     }
 
     /**
-     * Display the custom filter results
-     * @param customFilter - boolean value for custom filter
+     * Display the custom filter results\
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
-    function _displayCustomResults(customFilter, matchAllFilter) {
+    function _displayCustomResults(matchAllFilter) {
         if (state === 'lg') {
             Results.model.travelResultFilter(true, true, matchAllFilter);
             meerkat.modules.coverLevelTabs.buildCustomTab();
-        }
-        if (customFilter) {
-            $('input[name="reset-filters-radio-group"]').prop('checked', false);
         }
     }
 
