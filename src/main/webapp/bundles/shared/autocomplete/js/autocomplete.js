@@ -13,7 +13,8 @@
         },
         moduleEvents = events.autocomplete;
 
-	var baseURL = '';
+	var baseURL = '',
+		context = '';
 
 	function initAutoComplete() {
 		$(document).ready(function(){
@@ -35,6 +36,18 @@
         baseURL = url || '';
     }
 
+    function getContext() {
+		if(context === '') {
+			var tmpContext = meerkat.site.urls.context;
+			if(!_.isEmpty(tmpContext) && tmpContext.indexOf("app") !== -1) {
+				context = "/app/";
+			} else {
+				context = "/ctm/";
+			}
+		}
+		return context;
+    }
+
 	function setTypeahead() {
 		var $typeAheads = $('input.typeahead'),
 			params = null;
@@ -50,7 +63,7 @@
 			$component.data("addressfieldid", addressFieldId);
 
 			if (elasticSearch) {
-				url = '/ctm/spring/rest/address/street/get.json';
+				url = getContext() + 'spring/rest/address/street/get.json';
 				params = {
 					name: $component.attr('name'),
 					remote: {
