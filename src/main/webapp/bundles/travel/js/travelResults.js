@@ -367,26 +367,6 @@
 			var domestic = isDomestic();
 
 			setColVisibilityAndStylesByTravelType(domestic);
-
-			$('.medicalCondsAssessed').qtip({
-				content: {
-					text: 'Insurer allows assessment of pre-existing medical conditions.'
-				},
-				show: { event: 'mouseenter click' },
-				position: {
-					my: 'top right',
-					at: 'bottom right',
-					adjust: { x: -4 }
-				},
-				style: {
-					classes: 'qtip-bootstrap',
-					tip: {
-						width: 14,
-						height: 12,
-						mimic: 'center'
-					}
-				}
-			});
 		});
 
 		// Handle result row click
@@ -438,6 +418,26 @@
 		// alter background colour for every second column
 		$(".luggageAmount").toggleClass("evenRow", !isDomestic);
 		$(".cdxfeeAmount").toggleClass("evenRow", isDomestic);
+
+		$('.medicalCondsAssessed').qtip({
+			content: {
+				text: 'Insurer allows assessment of pre-existing medical conditions.'
+			},
+			show: { event: 'mouseenter click' },
+			position: {
+				my: 'top right',
+				at: 'bottom right',
+				adjust: { x: -4 }
+			},
+			style: {
+				classes: 'qtip-bootstrap',
+				tip: {
+					width: 14,
+					height: 12,
+					mimic: 'center'
+				}
+			}
+		});
 	}
 
 	function launchOfferTerms(event) {
