@@ -158,16 +158,16 @@
 
 					<div class="col-sm-12 col-lg-2 cta">
 						<div class="row">
-							<div class="col-sm-4 col-sm-pull-4 col-lg-pull-0 col-lg-6 moreInfo">
+							<div class="col-sm-4 col-sm-pull-0 col-lg-pull-0 col-lg-6 moreInfo">
 								<a href="javascript:;" class="btn-more-info" data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">More Info</a>
 							</div>
-							<div class="col-sm-4 col-sm-pull-4 col-lg-pull-0 col-lg-4 PDS">
+							<div class="col-sm-4 col-sm-pull-1 col-lg-pull-0 col-lg-4 PDS">
 								<a href="{{=obj.subTitle}}" target="_blank" class="showDoc">PDS</a>
 							</div>
 							{{ if (obj.medicalCondsAssessed) { }}
 								<img src="assets/graphics/travel-medical-conditions-assessed.svg" class="medicalCondsAssessed"/>
 							{{ } }}
-							<div class="col-sm-4 col-sm-push-8 col-lg-push-0 col-lg-12 buyNow">
+							<div class="col-sm-4 col-sm-pull-1 col-lg-push-0 col-lg-12 buyNow">
 								<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
 									<span>Continue to Insurer</span> <span class="icon icon-arrow-right" /></a>
 							</div>
@@ -177,6 +177,9 @@
 
 				<%-- START XS Top Row --%>
 				<div class="row visible-xs">
+					{{ if (obj.medicalCondsAssessed) { }}
+						<img src="assets/graphics/travel-medical-conditions-assessed.svg" class="medicalCondsAssessed" onclick="event.stopPropagation();"/>
+					{{ } }}
 					<div class="col-xs-3 logoContainer">
 						{{= logo }}
 					</div>
@@ -194,10 +197,8 @@
 										</span>
 										<span class="priceTitle">Price</span>
 									</div>
-									<div class="col-xs-6 gotoContainer">
-										<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
-											<span>Go to Insurer</span> <span class="icon icon-arrow-right" />
-										</a>
+									<div class="col-xs-6 text-center infoContainer">
+										<a href="javascript:;">More Info <span class="icon icon-angle-right" /></a>
 									</div>
 								</div>
 								<div class="clearfix btmContainer">
@@ -205,8 +206,10 @@
 										<span class="excessAmount">{{= obj.info.excess }}</span>
 										<span class="excessTitle">Excess</span>
 									</div>
-									<div class="col-xs-6 text-center infoContainer">
-											<a href="javascript:;">More Info <span class="icon icon-angle-right" /></a>
+									<div class="col-xs-6 gotoContainer">
+										<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
+											<span>Go to Insurer</span> <span class="icon icon-arrow-right" />
+										</a>
 									</div>
 								</div>
 							</div>
