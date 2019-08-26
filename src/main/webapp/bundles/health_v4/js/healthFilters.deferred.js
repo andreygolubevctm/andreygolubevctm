@@ -111,6 +111,25 @@
                     }
                 }
             },
+            "abd": {
+                name: 'health_filterBar_abd',
+                defaultValueSourceSelector: 'input[name="health_healthCover_abd"]',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        var isChecked = $(filterObject.defaultValueSourceSelector + ":checked").length > 0 && $(filterObject.defaultValueSourceSelector + ":checked").val() === 'Y';
+                        $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
+                    },
+                    update: function (filterObject) {
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        if (isChecked) {
+                            $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
+                        } else {
+                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change', [false]);
+                        }
+                    }
+                }
+            },
             "awardsScheme": {
                 name: 'health_filterBar_awardsScheme',
                 defaultValueSourceSelector: 'input[name="health_rewardsSchemeFirst"]',
@@ -278,6 +297,11 @@
                 {
                     template: '#filter-rebate-template',
                     container: '.results-filters-rebate',
+                    context: '#results-sidebar'
+                },
+                {
+                    template: '#filter-abd-template',
+                    container: '.results-filters-abd',
                     context: '#results-sidebar'
                 },
                 {

@@ -245,14 +245,9 @@ public class ResponseAdapterV2 {
         price.setDiscountAmount(formatCurrency(quotePrice.getDiscountAmount(), true, true));
         price.setDiscountPercentage(quotePrice.getDiscountPercentage());
 
-        String abdSuffix = "";
-        if (quotePrice.getAbd() > 0) {
-            abdSuffix = "Includes age based discount.";
-        }
-
         final BigDecimal lhcAmount = quotePrice.getLhcAmount();
 
-        String pricingText = String.format("Includes rebate of %1$s & LHC loading of %2$s. %3$s", rebateValue, formatCurrency(lhcAmount, true, true), abdSuffix).trim();
+        String pricingText = String.format("Includes rebate of %1$s & LHC loading of %2$s.", rebateValue, formatCurrency(lhcAmount, true, true)).trim();
         price.setPricing(pricingText);
 
         final BigDecimal lhcFreeAmount = calculateLHCFreeAmount(rebatePercentage, quotePrice.getBasePremium(), quotePrice.getLhcFreeAmount());
@@ -263,7 +258,7 @@ public class ResponseAdapterV2 {
         price.setText(formatCurrency(payableAmount, true, true) + (hasDiscount && isSimplesUser ? "*" : ""));
         price.setValue(payableAmount);
 
-        String lhcFreePricingText = String.format("%1$s <br> inc %2$s Govt Rebate. %3$s", getLhcFreePricing(healthQuote, lhcAmount, lookingForPrivateHospitalCover), rebateValue, abdSuffix).trim();
+        String lhcFreePricingText = String.format("%1$s <br> inc %2$s Govt Rebate. ", getLhcFreePricing(healthQuote, lhcAmount, lookingForPrivateHospitalCover), rebateValue).trim();
         price.setLhcfreepricing(lhcFreePricingText);
 
         price.setRebateValue(rebateValue);
