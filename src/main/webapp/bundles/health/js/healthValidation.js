@@ -97,7 +97,6 @@
         return $(element).parent().find(':checked').val() == 'Y';
     }, "Sorry, the highlighted dependant cannot be added to this policy. Please contact us if you require assistance.");
 
-
     //DOB validation message
     $.validator.addMethod("limitDependentAgeToUnder25", function (value) {
         var getAge = meerkat.modules.age.returnAge(value, true);

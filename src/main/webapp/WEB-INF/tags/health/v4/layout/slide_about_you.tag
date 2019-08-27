@@ -65,9 +65,13 @@
                             <input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
 
                             <h3 class="allow-margin-top">Your details</h3>
+                            <health_v4_aboutyou:dob xpath="${xpath}" />
                             <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
                             <health_v4_aboutyou:current_health_fund xpath="${xpath}" />
-                            <health_v4_aboutyou:dob xpath="${xpath}" />
+                            <health_v4_aboutyou:currentlyhaveabd xpath="health/previousfund" />
+                            <health_v4_aboutyou:abdstartdate xpath="health/previousfund" />
+
+
 
                             <h3 id="health_insurance_preferences_additional_partner_title" class="allow-margin-top">Your partner's details</h3>
 
