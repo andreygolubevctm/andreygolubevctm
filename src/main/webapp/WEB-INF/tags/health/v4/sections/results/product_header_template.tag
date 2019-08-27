@@ -64,8 +64,6 @@
                     {{ classificationDate = 'As of ' + classification.date; }} }}
                 {{ } }}
 
-                
-
                 <div class="results-header-classification">
                     <div class="results-header-classification-title">Government classification</div>
                     <div class="results-header-classification-icon {{= icon}}"></div>

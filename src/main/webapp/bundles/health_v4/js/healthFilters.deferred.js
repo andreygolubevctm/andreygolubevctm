@@ -113,7 +113,7 @@
             },
             "abd": {
                 name: 'health_filterBar_abd',
-                defaultValueSourceSelector: 'input[name="health_healthCover_abd"]',
+                defaultValueSourceSelector: 'input[name="health_abdProducts"]',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
