@@ -8,7 +8,7 @@
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
-<c:set var="fieldXpath" value="${xpath}/primary/abd" />
-<form_v4:row label="To the best of your knowledge, when did that policy start?" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
-	<field_v4:basic_date_no_calendar xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="99" />
-</form_v4:row>`
+<c:set var="fieldXpath" value="${xpath}/primary/abdPolicyStart" />
+<form_v4:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="primary_abd_start_date" className="changes-premium">
+	<field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
+</form_v4:row>

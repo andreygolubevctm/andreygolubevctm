@@ -68,8 +68,8 @@
                             <health_v4_aboutyou:dob xpath="${xpath}" />
                             <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
                             <health_v4_aboutyou:current_health_fund xpath="${xpath}" />
-                            <health_v4_aboutyou:currentlyhaveabd xpath="${xpath}" />
-                            <health_v4_aboutyou:abdstartdate xpath="${xpath}" />
+                            <health_v4_aboutyou:currentlyhaveabd xpath="health/previousfund" />
+                            <health_v4_aboutyou:abdstartdate xpath="health/previousfund" />
 
 
 
