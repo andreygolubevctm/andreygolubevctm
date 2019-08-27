@@ -105,6 +105,8 @@ public class RequestAdapterV2 {
             addProductTitleSearchFilter(filters, quote);
             addSingleProviderFilterFromSituation(filters, situation);
             addApplyDiscountsFilter(filters, quote);
+            addAbdProductsFilter(filters, quote);
+            
         } else {
             // returns a single result with the criteria below
             quoteRequest.setSearchResults(1);
@@ -519,6 +521,11 @@ public class RequestAdapterV2 {
         } else {
             filters.setApplyDiscounts(false);
         }
+    }
+
+    protected static void addAbdProductsFilter(Filters filters, final HealthQuote quote) {
+        boolean getAbdProducts = quote.getAbdProducts() != null && quote.getAbdProducts().equals("Y");
+        filters.setAbdProducts(getAbdProducts);
     }
 
     protected static void addPopularProductsFilter(Filters filters, final HealthQuote quote) {

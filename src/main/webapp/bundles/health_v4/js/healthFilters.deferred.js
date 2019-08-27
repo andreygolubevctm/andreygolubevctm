@@ -102,7 +102,7 @@
                         $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
                     },
                     update: function (filterObject) {
-                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');                        
                         if (isChecked) {
                             $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
                         } else {
@@ -122,6 +122,7 @@
                     },
                     update: function (filterObject) {
                         var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        $(filterObject.defaultValueSourceSelector).val(isChecked ? "Y" : "N");
                         if (isChecked) {
                             $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
                         } else {
