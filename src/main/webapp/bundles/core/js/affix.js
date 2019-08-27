@@ -64,6 +64,8 @@
 	}*/
 
 	function handleProgressBarSticky(stickyEl) {
+		if(!stickyEl) return;
+		
 		var windowScrollHeight = window.innerHeight + $('.navbar-header')[0].clientHeight;
 		var stuckHeight = document.documentElement.scrollHeight - stickyEl.clientHeight;
 		if (windowScrollHeight <= stuckHeight) {

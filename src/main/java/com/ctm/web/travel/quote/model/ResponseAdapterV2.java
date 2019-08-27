@@ -14,7 +14,6 @@ import com.ctm.web.travel.quote.model.response.TravelQuote;
 import com.ctm.web.travel.quote.model.response.TravelResponseV2;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,11 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ResponseAdapterV2 {
-
-    // trusted in that we trust the products returned ALL match the destinations selected by the user
-    private static final List<String> PARTNERS_WITH_TRUSTED_AMT_PRODUCTS = Arrays.asList(
-        "WEBJ"
-    );
 
     /**
      * Trave-quote to web_ctm adapter
@@ -86,16 +80,10 @@ public class ResponseAdapterV2 {
                 } else if(travelQuote.getService().equals("ZUJI")){
                     planDescription = travelQuote.getProduct().getLongTitle();
                 } else if(travelQuote.getService().equals("WEBJ")) {
-                    planDescription = "Webjet";
-                    switch(request.getPolicyType()) {
-                        case MULTI:
-                            planDescription += " AMT <br>Worldwide <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
-                            break;
-                        case SINGLE:
-                            planDescription += " "+travelQuote.getProduct().getLongTitle();
-                            break;
-                    }
-
+                    planDescription = "Webjet " + travelQuote.getProduct().getLongTitle();
+                    if(request.getPolicyType() == PolicyType.MULTI) {
+						planDescription += " <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
+					}
                 }
                 else if(travelQuote.getService().equals("JANE")) {
                     planDescription += "Travel With Jane - "+travelQuote.getProduct().getLongTitle();
@@ -269,7 +257,7 @@ public class ResponseAdapterV2 {
                     }
                 }
                 // check if the region retrieved from the returned products is equal to the parsed user request
-                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0 && !PARTNERS_WITH_TRUSTED_AMT_PRODUCTS.contains(travelQuote.getService())) {
+                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0 ) {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 

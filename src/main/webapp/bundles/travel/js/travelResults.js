@@ -404,13 +404,15 @@
 	}
 
 	function setColVisibilityAndStylesByTravelType(isDomestic) {
+		var destination = $('#travel_destination').val();
+
 		//set visibility of os medical and rental vehicle columns
-		$(".medicalTitle").toggle(!isDomestic);
-		$(".medicalAmount").toggle(!isDomestic);
-		$(".os-medical-col").toggle(!isDomestic);
-		$(".rentalVehicleTitle").toggle(isDomestic);
-		$(".rentalVehicle").toggle(isDomestic);
-		$(".rental-vehicle-col").toggle(isDomestic);
+		$(".medicalTitle").toggle(!isDomestic && destination !== 'AUS');
+		$(".medicalAmount").toggle(!isDomestic && destination !== 'AUS');
+		$(".os-medical-col").toggle(!isDomestic && destination !== 'AUS');
+		$(".rentalVehicleTitle").toggle(isDomestic || destination === 'AUS');
+		$(".rentalVehicle").toggle(isDomestic || destination === 'AUS');
+		$(".rental-vehicle-col").toggle(isDomestic || destination === 'AUS');
 
 		// alter background colour for every second column
 		$(".luggageAmount").toggleClass("evenRow", !isDomestic);

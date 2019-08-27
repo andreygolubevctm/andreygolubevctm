@@ -24,6 +24,9 @@
 	#navbar-main {
 		z-index: 600;
 	}
+	#navbar-main-travel {
+		z-index: 20;
+	}
 
 	@media screen and (@sm) {
 		#navbar-main {
@@ -37,6 +40,7 @@
 		// Add your slide feature to the particular step that it needs to be visible
 		&[data-step="start"] {
 			#navbar-main,
+			#navbar-main-travel,
 			.nav .slide-feature-back {
 				.slide-feature-hidden() !important;
 			}
@@ -83,5 +87,63 @@
 
 	.navbar-mobile {
 		border-bottom: none;
+	}
+	.flex-center-align {
+		display: flex;
+		align-items: center;
+	}
+	.flex-right-align {
+		justify-content: flex-end;
+	}
+
+	@media screen and (@xs-only) {
+		.navbar-default {
+			background: #ffffff;
+		}
+		.navbar-mobile-travel {
+			border: none;
+			.clt-trip-filter:not(:first-of-type) {
+				padding: 0;
+			}
+			.dropdown-menu {
+				top: 150px;
+			}
+		}
+	}
+	@media screen and (@sm-only) {
+		.navbar-mobile-travel {
+			.dropdown-menu-mobile-cover-types {
+				.mobile-cover-types {
+					text-align: left;
+				}
+			}
+			.dropdown-menu-excess-filter:before,
+			.dropdown-menu-excess-filter:after {
+				left: 15%;
+			}
+			.cover-type-mobile-active {
+				padding: 4px 0;
+				cursor: pointer;
+				font-size: 14px;
+				line-height: 14px;
+				border-radius: 4px;
+				border: 1px solid @theme-secondary;
+				background-color: transparent;
+				color: @theme-secondary;
+				text-align: center;
+
+				a {
+					text-decoration: none;
+					color: @theme-secondary;
+				}
+
+				i {
+					line-height: normal;
+					font-size: 20px;
+					margin: 0 5px;
+					color: @theme-secondary;
+				}
+			}
+		}
 	}
 }

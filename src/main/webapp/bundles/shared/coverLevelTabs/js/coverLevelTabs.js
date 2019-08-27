@@ -52,7 +52,7 @@
 		activeTabSet: [{
 			label: "Comprehensive",
 			rankingFilter: "C",
-			defaultTab: true, 
+			defaultTab: true,
 			showCount: true,
 			/**
 			 * The set of Results filters you want to add to the model based off your tab criteria.
@@ -90,6 +90,9 @@
 	function _coverTypeEvent (element) {
         var $el = $(element),
             tabIndex = $el.attr('data-clt-index');
+
+        var $elSibling = $('[data-clt-index="' + tabIndex + '"]').not($el[0]);
+
         log("[coverleveltabs] click", tabIndex);
 
         if(tabIndex === '' || settings.activeTabIndex === tabIndex) {
@@ -113,7 +116,8 @@
 
             // trigger filter call
             settings.activeTabSet[tabIndex].filter();
-            $el.siblings().removeClass('active').end().addClass('active');
+            $el.siblings().removeClass('active').prop('checked', false).end().addClass('active').prop('checked', true);
+			$elSibling.siblings().removeClass('active').prop('checked', false).end().addClass('active').prop('checked', true);
             settings.activeTabIndex = tabIndex;
             setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
             meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
@@ -180,6 +184,18 @@
 
 		$tabsContainer.off('click', '.clt-action').on('click', '.clt-action', function(e) {
 			_coverTypeEvent(this);
+			var $el = $(this),
+				tabIndex = $el.attr('data-clt-index');
+
+			if (tabIndex) {
+				var coverLevelText = settings.activeTabSet[tabIndex].label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
+				$('.mobile-active-cover-type').empty().text(coverLevelText);
+				$('#coverTypeDropdownBtn').dropdown('toggle');
+			}else{
+				//Custom tab doesn't have a tab index so its a safe bet thats what we have clicked 
+				$('.mobile-active-cover-type').empty().text('Custom');
+				$('#coverTypeDropdownBtn').dropdown('toggle');
+			}
 		});
 
         $tabsContainer.off('change', 'input[name="cover-type-mobile-radio-group"]').on('change', 'input[name="cover-type-mobile-radio-group"]', function (e) {
@@ -220,12 +236,9 @@
 	 */
 	function activateDefault() {
 		var state = meerkat.modules.deviceMediaState.get();
-		if(state === 'xs') {
 			$('.visible-xs .cover-type-mobile.active').click();
 			$('#coverTypeDropdownBtn').dropdown('toggle');
-		} else {
 			$('.hidden-xs .clt-action.active').click();
-		}
 	}
 	
 	function transformTabs(tabs) {
@@ -311,15 +324,12 @@
 		}
 
         $('.reset-travel-filters').empty().html(resetFilters);
-
-		if (state != 'xs') {
-            $currentTabContainer.empty().html(out);
-            $('.navbar-mobile').empty();
-		} else {
-            $('.mobile-cover-types').empty().html(mobileCoverTypes);
-            $('.navbar-desktop').empty();
-            $('.navbar__travel-filters').show();
-		}
+				$('.navbar-mobile-travel .mobile-cover-types').empty().html(mobileCoverTypes);
+				$currentTabContainer.empty().html(out);
+        $('.navbar-mobile').empty();
+        $('.mobile-cover-types').empty().html(mobileCoverTypes);
+        $('.navbar-desktop').empty();
+      	$('.navbar__travel-filters').show();
 
 		meerkat.modules.travelResultFilters.resetCustomFilters();
 
@@ -378,7 +388,6 @@
         $('[data-travel-filter="custom"]').remove();
         $('.clt-action').removeClass('active');
 
-        if (state !== 'xs') {
             customTab += '<div class="col-xs-' + xsCols + ' text-center clt-action active" data-travel-filter="custom">';
             customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')';
             customTab += '</div>';
@@ -389,8 +398,8 @@
                 $(this).siblings().removeClass('active').end().addClass('active');
                 $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
                 Results.model.travelResultFilter(true, true, true);
-            });
-		} else {
+						});
+						
             if ($('[data-travel-filter="custom-mobile"]').length === 0) {
                 customRadioMobile += '<div class="dropdown-item">';
                 customRadioMobile += 	'<div class="radio">';
@@ -399,7 +408,8 @@
                 customRadioMobile += 	'</div>';
                 customRadioMobile += '</div>';
                 $('.mobile-cover-types').append(customRadioMobile);
-			}
+						}
+
             $('.mobile-active-cover-type').empty().text('Custom');
             $('[data-travel-filter="custom-mobile"]').prop("checked", true);
 
@@ -409,7 +419,8 @@
                 Results.model.travelResultFilter(true, true, true);
                 $('#coverTypeDropdownBtn').dropdown('toggle');
 			});
-		}
+
+			applyEventListeners();
 	}
 
 	// return the originating tab value
