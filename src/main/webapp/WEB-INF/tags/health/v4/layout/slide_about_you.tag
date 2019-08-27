@@ -75,11 +75,13 @@
 
                             <h3 id="health_insurance_preferences_additional_partner_title" class="allow-margin-top">Your partner's details</h3>
 
+                            <health_v4_aboutyou:partner_dob xpath="${xpath}" />
                             <health_v4_aboutyou:partner_cover xpath="${xpath}" />
                             <div id="health_insurance_preferences_additional_partner_fields">
                                 <health_v4_aboutyou:partner_current_fund xpath="${xpath}" />
                             </div>
-                            <health_v4_aboutyou:partner_dob xpath="${xpath}" />
+                            <health_v4_aboutyou:partner_currentlyhaveabd xpath="health/previousfund" />
+                            <health_v4_aboutyou:partner_abdstartdate xpath="health/previousfund" />
 
                             <health_v4_aboutyou:optin xpath="${xpath}" />
 
