@@ -12,6 +12,9 @@
       $abdDetailsApplication,
       $abdDetailsApplicationSingleNoPHI,
       $abdDetailsApplicationCouple;
+      $partnerABDQuestion,
+      $primaryABDPolicyStartDate,
+      $partnerABDPolicyStartDate;
 
   function init() {
     $(document).ready(function() {
@@ -34,6 +37,8 @@
       $abdDetailsApplicationSingleNoPHI = $('.abd-details-application-single');
       $abdDetailsApplicationCouple = $('.abd-details-application-couple');
 
+      $primaryABDPolicyStartDate = $('#primary_abd_start_date');
+      $partnerABDPolicyStartDate = $('#partner_abd_start_date');
       _setupListeners();
     });
   }
@@ -89,6 +94,14 @@
     $partnerABDQuestionApplication.change(function() {
       setApplicationDetails();
     });
+
+    $primaryABDQuestion.change(function() {
+      showABDPolicyStartDate(true);
+    });
+
+    $partnerABDQuestion.change(function() {
+      showABDPolicyStartDate();
+    });
   }
 
   function showABDQuestion(isPrimary) {
@@ -109,7 +122,6 @@
     else {
       hasCover = $partnerCurrentCover.filter(":checked").val() === 'Y';
       age = meerkat.modules.age.returnAge($healthPartnerDateofBirth.val(), true);
-
 
       if (age >= 18 && age <= 45 && hasCover) {
         $partnerABDQuestion.removeClass('hidden');
@@ -149,6 +161,32 @@
         $abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
         $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
         $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+      }
+    }
+  }
+  
+  function showABDPolicyStartDate(isPrimary) {
+    var hasABD = false;
+
+    if (isPrimary) {
+      hasABD = $primaryABDQuestion.find(":checked").val() === 'Y';
+
+      if (hasABD) {
+        console.log('here');
+        $primaryABDPolicyStartDate.removeClass('hidden');
+      }
+      else {
+        $primaryABDPolicyStartDate.addClass('hidden');
+      }
+    }
+    else {
+      hasABD = $partnerABDQuestion.find(":checked").val() === 'Y';
+
+      if (hasABD) {
+        $partnerABDPolicyStartDate.removeClass('hidden');
+      }
+      else {
+        $partnerABDPolicyStartDate.addClass('hidden');
       }
     }
   }
