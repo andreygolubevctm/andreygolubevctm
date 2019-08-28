@@ -16,7 +16,7 @@
       $partnerCurrentCover = $('[name=health_healthCover_partner_cover]');
       $primaryABDQuestion = $('#health_previousfund_primaryhasABD');
       $partnerABDQuestion = $('#health_previousfund_partnerhasABD');
-      setupListeners();
+      _setupListeners();
     });
   }
 
@@ -32,13 +32,12 @@
 
   }
 
-  function setupListeners() {
+  function _setupListeners() {
     $primaryCurrentCover.change( function() {
       showABDQuestion(true);
     });
 
     $partnerCurrentCover.change( function() {
-      console.log('here');
       showABDQuestion();
     });
 
@@ -47,7 +46,6 @@
     });
 
     $healthPartnerDateofBirth.change(function() {
-      console.log('here');
       showABDQuestion();
     });
   }
@@ -62,20 +60,20 @@
 
       if (age >= 18 && age <= 45 && hasCover) {
         $primaryABDQuestion.removeClass('hidden');
-      } else {
+      }
+      else {
         $primaryABDQuestion.addClass('hidden');
       }
     }
-
-    if(!isPrimary) {
+    else {
       hasCover = $partnerCurrentCover.filter(":checked").val() === 'Y';
       age = meerkat.modules.age.returnAge($healthPartnerDateofBirth.val(), true);
 
-      console.log( hasCover, age);
 
       if (age >= 18 && age <= 45 && hasCover) {
         $partnerABDQuestion.removeClass('hidden');
-      } else {
+      }
+      else {
         $partnerABDQuestion.addClass('hidden');
       }
     }
