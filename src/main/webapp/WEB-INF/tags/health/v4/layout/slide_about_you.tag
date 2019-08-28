@@ -69,7 +69,7 @@
                             <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
                             <health_v4_aboutyou:current_health_fund xpath="${xpath}" />
                             <health_v4_aboutyou:currentlyhaveabd xpath="health/previousfund" />
-                            <health_v4_aboutyou:abdstartdate xpath="health/previousfund" />
+<%--                            <health_v4_aboutyou:abdstartdate xpath="health/previousfund" />--%>
 
 
 
@@ -81,7 +81,7 @@
                                 <health_v4_aboutyou:partner_current_fund xpath="${xpath}" />
                             </div>
                             <health_v4_aboutyou:partner_currentlyhaveabd xpath="health/previousfund" />
-                            <health_v4_aboutyou:partner_abdstartdate xpath="health/previousfund" />
+<%--                            <health_v4_aboutyou:partner_abdstartdate xpath="health/previousfund" />--%>
 
                             <health_v4_aboutyou:optin xpath="${xpath}" />
 
