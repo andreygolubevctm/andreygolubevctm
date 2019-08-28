@@ -96,8 +96,6 @@
     if (isPrimary) {
       hasABD = $primaryABDQuestion.find(":checked").val() === 'Y';
 
-      console.log(hasABD);
-
       if (hasABD) {
         console.log('here');
         $primaryABDPolicyStartDate.removeClass('hidden');
