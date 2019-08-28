@@ -6,7 +6,9 @@
       $primaryCurrentCover,
       $primaryABDQuestion,
       $partnerCurrentCover,
-      $partnerABDQuestion;
+      $partnerABDQuestion,
+      $primaryABDPolicyStartDate,
+      $partnerABDPolicyStartDate;
 
   function init() {
     $(document).ready(function() {
@@ -16,6 +18,8 @@
       $partnerCurrentCover = $('[name=health_healthCover_partner_cover]');
       $primaryABDQuestion = $('#health_previousfund_primaryhasABD');
       $partnerABDQuestion = $('#health_previousfund_partnerhasABD');
+      $primaryABDPolicyStartDate = $('#primary_abd_start_date');
+      $partnerABDPolicyStartDate = $('#partner_abd_start_date');
       _setupListeners();
     });
   }
@@ -48,6 +52,14 @@
     $healthPartnerDateofBirth.change(function() {
       showABDQuestion();
     });
+
+    $primaryABDQuestion.change(function() {
+      showABDPolicyStartDate(true);
+    });
+
+    $partnerABDQuestion.change(function() {
+      showABDPolicyStartDate();
+    });
   }
 
   function showABDQuestion(isPrimary) {
@@ -69,12 +81,39 @@
       hasCover = $partnerCurrentCover.filter(":checked").val() === 'Y';
       age = meerkat.modules.age.returnAge($healthPartnerDateofBirth.val(), true);
 
-
       if (age >= 18 && age <= 45 && hasCover) {
         $partnerABDQuestion.removeClass('hidden');
       }
       else {
         $partnerABDQuestion.addClass('hidden');
+      }
+    }
+  }
+
+  function showABDPolicyStartDate(isPrimary) {
+    var hasABD = false;
+
+    if (isPrimary) {
+      hasABD = $primaryABDQuestion.find(":checked").val() === 'Y';
+
+      console.log(hasABD);
+
+      if (hasABD) {
+        console.log('here');
+        $primaryABDPolicyStartDate.removeClass('hidden');
+      }
+      else {
+        $primaryABDPolicyStartDate.addClass('hidden');
+      }
+    }
+    else {
+      hasABD = $partnerABDQuestion.find(":checked").val() === 'Y';
+
+      if (hasABD) {
+        $partnerABDPolicyStartDate.removeClass('hidden');
+      }
+      else {
+        $partnerABDPolicyStartDate.addClass('hidden');
       }
     }
   }
