@@ -4,49 +4,90 @@
       $healthPrimaryDateofBirth,
       $healthPartnerDateofBirth,
       $primaryCurrentCover,
+      $primaryCurrentCoverApplication,
       $primaryABDQuestion,
       $partnerCurrentCover,
-      $partnerABDQuestion;
+      $partnerCurrentCoverApplication,
+      $partnerABDQuestion,
+      $abdDetailsApplication,
+      $abdDetailsApplicationSingleNoPHI,
+      $abdDetailsApplicationCouple;
 
   function init() {
     $(document).ready(function() {
       $healthPrimaryDateofBirth = $('#health_healthCover_primary_dob');
       $healthPartnerDateofBirth = $('#health_healthCover_partner_dob');
+
       $primaryCurrentCover = $('[name=health_healthCover_primary_cover]');
+      $primaryCurrentCoverApplication = $('[name=health_application_primary_cover]');
+
       $partnerCurrentCover = $('[name=health_healthCover_partner_cover]');
+      $partnerCurrentCoverApplication = $('[name=health_application_partner_cover]');
+
       $primaryABDQuestion = $('#health_previousfund_primaryhasABD');
       $partnerABDQuestion = $('#health_previousfund_partnerhasABD');
+
+      $primaryABDQuestionApplication = $('[name=health_previousfund_primary_abd]');
+      $partnerABDQuestionApplication = $('[name=health_previousfund_partner_abd]');
+      
+      $abdDetailsApplication = $('.abd-details-application');
+      $abdDetailsApplicationSingleNoPHI = $('.abd-details-application-single');
+      $abdDetailsApplicationCouple = $('.abd-details-application-couple');
+
       _setupListeners();
     });
   }
 
-  function calculateABDValue() {
-    
-  }
+  function isABD(isApplicationPage) {
+    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
+    var primaryHasCover = $primaryCurrentCover.filter(":checked").val() === 'Y';
+    var partnerHasCover = $partnerCurrentCover.filter(":checked").val() === 'Y';
 
-  function isABD() {
+    var primaryHasABD = isApplicationPage ? $primaryABDQuestionApplication.filter(":checked").val() === 'Y' : $primaryABDQuestion.filter(":checked").val() === 'Y';
+    var partnerHasABD = isApplicationPage ? $primaryABDQuestionApplication.filter(":checked").val() === 'Y' : $partnerABDQuestion.filter(":checked").val() === 'Y';
 
+    if(!primaryHasCover && (isSingle || !partnerHasCover)) {
+      return true;
+    }
+
+    if(!primaryHasABD && (isSingle || !partnerHasABD)) {
+      return true;
+    }
+
+    return false;
   }
 
   function isRABD() {
-
+    return !this.isABD();
   }
 
   function _setupListeners() {
     $primaryCurrentCover.change( function() {
       showABDQuestion(true);
+      setApplicationDetails();
     });
 
     $partnerCurrentCover.change( function() {
       showABDQuestion();
+      setApplicationDetails();
     });
 
     $healthPrimaryDateofBirth.change(function() {
       showABDQuestion(true);
+      setApplicationDetails();
     });
 
     $healthPartnerDateofBirth.change(function() {
       showABDQuestion();
+      setApplicationDetails();
+    });
+
+    $primaryABDQuestionApplication.change(function() {
+      setApplicationDetails();
+    });
+
+    $partnerABDQuestionApplication.change(function() {
+      setApplicationDetails();
     });
   }
 
@@ -79,11 +120,44 @@
     }
   }
 
+  function setApplicationDetails() {
+    var selectedProduct = Results.getSelectedProduct();
+    if(!selectedProduct || selectedProduct.premium.monthly.abd === 0) { return; }
+
+    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
+    var primaryHasCover = $primaryCurrentCoverApplication.filter(":checked").val() === 'Y';
+
+    $abdDetailsApplicationSingleNoPHI.toggleClass('hidden', primaryHasCover || !isSingle);
+    $abdDetailsApplicationCouple.toggleClass('hidden', isSingle);
+    $abdDetailsApplication.toggleClass('hidden', !isSingle);
+    
+    if(isABD(true)) {
+      
+      $abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
+      $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
+      $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
+    }else{
+            
+      var primaryHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
+      var partnerHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
+
+      if(primaryHasABD && ( !isSingle || partnerHasABD )) {
+        $abdDetailsApplication.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+      }else {
+        $abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+      }
+    }
+  }
+
   meerkat.modules.register('healthRABD', {
       init: init,
-      calculateABDValue: calculateABDValue,
       isABD: isABD,
-      isRABD: isRABD
+      isRABD: isRABD,
+      setApplicationDetails: setApplicationDetails
   });
 
 })(jQuery);

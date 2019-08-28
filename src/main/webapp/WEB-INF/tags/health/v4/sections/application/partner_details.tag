@@ -76,5 +76,6 @@
             </div>
 	    </div>
 	</div>
+    <health_v4_application:abd_details className="abd-details-application-couple hidden" />
 
 </form_v4:fieldset>

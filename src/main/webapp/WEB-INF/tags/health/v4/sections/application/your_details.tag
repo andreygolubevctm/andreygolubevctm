@@ -12,6 +12,8 @@
         <health_v4_application:contact_details xpath="${pageSettings.getVerticalCode()}/application" />
 
         <health_v4_application_primary:currently_own_any_cover xpath="${xpath}" />
+        <health_v4_application:abd_details className="abd-details-application-single hidden" />
+
         <health_v4_application_primary:ever_owned_hospital_cover xpath="${xpath}" variant="PrivateHospital1" />
 
         <c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
@@ -35,6 +37,7 @@
                     <c:set var="fieldXpath" value="${xpath}/primary/abd" />
                     <form_v4:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger hidden">
 	                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details" id="primary_abd_health_cover" />
+                        <health_v4_application:abd_details className="abd-details-application" />
                     </form_v4:row>
 
                     <c:set var="fieldXpath" value="${xpath}/primary/abdPolicyStart" />
