@@ -8,18 +8,25 @@
       $partnerCurrentCover,
       $partnerABDQuestion,
       $primaryABDPolicyStartDate,
-      $partnerABDPolicyStartDate;
+      $partnerABDPolicyStartDate,
+      $dialogTriggers;
 
   function init() {
     $(document).ready(function() {
       $healthPrimaryDateofBirth = $('#health_healthCover_primary_dob');
       $healthPartnerDateofBirth = $('#health_healthCover_partner_dob');
+
       $primaryCurrentCover = $('[name=health_healthCover_primary_cover]');
       $partnerCurrentCover = $('[name=health_healthCover_partner_cover]');
+
       $primaryABDQuestion = $('#health_previousfund_primaryhasABD');
       $partnerABDQuestion = $('#health_previousfund_partnerhasABD');
+
       $primaryABDPolicyStartDate = $('#primary_abd_start_date');
       $partnerABDPolicyStartDate = $('#partner_abd_start_date');
+
+      $dialogTriggers = $('.dialogPop');
+
       _setupListeners();
     });
   }
@@ -60,6 +67,8 @@
     $partnerABDQuestion.change(function() {
       showABDPolicyStartDate();
     });
+
+    $dialogTriggers.click(showABDModal);
   }
 
   function showABDQuestion(isPrimary) {
@@ -114,6 +123,14 @@
         $partnerABDPolicyStartDate.addClass('hidden');
       }
     }
+  }
+
+  function showABDModal() {
+    meerkat.modules.dialogs.show({
+      title: $(this).attr("title"),
+      htmlContent: $(this).attr("data-content"),
+      className: $(this).attr("data-class")
+    });
   }
 
   meerkat.modules.register('healthRABD', {

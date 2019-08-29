@@ -10,8 +10,12 @@
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
 <c:set var="fieldXpath" value="${xpath}/partner/abd" />
+<c:set var="abdSubLabel">
+	<health_v4:abd_whats_this shortTitle='true' />
+</c:set>
 
-<form_v4:row hideRowBorder="true" label="Does your partner's current health cover include an Age-Based Discount?" id="${name}_partnerhasABD" fieldXpath="${fieldXpath}"  className="lhcRebateCalcTrigger partnerHasABD hidden">
+
+<form_v4:row hideRowBorder="true" label="Does your partner's current health cover include an Age-Based Discount?" subLabel="${abdSubLabel}" id="${name}_partnerhasABD" fieldXpath="${fieldXpath}"  className="lhcRebateCalcTrigger partnerHasABD hidden">
 	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your current health cover include an Age-Based Discount?" required="true" />
 
 	<c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}" />
