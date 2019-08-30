@@ -1,15 +1,24 @@
 ;(function ($, undefined) {
 
   var meerkat = window.meerkat,
-      $healthPrimaryDateofBirth,
-      $healthPartnerDateofBirth,
-      $primaryCurrentCover,
-      $primaryABDQuestion,
-      $partnerCurrentCover,
-      $partnerABDQuestion,
-      $primaryABDPolicyStartDate,
-      $partnerABDPolicyStartDate,
-      $dialogTriggers;
+    $healthPrimaryDateofBirth,
+    $healthPartnerDateofBirth,
+    $primaryCurrentCover,
+    $primaryABDQuestion,
+    $partnerCurrentCover,
+    $partnerABDQuestion,
+    $primaryABDPolicyStartDate,
+    $partnerABDPolicyStartDate,
+    $dialogTriggers,
+    $journeyType,
+    $abdEligibilityContent,
+    hasPartner,
+    primaryAge,
+    primaryHasCurrentCover,
+    primaryHasABDPolicy,
+    partnerAge,
+    partnerHasCurrentCover,
+    partnerHasABDPolicy;
 
   function init() {
     $(document).ready(function() {
@@ -27,12 +36,20 @@
 
       $dialogTriggers = $('.dialogPop');
 
+      $abdEligibilityContent = $('.abd-support-text');
+
+      $journeyType = $('[name=health_situation_healthCvr]');
+
       _setupListeners();
     });
   }
 
+  function inRange(lowerBound, upperBound, value) {
+    return value >= lowerBound && value <= upperBound;
+  }
+
   function calculateABDValue() {
-    
+
   }
 
   function isABD() {
@@ -43,43 +60,64 @@
 
   }
 
+  function showABDModal() { 
+    meerkat.modules.dialogs.show({
+      title: $(this).attr("title"),
+      htmlContent: $(this).attr("data-content"),
+      className: $(this).attr("data-class")
+    });
+  }
+
   function _setupListeners() {
-    $primaryCurrentCover.change( function() {
+    $journeyType.change( function(e) {
+      hasPartner = meerkat.modules.healthChoices.hasPartner();
+      $abdEligibilityContent.addClass('hidden');
+    });
+
+    $primaryCurrentCover.change( function(e) {
+      primaryHasCurrentCover = e.target.value === 'Y';
       showABDQuestion(true);
     });
 
-    $partnerCurrentCover.change( function() {
+    $partnerCurrentCover.change( function(e) {
+      partnerHasCurrentCover = e.target.value === 'Y';
       showABDQuestion();
     });
 
-    $healthPrimaryDateofBirth.change(function() {
+    $healthPrimaryDateofBirth.change(function(e) {
+      primaryAge = meerkat.modules.age.returnAge(e.target.value, true);
       showABDQuestion(true);
+      if ($primaryABDQuestion.filter(':checked').length > 0) {
+        showABDSupportContent();
+      }
     });
 
-    $healthPartnerDateofBirth.change(function() {
+    $healthPartnerDateofBirth.change(function(e) {
+      partnerAge = meerkat.modules.age.returnAge(e.target.value, true);
       showABDQuestion();
+      if ( $partnerABDQuestion.filter(':checked').length > 0) {
+        showABDSupportContent();
+      }
     });
 
-    $primaryABDQuestion.change(function() {
-      showABDPolicyStartDate(true);
+    $primaryABDQuestion.change(function(e) {
+      primaryHasABDPolicy = e.target.value === 'Y';
+      showABDStartDate(true);
+      showABDSupportContent();
     });
 
-    $partnerABDQuestion.change(function() {
-      showABDPolicyStartDate();
+    $partnerABDQuestion.change(function(e) {
+      partnerHasABDPolicy = e.target.value === 'Y';
+      showABDStartDate();
+      showABDSupportContent();
     });
 
     $dialogTriggers.click(showABDModal);
   }
 
   function showABDQuestion(isPrimary) {
-    var hasCover = false;
-    var age = 17;
-
-    if(isPrimary) {
-      hasCover = $primaryCurrentCover.filter(":checked").val() === 'Y';
-      age = meerkat.modules.age.returnAge($healthPrimaryDateofBirth.val(), true);
-
-      if (age >= 18 && age <= 45 && hasCover) {
+    if (isPrimary) {
+      if (primaryAge >= 18 && primaryAge <= 45 && primaryHasCurrentCover) {
         $primaryABDQuestion.removeClass('hidden');
       }
       else {
@@ -87,10 +125,7 @@
       }
     }
     else {
-      hasCover = $partnerCurrentCover.filter(":checked").val() === 'Y';
-      age = meerkat.modules.age.returnAge($healthPartnerDateofBirth.val(), true);
-
-      if (age >= 18 && age <= 45 && hasCover) {
+      if (partnerAge >= 18 && partnerAge <= 45 && partnerHasCurrentCover) {
         $partnerABDQuestion.removeClass('hidden');
       }
       else {
@@ -99,45 +134,48 @@
     }
   }
 
-  function showABDPolicyStartDate(isPrimary) {
-    var hasABD = false;
-
+  function showABDStartDate(isPrimary) {
     if (isPrimary) {
-      hasABD = $primaryABDQuestion.find(":checked").val() === 'Y';
+      primaryHasABDPolicy ? $primaryABDPolicyStartDate.removeClass('hidden') : $primaryABDPolicyStartDate.addClass('hidden');
+    }
+    else {
+      partnerHasABDPolicy ? $partnerABDPolicyStartDate.removeClass('hidden') : $partnerABDPolicyStartDate.addClass('hidden');
+    }
+  }
 
-      if (hasABD) {
-        console.log('here');
-        $primaryABDPolicyStartDate.removeClass('hidden');
+  function showABDSupportContent() {
+    $abdEligibilityContent.addClass('hidden');
+
+    if(!hasPartner) {
+      if ( primaryHasABDPolicy ) {
+        $abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
       }
-      else {
-        $primaryABDPolicyStartDate.addClass('hidden');
+      else if ( primaryAge >= 18 && primaryAge < 30 ) {
+        $abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
       }
     }
     else {
-      hasABD = $partnerABDQuestion.find(":checked").val() === 'Y';
-
-      if (hasABD) {
-        $partnerABDPolicyStartDate.removeClass('hidden');
+      if ( primaryHasABDPolicy && partnerHasABDPolicy ) {
+        $abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
+      }
+      else if ( ( primaryHasABDPolicy && !partnerHasABDPolicy ) || ( !primaryHasABDPolicy && partnerHasABDPolicy ) ) {
+        $abdEligibilityContent.filter('#couple_one_has_abd').removeClass('hidden');
       }
       else {
-        $partnerABDPolicyStartDate.addClass('hidden');
+        if ( inRange(18, 30, primaryAge) && inRange(18, 30, partnerAge)) {
+          $abdEligibilityContent.filter('#couple_both_18_to_30').removeClass('hidden');
+        }
+        else if ( (inRange(18, 30, primaryAge) && !inRange(18, 30, partnerAge)) || (!inRange(18, 30, primaryAge) && inRange(18, 30, partnerAge))  ) {
+          $abdEligibilityContent.filter('#couple_one_18_to_30').removeClass('hidden');
+        }
       }
     }
   }
-
-  function showABDModal() {
-    meerkat.modules.dialogs.show({
-      title: $(this).attr("title"),
-      htmlContent: $(this).attr("data-content"),
-      className: $(this).attr("data-class")
-    });
-  }
-
   meerkat.modules.register('healthRABD', {
-      init: init,
-      calculateABDValue: calculateABDValue,
-      isABD: isABD,
-      isRABD: isRABD
+    init: init,
+    calculateABDValue: calculateABDValue,
+    isABD: isABD,
+    isRABD: isRABD
   });
 
 })(jQuery);
