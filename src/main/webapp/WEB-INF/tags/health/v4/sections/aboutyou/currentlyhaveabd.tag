@@ -14,8 +14,8 @@
 	<health_v4:abd_whats_this shortTitle='true' />
 </c:set>
 
-<form_v4:row hideRowBorder="true" label="Does your current health cover include an Age-Based Discount?" subLabel="${abdSubLabel}" id="primary_abd" fieldXpath="${fieldXpath}"  className="lhcRebateCalcTrigger primaryHasABD hidden">
-	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your current health cover include an Age-Based Discount?" required="true" />
+<form_v4:row hideRowBorder="true" label="Does your current health cover include an Age-Based Discount?" subLabel="${abdSubLabel}" id="${name}_primaryhasABD" fieldXpath="${fieldXpath}"  className="lhcRebateCalcTrigger primaryHasABD hidden">
+	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your current health cover include an Age-Based Discount?" id="primary_abd_health_cover" required="true" />
 
 	<c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}" />
 	<div class="${fieldXpathName}-help-text help-text success yes-help hidden">

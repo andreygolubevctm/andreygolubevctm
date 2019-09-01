@@ -171,6 +171,7 @@
       }
     }
   }
+
   meerkat.modules.register('healthRABD', {
     init: init,
     calculateABDValue: calculateABDValue,
