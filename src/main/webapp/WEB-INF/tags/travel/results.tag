@@ -159,16 +159,15 @@
 					<div class="col-sm-12 col-lg-2 cta">
 						<div class="row">
 							{{ if (obj.medicalCondsAssessed) { }}
-							<span class="medicalCondsAssessed">+ Medical Assessment</span>
-							<!-- <img src="assets/graphics/travel-medical-conditions-assessed.svg" class="medicalCondsAssessed"/>
-							-->{{ } }}
-							<div class="col-sm-4 col-sm-pull-0 col-lg-pull-0 col-lg-6 moreInfo">
+								<span class="medicalCondsAssessed">+ Medical Assessment</span>
+							{{ } }}
+							<div class="col-sm-4 col-sm-push-4 col-lg-push-0 col-lg-6 moreInfo">
 								<a href="javascript:;" class="btn-more-info" data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">More Info</a>
 							</div>
-							<div class="col-sm-4 col-sm-pull-1 col-lg-pull-0 col-lg-4 PDS">
+							<div class="col-sm-4 col-sm-push-2 col-md-push-3 col-lg-push-0 col-lg-4 PDS">
 								<a href="{{=obj.subTitle}}" target="_blank" class="showDoc">PDS</a>
 							</div>
-							<div class="col-sm-4 col-sm-pull-1 col-lg-push-0 col-lg-12 buyNow">
+							<div class="col-sm-4 col-sm-pull-8 col-lg-pull-0 col-lg-12 buyNow">
 								<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
 									<span>Continue to Insurer</span> <span class="icon icon-arrow-right" /></a>
 							</div>
@@ -179,7 +178,7 @@
 				<%-- START XS Top Row --%>
 				<div class="row visible-xs">
 					{{ if (obj.medicalCondsAssessed) { }}
-						<img src="assets/graphics/travel-medical-conditions-assessed.svg" class="medicalCondsAssessed" onclick="event.stopPropagation();"/>
+					<span class="medicalCondsAssessed" onclick="event.stopPropagation();">+ Medical Assessment</span>
 					{{ } }}
 					<div class="col-xs-3 logoContainer">
 						{{= logo }}

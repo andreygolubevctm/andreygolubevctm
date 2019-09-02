@@ -600,10 +600,18 @@
 		right: 0;
 		z-index: 1;
 
-		@media(@sm-md-only) {
+		@media (@xs-only), (@sm-md-only) {
 			& {
-				display: none;
+				width: fit-content;
+				padding-left: 12px;
+				padding-right: 12px;
+				border-bottom-left-radius: 4px;
 			}
+		}
+
+		@media (@xs-only) {
+			top: -36px;
+			right: -16px;
 		}
 	}
 
