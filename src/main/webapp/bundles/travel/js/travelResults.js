@@ -425,9 +425,9 @@
 			},
 			show: { event: 'mouseenter click' },
 			position: {
-				my: 'top right',
-				at: 'bottom right',
-				adjust: { x: -4 }
+				my: 'top center',
+				at: 'bottom center',
+				adjust: { x: 0 }
 			},
 			style: {
 				classes: 'qtip-bootstrap',

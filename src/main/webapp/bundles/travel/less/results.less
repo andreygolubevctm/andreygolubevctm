@@ -31,7 +31,7 @@
 
 @priceSize: 30px;
 .priceAmount {
-	color: @results-price-product-price-color;
+	color: #333;
 	line-height: @priceSize;
 	font-size: @priceSize;
 }
@@ -392,7 +392,7 @@
 
 @media(@sm) {
 
-    footer {
+		footer {
 		margin-top: 30px;
 	}
 
@@ -407,7 +407,7 @@
 
 	.PDS,
 	.moreInfo {
-		margin-bottom: 10px;
+		margin-bottom: 16px;
 		//text-align:center; //??
 		a {
 			text-decoration: underline;
@@ -423,7 +423,7 @@
 	.results-table {
 		.result-row	{
 			padding: 0;
-			margin-bottom: 30px;
+			margin-bottom: 16px;
 
 			.resultInsert > .row {
 				margin-left: 0;
@@ -458,9 +458,22 @@
 .vertical-center-row > div {
 	@media(@sm) {
 
+		&.cta .row {
+			margin: -15px -12px;
+			height: inherit;
+
+			@media(@lg-only) {
+				padding-top: 36px;
+			}
+
+			@media(@sm-md-only) {
+				padding-top: 15px;
+			}
+		}
+
 		//This is important - it sets the height of what we're vertically centering against.
 		//min-height:120px; //freaks out IE8
-		height: 120px;
+		height: 130px;
 		text-align: center;
 		padding: 15px 12px;
 
@@ -510,9 +523,14 @@
 		//Undo the vertical centering on the CTA cell because of the sub elements.
 		&.cta {
 			text-align: center;
+			width: 18.666667%;
 			div:before {
 				height: auto;
 			}
+		}
+
+		&.priceAmount {
+			width: 14.666667%;
 		}
 	}
 }
@@ -569,23 +587,32 @@
 		}
 	}
 
-	.medicalCondsAssessed {
-		@media (@lg-only) {
-			width: 26px;
-			top: 0;
-		}
-		@media (@sm-md-only) {
-			width: 38px;
-			top: 14px;
-		}
-		@media (@xs-only) {
-			width: 32px;
-			top: -16px;
-			right: -16px;
-		}
+	span.medicalCondsAssessed {
+		margin: 0;
+		padding: 4px;
+		width: 100%;
+		text-align: center;
+		background: #e3e9fb;
+		color: #233e93;
+		font-weight: 600;
+		top: 0;
 		position: absolute;
 		right: 0;
 		z-index: 1;
+
+		@media(@sm-md-only) {
+			& {
+				display: none;
+			}
+		}
+	}
+
+	img.medicalCondsAssessed {
+		display: none;
+	}
+
+	.cta .buyNow .btn {
+		font-weight: 600;
 	}
 }
 
@@ -683,9 +710,6 @@
 			color: @results-price-column-odd-text;
 			background-color: @results-price-column-odd-bg;
 		}
-		.priceAmount {
-			color: @results-price-product-price-color;
-		}
 		.productTitle {
 			color: @results-price-product-title-color;
 			border-left: 0 none;
@@ -705,9 +729,6 @@
 		.cta {
 			color: @results-price-column-odd-text;
 			background-color: @results-price-column-odd-bg;
-		}
-		.priceAmount {
-			color: @results-price-product-price-color;
 		}
 		.productTitle {
 			color: @results-price-product-title-color;

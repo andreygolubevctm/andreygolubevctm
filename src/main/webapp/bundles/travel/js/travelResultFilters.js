@@ -299,14 +299,10 @@
         };
 
         var _filters = Results.model.travelFilters;
-        _filters.CONDITIONS = _coverTypeValues[cover].CONDITIONS;
         _filters.LUGGAGE = _coverTypeValues[cover].LUGGAGE;
         _filters.CXDFEE = _coverTypeValues[cover].CXDFEE;
         _filters.MEDICAL = _coverTypeValues[cover].MEDICAL;
         _filters.RENTALVEHICLE = _coverTypeValues[cover].RENTALVEHICLE;
-
-        // update medical conditions assessed filter
-        $('input[name="medicalCondsAssessedCheckbox"]').prop("checked", _filters.CONDITIONS);
 
         // update luggage filter
         $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
