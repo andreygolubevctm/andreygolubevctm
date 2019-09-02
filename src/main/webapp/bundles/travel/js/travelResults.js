@@ -418,7 +418,7 @@
 		if (destination === 'AUS') {
 			$(".cdxfeeAmount").toggleClass("evenRow", !isDomestic);
 			$(".luggageAmount").toggleClass("evenRow", isDomestic);
-		} else if (destination !== 'AUS') {
+		} else {
 			$(".luggageAmount").toggleClass("evenRow", !isDomestic);
 			$(".cdxfeeAmount").toggleClass("evenRow", isDomestic);	
 		}
