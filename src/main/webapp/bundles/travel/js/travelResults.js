@@ -415,13 +415,8 @@
 		$(".rental-vehicle-col").toggle(isDomestic || destination === 'AUS');
 
 		// alter background colour for every second column
-		if (destination === 'AUS') {
-			$(".cdxfeeAmount").toggleClass("evenRow", !isDomestic);
-			$(".luggageAmount").toggleClass("evenRow", isDomestic);
-		} else {
-			$(".luggageAmount").toggleClass("evenRow", !isDomestic);
-			$(".cdxfeeAmount").toggleClass("evenRow", isDomestic);	
-		}
+		$(".luggageAmount").toggleClass("evenRow", !isDomestic);
+		$(".cdxfeeAmount").toggleClass("evenRow", isDomestic);
 	}
 
 	function launchOfferTerms(event) {
