@@ -1,5 +1,5 @@
 <%@ attribute name="abd" 	required="true"	 rtexprvalue="true"	 description="Returns an ADB badge" %>
 
 <span class="abd-badge">
-  ${abd ? "Receive Age-Based Discount" : "Retain Age-Based Discount"}
+  ${abd ? "Includes Age-Based Discount" : "Retains Age-Based Discount"}
 </span>

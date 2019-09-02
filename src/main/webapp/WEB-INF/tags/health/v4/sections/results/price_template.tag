@@ -38,10 +38,16 @@
 			{{= textLhcFreePricing}}
         </span>
     </div>
-    {{ if(prem.abd > 0) { }}
-        <health_v4:abd_badge abd="true" />
-        <health_v4:abd_whats_this shortTitle="true" />
-    {{ } }}
+
+        {{ if(obj.custom.reform.rabd !== "N" && availablePremiums[frequency].abd > 0) { }}
+            {{ var receiveAbd = meerkat.modules.healthRABD.isABD(); }}
+            {{ if(receiveAbd) { }}
+                <health_v4:abd_badge abd="true" />
+            {{ } else { }}
+                <health_v4:abd_badge abd="false" />
+            {{ } }}
+            <health_v4:abd_whats_this shortTitle="true" />
+        {{ } }}
 
         {{ if (frequency === obj._selectedFrequency && (obj.hasOwnProperty('priceBreakdown') || (!obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown)) && window.meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment') { }}
             {{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, frequency, false) }}

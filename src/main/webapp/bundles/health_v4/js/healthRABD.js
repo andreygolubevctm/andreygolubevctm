@@ -1,11 +1,14 @@
 ;(function ($, undefined) {
 
   var meerkat = window.meerkat,
+    meerkatEvents = meerkat.modules.events,
     $healthPrimaryDateofBirth,
     $healthPartnerDateofBirth,
     $primaryCurrentCover,
+    $primaryCurrentCoverApplication,
     $primaryABDQuestion,
     $partnerCurrentCover,
+    $partnerCurrentCoverApplication,
     $partnerABDQuestion,
     $primaryABDPolicyStartDate,
     $partnerABDPolicyStartDate,
@@ -26,10 +29,20 @@
       $healthPartnerDateofBirth = $('#health_healthCover_partner_dob');
 
       $primaryCurrentCover = $('[name=health_healthCover_primary_cover]');
+      $primaryCurrentCoverApplication = $('[name=health_application_primary_cover]');
+
       $partnerCurrentCover = $('[name=health_healthCover_partner_cover]');
+      $partnerCurrentCoverApplication = $('[name=health_application_partner_cover]');
 
       $primaryABDQuestion = $('#health_previousfund_primaryhasABD');
       $partnerABDQuestion = $('#health_previousfund_partnerhasABD');
+
+      $primaryABDQuestionApplication = $('[name=health_previousfund_primary_abd]');
+      $partnerABDQuestionApplication = $('[name=health_previousfund_partner_abd]');
+      
+      $abdDetailsApplication = $('.abd-details-application');
+      $abdDetailsApplicationSingleNoPHI = $('.abd-details-application-single');
+      $abdDetailsApplicationCouple = $('.abd-details-application-couple');
 
       $primaryABDPolicyStartDate = $('#primary_abd_start_date');
       $partnerABDPolicyStartDate = $('#partner_abd_start_date');
@@ -44,20 +57,31 @@
     });
   }
 
-  function inRange(lowerBound, upperBound, value) {
-    return value >= lowerBound && value <= upperBound;
-  }
+  function isABD(isApplicationPage) {
+    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
+    var primaryHasCover = $primaryCurrentCover.filter(":checked").val() === 'Y';
+    var partnerHasCover = $partnerCurrentCover.filter(":checked").val() === 'Y';
 
-  function calculateABDValue() {
+    var primaryHasABD = isApplicationPage ? $primaryABDQuestionApplication.filter(":checked").val() === 'Y' : $primaryABDQuestion.filter(":checked").val() === 'Y';
+    var partnerHasABD = isApplicationPage ? $primaryABDQuestionApplication.filter(":checked").val() === 'Y' : $partnerABDQuestion.filter(":checked").val() === 'Y';
 
-  }
+    if(!primaryHasCover && (isSingle || !partnerHasCover)) {
+      return true;
+    }
 
-  function isABD() {
+    if(!primaryHasABD && (isSingle || !partnerHasABD)) {
+      return true;
+    }
 
+    return false;
   }
 
   function isRABD() {
+    return !this.isABD();
+  }
 
+  function inRange(lowerBound, upperBound, value) {
+    return value >= lowerBound && value <= upperBound;
   }
 
   function showABDModal() { 
@@ -77,16 +101,20 @@
     $primaryCurrentCover.change( function(e) {
       primaryHasCurrentCover = e.target.value === 'Y';
       showABDQuestion(true);
+      setApplicationDetails();
     });
 
     $partnerCurrentCover.change( function(e) {
       partnerHasCurrentCover = e.target.value === 'Y';
       showABDQuestion();
+      setApplicationDetails();
     });
 
     $healthPrimaryDateofBirth.change(function(e) {
       primaryAge = meerkat.modules.age.returnAge(e.target.value, true);
       showABDQuestion(true);
+      setApplicationDetails();
+      
       if ($primaryABDQuestion.filter(':checked').length > 0) {
         showABDSupportContent();
       }
@@ -95,6 +123,15 @@
     $healthPartnerDateofBirth.change(function(e) {
       partnerAge = meerkat.modules.age.returnAge(e.target.value, true);
       showABDQuestion();
+      setApplicationDetails();
+    });
+
+    $primaryABDQuestionApplication.change(function() {
+      setApplicationDetails();
+    });
+
+    $partnerABDQuestionApplication.change(function() {
+      setApplicationDetails();
       if ( $partnerABDQuestion.filter(':checked').length > 0) {
         showABDSupportContent();
       }
@@ -113,6 +150,13 @@
     });
 
     $dialogTriggers.click(showABDModal);
+
+    meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
+  }
+
+  function hideResultsFilter() {
+    var rabdResult = Results.getReturnedResults().find(function(result) { return result.custom.reform.yad === "R" && result.premium.monthly.abd > 0 });
+    $('.results-filters-abd').toggleClass('hidden', rabdResult === undefined);
   }
 
   function showABDQuestion(isPrimary) {
@@ -130,6 +174,39 @@
       }
       else {
         $partnerABDQuestion.addClass('hidden');
+      }
+    }
+  }
+
+  function setApplicationDetails() {
+    var selectedProduct = Results.getSelectedProduct();
+    if(!selectedProduct || selectedProduct.premium.monthly.abd === 0) { return; }
+
+    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
+    var primaryHasCover = $primaryCurrentCoverApplication.filter(":checked").val() === 'Y';
+
+    $abdDetailsApplicationSingleNoPHI.toggleClass('hidden', primaryHasCover || !isSingle);
+    $abdDetailsApplicationCouple.toggleClass('hidden', isSingle);
+    $abdDetailsApplication.toggleClass('hidden', !isSingle);
+    
+    if(isABD(true)) {
+      
+      $abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
+      $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
+      $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
+    }else{
+            
+      var primaryHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
+      var partnerHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
+
+      if(primaryHasABD && ( !isSingle || partnerHasABD )) {
+        $abdDetailsApplication.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+      }else {
+        $abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
       }
     }
   }
@@ -172,10 +249,10 @@
     }
   }
   meerkat.modules.register('healthRABD', {
-    init: init,
-    calculateABDValue: calculateABDValue,
-    isABD: isABD,
-    isRABD: isRABD
+      init: init,
+      isABD: isABD,
+      isRABD: isRABD,
+      setApplicationDetails: setApplicationDetails
   });
 
 })(jQuery);

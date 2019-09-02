@@ -60,8 +60,14 @@
             <div class="rounding">Premium may vary slightly due to rounding</div>
             {{ } }}
 
-            {{ if(premium.abd > 0) { }}
-                <health_v4:abd_badge abd="true" />
+            {{ if(obj.custom.reform.rabd !== "N" && premium.abd > 0) { }}
+                {{ var receiveAbd = meerkat.modules.healthRABD.isABD(); }}
+                {{ if(receiveAbd) { }}
+                    <health_v4:abd_badge abd="true" />
+                {{ } else { }}
+                    <health_v4:abd_badge abd="false" />
+                {{ } }}
+                <health_v4:abd_whats_this shortTitle="true" />
             {{ } }}
 
             <div class="lhcText">
