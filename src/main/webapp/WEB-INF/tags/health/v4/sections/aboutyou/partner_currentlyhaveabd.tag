@@ -25,6 +25,7 @@
 		</div>
 		<div class="content"></div>
 	</div>
+</form_v4:row>
 
 	<div class="abd-support-text hidden" id="couple_both_has_abd">
 		<p>Based on what you’ve told us, because both you and your partner currently hold a policy with an Age-Based Discount, you may be eligible to retain that discount provided you choose a policy with the badge <health_v4:abd_badge abd='false' /> when you get to your comparison results.</p>
@@ -45,5 +46,3 @@
 		<p>Based on what you’ve told us, one of you may be eligible to receive an Age-Based discount on applicable health insurance policies. Look out for the <health_v4:abd_badge abd='true' /> badge when you get to your comparison results.</p>
 		<health_v4:abd_whats_this shortTitle='false' />
 	</div>
-
-</form_v4:row>

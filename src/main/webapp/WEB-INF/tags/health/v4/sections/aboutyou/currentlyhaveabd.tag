@@ -24,15 +24,14 @@
 		</div>
 		<div class="content">Blah</div>
 	</div>
-
-	<div class="abd-support-text hidden" id="single_18_to_30">
-		<p>Because you’re under 30, you may be eligible to receive an Age-Based discount on applicable health insurance policies. Look out for the <health_v4:abd_badge abd='true' /> badge when you get to your comparison results.</p>
-		<health_v4:abd_whats_this shortTitle='false' />
-	</div>
-
-	<div class="abd-support-text hidden" id="single_has_abd_policy">
-		<p>Based on what you’ve told us, because you currently hold a policy with an Age-Based Discount, you may be eligible to retain that discount provided you choose a policy with the badge <health_v4:abd_badge abd='false' /> when you get to your comparison results.</p>
-		<health_v4:abd_whats_this shortTitle='false' />
-	</div>
-
 </form_v4:row>
+
+<div class="abd-support-text hidden" id="single_18_to_30">
+	<p>Because you’re under 30, you may be eligible to receive an Age-Based discount on applicable health insurance policies. Look out for the <health_v4:abd_badge abd='true' /> badge when you get to your comparison results.</p>
+	<health_v4:abd_whats_this shortTitle='false' />
+</div>
+
+<div class="abd-support-text hidden" id="single_has_abd_policy">
+	<p>Based on what you’ve told us, because you currently hold a policy with an Age-Based Discount, you may be eligible to retain that discount provided you choose a policy with the badge <health_v4:abd_badge abd='false' /> when you get to your comparison results.</p>
+	<health_v4:abd_whats_this shortTitle='false' />
+</div>

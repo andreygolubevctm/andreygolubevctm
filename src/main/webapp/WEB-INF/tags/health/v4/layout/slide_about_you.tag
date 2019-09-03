@@ -79,9 +79,9 @@
                             <health_v4_aboutyou:partner_cover xpath="${xpath}" />
                             <div id="health_insurance_preferences_additional_partner_fields">
                                 <health_v4_aboutyou:partner_current_fund xpath="${xpath}" />
+                                <health_v4_aboutyou:partner_currentlyhaveabd xpath="health/previousfund" />
+                                <health_v4_aboutyou:partner_abdstartdate xpath="health/previousfund" />
                             </div>
-                            <health_v4_aboutyou:partner_currentlyhaveabd xpath="health/previousfund" />
-                            <health_v4_aboutyou:partner_abdstartdate xpath="health/previousfund" />
 
                             <health_v4_aboutyou:optin xpath="${xpath}" />
 
