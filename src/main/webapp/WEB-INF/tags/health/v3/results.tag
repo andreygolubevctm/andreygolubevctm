@@ -12,11 +12,13 @@
         <div class="col-xs-12 results-prologue-row">
             <div class="preResultsContainer hidden-xs"></div>
         </div>
-        <div id="rabd-reminder" class="col-sm-7 col-lg-7 red">
-            <simples:dialogue id="141" vertical="health" />
-        </div>
-        <div id="rabd-reminder-no-results" class="col-sm-7 col-lg-7 red">
-            <simples:dialogue id="142" vertical="health" mandatory="true" />
+        <div class="results-prologue-row col-sm-7 col-lg-7">
+            <div id="rabd-reminder" class="hidden">
+                <simples:dialogue id="141" vertical="health" />
+            </div>
+            <div id="rabd-reminder-no-results" class="red hidden">
+                <simples:dialogue id="142" vertical="health" mandatory="true" />
+            </div>
         </div>
         <div class="hidden-xs col-sm-5 col-lg-5 results-prologue-row results-pagination">
             <div class="collapse navbar-collapse">
