@@ -248,6 +248,7 @@
       }
     }
   }
+
   meerkat.modules.register('healthRABD', {
       init: init,
       isABD: isABD,
