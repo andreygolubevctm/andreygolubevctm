@@ -205,7 +205,7 @@
             }
 
             toggleTimeout = setTimeout(function () {
-                _displayCustomResults(true);
+                _displayCustomResults(false, true);
             }, 1000);
 
         });
@@ -223,27 +223,27 @@
             case 'CONDITIONS':
                 _filters.CONDITIONS = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true);
+                _displayCustomResults(false, true);
                 break;
             case 'LUGGAGE':
                 _filters.LUGGAGE = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true);
+                _displayCustomResults(true, true);
                 break;
             case 'CXDFEE':
                 _filters.CXDFEE = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true);
+                _displayCustomResults(true, true);
                 break;
             case 'MEDICAL':
                 _filters.MEDICAL = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true);
+                _displayCustomResults(true, true);
                 break;
             case 'RENTALVEHICLE':
                 _filters.RENTALVEHICLE = value;
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true);
+                _displayCustomResults(true, true);
                 break;
             case 'PROVIDERS':
                 if (_filters.PROVIDERS.indexOf(value) == -1) {
@@ -252,7 +252,7 @@
                     _filters.PROVIDERS.splice(_filters.PROVIDERS.indexOf(value), 1);
                 }
                 Results.model.travelFilters = _filters;
-                _displayCustomResults(true);
+                _displayCustomResults(false, true);
 
                 var TOTAL_PROVIDERS = 28;
 
@@ -322,7 +322,7 @@
 
         meerkat.modules.customRangeSlider.init();
         Results.model.travelFilters = _filters;
-        _displayCustomResults(cover === 'B' ? false : true);
+        _displayCustomResults(false, (cover === 'B' ? false : true));
     }
 
     /**
@@ -381,13 +381,17 @@
     }
 
     /**
-     * Display the custom filter results\
+     * Display the custom filter results
+     * @param customFilter - boolean value for custom filter
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
-    function _displayCustomResults(matchAllFilter) {
+    function _displayCustomResults(customFilter, matchAllFilter) {
         if (state === 'lg') {
             Results.model.travelResultFilter(true, true, matchAllFilter);
             meerkat.modules.coverLevelTabs.buildCustomTab();
+        }
+        if (customFilter) {
+            $('input[name="reset-filters-radio-group"]').prop('checked', false);
         }
     }
 
