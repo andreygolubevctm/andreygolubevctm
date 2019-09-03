@@ -14,6 +14,7 @@
     $partnerABDPolicyStartDate,
     $dialogTriggers,
     $journeyType,
+    $abdFilterQuestion,
     $abdEligibilityContent,
     hasPartner,
     primaryAge,
@@ -46,6 +47,8 @@
 
       $primaryABDPolicyStartDate = $('#primary_abd_start_date');
       $partnerABDPolicyStartDate = $('#partner_abd_start_date');
+
+      $abdFilterQuestion = $('#abd_filter');
 
       $dialogTriggers = $('.dialogPop');
 
@@ -141,17 +144,28 @@
       primaryHasABDPolicy = e.target.value === 'Y';
       showABDStartDate(true);
       showABDSupportContent();
+      showABDFilterQuestion();
     });
 
     $partnerABDQuestion.change(function(e) {
       partnerHasABDPolicy = e.target.value === 'Y';
       showABDStartDate();
       showABDSupportContent();
+      showABDFilterQuestion();
     });
 
     $dialogTriggers.click(showABDModal);
 
     meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
+  }
+
+  function showABDFilterQuestion() {
+    if ( primaryHasABDPolicy || partnerHasABDPolicy ) {
+      $abdFilterQuestion.removeClass('hidden');
+    }
+    else {
+      $abdFilterQuestion.addClass('hidden');
+    }
   }
 
   function hideResultsFilter() {
