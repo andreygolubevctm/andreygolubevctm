@@ -172,17 +172,29 @@
             closeWindow: true
           }],
           onClose: function(modalId) {
-            var abdFilterValue = $('#' + modalId).find('[name=health_healthCover_filter_abd_final]').filter(":checked").val();
+            var abdFilterValue = $('[name=health_healthCover_filter_abd_final]').filter(":checked").val();
             var target = $abdFilterRadios.filter('[value="' + abdFilterValue+ '"]');
             var currentSelection = $abdFilterRadios.filter(':checked');
             currentSelection.parent('label').removeClass('active');
             currentSelection.prop('checked', false);
             target.prop('checked', true);
             target.parent('label').addClass('active');
+            $('.filter-no-response-scripting').addClass('hidden');
+          },
+          onOpen: function() {
+            $('[name=health_healthCover_filter_abd_final]').change( function(e) {
+              if (e.target.value === 'N') {
+                $('.filter-no-response-scripting').removeClass('hidden');
+              }
+              else {
+                $('.filter-no-response-scripting').addClass('hidden');
+              }
+            });
           }
         });
       }
     });
+
 
     $dialogTriggers.click(showABDModal);
 

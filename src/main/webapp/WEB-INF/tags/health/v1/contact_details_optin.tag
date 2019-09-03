@@ -287,18 +287,21 @@
         <form_v3:fieldset id="abd_filter" legend="ABD Filtering" className="hidden">
 
             <div class="hidden abdFilterModalContent">
-                <p>Private Health Insurers can offer discounts on hospital cover for people under 30. The discount applies from the age you were when you purchased your policy. If you switch policies you can keep your discount as long as you switch to a policy that allows you to retain your age-based discount.</p>
-                <p class='text-danger'>If you choose to retain your discount you will remain eligible. However, if you move to a policy that does not have a retained age based discount you will lose the discount you are currently eligible for.</p>
-                <p>With that in mind, when comparing policies, do you want us to only look at policies that allow you to retain your age-based discount</p>
-                <div class="btn-group btn-group-justified" id="" data-toggle="radio">
-                    <label class="btn btn-form-inverse">
-                        <input type="radio" name="health_healthCover_filter_abd_final" id="health_healthCover_filter_abd_Y" value="Y" data-msg-required="Please choose - Choose whether you " required="required" aria-required="true">
-                        Yes
-                    </label>
-                    <label class="btn btn-form-inverse">
-                        <input type="radio" name="health_healthCover_filter_abd_final" id="health_healthCover_filter_abd_N" value="N" data-msg-required="Please choose - Choose whether you " required="required" aria-required="true">
-                        No
-                    </label>
+                <div class="simples-dialogue">
+                    <p>Private Health Insurers can offer discounts on hospital cover for people under 30. The discount applies from the age you were when you purchased your policy. If you switch policies you can keep your discount as long as you switch to a policy that allows you to retain your age-based discount.</p>
+                    <p class='text-danger'>If you choose to retain your discount you will remain eligible. However, if you move to a policy that does not have a retained age based discount you will lose the discount you are currently eligible for.</p>
+                    <p>With that in mind, when comparing policies, do you want us to only look at policies that allow you to retain your age-based discount</p>
+                    <div class="btn-group btn-group-justified" id="" data-toggle="radio">
+                        <label class="btn btn-form-inverse">
+                            <input type="radio" name="health_healthCover_filter_abd_final" id="health_healthCover_filter_abd_Y" value="Y" data-msg-required="Please choose - Choose whether you " required="required" aria-required="true">
+                            Yes
+                        </label>
+                        <label class="btn btn-form-inverse">
+                            <input type="radio" name="health_healthCover_filter_abd_final" id="health_healthCover_filter_abd_N" value="N" data-msg-required="Please choose - Choose whether you " required="required" aria-required="true">
+                            No
+                        </label>
+                    </div>
+                    <p class="hidden filter-no-response-scripting">I’ve noted that down, so we will have a look at all the options on our panel.</p>
                 </div>
             </div>
 
