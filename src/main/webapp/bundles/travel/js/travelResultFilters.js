@@ -183,6 +183,7 @@
                 $(this).find('.icon-brand').removeClass('icon-angle-up').addClass('icon-angle-down');
             }
         });
+        $('.filter-brands-toggle').click();
 
         // toggle brands select all/none
         $('.brands-select-toggle').on("click", function () {
