@@ -12,7 +12,10 @@
         <div class="col-xs-12 results-prologue-row">
             <div class="preResultsContainer hidden-xs"></div>
         </div>
-        <div class="hidden-xs col-sm-5 col-sm-offset-7 col-lg-4 col-lg-offset-8 results-prologue-row results-pagination wider">
+        <div id="rabd-reminder" class="col-sm-7 col-lg-8 red">
+            <simples:dialogue id="141" vertical="health" />
+        </div>
+        <div class="hidden-xs col-sm-5 col-lg-4 results-prologue-row results-pagination wider">
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
             </div>
@@ -116,6 +119,7 @@
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
         <input type="hidden" name="health_applyDiscounts" value="Y" />
+        <input type="hidden" name="health_abdProducts" value="N" />
         <input type="hidden" name="health_showAll" value="Y" />
         <input type="hidden" name="health_onResultsPage" value="Y" />
         <input type="hidden" name="health_incrementTransactionId" value="Y" />
