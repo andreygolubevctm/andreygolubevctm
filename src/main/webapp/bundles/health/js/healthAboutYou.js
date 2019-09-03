@@ -76,13 +76,13 @@
 			primary: {
 					receivesAgeBasedDiscountRow: $('#primary_abd'),
 					receivesAgeBasedDiscount: $('#primary_abd_health_cover'),
-					ageBasedDiscountPolicyStartRow: $('#primary_abd_start_date'),
+					ageBasedDiscountPolicyStartRow: $('#health_previousfund_primary_abd_start_date'),
 					healthApplicationDOB: $('#health_application_primary_dob'),
 			},
 			partner: {
 					receivesAgeBasedDiscountRow: $('#partner_abd'),
 					receivesAgeBasedDiscount: $('#partner_abd_health_cover'),
-					ageBasedDiscountPolicyStartRow: $('#partner_abd_start_date'),
+					ageBasedDiscountPolicyStartRow: $('#health_previousfund_partner_abd_start_date'),
 					healthApplicationDOB: $('#health_application_partner_dob')
 			}
 	};
