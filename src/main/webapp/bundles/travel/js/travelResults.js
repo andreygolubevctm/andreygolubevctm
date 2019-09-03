@@ -415,6 +415,7 @@
 		$(".rental-vehicle-col").toggle(isDomestic || destination === 'AUS');
 
 		// alter background colour for every second column
+<<<<<<< HEAD
 		var evenRowIndex = 1
 		$(".column-banded-row").each(function() {
 			$(this).children().each(function() {
@@ -424,6 +425,10 @@
 					}
 			})
 		})
+=======
+		$(".luggageAmount").toggleClass("evenRow", !isDomestic);
+		$(".cdxfeeAmount").toggleClass("evenRow", isDomestic);
+>>>>>>> develop
 	}
 
 	function launchOfferTerms(event) {
