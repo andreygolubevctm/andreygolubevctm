@@ -284,6 +284,21 @@
 
         </form_v3:fieldset>
 
+        <form_v3:fieldset id="abd_filter" legend="ABD Filtering" className="hidden">
+<%--            <div class="hidden">--%>
+<%--                <c:set var="abdModalContent" scope="request">--%>
+<%--                    <content:get key="abdModalContent"/>--%>
+<%--                </c:set>--%>
+<%--                    <a class="dialogPop" data-content="${abdModalContent}" title="What is the Age-Based Discount?">--%>
+<%--                        ${shortTitle ? "What's this?" : "What is an Age-Based Discount?" }--%>
+<%--                    </a>--%>
+<%--            </div>--%>
+            <c:set var="fieldXpath" value="${xpath}/filter/abd" />
+            <form_v3:row label="When comparing policies, do you want us to only look at policies that allow you to retain your Age-Based discount?" fieldXpath="${fieldXpath}" id="abd_filter">
+                <field_v2:array_radio xpath="" required="true" title="- Choose whether you " items="Y=Yes,N=No,U=Unsure" />
+            </form_v3:row>
+        </form_v3:fieldset>
+
         <%--dynamic scripts--%>
         <simples:dialogue id="37" vertical="health" mandatory="true" />
 
