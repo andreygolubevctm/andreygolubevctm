@@ -114,6 +114,7 @@
       primaryAge = meerkat.modules.age.returnAge(e.target.value, true);
       showABDQuestion(true);
       setApplicationDetails();
+      showABDStartDate(true);
       
       if ($primaryABDQuestion.filter(':checked').length > 0) {
         showABDSupportContent();
@@ -124,6 +125,7 @@
       partnerAge = meerkat.modules.age.returnAge(e.target.value, true);
       showABDQuestion();
       setApplicationDetails();
+      showABDStartDate(false);
     });
 
     $primaryABDQuestionApplication.change(function() {
@@ -213,10 +215,10 @@
 
   function showABDStartDate(isPrimary) {
     if (isPrimary) {
-      primaryHasABDPolicy ? $primaryABDPolicyStartDate.removeClass('hidden') : $primaryABDPolicyStartDate.addClass('hidden');
+      (primaryHasABDPolicy && primaryAge >= 18 && primaryAge <= 45) ? $primaryABDPolicyStartDate.removeClass('hidden') : $primaryABDPolicyStartDate.addClass('hidden');
     }
     else {
-      partnerHasABDPolicy ? $partnerABDPolicyStartDate.removeClass('hidden') : $partnerABDPolicyStartDate.addClass('hidden');
+      (partnerHasABDPolicy && partnerAge >= 18 && partnerAge <= 45) ? $partnerABDPolicyStartDate.removeClass('hidden') : $partnerABDPolicyStartDate.addClass('hidden');
     }
   }
 
