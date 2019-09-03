@@ -219,10 +219,10 @@
 
     if(!hasPartner) {
       if(primaryHasCurrentCover) {
-        if ( primaryHasABDPolicy ) {
+        if ( primaryHasABDPolicy && inRange(18, 45, primaryAge)) {
           $abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
         }
-        else if ( primaryAge >= 18 && primaryAge < 30 ) {
+        else if ( inRange(18, 30, primaryAge) ) {
           $abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
         }
       }
