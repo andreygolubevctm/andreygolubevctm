@@ -415,13 +415,15 @@
 		$(".rental-vehicle-col").toggle(isDomestic || destination === 'AUS');
 
 		// alter background colour for every second column
-		if (destination === 'AUS') {
-			$(".cdxfeeAmount").toggleClass("evenRow", !isDomestic);
-			$(".luggageAmount").toggleClass("evenRow", isDomestic);
-		} else if (destination !== 'AUS'){
-			$(".luggageAmount").toggleClass("evenRow", !isDomestic);
-			$(".cdxfeeAmount").toggleClass("evenRow", isDomestic);	
-		}
+		var evenRowIndex = 1
+		$(".column-banded-row").each(function() {
+			$(this).children().each(function() {
+					$(this).toggleClass("evenRow", evenRowIndex % 2 === 0)
+					if ($(this).css('display') !== 'none') {
+						evenRowIndex ++
+					}
+			})
+		})
 	}
 
 	function launchOfferTerms(event) {
