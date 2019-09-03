@@ -34,8 +34,8 @@
       $partnerCurrentCover = $('[name=health_healthCover_partner_cover]');
       $partnerCurrentCoverApplication = $('[name=health_application_partner_cover]');
 
-      $primaryABDQuestion = $('#health_previousfund_primaryhasABD');
-      $partnerABDQuestion = $('#health_previousfund_partnerhasABD');
+      $primaryABDQuestion = $('[name=health_healthCover_primary_abd]');
+      $partnerABDQuestion = $('[name=health_healthCover_partner_abd]');
 
       $primaryABDQuestionApplication = $('[name=health_previousfund_primary_abd]');
       $partnerABDQuestionApplication = $('[name=health_previousfund_partner_abd]');
@@ -58,7 +58,7 @@
   }
 
   function isABD(isApplicationPage) {
-    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
+    var isSingle = meerkat.modules.healthAboutYou.getSituation().indexOf("S") > -1;
     var primaryHasCover = $primaryCurrentCover.filter(":checked").val() === 'Y';
     var partnerHasCover = $partnerCurrentCover.filter(":checked").val() === 'Y';
 
@@ -182,7 +182,7 @@
     var selectedProduct = Results.getSelectedProduct();
     if(!selectedProduct || selectedProduct.premium.monthly.abd === 0) { return; }
 
-    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
+    var isSingle = meerkat.modules.healthAboutYou.getSituation().indexOf("S") > -1;
     var primaryHasCover = $primaryCurrentCoverApplication.filter(":checked").val() === 'Y';
 
     $abdDetailsApplicationSingleNoPHI.toggleClass('hidden', primaryHasCover || !isSingle);
