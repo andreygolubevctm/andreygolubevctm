@@ -415,15 +415,15 @@
 		$(".rental-vehicle-col").toggle(isDomestic || destination === 'AUS');
 
 		// alter background colour for every second column
-		var evenRowIndex = 1
+		var evenRowIndex = 1;
 		$(".column-banded-row").each(function() {
 			$(this).children().each(function() {
-					$(this).toggleClass("evenRow", evenRowIndex % 2 === 0)
+					$(this).toggleClass("evenRow", evenRowIndex % 2 === 0);
 					if ($(this).css('display') !== 'none') {
-						evenRowIndex ++
+						evenRowIndex ++;
 					}
-			})
-		})
+			});
+		});
 	}
 
 	function launchOfferTerms(event) {
