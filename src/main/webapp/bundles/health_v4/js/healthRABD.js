@@ -51,25 +51,17 @@
 
       $abdEligibilityContent = $('.abd-support-text');
 
-      $journeyType = $('[name=health_situation_healthCvr]');
-
       _setupListeners();
     });
   }
 
   function isABD(isApplicationPage) {
-    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
-    var primaryHasCover = $primaryCurrentCover.filter(":checked").val() === 'Y';
-    var partnerHasCover = $partnerCurrentCover.filter(":checked").val() === 'Y';
 
-    var primaryHasABD = isApplicationPage ? $primaryABDQuestionApplication.filter(":checked").val() === 'Y' : $primaryABDQuestion.filter(":checked").val() === 'Y';
-    var partnerHasABD = isApplicationPage ? $primaryABDQuestionApplication.filter(":checked").val() === 'Y' : $partnerABDQuestion.filter(":checked").val() === 'Y';
-
-    if(!primaryHasCover && (isSingle || !partnerHasCover)) {
+    if(!primaryHasCurrentCover && (!hasPartner || !partnerHasCurrentCover)) {
       return true;
     }
 
-    if(!primaryHasABD && (isSingle || !partnerHasABD)) {
+    if(!primaryHasABDPolicy && (!hasPartner || !partnerHasABDPolicy)) {
       return true;
     }
 
