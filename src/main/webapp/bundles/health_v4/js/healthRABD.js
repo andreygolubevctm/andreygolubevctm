@@ -231,15 +231,15 @@
 
   function showABDSupportContent() {
     $abdEligibilityContent.addClass('hidden');
+    console.log(inRange(18, 30, primaryAge));
 
     if(!hasPartner) {
-      if(primaryHasCurrentCover) {
-        if ( primaryHasABDPolicy ) {
-          $abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
-        }
-        else if ( inRange(18, 30, primaryAge) ) {
-          $abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
-        }
+      if ( primaryHasABDPolicy ) {
+        $abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
+      }
+      else if ( inRange(18, 30, primaryAge) ) {
+        console.log('here');
+        $abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
       }
     }
     else {
