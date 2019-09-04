@@ -10,6 +10,8 @@
     $partnerCurrentCover,
     $partnerCurrentCoverApplication,
     $partnerABDQuestion,
+    $primaryABDPolicyStartDateContainer,
+    $partnerABDPolicyStartDateContainer,
     $primaryABDPolicyStartDate,
     $partnerABDPolicyStartDate,
     $dialogTriggers,
@@ -21,7 +23,11 @@
     primaryHasABDPolicy,
     partnerAge,
     partnerHasCurrentCover,
-    partnerHasABDPolicy;
+    partnerHasABDPolicy,
+    $primaryABDPolicyStartDateApplicationContainer,
+    $primaryABDPolicyStartDateApplication,
+    $partnerABDPolicyStartDateApplicationContainer,
+    $partnerABDPolicyStartDateApplication;
 
   function init() {
     $(document).ready(function() {
@@ -47,12 +53,17 @@
       $abdDetailsApplicationSingleNoPHI = $('.abd-details-application-single');
       $abdDetailsApplicationCouple = $('.abd-details-application-couple');
 
-      $primaryABDPolicyStartDate = $('#primary_abd_start_date');
-      $partnerABDPolicyStartDate = $('#partner_abd_start_date');
+      $primaryABDPolicyStartDateContainer = $('#primary_abd_start_date');
+      $partnerABDPolicyStartDateContainer = $('#partner_abd_start_date');
 
-      $primaryABDPolicyStartDateApplication = $('#health_previousfund_primary_abd_start_date');
-      $partnerABDPolicyStartDateApplication = $('#health_previousfund_partner_abd_start_date');
+      $primaryABDPolicyStartDate = $('#health_healthCover_primary_abdPolicyStart');
+      $partnerABDPolicyStartDate = $('#health_healthCover_partner_abdPolicyStart');
 
+      $primaryABDPolicyStartDateApplicationContainer = $('#health_previousfund_primary_abd_start_date');
+      $partnerABDPolicyStartDateApplicationContainer = $('#health_previousfund_partner_abd_start_date');
+
+      $primaryABDPolicyStartDateApplication = $('#health_previousfund_primary_abdPolicyStart');
+      $partnerABDPolicyStartDateApplication = $('#health_previousfund_partner_abdPolicyStart');
 
       $dialogTriggers = $('.dialogPop');
 
@@ -132,14 +143,14 @@
     $primaryABDQuestionApplication.change(function(e) {
       primaryHasABDPolicy = e.target.value === 'Y';
       $primaryABDQuestion.filter('[value="' + e.target.value + '"]').click();
-      $primaryABDPolicyStartDateApplication.toggleClass('hidden', !primaryHasABDPolicy);
+      $primaryABDPolicyStartDateApplicationContainer.toggleClass('hidden', !primaryHasABDPolicy);
       setApplicationDetails();
     });
 
     $partnerABDQuestionApplication.change(function(e) {
       partnerHasABDPolicy = e.target.value === 'Y';
       $partnerABDQuestion.filter('[value="' + e.target.value + '"]').click();
-      $partnerABDPolicyStartDateApplication.toggleClass('hidden', !partnerHasABDPolicy);
+      $partnerABDPolicyStartDateApplicationContainer.toggleClass('hidden', !partnerHasABDPolicy);
       setApplicationDetails();
       showABDSupportContent();
     });
@@ -156,6 +167,20 @@
       $partnerABDQuestionApplication.filter('[value="' + e.target.value + '"]').click();
       showABDStartDate();
       showABDSupportContent();
+    });
+
+    $primaryABDPolicyStartDate.change(function(e) {
+      var dates= e.target.value.split('/');
+      var date = dates[1] + '/' + dates[0] + '/' + dates[2];
+
+      $primaryABDPolicyStartDateApplication.datepicker("setDate", new Date(date));
+    });
+
+    $partnerABDPolicyStartDate.change(function(e) {
+      var dates= e.target.value.split('/');
+      var date = dates[1] + '/' + dates[0] + '/' + dates[2];
+
+      $partnerABDPolicyStartDateApplication.datepicker("setDate", new Date(date));
     });
 
     $dialogTriggers.click(showABDModal);
@@ -222,10 +247,10 @@
 
   function showABDStartDate(isPrimary) {
     if (isPrimary) {
-      (primaryHasCurrentCover && primaryHasABDPolicy && primaryAge >= 18 && primaryAge < 45) ? $primaryABDPolicyStartDate.removeClass('hidden') : $primaryABDPolicyStartDate.addClass('hidden');
+      (primaryHasCurrentCover && primaryHasABDPolicy && primaryAge >= 18 && primaryAge < 45) ? $primaryABDPolicyStartDateContainer.removeClass('hidden') : $primaryABDPolicyStartDateContainer.addClass('hidden');
     }
     else {
-      (partnerHasCurrentCover && partnerHasABDPolicy && partnerAge >= 18 && partnerAge < 45) ? $partnerABDPolicyStartDate.removeClass('hidden') : $partnerABDPolicyStartDate.addClass('hidden');
+      (partnerHasCurrentCover && partnerHasABDPolicy && partnerAge >= 18 && partnerAge < 45) ? $partnerABDPolicyStartDateContainer.removeClass('hidden') : $partnerABDPolicyStartDateContainer.addClass('hidden');
     }
   }
 
