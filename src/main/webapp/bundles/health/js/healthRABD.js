@@ -100,7 +100,7 @@
 
   function _setupListeners() {
     $journeyType.change( function(e) {
-      hasPartner = meerkat.modules.healthChoices.hasPartner();
+      hasPartner = meerkat.modules.healthChoices.hasSpouse();
       $abdEligibilityContent.addClass('hidden');
     });
 
@@ -224,6 +224,14 @@
   function hideResultsFilter() {
     var rabdResult = Results.getReturnedResults().find(function(result) { return result.custom.reform.yad === "R" && result.premium.monthly.abd > 0; });
     $('.results-filters-abd').toggleClass('hidden', rabdResult === undefined);
+
+    var simplesShowRABD = filterAbdProducts();
+
+    if(isRABD) {
+      $('#rabd-reminder').toggleClass('hidden', !simplesShowRABD || rabdResult === undefined);
+      $('#rabd-reminder-no-results').toggleClass('hidden', !simplesShowRABD || rabdResult !== undefined);
+      $('.simples-dialogue-142').toggleClass('hidden', !simplesShowRABD || rabdResult !== undefined);
+    }
   }
 
   function showABDQuestion(isPrimary) {
@@ -315,11 +323,41 @@
       }
     }
   }
+
+  function showPaymentsScript() {
+    var selectedProduct = Results.getSelectedProduct();
+    var isSingle = meerkat.modules.healthAboutYou.getSituation().indexOf("S") > -1;
+    var primaryHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
+    var partnerHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
+
+    if(selectedProduct.custom.reform.yad !== 'R') {
+      if(isSingle && primaryHasABD) {
+        return true;
+      }
+
+      if(!isSingle && (primaryHasABD || partnerHasABD)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function filterAbdProducts() {
+    if(!$abdFilterRadios || $abdFilterRadios.filter(':checked') === undefined) {
+      return false;
+    }
+
+    return $abdFilterRadios.filter(':checked').val() === "Y";
+  }
+
   meerkat.modules.register('healthRABD', {
       init: init,
       isABD: isABD,
       isRABD: isRABD,
-      setApplicationDetails: setApplicationDetails
+      setApplicationDetails: setApplicationDetails,
+      showPaymentsScript: showPaymentsScript,
+      filterAbdProducts: filterAbdProducts
   });
 
 })(jQuery);
