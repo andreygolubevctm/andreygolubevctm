@@ -170,7 +170,7 @@
 
   function showABDQuestion(isPrimary) {
     if (isPrimary) {
-      if (primaryAge >= 18 && primaryAge <= 45 && primaryHasCurrentCover) {
+      if (primaryAge >= 18 && primaryAge < 45 && primaryHasCurrentCover) {
         $primaryABDQuestionContainer.removeClass('hidden');
       }
       else {
@@ -178,7 +178,7 @@
       }
     }
     else {
-      if (partnerAge >= 18 && partnerAge <= 45 && partnerHasCurrentCover) {
+      if (partnerAge >= 18 && partnerAge < 45 && partnerHasCurrentCover) {
         $partnerABDQuestionContainer.removeClass('hidden');
       }
       else {
@@ -222,10 +222,10 @@
 
   function showABDStartDate(isPrimary) {
     if (isPrimary) {
-      (primaryHasCurrentCover && primaryHasABDPolicy && primaryAge >= 18 && primaryAge <= 45) ? $primaryABDPolicyStartDate.removeClass('hidden') : $primaryABDPolicyStartDate.addClass('hidden');
+      (primaryHasCurrentCover && primaryHasABDPolicy && primaryAge >= 18 && primaryAge < 45) ? $primaryABDPolicyStartDate.removeClass('hidden') : $primaryABDPolicyStartDate.addClass('hidden');
     }
     else {
-      (partnerHasCurrentCover && partnerHasABDPolicy && partnerAge >= 18 && partnerAge <= 45) ? $partnerABDPolicyStartDate.removeClass('hidden') : $partnerABDPolicyStartDate.addClass('hidden');
+      (partnerHasCurrentCover && partnerHasABDPolicy && partnerAge >= 18 && partnerAge < 45) ? $partnerABDPolicyStartDate.removeClass('hidden') : $partnerABDPolicyStartDate.addClass('hidden');
     }
   }
 
