@@ -160,8 +160,10 @@
     $abdFilterRadios.change( function(e) {
       var unsure = e.target.value === 'N' || e.target.value === 'U';
       var modalContent = $abdFilterQuestion.find('.abdFilterModalContent').html();
+      var $yesScripting = $('.filter-yes-response-scripting');
 
       if (unsure) {
+        $yesScripting.addClass('hidden');
         meerkat.modules.dialogs.show({
           title: null,
           htmlContent: modalContent,
@@ -180,6 +182,12 @@
             target.prop('checked', true);
             target.parent('label').addClass('active');
             $('.filter-no-response-scripting').addClass('hidden');
+            if ( abdFilterValue === 'Y' ) {
+              $yesScripting.removeClass('hidden');
+            }
+            else {
+              $yesScripting.addClass('hidden');
+            }
           },
           onOpen: function() {
             $('[name=health_healthCover_filter_abd_final]').change( function(e) {
@@ -192,6 +200,9 @@
             });
           }
         });
+      }
+      else {
+        $yesScripting.removeClass('hidden');
       }
     });
 

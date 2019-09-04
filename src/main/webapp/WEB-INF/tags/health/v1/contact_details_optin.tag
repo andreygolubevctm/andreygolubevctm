@@ -301,7 +301,7 @@
                             No
                         </label>
                     </div>
-                    <p class="hidden filter-no-response-scripting">I’ve noted that down, so we will have a look at all the options on our panel.</p>
+                    <p class="hidden text-danger filter-no-response-scripting">I’ve noted that down, so we will have a look at all the options on our panel.</p>
                 </div>
             </div>
 
@@ -309,6 +309,7 @@
             <form_v3:row label="When comparing policies, do you want us to only look at policies that allow you to retain your Age-Based discount?" fieldXpath="${fieldXpath}" id="abd_filter">
                 <field_v2:array_radio xpath="${fieldXpath}" required="true" title="- Choose whether you " items="Y=Yes,N=No,U=Unsure" style="group" />
             </form_v3:row>
+            <p class="hidden text-danger filter-yes-response-scripting">I will look at policies that may allow you to retain your age-based discount based on what you’ve told us, the exact discount will be confirmed by your current fund.</p>
         </form_v3:fieldset>
 
         <%--dynamic scripts--%>
