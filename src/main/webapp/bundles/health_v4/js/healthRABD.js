@@ -29,6 +29,20 @@
     $partnerABDPolicyStartDateApplicationContainer,
     $partnerABDPolicyStartDateApplication;
 
+  var state = {
+    hasPartner: false,
+    primary: {
+      hasCurrentCover: false,
+      hasABDPolicy: false,
+      age: 17
+    },
+    partner: {
+      hasCurrentCover: false,
+      hasABDPolicy: false,
+      age: 17
+    }
+  };
+
   function init() {
     $(document).ready(function() {
       $healthPrimaryDateofBirth = $('#health_healthCover_primary_dob');
@@ -48,7 +62,7 @@
 
       $primaryABDQuestionApplication = $('[name=health_previousfund_primary_abd]');
       $partnerABDQuestionApplication = $('[name=health_previousfund_partner_abd]');
-      
+
       $abdDetailsApplication = $('.abd-details-application');
       $abdDetailsApplicationSingleNoPHI = $('.abd-details-application-single');
       $abdDetailsApplicationCouple = $('.abd-details-application-couple');
@@ -94,7 +108,7 @@
     return value >= lowerBound && value <= upperBound;
   }
 
-  function showABDModal() { 
+  function showABDModal() {
     meerkat.modules.dialogs.show({
       title: $(this).attr("title"),
       htmlContent: $(this).attr("data-content"),
@@ -104,12 +118,12 @@
 
   function _setupListeners() {
     meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function() {
-      hasPartner = meerkat.modules.healthChoices.hasPartner();
+      state.hasPartner = meerkat.modules.healthChoices.hasPartner();
       $abdEligibilityContent.addClass('hidden');
     });
 
     $primaryCurrentCover.change( function(e) {
-      primaryHasCurrentCover = e.target.value === 'Y';
+      state.primary.hasCurrentCover = e.target.value === 'Y';
       showABDQuestion(true);
       showABDStartDate(true);
       setApplicationDetails();
@@ -117,7 +131,7 @@
     });
 
     $partnerCurrentCover.change( function(e) {
-      partnerHasCurrentCover = e.target.value === 'Y';
+      state.partner.hasCurrentCover = e.target.value === 'Y';
       showABDQuestion(false);
       showABDStartDate(false);
       setApplicationDetails();
@@ -125,7 +139,7 @@
     });
 
     $healthPrimaryDateofBirth.change(function(e) {
-      primaryAge = meerkat.modules.age.returnAge(e.target.value, true);
+      state.primary.age = meerkat.modules.age.returnAge(e.target.value, true);
       showABDQuestion(true);
       setApplicationDetails();
       showABDStartDate(true);
@@ -133,7 +147,7 @@
     });
 
     $healthPartnerDateofBirth.change(function(e) {
-      partnerAge = meerkat.modules.age.returnAge(e.target.value, true);
+      state.partner.age = meerkat.modules.age.returnAge(e.target.value, true);
       showABDQuestion();
       setApplicationDetails();
       showABDStartDate(false);
@@ -141,29 +155,29 @@
     });
 
     $primaryABDQuestionApplication.change(function(e) {
-      primaryHasABDPolicy = e.target.value === 'Y';
+      state.primary.hasABDPolicy = e.target.value === 'Y';
       $primaryABDQuestion.filter('[value="' + e.target.value + '"]').click();
-      $primaryABDPolicyStartDateApplicationContainer.toggleClass('hidden', !primaryHasABDPolicy);
+      $primaryABDPolicyStartDateApplicationContainer.toggleClass('hidden', !state.primary.hasABDPolicy);
       setApplicationDetails();
     });
 
     $partnerABDQuestionApplication.change(function(e) {
-      partnerHasABDPolicy = e.target.value === 'Y';
+      state.partner.hasABDPolicy = e.target.value === 'Y';
       $partnerABDQuestion.filter('[value="' + e.target.value + '"]').click();
-      $partnerABDPolicyStartDateApplicationContainer.toggleClass('hidden', !partnerHasABDPolicy);
+      $partnerABDPolicyStartDateApplicationContainer.toggleClass('hidden', !state.partner.hasABDPolicy);
       setApplicationDetails();
       showABDSupportContent();
     });
 
     $primaryABDQuestion.change(function(e) {
-      primaryHasABDPolicy = e.target.value === 'Y';
+      state.primary.hasABDPolicy = e.target.value === 'Y';
       $primaryABDQuestionApplication.filter('[value="' + e.target.value + '"]').click();
       showABDStartDate(true);
       showABDSupportContent();
     });
 
     $partnerABDQuestion.change(function(e) {
-      partnerHasABDPolicy = e.target.value === 'Y';
+      state.partner.hasABDPolicy = e.target.value === 'Y';
       $partnerABDQuestionApplication.filter('[value="' + e.target.value + '"]').click();
       showABDStartDate();
       showABDSupportContent();
@@ -195,7 +209,7 @@
 
   function showABDQuestion(isPrimary) {
     if (isPrimary) {
-      if (primaryAge >= 18 && primaryAge < 45 && primaryHasCurrentCover) {
+      if (state.primary.age >= 18 && state.primary.age < 45 && primaryHasCurrentCover) {
         $primaryABDQuestionContainer.removeClass('hidden');
       }
       else {
@@ -203,7 +217,7 @@
       }
     }
     else {
-      if (partnerAge >= 18 && partnerAge < 45 && partnerHasCurrentCover) {
+      if (state.partner.age >= 18 && state.partner.age < 45 && partnerHasCurrentCover) {
         $partnerABDQuestionContainer.removeClass('hidden');
       }
       else {
@@ -222,14 +236,14 @@
     $abdDetailsApplicationSingleNoPHI.toggleClass('hidden', primaryHasCover || !isSingle);
     $abdDetailsApplicationCouple.toggleClass('hidden', isSingle);
     $abdDetailsApplication.toggleClass('hidden', !isSingle);
-    
+
     if(isABD(true)) {
-      
+
       $abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
       $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
       $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
     }else{
-            
+
       var primaryHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
       var partnerHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
 
@@ -247,10 +261,10 @@
 
   function showABDStartDate(isPrimary) {
     if (isPrimary) {
-      (primaryHasCurrentCover && primaryHasABDPolicy && primaryAge >= 18 && primaryAge < 45) ? $primaryABDPolicyStartDateContainer.removeClass('hidden') : $primaryABDPolicyStartDateContainer.addClass('hidden');
+      (state.primary.hasCurrentCover && state.primary.hasABDPolicy && state.primary.age >= 18 && state.primary.age < 45) ? $primaryABDPolicyStartDateContainer.removeClass('hidden') : $primaryABDPolicyStartDateContainer.addClass('hidden');
     }
     else {
-      (partnerHasCurrentCover && partnerHasABDPolicy && partnerAge >= 18 && partnerAge < 45) ? $partnerABDPolicyStartDateContainer.removeClass('hidden') : $partnerABDPolicyStartDateContainer.addClass('hidden');
+      (state.partner.hasCurrentCover && state.partner.hasABDPolicy && state.partner.age >= 18 && state.partner.age < 45) ? $partnerABDPolicyStartDateContainer.removeClass('hidden') : $partnerABDPolicyStartDateContainer.addClass('hidden');
     }
   }
 
@@ -258,27 +272,27 @@
     $abdEligibilityContent.addClass('hidden');
 
     if(!hasPartner) {
-      if ( primaryHasABDPolicy ) {
+      if ( state.primary.hasABDPolicy ) {
         $abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
       }
-      else if ( inRange(18, 30, primaryAge) ) {
+      else if ( inRange(18, 30, state.primary.age) ) {
         console.log('here');
         $abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
       }
     }
     else {
-      if(primaryHasCurrentCover || partnerHasCurrentCover) {
-        if ( primaryHasABDPolicy && partnerHasABDPolicy && primaryHasCurrentCover && partnerHasCurrentCover ) {
+      if(state.primary.hasCurrentCover || state.partner.hasCurrentCover) {
+        if ( state.primary.hasABDPolicy && state.partner.hasABDPolicy && state.primary.hasCurrentCover && state.partner.hasCurrentCover ) {
           $abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
         }
-        else if ( ( primaryHasABDPolicy && !partnerHasABDPolicy ) || ( !primaryHasABDPolicy && partnerHasABDPolicy ) ) {
+        else if ( ( state.primary.hasABDPolicy && !state.partner.hasABDPolicy ) || ( !state.primary.hasABDPolicy && state.partner.hasABDPolicy ) ) {
           $abdEligibilityContent.filter('#couple_one_has_abd').removeClass('hidden');
         }
         else {
-          if ( inRange(18, 30, primaryAge) && inRange(18, 30, partnerAge) && primaryHasCurrentCover && partnerHasCurrentCover) {
+          if ( inRange(18, 30, state.primary.age) && inRange(18, 30, state.partner.age) && state.primary.hasCurrentCover && state.partner.hasCurrentCover) {
             $abdEligibilityContent.filter('#couple_both_18_to_30').removeClass('hidden');
           }
-          else if ( (inRange(18, 30, primaryAge) && !inRange(18, 30, partnerAge)) || (!inRange(18, 30, primaryAge) && inRange(18, 30, partnerAge))  ) {
+          else if ( (inRange(18, 30, state.primary.age) && !inRange(18, 30, state.partner.age)) || (!inRange(18, 30, state.primary.age) && inRange(18, 30, state.partner.age))  ) {
             $abdEligibilityContent.filter('#couple_one_18_to_30').removeClass('hidden');
           }
         }
@@ -287,10 +301,10 @@
   }
 
   meerkat.modules.register('healthRABD', {
-      init: init,
-      isABD: isABD,
-      isRABD: isRABD,
-      setApplicationDetails: setApplicationDetails
+    init: init,
+    isABD: isABD,
+    isRABD: isRABD,
+    setApplicationDetails: setApplicationDetails
   });
 
 })(jQuery);
