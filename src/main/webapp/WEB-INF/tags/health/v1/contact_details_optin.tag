@@ -287,7 +287,7 @@
         <form_v3:fieldset id="abd_filter" legend="ABD Filtering" className="hidden">
 
             <div class="hidden abdFilterModalContent">
-                <div class="simples-dialogue">
+                <div class="simples-dialogue abd-filter-dialogue">
                     <p>Private Health Insurers can offer discounts on hospital cover for people under 30. The discount applies from the age you were when you purchased your policy. If you switch policies you can keep your discount as long as you switch to a policy that allows you to retain your age-based discount.</p>
                     <p class='text-danger'>If you choose to retain your discount you will remain eligible. However, if you move to a policy that does not have a retained age based discount you will lose the discount you are currently eligible for.</p>
                     <p>With that in mind, when comparing policies, do you want us to only look at policies that allow you to retain your age-based discount</p>
