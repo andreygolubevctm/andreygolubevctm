@@ -83,7 +83,7 @@
   }
 
   function isRABD() {
-    return !this.isABD();
+    return !isABD();
   }
 
   function inRange(lowerBound, upperBound, value) {
@@ -160,7 +160,7 @@
     $abdFilterRadios.change( function(e) {
       var unsure = e.target.value === 'N' || e.target.value === 'U';
       var modalContent = $abdFilterQuestion.find('.abdFilterModalContent').html();
-      var $yesScripting = $('.filter-yes-response-scripting');
+      var $yesScripting = $('.simples-dialogue-138');
 
       if (unsure) {
         $yesScripting.addClass('hidden');
@@ -210,6 +210,7 @@
     $dialogTriggers.click(showABDModal);
 
     meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
+    meerkat.messaging.subscribe(meerkatEvents.RESULTS_UPDATED_INFO_RECEIVED, hideResultsFilter);
   }
 
   function showABDFilterQuestion() {
@@ -227,7 +228,7 @@
 
     var simplesShowRABD = filterAbdProducts();
 
-    if(isRABD) {
+    if(isRABD()) {
       $('#rabd-reminder').toggleClass('hidden', !simplesShowRABD || rabdResult === undefined);
       $('#rabd-reminder-no-results').toggleClass('hidden', !simplesShowRABD || rabdResult !== undefined);
       $('.simples-dialogue-142').toggleClass('hidden', !simplesShowRABD || rabdResult !== undefined);
@@ -327,8 +328,8 @@
   function showPaymentsScript() {
     var selectedProduct = Results.getSelectedProduct();
     var isSingle = meerkat.modules.healthAboutYou.getSituation().indexOf("S") > -1;
-    var primaryHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
-    var partnerHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
+    var primaryHasABD = $primaryABDQuestion.filter(":checked").val() === 'Y';
+    var partnerHasABD = $partnerABDQuestion.filter(":checked").val() === 'Y';
 
     if(selectedProduct.custom.reform.yad !== 'R') {
       if(isSingle && primaryHasABD) {
