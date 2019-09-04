@@ -11,18 +11,14 @@
           dateOfBirth: $('#health_healthCover_primary_dob'),
           age: 0,
           currentCover: $('[name=health_healthCover_primary_cover]'),
-          hasCurrentCover: false,
           abdQuestion: $('[name=health_healthCover_primary_abd]'),
-          hasAbdPolicy: false,
           abdPolicyStartDate: $('#primary_abd_start_date')
         },
         partner: {
           dateOfBirth: $('#health_healthCover_partner_dob'),
           age: 0,
           currentCover: $('[name=health_healthCover_partner_cover]'),
-          hasCurrentCover: false,
           abdQuestion: $('[name=health_healthCover_partner_abd]'),
-          hasAbdPolicy: false,
           abdPolicyStartDate: $('#partner_abd_start_date')
         },
         abdFilterQuestion: $('#abd_filter'),
@@ -37,9 +33,33 @@
         onChangeAbdFilterRadios(e);
       });
 
+      // If we already have cover (we probably have loaded the quote in from a transactionId) check if we should show all the
+      // ABD elements
+      if(hasCover('primary')) {
+        elements.primary.age = meerkat.modules.age.returnAge(elements.primary.dateOfBirth.val(), true);
+        showABDQuestion('primary');
+        showABDStartDate('primary');
+        showABDFilterQuestion();
+      }
+
+      if(hasCover('partner')) {
+        elements.partner.age = meerkat.modules.age.returnAge(elements.partner.dateOfBirth.val(), true);
+        showABDQuestion('partner');
+        showABDStartDate('partner');
+        showABDFilterQuestion();
+      }
+
       meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
       meerkat.messaging.subscribe(meerkatEvents.RESULTS_UPDATED_INFO_RECEIVED, hideResultsFilter);
     });
+  }
+
+  function hasCover(type) {
+    return elements[type].currentCover.filter(':checked').val() === 'Y';
+  }
+
+  function hasAbdPolicy(type) {
+    return elements[type].abdQuestion.filter(':checked').val() === 'Y';
   }
 
   function onChangeAbdFilterRadios(e) {
@@ -93,11 +113,11 @@
 
   function isABD() {
     var isSingle = meerkat.modules.healthAboutYou.getSituation().indexOf("S") > -1;
-    var primaryHasCover = elements.primary.hasCurrentCover;
-    var partnerHasCover = elements.partner.hasCurrentCover;
+    var primaryHasCover = hasCover('primary');
+    var partnerHasCover = hasCover('partner');
 
-    var primaryHasABD = elements.primary.hasAbdPolicy;
-    var partnerHasABD = elements.partner.hasAbdPolicy;
+    var primaryHasABD = hasAbdPolicy('primary');
+    var partnerHasABD = hasAbdPolicy('partner');
 
     if(!primaryHasCover && (isSingle || !partnerHasCover)) {
       return true;
@@ -141,7 +161,7 @@
   }
 
   function showABDFilterQuestion() {
-    var hasAbd = elements.primary.hasAbdPolicy || elements.partner.hasAbdPolicy;
+    var hasAbd = hasAbdPolicy('primary') || hasAbdPolicy('parnter');
     elements.abdFilterQuestion.toggleClass('hidden', !hasAbd);
   }
 
@@ -159,19 +179,19 @@
   }
 
   function showABDQuestion(type) {
-    var showAbdQuestion = elements[type].age >= 18 && elements[type].age <= 45 && elements[type].hasCurrentCover ;
+    var showAbdQuestion = elements[type].age >= 18 && elements[type].age <= 45 && hasCover(type);
     elements[type].abdQuestion.toggleClass('hidden', !showAbdQuestion);
   }
 
   function showABDStartDate(type) {
-    elements[type].abdPolicyStartDate.toggleClass('hidden', !elements[type].hasAbdPolicy);
+    elements[type].abdPolicyStartDate.toggleClass('hidden', !hasAbdPolicy(type));
   }
 
   function showPaymentsScript() {
     var selectedProduct = Results.getSelectedProduct();
     var isSingle = meerkat.modules.healthAboutYou.getSituation().indexOf("S") > -1;
-    var primaryHasABD = elements.primary.hasAbdPolicy;
-    var partnerHasABD = elements.partner.hasAbdPolicy;
+    var primaryHasABD = hasAbdPolicy('primary');
+    var partnerHasABD = hasAbdPolicy('partner');
 
     if(selectedProduct.custom.reform.yad !== 'R') {
       if(isSingle && primaryHasABD) {
