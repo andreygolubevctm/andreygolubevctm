@@ -14,6 +14,8 @@
     $partnerABDPolicyStartDate,
     $dialogTriggers,
     $journeyType,
+    $abdFilterQuestion,
+    $abdFilterRadios,
     $abdEligibilityContent,
     hasPartner,
     primaryAge,
@@ -34,8 +36,8 @@
       $partnerCurrentCover = $('[name=health_healthCover_partner_cover]');
       $partnerCurrentCoverApplication = $('[name=health_application_partner_cover]');
 
-      $primaryABDQuestion = $('#health_previousfund_primaryhasABD');
-      $partnerABDQuestion = $('#health_previousfund_partnerhasABD');
+      $primaryABDQuestion = $('[name=health_healthCover_primary_abd]');
+      $partnerABDQuestion = $('[name=health_healthCover_partner_abd]');
 
       $primaryABDQuestionApplication = $('[name=health_previousfund_primary_abd]');
       $partnerABDQuestionApplication = $('[name=health_previousfund_partner_abd]');
@@ -46,6 +48,10 @@
 
       $primaryABDPolicyStartDate = $('#primary_abd_start_date');
       $partnerABDPolicyStartDate = $('#partner_abd_start_date');
+
+      $abdFilterQuestion = $('#abd_filter');
+
+      $abdFilterRadios = $('[name=health_healthCover_filter_abd]');
 
       $dialogTriggers = $('.dialogPop');
 
@@ -58,7 +64,7 @@
   }
 
   function isABD(isApplicationPage) {
-    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
+    var isSingle = meerkat.modules.healthAboutYou.getSituation().indexOf("S") > -1;
     var primaryHasCover = $primaryCurrentCover.filter(":checked").val() === 'Y';
     var partnerHasCover = $partnerCurrentCover.filter(":checked").val() === 'Y';
 
@@ -141,17 +147,78 @@
       primaryHasABDPolicy = e.target.value === 'Y';
       showABDStartDate(true);
       showABDSupportContent();
+      showABDFilterQuestion();
     });
 
     $partnerABDQuestion.change(function(e) {
       partnerHasABDPolicy = e.target.value === 'Y';
       showABDStartDate();
       showABDSupportContent();
+      showABDFilterQuestion();
     });
+
+    $abdFilterRadios.change( function(e) {
+      var unsure = e.target.value === 'N' || e.target.value === 'U';
+      var modalContent = $abdFilterQuestion.find('.abdFilterModalContent').html();
+      var $yesScripting = $('.filter-yes-response-scripting');
+
+      if (unsure) {
+        $yesScripting.addClass('hidden');
+        meerkat.modules.dialogs.show({
+          title: null,
+          htmlContent: modalContent,
+          className: '',
+          buttons: [{
+            label: "Ok",
+            className: 'btn-next',
+            closeWindow: true
+          }],
+          onClose: function(modalId) {
+            var abdFilterValue = $('[name=health_healthCover_filter_abd_final]').filter(":checked").val();
+            var target = $abdFilterRadios.filter('[value="' + abdFilterValue+ '"]');
+            var currentSelection = $abdFilterRadios.filter(':checked');
+            currentSelection.parent('label').removeClass('active');
+            currentSelection.prop('checked', false);
+            target.prop('checked', true);
+            target.parent('label').addClass('active');
+            $('.filter-no-response-scripting').addClass('hidden');
+            if ( abdFilterValue === 'Y' ) {
+              $yesScripting.removeClass('hidden');
+            }
+            else {
+              $yesScripting.addClass('hidden');
+            }
+          },
+          onOpen: function() {
+            $('[name=health_healthCover_filter_abd_final]').change( function(e) {
+              if (e.target.value === 'N') {
+                $('.filter-no-response-scripting').removeClass('hidden');
+              }
+              else {
+                $('.filter-no-response-scripting').addClass('hidden');
+              }
+            });
+          }
+        });
+      }
+      else {
+        $yesScripting.removeClass('hidden');
+      }
+    });
+
 
     $dialogTriggers.click(showABDModal);
 
     meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
+  }
+
+  function showABDFilterQuestion() {
+    if ( primaryHasABDPolicy || partnerHasABDPolicy ) {
+      $abdFilterQuestion.removeClass('hidden');
+    }
+    else {
+      $abdFilterQuestion.addClass('hidden');
+    }
   }
 
   function hideResultsFilter() {
@@ -182,7 +249,7 @@
     var selectedProduct = Results.getSelectedProduct();
     if(!selectedProduct || selectedProduct.premium.monthly.abd === 0) { return; }
 
-    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
+    var isSingle = meerkat.modules.healthAboutYou.getSituation().indexOf("S") > -1;
     var primaryHasCover = $primaryCurrentCoverApplication.filter(":checked").val() === 'Y';
 
     $abdDetailsApplicationSingleNoPHI.toggleClass('hidden', primaryHasCover || !isSingle);
@@ -248,7 +315,6 @@
       }
     }
   }
-
   meerkat.modules.register('healthRABD', {
       init: init,
       isABD: isABD,

@@ -61,13 +61,12 @@
             {{ } }}
 
             {{ if(obj.custom.reform.rabd !== "N" && premium.abd > 0) { }}
-                {{ var receiveAbd = meerkat.modules.healthRABD.isABD(); }}
+                {{ var receiveAbd = meerkat.modules.healthRABD.isABD(false); }}
                 {{ if(receiveAbd) { }}
                     <health_v4:abd_badge abd="true" />
                 {{ } else { }}
                     <health_v4:abd_badge abd="false" />
                 {{ } }}
-                <health_v4:abd_whats_this shortTitle="true" />
             {{ } }}
 
             <div class="lhcText">
