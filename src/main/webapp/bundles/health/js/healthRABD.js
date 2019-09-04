@@ -100,7 +100,7 @@
 
   function _setupListeners() {
     $journeyType.change( function(e) {
-      hasPartner = meerkat.modules.healthChoices.hasPartner();
+      hasPartner = meerkat.modules.healthChoices.hasSpouse();
       $abdEligibilityContent.addClass('hidden');
     });
 
@@ -225,7 +225,7 @@
     var rabdResult = Results.getReturnedResults().find(function(result) { return result.custom.reform.yad === "R" && result.premium.monthly.abd > 0; });
     $('.results-filters-abd').toggleClass('hidden', rabdResult === undefined);
 
-    var simplesShowRABD = true;
+    var simplesShowRABD = filterAbdProducts();
 
     if(isRABD) {
       $('#rabd-reminder').toggleClass('hidden', !simplesShowRABD || rabdResult === undefined);
@@ -343,12 +343,21 @@
     return false;
   }
 
+  function filterAbdProducts() {
+    if(!$abdFilterRadios || $abdFilterRadios.filter(':checked') === undefined) {
+      return false;
+    }
+
+    return $abdFilterRadios.filter(':checked').val() === "Y";
+  }
+
   meerkat.modules.register('healthRABD', {
       init: init,
       isABD: isABD,
       isRABD: isRABD,
       setApplicationDetails: setApplicationDetails,
-      showPaymentsScript: showPaymentsScript
+      showPaymentsScript: showPaymentsScript,
+      filterAbdProducts: filterAbdProducts
   });
 
 })(jQuery);
