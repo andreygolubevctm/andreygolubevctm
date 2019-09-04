@@ -231,7 +231,6 @@
 
   function showABDSupportContent() {
     $abdEligibilityContent.addClass('hidden');
-    console.log(inRange(18, 30, primaryAge));
 
     if(!hasPartner) {
       if ( primaryHasABDPolicy ) {
