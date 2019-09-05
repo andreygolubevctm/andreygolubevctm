@@ -10,26 +10,50 @@
 		$selectedTags,
 		initialised = false;
 
-	function updateSummaryText() {
-		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
-		// Build the summary text based on the entered information.
-
-		var txt= '<span class="highlight">';
-		var adults = $adults.val(),
-		children = $children.val();
-
-		if (adults < 3) {
+	function buildTravelersString(adultsCount, childrenCount) {
+		var travelersString = '';
+		if (adultsCount < 3) {
 			// adults
-			txt += adults + ' adult' + (adults == 1 ? '' : 's');
+			travelersString += adultsCount + ' adult' + (adultsCount == 1 ? '' : 's');
 		} else {
-			txt += adults;
+			travelersString += adults;
 		}
 
 		// children
-		if (children > 0)
-		{
-			txt += ' and ' + children + ' child' + (children == 1 ? '' : 'ren');
+		if (childrenCount > 0) {
+			travelersString += ' and ' + childrenCount + ' child' + (childrenCount == 1 ? '' : 'ren');
 		}
+		return travelersString;
+	}
+
+	function buildRegineString(regionTags) {
+		var regins='';
+		for(var rs = 0; rs < regionTags.length; rs++) {
+			regins += $(regionTags[rs]).text();
+			if (rs == regionTags.length-1) {
+				regins += '';
+				continue;
+			}
+			if (regionTags.length > 1 && rs !== regionTags.length-2 ) {
+				regins += ', ';
+			} else {
+				regins += ' & ';
+			}
+		}
+		return regins;
+	}
+
+	function updateSummaryText() {
+		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
+		// Build the summary text based on the entered information.
+		var txt= '<span class="highlight">';
+		var adults = $adults.val();
+	 	var regionTags = $('#destinationsfs').find('.selected-tag');
+		var children = $children.val();
+		// duration calculation
+		var days = meerkat.modules.travelDatepicker.getDateDifference();
+
+		txt += buildTravelersString(adults, children);
 
 		// if this is a single trip
 		if ($("input[name=travel_policyType]:checked").val() == 'S') {
@@ -38,42 +62,30 @@
 			txt +='</span> <span>travelling</span> <span class="md-block">to <span class="highlight">';
 
 			// update the country text for single trip
-			if ($selectedTags.children().length == 1) {
-				txt += $selectedTags.find('li:first-child').data("fulltext");
+			if (regionTags.length <=  10) {
+				// txt += $selectedTags.find('li:first-child').data("fulltext");
+				txt += buildRegineString(regionTags);
 			} else {
 				txt += "multiple destinations";
 			}
-
-			// duration calculation
-			var days = meerkat.modules.travelDatepicker.getDateDifference();
 			txt += "</span> for <span class='highlight'>"+days+" days</span>";
 		} else {
+			var regionStr = '';
+			var durationVal = $('#amtDurationsfs').find('.active').text().trim();
+			var travelTxt = 'to ';
+			var is61Duration = durationVal.indexOf("61") > -1;
+			var amtDurationSpan = "<span class='" + (is61Duration ? 'highlight' : 'amt-highlight') + "'>"+durationVal+".</span>";
 
 			$summaryHeader.html('Your Annual Multi Trip (AMT) quote is based on');
 
 			// build the destination string
-			var regionTags = $('#destinationsfs').find('.selected-tag');
-			var durationTag = $('#amtDurationsfs').find('.active').text();
-			var regionStr = '';
 			if (regionTags.length === 1) {
 				regionStr = regionTags.text();
+			} else if (regionTags.length <=  10) {
+				regionStr = buildRegineString(regionTags);
 			} else {
-				for(var rs = 0; rs < regionTags.length; rs++) {
-					regionStr += $(regionTags[rs]).text();
-					if (rs == regionTags.length-1) {
-						regionStr += '';
-						continue;
-					}
-					if (regionTags.length > 1 && rs !== regionTags.length-2 ) {
-						regionStr += ', ';
-					} else {
-						regionStr += ' & ';
-					}
-				}
+				regionStr = "multiple destinations";
 			}
-
-			var durationVal = $('#amtDurationsfs').find('.active').text().trim();
-			var travelTxt = 'to ';
 
 			if (regionTags[0].textContent.toLowerCase().indexOf('pacific') !== -1 || regionTags[0].textContent.toLowerCase().indexOf('united') !== -1) {
 				travelTxt = 'to the ';
@@ -81,9 +93,6 @@
 				travelTxt = '';
 			}
 
-			var is61Duration = durationVal.indexOf("61") > -1;
-
-			var amtDurationSpan = "<span class='" + (is61Duration ? 'highlight' : 'amt-highlight') + "'>"+durationVal+".</span>";
 			if(!is61Duration) {
 				amtDurationSpan = "<a href='javascript:void(0);' class='help-icon' data-content='helpid:645' data-toggle='popover'>" + amtDurationSpan + "</a>";
 			}
