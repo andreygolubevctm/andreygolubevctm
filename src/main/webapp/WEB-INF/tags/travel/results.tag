@@ -90,7 +90,7 @@
 						{{ } }}
 							<div><span>{{= productTitle }}</span></div>
 								<travel:results_triptype_icons />
-							{{ if (!isTripType && hasSpecialOffer) { }}
+							{{ if (hasSpecialOffer) { }}
 							<div class="promotion hidden-sm">
 								<span class="icon icon-tag"></span> {{= obj.offer.copy }}
 								<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
