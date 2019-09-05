@@ -26,7 +26,7 @@
 		return travelersString;
 	}
 
-	function buildRegineString(regionTags) {
+	function buildRegionString(regionTags) {
 		var regins='';
 		for(var rs = 0; rs < regionTags.length; rs++) {
 			regins += $(regionTags[rs]).text();
@@ -63,7 +63,7 @@
 
 			// update the country text for single trip
 			if (regionTags.length <=  10) {
-				txt += buildRegineString(regionTags);
+				txt += buildRegionString(regionTags);
 			} else {
 				txt += "multiple destinations";
 			}
@@ -79,7 +79,7 @@
 
 			// build the destination string
 			if (regionTags.length <=  10) {
-				regionStr = buildRegineString(regionTags);
+				regionStr = buildRegionString(regionTags);
 			} else {
 				regionStr = "multiple destinations";
 			}
