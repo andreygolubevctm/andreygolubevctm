@@ -70,7 +70,7 @@
 	{{ var isTripType = meerkat.modules.tripType.exists(); }}
 	{{ var tripTypes = meerkat.modules.tripType.get(); }}
 	{{ var tripTypeClass = isTripType ? "trip-type-container" : ""; }}
-	{{ var specialOfferClass = !isTripType && hasSpecialOffer ? "specialOffer" : ""; }}
+	{{ var specialOfferClass = hasSpecialOffer ? "specialOffer" : ""; }}
 
 	<div class="result-row available result_{{= obj.productId }}"
 		 data-productId="{{= obj.productId }}"
@@ -147,7 +147,7 @@
 							<span>{{= productTitle }}</span>
 							<travel:results_triptype_icons />
 						</div>
-						{{ if (!isTripType && hasSpecialOffer) { }}
+						{{ if (hasSpecialOffer) { }}
 						<div class="promotion">
 							<span class="icon icon-tag"></span> {{= obj.offer.copy }}
 							<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
