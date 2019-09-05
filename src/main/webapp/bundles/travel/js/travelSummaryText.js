@@ -63,7 +63,6 @@
 
 			// update the country text for single trip
 			if (regionTags.length <=  10) {
-				// txt += $selectedTags.find('li:first-child').data("fulltext");
 				txt += buildRegineString(regionTags);
 			} else {
 				txt += "multiple destinations";
@@ -79,9 +78,7 @@
 			$summaryHeader.html('Your Annual Multi Trip (AMT) quote is based on');
 
 			// build the destination string
-			if (regionTags.length === 1) {
-				regionStr = regionTags.text();
-			} else if (regionTags.length <=  10) {
+			if (regionTags.length <=  10) {
 				regionStr = buildRegineString(regionTags);
 			} else {
 				regionStr = "multiple destinations";
