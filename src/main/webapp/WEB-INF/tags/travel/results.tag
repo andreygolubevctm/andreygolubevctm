@@ -85,7 +85,7 @@
 					</div>
 
 					<div class="col-lg-3 visible-lg productTitle {{= tripTypeClass }} {{= specialOfferClass}}">
-						{{ if(!isTripType && hasSpecialOffer) { }}
+						{{ if(hasSpecialOffer) { }}
 						<div class="innertube">
 						{{ } }}
 							<div><span>{{= productTitle }}</span></div>
@@ -97,7 +97,7 @@
 								<div class="offerTerms-content hidden">{{= obj.offer.terms }}</div>
 							</div>
 							{{ } }}
-						{{ if(!isTripType && hasSpecialOffer) { }}
+						{{ if(hasSpecialOffer) { }}
 						</div>
 						{{ } }}
 					</div>
