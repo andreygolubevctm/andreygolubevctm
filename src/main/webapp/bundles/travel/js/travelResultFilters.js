@@ -97,6 +97,11 @@
             $amtFilterDropdownBtn.dropdown('toggle');
             _toggleAmtType($(this).val());
         });
+
+        // update the results as per the medical conditions checkbox filter
+        $('input[name="medicalCondsAssessedCheckbox"]').change(function () {
+            _updateTravelResults("CONDITIONS", this.checked);
+        });
         
         $('input[name="luggageRangeSlider"]').on('input', function() {
             _displaySliderValue("LUGGAGE", $(this).val());
@@ -178,6 +183,7 @@
                 $(this).find('.icon-brand').removeClass('icon-angle-up').addClass('icon-angle-down');
             }
         });
+        $('.filter-brands-toggle').click();
 
         // toggle brands select all/none
         $('.brands-select-toggle').on("click", function () {
@@ -215,6 +221,11 @@
         var _filters = Results.model.travelFilters;
 
         switch (filter) {
+            case 'CONDITIONS':
+                _filters.CONDITIONS = value;
+                Results.model.travelFilters = _filters;
+                _displayCustomResults(false, true);
+                break;
             case 'LUGGAGE':
                 _filters.LUGGAGE = value;
                 Results.model.travelFilters = _filters;
@@ -292,7 +303,6 @@
         _filters.LUGGAGE = _coverTypeValues[cover].LUGGAGE;
         _filters.CXDFEE = _coverTypeValues[cover].CXDFEE;
         _filters.MEDICAL = _coverTypeValues[cover].MEDICAL;
-        _filters.MEDICAL = _coverTypeValues[cover].MEDICAL;
         _filters.RENTALVEHICLE = _coverTypeValues[cover].RENTALVEHICLE;
 
         // update luggage filter
@@ -307,7 +317,7 @@
         $('input[name="overseasMedicalRangeSlider"]').val(_filters.MEDICAL);
         _displaySliderValue("MEDICAL", _filters.MEDICAL);
 
-                // update overseas medical filter
+        // update overseas medical filter
         $('input[name="rentalVehicleRangeSlider"]').val(_filters.RENTALVEHICLE);
         _displaySliderValue("RENTALVEHICLE", _filters.RENTALVEHICLE);
 
@@ -438,6 +448,7 @@
         var destination = $('#travel_destination').val();
 
         Results.model.travelFilters = {
+            CONDITIONS: false,
             EXCESS: 200,
             LUGGAGE: 5000,
             CXDFEE: destination === 'AUS' ? 10000 : 20000,
@@ -448,6 +459,9 @@
         Results.model.travelFilteredProductsCount = 0;
         $init.cover = null;
         var _filters = Results.model.travelFilters;
+
+        $('input[name="medicalCondsAssessedCheckbox"]').prop("checked", _filters.CONDITIONS);
+
         $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
         _displaySliderValue("LUGGAGE", _filters.LUGGAGE);
 

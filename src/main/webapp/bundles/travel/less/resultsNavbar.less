@@ -197,11 +197,20 @@ body.travel {
 
       .clt-trip-filter {
         margin-top: 0 !important;
+        padding-right: 0;
 
+        & > .dropdown {
+          width: fit-content;
+        }
       }
     }
     .main-filter-buttons {
       padding: 10px 0;
+      overflow: auto;
+
+      & > div {
+        width: fit-content;
+      }
     }
 
     .filters-row {
@@ -223,8 +232,11 @@ body.travel {
   }
 }
 
-.priceMode {
-  .filters-row {
+@media (@xs-only) {
+  .priceMode[data-step="results"] .filters-row {
     display: flex;
+  }
+  .priceMode[data-step="start"] .filters-row {
+    display: none;
   }
 }
