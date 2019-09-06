@@ -7,7 +7,6 @@
 
   function init() {
     $(document).ready(function() {
-      // Centrally managed state
       state = {
         hasPartner: false,
         primary: {
@@ -122,13 +121,10 @@
       var dates= e.target.value.split('/');
       var date = dates[1] + '/' + dates[0] + '/' + dates[2];
 
-      console.log(elements[type].abdPolicyStartDateApplication);
-
       elements[type].abdPolicyStartDateApplication.datepicker("setDate", new Date(date));
     });
 
     elements.dialogTriggers.click(showABDModal);
-
     meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
   }
 
@@ -193,16 +189,16 @@
 
     var primaryPolicy = hasCover('primary');
     var primaryABD = hasAbdPolicy('primary');
-    var primaryinRange = inRange(18,30,state.primary.age);
     var partnerPolicy = hasCover('partner');
     var partnerABD = hasAbdPolicy('partner');
-    var partnerinRange = inRange(18,30,state.partner.age);
+    var primaryinRange = inRange(18, 30, state.primary.age);
+    var partnerinRange = inRange(18, 30, state.partner.age);
 
     if(!state.hasPartner) {
       if ( primaryPolicy && primaryABD ) {
         elements.abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
       }
-      else if ( primaryinRange ) {
+      else if ( inRange(18,30,state.primary.age) ) {
         elements.abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
       }
     }
