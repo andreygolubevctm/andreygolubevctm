@@ -64,51 +64,41 @@
 
   function onChangeAbdFilterRadios(e) {
     var unsure = e.target.value === 'N' || e.target.value === 'U';
-        var modalContent = elements.abdFilterQuestion.find('.abdFilterModalContent').html();
-        var $yesScripting = $('.simples-dialogue-138');
+    var modalContent = elements.abdFilterQuestion.find('.abdFilterModalContent').html();
+    var $yesScripting = $('.simples-dialogue-138');
   
-        if (unsure) {
-          $yesScripting.addClass('hidden');
-          meerkat.modules.dialogs.show({
-            title: null,
-            htmlContent: modalContent,
-            className: '',
-            buttons: [{
-              label: "Ok",
-              className: 'btn-next',
-              closeWindow: true
-            }],
-            onClose: function(modalId) {
-              var abdFilterValue = $('[name=health_healthCover_filter_abd_final]').filter(":checked").val();
-              var target = elements.abdFilterRadios.filter('[value="' + abdFilterValue+ '"]');
-              var currentSelection = elements.abdFilterRadios.filter(':checked');
-              currentSelection.parent('label').removeClass('active');
-              currentSelection.prop('checked', false);
-              target.prop('checked', true);
-              target.parent('label').addClass('active');
-              $('.filter-no-response-scripting').addClass('hidden');
-              if ( abdFilterValue === 'Y' ) {
-                $yesScripting.removeClass('hidden');
-              }
-              else {
-                $yesScripting.addClass('hidden');
-              }
-            },
-            onOpen: function() {
-              $('[name=health_healthCover_filter_abd_final]').change( function(e) {
-                if (e.target.value === 'N') {
-                  $('.filter-no-response-scripting').removeClass('hidden');
-                }
-                else {
-                  $('.filter-no-response-scripting').addClass('hidden');
-                }
-              });
-            }
+    if (unsure) {
+      $yesScripting.addClass('hidden');
+      meerkat.modules.dialogs.show({
+        title: null,
+        htmlContent: modalContent,
+        className: '',
+        buttons: [{
+          label: "Ok",
+          className: 'btn-next',
+          closeWindow: true
+        }],
+        onClose: function(modalId) {
+          var abdFilterValue = $('[name=health_healthCover_filter_abd_final]').filter(":checked").val();
+          var target = elements.abdFilterRadios.filter('[value="' + abdFilterValue+ '"]');
+          var currentSelection = elements.abdFilterRadios.filter(':checked');
+          currentSelection.parent('label').removeClass('active');
+          currentSelection.prop('checked', false);
+          target.prop('checked', true);
+          target.parent('label').addClass('active');
+          $('.filter-no-response-scripting').addClass('hidden');
+          $yesScripting.toggleClass('hidden', abdFilterValue !== 'Y' );
+        },
+        onOpen: function() {
+          $('[name=health_healthCover_filter_abd_final]').change( function(e) {
+            $('.filter-no-response-scripting').toggleClass('hidden', e.target.value !== 'N');
           });
         }
-        else {
-          $yesScripting.removeClass('hidden');
-        }
+      });
+    }
+    else {
+      $yesScripting.removeClass('hidden');
+    }
   }
 
   function isABD() {
@@ -161,7 +151,7 @@
   }
 
   function showABDFilterQuestion() {
-    var hasAbd = hasAbdPolicy('primary') || hasAbdPolicy('parnter');
+    var hasAbd = hasAbdPolicy('primary') || hasAbdPolicy('partner');
     elements.abdFilterQuestion.toggleClass('hidden', !hasAbd);
   }
 
