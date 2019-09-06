@@ -7,7 +7,6 @@
 
   function init() {
     $(document).ready(function() {
-      // Centrally managed state
       state = {
         hasPartner: false,
         primary: {
@@ -122,13 +121,10 @@
       var dates= e.target.value.split('/');
       var date = dates[1] + '/' + dates[0] + '/' + dates[2];
 
-      console.log(elements[type].abdPolicyStartDateApplication);
-
       elements[type].abdPolicyStartDateApplication.datepicker("setDate", new Date(date));
     });
 
     elements.dialogTriggers.click(showABDModal);
-
     meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
   }
 
@@ -191,34 +187,27 @@
   function showABDSupportContent() {
     elements.abdEligibilityContent.addClass('hidden');
 
-    var primaryPolicy = hasCover('primary');
-    var primaryABD = hasAbdPolicy('primary');
-    var primaryinRange = inRange(18,30,state.primary.age);
-    var partnerPolicy = hasCover('partner');
-    var partnerABD = hasAbdPolicy('partner');
-    var partnerinRange = inRange(18,30,state.partner.age);
-
     if(!state.hasPartner) {
-      if ( primaryABD ) {
+      if ( hasAbdPolicy('primary') ) {
         elements.abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
       }
-      else if ( primaryinRange ) {
+      else if ( inRange(18,30,state.primary.age) ) {
         elements.abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
       }
     }
     else {
-      if (primaryPolicy || partnerPolicy) {
-        if(primaryABD && partnerABD && primaryPolicy && partnerPolicy) {
+      if (hasCover('primary') || hasCover('partner')) {
+        if(hasAbdPolicy('primary') && hasAbdPolicy('partner') && hasCover('primary') && hasCover('partner')) {
           elements.abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
         }
-        else if ((primaryABD && ! partnerABD) || (!primaryABD && partnerABD)) {
+        else if ((hasAbdPolicy('primary') && ! hasAbdPolicy('partner')) || (!hasAbdPolicy('primary') && hasAbdPolicy('partner'))) {
           elements.abdEligibilityContent.filter('#couple_one_has_abd').removeClass('hidden');
         }
         else {
-          if ( primaryinRange && partnerinRange && primaryPolicy && partnerPolicy) {
+          if ( inRange(18,30,state.primary.age) && inRange(18,30,state.partner.age) && hasCover('primary') && hasCover('partner')) {
             elements.abdEligibilityContent.filter('#couple_both_18_to_30').removeClass('hidden');
           }
-          else if ((primaryinRange && !partnerinRange) || (!primaryinRange && partnerinRange)) {
+          else if ((inRange(18,30,state.primary.age) && !inRange(18,30,state.partner.age)) || (!inRange(18,30,state.primary.age) && inRange(18,30,state.partner.age))) {
             elements.abdEligibilityContent.filter('#couple_one_18_to_30').removeClass('hidden');
           }
         }
