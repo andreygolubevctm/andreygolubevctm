@@ -198,7 +198,7 @@
       if ( primaryPolicy && primaryABD ) {
         elements.abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
       }
-      else if ( inRange(18,30,state.primary.age) ) {
+      else if ( primaryinRange ) {
         elements.abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
       }
     }
