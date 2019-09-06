@@ -2,98 +2,89 @@
 
   var meerkat = window.meerkat,
     meerkatEvents = meerkat.modules.events,
-    $healthPrimaryDateofBirth,
-    $healthPartnerDateofBirth,
-    $primaryCurrentCover,
-    $primaryCurrentCoverApplication,
-    $primaryABDQuestion,
-    $partnerCurrentCover,
-    $partnerCurrentCoverApplication,
-    $partnerABDQuestion,
-    $primaryABDPolicyStartDateContainer,
-    $partnerABDPolicyStartDateContainer,
-    $primaryABDPolicyStartDate,
-    $partnerABDPolicyStartDate,
-    $dialogTriggers,
-    $journeyType,
-    $abdEligibilityContent,
-    hasPartner,
-    primaryAge,
-    primaryHasCurrentCover,
-    primaryHasABDPolicy,
-    partnerAge,
-    partnerHasCurrentCover,
-    partnerHasABDPolicy,
-    $primaryABDPolicyStartDateApplicationContainer,
-    $primaryABDPolicyStartDateApplication,
-    $partnerABDPolicyStartDateApplicationContainer,
-    $partnerABDPolicyStartDateApplication;
-
-  var state = {
-    hasPartner: false,
-    primary: {
-      hasCurrentCover: false,
-      hasABDPolicy: false,
-      age: 17
-    },
-    partner: {
-      hasCurrentCover: false,
-      hasABDPolicy: false,
-      age: 17
-    }
-  };
+    elements,
+    state;
 
   function init() {
     $(document).ready(function() {
-      $healthPrimaryDateofBirth = $('#health_healthCover_primary_dob');
-      $healthPartnerDateofBirth = $('#health_healthCover_partner_dob');
+      // Centrally managed state
+      state = {
+        hasPartner: false,
+        primary: {
+          hasCurrentCover: false,
+          hasABDPolicy: false,
+          age: 0
+        },
+        partner: {
+          hasCurrentCover: false,
+          hasABDPolicy: false,
+          age: 0
+        }
+      };
 
-      $primaryCurrentCover = $('[name=health_healthCover_primary_cover]');
-      $primaryCurrentCoverApplication = $('[name=health_application_primary_cover]');
+      elements = {
+        primary: {
+          dob: $('#health_healthCover_primary_dob'),
+          currentCover: $('.health-cover_details input[type="radio"]'), //$('[name=health_healthCover_primary_cover]') || $('[name=health_application_primary_cover]'),
+          currentCoverApplication: $('[name=health_application_primary_cover]'),
+          abdQuestionContainer: $('.primaryHasABD'),
+          abdQuestion: $('.health-cover_details_abd_current input[type="radio"]'), //$('[name=health_healthCover_primary_abd]') || $('[name=health_previousfund_primary_abd]'),
+          abdQuestionApplication: $('[name=health_previousfund_primary_abd]'),
+          abdPolicyStartDateContainer: $('.health-cover_details_abd_start'), // $('#primary_abd_start_date') || $('#health_previousfund_primary_abd_start_date'),
+          abdPolicyStartDate: $('#health_healthCover_primary_abdPolicyStart'), //  || $('#health_previousfund_primary_abdPolicyStart'),
+          ABDPolicyStartDateApplicationContainer: $('#health_previousfund_primary_abd_start_date'),
+          abdPolicyStartDateApplication: $('#health_previousfund_primary_abdPolicyStart'),
+        },
+        partner: {
+          dob: $('#health_healthCover_partner_dob'),
+          currentCover: $('[name=health_healthCover_partner_cover]') || $('[name=health_application_partner_cover]'),
+          currentCoverApplication: $('[name=health_application_partner_cover]'),
+          abdQuestionContainer: $('#health_healthCover_partnerhasABD'),
+          abdQuestion: $('[name=health_healthCover_partner_abd]') || $('[name=health_previousfund_partner_abd]'),
+          abdQuestionApplication: $('[name=health_previousfund_partner_abd]'),
+          abdPolicyStartDateContainer: $('#partner_abd_start_date') || $('#health_previousfund_partner_abd_start_date'),
+          abdPolicyStartDate: $('#health_healthCover_partner_abdPolicyStart') || $('#health_previousfund_partner_abdPolicyStart'),
+          ABDPolicyStartDateApplicationContainer: $('#health_previousfund_partner_abd_start_date'),
+          ABDPolicyStartDateApplication: $('#health_previousfund_partner_abdPolicyStart'),
+        },
+        abdDetailsApplication: $('.abd-details-application'),
+        abdDetailsApplicationSingleNoPHI: $('.abd-details-application-single'),
+        abdDetailsApplicationCouple: $('.abd-details-application-couple'),
+        dialogTriggers: $('.dialogPop'),
+        abdEligibilityContent: $('.abd-support-text')
+      };
 
-      $partnerCurrentCover = $('[name=health_healthCover_partner_cover]');
-      $partnerCurrentCoverApplication = $('[name=health_application_partner_cover]');
+      _setupListeners('primary');
+      _setupListeners('partner');
 
-      $primaryABDQuestionContainer = $('#health_healthCover_primaryhasABD');
-      $partnerABDQuestionContainer = $('#health_healthCover_partnerhasABD');
+      if(hasCover('primary')) {
+        state.primary.age = meerkat.modules.age.returnAge(elements.primary.dob.val(), true);
+        showABDQuestion('primary');
+        showABDStartDate('primary');
+        showABDSupportContent();
+      }
 
-      $primaryABDQuestion = $('[name=health_healthCover_primary_abd]');
-      $partnerABDQuestion = $('[name=health_healthCover_partner_abd]');
+      if(hasCover('partner')) {
+        state.partner.age = meerkat.modules.age.returnAge(elements.partner.dob.val(), true);
+        showABDQuestion('partner');
+        showABDStartDate('partner');
+        showABDSupportContent();
+      }
 
-      $primaryABDQuestionApplication = $('[name=health_previousfund_primary_abd]');
-      $partnerABDQuestionApplication = $('[name=health_previousfund_partner_abd]');
-
-      $abdDetailsApplication = $('.abd-details-application');
-      $abdDetailsApplicationSingleNoPHI = $('.abd-details-application-single');
-      $abdDetailsApplicationCouple = $('.abd-details-application-couple');
-
-      $primaryABDPolicyStartDateContainer = $('#primary_abd_start_date');
-      $partnerABDPolicyStartDateContainer = $('#partner_abd_start_date');
-
-      $primaryABDPolicyStartDate = $('#health_healthCover_primary_abdPolicyStart');
-      $partnerABDPolicyStartDate = $('#health_healthCover_partner_abdPolicyStart');
-
-      $primaryABDPolicyStartDateApplicationContainer = $('#health_previousfund_primary_abd_start_date');
-      $partnerABDPolicyStartDateApplicationContainer = $('#health_previousfund_partner_abd_start_date');
-
-      $primaryABDPolicyStartDateApplication = $('#health_previousfund_primary_abdPolicyStart');
-      $partnerABDPolicyStartDateApplication = $('#health_previousfund_partner_abdPolicyStart');
-
-      $dialogTriggers = $('.dialogPop');
-
-      $abdEligibilityContent = $('.abd-support-text');
-
-      _setupListeners();
+      meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function() {
+        state.hasPartner = meerkat.modules.healthChoices.hasPartner();
+        showABDSupportContent();
+      });
     });
   }
 
   function isABD(isApplicationPage) {
 
-    if(!primaryHasCurrentCover && (!hasPartner || !partnerHasCurrentCover)) {
+    if(!state.primary.hasCurrentCover && (!state.hasPartner || !state.partner.hasCurrentCover)) {
       return true;
     }
 
-    if(!primaryHasABDPolicy && (!hasPartner || !partnerHasABDPolicy)) {
+    if(!state.primary.hasABDPolicy && (!state.hasPartner || !state.partner.hasABDPolicy)) {
       return true;
     }
 
@@ -108,98 +99,49 @@
     return value >= lowerBound && value <= upperBound;
   }
 
-  function showABDModal() {
-    meerkat.modules.dialogs.show({
-      title: $(this).attr("title"),
-      htmlContent: $(this).attr("data-content"),
-      className: $(this).attr("data-class")
-    });
-  }
-
-  function _setupListeners() {
-    meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function() {
-      state.hasPartner = meerkat.modules.healthChoices.hasPartner();
-      $abdEligibilityContent.addClass('hidden');
-    });
-
-    $primaryCurrentCover.change( function(e) {
-      state.primary.hasCurrentCover = e.target.value === 'Y';
-      showABDQuestion(true);
-      showABDStartDate(true);
+  function _setupListeners(type) {
+    elements[type].currentCover.change(function(e) {
+      state[type].hasCurrentCover = e.target.value === 'Y';
+      showABDQuestion(type);
+      showABDStartDate(type);
       setApplicationDetails();
       showABDSupportContent();
     });
 
-    $partnerCurrentCover.change( function(e) {
-      state.partner.hasCurrentCover = e.target.value === 'Y';
-      showABDQuestion(false);
-      showABDStartDate(false);
+    elements[type].dob.change(function(e) {
+      state[type].age = meerkat.modules.age.returnAge(e.target.value, true);
+      showABDQuestion(type);
       setApplicationDetails();
+      showABDStartDate(type);
       showABDSupportContent();
     });
 
-    $healthPrimaryDateofBirth.change(function(e) {
-      state.primary.age = meerkat.modules.age.returnAge(e.target.value, true);
-      showABDQuestion(true);
-      setApplicationDetails();
-      showABDStartDate(true);
+    elements[type].abdQuestion.change(function(e) {
+      state[type].hasABDPolicy = e.target.value === 'Y';
+      elements[type].abdQuestion.filter('[value="' + e.target.value + '"]').click();
+      elements[type].abdPolicyStartDateContainer.toggleClass('hidden', !state[type].hasABDPolicy);
       showABDSupportContent();
-    });
-
-    $healthPartnerDateofBirth.change(function(e) {
-      state.partner.age = meerkat.modules.age.returnAge(e.target.value, true);
-      showABDQuestion();
-      setApplicationDetails();
-      showABDStartDate(false);
-      showABDSupportContent();
-    });
-
-    $primaryABDQuestionApplication.change(function(e) {
-      state.primary.hasABDPolicy = e.target.value === 'Y';
-      $primaryABDQuestion.filter('[value="' + e.target.value + '"]').click();
-      $primaryABDPolicyStartDateApplicationContainer.toggleClass('hidden', !state.primary.hasABDPolicy);
       setApplicationDetails();
     });
 
-    $partnerABDQuestionApplication.change(function(e) {
-      state.partner.hasABDPolicy = e.target.value === 'Y';
-      $partnerABDQuestion.filter('[value="' + e.target.value + '"]').click();
-      $partnerABDPolicyStartDateApplicationContainer.toggleClass('hidden', !state.partner.hasABDPolicy);
-      setApplicationDetails();
-      showABDSupportContent();
-    });
-
-    $primaryABDQuestion.change(function(e) {
-      state.primary.hasABDPolicy = e.target.value === 'Y';
-      $primaryABDQuestionApplication.filter('[value="' + e.target.value + '"]').click();
-      showABDStartDate(true);
-      showABDSupportContent();
-    });
-
-    $partnerABDQuestion.change(function(e) {
-      state.partner.hasABDPolicy = e.target.value === 'Y';
-      $partnerABDQuestionApplication.filter('[value="' + e.target.value + '"]').click();
-      showABDStartDate();
-      showABDSupportContent();
-    });
-
-    $primaryABDPolicyStartDate.change(function(e) {
+    elements[type].abdPolicyStartDate.change(function(e) {
       var dates= e.target.value.split('/');
       var date = dates[1] + '/' + dates[0] + '/' + dates[2];
 
-      $primaryABDPolicyStartDateApplication.datepicker("setDate", new Date(date));
+      elements[type].abdPolicyStartDateApplication.datepicker("setDate", new Date(date));
     });
 
-    $partnerABDPolicyStartDate.change(function(e) {
-      var dates= e.target.value.split('/');
-      var date = dates[1] + '/' + dates[0] + '/' + dates[2];
-
-      $partnerABDPolicyStartDateApplication.datepicker("setDate", new Date(date));
-    });
-
-    $dialogTriggers.click(showABDModal);
+    elements.dialogTriggers.click(showABDModal);
 
     meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
+  }
+
+  function hasCover(type) {
+    return elements[type].currentCover.filter(':checked').val() === 'Y';
+  }
+
+  function hasAbdPolicy(type) {
+    return elements[type].abdQuestion.filter(':checked').val() === 'Y';
   }
 
   function hideResultsFilter() {
@@ -207,97 +149,93 @@
     $('.results-filters-abd').toggleClass('hidden', rabdResult === undefined);
   }
 
-  function showABDQuestion(isPrimary) {
-    if (isPrimary) {
-      if (state.primary.age >= 18 && state.primary.age < 45 && primaryHasCurrentCover) {
-        $primaryABDQuestionContainer.removeClass('hidden');
-      }
-      else {
-        $primaryABDQuestionContainer.addClass('hidden');
-      }
-    }
-    else {
-      if (state.partner.age >= 18 && state.partner.age < 45 && partnerHasCurrentCover) {
-        $partnerABDQuestionContainer.removeClass('hidden');
-      }
-      else {
-        $partnerABDQuestionContainer.addClass('hidden');
-      }
-    }
+  function showABDQuestion(type) {
+    var showQuestion = state[type].age >=18 && state[type].age <= 45 && hasCover(type);
+    elements[type].abdQuestionContainer.toggleClass('hidden', !showQuestion);
+  }
+
+  function showABDStartDate(type) {
+    var toDisplay = hasAbdPolicy(type) && hasCover(type);
+    elements[type].abdPolicyStartDateContainer.toggleClass('hidden', !toDisplay);
   }
 
   function setApplicationDetails() {
     var selectedProduct = Results.getSelectedProduct();
     if(!selectedProduct || selectedProduct.premium.monthly.abd === 0) { return; }
 
-    var isSingle = meerkat.modules.healthSituation.getSituation().indexOf("S") > -1;
-    var primaryHasCover = $primaryCurrentCoverApplication.filter(":checked").val() === 'Y';
+    var isSingle =  !state.hasPartner;
+    var primaryHasCover = elements.primary.currentCover.filter(":checked").val() === 'Y';
 
-    $abdDetailsApplicationSingleNoPHI.toggleClass('hidden', primaryHasCover || !isSingle);
-    $abdDetailsApplicationCouple.toggleClass('hidden', isSingle);
-    $abdDetailsApplication.toggleClass('hidden', !isSingle);
+    elements.abdDetailsApplicationSingleNoPHI.toggleClass('hidden', primaryHasCover || !isSingle);
+    elements.abdDetailsApplicationCouple.toggleClass('hidden', isSingle);
+    elements.abdDetailsApplication.toggleClass('hidden', !isSingle);
 
     if(isABD(true)) {
 
-      $abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
-      $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
-      $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
+      elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
+      elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
+      elements.abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
     }else{
 
-      var primaryHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
-      var partnerHasABD = $primaryABDQuestionApplication.filter(":checked").val() === 'Y';
+      var primaryHasABD = elements.primary.abdQuestionApplication.filter(":checked").val() === 'Y';
+      var partnerHasABD = elements.partner.abdQuestionApplication.filter(":checked").val() === 'Y';
 
       if(primaryHasABD && ( !isSingle || partnerHasABD )) {
-        $abdDetailsApplication.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-        $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-        $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        elements.abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
       }else {
-        $abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-        $abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-        $abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+        elements.abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
       }
-    }
-  }
-
-  function showABDStartDate(isPrimary) {
-    if (isPrimary) {
-      (state.primary.hasCurrentCover && state.primary.hasABDPolicy && state.primary.age >= 18 && state.primary.age < 45) ? $primaryABDPolicyStartDateContainer.removeClass('hidden') : $primaryABDPolicyStartDateContainer.addClass('hidden');
-    }
-    else {
-      (state.partner.hasCurrentCover && state.partner.hasABDPolicy && state.partner.age >= 18 && state.partner.age < 45) ? $partnerABDPolicyStartDateContainer.removeClass('hidden') : $partnerABDPolicyStartDateContainer.addClass('hidden');
     }
   }
 
   function showABDSupportContent() {
-    $abdEligibilityContent.addClass('hidden');
+    elements.abdEligibilityContent.addClass('hidden');
 
-    if(!hasPartner) {
-      if ( state.primary.hasABDPolicy ) {
-        $abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
+    var primaryPolicy = hasCover('primary');
+    var primaryABD = hasAbdPolicy('primary');
+    var primaryinRange = inRange(18,30,state.primary.age);
+    var partnerPolicy = hasCover('partner');
+    var partnerABD = hasAbdPolicy('partner');
+    var partnerinRange = inRange(18,30,state.partner.age);
+
+    if(!state.hasPartner) {
+      if ( primaryABD ) {
+        elements.abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
       }
-      else if ( inRange(18, 30, state.primary.age) ) {
-        console.log('here');
-        $abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
+      else if ( primaryinRange ) {
+        elements.abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
       }
     }
     else {
-      if(state.primary.hasCurrentCover || state.partner.hasCurrentCover) {
-        if ( state.primary.hasABDPolicy && state.partner.hasABDPolicy && state.primary.hasCurrentCover && state.partner.hasCurrentCover ) {
-          $abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
+      if (primaryPolicy || partnerPolicy) {
+        if(primaryABD && partnerABD && primaryPolicy && partnerPolicy) {
+          elements.abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
         }
-        else if ( ( state.primary.hasABDPolicy && !state.partner.hasABDPolicy ) || ( !state.primary.hasABDPolicy && state.partner.hasABDPolicy ) ) {
-          $abdEligibilityContent.filter('#couple_one_has_abd').removeClass('hidden');
+        else if ((primaryABD && ! partnerABD) || (!primaryABD && partnerABD)) {
+          elements.abdEligibilityContent.filter('#couple_one_has_abd').removeClass('hidden');
         }
         else {
-          if ( inRange(18, 30, state.primary.age) && inRange(18, 30, state.partner.age) && state.primary.hasCurrentCover && state.partner.hasCurrentCover) {
-            $abdEligibilityContent.filter('#couple_both_18_to_30').removeClass('hidden');
+          if ( primaryinRange && partnerinRange && primaryPolicy && partnerPolicy) {
+            elements.abdEligibilityContent.filter('#couple_both_18_to_30').removeClass('hidden');
           }
-          else if ( (inRange(18, 30, state.primary.age) && !inRange(18, 30, state.partner.age)) || (!inRange(18, 30, state.primary.age) && inRange(18, 30, state.partner.age))  ) {
-            $abdEligibilityContent.filter('#couple_one_18_to_30').removeClass('hidden');
+          else if ((primaryinRange && !partnerinRange) || (!primaryinRange && partnerinRange)) {
+            elements.abdEligibilityContent.filter('#couple_one_18_to_30').removeClass('hidden');
           }
         }
       }
     }
+  }
+
+  function showABDModal() {
+    meerkat.modules.dialogs.show({
+      title: $(this).attr("title"),
+      htmlContent: $(this).attr("data-content"),
+      className: $(this).attr("data-class")
+    });
   }
 
   meerkat.modules.register('healthRABD', {

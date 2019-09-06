@@ -35,13 +35,13 @@
                     </form_v4:row>
                     
                     <c:set var="fieldXpath" value="${xpath}/primary/abd" />
-                    <form_v4:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger hidden">
-	                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details" id="primary_abd_health_cover" />
+                    <form_v4:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger hidden primaryHasABD">
+	                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details health-cover_details_abd_current" id="primary_abd_health_cover" />
                         <health_v4_application:abd_details className="abd-details-application" />
                     </form_v4:row>
 
                     <c:set var="fieldXpath" value="${xpath}/primary/abdPolicyStart" />
-                    <form_v4:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="health_previousfund_primary_abd_start_date" className="changes-premium hidden">
+                    <form_v4:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="health_previousfund_primary_abd_start_date" className="changes-premium hidden health-cover_details_abd_start">
                         <field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
                     </form_v4:row>
 
