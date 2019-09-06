@@ -25,15 +25,14 @@
       elements = {
         primary: {
           dob: $('#health_healthCover_primary_dob'),
-          currentCover: $('.health-cover_details input[type="radio"]'), //$('[name=health_healthCover_primary_cover]') || $('[name=health_application_primary_cover]'),
+          currentCover: $('.health-cover_details input[type="radio"]'),
           currentCoverApplication: $('[name=health_application_primary_cover]'),
           abdQuestionContainer: $('.primaryHasABD'),
-          abdQuestion: $('.health-cover_details_abd_current input[type="radio"]'), //$('[name=health_healthCover_primary_abd]') || $('[name=health_previousfund_primary_abd]'),
+          abdQuestion: $('.health-cover_details_abd_current input[type="radio"]'),
           abdQuestionApplication: $('[name=health_previousfund_primary_abd]'),
-          abdPolicyStartDateContainer: $('.health-cover_details_abd_start'), // $('#primary_abd_start_date') || $('#health_previousfund_primary_abd_start_date'),
-          abdPolicyStartDate: $('#health_healthCover_primary_abdPolicyStart'), //  || $('#health_previousfund_primary_abdPolicyStart'),
-          ABDPolicyStartDateApplicationContainer: $('#health_previousfund_primary_abd_start_date'),
-          abdPolicyStartDateApplication: $('#health_previousfund_primary_abdPolicyStart'),
+          abdPolicyStartDateContainer: $('.health-cover_details_abd_start'),
+          abdPolicyStartDate: $('#health_healthCover_primary_abdPolicyStart'),
+          abdPolicyStartDateApplication: $('#health_previousfund_primary_abdPolicyStart')
         },
         partner: {
           dob: $('#health_healthCover_partner_dob'),
