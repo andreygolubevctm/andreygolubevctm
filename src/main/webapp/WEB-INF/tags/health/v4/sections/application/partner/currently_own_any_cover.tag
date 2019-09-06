@@ -13,7 +13,7 @@
 <c:set var="alreadyHaveHealthInsurance"><content:get key="alreadyHaveHealthInsurance" /></c:set>
 
 <form_v4:row label="Does your partner currently hold Private Health Insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover" className="lhcRebateCalcTrigger" helpId="587">
-	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your partner currently hold Private Health Insurance?" required="true" className="health-cover_details" id="${name}_partner_health_cover" additionalLabelAttributes="${analyticsAttr}" />
+	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your partner currently hold Private Health Insurance?" required="true" className="health-cover_details health-cover_details-partner" id="${name}_partner_health_cover" additionalLabelAttributes="${analyticsAttr}" />
 
 	<c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}" />
 	<div class="${fieldXpathName}-help-text help-text success yes-help hidden">

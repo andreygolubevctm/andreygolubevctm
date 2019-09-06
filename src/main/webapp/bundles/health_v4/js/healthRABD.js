@@ -26,25 +26,20 @@
         primary: {
           dob: $('#health_healthCover_primary_dob'),
           currentCover: $('.health-cover_details input[type="radio"]'),
-          currentCoverApplication: $('[name=health_application_primary_cover]'),
           abdQuestionContainer: $('.primaryHasABD'),
           abdQuestion: $('.health-cover_details_abd_current input[type="radio"]'),
-          abdQuestionApplication: $('[name=health_previousfund_primary_abd]'),
           abdPolicyStartDateContainer: $('.health-cover_details_abd_start'),
           abdPolicyStartDate: $('#health_healthCover_primary_abdPolicyStart'),
           abdPolicyStartDateApplication: $('#health_previousfund_primary_abdPolicyStart')
         },
         partner: {
           dob: $('#health_healthCover_partner_dob'),
-          currentCover: $('[name=health_healthCover_partner_cover]') || $('[name=health_application_partner_cover]'),
-          currentCoverApplication: $('[name=health_application_partner_cover]'),
-          abdQuestionContainer: $('#health_healthCover_partnerhasABD'),
-          abdQuestion: $('[name=health_healthCover_partner_abd]') || $('[name=health_previousfund_partner_abd]'),
-          abdQuestionApplication: $('[name=health_previousfund_partner_abd]'),
-          abdPolicyStartDateContainer: $('#partner_abd_start_date') || $('#health_previousfund_partner_abd_start_date'),
-          abdPolicyStartDate: $('#health_healthCover_partner_abdPolicyStart') || $('#health_previousfund_partner_abdPolicyStart'),
-          ABDPolicyStartDateApplicationContainer: $('#health_previousfund_partner_abd_start_date'),
-          ABDPolicyStartDateApplication: $('#health_previousfund_partner_abdPolicyStart'),
+          currentCover: $('.health-cover_details-partner input[type="radio"]'),
+          abdQuestionContainer: $('.partnerHasABD'),
+          abdQuestion: $('.health-cover_details_partner_abd_current input[type="radio"]'),
+          abdPolicyStartDateContainer: $('.health-cover_details_partner_abd_start'),
+          abdPolicyStartDate: $('#health_healthCover_partner_abdPolicyStart'),
+          abdPolicyStartDateApplication: $('#health_previousfund_partner_abdPolicyStart')
         },
         abdDetailsApplication: $('.abd-details-application'),
         abdDetailsApplicationSingleNoPHI: $('.abd-details-application-single'),
@@ -127,6 +122,8 @@
       var dates= e.target.value.split('/');
       var date = dates[1] + '/' + dates[0] + '/' + dates[2];
 
+      console.log(elements[type].abdPolicyStartDateApplication);
+
       elements[type].abdPolicyStartDateApplication.datepicker("setDate", new Date(date));
     });
 
@@ -176,8 +173,8 @@
       elements.abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
     }else{
 
-      var primaryHasABD = elements.primary.abdQuestionApplication.filter(":checked").val() === 'Y';
-      var partnerHasABD = elements.partner.abdQuestionApplication.filter(":checked").val() === 'Y';
+      var primaryHasABD = elements.primary.abdQuestion.filter(":checked").val() === 'Y';
+      var partnerHasABD = elements.partner.abdQuestion.filter(":checked").val() === 'Y';
 
       if(primaryHasABD && ( !isSingle || partnerHasABD )) {
         elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');

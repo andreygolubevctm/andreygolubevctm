@@ -9,6 +9,6 @@
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
 <c:set var="fieldXpath" value="${xpath}/partner/abdPolicyStart" />
-<form_v4:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="partner_abd_start_date" className="changes-premium hidden">
+<form_v4:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="partner_abd_start_date" className="changes-premium hidden health-cover_details_partner_abd_start">
 	<field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
 </form_v4:row>
