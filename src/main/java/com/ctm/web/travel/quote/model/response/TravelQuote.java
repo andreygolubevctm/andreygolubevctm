@@ -26,6 +26,7 @@ public class TravelQuote {
     private Product product;
     private List<Benefit> benefits;
     private Boolean isDomestic;
+    private Boolean medicalCondsAssessed;
 
     public TravelQuote(){
     }
@@ -197,5 +198,11 @@ public class TravelQuote {
 
     public void setIsDomestic(Boolean isDomestic) {
         this.isDomestic = isDomestic;
+    }
+
+    public Boolean getMedicalCondsAssessed() { return medicalCondsAssessed; }
+
+    public void setMedicalCondsAssessed(Boolean medicalCondsAssessed) {
+        this.medicalCondsAssessed = medicalCondsAssessed;
     }
 }

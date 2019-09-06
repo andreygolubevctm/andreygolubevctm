@@ -41,6 +41,8 @@ public class TravelQuote {
     @Name
     private String surname;
 
+    private Boolean medicalCondsAssessed;
+
     @NotNull(message = "Please choose how many adults")
     private Integer adults;
 
@@ -109,6 +111,14 @@ public class TravelQuote {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public Boolean getMedicalCondsAssessed() {
+        return medicalCondsAssessed;
+    }
+
+    public void setMedicalCondsAssessed(Boolean medicalCondsAssessed) {
+        this.medicalCondsAssessed = medicalCondsAssessed;
     }
 
     public Integer getChildren() {
