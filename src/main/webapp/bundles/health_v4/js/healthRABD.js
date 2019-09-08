@@ -71,7 +71,7 @@
     });
   }
 
-  function isABD(isApplicationPage) {
+  function isABD() {
 
     if(!state.primary.hasCurrentCover && (!state.hasPartner || !state.partner.hasCurrentCover)) {
       return true;
@@ -187,29 +187,35 @@
   function showABDSupportContent() {
     elements.abdEligibilityContent.addClass('hidden');
 
+    var primaryPolicy = hasCover('primary');
+    var primaryABD = hasAbdPolicy('primary');
+    var partnerPolicy = hasCover('partner');
+    var partnerABD = hasAbdPolicy('partner');
+    var primaryinRange = inRange(18, 30, state.primary.age);
+    var partnerinRange = inRange(18, 30, state.partner.age);
+
     if(!state.hasPartner) {
-      if ( hasAbdPolicy('primary') && inRange(18,45,state.primary.age) ) {
+      if ( primaryPolicy && primaryABD && inRange(18,45,state.primary.age) ) {
         elements.abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
       }
-      else if ( inRange(18,30,state.primary.age) ) {
+      else if ( primaryinRange ) {
         elements.abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
       }
     }
     else {
-      if (hasCover('primary') || hasCover('partner')) {
-        if(hasAbdPolicy('primary') && hasAbdPolicy('partner') && hasCover('primary') && hasCover('partner')) {
+      if((partnerPolicy && partnerABD) || (primaryPolicy && primaryABD)) {
+        if(primaryABD && partnerABD && primaryPolicy && partnerPolicy) {
           elements.abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
         }
-        else if ((hasAbdPolicy('primary') && ! hasAbdPolicy('partner')) || (!hasAbdPolicy('primary') && hasAbdPolicy('partner'))) {
+        else if ((primaryABD && (! partnerABD || !partnerPolicy)) || ((!primaryABD || !primaryPolicy) && partnerABD)) {
           elements.abdEligibilityContent.filter('#couple_one_has_abd').removeClass('hidden');
         }
-        else {
-          if ( inRange(18,30,state.primary.age) && inRange(18,30,state.partner.age) && hasCover('primary') && hasCover('partner')) {
-            elements.abdEligibilityContent.filter('#couple_both_18_to_30').removeClass('hidden');
-          }
-          else if ((inRange(18,30,state.primary.age) && !inRange(18,30,state.partner.age)) || (!inRange(18,30,state.primary.age) && inRange(18,30,state.partner.age))) {
-            elements.abdEligibilityContent.filter('#couple_one_18_to_30').removeClass('hidden');
-          }
+      }else{
+        if ( primaryinRange && partnerinRange) {
+          elements.abdEligibilityContent.filter('#couple_both_18_to_30').removeClass('hidden');
+        }
+        else if (primaryinRange || partnerinRange) {
+          elements.abdEligibilityContent.filter('#couple_one_18_to_30').removeClass('hidden');
         }
       }
     }
