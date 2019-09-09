@@ -49,6 +49,8 @@
 
       _setupListeners('primary');
       _setupListeners('partner');
+      elements.dialogTriggers.click(showABDModal);
+      meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
 
       if(hasCover('primary')) {
         state.primary.age = meerkat.modules.age.returnAge(elements.primary.dob.val(), true);
@@ -123,9 +125,6 @@
 
       elements[type].abdPolicyStartDateApplication.datepicker("setDate", new Date(date));
     });
-
-    elements.dialogTriggers.click(showABDModal);
-    meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
   }
 
   function hasCover(type) {
