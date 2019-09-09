@@ -190,19 +190,21 @@
     var primaryABD = hasAbdPolicy('primary');
     var partnerPolicy = hasCover('partner');
     var partnerABD = hasAbdPolicy('partner');
-    var primaryinRange = inRange(18, 30, state.primary.age);
-    var partnerinRange = inRange(18, 30, state.partner.age);
+    var primaryInRange = inRange(18, 30, state.primary.age);
+    var partnerInRange = inRange(18, 30, state.partner.age);
+    var primaryABDVisible = !elements.primary.abdQuestionContainer.hasClass('hidden');
+    var partnerABDVisible = !elements.partner.abdQuestionContainer.hasClass('hidden');
 
     if(!state.hasPartner) {
       if ( primaryPolicy && primaryABD && inRange(18,44,state.primary.age) ) {
         elements.abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
       }
-      else if ( primaryinRange ) {
+      else if ( primaryInRange ) {
         elements.abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
       }
     }
     else {
-      if((partnerPolicy && partnerABD) || (primaryPolicy && primaryABD)) {
+      if((partnerPolicy && partnerABD && partnerABDVisible) || (primaryPolicy && primaryABD && primaryABDVisible)) {
         if(primaryABD && partnerABD && primaryPolicy && partnerPolicy) {
           elements.abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
         }
@@ -210,10 +212,10 @@
           elements.abdEligibilityContent.filter('#couple_one_has_abd').removeClass('hidden');
         }
       }else{
-        if ( primaryinRange && partnerinRange) {
+        if ( primaryInRange && partnerInRange) {
           elements.abdEligibilityContent.filter('#couple_both_18_to_30').removeClass('hidden');
         }
-        else if (primaryinRange || partnerinRange) {
+        else if (primaryInRange || partnerInRange) {
           elements.abdEligibilityContent.filter('#couple_one_18_to_30').removeClass('hidden');
         }
       }
