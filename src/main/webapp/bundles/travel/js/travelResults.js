@@ -240,6 +240,7 @@
 		// This will render the unavailable combined template
 		$(Results.settings.elements.resultsContainer).on("noFilteredResults", function() {
 			Results.view.show();
+			setColVisibilityAndStylesByTravelType(isDomestic());
 		});
 
 		// If error occurs, go back in the journey
@@ -423,6 +424,26 @@
 						evenRowIndex ++;
 					}
 			});
+		});
+
+		$('.medicalCondsAssessed').qtip({
+			content: {
+				text: 'Insurer allows assessment of pre-existing medical conditions.'
+			},
+			show: { event: 'mouseenter click' },
+			position: {
+				my: 'top center',
+				at: 'bottom center',
+				adjust: { x: 0 }
+			},
+			style: {
+				classes: 'qtip-bootstrap',
+				tip: {
+					width: 14,
+					height: 12,
+					mimic: 'center'
+				}
+			}
 		});
 	}
 

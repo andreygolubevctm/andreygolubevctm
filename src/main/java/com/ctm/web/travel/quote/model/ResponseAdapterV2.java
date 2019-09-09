@@ -60,6 +60,7 @@ public class ResponseAdapterV2 {
                 result.setPrice(travelQuote.getPrice());
                 result.setPriceText(travelQuote.getPriceText());
                 result.setIsDomestic(travelQuote.getIsDomestic());
+                result.setMedicalCondsAssessed(travelQuote.getMedicalCondsAssessed());
 
                 // Override product names based on arbitrary rules.
 

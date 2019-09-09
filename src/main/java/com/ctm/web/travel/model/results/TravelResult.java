@@ -31,6 +31,7 @@ public class TravelResult extends Result {
     private Info info;
     private Boolean isDomestic;
     private Offer offer;
+    private Boolean medicalCondsAssessed;
 
     public TravelResult(){
         benefits = new ArrayList<Benefit>();
@@ -199,4 +200,8 @@ public class TravelResult extends Result {
     public void setOffer(Offer offer) {
         this.offer = offer;
     }
+
+    public Boolean getMedicalCondsAssessed() { return medicalCondsAssessed; }
+
+    public void setMedicalCondsAssessed(Boolean medicalCondsAssessed) { this.medicalCondsAssessed = medicalCondsAssessed; }
 }

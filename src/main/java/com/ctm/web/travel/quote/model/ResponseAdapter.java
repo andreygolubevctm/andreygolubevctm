@@ -48,6 +48,7 @@ public class ResponseAdapter {
                 result.setSubTitle(travelQuote.getProduct().getPdsUrl());
 
                 result.setIsDomestic(travelQuote.getIsDomestic());
+                result.setMedicalCondsAssessed(travelQuote.getMedicalCondsAssessed());
 
 
                 // Override product names based on arbitrary rules.
