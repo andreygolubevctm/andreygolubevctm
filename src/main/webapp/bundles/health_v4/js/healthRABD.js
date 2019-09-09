@@ -141,12 +141,12 @@
   }
 
   function showABDQuestion(type) {
-    var showQuestion = inRange(18,45, state[type].age) && hasCover(type);
+    var showQuestion = inRange(18,44, state[type].age) && hasCover(type);
     elements[type].abdQuestionContainer.toggleClass('hidden', !showQuestion);
   }
 
   function showABDStartDate(type) {
-    var toDisplay = hasAbdPolicy(type) && hasCover(type) && inRange(18,45, state[type].age);
+    var toDisplay = hasAbdPolicy(type) && hasCover(type) && inRange(18,44, state[type].age);
     elements[type].abdPolicyStartDateContainer.toggleClass('hidden', !toDisplay);
   }
 
@@ -194,7 +194,7 @@
     var partnerinRange = inRange(18, 30, state.partner.age);
 
     if(!state.hasPartner) {
-      if ( primaryPolicy && primaryABD && inRange(18,45,state.primary.age) ) {
+      if ( primaryPolicy && primaryABD && inRange(18,44,state.primary.age) ) {
         elements.abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
       }
       else if ( primaryinRange ) {
