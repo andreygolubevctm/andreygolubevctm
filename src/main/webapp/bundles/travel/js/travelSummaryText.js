@@ -12,12 +12,10 @@
 
 	function buildTravelersString(adultsCount, childrenCount) {
 		var travelersString = '';
-		var adults = $adults.val();
+		travelersString += adultsCount;
 		if (adultsCount < 3) {
 			// adults
-			travelersString += adultsCount + ' adult' + (adultsCount == 1 ? '' : 's');
-		} else {
-			travelersString += adults;
+			travelersString += ' adult' + (adultsCount == 1 ? '' : 's');
 		}
 
 		// children
