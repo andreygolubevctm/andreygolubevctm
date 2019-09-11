@@ -59,7 +59,9 @@
   }
 
   function hasAbdPolicy(type) {
-    return elements[type].abdQuestion.filter(':checked').val() === 'Y';
+    var showAbdQuestion = elements[type].age >= 18 && elements[type].age <= 45 && hasCover(type);
+
+    return showAbdQuestion && elements[type].abdQuestion.filter(':checked').val() === 'Y';
   }
 
   function onChangeAbdFilterRadios(e) {
@@ -136,11 +138,15 @@
     elements[type].currentCover.change( function(e) {
       elements[type].hasCurrentCover = e.target.value === 'Y';
       showABDQuestion(type);
+      showABDStartDate(type);
+      showABDFilterQuestion();
     });
 
     elements[type].dateOfBirth.change(function(e) {
       elements[type].age = meerkat.modules.age.returnAge(e.target.value, true);
       showABDQuestion(type);
+      showABDStartDate(type);
+      showABDFilterQuestion();
     });
 
     elements[type].abdQuestion.change(function(e) {
