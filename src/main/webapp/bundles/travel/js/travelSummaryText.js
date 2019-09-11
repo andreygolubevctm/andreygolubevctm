@@ -11,8 +11,7 @@
 		initialised = false;
 
 	function buildTravelersString(adultsCount, childrenCount) {
-		var travelersString = '';
-		travelersString += adultsCount;
+		var travelersString = adultsCount;
 		if (adultsCount < 3) {
 			// adults
 			travelersString += ' adult' + (adultsCount == 1 ? '' : 's');
