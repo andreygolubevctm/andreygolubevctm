@@ -159,7 +159,7 @@
 					<div class="col-sm-12 col-lg-2 cta">
 						<div class="row">
 							{{ if (obj.medicalCondsAssessed) { }}
-								<span class="medicalCondsAssessed">+ Medical Assessment</span>
+								<span class="medicalCondsAssessed">Allows medical assessment</span>
 							{{ } }}
 							<div class="col-sm-4 col-sm-push-4 col-lg-push-0 col-lg-6 moreInfo">
 								<a href="javascript:;" class="btn-more-info" data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">More Info</a>
@@ -178,7 +178,7 @@
 				<%-- START XS Top Row --%>
 				<div class="row visible-xs">
 					{{ if (obj.medicalCondsAssessed) { }}
-					<span class="medicalCondsAssessed" onclick="event.stopPropagation();">+ Medical Assessment</span>
+					<span class="medicalCondsAssessed" onclick="event.stopPropagation();">Allows medical assessment</span>
 					{{ } }}
 					<div class="col-xs-3 logoContainer">
 						{{= logo }}
