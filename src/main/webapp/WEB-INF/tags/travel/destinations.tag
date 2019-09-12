@@ -7,6 +7,7 @@
             <h6 class="region-title">Pacific</h6>
             <ul>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"AUS","countryName":"Australia"}'>Australia (domestic travel)</a></li>
+                <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"PC","countryName":"Pacific (including domestic cruising)"}'>Pacific (including domestic cruising)</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"NZL","countryName":"New Zealand"}'>New Zealand</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"FJI","countryName":"Fiji"}'>Fiji</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"COK","countryName":"Cook Islands"}'>Cook Islands</a></li>

@@ -5,51 +5,11 @@
 <div class="resultsHeadersBg">
 </div>
 
-<div class="navbar__travel-filters">
-
-	<div class="navbar-mobile coverLevelTabs visible-xs hidden-sm hidden-md hidden-lg">
-		<div class="filters-row">
-			<a class="edit-details-travel-mobile" href="javascript:;">Edit details</a>
-			<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
-		</div>
-		<div class="row">
-			<div class="col-xs-5 clt-trip-filter mobile-cover-type">
-				<div class="dropdown cover-type-mobile-active">
-					<a type="button" id="coverTypeDropdownBtn"
-					   data-toggle="dropdown" aria-haspopup="true"
-					   aria-expanded="false">
-						<span class="mobile-active-cover-type"></span>
-						<i class="icon icon-angle-down"></i>
-					</a>
-					<div class="dropdown-menu dropdown-menu-excess-filter dropdown-menu-mobile-cover-types"
-						 aria-labelledby="coverTypeDropdownBtn">
-						<div class="mobile-cover-types"></div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-7 clt-trip-filter amt-filter">
-				<travel_results_filter_types:amt_filter />
-			</div>
-			<div class="col-xs-2 clt-trip-filter">
-				<travel_results_filter_types:more_filters/>
-			</div>
-			<div class="col-xs-4 clt-trip-filter">
-				<travel_results_filter_types:excess_filter/>
-			</div>
-		</div>
-	</div>
-</div>
 
 <agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 	<travel:more_info />
 
 <%-- RESULTS TABLE --%>
-	<div class="container">
-		<div class="row coverLevelTabs visible-xs">
-			<div class="currentTabsContainer"></div>
-		</div>
-	</div>
-
 	<div class="bridgingContainer"></div>
 	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
 
@@ -198,15 +158,18 @@
 
 					<div class="col-sm-12 col-lg-2 cta">
 						<div class="row">
-							<div class="col-sm-4 col-sm-push-8 col-lg-push-0 col-lg-12 buyNow">
-								<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
-								<span>Continue to Insurer</span> <span class="icon icon-arrow-right" /></a>
-							</div>
-							<div class="col-sm-4 col-sm-pull-4 col-lg-pull-0 col-lg-6 moreInfo">
+							{{ if (obj.medicalCondsAssessed) { }}
+								<span class="medicalCondsAssessed">Allows medical assessment</span>
+							{{ } }}
+							<div class="col-sm-4 col-sm-push-4 col-lg-push-0 col-lg-6 moreInfo">
 								<a href="javascript:;" class="btn-more-info" data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">More Info</a>
 							</div>
-							<div class="col-sm-4 col-sm-pull-4 col-lg-pull-0 col-lg-6 PDS">
+							<div class="col-sm-4 col-sm-push-2 col-md-push-3 col-lg-push-0 col-lg-4 PDS">
 								<a href="{{=obj.subTitle}}" target="_blank" class="showDoc">PDS</a>
+							</div>
+							<div class="col-sm-4 col-sm-pull-8 col-lg-pull-0 col-lg-12 buyNow">
+								<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
+									<span>Continue to Insurer</span> <span class="icon icon-arrow-right" /></a>
 							</div>
 						</div>
 					</div>
@@ -214,6 +177,9 @@
 
 				<%-- START XS Top Row --%>
 				<div class="row visible-xs">
+					{{ if (obj.medicalCondsAssessed) { }}
+					<span class="medicalCondsAssessed" onclick="event.stopPropagation();">Allows medical assessment</span>
+					{{ } }}
 					<div class="col-xs-3 logoContainer">
 						{{= logo }}
 					</div>
@@ -231,10 +197,8 @@
 										</span>
 										<span class="priceTitle">Price</span>
 									</div>
-									<div class="col-xs-6 gotoContainer">
-										<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
-											<span>Go to Insurer</span> <span class="icon icon-arrow-right" />
-										</a>
+									<div class="col-xs-6 text-center infoContainer">
+										<a href="javascript:;">More Info <span class="icon icon-angle-right" /></a>
 									</div>
 								</div>
 								<div class="clearfix btmContainer">
@@ -242,8 +206,10 @@
 										<span class="excessAmount">{{= obj.info.excess }}</span>
 										<span class="excessTitle">Excess</span>
 									</div>
-									<div class="col-xs-6 text-center infoContainer">
-											<a href="javascript:;">More Info <span class="icon icon-angle-right" /></a>
+									<div class="col-xs-6 gotoContainer">
+										<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
+											<span>Go to Insurer</span> <span class="icon icon-arrow-right" />
+										</a>
 									</div>
 								</div>
 							</div>

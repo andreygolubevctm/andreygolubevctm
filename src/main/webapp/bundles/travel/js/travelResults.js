@@ -240,6 +240,7 @@
 		// This will render the unavailable combined template
 		$(Results.settings.elements.resultsContainer).on("noFilteredResults", function() {
 			Results.view.show();
+			setColVisibilityAndStylesByTravelType(isDomestic());
 		});
 
 		// If error occurs, go back in the journey
@@ -404,17 +405,46 @@
 	}
 
 	function setColVisibilityAndStylesByTravelType(isDomestic) {
+		var destination = $('#travel_destination').val();
+
 		//set visibility of os medical and rental vehicle columns
-		$(".medicalTitle").toggle(!isDomestic);
-		$(".medicalAmount").toggle(!isDomestic);
-		$(".os-medical-col").toggle(!isDomestic);
-		$(".rentalVehicleTitle").toggle(isDomestic);
-		$(".rentalVehicle").toggle(isDomestic);
-		$(".rental-vehicle-col").toggle(isDomestic);
+		$(".medicalTitle").toggle(!isDomestic && destination !== 'AUS');
+		$(".medicalAmount").toggle(!isDomestic && destination !== 'AUS');
+		$(".os-medical-col").toggle(!isDomestic && destination !== 'AUS');
+		$(".rentalVehicleTitle").toggle(isDomestic || destination === 'AUS');
+		$(".rentalVehicle").toggle(isDomestic || destination === 'AUS');
+		$(".rental-vehicle-col").toggle(isDomestic || destination === 'AUS');
 
 		// alter background colour for every second column
-		$(".luggageAmount").toggleClass("evenRow", !isDomestic);
-		$(".cdxfeeAmount").toggleClass("evenRow", isDomestic);
+		var evenRowIndex = 1;
+		$(".column-banded-row").each(function() {
+			$(this).children().each(function() {
+					$(this).toggleClass("evenRow", evenRowIndex % 2 === 0);
+					if ($(this).css('display') !== 'none') {
+						evenRowIndex ++;
+					}
+			});
+		});
+
+		$('.medicalCondsAssessed').qtip({
+			content: {
+				text: 'Insurer allows assessment of pre-existing medical conditions.'
+			},
+			show: { event: 'mouseenter click' },
+			position: {
+				my: 'top center',
+				at: 'bottom center',
+				adjust: { x: 0 }
+			},
+			style: {
+				classes: 'qtip-bootstrap',
+				tip: {
+					width: 14,
+					height: 12,
+					mimic: 'center'
+				}
+			}
+		});
 	}
 
 	function launchOfferTerms(event) {

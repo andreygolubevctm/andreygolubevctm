@@ -32,7 +32,7 @@
 	// Refresh sorting
 	//
 	//Set from an element clicked
-	function setSortFromTarget($elem) {
+	function setSortFromTarget($elem, $elemSibling) {
 
 		//debug'[travelSortings]','[setSortFromTarget]',$elem);
 
@@ -50,6 +50,7 @@
 				//debug'[travelSorting]','Flipping sort direction');
 				sortDir === 'asc' ? sortDir='desc' : sortDir='asc';
 				$elem.attr('data-sort-dir',sortDir);
+				$elemSibling.attr('data-sort-dir',sortDir);
 			}
 			//Results.applyFiltersAndSorts(); //We don't filter on travel and this call was super expensive x10 magnitude.
 
@@ -64,6 +65,7 @@
 				 */
 				$sortElements.parent('li').removeClass('active');
 				$elem.parent('li').addClass('active');
+				$elemSibling.parent('li').addClass('active');
 
 				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 				meerkat.modules.travelResults.publishExtraTrackingEvents({products: [], recordRanking: 'N'});
@@ -99,6 +101,7 @@
 				if (!($clicked.is('a'))) {
 					$clicked = $clicked.closest('a');
 				}
+				$clickedSibling = $('[data-sort-type="' + $clicked.attr('data-sort-type') + '"]').not($clicked[0]);
 				//console.timeEnd('setting event target');
 
 				//console.time('check disabled and run actions');
@@ -110,9 +113,9 @@
 					_.defer(function deferredSortClickWrapper() {
 						// check if resetState is enabled and that the clicked item isn't the currently clicked item
 						if (!$clicked.parent().hasClass('active')) {
-							resetSortDir($clicked);
+							resetSortDir($clicked, $clickedSibling);
 						}
-						setSortFromTarget($clicked);
+						setSortFromTarget($clicked, $clickedSibling);
 					});
 				}
 				//console.profileEnd();
@@ -132,9 +135,10 @@
 	}
 
 	// Reset the sort dir everytime we click on a sortable column header
-	function resetSortDir($elem) {
+	function resetSortDir($elem, $elemSibling) {
 		var sortType = $elem.attr('data-sort-type'); // grab the currently clicked sort type
 		$elem.attr('data-sort-dir', defaultSortStates[sortType]); // reset this element's default sort state
+		$elemSibling.attr('data-sort-dir', defaultSortStates[sortType]);
 	}
 
 	function init() {
