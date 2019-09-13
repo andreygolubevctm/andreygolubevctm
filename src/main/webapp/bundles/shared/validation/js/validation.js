@@ -17,9 +17,7 @@ var validation = false;
         }
 
         $(document).ready(function () {
-
             _overrideValidatorPrototypes();
-
         });
     }
 
@@ -108,7 +106,7 @@ var validation = false;
      * @param $formElement
      */
     function setupDefaultValidationOnForm($formElement) {
-        $formElement.validate(getDefaultValidationObj());
+        $formElement.validate(getDefaultValidationObj(), true);
     }
 
     function getDefaultValidationObj() {
@@ -266,7 +264,7 @@ var validation = false;
             $form = $("#mainForm");
 
         try {
-            return $form.validate(getDefaultValidationObj()).check($element);
+            return $form.validate(getDefaultValidationObj(), true).check($element);
         } catch (e) {
             return true;
         }
