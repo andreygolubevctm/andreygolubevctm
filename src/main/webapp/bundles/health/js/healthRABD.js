@@ -59,7 +59,7 @@
   }
 
   function hasAbdPolicy(type) {
-    var showAbdQuestion = elements[type].age >= 18 && elements[type].age <= 45 && hasCover(type);
+    var showAbdQuestion = elements[type].age >= 18 && elements[type].age < 45 && hasCover(type);
 
     return showAbdQuestion && elements[type].abdQuestion.filter(':checked').val() === 'Y';
   }
@@ -175,7 +175,7 @@
   }
 
   function showABDQuestion(type) {
-    var showAbdQuestion = elements[type].age >= 18 && elements[type].age <= 45 && hasCover(type);
+    var showAbdQuestion = elements[type].age >= 18 && elements[type].age < 45 && hasCover(type);
     elements[type].abdQuestion.toggleClass('hidden', !showAbdQuestion);
   }
 

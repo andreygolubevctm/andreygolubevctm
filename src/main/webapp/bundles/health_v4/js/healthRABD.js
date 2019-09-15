@@ -190,8 +190,8 @@
     var primaryABD = hasAbdPolicy('primary');
     var partnerPolicy = hasCover('partner');
     var partnerABD = hasAbdPolicy('partner');
-    var primaryInRange = inRange(18, 30, state.primary.age);
-    var partnerInRange = inRange(18, 30, state.partner.age);
+    var primaryInRange = inRange(18, 29, state.primary.age);
+    var partnerInRange = inRange(18, 29, state.partner.age);
     var primaryABDVisible = !elements.primary.abdQuestionContainer.hasClass('hidden');
     var partnerABDVisible = !elements.partner.abdQuestionContainer.hasClass('hidden');
 
