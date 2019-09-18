@@ -209,7 +209,7 @@
         if(primaryABD && partnerABD && primaryPolicy && partnerPolicy && primaryABDVisible && partnerABDVisible) {
           elements.abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
         }
-        else if ((primaryABD && (!partnerABD || !partnerPolicy)) || ((!primaryABD || !primaryPolicy) && partnerABD)) {
+        else if ((primaryABD && (!partnerABD || !partnerPolicy || !partnerABDVisible)) || ((!primaryABD || !primaryPolicy || !primaryABDVisible) && partnerABD)) {
           elements.abdEligibilityContent.filter('#couple_one_has_abd').removeClass('hidden');
         }
       }else{
