@@ -209,6 +209,7 @@
 		{{ var limitedCover = meerkat.modules.healthBenefitsStep.getLimitedCover() == "Y" ? true : false; }}
 		{{ var isOutbound = meerkat.modules.healthContactType.is('outbound'); }}
 		{{ var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound'); }}
+		{{ var isNextGenCli = meerkat.modules.healthContactType.is('nextgenCLI'); }}
 		{{ var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits(); }}
 		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return selectedBenefitsList.indexOf(benefit.value) > -1; }); }}
 		{{ var scriptTerm = 'everything'; }}
@@ -888,7 +889,7 @@
         </div>
 
 		<div>
-			{{ if(isOutbound || isNextGenOutbound) { }}
+			{{ if(isOutbound || isNextGenOutbound || isNextGenCli) { }}
 				<simples:dialogue id="129" vertical="health" dynamic="true" />
 			{{ } else { }}
 				<simples:dialogue id="99" vertical="health" />
