@@ -696,7 +696,7 @@
 			${logger.error("Write quote failed. {} {} {} {}", log:kv("errorMessage", error.message), log:kv("errorCause", error.cause), log:kv("sql", insertSQLSB.toString()), log:kv("sqlParams", insertParams.toString()))}
 			<%-- CTM-809 - remove after monitoring period --%>
 			<c:if test="${rootPath eq 'fuel'}">
-				${logger.error("Fuel write quote failed using: {}", log:kv("originalSqlParams",fuelSQLParams)}
+				${logger.error("Fuel write quote failed using: {}", log:kv("originalSqlParams",fuelSQLParams))}
 			</c:if>
 			<%-- END CTM-809 --%>
 			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
