@@ -38,7 +38,7 @@ public class SplitTestService {
 		try {
 
 			final SessionDataService sessionDataService = new SessionDataService();
-			final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+			final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), true);
 			String xpathRoot = null;
 
 			switch (vertical) {
@@ -79,7 +79,7 @@ public class SplitTestService {
 		try {
 
 			final SessionDataService sessionDataService = new SessionDataService();
-			final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+			final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), true);
 
 			String xpathRoot = null;
 

@@ -150,10 +150,6 @@ public class SessionDataServiceBean {
 		SessionData sessionData = getSessionDataForTransactionId(request, transactionId);
 
 		Data data = sessionData.getSessionDataForTransactionId(transactionId);
-		if (data == null) {
-			// Check for previous id as the transaction might have been incremented (should only be true when called from get_transaction_id.jsp)
-			data = sessionData.getSessionDataForPreviousTransactionId(Long.parseLong(transactionId));
-		}
 
 		if (data == null && searchPreviousIds) {
 			// Check for previous id as the transaction might have been incremented (should only be true when called from get_transaction_id.jsp)
