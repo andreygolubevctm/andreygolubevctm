@@ -77,12 +77,10 @@
   function isABD() {
 
     if(!hasCover('primary') && (!state.hasPartner || !hasCover('partner'))) {
-      console.log('abd = true because they have no cover, but no partner or partner has no cover');
       return true;
     }
 
     if(!hasAbdPolicy('primary') && (!state.hasPartner || !hasAbdPolicy('partner'))) {
-      console.log('abd = true because they don\' have abd policy and they have no partner or partner has no abd policy' );
       return true;
     }
 
@@ -175,7 +173,7 @@
     elements.abdDetailsApplicationCoupleNoPHI.toggleClass('hidden', isSingle || partnerHasCover);
 
     if(isABD()) {
-      if ( primaryHasCover || partnerHasCover ) {
+      if (primaryHasCover || (partnerHasCover  && !isSingle)) {
         if (isSingle) {
           elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
           elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
@@ -198,8 +196,7 @@
     }
     else {
 
-      if(primaryHasABD || partnerHasABD) {
-        console.log('rabd applicable');
+      if(primaryHasABD || (partnerHasABD && !isSingle)) {
         if (isSingle) {
           elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
           elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
@@ -209,7 +206,6 @@
           elements.abdDetailsApplicationCoupleNoPHI.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
         }
       }else {
-        console.log('abd applicable');
         if (isSingle) {
           elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
           elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
@@ -244,7 +240,6 @@
     }
     else {
       if((partnerPolicy && partnerABD && partnerABDVisible) || (primaryPolicy && primaryABD && primaryABDVisible)) {
-        console.log(primaryABD && partnerABD && primaryPolicy && partnerPolicy && primaryABDVisible && partnerABDVisible);
         if(primaryABD && partnerABD && primaryPolicy && partnerPolicy && primaryABDVisible && partnerABDVisible) {
           elements.abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
         }
