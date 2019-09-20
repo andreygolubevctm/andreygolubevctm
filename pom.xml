@@ -718,13 +718,8 @@
             <artifactId>schema-model</artifactId>
             <version>${schema-model.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.ctm.schema</groupId>
-            <artifactId>schema-model</artifactId>
-            <version>${schema-model.version}</version>
-        </dependency>
     </dependencies>
+
     <profiles>
         <profile>
             <id>build-frontend</id>
