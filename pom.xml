@@ -38,10 +38,7 @@
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
         <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
         <frontend-maven-plugin.version>0.0.26</frontend-maven-plugin.version>
-        <javax.el.version>2.2.4</javax.el.version>
-        <javax.servlet.version>3.0.1</javax.servlet.version>
         <jackson.version>2.6.2</jackson.version>
-        <javax.jsp.version>2.2</javax.jsp.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
         <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
         <swagger-annotations.version>1.5.4</swagger-annotations.version>
