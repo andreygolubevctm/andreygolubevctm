@@ -129,7 +129,11 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 					<c:if test="${not empty param.cid and not empty param.etRid and not empty param.utmSource and not empty param.utmMedium and not empty param.utmCampaign}">
 						&amp;cid=${param.cid}&amp;et_rid=${param.etRid}&amp;utm_source=${param.utmSource}&amp;utm_medium=${param.utmMedium}&amp;utm_campaign=${param.utmCampaign}
 					</c:if>
+					<c:if test="${param.vertical == 'travel' and empty trackingParams and not empty param.utmSource and not empty param.utmMedium and not empty param.utmCampaign}">
+						&amp;utmSource=${param.utmSource}&amp;utmMedium=${param.utmMedium}&amp;utmCampaign=${param.utmCampaign}
+					</c:if>
 				</c:set>
+
 
 				<c:set var="productCode">
 					<c:if test="${not empty param.productCode}">&amp;productCode=<c:out value="${param.productCode}" escapeXml="false"/></c:if>
