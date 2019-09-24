@@ -426,9 +426,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 						},
 						useNewLogging: ${pageSettings.getSetting("useNewLogging") and not param['automated-test']},
 						couponId: '<c:out value="${couponId}"/>',
-						vdn: '<c:out value="${go:decodeUrl(param.vdn)}" escapeXml="true" />'<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">,
-						kampyleId: 112902
-						</c:if>
+						vdn: '<c:out value="${go:decodeUrl(param.vdn)}" escapeXml="true" />'
 						<core_v1:settings />
 					};
 

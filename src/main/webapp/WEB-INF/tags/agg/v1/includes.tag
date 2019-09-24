@@ -2,8 +2,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="kampyle"			required="false"  rtexprvalue="true"	 description="Whether to display Kampyle or not" %>
-<%@ attribute name="newKampyle"			required="false"  rtexprvalue="true"	 description="Whether to display the NEW Kampyle or not" %>
 <%@ attribute name="loading"			required="false"  rtexprvalue="true"	 description="Whether to load the loading overlay" %>
 <%@ attribute name="sessionPop"			required="false"  rtexprvalue="true"	 description="Whether to load the session pop" %>
 <%@ attribute name="supertag"			required="false"  rtexprvalue="true"	 description="Whether to load supertag or not" %>
@@ -13,8 +11,6 @@
 <%@ attribute name="fatalErrorMessage"	required="false"  rtexprvalue="true"	 description="Whether to load the dev tools or not" %>
 
 <%-- VARIABLES --%>
-<c:if test="${empty kampyle}"><c:set var="kampyle" value="true" /></c:if>
-<c:if test="${empty newKampyle}"><c:set var="newKampyle" value="false" /></c:if>
 <c:if test="${empty loading}"><c:set var="loading" value="true" /></c:if>
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 <c:if test="${empty devTools}"><c:set var="devTools" value="false" /></c:if>
@@ -25,13 +21,6 @@
 	<quote:loading />
 </c:if>
 
-<%-- Kampyle Feedback --%>
-<c:if test="${kampyle eq true}">
-	<%-- Check whether Kampyle is enabled for this brand/vertical --%>
-	<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">
-		<core_v1:kampyle formId="112902" />
-	</c:if>
-</c:if>
 
 <%-- Dev Environment 
 <c:if test="${not empty vertical and devTools eq true}">
