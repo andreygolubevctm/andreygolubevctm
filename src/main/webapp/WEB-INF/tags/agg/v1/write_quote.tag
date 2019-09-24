@@ -444,6 +444,9 @@
 			<%-- Consultant has flagged this transaction as an return cli --%>
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'RETURN_CLI', brand)}
 		</c:when>
+		<c:when test="${not empty data['health/simples/contactTypeRadio'] && data['health/simples/contactTypeRadio'] == 'nextgenCLI'}">
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'RETURN_CLI', brand)}
+		</c:when>
 		<c:otherwise>
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN', brand)}
 		</c:otherwise>
