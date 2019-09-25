@@ -482,7 +482,7 @@
 			<sql:transaction>
 				${go:appendString(insertSQLSB ,'INSERT INTO aggregator.transaction_details (transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) VALUES ')}
 
-				<%-- Add sticky content to transaction details for triggered saves (Kampyle, SessionPop or FatalError) --%>
+				<%-- Add sticky content to transaction details for triggered saves (SessionPop or FatalError) --%>
 				<c:if test="${not empty param.triggeredsave or not empty triggeredsave}">
 					<c:choose>
 						<c:when test="${not empty triggeredsave}"><c:set var="trigger" value="${triggeredsave}" /></c:when>
