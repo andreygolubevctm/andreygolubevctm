@@ -13,6 +13,7 @@ import com.ctm.web.core.model.Error;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
 import org.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +57,19 @@ public class CouponRouter extends HttpServlet {
 			return;
 		}
 
+		String tranId = request.getParameter("transactionId");
+		if(tranId == null || tranId.isEmpty()) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		String couponId = request.getParameter("couponId");
+		if(couponId == null || couponId.isEmpty() || !StringUtils.isNumeric(couponId)) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+
 		CouponRequest couponRequest = new CouponRequest();
 
 		try {
@@ -69,8 +83,10 @@ public class CouponRouter extends HttpServlet {
 			couponRequest.verticalId = pageSettings.getVertical().getId();
 			couponRequest.effectiveDate = ApplicationService.getApplicationDate(request);
 			couponRequest.couponChannel = authenticatedData.isLoggedIn() ? CouponChannel.CALL_CENTRE : CouponChannel.ONLINE;
-			couponRequest.showCouponSeen = request.getParameter("showCouponSeen") == null || request.getParameter("showCouponSeen").isEmpty() ? 0 : 1;
-			couponRequest.couponId = request.getParameter("couponId") == null || request.getParameter("couponId").isEmpty() ? 0 : Integer.parseInt(request.getParameter("couponId"));
+
+			String showCouponSeen = request.getParameter("showCouponSeen");
+			couponRequest.showCouponSeen = showCouponSeen == null || showCouponSeen.isEmpty() ? 0 : 1;
+			couponRequest.couponId = Integer.parseInt(couponId);
 
 			if (uri.endsWith("/coupon/id/get.json")) {
 				getCouponById(couponRequest, writer, request, response);
@@ -86,7 +102,7 @@ public class CouponRouter extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("Coupon request failed {}", kv("uri", request.getRequestURI()), e);
+			LOGGER.error("Coupon request failed {}", kv("uri", request.getRequestURI()), request.getQueryString(), e);
 			writeErrors(e, writer, response);
 		}
 	}
