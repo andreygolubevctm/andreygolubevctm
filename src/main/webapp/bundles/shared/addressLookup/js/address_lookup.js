@@ -46,7 +46,7 @@
 			// Lock Journey
 			// Don't lock on home, as the address is on the first slide and the next button is directly after the question.
 			// If this address question moves it might be worth removing this condition.
-			if (meerkat.site.vertical != 'home' && meerkat.site.vertical != 'car') {
+			if (_.indexOf(['car','home','simples'], meerkat.site.vertical) === -1) {
 				meerkat.modules.loadingAnimation.showInside($navButton);
 				meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, { source: 'address_lookup' });
 			}
@@ -97,7 +97,7 @@
 						meerkat.modules.loadingAnimation.hide($navButton);
 					}
 				});
-			}else if(meerkat.site.vertical === 'car' || meerkat.site.vertical === 'home') {
+			}else if(_.indexOf(['car','home','simples'], meerkat.site.vertical) >= 0) {
 				setAddressDataFields(data);
 			}
 		}
