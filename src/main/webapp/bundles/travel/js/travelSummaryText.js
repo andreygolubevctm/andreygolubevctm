@@ -25,20 +25,20 @@
 	}
 
 	function buildRegionString(regionTags) {
-		var regins='';
+		var regions='';
 		for(var rs = 0; rs < regionTags.length; rs++) {
-			regins += $(regionTags[rs]).text();
+			regions += $(regionTags[rs]).data('fulltext');
 			if (rs == regionTags.length-1) {
-				regins += '';
+				regions += '';
 				continue;
 			}
 			if (regionTags.length > 1 && rs !== regionTags.length-2 ) {
-				regins += ', ';
+				regions += ', ';
 			} else {
-				regins += ' & ';
+				regions += ' & ';
 			}
 		}
-		return regins;
+		return regions;
 	}
 
 	function updateSummaryText() {
