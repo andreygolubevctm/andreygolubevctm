@@ -116,6 +116,11 @@
 
 		data.transactionId = meerkat.modules.transactionId.get();
 
+		if(_.isEmpty(data.transactionId) || _.isNumeric(String(data.transactionId))) {
+			exception("invalid transactionId to load coupon");
+			return;
+		}
+
 		switch(type) {
 			case "couponId":
 				url = 'coupon/id/get.json';
@@ -146,6 +151,11 @@
 			default:
 				exception('invalid type to load coupon');
 				return;
+		}
+
+		if(_.isEmpty(data.couponId) || !_.isNumeric(String(data.couponId))) {
+			exception("invalid couponId to load coupon (type=" + type + ")");
+			return;
 		}
 
 		meerkat.modules.comms.get({
