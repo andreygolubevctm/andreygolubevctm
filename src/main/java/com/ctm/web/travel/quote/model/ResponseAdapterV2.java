@@ -273,7 +273,10 @@ public class ResponseAdapterV2 {
                     } else if (productRegion.equals("apac") && userRegion.contains("asia") ||
                             productRegion.equals("apac") && userRegion.contains("pacific")) {
                         continue;
+                    } else if (productRegion.equals("europe") && userRegion.contains("worldwide") && (userRegion.contains("asia") || userRegion.contains("pacific"))) {
+                        continue;
                     }
+
                     if (!userRegion.contains(productRegion)) {
                         result.setAvailable(AvailableType.N);
                     }
