@@ -273,7 +273,9 @@ public class ResponseAdapterV2 {
                     } else if (productRegion.equals("apac") && userRegion.contains("asia") ||
                             productRegion.equals("apac") && userRegion.contains("pacific")) {
                         continue;
-                    } else if (productRegion.equals("europe") && userRegion.contains("worldwide") && (userRegion.contains("asia") || userRegion.contains("pacific"))) {
+                        
+                    } else if (travelQuote.getService().contains("FAST") && productRegion.equals("europe") && userRegion.contains("worldwide") && (userRegion.contains("asia") || userRegion.contains("pacific"))) {
+                        // FastCover have a slightly different set of rules for regions CTM-1964
                         continue;
                     }
 
