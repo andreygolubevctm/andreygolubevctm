@@ -62,6 +62,10 @@
 	<c:set var="trackingParams" value="&cid=${cid}&etRid=${etRid}&utmSource=${utmSource}&utmMedium=${utmMedium}&utmCampaign=${utmCampaign}" />
 </c:if>
 
+<c:if test="${vertical == 'travel' and empty trackingParams and not empty utmSource and not empty utmMedium and not empty utmCampaign}">
+	<c:set var="trackingParams" value="&utmSource=${utmSource}&utmMedium=${utmMedium}&utmCampaign=${utmCampaign}" />
+</c:if>
+
 <c:set var="coupon">
 	<c:if test="${not empty param.couponid}">
 		&couponid=<c:out value="${param.couponid}" escapeXml="false" />
