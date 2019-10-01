@@ -12,7 +12,10 @@
 
 	function buildTravelersString(adultsCount, childrenCount) {
 		var travelersString = adultsCount;
-		if (adultsCount < 3) {
+		if (adultsCount == 1 && childrenCount <= 0) {
+			// adults
+			travelersString += ' single';
+		} else if (adultsCount < 3) {
 			// adults
 			travelersString += ' adult' + (adultsCount == 1 ? '' : 's');
 		}

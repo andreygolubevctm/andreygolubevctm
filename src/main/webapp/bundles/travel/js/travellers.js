@@ -15,7 +15,7 @@
 	};
 
 	var travelText = {
-		S: 'The age of the travelling adult?',
+		S: 'The age of the traveller?',
 		SF: 'The age of the travelling adult?',
 		C: 'The age of the travelling adults?',
 		F: 'The age of the travelling adults?',
@@ -27,7 +27,7 @@
 		selection: 'S',
 		showAddBtn: false,
 		addedFields: 0,
-		minAge: 16,
+		minAge: 10,
 		maxAge: 99,
 		hiddenValues: []
 	};
@@ -130,7 +130,7 @@
 			switch (travelParty) {
 				case "S":
 				case "SF":
-						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
+						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 10 });
 					break;
 				case "C":
 						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });

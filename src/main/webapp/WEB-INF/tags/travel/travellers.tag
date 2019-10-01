@@ -20,7 +20,7 @@
 <%-- Ages row --%>
 <div class="form-group row fieldrow smallWidth">
   <%--labels  --%>
-  <label class="col-sm-4 col-xs-10 control-label traveler-age-label">The age of the travelling adult?</label>
+  <label class="col-sm-4 col-xs-10 control-label traveler-age-label">The age of the traveller?</label>
   <%-- default age box --%>
   <div class="col-sm-5 col-xs-12 age-container">
     <div class="age-item col-md-5 col-lg-3">
