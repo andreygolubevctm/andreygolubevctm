@@ -27,7 +27,7 @@
 		selection: 'S',
 		showAddBtn: false,
 		addedFields: 0,
-		minAge: 10,
+		minAge: 1,
 		maxAge: 99,
 		hiddenValues: []
 	};
@@ -130,7 +130,7 @@
 			switch (travelParty) {
 				case "S":
 				case "SF":
-						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 10 });
+						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 1 });
 					break;
 				case "C":
 						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
