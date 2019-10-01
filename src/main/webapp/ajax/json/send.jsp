@@ -128,7 +128,7 @@
 
 		<c:choose>
 			<c:when test="${empty MailingName}">
-				${logger.warn('BPEMAIL Mailing Name empty, no email found to be sent. {} {} {} {} {}', log:kv('transactionId', data.current.transactionId), log:kv('hashedEmail', hashedEmail), log:kv('OptInMailingName', OptInMailingName), log:kv('emailSubscribed', emailSubscribed)}
+				${logger.warn('BPEMAIL Mailing Name empty, no email found to be sent. {} {} {} {} {}', log:kv('transactionId', data.current.transactionId), log:kv('hashedEmail', hashedEmail), log:kv('OptInMailingName', OptInMailingName), log:kv('emailSubscribed', emailSubscribed))}
 			</c:when>
 			<c:otherwise>
 				<%-- Dial into the send script --%>

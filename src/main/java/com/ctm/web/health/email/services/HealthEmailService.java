@@ -484,7 +484,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			String utmMedium = "email";
 			String utmCampaign = "health_pds";
 			boolean isCallCenter = SessionUtils.isCallCentre(request.getSession());
-			final Data dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(emailBrochureRequest.transactionId), false);
+			final Data dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(emailBrochureRequest.transactionId), true);
 
 			if (isCallCenter && dataBucket.getString("health/simples/contactType").equals("webchat") && blockEmailSending) {
 				cid = "livechat";

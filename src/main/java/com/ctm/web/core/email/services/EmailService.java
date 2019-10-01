@@ -161,7 +161,7 @@ public class EmailService {
 		try {
 			if(transactionId > 0) {
 				try {
-					data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+					data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), true);
 				} catch (SessionExpiredException e) {
 					LOGGER.info("Session has expired {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
 							kv("transactionId", transactionId), e);
