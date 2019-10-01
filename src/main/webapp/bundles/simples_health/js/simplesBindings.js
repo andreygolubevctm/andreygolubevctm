@@ -21,13 +21,14 @@
         $healthInternationalStudentField,
         $healthInternationalStudentMsg1,
         $healthInternationalStudentMsg2,
-	    $followupCallCheckboxDialogue,
-	    $followupCallCheckbox,
-	    $referralCallCheckboxDialogue,
-	    $referralCallCheckbox,
-	    $referralCallPaymentStepDialogue1,
-	    $referralCallPaymentStepDialogue2,
+	      $followupCallCheckboxDialogue,
+	      $followupCallCheckbox,
+	      $referralCallCheckboxDialogue,
+	      $referralCallCheckbox,
+	      $referralCallPaymentStepDialogue1,
+	      $referralCallPaymentStepDialogue2,
         $dialogue97,
+        $dialogue102,
         $cliCallCheckboxDialogue,
         $nonCliCallCheckboxDialogue,
         $outboundIntroDialogue,
@@ -54,21 +55,21 @@
         $affiliatesDialogue,
         $dialogue106,
         $optin_email,
-	    $optin_email_app,
+	      $optin_email_app,
         $optin_phone,
         $optin_privacy,
         $optin_optin,
         // List of affiliates who must be ommited from auto optin functionality
         affiliatesOptinBlacklist = [
             "trialcampaignFacebook",
-	        "trialcampaignHealthEngine",
-	        "trialcampaignHealthEngineLP",
-	        "trialcampaignJackMedia",
-	        "trialcampaignMicrosite",
-	        "trialcampaignOmnilead",
-	        "trialcampaignOptimise",
-	        "nextgenOutbound",
-	        "nextgenCLI"
+	          "trialcampaignHealthEngine",
+	          "trialcampaignHealthEngineLP",
+	          "trialcampaignJackMedia",
+	          "trialcampaignMicrosite",
+	          "trialcampaignOmnilead",
+	          "trialcampaignOptimise",
+	          "nextgenOutbound",
+	          "nextgenCLI"
         ]
     ;
 
@@ -97,11 +98,12 @@
             $healthInternationalStudentMsg2 = $('.healthInternationalStudentMsg2');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
-	        $referralCallCheckboxDialogue = $('.simples-dialogue-93');
-	        $referralCallCheckbox = $('#health_simples_dialogue-checkbox-93');
-	        $referralCallPaymentStepDialogue1 = $('.simples-dialogue-94');
-	        $referralCallPaymentStepDialogue2 = $('.simples-dialogue-95');
-	        $dialogue97 = $('.simples-dialogue-97');
+	          $referralCallCheckboxDialogue = $('.simples-dialogue-93');
+	          $referralCallCheckbox = $('#health_simples_dialogue-checkbox-93');
+	          $referralCallPaymentStepDialogue1 = $('.simples-dialogue-94');
+	          $referralCallPaymentStepDialogue2 = $('.simples-dialogue-95');
+	          $dialogue97 = $('.simples-dialogue-97');
+	          $dialogue102 = $('.simples-dialogue-102');
             $cliCallCheckboxDialogue = $('.simples-dialogue-78');
             $nonCliCallCheckboxDialogue = $('.simples-dialogue-20');
             $outboundIntroDialogue = $('.simples-dialogue-135');
@@ -130,10 +132,10 @@
             $dialogue111 = $('.simples-dialogue-111');
             $dialogue112 = $('.simples-dialogue-112');
             $optin_email = $('#health_contactDetails_optInEmail');
-	        $optin_email_app = $('#health_application_optInEmail');
-	        $optin_phone = $('#health_contactDetails_call');
-	        $optin_privacy = $('#health_privacyoptin');
-	        $optin_optin = $('#health_contactDetails_optin');
+	          $optin_email_app = $('#health_application_optInEmail');
+	          $optin_phone = $('#health_contactDetails_call');
+	          $optin_privacy = $('#health_privacyoptin');
+	          $optin_optin = $('#health_contactDetails_optin');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -141,7 +143,7 @@
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
             toggleFollowupCallDialog();
-	        toggleReferralCallDialog();
+	          toggleReferralCallDialog();
             initNaturpathyDialog();
 
             applyEventListeners();
@@ -602,15 +604,15 @@
 
     function toggleCoverTypeScripts($elements, show) {
         $elements.hide();
+        $dialogue97.show();
+        $dialogue102.show();
         if(show) {
             switch ($healthContactTypeField.val()) {
                 case 'nextgenCLI':
                     $elements.filter('.simples-dialog-nextgencli').show();
-                    $dialogue97.show();
                     break;
                 case 'nextgenOutbound':
                     $elements.filter('.simples-dialog-nextgenoutbound').show();
-                    $dialogue97.show();
                     break;
                 case 'outbound':
                     $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-inbound').show();
