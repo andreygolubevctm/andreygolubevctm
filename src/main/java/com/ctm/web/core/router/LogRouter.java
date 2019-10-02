@@ -67,7 +67,7 @@ public class LogRouter extends HttpServlet {
 		@SuppressWarnings("unused")
 		Data dataBucket = null;
 		try {
-			dataBucket = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+			dataBucket = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), true);
 
 			/**
 			 * Route the requests.
