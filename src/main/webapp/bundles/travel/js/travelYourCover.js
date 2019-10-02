@@ -45,8 +45,7 @@
 
 			// hide the destinations section, travellers section, leave date and return date
 			$amtDuration.hide();
-			$datestravellersfs.hide();
-			$travelDatePicker.hide(); 
+			$travelDatePicker.hide();
 
 			// hide the blue bubble amt and single trip content
 			$detailsForm.find('.well-chatty > .amt, .well-chatty > .single').hide();
@@ -102,7 +101,7 @@
 			$detailsForm.find('.well-chatty > .amt, .well-chatty > .default').hide();
 			// hide amt 
 			$amtDuration[hideMethod]();
-			$destinationfs.add($datestravellersfs).add($travelDatePicker)[showMethod](); 
+			$destinationfs.add($travelDatePicker)[showMethod]();
 			$destinationfs.find('.control-label').text('Which countries or regions will you be visiting on your trip (excluding stopovers of less than 48 hours)?');
 
 			// update section header name for dates & travellers section
@@ -115,7 +114,7 @@
 			// show the amt blue bubble copy
 			$detailsForm.find('.well-chatty > .amt').show();
 			// show amt 
-			$amtDuration.add($datestravellersfs)[showMethod]();
+			$amtDuration[showMethod]();
 			$travelDatePicker[hideMethod]();
 			$destinationfs.find('.control-label').text('Which countries or regions will you be visiting in the next 12 months (excluding stopovers of less than 48 hours)?');
 
