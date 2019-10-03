@@ -133,10 +133,10 @@
 						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 1 });
 					break;
 				case "C":
-						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
+						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 1 });
 					break;
 				case "F":
-						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
+						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 1 });
 					break;
 				case "G":
 						setState({ travellers: 3, showAddBtn: true, selection: travelParty, minAge: 0 });

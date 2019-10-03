@@ -34,10 +34,10 @@
     // Validate age range 16-99
     $.validator.addMethod("ageRange",
         function(value, element){
-            if(parseInt(value) >= 16 && parseInt(value) < 100){
+            if(parseInt(value) >= 1 && parseInt(value) < 100){
                 return true;
             }
         },
-        "Adult${validationNoun}s must be aged 16 - 99."
+        "Adult${validationNoun}s must be aged 1 - 99."
     );
 })(jQuery);
