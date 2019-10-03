@@ -41,7 +41,7 @@ public class TrackingKeyService {
 		if(!strXpaths.isEmpty()) {
 			try {
 				final SessionDataService sessionDataService = new SessionDataService();
-				final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+				final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), true);
 
 				List<String> trackingKeyXpaths = Arrays.asList(strXpaths.split("\\s*,\\s*"));;
 				String xpathRoot = null;

@@ -33,7 +33,7 @@ public class SimplesTickleService {
         boolean success = false;
         try {
             // Keep the transaction fresh in user's session
-            sessionDataService.getDataForTransactionId(request, transactionId.toString(), false);
+            sessionDataService.getDataForTransactionId(request, transactionId.toString(), true);
             // Keep user fresh
             final int simplesUid = authenticatedData.getSimplesUid();
             if (simplesUid != -1) {
