@@ -604,15 +604,19 @@
 
     function toggleCoverTypeScripts($elements, show) {
         $elements.hide();
-        $dialogue97.show();
-        $dialogue102.show();
         if(show) {
             switch ($healthContactTypeField.val()) {
                 case 'nextgenCLI':
-                    $elements.filter('.simples-dialog-nextgencli').show();
+                    $elements.filter('.simples-dialog-nextgencli')
+                      .add($dialogue97)
+                      .add($dialogue102)
+                      .show();
                     break;
                 case 'nextgenOutbound':
-                    $elements.filter('.simples-dialog-nextgenoutbound').show();
+                    $elements.filter('.simples-dialog-nextgenoutbound')
+                      .add($dialogue97)
+                      .add($dialogue102)
+                      .show();
                     break;
                 case 'outbound':
                     $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-inbound').show();
