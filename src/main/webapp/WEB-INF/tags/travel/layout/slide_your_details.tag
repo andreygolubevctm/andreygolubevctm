@@ -51,10 +51,6 @@
 				<%-- PROVIDER TESTING --%>
 				<agg_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" displayFullWidth="true" />
 				<field_v1:hidden xpath="travel/lastCoverTabLevel" />
-				<%-- YOUR CONTACT DETAILS SECTION --%>
-				<form_v2:fieldset legend="Your Cover" id="yourcoverfs">
-					<travel:your_cover />
-				</form_v2:fieldset>
 
 				<%-- COUNTRY SECTION --%>
 				<form_v2:fieldset showHelpText="true" legend="Destinations"
@@ -71,7 +67,7 @@
 										variableListArray="${locationsService.getCountrySelectionList()}"
 										xpath="travel/destinations"
 										xpathhidden="travel/destination"
-										label="Which countries or regions will you be visiting on your trip (excluding stopovers of less than 48 hours)?"
+										label="Which countries or regions will you be visiting (excluding stopovers of less than 48 hours)?"
                                         additionalAttributes="autocomplete='no'"
 										title="Where are you travelling?"
 										validationErrorPlacementSelector=".travel_details_destinations"
@@ -80,18 +76,7 @@
 						<field_v1:hidden xpath="travel/unknownDestinations"/>
 				</form_v2:fieldset>
 
-				<%-- DURATION SELECTION --%>
-                <form_v2:fieldset legend="Duration" className="travel_maxDuration" id="amtDurationsfs">
-                    <form_v2:row label="What is the maximum number of days you will be away from home for any single journey?" className="smallWidth">
-                        <field_v2:array_radio items="1=1 - 15 days,16=16 - 30 days,31=31 - 45 days,46=46 - 60 days,61=61+ days" xpath="travel/amtDuration" title="max trip duration" required="true" className="radio" style="radio-green" />
-                    </form_v2:row>
-                </form_v2:fieldset>
-
-				<%-- DATES AND TRAVELLERS SECTION --%>
-				<form_v2:fieldset legend="Dates" className="travel_details_datesTravellers" id="travelDatePicker">
-					<travel:date_picker xpath="travel" /> 
-				</form_v2:fieldset>
-				 
+				<%-- TRAVELLERS --%>
 				<form_v2:fieldset legend="Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
 					<form_v2:row label="Who's travelling?" className="smallWidth" helpId="216">
 						<field_v2:array_radio items="S=Single,SF=Single parent family,C=Two adults,F=Family,G=Group" xpath="travel/party" title="who is travelling" required="true" className="thinner_input travel_party roundedCheckboxIcons" />
@@ -109,6 +94,24 @@
 					<field_v1:hidden xpath="travel/adults" />
 					<field_v1:hidden xpath="travel/children" />
 				</form_v2:fieldset>
+
+				<%-- COVER TYPE --%>
+				<form_v2:fieldset legend="Your Cover" id="yourcoverfs">
+					<travel:your_cover />
+				</form_v2:fieldset>
+
+				<%-- DURATION SELECTION --%>
+                <form_v2:fieldset legend="Duration" className="travel_maxDuration" id="amtDurationsfs">
+                    <form_v2:row label="What is the maximum number of days you will be away from home for any single journey?" className="smallWidth">
+                        <field_v2:array_radio items="1=1 - 15 days,16=16 - 30 days,31=31 - 45 days,46=46 - 60 days,61=61+ days" xpath="travel/amtDuration" title="max trip duration" required="true" className="radio" style="radio-green" />
+                    </form_v2:row>
+                </form_v2:fieldset>
+
+				<%-- DATES AND TRAVELLERS SECTION --%>
+				<form_v2:fieldset legend="Dates" className="travel_details_datesTravellers" id="travelDatePicker">
+					<travel:date_picker xpath="travel" /> 
+				</form_v2:fieldset>
+
 				<c:set var="fieldSetHeading">
 					<c:if test="${data.travel.currentJourney == null or empty data.travel.currentJourney or (data.travel.currentJourney != null && data.travel.currentJourney != 7)}">
 						Your&nbsp;
@@ -121,6 +124,11 @@
 				</form_v2:fieldset>
 
 				<%-- YOUR CONTACT DETAILS SECTION --%>
+				<c:set var="fieldSetHeading">
+					<c:if test="${data.travel.currentJourney == null or empty data.travel.currentJourney or (data.travel.currentJourney != null && data.travel.currentJourney != 7)}">
+						Your&nbsp;
+					</c:if>
+				</c:set>
 				<form_v2:fieldset legend="${fieldSetHeading}Contact Details" id="contactDetails">
 					<travel:contact_details />
 				</form_v2:fieldset>
