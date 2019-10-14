@@ -40,7 +40,7 @@
           abdPolicyStartDate: $('#health_healthCover_partner_abdPolicyStart'),
           abdPolicyStartDateApplication: $('#health_previousfund_partner_abdPolicyStart')
         },
-        abdDetailsApplicationSingle: $('.abd-details-applicatio-single'),
+        abdDetailsApplicationSingle: $('.abd-details-application-single'),
         abdDetailsApplicationSingleNoPHI: $('.abd-details-application-single-no-phi'),
         abdDetailsApplicationCouple: $('.abd-details-application-couple'),
         abdDetailsApplicationCoupleNoPHI: $('.abd-details-application-couple-no-phi'),
