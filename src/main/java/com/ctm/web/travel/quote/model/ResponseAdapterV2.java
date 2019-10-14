@@ -60,6 +60,7 @@ public class ResponseAdapterV2 {
                 result.setPrice(travelQuote.getPrice());
                 result.setPriceText(travelQuote.getPriceText());
                 result.setIsDomestic(travelQuote.getIsDomestic());
+                result.setMedicalCondsAssessed(travelQuote.getMedicalCondsAssessed());
 
                 // Override product names based on arbitrary rules.
 
@@ -257,7 +258,7 @@ public class ResponseAdapterV2 {
                     }
                 }
                 // check if the region retrieved from the returned products is equal to the parsed user request
-                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0 ) {
+                if ( request.getPolicyType() == PolicyType.MULTI && (request.getDestinations().size()) > 0 && !travelQuote.getService().equals("BUDD")) {
                     String userRegion = parseRegion(request.getDestinations());
                     String productRegion = parseLongtitle(travelQuote.getProduct());
 
@@ -272,7 +273,12 @@ public class ResponseAdapterV2 {
                     } else if (productRegion.equals("apac") && userRegion.contains("asia") ||
                             productRegion.equals("apac") && userRegion.contains("pacific")) {
                         continue;
+                        
+                    } else if (travelQuote.getService().contains("FAST") && productRegion.equals("europe") && userRegion.contains("worldwide") && (userRegion.contains("asia") || userRegion.contains("pacific"))) {
+                        // FastCover have a slightly different set of rules for regions CTM-1964
+                        continue;
                     }
+
                     if (!userRegion.contains(productRegion)) {
                         result.setAvailable(AvailableType.N);
                     }

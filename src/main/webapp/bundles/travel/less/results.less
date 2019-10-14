@@ -31,7 +31,7 @@
 
 @priceSize: 30px;
 .priceAmount {
-	color: @results-price-product-price-color;
+	color: #333;
 	line-height: @priceSize;
 	font-size: @priceSize;
 }
@@ -392,7 +392,7 @@
 
 @media(@sm) {
 
-    footer {
+		footer {
 		margin-top: 30px;
 	}
 
@@ -407,7 +407,7 @@
 
 	.PDS,
 	.moreInfo {
-		margin-top: 10px;
+		margin-bottom: 16px;
 		//text-align:center; //??
 		a {
 			text-decoration: underline;
@@ -423,7 +423,7 @@
 	.results-table {
 		.result-row	{
 			padding: 0;
-			margin-bottom: 30px;
+			margin-bottom: 16px;
 
 			.resultInsert > .row {
 				margin-left: 0;
@@ -458,9 +458,22 @@
 .vertical-center-row > div {
 	@media(@sm) {
 
+		&.cta .row {
+			margin: -15px -12px;
+			height: inherit;
+
+			@media(@lg-only) {
+				padding-top: 36px;
+			}
+
+			@media(@sm-md-only) {
+				padding-top: 15px;
+			}
+		}
+
 		//This is important - it sets the height of what we're vertically centering against.
 		//min-height:120px; //freaks out IE8
-		height: 120px;
+		height: 130px;
 		text-align: center;
 		padding: 15px 12px;
 
@@ -494,7 +507,7 @@
 	@media(@sm-md-only) {
 		&.productTitle {
 			//min-height: 70px; //freaks out IE8
-			height: 70px;
+			height: auto;
 		}
 		&.cta {
 			//min-height: 70px; //freaks out IE8
@@ -510,9 +523,14 @@
 		//Undo the vertical centering on the CTA cell because of the sub elements.
 		&.cta {
 			text-align: center;
+			width: 18.666667%;
 			div:before {
 				height: auto;
 			}
+		}
+
+		&.priceAmount {
+			width: 14.666667%;
 		}
 	}
 }
@@ -552,6 +570,10 @@
 			}
 		}
 	}
+
+	@media (@lg) {
+		height: 190px;
+	}
 }
 
 .result {
@@ -567,6 +589,47 @@
 				}
 			}
 		}
+	}
+
+	span.medicalCondsAssessed {
+		margin: 0;
+		padding: 4px;
+		width: 100%;
+		text-align: center;
+		background: #e3e9fb;
+		color: #233e93;
+		font-weight: 600;
+		top: 0;
+		position: absolute;
+		right: 0;
+		z-index: 1;
+
+		@media (@xs-only), (@sm-md-only) {
+			& {
+				width: fit-content;
+				padding-left: 12px;
+				padding-right: 12px;
+				border-bottom-left-radius: 4px;
+			}
+		}
+
+		@media (@xs-only) {
+			position: relative;
+			border-top-left-radius: 4px;
+			margin-top: -15px;
+			margin-right: -20px;
+			margin-bottom: 6px;
+			float: right;
+			white-space: nowrap;
+		}
+	}
+
+	img.medicalCondsAssessed {
+		display: none;
+	}
+
+	.cta .buyNow .btn {
+		font-weight: 600;
 	}
 }
 
@@ -585,6 +648,7 @@
 	@media(@lg) {
 		& > div {
 			> span:first-of-type {
+				display: block;
 				line-height:16px;
 			}
 		}
@@ -594,6 +658,7 @@
 
 @media(@sm-md-only) {
 	.productTitle div span {
+		display: inline;
 		br {
 			display:none;
 		}
@@ -663,9 +728,6 @@
 			color: @results-price-column-odd-text;
 			background-color: @results-price-column-odd-bg;
 		}
-		.priceAmount {
-			color: @results-price-product-price-color;
-		}
 		.productTitle {
 			color: @results-price-product-title-color;
 			border-left: 0 none;
@@ -677,17 +739,14 @@
 		}
 	}
 	@media(@lg) {
-		.productTitle,
-		.medicalAmount,
+		.productTitle.evenRow,
+		.medicalAmount.evenRow,
 		.luggageAmount.evenRow,
 		.cdxfeeAmount.evenRow,
-		.rentalVehicle,
+		.rentalVehicle.evenRow,
 		.cta {
 			color: @results-price-column-odd-text;
 			background-color: @results-price-column-odd-bg;
-		}
-		.priceAmount {
-			color: @results-price-product-price-color;
 		}
 		.productTitle {
 			color: @results-price-product-title-color;
@@ -706,9 +765,9 @@ body[data-step="results"] #dynamic_dom {
 			position:relative;
 			float:right;
 			height:auto;
-			width:40%;
+			width:38%;
 			padding-left:30px;
-			margin-top: -2.7em;
+			margin-top: 0.5em;
 			color: @theme-tertiary;
 			font-size: 13px;
 			line-height:16px;
@@ -759,6 +818,7 @@ body[data-step="results"] #dynamic_dom {
 			&.productTitle {
 				div:not(.promotion) {
 					width:60%;
+					display: inline-block;
 				}
 			}
 			&.more-info-content {

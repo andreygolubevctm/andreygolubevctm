@@ -444,6 +444,9 @@
 			<%-- Consultant has flagged this transaction as an return cli --%>
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'RETURN_CLI', brand)}
 		</c:when>
+		<c:when test="${not empty data['health/simples/contactTypeRadio'] && data['health/simples/contactTypeRadio'] == 'nextgenCLI'}">
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'RETURN_CLI', brand)}
+		</c:when>
 		<c:otherwise>
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN', brand)}
 		</c:otherwise>
@@ -479,7 +482,7 @@
 			<sql:transaction>
 				${go:appendString(insertSQLSB ,'INSERT INTO aggregator.transaction_details (transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) VALUES ')}
 
-				<%-- Add sticky content to transaction details for triggered saves (Kampyle, SessionPop or FatalError) --%>
+				<%-- Add sticky content to transaction details for triggered saves (SessionPop or FatalError) --%>
 				<c:if test="${not empty param.triggeredsave or not empty triggeredsave}">
 					<c:choose>
 						<c:when test="${not empty triggeredsave}"><c:set var="trigger" value="${triggeredsave}" /></c:when>
@@ -693,7 +696,7 @@
 			${logger.error("Write quote failed. {} {} {} {}", log:kv("errorMessage", error.message), log:kv("errorCause", error.cause), log:kv("sql", insertSQLSB.toString()), log:kv("sqlParams", insertParams.toString()))}
 			<%-- CTM-809 - remove after monitoring period --%>
 			<c:if test="${rootPath eq 'fuel'}">
-				${logger.error("Fuel write quote failed using: {}", log:kv("originalSqlParams",fuelSQLParams)}
+				${logger.error("Fuel write quote failed using: {}", log:kv("originalSqlParams",fuelSQLParams))}
 			</c:if>
 			<%-- END CTM-809 --%>
 			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

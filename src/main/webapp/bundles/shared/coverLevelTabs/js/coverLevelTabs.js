@@ -297,14 +297,17 @@
 
 			// custom code due to requirement
 			switch (coverTypeValue) {
+				case 'comprehensive':
+					coverTypeText = 'Comprehensive <br>products only';
+					break;
 				case 'mid_range':
                     coverTypeValue = 'comprehensive_' + coverTypeValue;
-                    coverTypeText = 'Comprehensive & <br>Mid Range';
+                    coverTypeText = 'Comprehensive & <br>Mid Range products';
                     break;
 
 				case 'basic':
 					coverTypeValue = 'all';
-					coverTypeText = 'All';
+					coverTypeText = 'Comprehensive, <br>Mid Range & <br> Basic products';
 					break;
 			}
 
@@ -324,8 +327,8 @@
 		}
 
         $('.reset-travel-filters').empty().html(resetFilters);
-				$('.navbar-mobile-travel .mobile-cover-types').empty().html(mobileCoverTypes);
-				$currentTabContainer.empty().html(out);
+		$('.navbar-mobile-travel .mobile-cover-types').empty().html(mobileCoverTypes);
+		$currentTabContainer.empty().html(out);
         $('.navbar-mobile').empty();
         $('.mobile-cover-types').empty().html(mobileCoverTypes);
         $('.navbar-desktop').empty();

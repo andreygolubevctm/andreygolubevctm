@@ -9,7 +9,7 @@
 <form class="redemptionForm form-horizontal">
     <fieldset class="qe-window fieldset">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12 form-heading">
                 <h1>Claim your Meerkat toy</h1>
                 <p class="toy-subtitle">Congratulations, you will soon be the owner of your very own Meerkat toy. Please
                     complete the following details to claim.</p>
@@ -18,8 +18,7 @@
 
         {{ var orderLine = data.orderForm.orderHeader.orderLine || {}; }}
         <div class="form-group row fieldrow clear required_input rewardType">
-            <label for="order_rewardType" class="col-sm-4 col-xs-10 control-label"></label>
-            <div class="col-sm-8 col-xs-12 row-content">
+            <div class="col-sm-12 col-xs-12 row-content">
                 <h3 class="redemption-subtitle">Please select your reward</h3>
                 <div class="btn-tile toy-radio-tiles" data-toggle="radio">
                     {{ var rewards = currentCampaign.rewards.filter(function(reward) { }}

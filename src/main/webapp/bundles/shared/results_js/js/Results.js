@@ -28,6 +28,7 @@ var Results = {
 		Results.model = ResultsModel;
 		Results.pagination = ResultsPagination;
         Results.model.travelFilters = {
+        	CONDITIONS: false,
             EXCESS: 200,
             LUGGAGE: 5000,
             CXDFEE: 20000,

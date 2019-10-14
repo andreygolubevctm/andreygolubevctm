@@ -16,7 +16,7 @@
 
 $.extend($.fn, {
 	// http://jqueryvalidation.org/validate/
-	validate: function( options ) {
+	validate: function( options, forceOptions ) {
 
 		// if nothing is selected, return nothing; can't chain anyway
 		if ( !this.length ) {
@@ -28,7 +28,7 @@ $.extend($.fn, {
 
 		// check if a validator for this form was already created
 		var validator = $.data( this[ 0 ], "validator" );
-		if ( validator ) {
+		if ( validator && !forceOptions ) {
 			return validator;
 		}
 

@@ -235,6 +235,25 @@
     cursor: pointer;
     margin-left: 15px;
   }
+
+  #travel-filter-conditions {
+    margin-bottom: 16px;
+  }
+
+  #medical_conditions_assessed + label {
+    padding-top: 0;
+    line-height: 20px;
+    color: #666;
+    font-size: 14px;
+  }
+
+  #medical_conditions_assessed + label:before {
+    margin-top: 0;
+  }
+
+  .reset-travel-filters .dropdown-item {
+    padding-left: 0;
+  }
 }
 
 .dropdown-menu-excess-filter, .dropdown-menu-more-filters {
@@ -336,10 +355,10 @@
     }
 
     .dropdown-menu-more-filters {
-      height: 100%;
+      height: ~"calc(100% - 190px)";
       .more-filters-container {
         height: auto;
-        max-height: 500px;
+        max-height: 100%;
         overflow-y: scroll;
       }
       &:before,
@@ -350,10 +369,6 @@
       .filter-section {
         padding-top: 10px;
         padding-bottom: 10px;
-
-        &:last-of-type {
-          border-top: 1px solid @theme-default;
-        }
 
         .filter-brands-container {
           display: none;
