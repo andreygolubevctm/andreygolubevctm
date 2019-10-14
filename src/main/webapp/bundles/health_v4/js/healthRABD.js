@@ -202,7 +202,9 @@
 
     if(isABD()) {
       // Does not already have a policy with an age based discount
-      if (primaryHasCover && primaryInABDRange || (!isSingle && (partnerHasCover && partnerInABDRange))) {
+      if (primaryHasCover || (!isSingle && partnerHasCover)) {
+        // Checking if each party is InABDRange on the line above would mean that abdHasCoverMsg would only be applied if the party that has cover is also in InABDRange
+        // this would treat the situation where a party is InABDRange and does not have cover yet their partner is not InABDRange and has cover the same as abdNoPHI
         if (isSingle) {
           // is single and has cover - but not one with an age based discount and is in the age group where ADB is applicable
           elements.abdDetailsApplicationSingle.html(abdHasCoverMsg);
@@ -295,6 +297,7 @@
     });
   }
 
+  // ABD - Age Based Discount | RABD - Retained Age Based Discount
   meerkat.modules.register('healthRABD', {
     init: init,
     isABD: isABD,

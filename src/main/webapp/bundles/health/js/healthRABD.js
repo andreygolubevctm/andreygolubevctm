@@ -231,6 +231,7 @@
     }
   }
 
+  // ABD - Age Based Discount | RABD - Retained Age Based Discount
   meerkat.modules.register('healthRABD', {
       init: init,
       isABD: isABD,
