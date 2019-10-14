@@ -14,7 +14,7 @@
 
 <form_v4:row label="Do you currently hold Private Health Insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover" className="lhcRebateCalcTrigger" helpId="587">
 	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold Private Health Insurance?" required="true" className="health-cover_details" id="${name}_health_cover" additionalLabelAttributes="${analyticsAttr}"/>
-
+    <health_v4_application:abd_details className="abd-details-application-single-no-phi hidden" />
 	<c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}" />
 	<div class="${fieldXpathName}-help-text help-text success yes-help hidden">
 		<div class="icon-area">

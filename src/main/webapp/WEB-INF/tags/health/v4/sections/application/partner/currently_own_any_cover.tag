@@ -15,6 +15,7 @@
 <form_v4:row label="Does your partner currently hold Private Health Insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover" className="lhcRebateCalcTrigger" helpId="587">
 	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your partner currently hold Private Health Insurance?" required="true" className="health-cover_details health-cover_details-partner" id="${name}_partner_health_cover" additionalLabelAttributes="${analyticsAttr}" />
 
+    <health_v4_application:abd_details className="abd-details-application-couple-no-phi hidden" />
 	<c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}" />
 	<div class="${fieldXpathName}-help-text help-text success yes-help hidden">
 		<div class="icon-area">

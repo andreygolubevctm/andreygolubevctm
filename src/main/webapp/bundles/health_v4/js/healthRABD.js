@@ -23,8 +23,8 @@
 
       elements = {
         primary: {
-          dob: $('#health_healthCover_primary_dob'),
-          currentCover: $('.health-cover_details input[type="radio"]'),
+          dob: $('#health_application_primary_dob'),
+          currentCover: $('input[type="radio"][name="health_application_primary_cover"]'),
           abdQuestionContainer: $('.primaryHasABD'),
           abdQuestion: $('.health-cover_details_abd_current input[type="radio"]'),
           abdPolicyStartDateContainer: $('.health-cover_details_abd_start'),
@@ -32,16 +32,16 @@
           abdPolicyStartDateApplication: $('#health_previousfund_primary_abdPolicyStart')
         },
         partner: {
-          dob: $('#health_healthCover_partner_dob'),
-          currentCover: $('.health-cover_details-partner input[type="radio"]'),
+          dob: $('#health_application_partner_dob'),
+          currentCover: $('input[type="radio"][name="health_application_partner_cover"]'),
           abdQuestionContainer: $('.partnerHasABD'),
           abdQuestion: $('.health-cover_details_partner_abd_current input[type="radio"]'),
           abdPolicyStartDateContainer: $('.health-cover_details_partner_abd_start'),
           abdPolicyStartDate: $('#health_healthCover_partner_abdPolicyStart'),
           abdPolicyStartDateApplication: $('#health_previousfund_partner_abdPolicyStart')
         },
-        abdDetailsApplication: $('.abd-details-application'),
-        abdDetailsApplicationSingleNoPHI: $('.abd-details-application-single'),
+        abdDetailsApplicationSingle: $('.abd-details-applicatio-single'),
+        abdDetailsApplicationSingleNoPHI: $('.abd-details-application-single-no-phi'),
         abdDetailsApplicationCouple: $('.abd-details-application-couple'),
         abdDetailsApplicationCoupleNoPHI: $('.abd-details-application-couple-no-phi'),
         dialogTriggers: $('.dialogPop'),
@@ -53,14 +53,14 @@
       elements.dialogTriggers.click(showABDModal);
       meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
 
-      if(hasCover('primary')) {
+      if (hasCover('primary')) {
         state.primary.age = meerkat.modules.age.returnAge(elements.primary.dob.val(), true);
         showABDQuestion('primary');
         showABDStartDate('primary');
         showABDSupportContent();
       }
 
-      if(hasCover('partner')) {
+      if (hasCover('partner')) {
         state.partner.age = meerkat.modules.age.returnAge(elements.partner.dob.val(), true);
         showABDQuestion('partner');
         showABDStartDate('partner');
@@ -76,11 +76,11 @@
 
   function isABD() {
 
-    if(!hasCover('primary') && (!state.hasPartner || !hasCover('partner'))) {
+    if (!hasCover('primary') && (!state.hasPartner || !hasCover('partner'))) {
       return true;
     }
 
-    if(!hasAbdPolicy('primary') && (!state.hasPartner || !hasAbdPolicy('partner'))) {
+    if (!hasAbdPolicy('primary') && (!state.hasPartner || !hasAbdPolicy('partner'))) {
       return true;
     }
 
@@ -133,7 +133,12 @@
   }
 
   function hasAbdPolicy(type) {
-    return elements[type].abdQuestion.filter(':checked').val() === 'Y';
+    var showAbdQuestion = eligibleForAlreadyHavingABD(type);
+    return showAbdQuestion && elements[type].abdQuestion.filter(':checked').val() === 'Y';
+  }
+
+  function eligibleForAlreadyHavingABD(type) {
+    return inRange(18,44, state[type].age) && hasCover(type);
   }
 
   function hideResultsFilter() {
@@ -142,77 +147,101 @@
   }
 
   function showABDQuestion(type) {
-    var showQuestion = inRange(18,44, state[type].age) && hasCover(type);
+    var showQuestion = eligibleForAlreadyHavingABD(type);
     elements[type].abdQuestionContainer.toggleClass('hidden', !showQuestion);
   }
 
   function showABDStartDate(type) {
-    var toDisplay = hasAbdPolicy(type) && hasCover(type) && inRange(18,44, state[type].age);
-    elements[type].abdPolicyStartDateContainer.toggleClass('hidden', !toDisplay);
+    elements[type].abdPolicyStartDateContainer.toggleClass('hidden', !hasAbdPolicy(type));
   }
 
   function setApplicationDetails() {
     var selectedProduct = Results.getSelectedProduct();
     if(!selectedProduct || selectedProduct.premium.monthly.abd === 0) {
-      elements.abdDetailsApplication.html('');
+      elements.abdDetailsApplicationSingle.html('');
       elements.abdDetailsApplicationSingleNoPHI.html('');
       elements.abdDetailsApplicationCouple.html('');
+      elements.abdDetailsApplicationCoupleNoPHI.html('');
       return;
     }
 
-    var isSingle =  !state.hasPartner;
-    var primaryHasCover =  hasCover('primary');
-    var partnerHasCover =  hasCover('partner');
+    var isSingle = !state.hasPartner;
+    var primaryHasCover = hasCover('primary');
+    var partnerHasCover = hasCover('partner');
     var primaryHasABD = hasAbdPolicy('primary');
     var partnerHasABD = hasAbdPolicy('partner');
+    var partnerInABDRange = inRange(18, 29, state.partner.age);
+    var primaryInABDRange = inRange(18, 29, state.primary.age);
 
     elements.abdDetailsApplicationSingleNoPHI.toggleClass('hidden', primaryHasCover || !isSingle);
-    elements.abdDetailsApplication.toggleClass('hidden', !isSingle);
+    elements.abdDetailsApplicationSingle.toggleClass('hidden', !isSingle || (isSingle && !primaryHasCover));
 
-    elements.abdDetailsApplicationCouple.toggleClass('hidden', isSingle);
-    elements.abdDetailsApplicationCoupleNoPHI.toggleClass('hidden', isSingle || partnerHasCover);
+    var abdDetailsApplicationCouple = false;
+    var abdDetailsApplicationCoupleRabdNaForPartner = false;
+    var abdDetailsApplicationCouplePartnerHasRabd = false;
+    var abdDetailsApplicationCoupleNoPHI = false;
 
-    if(isABD()) {
-      if (primaryHasCover || (partnerHasCover  && !isSingle)) {
-        if (isSingle) {
-          elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-          elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-        }
-        else {
-          elements.abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-          elements.abdDetailsApplicationCoupleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-        }
-      }
-      else {
-        if (isSingle) {
-          elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
-          elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
-        }
-        else {
-          elements.abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
-          elements.abdDetailsApplicationCoupleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will confirm the exact discount you are eligible for.');
-        }
+    if (!isSingle && (primaryInABDRange || partnerInABDRange)) {
+      if (!primaryHasCover && !partnerHasCover) {
+        abdDetailsApplicationCoupleNoPHI = true;  // show feedback under do you have cover
+      } else if ((!partnerInABDRange || !partnerHasCover) && (primaryHasCover && primaryHasABD)) { // partner RABD Question wont be visible
+        abdDetailsApplicationCoupleRabdNaForPartner = true;
+      } else if (partnerInABDRange && partnerHasCover) {  // show feedback under RABD question for partner
+        abdDetailsApplicationCouplePartnerHasRabd = true;
+      } else {
+        abdDetailsApplicationCouple = true;  // show feedback under do you have cover
       }
     }
-    else {
 
-      if(primaryHasABD || (partnerHasABD && !isSingle)) {
+    elements.abdDetailsApplicationCouple.toggleClass('hidden', !abdDetailsApplicationCouplePartnerHasRabd);
+    elements.abdDetailsApplicationCoupleNoPHI.toggleClass('hidden', !(abdDetailsApplicationCoupleNoPHI || (abdDetailsApplicationCoupleRabdNaForPartner || abdDetailsApplicationCouple)));
+
+    var abdNoPhiMsg = 'The price indicated in the summary above <span class="text-bold">includes an age-based discount</span> based on what you&apos;ve told us. Your new health fund will confirm the exact discount you are eligible for.';
+    var abdHasCoverMsg = 'The price indicated in the summary above <span class="text-bold">includes an age-based discount</span> based on what you&apos;ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.';
+    var abrRetainedMsg = 'The price indicated in the summary above <span class="text-bold">includes a retained age-based discount</span> based on what you&apos;ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.';
+
+    if(isABD()) {
+      // Does not already have a policy with an age based discount
+      if (primaryHasCover && primaryInABDRange || (!isSingle && (partnerHasCover && partnerInABDRange))) {
         if (isSingle) {
-          elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-          elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+          // is single and has cover - but not one with an age based discount and is in the age group where ADB is applicable
+          elements.abdDetailsApplicationSingle.html(abdHasCoverMsg);
+          elements.abdDetailsApplicationSingleNoPHI.html(abdHasCoverMsg);
+        } else {
+          // one or both (have cover - but not one with an age based discount AND is in the age group where ADB is applicable)
+          elements.abdDetailsApplicationCouple.html(abdHasCoverMsg);
+          elements.abdDetailsApplicationCoupleNoPHI.html(abdHasCoverMsg);
         }
-        else {
-          elements.abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-          elements.abdDetailsApplicationCoupleNoPHI.html('The price indicated in the summary above <strong>includes a retained age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-        }
-      }else {
+      } else {
+        // no previous cover
         if (isSingle) {
-          elements.abdDetailsApplication.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-          elements.abdDetailsApplicationSingleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+          elements.abdDetailsApplicationSingle.html(abdNoPhiMsg);
+          elements.abdDetailsApplicationSingleNoPHI.html(abdNoPhiMsg);
+        } else {
+          elements.abdDetailsApplicationCouple.html(abdNoPhiMsg);
+          elements.abdDetailsApplicationCoupleNoPHI.html(abdNoPhiMsg);
         }
-        else {
-          elements.abdDetailsApplicationCouple.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
-          elements.abdDetailsApplicationCoupleNoPHI.html('The price indicated in the summary above <strong>includes an age-based discount</strong> based on what you’ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.');
+      }
+    } else {
+      if (primaryHasABD || (partnerHasABD && !isSingle)) {
+        // Already has a policy with an age based discount
+        if (isSingle) {
+          // is single and has an age based discount that could be retained
+          elements.abdDetailsApplicationSingle.html(abrRetainedMsg);
+          elements.abdDetailsApplicationSingleNoPHI.html(abrRetainedMsg);
+        } else {
+          // one or both has an age based discount that could be retained
+          elements.abdDetailsApplicationCouple.html(abrRetainedMsg);
+          elements.abdDetailsApplicationCoupleNoPHI.html(abrRetainedMsg);
+        }
+      } else {
+        // Already has a policy - but not one with an age based discount
+        if (isSingle) {
+          elements.abdDetailsApplicationSingle.html(abdHasCoverMsg);
+          elements.abdDetailsApplicationSingleNoPHI.html(abdHasCoverMsg);
+        } else {
+          elements.abdDetailsApplicationCouple.html(abdHasCoverMsg);
+          elements.abdDetailsApplicationCoupleNoPHI.html(abdHasCoverMsg);
         }
       }
     }
@@ -221,37 +250,38 @@
   function showABDSupportContent() {
     elements.abdEligibilityContent.addClass('hidden');
 
-    var primaryPolicy = hasCover('primary');
     var primaryABD = hasAbdPolicy('primary');
-    var partnerPolicy = hasCover('partner');
     var partnerABD = hasAbdPolicy('partner');
+
     var primaryInRange = inRange(18, 29, state.primary.age);
     var partnerInRange = inRange(18, 29, state.partner.age);
+
     var primaryABDVisible = !elements.primary.abdQuestionContainer.hasClass('hidden');
     var partnerABDVisible = !elements.partner.abdQuestionContainer.hasClass('hidden');
 
     if(!state.hasPartner) {
-      if ( primaryPolicy && primaryABD && inRange(18,44,state.primary.age) ) {
-        elements.abdEligibilityContent.filter('#single_has_abd_policy').removeClass('hidden');
+      if ( primaryABD ) {
+        elements.abdEligibilityContent.filter('#single_has_abd_policy').toggleClass('hidden', false);
       }
       else if ( primaryInRange ) {
-        elements.abdEligibilityContent.filter('#single_18_to_30').removeClass('hidden');
+        elements.abdEligibilityContent.filter('#single_18_to_30').toggleClass('hidden', false);
       }
     }
     else {
-      if((partnerPolicy && partnerABD && partnerABDVisible) || (primaryPolicy && primaryABD && primaryABDVisible)) {
-        if(primaryABD && partnerABD && primaryPolicy && partnerPolicy && primaryABDVisible && partnerABDVisible) {
-          elements.abdEligibilityContent.filter('#couple_both_has_abd').removeClass('hidden');
+
+      if ((partnerABD && partnerABDVisible) || (primaryABD && primaryABDVisible)) {
+        if (primaryABD && partnerABD && primaryABDVisible && partnerABDVisible) {
+          elements.abdEligibilityContent.filter('#couple_both_has_abd').toggleClass('hidden', false);
         }
-        else if ((primaryABD && (!partnerABD || !partnerPolicy || !partnerABDVisible)) || ((!primaryABD || !primaryPolicy || !primaryABDVisible) && partnerABD)) {
-          elements.abdEligibilityContent.filter('#couple_one_has_abd').removeClass('hidden');
+        else if ((primaryABD && (!partnerABD || !partnerABDVisible)) || ((!primaryABD || !primaryABDVisible) && partnerABD)) {
+          elements.abdEligibilityContent.filter('#couple_one_has_abd').toggleClass('hidden', false);
         }
-      }else{
+      } else {
         if ( primaryInRange && partnerInRange) {
-          elements.abdEligibilityContent.filter('#couple_both_18_to_30').removeClass('hidden');
+          elements.abdEligibilityContent.filter('#couple_both_18_to_30').toggleClass('hidden', false);
         }
         else if (primaryInRange || partnerInRange) {
-          elements.abdEligibilityContent.filter('#couple_one_18_to_30').removeClass('hidden');
+          elements.abdEligibilityContent.filter('#couple_one_18_to_30').toggleClass('hidden', false);
         }
       }
     }

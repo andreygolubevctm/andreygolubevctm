@@ -223,13 +223,13 @@
 			return;
 		}
 
-		if(age >= 18 && age < 45 && privateHospitalValue === 'Y') {
+		if (age >= 18 && age < 45 && privateHospitalValue === 'Y') {
 			$abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
 			var hasABD = $abdElements[applicant].receivesAgeBasedDiscount.find(':checked').val();
 			if(hasABD === 'Y') {
-					$abdElements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+				$abdElements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
 			}
-		}else{
+		} else {
 			$abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
 			$abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
 		}

@@ -117,8 +117,9 @@
                 } else if (_dob.getMonth() < 6) {
                     return true;
                 } else {
-                    //javascript dates returns 0 for the first day of the month
-                    if (_dob.getDay() === 0) {
+                    // javascript dates returns 1 for the first day of the month
+                    // Note: getDate() returns the day of the month, getDay() returns the day of the week
+                    if (_dob.getDate() === 1) {
                         return true;
                     } else {
                         return false;
