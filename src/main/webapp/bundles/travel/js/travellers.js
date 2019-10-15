@@ -129,13 +129,13 @@
 		if (travelParty !== state.selection) {
 			switch (travelParty) {
 				case "S":
-					setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 1 });
+						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 1 });
 					break;
 				case "SF":
 						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
 					break;
 				case "C":
-						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 1 });
+						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
 					break;
 				case "F":
 						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
