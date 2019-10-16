@@ -255,7 +255,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 				<c:if test="${displayNavigationBar eq true}">
 					<c:choose>
 						<c:when test="${pageSettings.getVerticalCode() eq 'travel'}">
-							<nav class="navbar navbar-affix navbar-default" role="navigationTravel">
+							<nav id="navbar-main-travel" class="navbar navbar-affix navbar-default" role="navigationTravel">
 								<div class="container">
 									<div class="row">
 										<jsp:invoke fragment="navbar" />

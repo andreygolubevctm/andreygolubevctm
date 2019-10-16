@@ -25,6 +25,10 @@
 		z-index: 600;
 	}
 
+	#navbar-main-travel {
+		z-index: 10;
+	}
+
 	@media screen and (@sm) {
 		#navbar-main {
 			.transition(~"max-height 60ms");
@@ -37,6 +41,7 @@
 		// Add your slide feature to the particular step that it needs to be visible
 		&[data-step="start"] {
 			#navbar-main,
+			#navbar-main-travel,
 			.nav .slide-feature-back {
 				.slide-feature-hidden() !important;
 			}
