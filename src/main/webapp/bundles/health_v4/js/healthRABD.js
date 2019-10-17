@@ -23,7 +23,9 @@
 
       elements = {
         primary: {
+          dobPreResults: $('#health_healthCover_primary_dob'),
           dob: $('#health_application_primary_dob'),
+          currentlyHaveAnyKindOfCoverPreResults: $('input[name=health_healthCover_primary_cover]'),
           currentCover: $('input[type="radio"][name="health_application_primary_cover"]'),
           abdQuestionContainer: $('.primaryHasABD'),
           abdQuestion: $('.health-cover_details_abd_current input[type="radio"]'),
@@ -32,7 +34,9 @@
           abdPolicyStartDateApplication: $('#health_previousfund_primary_abdPolicyStart')
         },
         partner: {
+          dobPreResults: $('#health_healthCover_partner_dob'),
           dob: $('#health_application_partner_dob'),
+          currentlyHaveAnyKindOfCoverPreResults: $('input[name=health_healthCover_partner_cover]'),
           currentCover: $('input[type="radio"][name="health_application_partner_cover"]'),
           abdQuestionContainer: $('.partnerHasABD'),
           abdQuestion: $('.health-cover_details_partner_abd_current input[type="radio"]'),
@@ -53,15 +57,20 @@
       elements.dialogTriggers.click(showABDModal);
       meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, hideResultsFilter);
 
-      if (hasCover('primary')) {
+      state.primary.hasCurrentCover = elements['primary'].currentlyHaveAnyKindOfCoverPreResults.filter(':checked').val() === 'Y';
+      state.partner.hasCurrentCover = elements['partner'].currentlyHaveAnyKindOfCoverPreResults.filter(':checked').val() === 'Y';
+
+      if (state.primary.hasCurrentCover) {
         state.primary.age = meerkat.modules.age.returnAge(elements.primary.dob.val(), true);
+        state.primary.hasABDPolicy = elements.primary.abdQuestion.filter(':checked').val() === 'Y';
         showABDQuestion('primary');
         showABDStartDate('primary');
         showABDSupportContent();
       }
 
-      if (hasCover('partner')) {
+      if (state.partner.hasCurrentCover) {
         state.partner.age = meerkat.modules.age.returnAge(elements.partner.dob.val(), true);
+        state.partner.hasABDPolicy = elements.partner.abdQuestion.filter(':checked').val() === 'Y';
         showABDQuestion('partner');
         showABDStartDate('partner');
         showABDSupportContent();
@@ -76,7 +85,7 @@
 
   function isABD() {
 
-    if (!hasCover('primary') && (!state.hasPartner || !hasCover('partner'))) {
+    if (!state.primary.hasCurrentCover && (!state.hasPartner || !state.partner.hasCurrentCover)) {
       return true;
     }
 
@@ -96,11 +105,27 @@
   }
 
   function _setupListeners(type) {
+    elements[type].currentlyHaveAnyKindOfCoverPreResults.change(function(e) {
+      state[type].hasCurrentCover = e.target.value === 'Y';
+      showABDQuestion(type);
+      showABDStartDate(type);
+      setApplicationDetails();
+      showABDSupportContent();
+    });
+
     elements[type].currentCover.change(function(e) {
       state[type].hasCurrentCover = e.target.value === 'Y';
       showABDQuestion(type);
       showABDStartDate(type);
       setApplicationDetails();
+      showABDSupportContent();
+    });
+
+    elements[type].dobPreResults.change(function(e) {
+      state[type].age = meerkat.modules.age.returnAge(e.target.value, true);
+      showABDQuestion(type);
+      setApplicationDetails();
+      showABDStartDate(type);
       showABDSupportContent();
     });
 
@@ -128,17 +153,13 @@
     });
   }
 
-  function hasCover(type) {
-    return elements[type].currentCover.filter(':checked').val() === 'Y';
-  }
-
   function hasAbdPolicy(type) {
     var showAbdQuestion = eligibleForAlreadyHavingABD(type);
-    return showAbdQuestion && elements[type].abdQuestion.filter(':checked').val() === 'Y';
+    return showAbdQuestion && state[type].hasABDPolicy;
   }
 
   function eligibleForAlreadyHavingABD(type) {
-    return inRange(18,44, state[type].age) && hasCover(type);
+    return inRange(18,44, state[type].age) && state[type].hasCurrentCover;
   }
 
   function hideResultsFilter() {
@@ -166,8 +187,8 @@
     }
 
     var isSingle = !state.hasPartner;
-    var primaryHasCover = hasCover('primary');
-    var partnerHasCover = hasCover('partner');
+    var primaryHasCover = state.primary.hasCurrentCover;
+    var partnerHasCover = state.partner.hasCurrentCover;
     var primaryHasABD = hasAbdPolicy('primary');
     var partnerHasABD = hasAbdPolicy('partner');
     var partnerInABDRange = inRange(18, 29, state.partner.age);
