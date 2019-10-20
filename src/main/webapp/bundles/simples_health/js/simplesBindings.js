@@ -580,12 +580,16 @@
 	    switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
 	            toggleCoverTypeScripts($hospitalScripts, true);
+	              $dialogue97.show();
+	              $dialogue102.show();
                 $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
                 $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
 	            toggleCoverTypeScripts($extrasScripts, true);
                 break;
             case 'h':
 	            toggleCoverTypeScripts($hospitalScripts, true);
+              $dialogue97.show();
+              $dialogue102.show();
 	            $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
 	            $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
 	            toggleCoverTypeScripts($extrasScripts, false);
@@ -604,15 +608,15 @@
 
     function toggleCoverTypeScripts($elements, show) {
         $elements.hide();
-        $dialogue97.show();
-        $dialogue102.show();
         if(show) {
             switch ($healthContactTypeField.val()) {
                 case 'nextgenCLI':
-                    $elements.filter('.simples-dialog-nextgencli').show();
+                    $elements.filter('.simples-dialog-nextgencli')
+                      .show();
                     break;
                 case 'nextgenOutbound':
-                    $elements.filter('.simples-dialog-nextgenoutbound').show();
+                    $elements.filter('.simples-dialog-nextgenoutbound')
+                      .show();
                     break;
                 case 'outbound':
                     $elements.not('.simples-dialog-nextgenoutbound, .simples-dialog-nextgencli, .simples-dialog-inbound').show();
