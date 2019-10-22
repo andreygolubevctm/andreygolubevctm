@@ -217,9 +217,9 @@
     elements.abdDetailsApplicationCouple.toggleClass('hidden', !abdDetailsApplicationCouplePartnerHasRabd);
     elements.abdDetailsApplicationCoupleNoPHI.toggleClass('hidden', !(abdDetailsApplicationCoupleNoPHI || (abdDetailsApplicationCoupleRabdNaForPartner || abdDetailsApplicationCouple)));
 
-    var abdNoPhiMsg = 'The price indicated in the summary above <span class="text-bold">includes an age-based discount</span> based on what you&apos;ve told us. Your new health fund will confirm the exact discount you are eligible for.';
-    var abdHasCoverMsg = 'The price indicated in the summary above <span class="text-bold">includes an age-based discount</span> based on what you&apos;ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.';
-    var abrRetainedMsg = 'The price indicated in the summary above <span class="text-bold">includes a retained age-based discount</span> based on what you&apos;ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.';
+    var abdNoPhiMsg = 'The price indicated in the summary above includes an age-based discount based on what you&apos;ve told us. Your new health fund will confirm the exact discount you are eligible for.';
+    var abdHasCoverMsg = 'The price indicated in the summary above includes an age-based discount based on what you&apos;ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.';
+    var abrRetainedMsg = 'The price indicated in the summary above includes a retained age-based discount based on what you&apos;ve told us. Your new health fund will request a clearance certificate from your previous fund to confirm the exact discount you are eligible for.';
 
     if(isABD()) {
       // Does not already have a policy with an age based discount
