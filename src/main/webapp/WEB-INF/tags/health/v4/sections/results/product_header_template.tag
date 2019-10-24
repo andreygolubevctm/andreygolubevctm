@@ -26,7 +26,7 @@
 
                 <div class="hide-on-affix logo-full-width">{{= logoHtml }}</div>
 
-                <div class="open-more-info more-info-showapply" data-productId='{{= obj.productId }}' data-available='{{= obj.available }}'>
+                <div class="more-info-showapply" data-productId='{{= obj.productId }}' data-available='{{= obj.available }}'>
                     {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
                         <div class="dual-pricing-before-after-text">Now</div>
                     {{ } }}
@@ -58,13 +58,16 @@
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
                 {{ var isExtrasOnly = meerkat.modules.healthChoices.getCoverType() === 'E'; }}
                 {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
+                {{ var classificationDate = ''; }}
+
+                {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
+                    {{ classificationDate = 'As of ' + classification.date; }} }}
+                {{ } }}
 
                 <div class="results-header-classification">
-                   <div class="results-header-classification-icon {{= icon}}">
-                        {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
-                            <div class="results-header-classification-date">From {{= classification.date}}</div>
-                        {{ } }}
-                    </div>
+                    <div class="results-header-classification-title">Government classification</div>
+                    <div class="results-header-classification-icon {{= icon}}"></div>
+                    <div class="results-header-classification-date">{{= classificationDate}}</div>
                 </div>
             </c:when>
             </c:choose>

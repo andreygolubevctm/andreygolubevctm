@@ -711,6 +711,7 @@
 				}
 			},
 			onBeforeEnter: function enterPaymentStep(event){
+				$('.simples-dialogue-140').toggleClass('hidden', !meerkat.modules.healthRABD.showPaymentsScript());
 
 				if(event.isForward === true){
 

@@ -65,11 +65,19 @@
                     	<div class="lhcText hide-on-affix">
                     	    <span>
 								{{= textLhcFreePricing}}
-								{{ if(showABDToolTip) { }}
-               						 <field_v2:help_icon helpId="643" showText="false" />
-            					{{ } }}
                     	    </span>
                     	</div>
+
+            		{{ if(obj.custom.reform.rabd !== "N" && premium.abd > 0) { }}
+            		    {{ var receiveAbd = meerkat.modules.healthRABD.isABD(); }}
+            		    {{ if(receiveAbd) { }}
+            		        <health_v4:abd_badge abd="true" />
+            		    {{ } else { }}
+            		        <health_v4:abd_badge abd="false" />
+            		    {{ } }}
+										<health_v4:abd_whats_this shortTitle="true" />
+            		{{ } }}
+
                 		{{ } else { }}
                 		    {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, freq, obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) }}
                 		{{ } }}

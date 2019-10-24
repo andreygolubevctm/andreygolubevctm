@@ -168,6 +168,11 @@
 			{{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
 			{{ var isExtrasOnly = coverType === 'E'; }}
       {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
+      {{ var classificationDate = ''; }}
+
+      {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
+          {{ classificationDate = 'As of ' + classification.date; }} }}
+      {{ } }}
 
 			<c:choose>
 				<c:when test="${isDualPriceActive eq true}">
@@ -177,11 +182,11 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 							</div>
 							<c:if test="${simplesHealthReformMessaging eq 'Y'}">
-								<div class="simplesMoreInfoTierLogo {{= icon}}">
-                  {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
-                      <div class="results-header-classification-date">From {{= classification.date}}</div>
-                  {{ } }}
-								</div>
+							<div class="results-header-classification">
+                    <div class="results-header-classification-title">Government classification</div>
+                    <div class="simplesMoreInfoTierLogo {{= icon}}"></div>
+                    <div class="results-header-classification-date">{{= classificationDate}}</div>
+                </div>
 							</c:if>
 					</div>
 				</c:when>
@@ -192,11 +197,11 @@
 							<div class="col-xs-12">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 								<c:if test="${simplesHealthReformMessaging eq 'Y'}">
-									<div class="simplesMoreInfoTierLogo {{= icon}}">
-                    {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
-                      <div class="results-header-classification-date">From {{= classification.date}}</div>
-                    {{ } }}
-										</div>
+									<div class="results-header-classification">
+                    <div class="results-header-classification-title">Government classification</div>
+                    <div class="simplesMoreInfoTierLogo {{= icon}}"></div>
+                    <div class="results-header-classification-date">{{= classificationDate}}</div>
+                	</div>
 								</c:if>
 							</div>
 						</div>
