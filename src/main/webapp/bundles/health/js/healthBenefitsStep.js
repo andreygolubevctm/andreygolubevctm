@@ -391,6 +391,16 @@
 
 	}
 
+	function isAmbulanceSelected() {
+    	var cover = getAmbulanceAccidentCover();
+    	return _.indexOf(cover, 'ambulance') !== -1;
+	}
+
+	function isAccidentSelected() {
+		var cover = getAmbulanceAccidentCover();
+		return _.indexOf(cover, 'accident') !== -1;
+	}
+
     function getLimitedCover() {
         return $limitedCoverHidden.val();
     }
@@ -475,6 +485,8 @@
         getHospitalBenefitsModel: getHospitalBenefitsModel,
         getExtraBenefitsModel: getExtraBenefitsModel,
 	    getAmbulanceAccidentCoverModel: getAmbulanceAccidentCoverModel,
+	    isAmbulanceSelected: isAmbulanceSelected,
+	    isAccidentSelected: isAccidentSelected,
         getLimitedCover: getLimitedCover,
         showTabOneCheckboxes: showTabOneCheckboxes,
         showTabTwoCheckboxes: showTabTwoCheckboxes,

@@ -68,10 +68,10 @@
             <div class="sidebar-subtitle-container">
                 <span class="heading-text">Cover the Customer has Mentioned</span>
             </div>
-            <div class="benefits-list ${aacLabel} expanded health_filterBar_${aacLabel}_container">
+            <div class="benefits-list expanded health_filterBar_${aacLabel}_container">
                 {{ _.each(model.${aacLabel}.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
-                <div class="checkbox ${aacLabel}">
+                <div class="checkbox">
                     <input type="checkbox" name="health_filterBar_${aacLabel}_{{= object.value }}" id="health_filterBar_${aacLabel}_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_${aacLabel}_{{= object.value }}" >{{= object.label }}</label>
                 {{ if(object.helpId) { }}
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span class="text-hide">Need Help?</span></a>
