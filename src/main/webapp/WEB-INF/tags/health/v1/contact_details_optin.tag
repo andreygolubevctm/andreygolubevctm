@@ -178,8 +178,8 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/abd" />
-            <form_v3:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger hidden">
-	            <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details" id="primary_abd_health_cover" />
+            <form_v3:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger primary_currentPolicyAbd-group hidden">
+	            <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_detailsAbd" id="primary_abd_health_cover" />
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/abdPolicyStart" />
@@ -218,8 +218,8 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/abd" />
-            <form_v3:row label="Does your partner currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="partner_abd" className="lhcRebateCalcTrigger hidden">
-              <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your partner currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details" id="partner_abd_health_cover" />
+            <form_v3:row label="Does your partner currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="partner_abd" className="lhcRebateCalcTrigger partner_currentPolicyAbd-group hidden">
+              <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your partner currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_detailsAbdPartner" id="partner_abd_health_cover" />
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/abdPolicyStart" />
@@ -233,6 +233,35 @@
                     <field_v1:input_numeric xpath="${fieldXpath}" minValue="0" maxValue="70" title="Partner's LHC" required="false" id="${name}_partner_lhc" maxLength="2" className="partner-lhc"/>
                 </form_v2:row>
             </c:if>
+        </form_v3:fieldset>
+
+        <form_v3:fieldset id="abd_filter" legend="ABD Filtering" className="hidden">
+            <div class="hidden abdFilterModalContent">
+                <div class="simples-dialogue abd-filter-dialogue">
+                    <p>Private Health Insurers can offer discounts on hospital cover for people under 30. The discount applies from the age you were when you purchased your policy. If you switch policies you can keep your discount as long as you switch to a policy that allows you to retain your age-based discount.</p>
+                    <p class='text-danger well'>If you choose to retain your discount you will remain eligible. However, if you move to a policy that does not have a retained age based discount you will lose the discount you are currently eligible for.</p>
+                    <div style="display: flex;">
+                        <p>With that in mind, when comparing policies, do you want us to only look at policies that allow you to retain your age-based discount</p>
+                        <div class="btn-group btn-group-justified" data-toggle="radio">
+                            <label class="btn btn-form-inverse">
+                                <input type="radio" name="health_healthCover_filter_abd_final" id="health_healthCover_filter_abd_final_Y" value="Y" data-msg-required="Please choose - Choose whether you " required="required" aria-required="true">
+                                Yes
+                            </label>
+                            <label class="btn btn-form-inverse">
+                                <input type="radio" name="health_healthCover_filter_abd_final" id="health_healthCover_filter_abd_final_N" value="N" data-msg-required="Please choose - Choose whether you " required="required" aria-required="true">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <p class="hidden filter-no-response-scripting">I’ve noted that down, so we will have a look at all the options on our panel.</p>
+                </div>
+            </div>
+
+            <c:set var="fieldXpath" value="${xpath}/filter/abd" />
+            <form_v3:row label="When comparing policies, do you want us to only look at policies that allow you to retain your Age-Based discount?" fieldXpath="${fieldXpath}" id="abd_filter">
+                <field_v2:array_radio xpath="${fieldXpath}" required="true" title="- Choose whether you " items="Y=Yes,N=No,U=Unsure" style="group" />
+            </form_v3:row>
+            <simples:dialogue id="138" className="hidden" vertical="health" mandatory="true" />
         </form_v3:fieldset>
 
         <%--dynamic script--%>

@@ -60,6 +60,8 @@ public class HealthQuote {
 
     private String applyDiscounts;
 
+    private String abdProducts;
+
     private String popularProducts;
 
     private String rewardsSchemeFirst;
@@ -288,6 +290,14 @@ public class HealthQuote {
 
     public void setApplyDiscounts(String applyDiscounts) {
         this.applyDiscounts = applyDiscounts;
+    }
+
+    public String getAbdProducts() {
+        return abdProducts;
+    }
+
+    public void setAbdProducts(String abdProducts) {
+        this.abdProducts = abdProducts;
     }
 
     public String getPopularProducts() {

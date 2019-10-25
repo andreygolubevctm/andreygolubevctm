@@ -68,6 +68,26 @@
                     }
                 }
             },
+            "abd": {
+                name: 'health_filterBar_abd',
+                defaultValueSourceSelector: 'input[name="health_abdProducts"]',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        var isChecked = $(filterObject.defaultValueSourceSelector + ":checked").length > 0 && $(filterObject.defaultValueSourceSelector + ":checked").val() === 'Y';
+                        $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
+                    },
+                    update: function (filterObject) {
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        $(filterObject.defaultValueSourceSelector).val(isChecked ? "Y" : "N");
+                        if (isChecked) {
+                            $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
+                        } else {
+                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change', [false]);
+                        }
+                    }
+                }
+            },
             "extendedFamily": {
                 name: 'health_filterBar_extendedFamily',
                 defaultValueSourceSelector: '#health_situation_healthCvr',
