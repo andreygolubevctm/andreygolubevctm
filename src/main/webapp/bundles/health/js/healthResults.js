@@ -8,6 +8,7 @@
         best_price_count = 5,
         isLhcApplicable = 'N',
         selectedBenefitsList,
+	    ambulanceAccidentCoverList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
@@ -1280,6 +1281,11 @@
         selectedBenefitsList = selectedBenefits;
     }
 
+
+	function setAmbulanceAccidentCoverList(ambulanceAccidentCover) {
+		ambulanceAccidentCoverList = ambulanceAccidentCover;
+	}
+
     function hideNavigationLink() {
         $('.floated-next-arrow').addClass('hidden');
         $('.floated-previous-arrow').addClass('hidden');
@@ -1318,6 +1324,7 @@
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
+	    setAmbulanceAccidentCoverList: setAmbulanceAccidentCoverList,
         hideNavigationLink: hideNavigationLink,
         getProvidersReturned : getProvidersReturned,
         getProviderSpecificPopoverData: getProviderSpecificPopoverData

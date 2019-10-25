@@ -78,6 +78,34 @@
 		<core_v1:js_template id="customise-cover-template">
 			<content:get key="customiseCoverTemplate"/>
 		</core_v1:js_template>
+
+		<c:set var="fieldsetClass">ambulanceAccidentCover</c:set>
+		<form_v2:fieldset legend="" postLegend="" id="yourCover_${fieldsetClass}" className="${fieldsetClass}" >
+			<div class="scrollable row">
+				<div class="benefits-list col-sm-12">
+					<div class="row">
+						<div class="short-list-item ${fieldsetClass}_container">
+						<div class="title">
+							<h2 class="ignore">Has Your Customer Mentioned?</h2>
+						</div>
+						<div class="customer-mentioned-wrapper">
+							<div class="children ${fieldsetClass}">
+								<div class="hasIcons">
+									<c:set var="resultPath" value="${pageSettings.getVerticalCode()}/${fieldsetClass}/" />
+									<div class="categoriesCell short-list-item HLTicon-general-dental DentalGeneral_container ${fieldsetClass}">
+										<field_v2:checkbox xpath="${resultPath}ambulance" value="Y" required="false" label="true" title="Ambulance" errorMsg="Please tick" />
+									</div>
+									<div class="categoriesCell short-list-item HLTicon-general-dental DentalGeneral_container ${fieldsetClass}">
+										<field_v2:checkbox xpath="${resultPath}accident" value="Y" required="false" label="true" title="Accident" helpId="647" errorMsg="Please tick" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form_v2:fieldset>
+
 	</jsp:body>
 
 	</form_v2:fieldset_columns>
