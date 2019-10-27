@@ -92,10 +92,10 @@
 							<div class="children ${fieldsetClass}">
 								<div class="hasIcons">
 									<c:set var="resultPath" value="${pageSettings.getVerticalCode()}/${fieldsetClass}/" />
-									<div class="categoriesCell short-list-item HLTicon-general-dental DentalGeneral_container ${fieldsetClass}">
+									<div class="categoriesCell short-list-item HLTicon-ambulance Ambulance_container ${fieldsetClass}">
 										<field_v2:checkbox xpath="${resultPath}ambulance" value="Y" required="false" label="true" title="Ambulance" errorMsg="Please tick" />
 									</div>
-									<div class="categoriesCell short-list-item HLTicon-general-dental DentalGeneral_container ${fieldsetClass}">
+									<div class="categoriesCell short-list-item HLTicon-n-pain-management-no-device Accident_container ${fieldsetClass}">
 										<field_v2:checkbox xpath="${resultPath}accident" value="Y" required="false" label="true" title="Accident" helpId="647" errorMsg="Please tick" />
 									</div>
 								</div>
