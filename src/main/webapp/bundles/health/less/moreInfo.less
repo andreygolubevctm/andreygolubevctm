@@ -649,6 +649,35 @@
       }
     }
   }
+  .simplesMoreInfoHospitalCover,
+  .ambulanceCoverSection {
+	p {
+		> span.highlight {
+			color: #FF0000;
+		}
+	}
+	.benefitRow {
+		&.highlight {
+			color: #FF0000;
+		}
+	}
+    .checkbox {
+		&.ambulanceAccidentCoverCheckbox {
+			display: inline-block;
+			margin-left: 5px;
+			margin-bottom: -5px;
+			.error-field {
+				position: absolute;
+				font-weight: normal;
+				margin-top: 5px;
+				margin-left: -3px;
+				label {
+					font-size: 13px;
+				}
+			}
+		}
+	}
+  }
 }
 
 //.more-info-content

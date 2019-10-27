@@ -28,6 +28,10 @@
 
     }
 
+	function onAmbulanceAccidentCoverChange(ambulanceAccidentCover) {
+		meerkat.modules.healthResults.setSelectedBenefitsList(ambulanceAccidentCover);
+	}
+
     function onFilterChange(obj) {
         if (obj && obj.hasOwnProperty('filter-frequency-change')) {
             meerkat.modules.resultsTracking.setResultsEventMode('Refresh'); // Only for events that dont cause a new TranId
@@ -55,6 +59,7 @@
         init: init,
         events: moduleEvents,
         onBenefitsSelectionChange: onBenefitsSelectionChange,
+	    onAmbulanceAccidentCoverChange: onAmbulanceAccidentCoverChange,
         onFilterChange : onFilterChange
     });
 

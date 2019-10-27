@@ -322,6 +322,8 @@
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
 				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
+				var ambulanceAccidentCover = meerkat.modules.healthBenefitsStep.getAmbulanceAccidentCover();
+				meerkat.modules.healthResultsChange.onAmbulanceAccidentCoverChange(ambulanceAccidentCover);
 			},
 			onBeforeLeave:function(event){}
 		};
