@@ -557,7 +557,7 @@
 				<p><strong>Accident Override:</strong>
 					{{ if(accidentSelected) { }}
 					<span class="checkbox ambulanceAccidentCoverCheckbox">
-						<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
+						<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
 						<label for="health_simples_dialogue-radio-accidentcover"></label>
 					</span>
 					{{ } }}
@@ -731,7 +731,7 @@
 					<p><strong>Accident Override:</strong>
 						{{ if(accidentSelected) { }}
 						<span class="checkbox ambulanceAccidentCoverCheckbox">
-							<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
+							<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
 							<label for="health_simples_dialogue-radio-accidentcover"></label>
 						</span>
 						{{ } }}
