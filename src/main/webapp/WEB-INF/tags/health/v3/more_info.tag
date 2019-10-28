@@ -557,8 +557,8 @@
 				<p><strong>Accident Override:</strong>
 					{{ if(accidentSelected) { }}
 					<span class="checkbox ambulanceAccidentCoverCheckbox">
-						<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="after_read_accidentoverride_scripting" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
-						<label for="after_read_accidentoverride_scripting"></label>
+						<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
+						<label for="health_simples_dialogue-radio-accidentcover"></label>
 					</span>
 					{{ } }}
 					<br>
@@ -731,8 +731,8 @@
 					<p><strong>Accident Override:</strong>
 						{{ if(accidentSelected) { }}
 						<span class="checkbox ambulanceAccidentCoverCheckbox">
-							<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="after_read_accidentoverride_scripting" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
-							<label for="after_read_accidentoverride_scripting"></label>
+							<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
+							<label for="health_simples_dialogue-radio-accidentcover"></label>
 						</span>
 						{{ } }}
 						<br>
@@ -903,8 +903,8 @@
             <h2 class="text-dark">Ambulance cover
 	            {{ if(ambulanceSelected) { }}
 	            <span class="checkbox ambulanceAccidentCoverCheckbox">
-					<input type="checkbox" name="health_simples_dialogue-radio-ambulancecover" id="after_read_ambulanceoverride_scripting" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Ambulance Cover copy" required="required">
-					<label for="after_read_ambulanceoverride_scripting"></label>
+					<input type="checkbox" name="health_simples_dialogue-radio-ambulancecover" id="health_simples_dialogue-radio-ambulancecover" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Ambulance Cover copy" required="required">
+					<label for="health_simples_dialogue-radio-ambulancecover"></label>
 	            </span>
 	            {{ } }}
             </h2>
