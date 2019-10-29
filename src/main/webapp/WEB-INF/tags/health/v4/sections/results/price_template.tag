@@ -39,9 +39,8 @@
         </span>
     </div>
 
-        {{ if(obj.custom.reform.rabd !== "N" && availablePremiums[frequency].abd > 0) { }}
-            {{ var receiveAbd = meerkat.modules.healthRABD.isABD(); }}
-            {{ if(receiveAbd) { }}
+        {{ if(obj.custom.reform.yad !== "N" && availablePremiums[frequency].abd > 0) { }}
+            {{ if(info.abdRequestFlag === 'A') { }}
                 <health_v4:abd_badge abd="true" />
             {{ } else { }}
                 <health_v4:abd_badge abd="false" />
