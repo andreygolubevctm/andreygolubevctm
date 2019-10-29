@@ -38,6 +38,12 @@
                     <label for="health_filterBar_discount">Apply all available discounts</label>
                 </div>
             </div>
+            <div class="results-filters-abd">
+                <div class="checkbox">
+                    <input type="checkbox" name="health_filterBar_abd" id="health_filterBar_abd" value="N">
+                    <label for="health_filterBar_abd">Only show me products that include or retain an Age Based Discount</label>
+                </div>
+            </div>
         </div>
     </div>
 

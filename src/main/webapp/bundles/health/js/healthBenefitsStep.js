@@ -13,7 +13,8 @@
         $hasIconsDiv,
         $limitedCoverHidden,
         hospitalBenefits = [],
-        extrasBenefits = [];
+        extrasBenefits = [],
+        ambulanceAccidentCoverItems = [];
 
     var events = {
             healthBenefitsStep: {
@@ -171,6 +172,7 @@
             // Set benefits model
             hospitalBenefits = getBenefitsModelFromPage($benefitsForm.find('.hospitalCover'));
             extrasBenefits = getBenefitsModelFromPage($benefitsForm.find('.extrasCover'));
+            ambulanceAccidentCoverItems = getAmbulanceAccidentCoverModelFromPage($benefitsForm.find('.ambulanceAccidentCover_container'));
         });
 
         toggleBenefits();
@@ -191,6 +193,20 @@
         return benefits;
     }
 
+	function getAmbulanceAccidentCoverModelFromPage($container) {
+		var ambulanceAccidentCoverItems = [];
+		$container.find('.short-list-item').each(function () {
+			var item = {},
+				$this = $(this);
+			item.value = $this.find('input[type="checkbox"]').attr('id').replace('health_ambulanceAccidentCover_', '');
+			item.label = $this.find('.iconLabel').text() || $.trim($this.find('label')[0].firstChild.nodeValue);
+			var hasHelpIcon = $this.find('.help-icon').length > 0;
+			item.helpId = !hasHelpIcon ? '' : $this.find('.help-icon').data('content').replace('helpid:', '');
+			ambulanceAccidentCoverItems.push(item);
+		});
+		return ambulanceAccidentCoverItems;
+	}
+
     function getHospitalBenefitsModel(){
         return hospitalBenefits;
     }
@@ -198,6 +214,10 @@
     function getExtraBenefitsModel(){
         return extrasBenefits;
     }
+
+	function getAmbulanceAccidentCoverModel(){
+		return ambulanceAccidentCoverItems;
+	}
 
     function hospitalCoverToggleEvents() {
         var currentCover = 'customise',
@@ -289,6 +309,10 @@
         }
     }
 
+	function resetAmbulanceAccidentCoverSelection() {
+		$benefitsForm.find("input[type='checkbox'][name^='health_ambulanceAccidentCover']").prop('checked', false);
+	}
+
     function populateBenefitsSelection(checkedBenefits) {
 
         resetBenefitsSelection(false);
@@ -298,6 +322,16 @@
             $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true);
         }
     }
+
+	function populateAmbulanceAccidentCoverSelection(checkedAmbulanceAccidentCover) {
+
+		resetAmbulanceAccidentCoverSelection();
+
+		for (var i = 0; i < checkedAmbulanceAccidentCover.length; i++) {
+			var path = checkedAmbulanceAccidentCover[i];
+			$benefitsForm.find("input[name='health_ambulanceAccidentCover_" + path + "']").prop('checked', true);
+		}
+	}
 
 
     // reset benefits for devs when use product title to search
@@ -338,6 +372,34 @@
         return benefits;
 
     }
+
+	// Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
+	function getAmbulanceAccidentCover() {
+
+		var ambulanceAccidentCoverItems = [];
+
+		// other benefits
+		$('#benefitsForm').find("input[type='checkbox'][name^='health_ambulanceAccidentCover']").each(function (index, element) {
+			var $element = $(element);
+			if ($element.is(':checked')) {
+				var key = $element.attr('name').replace('health_ambulanceAccidentCover_', '');
+				ambulanceAccidentCoverItems.push(key);
+			}
+		});
+
+		return ambulanceAccidentCoverItems;
+
+	}
+
+	function isAmbulanceSelected() {
+    	var cover = getAmbulanceAccidentCover();
+    	return _.indexOf(cover, 'ambulance') !== -1;
+	}
+
+	function isAccidentSelected() {
+		var cover = getAmbulanceAccidentCover();
+		return _.indexOf(cover, 'accident') !== -1;
+	}
 
     function getLimitedCover() {
         return $limitedCoverHidden.val();
@@ -414,11 +476,17 @@
         setDefaultCover: setDefaultCover,
         updateHiddenFields: updateHiddenFields,
         resetBenefitsSelection: resetBenefitsSelection,
+	    resetAmbulanceAccidentCoverSelection: resetAmbulanceAccidentCoverSelection,
         resetBenefitsForProductTitleSearch: resetBenefitsForProductTitleSearch,
         getSelectedBenefits: getSelectedBenefits,
+	    getAmbulanceAccidentCover: getAmbulanceAccidentCover,
         populateBenefitsSelection: populateBenefitsSelection,
+	    populateAmbulanceAccidentCoverSelection: populateAmbulanceAccidentCoverSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
         getExtraBenefitsModel: getExtraBenefitsModel,
+	    getAmbulanceAccidentCoverModel: getAmbulanceAccidentCoverModel,
+	    isAmbulanceSelected: isAmbulanceSelected,
+	    isAccidentSelected: isAccidentSelected,
         getLimitedCover: getLimitedCover,
         showTabOneCheckboxes: showTabOneCheckboxes,
         showTabTwoCheckboxes: showTabTwoCheckboxes,

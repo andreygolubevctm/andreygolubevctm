@@ -322,6 +322,8 @@
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
 				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
+				var ambulanceAccidentCover = meerkat.modules.healthBenefitsStep.getAmbulanceAccidentCover();
+				meerkat.modules.healthResultsChange.onAmbulanceAccidentCoverChange(ambulanceAccidentCover);
 			},
 			onBeforeLeave:function(event){}
 		};
@@ -711,6 +713,7 @@
 				}
 			},
 			onBeforeEnter: function enterPaymentStep(event){
+				$('.simples-dialogue-140').toggleClass('hidden', !meerkat.modules.healthRABD.showPaymentsScript());
 
 				if(event.isForward === true){
 

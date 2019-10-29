@@ -18,7 +18,6 @@
   h2 {
     text-align: center;
   }
-
 }
 
 // Don't need it on XS.
@@ -100,5 +99,113 @@
   .img-oleg {
     width: 400px;
     margin: 0 auto;
+  }
+}
+
+.choo-container {
+  margin: 0;
+  width: 100%;
+
+  .banner {
+    background: url('../../../graphics/choosi-error-page-bg.jpg') center center / cover no-repeat;
+    left: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 20px 0;
+    position: relative;
+    right: 50%;
+    width: 100vw;
+
+    @media (@lg) {
+      padding: 60px 0;
+    }
+  }
+
+  .title {
+    background-color: rgba(0, 55, 83, 0.6);
+    margin: 30px 20px;
+    padding: 70px 35px;
+
+    @media (@sm) {
+      margin: 30px 45px;
+      padding: 50px;
+      width: 60%;
+    }
+
+    @media (@md) {
+      margin: 30px 120px;;
+      padding: 50px 80px;
+      width: 45%;
+    }
+
+    @media (@lg) {
+      margin: 30px 20%;
+      padding: 60px 90px;
+      width: 30%;
+    }
+  }
+
+  h1 {
+    color: white;
+    font-size: 32px;
+    margin: 0 auto;
+    padding: 0 0 30px;
+    text-align: center;
+
+    @media (@sm) {
+      font-size: 45px;
+    }
+  }
+
+  .btn {
+    background-color: #fe5a19;
+    border-radius: 0;
+    border: 0 none;
+    margin: 0 auto;
+
+    a {
+      cursor: pointer;
+      color: white;
+      font-size: 25px;
+      font-weight: bold;
+    }
+  }
+
+  .desc {
+    font-size: 36px;
+    line-height: 43px;
+    margin: 25px;
+    text-align: left !important;
+
+    @media (@sm) {
+      margin: 30px 20px;
+    }
+
+    @media (@md) {
+      margin: 30px 0;
+    }
+  }
+
+  .content {
+    font-size: 16px;
+    line-height: 25px;
+    color: #444;
+    margin: 0 25px 18px;
+
+    @media (@sm) {
+      margin: 0 20px 18px;
+    }
+
+    @media (@md) {
+      margin: 0 0px 18px;
+    }
+  }
+
+  li {
+    margin: 0 20px 10px;
+
+    @media (@md) {
+      margin: 0 0px 10px;
+    }
   }
 }
