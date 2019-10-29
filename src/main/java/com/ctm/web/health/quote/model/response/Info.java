@@ -34,6 +34,8 @@ public class Info {
 
     private Boolean popularProduct;
 
+    private String abdRequestFlag;
+
     public boolean isRestrictedFund() {
         return restrictedFund;
     }
@@ -144,5 +146,13 @@ public class Info {
 
     public void setPopularProductRank(Integer popularProductRank) {
         this.popularProductRank = popularProductRank;
+    }
+
+    public String getAbdRequestFlag() {
+        return abdRequestFlag;
+    }
+
+    public void setAbdRequestFlag(String abdRequestFlag) {
+        this.abdRequestFlag = abdRequestFlag;
     }
 }

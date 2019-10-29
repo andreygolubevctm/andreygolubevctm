@@ -364,6 +364,7 @@ public class ResponseAdapterV2 {
         info.setState(otherInfoProperties.get("State"));
         info.setPopularProduct(responseInfo.getPopularProduct());
         info.setPopularProductsRank(responseInfo.getPopularProductRank());
+        info.setAbdRequestFlag(responseInfo.getAbdRequestFlag());
         return info;
     }
 }
