@@ -46,6 +46,8 @@ public class Info {
 
     private Boolean popularProduct;
 
+    private String abdRequestFlag;
+
     public String getTrackCode() {
         return trackCode;
     }
@@ -188,5 +190,13 @@ public class Info {
 
     public void setPopularProductsRank(Integer popularProductsRank) {
         this.popularProductsRank = popularProductsRank;
+    }
+
+    public String getAbdRequestFlag() {
+        return abdRequestFlag;
+    }
+
+    public void setAbdRequestFlag(String abdRequestFlag) {
+        this.abdRequestFlag = abdRequestFlag;
     }
 }
