@@ -39,14 +39,17 @@
         <div class="frequencyTitle">{{= freqObj.label }}</div>
     </div>
 
+        {{ if(obj.custom.reform.yad !== "N" && availablePremiums[frequency].abd > 0) { }}
+            {{ if(info.abdRequestFlag === 'A') { }}
+                <health_v4:abd_badge abd="true" />
+            {{ } else { }}
+                <health_v4:abd_badge abd="false" />
+            {{ } }}
+        {{ } }}
+
     <div class="lhcText">
         <span>
             {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
-            {{ var showABDToolTip = availablePremiums[frequency].abd > 0; }}
-
-            {{ if(showABDToolTip) { }}
-                <field_v2:help_icon helpId="643" showText="false" />
-            {{ } }}
         </span>
     </div>
 

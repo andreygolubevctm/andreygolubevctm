@@ -65,6 +65,10 @@
 		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
 	{{ } }}
 
+	<%-- Vars for custom Ambulance and Accident scripting --%>
+	{{ var ambulanceSelected = meerkat.modules.healthBenefitsStep.isAmbulanceSelected(); }}
+	{{ var accidentSelected = meerkat.modules.healthBenefitsStep.isAccidentSelected(); }}
+
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
 			<c:when test="${isDualPriceActive eq true}">hidden-xs</c:when>
@@ -168,6 +172,11 @@
 			{{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
 			{{ var isExtrasOnly = coverType === 'E'; }}
       {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
+      {{ var classificationDate = ''; }}
+
+      {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
+          {{ classificationDate = 'As of ' + classification.date; }} }}
+      {{ } }}
 
 			<c:choose>
 				<c:when test="${isDualPriceActive eq true}">
@@ -177,11 +186,11 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 							</div>
 							<c:if test="${simplesHealthReformMessaging eq 'Y'}">
-								<div class="simplesMoreInfoTierLogo {{= icon}}">
-                  {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
-                      <div class="results-header-classification-date">From {{= classification.date}}</div>
-                  {{ } }}
-								</div>
+							<div class="results-header-classification">
+                    <div class="results-header-classification-title">Government classification</div>
+                    <div class="simplesMoreInfoTierLogo {{= icon}}"></div>
+                    <div class="results-header-classification-date">{{= classificationDate}}</div>
+                </div>
 							</c:if>
 					</div>
 				</c:when>
@@ -192,11 +201,11 @@
 							<div class="col-xs-12">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 								<c:if test="${simplesHealthReformMessaging eq 'Y'}">
-									<div class="simplesMoreInfoTierLogo {{= icon}}">
-                    {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
-                      <div class="results-header-classification-date">From {{= classification.date}}</div>
-                    {{ } }}
-										</div>
+									<div class="results-header-classification">
+                    <div class="results-header-classification-title">Government classification</div>
+                    <div class="simplesMoreInfoTierLogo {{= icon}}"></div>
+                    <div class="results-header-classification-date">{{= classificationDate}}</div>
+                	</div>
 								</c:if>
 							</div>
 						</div>
@@ -545,13 +554,25 @@
 				<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
 				<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
 
-				<p><strong>Accident Override:</strong><br>
+				<p><strong>Accident Override:</strong>
+					{{ if(accidentSelected) { }}
+					<span class="checkbox ambulanceAccidentCoverCheckbox">
+						<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
+						<label for="health_simples_dialogue-radio-accidentcover"></label>
+					</span>
+					{{ } }}
+					<br>
+					{{ if(accidentSelected) { }}<span class="highlight">{{ } }}
 					{{ if(!_.isEmpty(obj.accident) && obj.accident.covered === 'Y') { }}
-					{{= obj.accident.overrideDetails }}</p>
+					{{= obj.accident.overrideDetails }}
 					{{ }else{ }}
 						<strong>Covered: No</strong><br>
-						{{= obj.accident.overrideDetails }}</p>
+						{{= obj.accident.overrideDetails }}
 					{{ } }}
+					{{ if(accidentSelected) { }}
+					</span>
+					{{ } }}
+				</p>
 				{{ } }}
 			</div>
 			{{ } }}
@@ -707,14 +728,26 @@
 						<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
 					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
 
-					<p><strong>Accident Override:</strong><br>
+					<p><strong>Accident Override:</strong>
+						{{ if(accidentSelected) { }}
+						<span class="checkbox ambulanceAccidentCoverCheckbox">
+							<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
+							<label for="health_simples_dialogue-radio-accidentcover"></label>
+						</span>
+						{{ } }}
+						<br>
+						{{ if(accidentSelected) { }}<span class="highlight">{{ } }}
 						{{ if(!_.isEmpty(obj.accident) && obj.accident.covered === 'Y') { }}
-						{{= obj.accident.overrideDetails }}</p>
-					{{ }else{ }}
-					<strong>Covered: No</strong><br>
-					{{= obj.accident.overrideDetails }}</p>
-					{{ } }}
-					{{ } }}
+						{{= obj.accident.overrideDetails }}
+						{{ }else{ }}
+						<strong>Covered: No</strong><br>
+						{{= obj.accident.overrideDetails }}
+						{{ } }}
+						{{ } }}
+						{{ if(accidentSelected) { }}
+						</span>
+						{{ } }}
+					</p>
 				</div>
 				{{ } }}
 			</c:if>
@@ -867,7 +900,14 @@
 		{{ } }}
 
         <div class="row ambulanceCoverSection">
-            <h2 class="text-dark">Ambulance cover</h2>
+            <h2 class="text-dark">Ambulance cover
+	            {{ if(ambulanceSelected) { }}
+	            <span class="checkbox ambulanceAccidentCoverCheckbox">
+					<input type="checkbox" name="health_simples_dialogue-radio-ambulancecover" id="health_simples_dialogue-radio-ambulancecover" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Ambulance Cover copy" required="required">
+					<label for="health_simples_dialogue-radio-ambulancecover"></label>
+	            </span>
+	            {{ } }}
+            </h2>
             <div class="col-xs-12 benefitTable">
                 <div class="row benefitRow benefitRowHeader">
                     <div class="col-xs-8 newBenefitRow benefitHeaderTitle">
@@ -877,7 +917,7 @@
                         Waiting period
                     </div>
                 </div>
-                <div class="row benefitRow">
+                <div class="row benefitRow {{ if(ambulanceSelected) { }}highlight{{ } }}">
                     <div class="col-xs-8 newBenefitRow benefitRowTitle">
                         {{= obj.ambulance.otherInformation }}
                     </div>

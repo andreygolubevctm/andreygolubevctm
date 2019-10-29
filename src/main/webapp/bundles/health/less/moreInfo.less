@@ -30,32 +30,48 @@
   margin-bottom: 30px;
 }
 
+.results-header-classification-date {
+  height: 20px;
+  text-align: center;
+  color: #555555;
+  margin: 0 auto;
+  margin-top: 5px;
+}
+
+.results-header-classification-title {
+  height: 20px;
+  text-align: center;
+  color: #555555;
+  margin: 0 auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 16px;
+
+  @media (@xs-only) {
+    margin-bottom: 25px;
+  }
+}
+
+.results-header-classification {
+  margin: 15px 0px;
+}
+
 .simplesMoreInfoTierLogo {
-  margin: 28px 0;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  position: relative;
+  border-radius: 30px;
+  height: 35px;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  width: 33%;
+  min-width: 135px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 
   &.small-height {
     height: 2px;
-  }
-
-  .results-header-classification-date {
-    position: absolute;
-    bottom: -5px;
-    left: ~"calc(50% - 65px)";
-    width: 130px;
-    text-align: center;
-    color: white;
-    border-radius: 10px;
-    background-color: #a0a0a0;
-  }
-
-  height: 100px;
-
-  @media (@sm) {
-    height: 60px;
   }
 
   &.gov-unclassified {
@@ -71,86 +87,51 @@
   }
 
   &.gov-bronze-plus {
-    background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass_mobile.svg');
-
-    &.force-large {
-      background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
-    }
-
-    @media (@sm) {
-      background-image: url('../../../../assets/graphics/health_classification/Bronzeplus_govclass.svg');
+    background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+    &::before {
+      content: "BRONZE+";
     }
   }
 
   &.gov-bronze {
-    background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass_mobile.svg');
-
-    &.force-large {
-      background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
-    }
-
-    @media (@sm) {
-      background-image: url('../../../../assets/graphics/health_classification/Bronze_govclass.svg');
-    }
-  }
-
-  &.gov-silver-plus {
-    background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass_mobile.svg');
-
-    &.force-large {
-      background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
-    }
-
-    @media (@sm) {
-      background-image: url('../../../../assets/graphics/health_classification/Silverplus_govclass.svg');
+    background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+    &::before {
+      content: "BRONZE";
     }
   }
 
   &.gov-silver {
-    background-image: url('../../../../assets/graphics/health_classification/Silver_govclass_mobile.svg');
-
-    &.force-large {
-      background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
+    background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+    &::before {
+      content: "SILVER";
     }
+  }
 
-    @media (@sm) {
-      background-image: url('../../../../assets/graphics/health_classification/Silver_govclass.svg');
+  &.gov-silver-plus {
+    background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+    &::before {
+      content: "SILVER+";
     }
   }
 
   &.gov-gold {
-    background-image: url('../../../../assets/graphics/health_classification/Gold_govclass_mobile.svg');
-
-    &.force-large {
-      background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
-    }
-
-    @media (@sm) {
-      background-image: url('../../../../assets/graphics/health_classification/Gold_govclass.svg');
-    }
-  }
-
-  &.gov-basic-plus {
-    background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass_mobile.svg');
-
-    &.force-large {
-      background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
-    }
-
-    @media (@sm) {
-      background-image: url('../../../../assets/graphics/health_classification/Basicplus_govclass.svg');
+    background-image: linear-gradient(to right, #f3d838, #fded8d 50%, #f3d838);
+    &::before {
+      content: "GOLD";
     }
   }
 
   &.gov-basic {
-    background-image: url('../../../../assets/graphics/health_classification/Basic_govclass_mobile.svg');
-
-    &.force-large {
-      background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
+    background-color: #0d1644;
+    &::before {
+      content: "BASIC";
     }
+  }
 
-    @media (@sm) {
-      background-image: url('../../../../assets/graphics/health_classification/Basic_govclass.svg');
+  &.gov-basic-plus {
+    background-color: #0d1644;
+    &::before {
+      content: "BASIC+";
     }
   }
 }
@@ -296,6 +277,24 @@
     h2 {
       font-size: 20px;
     }
+  }
+
+  .abd-badge {
+    background-color: #666666;
+    border-radius: 20px;
+    color: white;
+    font-size: 14px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0;
+    min-height: 25px;
+    font-weight: bold;
+    width: 85%;
+    min-width: 130px;
+    max-width: 200px;
+    margin-bottom: 2px;
+    margin-top: 5px;
   }
 
   .companyLogo {
@@ -649,6 +648,35 @@
         }
       }
     }
+  }
+  .simplesMoreInfoHospitalCover,
+  .ambulanceCoverSection {
+	p {
+		> span.highlight {
+			color: #FF0000;
+		}
+	}
+	.benefitRow {
+		&.highlight {
+			color: #FF0000;
+		}
+	}
+    .checkbox {
+		&.ambulanceAccidentCoverCheckbox {
+			display: inline-block;
+			margin-left: 5px;
+			margin-bottom: -5px;
+			.error-field {
+				position: absolute;
+				font-weight: normal;
+				margin-top: 5px;
+				margin-left: -3px;
+				label {
+					font-size: 13px;
+				}
+			}
+		}
+	}
   }
 }
 

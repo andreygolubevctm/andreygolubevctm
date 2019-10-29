@@ -72,13 +72,16 @@
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
                 {{ var isExtrasOnly = meerkat.modules.health.getCoverType() === 'E'; }}
                 {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
+                {{ var classificationDate = ''; }}
+
+                {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
+                    {{ classificationDate = 'As of ' + classification.date; }} }}
+                {{ } }}
 
                 <div class="results-header-classification">
-                    <div class="results-header-classification-icon {{= icon}}">
-                    {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
-                        <div class="results-header-classification-date">From {{= classification.date}}</div>
-                    {{ } }}
-                    </div>
+                    <div class="results-header-classification-title">Government classification</div>
+                    <div class="results-header-classification-icon {{= icon}}"></div>
+                    <div class="results-header-classification-date">{{= classificationDate}}</div>
                 </div>
             </c:when>
             </c:choose>

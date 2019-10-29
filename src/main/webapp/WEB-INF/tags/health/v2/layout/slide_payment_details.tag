@@ -24,6 +24,9 @@
 
 				<health_v2:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
 				<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
+				
+				<simples:dialogue id="140" vertical="health" mandatory="true" />
+
 				<health_v2:whats-next />
 
 				<simples:dialogue id="107" vertical="health" />
