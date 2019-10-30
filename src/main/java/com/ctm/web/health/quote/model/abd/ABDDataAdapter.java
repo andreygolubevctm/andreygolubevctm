@@ -62,20 +62,11 @@ public final class ABDDataAdapter {
         final Optional<Boolean> primaryHasABD;
         final Optional<Boolean> partnerHasABD;
 
-        if (isSimples) {
-            primaryABDStart = primaryInsured.map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
-            primaryHasABD = primaryInsured.map(Insured::getAbd).map(BooleanUtils::toBoolean);
-            partnerABDStart = partnerInsured.map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
-            partnerHasABD = partnerInsured.map(Insured::getAbd).map(BooleanUtils::toBoolean);
-        } else {
-            Optional<PreviousFund> previousFund = Optional.of(request)
-                    .map(HealthRequest::getQuote)
-                    .map(HealthQuote::getPreviousfund);
-            primaryABDStart = previousFund.map(PreviousFund::getPrimary).map(Fund::getAbdPolicyStart).flatMap(ABD.safeParseDate);
-            primaryHasABD = previousFund.map(PreviousFund::getPrimary).map(Fund::getAbd).map(BooleanUtils::toBoolean);
-            partnerABDStart = previousFund.map(PreviousFund::getPartner).map(Fund::getAbdPolicyStart).flatMap(ABD.safeParseDate);
-            partnerHasABD = previousFund.map(PreviousFund::getPartner).map(Fund::getAbd).map(BooleanUtils::toBoolean);
-        }
+        primaryABDStart = primaryInsured.map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+        primaryHasABD = primaryInsured.map(Insured::getAbd).map(BooleanUtils::toBoolean);
+        partnerABDStart = partnerInsured.map(Insured::getAbdPolicyStart).flatMap(ABD.safeParseDate);
+        partnerHasABD = partnerInsured.map(Insured::getAbd).map(BooleanUtils::toBoolean);
+
         return new ABDDataAdapter(primary, partner, primaryABDStart, partnerABDStart, primaryHasABD.orElse(false), partnerHasABD.orElse(false));
     }
 

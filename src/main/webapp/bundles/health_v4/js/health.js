@@ -507,6 +507,7 @@
                 meerkat.modules.healthAGRModal.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
+                meerkat.modules.healthRABD.setApplicationDetails();
                 meerkat.modules.benefitsToggleBar.deRegisterScroll();
                 if (event.isForward === true) {
                     var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();

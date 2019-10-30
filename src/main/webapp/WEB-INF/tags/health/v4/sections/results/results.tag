@@ -15,9 +15,10 @@
 
     <jsp:attribute name="sidebarColumnRight">
         <div class="hidden-xs hidden-sm results-sidebar-inner grey-border">
-            <div class="results-page-sidebar-header smaller-text">Features</div>
+            <div class="results-page-sidebar-header smaller-text">Discounts</div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
+            <div class="sidebar-widget sidebar-widget-padded results-filters-abd"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-awards-scheme"></div>
         </div>
 
@@ -33,6 +34,7 @@
 
         <health_v4_results:results_legend />
         <health_v4_results:filters_discount />
+        <health_v4_results:filters_abd />
         <health_v4_results:filters_rebate />
         <health_v4_results:filters_awards_scheme />
         <health_v4_results:filters_benefits />
@@ -160,6 +162,7 @@
         <input type="hidden" name="health_popularProducts" value="N" />
         <input type="hidden" name="health_popularProducts_purchased" value="0" />
         <input type="hidden" name="health_applyDiscounts" value="Y" />
+        <input type="hidden" name="health_abdProducts" value="N" />
         <input type="hidden" name="health_rewardsSchemeFirst" value="N" />
         <input type="hidden" name="health_showAll" value="Y" />
         <input type="hidden" name="health_onResultsPage" value="Y" />

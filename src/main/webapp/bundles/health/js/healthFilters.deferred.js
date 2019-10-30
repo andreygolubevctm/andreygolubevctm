@@ -68,6 +68,26 @@
                     }
                 }
             },
+            "abd": {
+                name: 'health_filterBar_abd',
+                defaultValueSourceSelector: 'input[name="health_abdProducts"]',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        var isChecked = $(filterObject.defaultValueSourceSelector + ":checked").length > 0 && $(filterObject.defaultValueSourceSelector + ":checked").val() === 'Y';
+                        $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
+                    },
+                    update: function (filterObject) {
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        $(filterObject.defaultValueSourceSelector).val(isChecked ? "Y" : "N");
+                        if (isChecked) {
+                            $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
+                        } else {
+                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change', [false]);
+                        }
+                    }
+                }
+            },
             "extendedFamily": {
                 name: 'health_filterBar_extendedFamily',
                 defaultValueSourceSelector: '#health_situation_healthCvr',
@@ -254,8 +274,22 @@
                 events: {
                     // already run in hospital events
                 }
-            }
-
+            },
+	        "ambulanceAccidentCover": {
+		        name: 'health_filterBar_ambulanceAccidentCover',
+		        values: meerkat.modules.healthBenefitsStep.getAmbulanceAccidentCoverModel(),
+		        defaultValueSourceSelector: '.ambulanceAccidentCover_container',
+		        defaultValue: {
+			        getDefaultValue: function () {
+				        return meerkat.modules.healthBenefitsStep.getAmbulanceAccidentCover();
+			        }
+		        },
+		        events: {
+			        update: function () {
+				        populateAmbulanceAccidentCover();
+			        }
+		        }
+	        }
         },
         settings = {
             filters: [
@@ -284,16 +318,24 @@
         coverType;
 
     function populateSelectedBenefits() {
-        var selectedBenefits = $('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
+        var selectedBenefits = $('.results-filters-benefits input[type="checkbox"][name^="health_filterBar_benefits"]:checked').map(function() {
             return this.value;
         });
-        meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
+	    meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
         meerkat.modules.healthBenefitsStep.populateBenefitsSelection(selectedBenefits);
 
         // when hospital is set to off in [Customise Cover] hide the excess section
         var $excessSection = $("#resultsPage").find('.cell.excessSection');
         _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
     }
+
+	function populateAmbulanceAccidentCover() {
+		var selectedAmbulanceAccidentCover = $('.results-filters-benefits input[type="checkbox"][name^="health_filterBar_ambulanceAccidentCover_"]:checked').map(function() {
+			return this.value;
+		});
+		meerkat.modules.healthResults.setAmbulanceAccidentCoverList(selectedAmbulanceAccidentCover);
+		meerkat.modules.healthBenefitsStep.populateAmbulanceAccidentCoverSelection(selectedAmbulanceAccidentCover);
+	}
 
     function init() {
         if(meerkat.site.pageAction === "confirmation") { return false; }
@@ -398,6 +440,10 @@
             toggleBenefitsLink($benefitsList);
         });
 
+	    $(document).on('change', ":input[name^='health_filterBar_ambulanceAccidentCover']", function (e) {
+		    populateAmbulanceAccidentCover();
+	    });
+
     }
 
     function toggleBenefitsLink($benefitsList) {
@@ -412,8 +458,7 @@
         // health specific logic attached to filter change
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTER_CHANGED, function (event) {
             var $sidebar = $('.sidebar-widget');
-
-            // coverLevel change event subscription
+			// coverLevel change event subscription
             switch (event.target.name) {
                 case 'health_filterBar_coverLevel':
                     var currentCover = $(event.target).val(),

@@ -138,7 +138,7 @@ fieldset {
   }
 
   @media (@xs-only) {
-    .healthBenefits {
+    .healthBenefits, .ambulanceAccidentCover {
       br {
         display: none;
       }
@@ -172,7 +172,8 @@ fieldset {
       }
     }
 
-    .Hospital_container .healthBenefits .checkbox input:checked + label:before {
+    .Hospital_container .healthBenefits .checkbox input:checked + label:before,
+    .ambulanceAccidentCover_container .ambulanceAccidentCover .checkbox input:checked + label:before {
       background: @btn-benefit-category-bg-color;
       color: @btn-benefit-category-color;
     }
