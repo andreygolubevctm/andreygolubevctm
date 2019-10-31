@@ -18,10 +18,10 @@
     <properties>
         <!-- CTM -->
         <common-logging.version>1.13.0-SNAPSHOT</common-logging.version>
-        <common-interfaces.version>1.15.0-SNAPSHOT</common-interfaces.version>
-        <http-client.version>1.3.0-SNAPSHOT</http-client.version>
-        <contact-validator-model.version>1.0.0-SNAPSHOT</contact-validator-model.version>
-        <life-common.version>1.1.0-SNAPSHOT</life-common.version>
+        <common-interfaces.version>1.15.0-RC1</common-interfaces.version>
+        <http-client.version>1.3.0-RC1</http-client.version>
+        <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
+        <life-common.version>1.1.0-RC1</life-common.version>
         <reward-model.version>1.9.0</reward-model.version>
         <health-common.version>1.22.1-SNAPSHOT</health-common.version>
         <emails-utils.version>1.21.1-SNAPSHOT</emails-utils.version>
@@ -50,7 +50,7 @@
         <node.version>v6.9.2</node.version>
         <npm.version>3.10.9</npm.version>
 
-        <http-client.version>1.3.0-SNAPSHOT</http-client.version>
+        <http-client.version>1.3.0-RC1</http-client.version>
 
         <!-- Test dependencies -->
         <powermock.version>1.6.4</powermock.version>
