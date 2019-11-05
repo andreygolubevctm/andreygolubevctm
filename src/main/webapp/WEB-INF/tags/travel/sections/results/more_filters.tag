@@ -16,7 +16,7 @@
                 <div class="col-xs-12 col-sm-3 col-md-2 text-left filter-section">
                     <div class="col-xs-6 col-sm-12 no-padding">
                         <div class="dropdown-item range-filter">
-                            <b>Medical Conditions</b>
+                            <b>Pre-existing medical conditions</b>
                             <field_v2:help_icon helpId="646" tooltipClassName=""/>
                         </div>
                         <travel_results_filters:medical_conditions_assessed/>
