@@ -1,13 +1,17 @@
 package com.ctm.web.core.resultsData.model;
 
 
+import java.io.Serializable;
+
 import static com.ctm.web.core.resultsData.model.AvailableType.Y;
 
 /**
  * This class is used to hold the results java classes when returning to the front end
  * It assists by ensuring the JSON structure matches what the front end expects.
  */
-public class Result {
+public class Result implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private AvailableType available = Y;
 

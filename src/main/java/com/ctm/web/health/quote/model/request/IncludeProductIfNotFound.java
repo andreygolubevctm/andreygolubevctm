@@ -4,7 +4,7 @@ public class IncludeProductIfNotFound {
 
     private int providerId;
 
-    private int productId;
+    private String productId;
 
     private String productTitle;
 
@@ -16,11 +16,11 @@ public class IncludeProductIfNotFound {
         this.providerId = providerId;
     }
 
-    public int getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 

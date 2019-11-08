@@ -1,17 +1,19 @@
 package com.ctm.web.health.dao;
 
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.exceptions.DaoException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import javax.naming.NamingException;
+
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.exceptions.DaoException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * Class provides methods to store and retrieve selected product data from the database.
@@ -28,17 +30,17 @@ public class HealthSelectedProductDao {
 
 	public HealthSelectedProductDao() {}
 
-    public void addSelectedProduct(final long transactionId, final long productId, final String productXML) throws DaoException {
+    public void addSelectedProduct(final long transactionId, final String productId, final String productXML) throws DaoException {
 
         final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         PreparedStatement stmt = null;
 
         try {
             stmt = dbSource.getConnection().prepareStatement(
-            "INSERT INTO ctm.health_selected_product (transactionId, productId, productXML) VALUES (?,?,?); "
+            "INSERT INTO ctm.health_selected_product_apply (transactionId, productId, productXML) VALUES (?,?,?); "
             );
             stmt.setLong(1, transactionId);
-            stmt.setLong(2, productId);
+            stmt.setString(2, productId);
             stmt.setString(3, productXML);
 
             stmt.executeUpdate();
@@ -56,7 +58,7 @@ public class HealthSelectedProductDao {
         }
     }
 
-    public String getSelectedProduct(final long transactionId, final long productId) throws DaoException {
+    public String getSelectedProduct(final long transactionId, final String productId) throws DaoException {
 
         final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         PreparedStatement stmt = null;
@@ -65,12 +67,12 @@ public class HealthSelectedProductDao {
         try {
             stmt = dbSource.getConnection().prepareStatement(
                     "SELECT productXML " +
-                            "FROM ctm.health_selected_product " +
+                            "FROM ctm.health_selected_product_apply " +
                             "WHERE transactionId=? AND productId=? " +
                             "ORDER BY created DESC LIMIT 1;"
             );
             stmt.setLong(1, transactionId);
-            stmt.setLong(2, productId);
+            stmt.setString(2, productId);
             final ResultSet results = stmt.executeQuery();
             while (results.next()) {
                 productXML = results.getString("productXML");

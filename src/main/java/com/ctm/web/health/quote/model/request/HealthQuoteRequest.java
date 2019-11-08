@@ -18,6 +18,8 @@ public class HealthQuoteRequest {
 
     private String state;
 
+    private String currentJourney;
+
     private Membership membership;
 
     private ProductType productType;
@@ -80,6 +82,14 @@ public class HealthQuoteRequest {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getCurrentJourney() {
+        return currentJourney;
+    }
+
+    public void setCurrentJourney(String currentJourney) {
+        this.currentJourney = currentJourney;
     }
 
     public Membership getMembership() {

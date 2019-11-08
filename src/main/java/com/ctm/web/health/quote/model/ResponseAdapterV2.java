@@ -20,6 +20,7 @@ import com.ctm.web.health.quote.model.response.HealthResponseV2;
 import com.ctm.web.health.quote.model.response.Promotion;
 import com.ctm.web.health.quote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +43,13 @@ import static java.util.Optional.ofNullable;
 
 public class ResponseAdapterV2 {
 
-    public static final String HEALTH_BROCHURE_URL = "health_brochure.jsp?pdf=";
+    public static final String HEALTH_BROCHURE_URL = "health_brochure.jsp?pdf=%1$s%2$s%3$s";
+    /**
+     * ATLAS_QUOTE_BROCHURE_IDENTIFIER
+     * This is used for new health quote brochure links, old health quote uses health_brochure.jsp while
+     * new health quote sends an S3 bucket link directly to the UI
+     */
+    private static final String ATLAS_QUOTE_BROCHURE_IDENTIFIER = "http";
 
     public static ResponseAdapterModel adapt(final HealthRequest request, final HealthResponseV2 healthResponse, final Content alternatePricingContent, final String brandCode) {
         boolean hasPriceChanged = false;
@@ -127,7 +134,15 @@ public class ResponseAdapterV2 {
 
                     result.setInfo(createInfo(quote.getInfo(), index++));
                     result.setHospital(validateNode(quote.getHospital()));
-                    result.setExtras(validateNode(quote.getExtras()));
+                    JsonNode extras = validateNode(quote.getExtras());
+
+                    // This is to support new Health Quote. Old Health Quote will have hasSpecialFeatures present so this won't be called
+                    if(!extras.getClass().equals(TextNode.class) && !extras.has("hasSpecialFeatures")) {
+                        ((ObjectNode) extras).put("hasSpecialFeatures", extras.get("SpecialFeatures").isNull() ? "N" : "Y");
+                        ((ObjectNode) extras).set("SpecialFeatures", extras.get("SpecialFeatures") != null ? extras.get("SpecialFeatures").get("hasSpecialFeatures") : null);
+                    }
+
+                    result.setExtras(extras);
                     result.setAmbulance(validateNode(quote.getAmbulance()));
                     result.setAccident(validateNode(quote.getAccident()));
 
@@ -196,9 +211,22 @@ public class ResponseAdapterV2 {
         promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer(), isSimplesUser));
         promo.setProviderPhoneNumber(quotePromotion.getProviderPhoneNumber());
         promo.setDiscountText(StringUtils.trimToEmpty(quotePromotion.getDiscountDescription()));
-        promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF() + staticBranchQS + brandCodeQS);
-        promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromotion.getHospitalPDF() + staticBranchQS + brandCodeQS);
+        promo.setExtrasPDF(createPDFLink(quotePromotion.getExtrasPDF(), staticBranchQS, brandCodeQS));
+        promo.setHospitalPDF(createPDFLink(quotePromotion.getHospitalPDF(), staticBranchQS, brandCodeQS));
         return promo;
+    }
+
+    private static String createPDFLink(final String pdfUrl, String staticBranchQS, String brandCodeQS) {
+
+        if(pdfUrl == null) {
+            return "";
+        }
+
+        if(pdfUrl.toLowerCase().contains(ATLAS_QUOTE_BROCHURE_IDENTIFIER)) {
+            return pdfUrl;
+        }else{
+            return String.format(HEALTH_BROCHURE_URL, pdfUrl, staticBranchQS, brandCodeQS);
+        }
     }
 
     private static AwardScheme createAwardScheme(final Promotion quotePromotion, boolean isSimplesUser) {
@@ -254,7 +282,7 @@ public class ResponseAdapterV2 {
         price.setLhcfreetext(formatCurrency(lhcFreeAmount, true, true) + (hasDiscount && isSimplesUser ? "*" : ""));
         price.setLhcfreevalue(lhcFreeAmount);
 
-        final BigDecimal payableAmount = lhcAmount.add(lhcFreeAmount);
+        final BigDecimal payableAmount = quotePrice.getPayableAmount();
         price.setText(formatCurrency(payableAmount, true, true) + (hasDiscount && isSimplesUser ? "*" : ""));
         price.setValue(payableAmount);
 
@@ -350,6 +378,9 @@ public class ResponseAdapterV2 {
         info.setProviderName(responseInfo.getFundName());
         info.setProviderId(responseInfo.getProviderId());
         info.setProductCode(responseInfo.getProductCode());
+        info.setHospitalName(responseInfo.getHospitalName());
+        info.setExtrasName(responseInfo.getExtrasName());
+        info.setFundProductCode(responseInfo.getFundProductCode());
         info.setProductTitle(responseInfo.getTitle());
         info.setTrackCode("UNKNOWN");
         info.setName(responseInfo.getName());

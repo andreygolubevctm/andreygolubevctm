@@ -776,6 +776,11 @@
           width: 100%;
           margin-top: 5px;
           font-weight: normal;
+          word-wrap: break-word;
+
+          b  {
+            font-weight: bold !important;
+          }
 
           @media (@lg) {
             &.excess-wavier {
@@ -789,7 +794,6 @@
           }
 
           @media (@xs-only) {
-            word-wrap: break-word;
             font-size: 12px;
           }
 
@@ -825,6 +829,13 @@
     // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
     position: relative;
     overflow: hidden;
+    min-height: 30px;
+  }
+
+  .content-empty {
+    padding: 0 !important;
+    min-height: 0 !important;
+    height: 0 !important;
   }
 
   .limited-cover-warning {
@@ -1109,7 +1120,12 @@
   &.content {
     padding: 0px 15px;
     position: initial;
-    overflow: visible;;
+    overflow: visible;
+    min-height: 30px;
+  }
+  &.content-empty {
+    padding: 0 !important;
+    min-height: 0 !important;
   }
   .feature-item-text {
     width: 100%;

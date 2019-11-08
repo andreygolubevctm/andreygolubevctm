@@ -25,11 +25,16 @@ import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Simples;
 import com.ctm.web.health.model.form.Tracking;
+import com.ctm.web.health.model.results.HealthQuoteResult;
+import com.ctm.web.health.model.results.SelectedProduct;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+
+import atg.taglib.json.util.JSONObject;
 import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
@@ -94,13 +99,14 @@ public class HealthApplyService extends CommonRequestServiceV2 {
 
             LOGGER.debug("Found {}, {}, {} from {}", kv("operator", operator), kv("cid", cid), kv("trialCampaign", trialCampaign), kv("transactionId", data.getTransactionId()));
 
+            SelectedProduct selectedProduct = new ObjectMapper().readValue((String)httpServletRequest.getSession().getAttribute("selectedProduct"), SelectedProduct.class);
             // Version 2
             final ApplicationOutgoingRequest<HealthApplicationRequest> request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
                     .transactionId(transactionId)
                     .brandCode(brand.getCode())
                     .requestAt(data.getRequestAt())
                     .providerFilter(data.getQuote().getApplication().getProvider())
-                    .payload(RequestAdapterV2.adapt(data, operator, cid, trialCampaign))
+                    .payload(RequestAdapterV2.adapt(data, selectedProduct, operator, cid, trialCampaign))
                     .sessionId(anonymousId)
                     .userId(userId)
                     .build();

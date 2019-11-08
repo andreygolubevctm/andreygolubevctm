@@ -25,11 +25,13 @@ import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.InfoHealth;
+import com.ctm.web.health.model.results.SelectedProduct;
 import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.services.HealthQuoteEndpointService;
 import com.ctm.web.health.services.HealthQuoteService;
 import com.ctm.web.health.services.HealthSelectedProductService;
 import com.ctm.web.health.utils.HealthRequestParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -163,13 +165,19 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
             if (!isShowAll) {
                 long tranId = data.getTransactionId();
-                long prodId = HealthRequestParser.getProductIdFromHealthRequest(data);
+                String prodId = HealthRequestParser.getProductIdFromHealthRequest(data);
                 String xml = ObjectMapperUtil.getObjectMapper().writeValueAsString(results);
 				try {
                     HealthSelectedProductService selectedProductService = new HealthSelectedProductService(tranId, prodId, xml);
                 } catch(DaoException e) {
                     LOGGER.error("Failed to write selected product to db {} {} {}", kv("error", e.getMessage()), kv("transactiponId", tranId), kv("productId", prodId), e);
                 }
+            }
+
+            // If we only have 1 result and it has PaymentTypePremiums it means we have hit the application page
+            // We need to cache the product in sessionData
+            if(quotes.getResults().size() == 1 && quotes.getResults().get(0).getPaymentTypePremiums() != null) {
+                request.getSession().setAttribute("selectedProduct", new ObjectMapper().writeValueAsString(new SelectedProduct(quotes.getResults().get(0))));
             }
 
             // create resultsWrapper with the token
