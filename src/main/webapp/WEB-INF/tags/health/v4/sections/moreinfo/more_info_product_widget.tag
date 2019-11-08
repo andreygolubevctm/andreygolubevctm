@@ -12,7 +12,7 @@
     <c:if test="${onlineHealthReformMessaging eq 'Y'}">
         <div class="col-xs-12 productWidgetSection">
             {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-            {{ var isExtrasOnly = meerkat.modules.healthChoices.getCoverType() === 'E'; }}
+            {{ var isExtrasOnly = info.ProductType === 'Ancillary'; }}
             {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
             {{ var classificationDate = ''; }}
 
@@ -20,11 +20,13 @@
                 {{ classificationDate = 'As of ' + classification.date; }} }}
             {{ } }}
 
+            {{ if(!isExtrasOnly) { }}
             <div class="results-header-classification">
                 <div class="results-header-classification-title">Government classification</div>
                 <div class="more-info-classification-icon {{= icon}}"></div>
                 <div class="results-header-classification-date">{{= classificationDate}}</div>
             </div>
+            {{ } }}
         </div>
     </c:if>
     <div class="col-xs-12 productWidgetSection">
@@ -34,12 +36,20 @@
         <div class="col-md-10 col-xs-9">
             {{ if (hospital && typeof hospitalCover !== 'undefined') { }}
             <div class="brochureLink">
-                <a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View hospital brochure</a>
+            	{{ if(promo.hospitalPDF.indexOf('http') === -1) { }}
+                    <a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View hospital brochure</a>
+				{{ } else { }}
+                    <a href="{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View hospital brochure</a>
+				{{ } }}
             </div>
             {{ } }}
             {{ if (typeof extrasCover !== 'undefined') { }}
             <div class="brochureLink">
+            {{ if(promo.extrasPDF.indexOf('http') === -1) { }}
                 <a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure">View extras brochure</a>
+			{{ } else { }}
+                <a href="{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure">View extras brochure</a>
+			{{ } }}
             </div>
             {{ } }}
             <div class="brochureLink printableBrochures">

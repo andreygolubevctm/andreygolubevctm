@@ -6,6 +6,8 @@ public class HealthQuote {
 
     private Benefits benefits;
 
+    private String currentJourney;
+
     private Double rebate;
 
     private Double rebateChangeover;
@@ -82,6 +84,14 @@ public class HealthQuote {
 
     public void setBenefits(Benefits benefits) {
         this.benefits = benefits;
+    }
+
+    public String getCurrentJourney() {
+        return currentJourney;
+    }
+
+    public void setCurrentJourney(String currentJourney) {
+        this.currentJourney = currentJourney;
     }
 
     public Double getRebate() {

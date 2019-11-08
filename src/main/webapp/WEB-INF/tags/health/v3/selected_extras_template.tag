@@ -41,7 +41,7 @@
                         {{ if(isSingle && trimmedKey === 'per person') { }}
                         {{ return; }}
                         {{ } }}
-                        {{ if(key !== 'annualLimit') { }}
+                        {{ if(key !== 'annualLimit' && option) { }}
                         <div class="row">
                             <div class="col-xs-4 extraBenefitOption">
                                 {{ var benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim(); }}
@@ -68,7 +68,7 @@
                         {{ }); }}
                         {{ if(benefit.groupLimit) { }}
                         {{ _.each(benefit.groupLimit, function (option, key) { }}
-                        {{ if(key !== 'annualLimit') { }}
+                        {{ if(key !== 'annualLimit' && option) { }}
                         <div class="row">
                             <div class="col-xs-4 extraBenefitOption">
                                 {{ var benefitGroupLimitName = key.replace(/([A-Z])/g, ' $1').trim(); }}
@@ -159,7 +159,7 @@
                         {{ } }}
                         {{ } }}
                         {{ _.each(benefit, function (option, key) { }}
-                        {{ if (key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent' || key === 'listBenefitExample') { }}
+                        {{ if ((key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent' || key === 'listBenefitExample') && option) { }}
                         <div class="row">
                             <div class="col-xs-4 extraBenefitOption">
                                 {{ if(featureIteratorChild) { }}

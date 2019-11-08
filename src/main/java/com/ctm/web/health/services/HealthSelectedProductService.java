@@ -36,18 +36,18 @@ public class HealthSelectedProductService {
         this.selectedProductDao = new HealthSelectedProductDao();
     }
 
-	public HealthSelectedProductService(final long transactionId, final long productId, final String productXML) throws DaoException {
+	public HealthSelectedProductService(final long transactionId, final String productId, final String productXML) throws DaoException {
 		this.selectedProductDao = new HealthSelectedProductDao();
 		setProductXML(transactionId, productId, productXML);
 	}
 
-    public String getProductXML(final long transactionId, final long productId) throws DaoException {
+    public String getProductXML(final long transactionId, final String productId) throws DaoException {
         return selectedProductDao.getSelectedProduct(transactionId, productId);
     }
 
 	public String getProductXML(final long transactionId) throws DaoException {
     	TransactionDetail detail = getProductIdFromTransactionDetails(transactionId);
-		return detail != null ? selectedProductDao.getSelectedProduct(transactionId, Long.parseLong(detail.getTextValue().replaceAll("\\D",""))) : null;
+		return detail != null ? selectedProductDao.getSelectedProduct(transactionId, detail.getTextValue()) : null;
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class HealthSelectedProductService {
 	 * @return
 	 * @throws DaoException
 	 */
-	public String getMinimalistProductXML(final long transactionId, final long productId) throws DaoException {
+	public String getMinimalistProductXML(final long transactionId, final String productId) throws DaoException {
     	String productXML = getProductXML(transactionId, productId);
 		return minimaliseProductXML(productXML);
 	}
@@ -142,7 +142,7 @@ public class HealthSelectedProductService {
 		return getProductXML(transactionId);
 	}
 
-    public void setProductXML(final long transactionId, final long productId, final String productXML) throws DaoException {
+    public void setProductXML(final long transactionId, final String productId, final String productXML) throws DaoException {
         selectedProductDao.addSelectedProduct(transactionId, productId, productXML);
     }
 

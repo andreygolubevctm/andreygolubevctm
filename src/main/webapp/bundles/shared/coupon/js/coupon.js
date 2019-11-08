@@ -116,7 +116,7 @@
 
 		data.transactionId = meerkat.modules.transactionId.get();
 
-		if(_.isEmpty(data.transactionId) || isNumeric(String(data.transactionId))) {
+		if(_.isEmpty(data.transactionId) || isNaN(String(data.transactionId))) {
 			exception("invalid transactionId to load coupon");
 			return;
 		}
@@ -153,7 +153,7 @@
 				return;
 		}
 
-		if(_.isEmpty(data.couponId) || !isNumeric(String(data.couponId))) {
+		if(_.isEmpty(data.couponId) || isNaN(String(data.transactionId))) {
 			exception("invalid couponId to load coupon (type=" + type + ")");
 			return;
 		}

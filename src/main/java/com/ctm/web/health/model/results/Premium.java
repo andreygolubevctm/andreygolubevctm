@@ -2,8 +2,10 @@ package com.ctm.web.health.model.results;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 @JsonPropertyOrder({"weekly", "fortnightly", "monthly", "quarterly", "halfyearly", "annually"})
-public class Premium {
+public class Premium implements Serializable {
 
     private Price fortnightly;
 

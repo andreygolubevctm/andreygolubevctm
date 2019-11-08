@@ -119,7 +119,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 	@Override
 	public String send(HttpServletRequest request, String emailAddress,
-					   long transactionId, long productId) throws SendEmailException {
+					   long transactionId, String productId) throws SendEmailException {
 		switch (emailMode) {
 			case APP:
 				return sendApplicationEmail(request, emailAddress, transactionId, productId);
@@ -153,7 +153,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 	@Override
-	public String sendApplicationEmail(HttpServletRequest request, String emailAddress, long transactionId, long productId) throws SendEmailException {
+	public String sendApplicationEmail(HttpServletRequest request, String emailAddress, long transactionId, String productId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(ApplicationEmailHandler.MAILING_NAME_KEY);
 		try {
@@ -272,7 +272,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		return emailModel;
 	}
 
-	private EmailEventRequest buildApplicationEmailModel(EmailMaster emailDetails, long transactionId, long productId, HttpServletRequest request) throws SendEmailException {
+	private EmailEventRequest buildApplicationEmailModel(EmailMaster emailDetails, long transactionId, String productId, HttpServletRequest request) throws SendEmailException {
 
 		Optional<HealthRequest> data = Optional.ofNullable((HealthRequest) request.getAttribute("requestData"));
 		final Data dataBucket;

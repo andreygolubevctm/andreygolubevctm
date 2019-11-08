@@ -48,6 +48,7 @@ import rx.schedulers.Schedulers;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
@@ -58,6 +59,7 @@ import static java.util.Optional.ofNullable;
 public class HealthQuoteService extends CommonRequestServiceV2 implements InitializingBean {
 
     public static final String GIFT_CARD_COUPON = "pyrr";
+    private static final String SPLIT_TRAFFIC_ID = "atlas";
     private static Logger LOGGER = LoggerFactory.getLogger(HealthQuoteService.class);
 
     @Autowired
@@ -131,16 +133,16 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
 
             LOGGER.info("Attempting to call clientQuotesV2.post (HealthResponseV2)  {} {} {}", kv("url", properties.getServiceUrl()+"/quote"), kv("timeout", properties.getTimeout()), kv("request", request.getPayload().toString()));
 
-            final HealthResponseV2 healthResponse = clientQuotesV2.post(RestSettings.<RatesheetOutgoingRequest<HealthQuoteRequest>>builder()
-                    .request(request)
-                    .jsonHeaders()
-                    .url(properties.getServiceUrl()+"/quote")
-                    .timeout(properties.getTimeout())
-                    .responseType(MediaType.APPLICATION_JSON)
-                    .response(HealthResponseV2.class)
-                    .build())
-                    .doOnError(this::logHttpClientError)
-                    .observeOn(Schedulers.io()).toBlocking().single();
+            HealthResponseV2 healthResponse = null;
+
+            if(SPLIT_TRAFFIC_ID.equals(Optional.of(request.getPayload().getCurrentJourney()).orElse(""))) {
+                healthResponse = getHealthResponseV2("v3/quote", request, properties);
+            }else{
+                CompletableFuture<HealthResponseV2> oldResponseFuture = CompletableFuture.supplyAsync(() -> getHealthResponseV2("quote", request, properties));
+                CompletableFuture<HealthResponseV2> newResponseFuture = CompletableFuture.supplyAsync(() -> getHealthResponseV2("v3/quote", request, properties));
+                CompletableFuture.allOf(oldResponseFuture, newResponseFuture);
+                healthResponse = oldResponseFuture.get();
+            }
 
             final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent, brand.getCode());
 
@@ -187,17 +189,12 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
             request.setBrandCode(brand.getCode());
             request.setRequestAt(data.getRequestAt());
 
-            final HealthResponse healthResponse = clientQuotes.post(RestSettings.<Request<HealthQuoteRequest>>builder()
-                    .request(request)
-                    .jsonHeaders()
-                    .url(properties.getServiceUrl()+"/quote")
-                    .timeout(properties.getTimeout())
-                    .responseType(MediaType.APPLICATION_JSON)
-                    .response(HealthResponse.class)
-                    .build())
-                    .doOnError(this::logHttpClientError)
-                    .observeOn(Schedulers.io()).toBlocking().single();
+            HealthResponse healthResponse = getHealthResponse("quote", request, properties);
+            final HealthResponse healthResponseNew = getHealthResponse("v3/quote", request, properties);
 
+            if(request.getPayload().getCurrentJourney().equals(SPLIT_TRAFFIC_ID)) {
+                healthResponse = healthResponseNew;
+            }
 
             final Pair<Boolean, List<HealthQuoteResult>> response = ResponseAdapter.adapt(data, healthResponse, alternatePricingContent);
 
@@ -247,6 +244,32 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
             competitionNode.addChild(new XmlNode("previous", concat));
         }
         return dataBucket;
+    }
+
+    private HealthResponseV2 getHealthResponseV2(String url, RatesheetOutgoingRequest<HealthQuoteRequest> request, QuoteServiceProperties properties) {
+        return clientQuotesV2.post(RestSettings.<RatesheetOutgoingRequest<HealthQuoteRequest>>builder()
+        .request(request)
+        .jsonHeaders()
+        .url(properties.getServiceUrl()+"/"+url)
+        .timeout(properties.getTimeout())
+        .responseType(MediaType.APPLICATION_JSON)
+        .response(HealthResponseV2.class)
+        .build())
+        .doOnError(this::logHttpClientError)
+        .observeOn(Schedulers.io()).toBlocking().single();
+    }
+
+    private HealthResponse getHealthResponse(String url, Request<HealthQuoteRequest> request, QuoteServiceProperties properties) {
+        return clientQuotes.post(RestSettings.<Request<HealthQuoteRequest>>builder()
+        .request(request)
+        .jsonHeaders()
+        .url(properties.getServiceUrl()+"/"+url)
+        .timeout(properties.getTimeout())
+        .responseType(MediaType.APPLICATION_JSON)
+        .response(HealthResponse.class)
+        .build())
+        .doOnError(this::logHttpClientError)
+        .observeOn(Schedulers.io()).toBlocking().single();
     }
 
 

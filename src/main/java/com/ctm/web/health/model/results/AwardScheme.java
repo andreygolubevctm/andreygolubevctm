@@ -1,6 +1,8 @@
 package com.ctm.web.health.model.results;
 
-public class AwardScheme {
+import java.io.Serializable;
+
+public class AwardScheme implements Serializable {
 
     private String text;
 
