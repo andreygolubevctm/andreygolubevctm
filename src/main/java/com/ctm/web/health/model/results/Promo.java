@@ -1,6 +1,8 @@
 package com.ctm.web.health.model.results;
 
-public class Promo {
+import java.io.Serializable;
+
+public class Promo implements Serializable {
 
     private String promoText;
 

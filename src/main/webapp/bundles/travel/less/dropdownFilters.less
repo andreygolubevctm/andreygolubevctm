@@ -1,5 +1,6 @@
 .dropdown-menu-excess-filter {
   /* this CS forms the triangles */
+
   &:before,
   &:after {
     position: absolute;
@@ -192,6 +193,7 @@
   }
 
   /* this CS forms the triangles */
+
   &:before,
   &:after {
     position: absolute;
@@ -258,12 +260,14 @@
 
 .dropdown-menu-excess-filter, .dropdown-menu-more-filters {
   /* this border color controls the outside, thin border */
+
   &:before {
     top: -19px;
     border-color: transparent transparent @dropdown-border-color transparent;
   }
 
   /* this border color controls the color of the triangle */
+
   &:after {
     top: -18px;
     border-color: transparent transparent @dropdown-bg-color transparent;
@@ -280,6 +284,10 @@
   white-space: nowrap;
   background: 0 0;
   border: 0;
+
+  b {
+    white-space: normal;
+  }
 }
 
 .no-padding {
@@ -356,11 +364,13 @@
 
     .dropdown-menu-more-filters {
       height: ~"calc(100% - 190px)";
+
       .more-filters-container {
         height: auto;
         max-height: 100%;
         overflow-y: scroll;
       }
+
       &:before,
       &:after {
         left: 48%;

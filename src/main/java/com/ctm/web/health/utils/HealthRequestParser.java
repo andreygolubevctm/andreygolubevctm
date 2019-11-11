@@ -28,8 +28,8 @@ public class HealthRequestParser {
         return healthRequest;
     }
 
-    public static long getProductIdFromHealthRequest(final HealthRequest data) {
-        long productId = 0;
+    public static String getProductIdFromHealthRequest(final HealthRequest data) {
+        String productId = "0";
         try {
             Optional<HealthQuote> quote = Optional.ofNullable(data.getHealth());
             if(quote.isPresent()) {
@@ -37,9 +37,9 @@ public class HealthRequestParser {
                 if(application.isPresent()) {
                     Optional<String> rawId = Optional.ofNullable(application.get().getProductId());
                     if(rawId.isPresent()) {
-                        String id = rawId.get().replaceAll("\\D", "");
-                        if(!id.isEmpty() && StringUtils.isNumeric(id)) {
-                            productId = Long.parseLong(id);
+                        String id = rawId.get();
+                        if(!id.isEmpty()) {
+                            productId = id;
                         } else {
                             throw new Exception("ProductId was empty or contained no numeric chars (" + id + ")");
                         }

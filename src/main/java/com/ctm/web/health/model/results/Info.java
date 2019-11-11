@@ -3,7 +3,9 @@ package com.ctm.web.health.model.results;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class Info {
+import java.io.Serializable;
+
+public class Info implements Serializable {
 
     private String trackCode;
 
@@ -18,6 +20,12 @@ public class Info {
     private String productTitle;
 
     private String productCode;
+
+    private String hospitalName;
+
+    private String extrasName;
+
+    private String fundProductCode;
 
     private String des;
 
@@ -94,6 +102,30 @@ public class Info {
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
+    public String getExtrasName() {
+        return extrasName;
+    }
+
+    public void setExtrasName(String extrasName) {
+        this.extrasName = extrasName;
+    }
+
+    public String getFundProductCode() {
+        return fundProductCode;
+    }
+
+    public void setFundProductCode(String fundProductCode) {
+        this.fundProductCode = fundProductCode;
     }
 
     public String getDes() {

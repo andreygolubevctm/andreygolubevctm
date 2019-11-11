@@ -352,12 +352,12 @@ public class RequestAdapter {
         }
     }
 
-    protected static Integer getProductId(Application application) {
+    protected static String getProductId(Application application) {
         String productId = application.getProductId();
         if (StringUtils.startsWith(application.getProductId(), "PHIO-HEALTH-")) {
             productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
         }
-        return Integer.parseInt(productId);
+        return productId;
     }
 
     protected static boolean toBoolean(String value) {

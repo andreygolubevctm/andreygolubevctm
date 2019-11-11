@@ -109,7 +109,11 @@
 												<h2>Hospital cover</h2>
 											</div>
 											<div class="col-xs-12 col-sm-6 heading-brochure no-padding">
+											{{ if(promo.hospitalPDF.indexOf('http') === -1) { }}
 												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View hospital brochure</a>
+											{{ } else { }}
+												<a href="{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View hospital brochure</a>
+											{{ } }}
 											</div>
 										</div>
 									</div>
@@ -323,7 +327,11 @@
 										<h3 class="heading">Restricted Benefits <span class="benefitCount gray">{{= hospitalCover.restrictions.length }}</span></h3>
 										<p>These treatments are limited to the same amount you would receive in a public hospital for those treatments.</p>
 										{{ if(hospital && typeof hospitalCover !== 'undefined') { }}
-											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
+											{{ if(promo.hospitalPDF.indexOf('http') === -1) { }}
+												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
+											{{ } else { }}
+												<a href="{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
+											{{ } }}
 										{{ } }}
 										{{ if(hospital) { }}
 										{{ _.each(hospitalCover.restrictions, function(restriction){ }}
@@ -355,7 +363,11 @@
 										<h2>Extras cover</h2>
 									</div>
 									<div class="col-xs-12 col-sm-6 heading-brochure no-padding">
-										<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure"><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View extras brochure</a>
+										{{ if(promo.extrasPDF.indexOf('http') === -1) { }}
+											<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure"><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View extras brochure</a>
+										{{ } else { }}
+											<a href="{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure"><img src="assets/brand/ctm/images/icons/brochure_icon.svg" width="11" height="13">&nbsp;View extras brochure</a>
+										{{ } }}
 									</div>
 								</div>
 								{{ } }}
@@ -474,7 +486,7 @@
 																	{{ }); }}
 																{{ } }}
 																{{ _.each(benefit, function (option, key) { }}
-																	{{ if (key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent' || key === 'listBenefitExample') { }}
+																	{{ if ((key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent' || key === 'listBenefitExample') && option) { }}
 																	<div class="row">
 																		<div class="col-xs-6 col-sm-6 extraBenefitOption">
 																			{{ if(featureIteratorChild) { }}
@@ -512,7 +524,7 @@
 																	{{ if(isSingle && trimmedKey === 'per person') { }}
 																		{{ return; }}
 																	{{ } }}
-																{{ if(key !== 'annualLimit') { }}
+																{{ if(key !== 'annualLimit' && option) { }}
 																<div class="row">
 																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
 																	{{ var benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim(); }}
@@ -539,7 +551,7 @@
 																{{ }); }}
 																{{ if(benefit.groupLimit) { }}
 																{{ _.each(benefit.groupLimit, function (option, key) { }}
-																{{ if(key !== 'annualLimit') { }}
+																{{ if(key !== 'annualLimit' && option) { }}
 																<div class="row">
 																	<div class="col-xs-9 col-sm-6 extraBenefitOption">
 																	{{ var benefitGroupLimitName = key.replace(/([A-Z])/g, ' $1').trim(); }}

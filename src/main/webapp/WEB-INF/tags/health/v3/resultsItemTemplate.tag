@@ -45,7 +45,14 @@
                 </div>
             </div>
         </div>{{ } }}
-        {{ if(ft.type == 'feature') { }}<div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">{{= ft.displayValue }}</div>{{ } }}
+
+        {{ var hiddenResultPathsNew = ['extras.Optical.benefits.Frames', 'extras.Optical.benefits.ContactLenses', 'extras.Optical.benefits.SingleVision', 'extras.Optical.benefits.MultiVision', 'extras.DentalGeneral.benefits.DentalMajor322Extraction'] }}
+        {{ var hiddenResultPathsOld = ['extras.Optical.benefits.OpticalSingleVisionLenses', 'extras.Optical.benefits.OpticalMultiFocalLenses', 'extras.DentalGeneral.benefits.DentalGeneral322Extraction']; }}
+        {{ var hiddenResultPaths = meerkat.modules.splitTest.get() !== 'atlas' ? hiddenResultPathsNew : hiddenResultPathsOld }}
+
+        {{ var showContent = (hiddenResultPaths.indexOf(ft.resultPath) === -1) || (ft.pathValue && hiddenResultPaths.indexOf(ft.resultPath) > -1) }}
+        
+        {{ if(ft.type == 'feature' && showContent) { }}<div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">{{= ft.displayValue }}</div>{{ } }}
         {{ } if(ft.displayChildren) { }}
         <div class="children {{= ft.hideChildrenClass }}" data-fid="{{= ft.id }}">
             {{ if(ft.isNotCovered) { }}<div class="content noCoverContainer"><p class="noCoverLabel">NOT COVERED IN THIS PRODUCT</p></div>{{ } }}

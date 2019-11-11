@@ -687,7 +687,7 @@
             $('.featuresListExtrasFullList .children').children('.cell .category').each(function(i) { 
                 var element = $(this).first();
                 var selectedBenefits = window.meerkat.modules.healthResults.getSelectedBenefitsList();
-                var featureId = element.context.children[0].children[0].getAttribute('data-featureid');
+                var featureId = element.get(0).children[0].children[0].getAttribute('data-featureid');
                 var alreadySelected = selectedBenefits.indexOf(featureId) > -1;
                 if(!$(this).hasClass('hidden') && alreadySelected) {
                     $(this).addClass('hidden');
@@ -702,7 +702,7 @@
             $('.featuresListHospitalFullList .children').children('.cell .category').each(function(i) { 
                 var element = $(this).first();
                 var selectedBenefits = window.meerkat.modules.healthResults.getSelectedBenefitsList();
-                var featureId = element.context.children[0].children[0].getAttribute('data-featureid');
+                var featureId = element.get(0).children[0].children[0].getAttribute('data-featureid');
                 var alreadySelected = selectedBenefits.indexOf(featureId.toString()) > -1;
                 if(!$(this).hasClass('hidden') && alreadySelected) {
                     $(this).addClass('hidden');
