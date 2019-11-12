@@ -15,9 +15,15 @@
 
 	var $currentAjaxRequest = null,
 		dpIdCache = {},
-		addressFieldId;
+		addressFieldId,
+		isPublicRedemptionPage = false,
+		isSimplesRedemptionPage = false;
 
 	function initAddressLookup() {
+		$(document).ready(function ($) {
+			isPublicRedemptionPage = meerkat.site.vertical === 'generic' && _.has(meerkat.modules, 'redemptionComponent');
+			isSimplesRedemptionPage = meerkat.site.vertical === 'simples' && _.has(meerkat.modules, 'redemptionForm');
+		});
 		meerkat.messaging.subscribe(meerkatEvents.autocomplete.ELASTIC_SEARCH_COMPLETE, function elasticAddress(data) {
 			getAddressData(data);
 		});
@@ -46,7 +52,7 @@
 			// Lock Journey
 			// Don't lock on home, as the address is on the first slide and the next button is directly after the question.
 			// If this address question moves it might be worth removing this condition.
-			if (_.indexOf(['car','home','simples'], meerkat.site.vertical) === -1) {
+			if (_.indexOf(['car','home'], meerkat.site.vertical) === -1 && !isPublicRedemptionPage && !isSimplesRedemptionPage) {
 				meerkat.modules.loadingAnimation.showInside($navButton);
 				meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, { source: 'address_lookup' });
 			}
@@ -85,7 +91,7 @@
 								data: xhr
 							});
 
-							if (meerkat.site.vertical == 'home') {
+							if (meerkat.site.vertical === 'home') {
 								meerkat.modules.journeyEngine.gotoPath("start");
 							}
 							$('#' + addressFieldId + '_nonStd').trigger('click.elasticAddress').prop('checked', true);
@@ -97,7 +103,7 @@
 						meerkat.modules.loadingAnimation.hide($navButton);
 					}
 				});
-			}else if(_.indexOf(['car','home','simples'], meerkat.site.vertical) >= 0) {
+			}else if( isPublicRedemptionPage || isSimplesRedemptionPage || _.indexOf(['car','home'], meerkat.site.vertical) >= 0) {
 				setAddressDataFields(data);
 			}
 		}
