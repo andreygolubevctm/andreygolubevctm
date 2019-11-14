@@ -473,8 +473,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		try {
 			OpeningHoursService openingHoursService = new OpeningHoursService();
 			emailEventRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
-			emailEventRequest.setHospitalPds( pageSettings.getBaseUrl() + request.getParameter("hospitalPDSUrl"));
-			emailEventRequest.setExtrasPds(pageSettings.getBaseUrl() + request.getParameter("extrasPDSUrl"));
+			emailEventRequest.setHospitalPds( getPdsUrl(request.getParameter("hospitalPDSUrl")));
+			emailEventRequest.setExtrasPds( getPdsUrl(request.getParameter("extrasPDSUrl")));
 			emailEventRequest.setPhoneNumber(getCallCentreNumber());
 
 			String productId = request.getParameter("productId");
@@ -583,4 +583,10 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		}
 	}
 
+	private String getPdsUrl(String pdsUrl) throws ConfigSettingException {
+		if (!StringUtils.startsWithIgnoreCase(pdsUrl, "https")) {
+			return pageSettings.getBaseUrl() + pdsUrl;
+		}
+		return pdsUrl;
+	}
 }
