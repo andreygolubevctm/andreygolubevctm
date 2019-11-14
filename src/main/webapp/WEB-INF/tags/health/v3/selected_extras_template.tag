@@ -36,7 +36,7 @@
                     <div class="col-xs-12">
                         {{ _.each(benefit.benefitLimits, function (option, key) { }}
                         {{ var situation = window.meerkat.modules.health.getSituation(); }}
-                        {{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
+                        {{ var isSingle = situation === 'SM' || situation === 'SF'; }}
                         {{ var trimmedKey = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
                         {{ if(isSingle && trimmedKey === 'per person') { }}
                         {{ return; }}
@@ -106,7 +106,7 @@
                         {{ var dentalBenefitsTotalCost = 0; }}
                         {{ _.each(benefit.benefits, function (option, key) { }}
                         {{ var situation = window.meerkat.modules.health.getSituation(); }}
-                        {{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
+                        {{ var isSingle = situation === 'SM' || situation === 'SF'; }}
                         {{ var trimmedKey = key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim(); }}
                         {{ if(isSingle && trimmedKey === 'per person') { }}
                         {{ return; }}
