@@ -8,6 +8,7 @@ import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.resultsData.NoResults;
 import com.ctm.web.core.model.resultsData.NoResultsObj;
 import com.ctm.web.core.model.resultsData.PricesObj;
+import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
@@ -31,7 +32,6 @@ import com.ctm.web.health.services.HealthQuoteEndpointService;
 import com.ctm.web.health.services.HealthQuoteService;
 import com.ctm.web.health.services.HealthSelectedProductService;
 import com.ctm.web.health.utils.HealthRequestParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -44,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Context;
@@ -61,7 +62,7 @@ import static com.ctm.web.core.security.AuthorisationConstants.TOKEN_REQUEST_PAR
 @RequestMapping("/rest/health")
 public class HealthQuoteController extends CommonQuoteRouter {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HealthQuoteController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HealthQuoteController.class);
 
     private Vertical.VerticalType verticalType = Vertical.VerticalType.HEALTH;
 
@@ -79,18 +80,18 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
     // call by rest/health/dropdown/list.json?type=X
     @RequestMapping(value = "/dropdown/list.json",
-            method= RequestMethod.GET,
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String,String> getContent(@RequestParam("type") String type) {
-        final Map<String,String> result;
+    public Map<String, String> getContent(@RequestParam("type") String type) {
+        final Map<String, String> result;
         GeneralDao generalDao = new GeneralDao();
         result = generalDao.getValuesOrdered(type);
         return result;
     }
 
     @RequestMapping(value = "/quote/get.json",
-            method= RequestMethod.POST,
-            consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
+            method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultsWrapper getHealthQuote(@Valid final HealthRequest data, HttpServletRequest request) throws Exception {
 
@@ -108,10 +109,10 @@ public class HealthQuoteController extends CommonQuoteRouter {
         updateApplicationDate(request, data);
         HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService(ipAddressHandler);
         boolean isCallCentre = SessionUtils.isCallCentre(request.getSession());
-        try{
+        try {
             validateRequest(request, verticalType, brand, healthQuoteTokenService, data, isCallCentre);
-        } catch(RouterException re) {
-            if(re.getValidationErrors() == null){
+        } catch (RouterException re) {
+            if (re.getValidationErrors() == null) {
                 throw re;
             }
             return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), handleException(re));
@@ -167,17 +168,30 @@ public class HealthQuoteController extends CommonQuoteRouter {
                 long tranId = data.getTransactionId();
                 String prodId = HealthRequestParser.getProductIdFromHealthRequest(data);
                 String xml = ObjectMapperUtil.getObjectMapper().writeValueAsString(results);
-				try {
+                try {
                     HealthSelectedProductService selectedProductService = new HealthSelectedProductService(tranId, prodId, xml);
-                } catch(DaoException e) {
+                } catch (DaoException e) {
                     LOGGER.error("Failed to write selected product to db {} {} {}", kv("error", e.getMessage()), kv("transactiponId", tranId), kv("productId", prodId), e);
                 }
             }
 
             // If we only have 1 result and it has PaymentTypePremiums it means we have hit the application page
             // We need to cache the product in sessionData
-            if(quotes.getResults().size() == 1 && quotes.getResults().get(0).getPaymentTypePremiums() != null) {
-                request.getSession().setAttribute("selectedProduct", new ObjectMapper().writeValueAsString(new SelectedProduct(quotes.getResults().get(0))));
+            if (quotes.getResults().size() == 1 && quotes.getResults().get(0).getPaymentTypePremiums() != null) {
+                HttpSession session = request.getSession(false);
+                if (session == null) {
+                    throw new IllegalStateException("Unable to save selected product in the session. Session was null");
+                }
+                SelectedProduct selectedProduct = new SelectedProduct(quotes.getResults().get(0));
+                String productString = ObjectMapperUtil.getObjectMapper().writeValueAsString(selectedProduct);
+                LOGGER.info(String.format("Saving 'selectedProduct' '%1$s' in session: '%2$s'", selectedProduct.getProductId(), session.getId()));
+                session.setAttribute("selectedProduct", productString);
+                SessionData.markSessionForCommit(request);
+
+                String selectedProductFromSession = (String) session.getAttribute("selectedProduct");
+                if (StringUtils.isEmpty(selectedProductFromSession)) {
+                    throw new IllegalStateException(String.format("Unable to save selected product in the session '%1$s'", session.getId()));
+                }
             }
 
             // create resultsWrapper with the token
