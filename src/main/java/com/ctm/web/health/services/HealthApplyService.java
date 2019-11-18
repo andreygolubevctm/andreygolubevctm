@@ -25,19 +25,18 @@ import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Simples;
 import com.ctm.web.health.model.form.Tracking;
-import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.SelectedProduct;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-
-import atg.taglib.json.util.JSONObject;
 import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -81,8 +80,8 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         final String anonymousId = Optional.ofNullable(httpServletRequest.getAttribute(TOKEN_REQUEST_PARAM_ANONYMOUS_ID)).map(Object::toString).orElse(null);
         final String userId = Optional.ofNullable(httpServletRequest.getAttribute(TOKEN_REQUEST_PARAM_USER_ID)).map(Object::toString).orElse(null);
 
-        if (anonymousId!=null||userId!=null) {
-            transactionDao.writeAuthIDs(transactionId,anonymousId,userId);
+        if (anonymousId != null || userId != null) {
+            transactionDao.writeAuthIDs(transactionId, anonymousId, userId);
             journeyUpdateService.publishInteraction("health", transactionId.toString(), anonymousId, userId);
         }
 
@@ -98,8 +97,24 @@ public class HealthApplyService extends CommonRequestServiceV2 {
             }
 
             LOGGER.debug("Found {}, {}, {} from {}", kv("operator", operator), kv("cid", cid), kv("trialCampaign", trialCampaign), kv("transactionId", data.getTransactionId()));
+            final SelectedProduct selectedProduct;
+            HttpSession session = httpServletRequest.getSession(false);
+            try {
+                if (session == null) {
+                    throw new IllegalStateException("Unable to retrieve selected product from the session. The session was null");
+                }
+                String selectedProductString = (String) session.getAttribute("selectedProduct");
 
-            SelectedProduct selectedProduct = new ObjectMapper().readValue((String)httpServletRequest.getSession().getAttribute("selectedProduct"), SelectedProduct.class);
+                if (StringUtils.isEmpty(selectedProductString)) {
+                    throw new IllegalStateException(String.format("The selected product data could not be found in the session '%1$s'", session.getId()));
+                }
+
+                selectedProduct = new ObjectMapper().readValue(selectedProductString, SelectedProduct.class);
+                LOGGER.debug(String.format("Retrieved selected product '%1$s' from session '%2$s'...", Optional.ofNullable(selectedProduct).map(SelectedProduct::getProductId).orElse("N/A"), session.getId()));
+            } catch (Exception ex) {
+                LOGGER.error("Unable to retrieve the selected product from the session. Please verify the object exists and is serializable to support Hazelcast replication", ex);
+                throw ex;
+            }
             // Version 2
             final ApplicationOutgoingRequest<HealthApplicationRequest> request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
                     .transactionId(transactionId)
@@ -119,7 +134,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .request(request)
                     .header("rootId", Long.toString(rootId))
                     .jsonHeaders()
-                    .url(properties.getServiceUrl()+"/apply")
+                    .url(properties.getServiceUrl() + "/apply")
                     .timeout(properties.getTimeout())
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthApplyResponse.class)
@@ -153,21 +168,21 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         }
     }
 
-	private String getCidFromData(HealthRequest data) {
-		return Optional.ofNullable(data)
-				.map(HealthRequest::getQuote)
-				.map(HealthQuote::getTracking)
-				.map(Tracking::getCid)
-				.orElse(null);
-	}
+    private String getCidFromData(HealthRequest data) {
+        return Optional.ofNullable(data)
+                .map(HealthRequest::getQuote)
+                .map(HealthQuote::getTracking)
+                .map(Tracking::getCid)
+                .orElse(null);
+    }
 
-	private String getTrialCampaignFromData(HealthRequest data) {
-		return Optional.ofNullable(data)
-				.map(HealthRequest::getQuote)
-				.map(HealthQuote::getSimples)
-				.map(Simples::getContactTypeRadio)
-				.orElse(null);
-	}
+    private String getTrialCampaignFromData(HealthRequest data) {
+        return Optional.ofNullable(data)
+                .map(HealthRequest::getQuote)
+                .map(HealthQuote::getSimples)
+                .map(Simples::getContactTypeRadio)
+                .orElse(null);
+    }
 
     @Deprecated
     private com.ctm.web.core.providers.model.Request<HealthApplicationRequest> createRequest(Brand brand, HealthRequest data, HealthApplicationRequest payload) {
