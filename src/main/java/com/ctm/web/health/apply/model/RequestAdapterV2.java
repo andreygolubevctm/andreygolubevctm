@@ -17,8 +17,6 @@ import com.ctm.web.health.model.form.Insured;
 import com.ctm.web.health.model.form.Person;
 import com.ctm.web.health.model.form.PreviousFund;
 import com.ctm.web.health.model.results.HealthQuoteResult;
-
-import com.ctm.web.health.model.results.SelectedProduct;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
@@ -37,7 +35,7 @@ public class RequestAdapterV2 {
     static final String BANK_ACCOUNT = "BankAccount";
     static final String CREDIT_CARD = "CreditCard";
 
-    public static HealthApplicationRequest adapt(HealthRequest healthRequest, SelectedProduct healthSelectedProduct,
+    public static HealthApplicationRequest adapt(HealthRequest healthRequest, HealthQuoteResult healthSelectedProduct,
             String operator, String cid, String trialCampaign) throws DaoException {
         final Optional<HealthQuote> quote = Optional.ofNullable(healthRequest).map(HealthRequest::getQuote);
 
@@ -63,7 +61,7 @@ public class RequestAdapterV2 {
 
         FundData fundData = FundDataAdapter.createFundData(quote);
         PriceResultExtraInfo product = ProductAdapter.createProduct(healthSelectedProduct, fundProductCode, paymentType, extrasName, hospitalName);
-        
+
         HealthApplicationRequest.Builder healthApplicationRequest = HealthApplicationRequest.newBuilder()
                 .contactDetails(ContactDetailsAdapter.createContactDetails(quote))
                 .payment(PaymentAdapter.createPayment(quote))

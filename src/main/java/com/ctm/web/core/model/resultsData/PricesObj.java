@@ -10,4 +10,10 @@ public class PricesObj<R extends Result> extends BaseResultObj<R> {
         return value;
     }
 
+    public void setPrice(List<R> result) {
+        this.value = result;
+    }
+
+
+
 }
