@@ -1,12 +1,11 @@
 package com.ctm.web.health.apply.model;
 
-import java.math.BigDecimal;
-
 import com.ctm.web.health.apply.model.request.product.PricePremiums;
 import com.ctm.web.health.apply.model.request.product.PriceResultExtraInfo;
 import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.Premium;
-import com.ctm.web.health.model.results.SelectedProduct;
+
+import java.math.BigDecimal;
 
 public class ProductAdapter {
 
@@ -16,7 +15,7 @@ public class ProductAdapter {
     static final String RESTRICTED_FUND_FLAG = "Y";
     static final String EMPTY_STRING = "";
 
-    protected static PriceResultExtraInfo createProduct(SelectedProduct result, String fundProductCode, String PaymentType, String extrasName, String hospitalName) {
+    protected static PriceResultExtraInfo createProduct(HealthQuoteResult result, String fundProductCode, String PaymentType, String extrasName, String hospitalName) {
         return PriceResultExtraInfo.newBuilder()
                 .pricePremiums(createPricePremiums(result.getPaymentTypePremiums().get(PaymentType)))
                 .fundCode(result.getInfo().getFundCode())

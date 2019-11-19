@@ -7,6 +7,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.QuoteServiceProperties;
+import com.ctm.web.core.model.resultsData.PricesObj;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.providers.model.ApplicationOutgoingRequest;
@@ -15,6 +16,7 @@ import com.ctm.web.core.services.JourneyUpdateService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.health.apply.model.RequestAdapter;
 import com.ctm.web.health.apply.model.RequestAdapterV2;
 import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
@@ -25,9 +27,9 @@ import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Simples;
 import com.ctm.web.health.model.form.Tracking;
-import com.ctm.web.health.model.results.SelectedProduct;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
+import com.ctm.web.health.model.results.HealthQuoteResult;
+import com.ctm.web.health.utils.HealthRequestParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,6 @@ import org.springframework.stereotype.Component;
 import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -64,6 +65,9 @@ public class HealthApplyService extends CommonRequestServiceV2 {
 
     @Autowired
     private JourneyUpdateService journeyUpdateService;
+
+    @Autowired
+    private HealthSelectedProductService healthSelectedProductService;
 
     @Autowired
     public HealthApplyService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean) {
@@ -97,24 +101,20 @@ public class HealthApplyService extends CommonRequestServiceV2 {
             }
 
             LOGGER.debug("Found {}, {}, {} from {}", kv("operator", operator), kv("cid", cid), kv("trialCampaign", trialCampaign), kv("transactionId", data.getTransactionId()));
-            final SelectedProduct selectedProduct;
-            HttpSession session = httpServletRequest.getSession(false);
+            final HealthQuoteResult selectedProduct;
             try {
-                if (session == null) {
-                    throw new IllegalStateException("Unable to retrieve selected product from the session. The session was null");
+                String productId = HealthRequestParser.getProductIdFromHealthRequest(data);
+                String productXml = healthSelectedProductService.getProductXML(transactionId, productId);
+                PricesObj<HealthQuoteResult> products = ObjectMapperUtil.getObjectMapper().readValue(productXml, new TypeReference<PricesObj<HealthQuoteResult>>(){});
+                if (products.getPrice() == null || products.getPrice().size() != 1) {
+                    throw new IllegalStateException(String.format("Unable to retrieve a single selected product for transactionId: '%1$s', productId: '%2$s'", transactionId, productId));
                 }
-                String selectedProductString = (String) session.getAttribute("selectedProduct");
-
-                if (StringUtils.isEmpty(selectedProductString)) {
-                    throw new IllegalStateException(String.format("The selected product data could not be found in the session '%1$s'", session.getId()));
-                }
-
-                selectedProduct = new ObjectMapper().readValue(selectedProductString, SelectedProduct.class);
-                LOGGER.debug(String.format("Retrieved selected product '%1$s' from session '%2$s'...", Optional.ofNullable(selectedProduct).map(SelectedProduct::getProductId).orElse("N/A"), session.getId()));
+                selectedProduct = products.getPrice().get(0);
             } catch (Exception ex) {
-                LOGGER.error("Unable to retrieve the selected product from the session. Please verify the object exists and is serializable to support Hazelcast replication", ex);
+                LOGGER.error(String.format("Failed to retrieve selected product - %1$s", ex.getMessage()), ex);
                 throw ex;
             }
+
             // Version 2
             final ApplicationOutgoingRequest<HealthApplicationRequest> request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
                     .transactionId(transactionId)

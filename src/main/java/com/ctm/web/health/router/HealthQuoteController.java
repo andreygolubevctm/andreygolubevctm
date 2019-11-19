@@ -8,7 +8,6 @@ import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.resultsData.NoResults;
 import com.ctm.web.core.model.resultsData.NoResultsObj;
 import com.ctm.web.core.model.resultsData.PricesObj;
-import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
@@ -26,7 +25,6 @@ import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.InfoHealth;
-import com.ctm.web.health.model.results.SelectedProduct;
 import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.services.HealthQuoteEndpointService;
 import com.ctm.web.health.services.HealthQuoteService;
@@ -44,7 +42,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Context;
@@ -171,28 +168,10 @@ public class HealthQuoteController extends CommonQuoteRouter {
                 try {
                     HealthSelectedProductService selectedProductService = new HealthSelectedProductService(tranId, prodId, xml);
                 } catch (DaoException e) {
-                    LOGGER.error("Failed to write selected product to db {} {} {}", kv("error", e.getMessage()), kv("transactiponId", tranId), kv("productId", prodId), e);
+                    LOGGER.error("Failed to write selected product to db {} {} {}", kv("error", e.getMessage()), kv("transactionId", tranId), kv("productId", prodId), e);
                 }
             }
 
-            // If we only have 1 result and it has PaymentTypePremiums it means we have hit the application page
-            // We need to cache the product in sessionData
-            if (quotes.getResults().size() == 1 && quotes.getResults().get(0).getPaymentTypePremiums() != null) {
-                HttpSession session = request.getSession(false);
-                if (session == null) {
-                    throw new IllegalStateException("Unable to save selected product in the session. Session was null");
-                }
-                SelectedProduct selectedProduct = new SelectedProduct(quotes.getResults().get(0));
-                String productString = ObjectMapperUtil.getObjectMapper().writeValueAsString(selectedProduct);
-                LOGGER.info(String.format("Saving 'selectedProduct' '%1$s' in session: '%2$s'", selectedProduct.getProductId(), session.getId()));
-                session.setAttribute("selectedProduct", productString);
-                SessionData.markSessionForCommit(request);
-
-                String selectedProductFromSession = (String) session.getAttribute("selectedProduct");
-                if (StringUtils.isEmpty(selectedProductFromSession)) {
-                    throw new IllegalStateException(String.format("Unable to save selected product in the session '%1$s'", session.getId()));
-                }
-            }
 
             // create resultsWrapper with the token
             return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), results);
