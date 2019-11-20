@@ -70,7 +70,7 @@
                     </div>
 
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-                {{ var isExtrasOnly = obj.info.ProductType === 'Ancillary'; }}
+                {{ var isExtrasOnly = obj.info.ProductType === 'Ancillary' || obj.info.ProductType === 'GeneralHealth'; }}
                 {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
                 {{ var classificationDate = ''; }}
 
