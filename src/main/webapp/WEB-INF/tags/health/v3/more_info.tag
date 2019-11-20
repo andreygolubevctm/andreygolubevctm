@@ -170,7 +170,7 @@
 
 			</div>
 			{{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-			{{ var isExtrasOnly = coverType === 'E'; }}
+      {{ var isExtrasOnly = info.ProductType === 'Ancillary' || info.ProductType === 'GeneralHealth'; }}
       {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
       {{ var classificationDate = ''; }}
 
@@ -186,11 +186,13 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 							</div>
 							<c:if test="${simplesHealthReformMessaging eq 'Y'}">
+							{{ if(!isExtrasOnly) { }}
 							<div class="results-header-classification">
                     <div class="results-header-classification-title">Government classification</div>
                     <div class="simplesMoreInfoTierLogo {{= icon}}"></div>
                     <div class="results-header-classification-date">{{= classificationDate}}</div>
-                </div>
+              </div>
+							{{ } }}
 							</c:if>
 					</div>
 				</c:when>
@@ -201,11 +203,13 @@
 							<div class="col-xs-12">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now <span class="icon-arrow-right" /></a>
 								<c:if test="${simplesHealthReformMessaging eq 'Y'}">
+									{{ if(!isExtrasOnly) { }}
 									<div class="results-header-classification">
                     <div class="results-header-classification-title">Government classification</div>
                     <div class="simplesMoreInfoTierLogo {{= icon}}"></div>
                     <div class="results-header-classification-date">{{= classificationDate}}</div>
                 	</div>
+									{{ } }}
 								</c:if>
 							</div>
 						</div>
@@ -947,19 +951,31 @@
 				<div class="row">
 					{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
 					<div class="col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Policy Brochure</a>
+						{{ if(promo.hospitalPDF.indexOf('http') === -1) { }}
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Policy Brochure</a>
+						{{ } else { }}
+							<a href="{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Policy Brochure</a>
+						{{ } }}
 					</div>
 					{{ } else { }}
 
 					{{ if(typeof hospitalCover !== 'undefined') { }}
 					<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Hospital Policy Brochure</a>
+						{{ if(promo.hospitalPDF.indexOf('http') === -1) { }}
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Hospital Policy Brochure</a>
+						{{ } else { }}
+							<a href="{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Hospital Policy Brochure</a>
+						{{ } }}
 					</div>
 					{{ } }}
 
 					{{ if(typeof extrasCover !== 'undefined') { }}
 					<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
+						{{ if(promo.extrasPDF.indexOf('http') === -1) { }}
+							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
+						{{ } else { }}
+							<a href="{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
+						{{ } }}
 					</div>
 					{{ } }}
 					{{ } }}

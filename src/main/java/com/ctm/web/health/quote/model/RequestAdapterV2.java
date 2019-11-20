@@ -58,6 +58,7 @@ public class RequestAdapterV2 {
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
 
         quoteRequest.setIsSimples(isSimples);
+        quoteRequest.setCurrentJourney(request.getHealth().getCurrentJourney());
 
         Filters filters = new Filters();
         quoteRequest.setFilters(filters);
@@ -478,12 +479,12 @@ public class RequestAdapterV2 {
         }
     }
 
-    protected static Integer getProductId(Application application) {
+    protected static String getProductId(Application application) {
         String productId = application.getProductId();
         if (StringUtils.startsWith(application.getProductId(), "PHIO-HEALTH-")) {
             productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
         }
-        return Integer.parseInt(productId);
+        return productId;
     }
 
     protected static boolean toBoolean(String value) {

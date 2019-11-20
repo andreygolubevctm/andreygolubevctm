@@ -55,7 +55,7 @@ public abstract class EmailServiceHandler {
 	 * unique to health and is not needed anywhere else that implements this class.
 	 */
 	public String send(HttpServletRequest request, String emailAddress,
-		   	long transactionId, long productId) throws SendEmailException {
+		   	long transactionId, String productId) throws SendEmailException {
 		return null;
 	}
 

@@ -16,6 +16,12 @@ public class Info {
 
     private String productCode;
 
+    private String hospitalName;
+
+    private String extrasName;
+
+    private String fundProductCode;
+
     private String title;
 
     private String name;
@@ -74,6 +80,30 @@ public class Info {
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
+    public String getExtrasName() {
+        return extrasName;
+    }
+
+    public void setExtrasName(String extrasName) {
+        this.extrasName = extrasName;
+    }
+
+    public String getFundProductCode() {
+        return fundProductCode;
+    }
+
+    public void setFundProductCode(String fundProductCode) {
+        this.fundProductCode = fundProductCode;
     }
 
     public String getTitle() {

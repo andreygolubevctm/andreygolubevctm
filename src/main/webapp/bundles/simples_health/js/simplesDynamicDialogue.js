@@ -234,11 +234,11 @@
     html += listStartText;
     var found = 0;
     if(renderList) {
-      var benefitMatch = function(benefit, key) {
-	      return benefit.value === keys[key];
-      };
       for(var j = 0; j < keys.length; j++) {
-        var benefit = benefits.find(benefitMatch(benefit, j));
+        var benefit = benefits.find(
+          function(benefit) {
+              return benefit.value === keys[j];
+          });
         var productBenefit = productBenefits[keys[j]];
 
           if(benefit && coveredCheck.indexOf(productBenefit.covered) > -1) {

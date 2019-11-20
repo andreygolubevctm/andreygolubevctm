@@ -5,6 +5,7 @@ import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
 import com.ctm.web.health.apply.model.request.contactDetails.ContactDetails;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
 import com.ctm.web.health.apply.model.request.payment.Payment;
+import com.ctm.web.health.apply.model.request.product.PriceResultExtraInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;
@@ -27,6 +28,9 @@ public class HealthApplicationRequest {
     @NotNull
     private ApplicationGroup applicants;
 
+    @NotNull
+    private PriceResultExtraInfo product;
+
     @Deprecated
     @Size(min = 1, max = 1)
     public List<String> providerFilter;
@@ -43,6 +47,7 @@ public class HealthApplicationRequest {
         payment = builder.payment;
         fundData = builder.fundData;
         applicants = builder.applicants;
+        product = builder.product;
         providerFilter = builder.providerFilter;
         operator = builder.operator;
         cid = builder.cid;
@@ -68,6 +73,10 @@ public class HealthApplicationRequest {
 
     public ApplicationGroup getApplicants() {
         return applicants;
+    }
+
+    public PriceResultExtraInfo getProduct() {
+        return product;
     }
 
     @Deprecated
@@ -96,6 +105,7 @@ public class HealthApplicationRequest {
         private Payment payment;
         private FundData fundData;
         private ApplicationGroup applicants;
+        private PriceResultExtraInfo product;
         private List<String> providerFilter;
         private String operator;
         private String cid;
@@ -122,6 +132,11 @@ public class HealthApplicationRequest {
 
         public Builder applicants(ApplicationGroup val) {
             applicants = val;
+            return this;
+        }
+
+        public Builder product(PriceResultExtraInfo val) {
+            product = val;
             return this;
         }
 

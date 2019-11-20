@@ -2,13 +2,13 @@ package com.ctm.web.health.quote.model.request;
 
 public class ProductIdSameExcessAmountFilter implements ExcessFilter {
 
-    private int productIdWithSameExcessAmount;
+    private String productIdWithSameExcessAmount;
 
-    public int getProductIdWithSameExcessAmount() {
+    public String getProductIdWithSameExcessAmount() {
         return productIdWithSameExcessAmount;
     }
 
-    public void setProductIdWithSameExcessAmount(int productIdWithSameExcessAmount) {
+    public void setProductIdWithSameExcessAmount(String productIdWithSameExcessAmount) {
         this.productIdWithSameExcessAmount = productIdWithSameExcessAmount;
     }
 }

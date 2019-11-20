@@ -59,7 +59,7 @@ import static com.ctm.web.core.security.AuthorisationConstants.TOKEN_REQUEST_PAR
 @RequestMapping("/rest/health")
 public class HealthQuoteController extends CommonQuoteRouter {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HealthQuoteController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HealthQuoteController.class);
 
     private Vertical.VerticalType verticalType = Vertical.VerticalType.HEALTH;
 
@@ -77,18 +77,18 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
     // call by rest/health/dropdown/list.json?type=X
     @RequestMapping(value = "/dropdown/list.json",
-            method= RequestMethod.GET,
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String,String> getContent(@RequestParam("type") String type) {
-        final Map<String,String> result;
+    public Map<String, String> getContent(@RequestParam("type") String type) {
+        final Map<String, String> result;
         GeneralDao generalDao = new GeneralDao();
         result = generalDao.getValuesOrdered(type);
         return result;
     }
 
     @RequestMapping(value = "/quote/get.json",
-            method= RequestMethod.POST,
-            consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
+            method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultsWrapper getHealthQuote(@Valid final HealthRequest data, HttpServletRequest request) throws Exception {
 
@@ -106,10 +106,10 @@ public class HealthQuoteController extends CommonQuoteRouter {
         updateApplicationDate(request, data);
         HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService(ipAddressHandler);
         boolean isCallCentre = SessionUtils.isCallCentre(request.getSession());
-        try{
+        try {
             validateRequest(request, verticalType, brand, healthQuoteTokenService, data, isCallCentre);
-        } catch(RouterException re) {
-            if(re.getValidationErrors() == null){
+        } catch (RouterException re) {
+            if (re.getValidationErrors() == null) {
                 throw re;
             }
             return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), handleException(re));
@@ -163,14 +163,15 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
             if (!isShowAll) {
                 long tranId = data.getTransactionId();
-                long prodId = HealthRequestParser.getProductIdFromHealthRequest(data);
+                String prodId = HealthRequestParser.getProductIdFromHealthRequest(data);
                 String xml = ObjectMapperUtil.getObjectMapper().writeValueAsString(results);
-				try {
+                try {
                     HealthSelectedProductService selectedProductService = new HealthSelectedProductService(tranId, prodId, xml);
-                } catch(DaoException e) {
-                    LOGGER.error("Failed to write selected product to db {} {} {}", kv("error", e.getMessage()), kv("transactiponId", tranId), kv("productId", prodId), e);
+                } catch (DaoException e) {
+                    LOGGER.error("Failed to write selected product to db {} {} {}", kv("error", e.getMessage()), kv("transactionId", tranId), kv("productId", prodId), e);
                 }
             }
+
 
             // create resultsWrapper with the token
             return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), results);

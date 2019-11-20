@@ -7,6 +7,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.QuoteServiceProperties;
+import com.ctm.web.core.model.resultsData.PricesObj;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.providers.model.ApplicationOutgoingRequest;
@@ -15,6 +16,7 @@ import com.ctm.web.core.services.JourneyUpdateService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.health.apply.model.RequestAdapter;
 import com.ctm.web.health.apply.model.RequestAdapterV2;
 import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
@@ -25,6 +27,9 @@ import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Simples;
 import com.ctm.web.health.model.form.Tracking;
+import com.ctm.web.health.model.results.HealthQuoteResult;
+import com.ctm.web.health.utils.HealthRequestParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +67,9 @@ public class HealthApplyService extends CommonRequestServiceV2 {
     private JourneyUpdateService journeyUpdateService;
 
     @Autowired
+    private HealthSelectedProductService healthSelectedProductService;
+
+    @Autowired
     public HealthApplyService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean) {
         super(providerFilterDAO, serviceConfigurationServiceBean);
     }
@@ -76,8 +84,8 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         final String anonymousId = Optional.ofNullable(httpServletRequest.getAttribute(TOKEN_REQUEST_PARAM_ANONYMOUS_ID)).map(Object::toString).orElse(null);
         final String userId = Optional.ofNullable(httpServletRequest.getAttribute(TOKEN_REQUEST_PARAM_USER_ID)).map(Object::toString).orElse(null);
 
-        if (anonymousId!=null||userId!=null) {
-            transactionDao.writeAuthIDs(transactionId,anonymousId,userId);
+        if (anonymousId != null || userId != null) {
+            transactionDao.writeAuthIDs(transactionId, anonymousId, userId);
             journeyUpdateService.publishInteraction("health", transactionId.toString(), anonymousId, userId);
         }
 
@@ -93,6 +101,19 @@ public class HealthApplyService extends CommonRequestServiceV2 {
             }
 
             LOGGER.debug("Found {}, {}, {} from {}", kv("operator", operator), kv("cid", cid), kv("trialCampaign", trialCampaign), kv("transactionId", data.getTransactionId()));
+            final HealthQuoteResult selectedProduct;
+            try {
+                String productId = HealthRequestParser.getProductIdFromHealthRequest(data);
+                String productXml = healthSelectedProductService.getProductXML(transactionId, productId);
+                PricesObj<HealthQuoteResult> products = ObjectMapperUtil.getObjectMapper().readValue(productXml, new TypeReference<PricesObj<HealthQuoteResult>>(){});
+                if (products.getPrice() == null || products.getPrice().size() != 1) {
+                    throw new IllegalStateException(String.format("Unable to retrieve a single selected product for transactionId: '%1$s', productId: '%2$s'", transactionId, productId));
+                }
+                selectedProduct = products.getPrice().get(0);
+            } catch (Exception ex) {
+                LOGGER.error(String.format("Failed to retrieve selected product - %1$s", ex.getMessage()), ex);
+                throw ex;
+            }
 
             // Version 2
             final ApplicationOutgoingRequest<HealthApplicationRequest> request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
@@ -100,7 +121,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .brandCode(brand.getCode())
                     .requestAt(data.getRequestAt())
                     .providerFilter(data.getQuote().getApplication().getProvider())
-                    .payload(RequestAdapterV2.adapt(data, operator, cid, trialCampaign))
+                    .payload(RequestAdapterV2.adapt(data, selectedProduct, operator, cid, trialCampaign))
                     .sessionId(anonymousId)
                     .userId(userId)
                     .build();
@@ -113,7 +134,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .request(request)
                     .header("rootId", Long.toString(rootId))
                     .jsonHeaders()
-                    .url(properties.getServiceUrl()+"/apply")
+                    .url(properties.getServiceUrl() + "/apply")
                     .timeout(properties.getTimeout())
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthApplyResponse.class)
@@ -147,21 +168,21 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         }
     }
 
-	private String getCidFromData(HealthRequest data) {
-		return Optional.ofNullable(data)
-				.map(HealthRequest::getQuote)
-				.map(HealthQuote::getTracking)
-				.map(Tracking::getCid)
-				.orElse(null);
-	}
+    private String getCidFromData(HealthRequest data) {
+        return Optional.ofNullable(data)
+                .map(HealthRequest::getQuote)
+                .map(HealthQuote::getTracking)
+                .map(Tracking::getCid)
+                .orElse(null);
+    }
 
-	private String getTrialCampaignFromData(HealthRequest data) {
-		return Optional.ofNullable(data)
-				.map(HealthRequest::getQuote)
-				.map(HealthQuote::getSimples)
-				.map(Simples::getContactTypeRadio)
-				.orElse(null);
-	}
+    private String getTrialCampaignFromData(HealthRequest data) {
+        return Optional.ofNullable(data)
+                .map(HealthRequest::getQuote)
+                .map(HealthQuote::getSimples)
+                .map(Simples::getContactTypeRadio)
+                .orElse(null);
+    }
 
     @Deprecated
     private com.ctm.web.core.providers.model.Request<HealthApplicationRequest> createRequest(Brand brand, HealthRequest data, HealthApplicationRequest payload) {

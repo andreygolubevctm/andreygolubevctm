@@ -36,12 +36,12 @@
                     <div class="col-xs-12">
                         {{ _.each(benefit.benefitLimits, function (option, key) { }}
                         {{ var situation = window.meerkat.modules.health.getSituation(); }}
-                        {{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
+                        {{ var isSingle = situation === 'SM' || situation === 'SF'; }}
                         {{ var trimmedKey = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
                         {{ if(isSingle && trimmedKey === 'per person') { }}
                         {{ return; }}
                         {{ } }}
-                        {{ if(key !== 'annualLimit') { }}
+                        {{ if(key !== 'annualLimit' && option) { }}
                         <div class="row">
                             <div class="col-xs-4 extraBenefitOption">
                                 {{ var benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim(); }}
@@ -68,7 +68,7 @@
                         {{ }); }}
                         {{ if(benefit.groupLimit) { }}
                         {{ _.each(benefit.groupLimit, function (option, key) { }}
-                        {{ if(key !== 'annualLimit') { }}
+                        {{ if(key !== 'annualLimit' && option) { }}
                         <div class="row">
                             <div class="col-xs-4 extraBenefitOption">
                                 {{ var benefitGroupLimitName = key.replace(/([A-Z])/g, ' $1').trim(); }}
@@ -106,7 +106,7 @@
                         {{ var dentalBenefitsTotalCost = 0; }}
                         {{ _.each(benefit.benefits, function (option, key) { }}
                         {{ var situation = window.meerkat.modules.health.getSituation(); }}
-                        {{ var isSingle = situation[0] === 'S' || situation === 'ESF'; }}
+                        {{ var isSingle = situation === 'SM' || situation === 'SF'; }}
                         {{ var trimmedKey = key.replace(/[0-9]/g, '').replace(/([A-Z])/g, ' $1').trim(); }}
                         {{ if(isSingle && trimmedKey === 'per person') { }}
                         {{ return; }}
@@ -159,7 +159,7 @@
                         {{ } }}
                         {{ } }}
                         {{ _.each(benefit, function (option, key) { }}
-                        {{ if (key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent' || key === 'listBenefitExample') { }}
+                        {{ if ((key === 'benefitPayableInitial' || key === 'benefitpayableSubsequent' || key === 'listBenefitExample') && option) { }}
                         <div class="row">
                             <div class="col-xs-4 extraBenefitOption">
                                 {{ if(featureIteratorChild) { }}

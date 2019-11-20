@@ -82,7 +82,11 @@
                     <div class="clearfix">
                         <h2>Hospital cover</h2>
                         <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
+                        {{ if(promo.hospitalPDF.indexOf('http') === -1) { }}
                             <a class="results-download-brochure" href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">hospital </span>brochure</a>
+						{{ } else { }}
+                            <a class="results-download-brochure" href="{{= promo.hospitalPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">hospital </span>brochure</a>
+						{{ } }}
                         </c:if>
                     </div>
                     <div class="hospitalSelectionsExcessContainer">
@@ -130,7 +134,11 @@
                     </c:when>
                     </c:choose>
                         <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
+                        {{ if(promo.extrasPDF.indexOf('http') === -1) { }}
                             <a class="results-download-brochure" href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">extras </span>brochure</a>
+						{{ } else { }}
+                            <a class="results-download-brochure" href="{{= promo.extrasPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">extras </span>brochure</a>
+						{{ } }}
                         </c:if>
                         <div class="yourSelectionsHospital">
                             <div class="coverTitle">Your selected cover benefits:</div>
