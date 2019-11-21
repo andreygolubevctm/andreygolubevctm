@@ -39,12 +39,9 @@
 <%-- TODO: Minimum/Maximum Dates used to be handled with this crazy go tag, lets determine what difference this has to the above. --%>
 <%-- <fmt:formatDate value="${go:AddDays(now,365)}" var="nowPlusYear_Date" type="date" pattern="dd/MM/yyyy"/> --%>
 
-<layout_v1:slide formId="detailsForm" nextLabel="Get Quotes">
-    <layout_v1:slide_columns>
+<layout_v1:slide formId="detailsForm" nextLabel="Get Quotes" customizedWidthLayout="col-sm-12">
+    <layout_v1:slide_columns colSize="12">
 		<jsp:attribute name="rightColumn">
-
-			<travel:brand_sidebar />
-
 		</jsp:attribute>
 		<jsp:body>
 			<layout_v1:slide_content>
@@ -58,7 +55,7 @@
 
 						<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService"
 												 scope="page"/>
-											 
+
 						<travel:destinations />
 
 						<core_v1:select_tags
@@ -102,14 +99,14 @@
 
 				<%-- DURATION SELECTION --%>
                 <form_v2:fieldset legend="Duration" className="travel_maxDuration" id="amtDurationsfs">
-                    <form_v2:row label="What is the maximum number of days you will be away from home for any single journey?" className="smallWidth">
+                    <form_v2:row label="What is the maximum number of days you will be away from home for any single journey?" className="smallWidth" smRowOverride="4">
                         <field_v2:array_radio items="1=1 - 15 days,16=16 - 30 days,31=31 - 45 days,46=46 - 60 days,61=61+ days" xpath="travel/amtDuration" title="max trip duration" required="true" className="radio" style="radio-green" />
                     </form_v2:row>
                 </form_v2:fieldset>
 
 				<%-- DATES AND TRAVELLERS SECTION --%>
 				<form_v2:fieldset legend="Dates" className="travel_details_datesTravellers" id="travelDatePicker">
-					<travel:date_picker xpath="travel" /> 
+					<travel:date_picker xpath="travel" />
 				</form_v2:fieldset>
 
 				<c:set var="fieldSetHeading">
