@@ -105,11 +105,15 @@ public class HealthApplyService extends CommonRequestServiceV2 {
             try {
                 String productId = HealthRequestParser.getProductIdFromHealthRequest(data);
                 String productXml = healthSelectedProductService.getProductXML(transactionId, productId);
-                PricesObj<HealthQuoteResult> products = ObjectMapperUtil.getObjectMapper().readValue(productXml, new TypeReference<PricesObj<HealthQuoteResult>>(){});
-                if (products.getPrice() == null || products.getPrice().size() != 1) {
+                PricesObj<HealthQuoteResult> products = ObjectMapperUtil.getObjectMapper().readValue(productXml, new TypeReference<PricesObj<HealthQuoteResult>>() {});
+
+                Optional<HealthQuoteResult> productForApply = products.getPrice().stream().filter(p -> productId.equals(p.getProductId())).findFirst();
+
+                if (!productForApply.isPresent()) {
                     throw new IllegalStateException(String.format("Unable to retrieve a single selected product for transactionId: '%1$s', productId: '%2$s'", transactionId, productId));
                 }
-                selectedProduct = products.getPrice().get(0);
+
+                selectedProduct = productForApply.get();
             } catch (Exception ex) {
                 LOGGER.error(String.format("Failed to retrieve selected product - %1$s", ex.getMessage()), ex);
                 throw ex;

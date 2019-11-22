@@ -15,7 +15,7 @@ public class ProductAdapter {
     static final String RESTRICTED_FUND_FLAG = "Y";
     static final String EMPTY_STRING = "";
 
-    protected static PriceResultExtraInfo createProduct(HealthQuoteResult result, String fundProductCode, String PaymentType, String extrasName, String hospitalName) {
+    protected static PriceResultExtraInfo createProduct(HealthQuoteResult result, String fundProductCode, String PaymentType, String extrasName, String hospitalName, int excess) {
         return PriceResultExtraInfo.newBuilder()
                 .pricePremiums(createPricePremiums(result.getPaymentTypePremiums().get(PaymentType)))
                 .fundCode(result.getInfo().getFundCode())
@@ -25,7 +25,7 @@ public class ProductAdapter {
                 .extrasName(extrasName)
                 .hospitalName(hospitalName)
                 .fundProductCode(fundProductCode)
-                .excess(result.getHospital().get("inclusions").get("excesses").get("perPerson").asInt())
+                .excess(excess)
                 .title(result.getInfo().getName())
                 .productId(result.getProductId().replaceAll(PRODUCT_ID_PREFIX, ""))
                 .productType(result.getInfo().getProductType())
