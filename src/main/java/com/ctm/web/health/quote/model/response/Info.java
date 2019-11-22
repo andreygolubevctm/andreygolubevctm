@@ -42,6 +42,8 @@ public class Info {
 
     private String abdRequestFlag;
 
+    private int excess;
+
     public boolean isRestrictedFund() {
         return restrictedFund;
     }
@@ -184,5 +186,13 @@ public class Info {
 
     public void setAbdRequestFlag(String abdRequestFlag) {
         this.abdRequestFlag = abdRequestFlag;
+    }
+
+    public int getExcess() {
+        return excess;
+    }
+
+    public void setExcess(int excess) {
+        this.excess = excess;
     }
 }

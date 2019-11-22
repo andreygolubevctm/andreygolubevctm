@@ -15,6 +15,7 @@ import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Simples;
 import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.services.HealthQuoteService;
+import com.ctm.web.health.services.HealthSelectedProductService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -114,7 +115,7 @@ public class HealthQuoteRouterTest {
         when(sessionDataServiceBean.getDataForTransactionId(httpServletRequest, transactionId.toString(), true)).thenReturn(dataB);
         when(httpServletRequest.getSession()).thenReturn(session);
         when(healthQuoteService.getQuotes(any(), any(), any(), anyBoolean(), any())).thenReturn(mock(ResponseAdapterModel.class));
-        healthQuoteRouter = new HealthQuoteController(sessionDataServiceBean, ipAddressHandler, contentService, healthQuoteService);
+        healthQuoteRouter = new HealthQuoteController(sessionDataServiceBean, ipAddressHandler, contentService, healthQuoteService, new HealthSelectedProductService());
     }
 
     @Test

@@ -27,10 +27,18 @@ import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.health.dao.HealthTransactionDao;
-import com.ctm.web.health.model.form.*;
+import com.ctm.web.health.model.form.Competition;
+import com.ctm.web.health.model.form.ContactDetails;
+import com.ctm.web.health.model.form.ContactNumber;
+import com.ctm.web.health.model.form.HealthQuote;
+import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.PremiumRange;
-import com.ctm.web.health.quote.model.*;
+import com.ctm.web.health.quote.model.RequestAdapter;
+import com.ctm.web.health.quote.model.RequestAdapterV2;
+import com.ctm.web.health.quote.model.ResponseAdapter;
+import com.ctm.web.health.quote.model.ResponseAdapterModel;
+import com.ctm.web.health.quote.model.ResponseAdapterV2;
 import com.ctm.web.health.quote.model.request.HealthQuoteRequest;
 import com.ctm.web.health.quote.model.response.GiftCard;
 import com.ctm.web.health.quote.model.response.HealthResponse;
@@ -138,10 +146,9 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
             if(SPLIT_TRAFFIC_ID.equals(Optional.of(request.getPayload().getCurrentJourney()).orElse(""))) {
                 healthResponse = getHealthResponseV2("v3/quote", request, properties);
             }else{
-                CompletableFuture<HealthResponseV2> oldResponseFuture = CompletableFuture.supplyAsync(() -> getHealthResponseV2("quote", request, properties));
-                CompletableFuture<HealthResponseV2> newResponseFuture = CompletableFuture.supplyAsync(() -> getHealthResponseV2("v3/quote", request, properties));
-                CompletableFuture.allOf(oldResponseFuture, newResponseFuture);
-                healthResponse = oldResponseFuture.get();
+                // This Future is intended to run async and be non-blocking because we are running `v3/quote` (ATLAS) in parallel for all quotes even if it not an atlas journey.
+                CompletableFuture.supplyAsync(() -> getHealthResponseV2("v3/quote", request, properties));
+                healthResponse = getHealthResponseV2("quote", request, properties);
             }
 
             final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent, brand.getCode());

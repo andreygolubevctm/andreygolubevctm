@@ -56,6 +56,8 @@ public class Info implements Serializable {
 
     private String abdRequestFlag;
 
+    private int excess;
+
     public String getTrackCode() {
         return trackCode;
     }
@@ -230,5 +232,13 @@ public class Info implements Serializable {
 
     public void setAbdRequestFlag(String abdRequestFlag) {
         this.abdRequestFlag = abdRequestFlag;
+    }
+
+    public int getExcess() {
+        return excess;
+    }
+
+    public void setExcess(int excess) {
+        this.excess = excess;
     }
 }

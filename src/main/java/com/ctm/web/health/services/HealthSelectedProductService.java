@@ -36,11 +36,6 @@ public class HealthSelectedProductService {
         this.selectedProductDao = new HealthSelectedProductDao();
     }
 
-	public HealthSelectedProductService(final long transactionId, final String productId, final String productXML) throws DaoException {
-		this.selectedProductDao = new HealthSelectedProductDao();
-		setProductXML(transactionId, productId, productXML);
-	}
-
     public String getProductXML(final long transactionId, final String productId) throws DaoException {
         return selectedProductDao.getSelectedProduct(transactionId, productId);
     }
