@@ -43,7 +43,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Context;
 import java.util.Collections;
 import java.util.Date;
@@ -67,12 +66,18 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
     private ContentService contentService;
 
+    private HealthSelectedProductService selectedProductService;
+
     @Autowired
-    public HealthQuoteController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler,
-                                 ContentService contentService, HealthQuoteService healthQuoteService) {
+    public HealthQuoteController(SessionDataServiceBean sessionDataServiceBean,
+                                 IPAddressHandler ipAddressHandler,
+                                 ContentService contentService,
+                                 HealthQuoteService healthQuoteService,
+                                 HealthSelectedProductService selectedProductService) {
         super(sessionDataServiceBean, ipAddressHandler);
         this.contentService = contentService;
         this.healthQuoteService = healthQuoteService;
+        this.selectedProductService = selectedProductService;
     }
 
     // call by rest/health/dropdown/list.json?type=X
@@ -166,7 +171,7 @@ public class HealthQuoteController extends CommonQuoteRouter {
                 String prodId = HealthRequestParser.getProductIdFromHealthRequest(data);
                 String xml = ObjectMapperUtil.getObjectMapper().writeValueAsString(results);
                 try {
-                    HealthSelectedProductService selectedProductService = new HealthSelectedProductService(tranId, prodId, xml);
+                    selectedProductService.setProductXML(tranId, prodId, xml);
                 } catch (DaoException e) {
                     LOGGER.error("Failed to write selected product to db {} {} {}", kv("error", e.getMessage()), kv("transactionId", tranId), kv("productId", prodId), e);
                 }
@@ -178,7 +183,7 @@ public class HealthQuoteController extends CommonQuoteRouter {
         }
     }
 
-    protected ResultsWrapper handleEmptyResults(HttpServletRequest request, @FormParam("") @Valid HealthRequest data, HealthQuoteEndpointService healthQuoteTokenService, InfoHealth info) {
+    protected ResultsWrapper handleEmptyResults(HttpServletRequest request, HealthRequest data, HealthQuoteEndpointService healthQuoteTokenService, InfoHealth info) {
         NoResultsObj results = new NoResultsObj();
 
         NoResults noResults = new NoResults();
