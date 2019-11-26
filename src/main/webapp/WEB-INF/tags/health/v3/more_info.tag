@@ -900,7 +900,7 @@
 		{{ } }}
 
 		{{ if((isOutbound || isNextGenOutbound) && (coverType === 'c' || coverType === 'e')) { }}
-			<simples:dialogue id="130" vertical="health" dynamic="true" />
+			<simples:dialogue id="130" vertical="health" mandatory="true" dynamic="true" />
 		{{ } }}
 
         <div class="row ambulanceCoverSection">
