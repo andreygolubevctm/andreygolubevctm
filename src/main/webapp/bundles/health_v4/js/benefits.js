@@ -211,11 +211,11 @@
         var benefitType = meerkat.modules.benefitsModel.getBenefitType();
 
         // reset the checkboxes
-        $elements[benefitType].find('input[data-benefit-id]').removeAttr('checked');
+        $elements[benefitType].find('input[data-benefit-id]').prop('checked', false);
 
         // reselect the checkboxes
         _.each(updatedBenefitsModel, function updateCheckboxes(id) {
-            $elements[benefitType].find('input[data-benefit-id=' + id + ']').prop('checked', 'checked');
+            $elements[benefitType].find('input[data-benefit-id=' + id + ']').prop('checked', true);
         });
 
         // Update limited icon
