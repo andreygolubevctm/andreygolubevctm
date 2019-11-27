@@ -82,6 +82,12 @@
 			color: @state-danger-bg;
 		}
 
+		&.has-error:checked + label:before {
+			border-color: @state-danger-border;
+			background-color: @form-input-common-selected-bg-colour;
+			color: @form-input-common-selected-text-colour;
+		}
+
 		/* Focused state */
 		&:focus + label:before {
 			border-color: darken(@form-input-common-selected-border-colour, 10%);

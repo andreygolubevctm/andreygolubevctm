@@ -13,6 +13,7 @@
 <%@ attribute name="prevStepId" 	required="false"	description="Step ID that the previous button should point to"%>
 <%@ attribute name="nextStepId" 	required="false"	description="Step ID that the next button should point to"%>
 <%@ attribute name="offsetRight" 	required="false"	description="Full width slide offset button to right"%>
+<%@ attribute name="customizedWidthLayout" 	required="false"	description="Set custom width layout"%>
 
 <c:choose>
 <c:when test="${offsetRight == true}">
@@ -21,6 +22,15 @@
 <c:otherwise>
 	<c:set var="offset" value="" />
 </c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${customizedWidthLayout != null}">
+		<c:set var="customizedWidthLayout" value="${customizedWidthLayout}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="customizedWidthLayout" value="col-sm-8" />
+	</c:otherwise>
 </c:choose>
 
 <c:if test="${empty prevStepId}"><c:set var="prevStepId" value="previous" /></c:if>
@@ -38,7 +48,7 @@
 
 	<c:if test="${not empty nextLabel}">
 		<div class="row">
-			<div class="${offset}col-sm-8">
+			<div class="${offset}${customizedWidthLayout}">
 				<div class="row slideAction">
 					<div class="col-sm-offset-4 col-xs-12 col-sm-6 col-md-4">
 						<a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="${nextStepId}" href="javascript:;" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />><c:out value='${nextLabel} ' /> <span class="icon icon-arrow-right"></span></a>
