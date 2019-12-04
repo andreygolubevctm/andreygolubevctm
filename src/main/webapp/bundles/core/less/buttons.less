@@ -11,6 +11,16 @@
 .btn-block {
 	width: 100%;
 }
+.btn-long-text {
+	display: flex;
+	justify-content: center;
+
+	span {
+		word-wrap: break-word;
+		white-space: normal;
+	}
+}
+
 @media (@xs-only) {
 	/* text wrapping on mobile buttons */
 	.btn-group-wrap .btn {

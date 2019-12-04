@@ -44,6 +44,7 @@ public class ResponseAdapterV2 {
                 result.setServiceName(travelQuote.getService());
                 result.setService(travelQuote.getService());
                 result.setProductId(travelQuote.getProductId());
+                result.setProviderName(travelQuote.getProviderName());
                 result.setTrackCode(String.valueOf(travelQuote.getTrackCode()));
 
                 results.add(result);
@@ -273,7 +274,7 @@ public class ResponseAdapterV2 {
                     } else if (productRegion.equals("apac") && userRegion.contains("asia") ||
                             productRegion.equals("apac") && userRegion.contains("pacific")) {
                         continue;
-                        
+
                     } else if (travelQuote.getService().contains("FAST") && productRegion.equals("europe") && userRegion.contains("worldwide") && (userRegion.contains("asia") || userRegion.contains("pacific"))) {
                         // FastCover have a slightly different set of rules for regions CTM-1964
                         continue;
