@@ -12,18 +12,22 @@
     </div>
     <div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
         {{ var coverType = window.meerkat.modules.healthAboutYou.getSituation(); }}
-        {{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && (benefit.benefitLimits.perPerson !== '-')) { }}
+        {{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
         <div>per person: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
         {{ } }}
-        {{ if(benefit.benefitLimits.perPolicy !== '-') { }}
-        <div>per policy: {{= benefit.benefitLimits.perPolicy ? benefit.benefitLimits.perPolicy : '' }}</div>
+        {{ if(benefit.benefitLimits.perPolicy !== '-' || benefit.benefitLimits.perPerson !== '-') { }}
+            {{ if((coverType === 'SM' || coverType === 'SF') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
+                <div>per policy: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
+            {{ }else{ }}
+                <div>per policy: {{= benefit.benefitLimits.perPolicy ? benefit.benefitLimits.perPolicy : '' }}</div>
+            {{ } }}
         {{ } }}
     </div>
     <div class="col-xs-1 newBenefitRow benefitRowTitle">
         <span class="newBenefitStatus benefitStatusIcon_{{= benefit.covered}}"></span>
     </div>
     <div class="col-xs-2 newBenefitRow benefitRowTitle align-center">
-        {{= benefit.waitingPeriod.substring(0, 20) }}
+        {{= benefit.waitingPeriod ? benefit.waitingPeriod.substring(0, 20) : '' }}
     </div>
 </div>
 <div class="row collapse benefitCollapsedContent {{= expanded ? 'in' : '' }}" id="extrasCollapsedContent-{{= key }}" aria-expanded="{{= expanded}}">
@@ -33,10 +37,18 @@
                 <div class="row">
                     <div class="col-xs-12 extraBenefitSubHeading"><strong>Annual Limits:</strong></div>
                     {{ if (benefit.benefitLimits !== undefined) { }}
+                    {{ var situation = window.meerkat.modules.health.getSituation(); }}
+                    {{ var isSingle = situation === 'SM' || situation === 'SF'; }}
+                    {{ if(isSingle) { }}
+                        {{ var perPolicy = benefit.benefitLimits.perPolicy; }}
+                        {{ var perPerson = benefit.benefitLimits.perPerson; }}
+                            {{ if((!perPolicy || (perPolicy && perPolicy.indexOf('$') === -1)) && (perPerson && perPerson.indexOf('$') > -1)) { }}
+                                {{ benefit.benefitLimits.perPolicy = perPerson; }}
+                            {{ } }}
+                    {{ } }}
+
                     <div class="col-xs-12">
                         {{ _.each(benefit.benefitLimits, function (option, key) { }}
-                        {{ var situation = window.meerkat.modules.health.getSituation(); }}
-                        {{ var isSingle = situation === 'SM' || situation === 'SF'; }}
                         {{ var trimmedKey = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
                         {{ if(isSingle && trimmedKey === 'per person') { }}
                         {{ return; }}
