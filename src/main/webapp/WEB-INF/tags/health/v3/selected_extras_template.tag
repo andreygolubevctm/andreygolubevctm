@@ -56,7 +56,8 @@
                         {{ if(key !== 'annualLimit' && option) { }}
                         <div class="row">
                             <div class="col-xs-4 extraBenefitOption">
-                                {{ var benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim(); }}
+                                {{ var benefitLimitsName = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
+                                {{ benefitLimitsName = benefitLimitsName.charAt(0).toUpperCase() + benefitLimitsName.slice(1); }}
                                 {{ if(featureIteratorChild) { }}
                                 {{ _.each(featureIteratorChild.children, function (child) { }}
                                 {{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
@@ -83,7 +84,8 @@
                         {{ if(key !== 'annualLimit' && option) { }}
                         <div class="row">
                             <div class="col-xs-4 extraBenefitOption">
-                                {{ var benefitGroupLimitName = key.replace(/([A-Z])/g, ' $1').trim(); }}
+                                {{ var benefitGroupLimitName = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase(); }}
+                                {{ benefitGroupLimitName = benefitGroupLimitName.charAt(0).toUpperCase() + benefitGroupLimitName.slice(1); }}
                                 {{ if(featureIteratorChild) { }}
                                 {{ _.each(featureIteratorChild.children, function (child) { }}
                                 {{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}

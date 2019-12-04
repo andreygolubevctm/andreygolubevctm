@@ -70,7 +70,7 @@
         {{ var hiddenResultPathsOld = ['extras.Optical.benefits.OpticalSingleVisionLenses', 'extras.Optical.benefits.OpticalMultiFocalLenses', 'extras.DentalGeneral.benefits.DentalGeneral322Extraction']; }}
         {{ var hiddenResultPaths = meerkat.modules.splitTest.get() !== 'atlas' ? hiddenResultPathsNew : hiddenResultPathsOld }}
 
-        {{ if(ft.type == 'feature' && hiddenResultPaths.indexOf(ft.resultPath) === -1) { }}<div class="content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">{{ if(ft.displayValue != 'None') { }}<div class="featureLabel">{{= ft.safeName }}</div><div class="featureValue">{{= ft.displayValue }}</div>{{ } }}</div>{{ } }}
+        {{ if(ft.type == 'feature' && hiddenResultPaths.indexOf(ft.resultPath) === -1) { }}<div class="content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">{{ if(ft.displayValue != '') { }}<div class="featureLabel">{{= ft.safeName }}</div><div class="featureValue">{{= ft.displayValue }}</div>{{ } }}</div>{{ } }}
         {{ } if(ft.displayChildren) { }}
         <div class="children {{= ft.hideChildrenClass }}" data-fid="{{= ft.id }}">
             {{ if(ft.isNotCovered) { }}
