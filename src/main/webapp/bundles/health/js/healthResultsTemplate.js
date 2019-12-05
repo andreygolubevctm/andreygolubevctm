@@ -80,9 +80,10 @@
         resultPathTemp[resultPathTemp.length - 1] = 'serviceLimit';
         var serviceLimitResultPath = resultPathTemp.join('.');
         var displayValueList = [
-            !_.isEmpty(copy) ? copy : '',
+            '<h3 class="noStyles">Group Limits</h3>',
+            !_.isEmpty(copy) ? copy : 'None',
             '<h3 class="noStyles">Sub-limits</h3>',
-            Features.parseFeatureValue(_getPathValue(obj, {resultPath:subLimitResultPath}), true),
+            Features.parseFeatureValue(_getPathValue(obj, {resultPath:subLimitResultPath}), true) || 'None',
             '<h3 class="noStyles">Service limits</h3>',
             Features.parseFeatureValue(_getPathValue(obj, {resultPath:serviceLimitResultPath}), true),
             '<br><br>'
