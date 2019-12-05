@@ -432,9 +432,14 @@
 													{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
 														<div>per person: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
 													{{ } }}
-													{{ if(benefit.benefitLimits.perPolicy !== '-') { }}
-													<div>per policy: {{= benefit.benefitLimits.perPolicy ? benefit.benefitLimits.perPolicy : '' }}</div>
-													{{ } }}
+													
+        								{{ if(benefit.benefitLimits.perPolicy !== '-' || benefit.benefitLimits.perPerson !== '-') { }}
+        								    {{ if((coverType === 'SM' || coverType === 'SF') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
+        								        <div>per policy: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
+        								    {{ }else{ }}
+        								        <div>per policy: {{= benefit.benefitLimits.perPolicy ? benefit.benefitLimits.perPolicy : '' }}</div>
+        								    {{ } }}
+        								{{ } }}
 												</div>
 											</div>
 											<div class="col-xs-3 col-md-2 col-sm-2 col-lg-1 newBenefitRow benefitRowTitle">

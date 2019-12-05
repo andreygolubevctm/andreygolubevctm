@@ -182,10 +182,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
   .resultInsert .productSummary.hasDualPricing {
     height: 100%;
 
-    @media (@lg) {
-    height: 250px;
-    }
-    
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -204,6 +200,10 @@ body[data-step="results"]:not(.moreInfoVisible) {
           margin-top: -10px;
         }
       }
+    }
+
+    .more-info-showapply {
+      margin: 0 auto;
     }
 
     .price.premium {
@@ -232,9 +232,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
       width: 100%;
       height: 145px;
 
-      @media (@lg) {
-        width: 50%;
-      }
       .april-pricing {
         @media (@xs-only) {
           height: 81px;

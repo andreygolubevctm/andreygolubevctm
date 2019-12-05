@@ -127,7 +127,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonR
         IPCheckService ipCheckService = new IPCheckService();
         PageSettings pageSettings = getPageSettingsByCode(brand, vertical);
         if(!ipCheckService.isPermittedAccess(request, pageSettings)) {
-            LOGGER.error("Access attempts exceeded for IP {} in {}", ipAddressHandler.getIPAddress(request), vertical.getCode());
+            LOGGER.info("Access attempts exceeded for IP {} in {}", ipAddressHandler.getIPAddress(request), vertical.getCode());
             throw new RouterException("Access attempts exceeded");
         }
     }

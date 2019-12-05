@@ -114,7 +114,7 @@
         if(!_.isEmpty(displayValue)) {
             return displayValue + _getHelpTooltip(ft);
         }
-        return 'None';
+        return '';
     }
 
     /**
@@ -278,7 +278,7 @@
 
     function getExcessItem(obj, ft) {
         ft.pathValue = _getPathValue(obj, ft);
-        ft.displayValue = Features.parseFeatureValue(ft.pathValue, true) || 'None';
+        ft.displayValue = Features.parseFeatureValue(ft.pathValue, true) || '';
         return ft;
     }
 
