@@ -32,6 +32,7 @@ public class TravelResult extends Result {
     private Boolean isDomestic;
     private Offer offer;
     private Boolean medicalCondsAssessed;
+    private String providerName;
 
     public TravelResult(){
         benefits = new ArrayList<Benefit>();
@@ -44,6 +45,13 @@ public class TravelResult extends Result {
 
     public void setTrackCode(String trackCode) {
         this.trackCode = trackCode;
+    }
+
+    public void setProviderName(String providerName){
+        this.providerName = providerName;
+    }
+    public String getProviderName() {
+        return providerName;
     }
 
     public String getProductId() {

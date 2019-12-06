@@ -26,7 +26,7 @@
             }
         });
         if (!availableExtras.length) {
-            $('.featuresListExtrasOtherList, .featuresListExtrasFullList').addClass('hidden');
+            output = 'None';
         } else {
             _.each(availableExtras, function (ft, i) {
                 var separator = '';
@@ -80,15 +80,16 @@
         resultPathTemp[resultPathTemp.length - 1] = 'serviceLimit';
         var serviceLimitResultPath = resultPathTemp.join('.');
         var displayValueList = [
-            !_.isEmpty(copy) ? copy : '',
+            '<h6>Group Limits</h6>',
+            !_.isEmpty(copy) ? copy : 'None',
             '<h6>Sub-limits</h6>',
-            Features.parseFeatureValue(_getPathValue(obj, {resultPath:subLimitResultPath}), true),
+            Features.parseFeatureValue(_getPathValue(obj, {resultPath:subLimitResultPath}), true) || 'None',
             '<h6>Service limits</h6>',
             Features.parseFeatureValue(_getPathValue(obj, {resultPath:serviceLimitResultPath}), true),
             '<br><br>'
         ];
-        if(_.isEmpty(displayValueList[2])) displayValueList[2] = 'None';
-        if(_.isEmpty(displayValueList[4])) displayValueList[4] = 'None';
+        if(_.isEmpty(displayValueList[2])) displayValueList[2] = '';
+        if(_.isEmpty(displayValueList[4])) displayValueList[4] = '';
         displayValueList[2] = getNormalCopy(displayValueList[2]);
         displayValueList[4] = getNormalCopy(displayValueList[4]);
         return displayValueList.join('');

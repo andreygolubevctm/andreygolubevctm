@@ -7,7 +7,23 @@
     {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(obj.featuresStructureIndexToUse); }}
     {{ var module = meerkat.modules.healthResultsTemplate; }}
     {{ var coverDate = module.getCoverDate(obj); }}
+    {{ var situation = window.meerkat.modules.health.getSituation(); }}
+    {{ var isSingle = situation === 'SM' || situation === 'SF'; }}
+    {{ var perPersonValue = ''; }}
+    {{ var perPersonDisplayValue = ''; }}
     {{ for(var i = 0; i < featureIterator.length; i++) { var ft = module.getItem(obj, featureIterator[i]); if(ft.doNotRender === true) { continue; } }}
+    {{ if(isSingle) { }}
+        {{ if(ft.safeName === 'Per person') { }}
+            {{ perPersonValue = ft.pathValue; }}
+            {{ perPersonDisplayValue = '<strong>' + ft.pathValue + '</strong> per policy'; }}
+        {{ } }}
+        {{ if(ft.safeName === 'Per policy') { }}
+            {{ if((!ft.pathValue || ft.pathValue.indexOf('$') === -1) && (perPersonValue && perPersonValue.indexOf('$') > -1)) { }}
+                {{ ft.pathValue = perPersonValue; }}
+                {{ ft.displayValue = perPersonDisplayValue; }}
+            {{ } }}
+        {{ } }}
+    {{ } }}
     <div class="cell {{= ft.classString }}">
         {{ if(ft.displayItem) { }}
         {{ if(ft.type == 'category') { }}
@@ -51,7 +67,7 @@
         {{ var hiddenResultPaths = meerkat.modules.splitTest.get() !== 'atlas' ? hiddenResultPathsNew : hiddenResultPathsOld }}
 
         {{ var showContent = (hiddenResultPaths.indexOf(ft.resultPath) === -1) || (ft.pathValue && hiddenResultPaths.indexOf(ft.resultPath) > -1) }}
-        
+
         {{ if(ft.type == 'feature' && showContent) { }}<div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">{{= ft.displayValue }}</div>{{ } }}
         {{ } if(ft.displayChildren) { }}
         <div class="children {{= ft.hideChildrenClass }}" data-fid="{{= ft.id }}">

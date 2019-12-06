@@ -20,11 +20,21 @@
 	<jsp:attribute name="navbar">
 		<div class="hidden-sm hidden-md hidden-lg">
 			<div class="filters-row flex-center-align flex-right-align">
+				<a class="revise-details-link" href="javascript:;" data-slide-control="previous">
+					<span class="icon icon-arrow-left"></span>
+					<span>Revise details</span>
+				</a>
 				<a class="edit-details-travel-mobile" href="javascript:;">Edit details</a>
 				<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
 			</div>
 		</div>
 		<div class="main-filter-buttons flex-center-align">
+			<div class="hidden-md hidden-lg hidden-xs col-sm-4">
+				<a href="javascript:;" data-slide-control="previous">
+					<span class="icon icon-arrow-left"></span>
+					<span>Revise details</span>
+				</a>
+			</div>
 			<div class="col-xs-6 col-sm-7 col-md-12">
 				<div class="flex-center-align hidden-xs hidden-sm">
 					<div><a href="javascript:;" data-slide-control="previous"><span class="icon icon-arrow-left"></span> <span>Revise details</span></a></div>

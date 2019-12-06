@@ -24,6 +24,7 @@ public class TravelQuote {
     private boolean encodeQuoteUrl;
     private Offer offer;
     private Product product;
+    private String providerName;
     private List<Benefit> benefits;
     private Boolean isDomestic;
     private Boolean medicalCondsAssessed;
@@ -41,6 +42,13 @@ public class TravelQuote {
 
     public String getProductId() {
         return productId;
+    }
+
+    public void setProviderName(String providerName){
+        this.providerName = providerName;
+    }
+    public String getProviderName() {
+        return providerName;
     }
 
     public void setProductId(String productId) {
