@@ -416,7 +416,7 @@
             suburb = $fields.address[returnAddrType].suburbName.val(),
             state = $fields.address[returnAddrType].state.val(),
             postcode = $fields.address[returnAddrType].postcode.val(),
-            isNonStdAddress = $fields.address[returnAddrType].nonStd.val(),
+            isNonStdAddress = $fields.address[returnAddrType].nonStd.filter(':checked').val(),
             nonStdStreet = $fields.address[returnAddrType].nonStdStreet.val(),
             unitType = $fields.address[returnAddrType].unitType.val(),
             unitNo = $fields.address[returnAddrType].unitShop.val(),
@@ -460,6 +460,20 @@
 	        if(streetName.length > 0 || nonStdStreet.length > 0) {
 		        addrLn1 += (streetName.length > 0 ? streetName : nonStdStreet) + " ";
 	        }
+        } else if (isNonStdAddress === 'Y') {
+            if (unitNo.length > 0) {
+                addrLn1 += unitNo + "  ";
+            }
+
+            // for clarity a slash could be added here if both exist
+
+            if (streetNum.length > 0) {
+                addrLn1 += streetNum + " ";
+            }
+
+            if(streetName.length > 0 || nonStdStreet.length > 0) {
+                addrLn1 += (streetName.length > 0 ? streetName : nonStdStreet) + " ";
+            }
         } else {
             if (fullAddress.lastIndexOf(suburb) > 1) {
                 addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(suburb) - 1));

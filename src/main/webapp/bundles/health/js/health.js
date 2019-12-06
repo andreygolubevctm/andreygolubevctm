@@ -529,6 +529,8 @@
 
 				meerkat.modules.healthDependants.initHealthDependants();
 				meerkat.modules.healthMedicare.initHealthMedicare();
+				meerkat.modules.healthAGRScripting.onInitialise();
+				meerkat.modules.healthApplicationDynamicScripting.onInitialise();
 
 				if (!meerkat.modules.splitTest.isActive(18)) {
 					healthApplicationDetails.init();
@@ -613,6 +615,8 @@
 
                     setHospitalCoverClass(selectedProduct);
                     setExtrasCoverClass(selectedProduct);
+					meerkat.modules.healthAGRScripting.onBeforeEnterApply();
+					meerkat.modules.healthApplicationDynamicScripting.onBeforeEnterApply();
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
@@ -646,7 +650,6 @@
 
 				meerkat.modules.healthPaymentDate.initPaymentDate();
 				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
-                meerkat.modules.healthPayConfDetailsModal.onInitialise();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
@@ -707,7 +710,7 @@
 
 					// Validation passed, submit the application after showing confirmation modal - see subscribe event below.
 					if (valid && secondaryValidation) {
-                        meerkat.modules.healthPayConfDetailsModal.open(submitApplication);
+						submitApplication();
 					}
 				});
 
@@ -813,6 +816,26 @@
 				}
 			},
 			onComplete: function() {
+
+				if (content.length > 0) {
+					// this uses the application date when testing in NXI and the date is changed
+					var applicationDate = $('#health_searchDate').val();
+					var applicationDateString = '';
+
+					if(applicationDate) {
+						var dateSplit = applicationDate.split('/');
+						if(dateSplit.length == 3) {
+							var year = dateSplit[2];
+							var month = dateSplit[1];
+							var day = dateSplit[0];
+							applicationDateString = year + '-' + month + '-' + day;
+						}
+					}
+
+					var curDate = applicationDateString ? new Date(applicationDateString) : meerkat.site.serverDate;
+					content = content.replace(new RegExp('%DATE_TODAY%', 'g'), meerkat.modules.dateUtils.dateValueFormFormat(curDate));
+				}
+
 				callback(content);
 			}
 		});
@@ -1526,11 +1549,20 @@
 			if(situation === 'F' || situation === 'SPF' || situation === 'EF' || situation === 'ESP'){
 				$('.health_cover_details_dependants').show();
 			}
-			$('.simples-dialogue-37').show();
+			if ($('#health_healthCover_income').val() === '3') {
+				$('.simples-dialogue-144').toggleClass('hidden', false);
+				$('.simples-dialogue-37').hide();
+				$('.simples-dialogue-143').toggleClass('hidden', true);
+			} else {
+				$('.simples-dialogue-37').show();
+				$('.simples-dialogue-143').toggleClass('hidden', true);
+			}
 		} else {
 			$('#health_healthCover_tier').hide();
 			$('.health_cover_details_dependants').hide();
 			$('.simples-dialogue-37').hide();
+			$('.simples-dialogue-143').toggleClass('hidden', false);
+			$('.simples-dialogue-144').toggleClass('hidden', true);
 		}
 		webChatHideFields();
 

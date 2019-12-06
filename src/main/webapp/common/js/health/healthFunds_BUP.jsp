@@ -302,9 +302,6 @@ var healthFunds_BUP = {
 		healthFunds_BUP.$partnerFirstname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
 		healthFunds_BUP.$partnerSurname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
 
-		healthFunds_BUP.$primaryMiddleName.setRequired(true);
-		healthFunds_BUP.$partnerMiddleName.setRequired(true);
-
 		<%-- Unset any ipp tokenisation --%>
 		meerkat.modules.healthPaymentIPP.reset();
 	}

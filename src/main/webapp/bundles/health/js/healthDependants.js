@@ -13,7 +13,7 @@
         dependantTemplate,
         /**
          * The data that makes up a dependant.
-         * @type {{dependantId: number, title: string, firstName: string, middleName: string, lastname: string, fulltime: string, school: string, schoolDate: string, schoolID: string, dob: string, dobInputD: string, dobInputY: string, dobInputM: string, maritalincomestatus: string, apprentice: string}}
+         * @type {{dependantId: number, title: string, firstName: string, middleName: string, lastname: string, fulltime: string, school: string, schoolDate: string, schoolID: string, dob: string, dobInputD: string, dobInputY: string, dobInputM: string, maritalincomestatus: string, apprentice: string, gender: string}}
          */
         defaultDependant = {
             dependantId: 1,
@@ -31,7 +31,8 @@
             dobInputM: "",
             maritalincomestatus: "",
             relationship:"",
-            apprentice: ""
+            apprentice: "",
+            gender: ""
         },
         dependantLimit = 12,
         dependantsArr = [],
@@ -326,6 +327,34 @@
             }
             if (providerConfig.showApprenticeField) {
                 $(prefix + '_apprentice').val(dependantsArr[i].apprentice);
+            }
+
+            if(meerkat.site.isCallCentreUser) {
+                //simples journey - dependant gender fields are radio btns
+                if (dependantsArr[i].gender_M) {
+                    $(prefix + '_gender_M').prop('checked', true);
+                    $(prefix + '_gender_M').parent().addClass( "active" );
+                } else if (dependantsArr[i].gender_F) {
+                    $(prefix + '_gender_F').prop('checked', true);
+                    $(prefix + '_gender_F').parent().addClass( "active" );
+                } else if (dependantsArr[i].gender) {
+                    if (dependantsArr[i].gender === 'M') {
+                        $(prefix + '_gender_M').prop('checked', true);
+                        $(prefix + '_gender_M').parent().addClass( "active" );
+                    } else if (dependantsArr[i].gender === 'F') {
+                        $(prefix + '_gender_F').prop('checked', true);
+                        $(prefix + '_gender_F').parent().addClass( "active" );
+                    }
+                }
+            } else {
+                // v4 online journey - dependant gender fields are hidden fields
+                if (dependantsArr[i].gender) {
+                    $(prefix + '_gender').val(dependantsArr[i].gender);
+                } else if (dependantsArr[i].gender_M) {
+                    $(prefix + '_gender').val('M');
+                } else if (dependantsArr[i].gender_F) {
+                    $(prefix + '_gender').val('F');
+                }
             }
 
         }

@@ -61,6 +61,10 @@
                 <field_v4:person_dob xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s date of birth" required="true" ageMin="0"
                                      additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}" disableErrorContainer="${true}" />
             </form_v4:row>
+
+            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/gender" />
+            <field_v1:hidden xpath="${fieldXpath}" className="health-person-details person-gender" />
+
                 <%-- Only shows if showFullTimeField is true, AND the school age is between schoolMinAge and schoolMaxAge --%>
             {{ if(providerConfig.showFullTimeField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/fulltime"/>

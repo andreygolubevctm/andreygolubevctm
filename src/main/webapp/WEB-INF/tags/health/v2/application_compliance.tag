@@ -18,3 +18,4 @@
 <simples:dialogue id="29"  vertical="health" mandatory="true" />
 <simples:dialogue id="97"  vertical="health" className="simples-dialogue-hospital-cover classification-nonPublic" />
 <simples:dialogue id="102" vertical="health" className="simples-dialogue-hospital-cover classification-public" />
+<simples:dialogue id="169" vertical="health" mandatory="true"  className="simplesAgrElementsToggle hidden"  />

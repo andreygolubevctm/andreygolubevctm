@@ -22,7 +22,7 @@
 		<%-- the funds's dependants details definition dynamically inserted here - currently defined in the fund specific healthFunds_ file --%>
 		<%-- this template is currently used by simples --%>
         <p class="definition"></p>
-		
+
 		<div id="${name}_threshold" class="text-danger">
 
 			<p>
@@ -43,7 +43,7 @@
 		<form_v2:row id="dependents_list_options">
 			<a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependant">Add New Dependant</a>
 		</form_v2:row>
-		
+
 		<%-- If the user changes the amount of dependants here, we will need to re-confirm their selection --%>
 		<div class="health-dependants-tier" style="display:none">
 
@@ -57,6 +57,8 @@
 				<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 			</form_v2:row>
 		</div>
+
+		<simples:dialogue id="165" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
 
 	</form_v2:fieldset>
 
