@@ -7,24 +7,9 @@
     {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(obj.featuresStructureIndexToUse); }}
     {{ var module = meerkat.modules.healthResultsTemplate; }}
     {{ var coverDate = module.getCoverDate(obj); }}
-    {{ var situation = window.meerkat.modules.healthSituation.getSituation(); }}
-    {{ var isSingle = situation === 'SM' || situation === 'SF'; }}
-    {{ var perPersonValue = ''; }}
-    {{ var perPersonDisplayValue = ''; }}
+
     {{ for(var i = 0; i < featureIterator.length; i++) { var ft = module.getItem(obj, featureIterator[i]); }}
     {{ if(ft.classStringForInlineLabel.indexOf('more-info-only') != -1) { continue; } }}
-    {{ if(isSingle) { }}
-        {{ if(ft.safeName === 'Per person') { }}
-            {{ perPersonValue = ft.pathValue; }}
-            {{ perPersonDisplayValue = '<strong>' + ft.pathValue + '</strong>'; }}
-        {{ } }}
-        {{ if(ft.safeName === 'Per policy') { }}
-            {{ if((!ft.pathValue || ft.pathValue.indexOf('$') === -1) && (perPersonValue && perPersonValue.indexOf('$') > -1)) { }}
-                {{ ft.pathValue = perPersonValue; }}
-                {{ ft.displayValue = perPersonDisplayValue; }}
-            {{ } }}
-        {{ } }}
-    {{ } }}
     <div class="cell {{= ft.classString }}" title="Click on each benefit to learn about what level of cover this policy offers.">
         {{ if(ft.displayItem) { }}
         {{ if(ft.type == 'category') { }}
