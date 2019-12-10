@@ -30,6 +30,14 @@
 <%-- HTML --%>
 <go:script href="common/javascript/legacy_address.js" marker="js-href"/>
 
+<c:if test="${isResidentialAddress}">
+	<simples:dialogue id="150" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
+</c:if>
+
+<c:if test="${isPostalAddress}">
+	<simples:dialogue id="152" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
+</c:if>
+
 <c:if test="${empty showTitle or showTitle == 'true'}">
 	<form_v2:row fieldXpath="${fieldXpath}" labelTag="h5" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22" className="addressHeading" hideHelpIconCol="true"></form_v2:row>
 </c:if>
@@ -225,3 +233,11 @@
 		}
 	});
 </go:script>
+
+<c:if test="${isResidentialAddress}">
+	<simples:dialogue id="151" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
+</c:if>
+
+<c:if test="${isPostalAddress}">
+	<simples:dialogue id="153" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
+</c:if>

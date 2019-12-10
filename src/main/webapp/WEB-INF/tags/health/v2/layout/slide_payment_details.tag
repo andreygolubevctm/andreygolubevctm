@@ -59,8 +59,6 @@
 					<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="submit_btn" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Submit Application <span class="icon icon-arrow-right"></span></a>
 				</form_v2:row>
 
-				<health_v2_confirmation:modal />
-
 			</layout_v1:slide_content>
 
 		</jsp:body>

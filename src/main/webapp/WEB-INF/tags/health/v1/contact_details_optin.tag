@@ -315,6 +315,9 @@
 
         <%--dynamic scripts--%>
         <simples:dialogue id="37" vertical="health" mandatory="true" />
+        <simples:dialogue id="143" vertical="health" mandatory="true" className="hidden"/>
+        <simples:dialogue id="144" vertical="health" mandatory="true" className="hidden"/>
+
 
     </jsp:body>
 

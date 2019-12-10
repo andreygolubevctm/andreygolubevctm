@@ -41,6 +41,18 @@ var healthFunds_MYO = {
                 <form_v2:row fieldXpath="${fieldXpath}" label="Email Address" id="partner-email">
                     <field_v2:email xpath="${fieldXpath}" title="your partners email address" required="true" size="40" />
                 </form_v2:row>
+
+                <div class="simples-dialogue-164 simples-dialogue row-content simplesDynamicElements mandatory onlyMyo">
+                    <div class="wrapper">
+
+                        <div class="checkbox-custom simples_dialogue-checkbox-164 checkbox">
+                            <input type="checkbox" name="health_simples_dialogue-checkbox-164" id="health_simples_dialogue-checkbox-164" class="checkbox-custom  checkbox" value="Y" required="" data-msg-required="Please confirm each mandatory dialog has been read to the client" aria-required="true">
+
+                                <label for="health_simples_dialogue-checkbox-164">Your partner&apos;s email address is %PARTNER_EMAIL_ADDRESS_PHONETIC% is that correct?</label>
+                        </div>
+                    </div>
+                </div>
+
             </c:set>
 
             <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />

@@ -29,7 +29,7 @@
             <form_v2:row label="Name" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/title"/>
                 <form_v2:row fieldXpath="${fieldXpath}" label="Title" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}" className="selectContainerTitle">
-                    <field_v2:import_select xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html" placeHolder="Title" disableErrorContainer="${true}" />
+                    <field_v2:import_select xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html" placeHolder="Title" disableErrorContainer="${false}" additionalAttributes=" data-rule-genderTitle='dependant{{= obj.dependantId }}-gender' "/>
                 </form_v2:row>
 
 
@@ -61,6 +61,12 @@
                 <field_v2:person_dob xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s date of birth" required="true" ageMin="0"
                                       additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}" disableErrorContainer="${true}"/>
             </form_v2:row>
+
+            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/gender" />
+            <form_v2:row fieldXpath="${fieldXpath}" label="Gender" id="${name}_genderRow">
+                <field_v2:array_radio id="${name}_gender" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="dependant {{= obj.dependantId }}'s gender" className="health-person-details dependant{{= obj.dependantId }}-gender" disableErrorContainer="${true}" />
+            </form_v2:row>
+
             <%-- Only shows if showFullTimeField is true, AND the school age is between schoolMinAge and schoolMaxAge --%>
             {{ if(providerConfig.showFullTimeField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/fulltime"/>

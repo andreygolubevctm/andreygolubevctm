@@ -26,7 +26,7 @@
                 healthProductHospitalClass: $('#health_application_productClassification_hospital'),
                 healthProductExtrasClass: $('#health_application_productClassification_extras'),
                 primary: _createFieldReferences('primary'),
-                partner: _createFieldReferences('partner')                
+                partner: _createFieldReferences('partner')
             };
 
             $unitElements = {
@@ -161,6 +161,14 @@
             var applicant = $(this).closest('.qe-window').find('.health-person-details').hasClass('primary') ? 'primary' : 'partner';
 
             _toggleSelectGender(applicant);
+
+            if (meerkat.modules.healthDependants.getNumberOfDependants() > 0) {
+                for (var i = 1; i <= meerkat.modules.healthDependants.getNumberOfDependants(); i++) {
+                    var dependant = 'dependants_dependant' + i;
+                    _toggleSelectGender(dependant);
+                }
+            }
+
         });
 
         $elements.genderToggle.on('change', function onGenderToggle() {
