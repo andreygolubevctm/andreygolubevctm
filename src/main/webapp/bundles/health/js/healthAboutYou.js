@@ -29,7 +29,9 @@
 		$lhcContainers,
 		$medicare,
 		$healthSituation,
-		$abdElements;
+		$abdElements,
+		$tier3Dialogue,
+		$hasRebateDialogue;
 
 	function init(){
 		$(document).ready(function () {
@@ -49,6 +51,8 @@
 	function initFields() {
 		$healthCoverDetailsDependants = $('.health_cover_details_dependants'),
 		$healthCoverIncomeMessage = $('#health_healthCover_incomeMessage'),
+		$tier3Dialogue = $('.simples-dialogue-144'),
+		$hasRebateDialogue = $('.simples-dialogue-37'),
 		$primaryCurrentCover = $('#health_healthCover_health_cover'),
 		$primaryContinuousCoverContainer = $('#health-continuous-cover-primary'),
 		$partnerContainer = $('#partner-health-cover'),
@@ -196,7 +200,7 @@
 		if(!dob) return;
 
 		var applicationDate = $('#health_searchDate').val();
-		var applicationDateString = ''; 
+		var applicationDateString = '';
 
 		if(applicationDate) {
 				var dateSplit = applicationDate.split('/');
@@ -359,6 +363,13 @@
 
 	function toggleMlsMessage () {
 		$('#health_healthCover_tier_row_legend_mls').toggleClass('hidden', ['CHC', 'ATP'].indexOf($healthSituation.val()) < 0 || $healthCoverIncome.val() !== '0');
+		if ($healthCoverIncome.val() === '3') {
+			$hasRebateDialogue.hide();
+			$tier3Dialogue.toggleClass('hidden', false);
+		} else {
+			$hasRebateDialogue.show();
+			$tier3Dialogue.toggleClass('hidden', true);
+		}
 	}
 
 	function getSituation() {

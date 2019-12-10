@@ -40,3 +40,5 @@
 								additionalAttributes="${additionalAttributes}"
 								requireOnePlusNumber="true"/>
 </form_v2:row>
+
+<simples:dialogue id="154" vertical="health" mandatory="true"  className="simplesDynamicElements"  />

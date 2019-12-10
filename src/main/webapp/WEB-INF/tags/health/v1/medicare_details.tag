@@ -11,6 +11,8 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-medicare_details">
 
+	<simples:dialogue id="157" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
+
 	<simples:dialogue id="30" vertical="health" className="red" />
 
 	<c:set var="fieldXpath" value="${xpath}/cover" />
@@ -34,6 +36,8 @@
 			<field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="Medicare card expiry date" required="true" className="health-medicare_details-expiry" maxYears="10" disableErrorContainer="${true}" />
 		</form_v2:row>
 	</form_v2:row>
+
+	<simples:dialogue id="158" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
 
 	<field_v3:medicare_name_group_hidden_names xpath="${xpath}" showInitial="${true}" />
 

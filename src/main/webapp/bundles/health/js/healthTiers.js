@@ -125,9 +125,14 @@ Handling of the rebate tiers based off situation
 	
 	};
 
+	function getIncome() {
+		return $income.val();
+	}
+
 	meerkat.modules.register("healthTiers", {
 		initHealthTiers: initHealthTiers,
-		setTiers: setTiers
+		setTiers: setTiers,
+		getIncome: getIncome
 	});
 
 })(jQuery);

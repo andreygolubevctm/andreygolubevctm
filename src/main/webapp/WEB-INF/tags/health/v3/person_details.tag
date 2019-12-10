@@ -21,17 +21,63 @@
 
 <%-- HTML --%>
 <div class="health-person-details-${id} health-person-details ${id}">
+
+		<c:choose>
+			<c:when test="${id eq 'partner'}">
+				<simples:dialogue id="159" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:when>
+			<c:otherwise>
+				<simples:dialogue id="145" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:otherwise>
+		</c:choose>
+
 		<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" middleInitialMaxlength="1" label="Name as it appears on Medicare Card" />
+
+		<c:choose>
+			<c:when test="${id eq 'partner'}">
+				<simples:dialogue id="160" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:when>
+			<c:otherwise>
+				<simples:dialogue id="146" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:otherwise>
+		</c:choose>
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
 			<field_v2:person_dob xpath="${fieldXpath}" title="${dobTitle}" required="true" ageMin="16" ageMax="120" disableErrorContainer="${true}" />
 		</form_v2:row>
 
+		<c:choose>
+			<c:when test="${id eq 'partner'}">
+				<simples:dialogue id="161" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:when>
+			<c:otherwise>
+				<simples:dialogue id="147" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:otherwise>
+		</c:choose>
+
+		<c:choose>
+			<c:when test="${id eq 'partner'}">
+				<simples:dialogue id="162" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:when>
+			<c:otherwise>
+				<simples:dialogue id="148" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:otherwise>
+		</c:choose>
+
 		<c:set var="fieldXpath" value="${xpath}/gender" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Gender" id="${name}_genderRow" smRowOverride="5">
 			<field_v2:array_radio id="${name}_gender" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" disableErrorContainer="${true}" />
 		</form_v2:row>
+
+		<c:choose>
+			<c:when test="${id eq 'partner'}">
+				<simples:dialogue id="163" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:when>
+			<c:otherwise>
+				<simples:dialogue id="149" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			</c:otherwise>
+		</c:choose>
 
 		<c:if test="${id == 'partner'}">
 			<c:set var="fieldXpath" value="${xpath}/authority" />
@@ -39,5 +85,4 @@
 				<field_v2:array_radio id="${name}_authority" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="${title} authority permission" className="health-person-details-authority" />
 			</form_v2:row>
 		</c:if>
-
 </div>

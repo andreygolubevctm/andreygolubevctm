@@ -9,7 +9,10 @@
             return true;
         }
 
-        var _gender = $(element).closest('.qe-window').find('.person-gender input:checked').val();
+        /* Adding another case for dependants gender */
+        var className = (param === true) ? 'person-gender' : param;
+
+        var _gender = $(element).closest('.qe-window').find('.' + className + ' input:checked').val();
 
         if (typeof _gender == 'undefined' || _gender === '') {
             return true; // no need to validate until both completed

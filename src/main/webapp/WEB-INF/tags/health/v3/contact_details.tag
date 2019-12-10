@@ -65,6 +65,8 @@
 
 		<group_v2:contact_numbers xpath="${xpath}" required="true" />
 
+		<simples:dialogue id="155" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
+
 		<c:set var="fieldXpath" value="${xpath}/email" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Email Address" id="${name}_emailGroup">
 			<field_v2:email xpath="${fieldXpath}" title="your email address" required="true" size="40" />
@@ -73,6 +75,8 @@
 			<field_v1:hidden xpath="${xpath}/emailhistory" />
 		</form_v2:row>
 
+		<simples:dialogue id="156" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
+
 		<c:set var="fieldXpath" value="${xpath}_no_email" />
 		<form_v2:row fieldXpath="${fieldXpath}" id="${name}_noEmailGroup">
 			<field_v2:checkbox xpath="${fieldXpath}" value="N"
@@ -80,7 +84,7 @@
 				required="false"
 				label="true" />
 		</form_v2:row>
-		
+
 		<form_v2:row id="${name}_optInEmail-group" hideHelpIconCol="true">
 			<field_v2:checkbox xpath="${xpath}/optInEmail" value="Y"
 				title="Stay up to date with news and offers direct to your inbox"
@@ -94,7 +98,7 @@
 					className="health_application-details_contact-group hidden">
 			<field_v2:array_radio items="E=Email,P=Post,S=SMS" xpath="${fieldXpath}" title="like the fund to contact you" required="false" id="${name}_contactPoint" />
 		</form_v2:row>
-		
+
 		<%-- Product Information --%>
 		<field_v1:hidden xpath="${xpath}/provider" className="health_application_details_provider" />
 		<field_v1:hidden xpath="${xpath}/productId" className="health_application_details_productId" />
