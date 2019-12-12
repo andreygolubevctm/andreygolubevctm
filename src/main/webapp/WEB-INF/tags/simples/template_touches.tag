@@ -4,12 +4,6 @@
 
 <script id="simples-template-touches" type="text/html">
 
-
-<c:choose>
-	<c:when test="${isRoleSupervisor or isRoleIT}">{{ var isAdmin = true; }}</c:when>
-	<c:otherwise>{{ var isAdmin = false; }}</c:otherwise>
-</c:choose>
-
 <div class="touch-container">
 
 	<%-- TOUCHES --%>
@@ -31,7 +25,7 @@
 			{{ var displayTouches = ['N','R','A','P','F','C','L','S', 'B']; }}
 			{{ var count = 0; }}
 			{{ _.each(touches, function(touch) { }}
-				{{ if ((touch.type === null || _.indexOf(displayTouches, touch.type.code) == -1 ) || (isAdmin !== true && count >= 1)) return; }}
+				{{ if (touch.type === null || _.indexOf(displayTouches, touch.type.code) == -1 ) return; }}
 				{{ var _des = touch.type.description; }}
 				<tr>
 					<td>{{= touch.datetime }}</td>

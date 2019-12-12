@@ -70,7 +70,9 @@
 							{{ if (result.quoteType === 'health') { }}
 								<h3>{{= result.contacts.name }}</h3>
 
-								{{ if (result.email !== '') { }}
+								{{ if (result.applicationEmail !== '') { }}
+									<div class="text-info">{{= result.applicationEmail }}</div>
+								{{ } else if (result.email !== '') { }}
 									<div class="text-info">{{= result.email }}</div>
 								{{ } }}
 

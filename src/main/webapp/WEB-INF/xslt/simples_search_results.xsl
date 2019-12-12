@@ -13,6 +13,7 @@
 					<id><xsl:value-of select="id" /></id>
 					<rootid><xsl:value-of select="rootid" /></rootid>
 					<email><xsl:value-of select="email" /><!-- TODO check TD fields --></email>
+					<applicationEmail><xsl:value-of select="application/email" /></applicationEmail>
 					<quoteBrandName><xsl:value-of select="quoteBrandName" /></quoteBrandName>
 					<quoteBrandId><xsl:value-of select="quoteBrandId" /></quoteBrandId>
 					<quoteDate><xsl:value-of select="quoteDate" /></quoteDate>
@@ -46,11 +47,14 @@
 						</name>
 						<primary>
 							<name><xsl:value-of select="$primary" /></name>
+							<yourDtlsName><xsl:value-of select="translate(contactDetails/name, $LOWERCASE, $UPPERCASE)" /></yourDtlsName>
 							<dob><xsl:value-of select="application/primary/dob" /></dob>
+							<yourDtlsDob><xsl:value-of select="healthCover/primary/dob" /></yourDtlsDob>
 						</primary>
 						<partner>
 							<name><xsl:value-of select="$partner" /></name>
 							<dob><xsl:value-of select="application/partner/dob" /></dob>
+							<yourDtlsDob><xsl:value-of select="healthCover/partner/dob" /></yourDtlsDob>
 						</partner>
 					</contacts>
 
