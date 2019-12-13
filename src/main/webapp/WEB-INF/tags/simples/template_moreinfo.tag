@@ -42,12 +42,12 @@
 				</tr>
 				<tr>
 					<th>Primary applicant</th>
-					<td>{{= contacts.primary.name }}{{ if (contacts.primary.dob !== '') { }}<br>{{= contacts.primary.dob }}{{ } }}</td>
+					<td>{{ if (contacts.primary.name !== '') { }}{{= contacts.primary.name }}{{ } else if (contacts.primary.yourDtlsName !== '') { }}{{= contacts.primary.yourDtlsName }}{{ } }}{{ if (contacts.primary.dob !== '') { }}<br>{{= contacts.primary.dob }}{{ } else if (contacts.primary.yourDtlsDob !== '') { }}<br>{{= contacts.primary.yourDtlsDob }}{{ } }}</td>
 				</tr>
-				{{ if (contacts.partner.name !== '' || contacts.partner.dob !== '') { }}
+				{{ if (contacts.partner.name !== '' || contacts.partner.dob !== '' || contacts.partner.yourDtlsDob  !== '') { }}
 					<tr>
 						<th>Partner applicant</th>
-						<td>{{= contacts.partner.name }}{{ if (contacts.partner.dob !== '') { }}<br>{{= contacts.partner.dob }}{{ } }}</td>
+						<td>{{= contacts.partner.name }}{{ if (contacts.partner.dob !== '') { }}<br>{{= contacts.partner.dob }}{{ } else if (contacts.partner.yourDtlsDob !== '') { }}<br>{{= contacts.partner.yourDtlsDob }}{{ } }}</td>
 					</tr>
 				{{ } }}
 				{{ if (resultData.phone !== '') { }}
