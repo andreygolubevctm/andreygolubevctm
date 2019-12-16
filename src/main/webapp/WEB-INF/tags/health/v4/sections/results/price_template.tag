@@ -8,14 +8,13 @@
 {{ var discountText = healthResultsTemplate.getDiscountText(obj); }}
 <div class="price premium">
     {{ _.each(availableFrequencies, function(freqObj) { }}
-    {{ var formatCurrency = meerkat.modules.currencyField.formatCurrency; }}
     {{ var frequency = freqObj.key; }}
     {{ if (typeof availablePremiums[frequency] === "undefined") { return; } }}
     {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode); }}
     {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
     {{ var property = obj.premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = obj.altPremium; } }}
 	{{ var prem = obj.premium[frequency]; }}
-    {{ var textLhcFreePricing = 'inc ' + formatCurrency(prem.rebateValue) + ' Govt Rebate';}}
+	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
         {{ if (!result.hasValidPrice) { }}
