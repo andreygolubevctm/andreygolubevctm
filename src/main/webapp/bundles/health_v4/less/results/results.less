@@ -390,16 +390,16 @@
 
         &.gov-unclassified {
           background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
-
+    
           &.force-large {
             background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
           }
-
+    
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
           }
         }
-
+    
         &.gov-bronze-plus {
           background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
           &::before {
@@ -418,7 +418,6 @@
           background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
           &::before {
             content: "SILVER";
-            color: #333333;
           }
         }
 
@@ -426,10 +425,9 @@
           background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
           &::before {
             content: "SILVER+";
-            color: #333333;
           }
         }
-
+    
         &.gov-gold {
           background-image: linear-gradient(to right, #f3d838, #fded8d 50%, #f3d838);
           &::before {
@@ -633,7 +631,7 @@
 
     .featuresList {
       .hospitalCoverSection,
-      .extrasCoverSection,
+      .extrasCoverSection, 
       .ambulanceCoverSection  {
         .coverTitle {
           padding: 15px 15px 15px;
@@ -662,10 +660,10 @@
           border-bottom: 1px solid @results-border-color;
         }
       }
-
+      
       @media (@lg) {
         .hospitalCoverSection,
-        .extrasCoverSection,
+        .extrasCoverSection, 
         .ambulanceCoverSection  {
           .coverTitle {
             padding: 15px 15px 15px;
@@ -733,10 +731,10 @@
 
         .contentInner {
           color: #333333;
-          .cover-title {
+          .cover-title {	
             font-size: 14px;
             font-weight: 600;
-          }
+          } 
         }
 
           .labelInColumn {
@@ -994,12 +992,12 @@
                   margin-right: 5px;
                   margin-top: -7px;
                   vertical-align: middle;
-                }
+                } 
               }
             }
           }
 
-
+         
             .contentInner {
               .benefit-container {
                 .noCover {
@@ -1009,7 +1007,7 @@
                     content: '\e601';
                     color: @theme-accent-3;
                     vertical-align: top;
-                  }
+                  } 
                 }
               }
             }
@@ -1025,7 +1023,7 @@
                     right: 2px;
                     margin-top: -12px;
                     vertical-align: top;
-                  }
+                  } 
                 }
               }
             }
@@ -1036,12 +1034,12 @@
               .tbaCover {
               .benefit-icon {
                 margin-left: 0px;
-
+                
                 &::before {
                   .icon-tba();
                   right: 2px;
                   margin-top: -12px;
-                }
+                } 
               }
             }
           }
