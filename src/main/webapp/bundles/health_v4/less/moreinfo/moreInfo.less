@@ -380,6 +380,10 @@
   justify-content: space-between;
   margin: -10px;
   width: 100%;
+
+  .current-price .frequencyAmount{
+    font-size: 56px;
+  }
 }
 
 .moreInfoPriceWrapper {
@@ -424,6 +428,22 @@
   }
 }
 
+.future-price {
+  .moreInfoPriceHeading {
+    background-color: #DD4C5D;
+  }
+
+  .moreInfoPrice {
+    .frequencyAmount {
+      font-size: 42px;
+      color: #DD4C5D;
+    }
+
+    .frequencyTitle {
+      color: @gray-dark;
+    }
+  }
+}
 .ambulanceCoverSection {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -529,6 +549,7 @@
   .productSummary {
 
     .frequency {
+      padding: 16px 0;
       .lhcText {
         color: @gray-darker;
         span {
@@ -1085,5 +1106,5 @@ body[data-is-single="true"] {
   min-width: 130px;
   max-width: 220px;
   margin-bottom: 2px;
-  margin-top: 5px;
+  margin-top: 15px;
 }

@@ -42,7 +42,7 @@
         		    {{ priceText = premium.lhcfreetext; }}
         		{{ } }}
 				{{ var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount) }}
-				{{ var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate' }}
+				{{ var textLhcFreePricing = 'inc ' + formatCurrency(premium.rebateValue) + ' Govt Rebate';}}
 				{{ var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount) }}
 				{{ var showABDToolTip = premium.abd > 0; }}
 
