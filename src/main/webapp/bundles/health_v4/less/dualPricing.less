@@ -15,6 +15,7 @@
     font-family: @font-family-theme-bold;
     margin: -20px -20px 20px -20px;
     padding: 10px;
+
     .icon-arrow-thick-up {
       margin-top: 5px;
       margin-right: 5px;
@@ -34,6 +35,7 @@
 
   .row {
     margin-bottom: 15px;
+
     &:first-of-type {
       margin-bottom: 0;
     }
@@ -54,12 +56,15 @@
       padding: 5px 0 10px 0;
       span {
         display: block;
+
         &.dual-pricing-date-month {
           font-size: 18px;
         }
+
         &.dual-pricing-date-day {
           font-size: 35px;
           line-height: 35px;
+
           sup {
             font-size: 20px;
           }
@@ -176,7 +181,12 @@ body[data-step="results"]:not(.moreInfoVisible) {
   .dual-pricing-before-after-text {
     color: @gray-base;
     font-size: @font-size-base;
+    font-weight: bold;
     text-align: center;
+
+    @media (max-width: @screen-xs){
+      font-size: @font-size-extra-small;
+    }
   }
 
   .resultInsert .productSummary.hasDualPricing {
@@ -202,8 +212,27 @@ body[data-step="results"]:not(.moreInfoVisible) {
       }
     }
 
+    .price-row {
+      display: flex;
+      width: 100%;
+    }
+
+    .lhcText{
+      font-size: 11px;
+
+      @media (max-width: @screen-xs){
+        font-size: 10px;
+      }
+    }
+
+    .premium-LHC-text {
+      margin-top: 6px;
+      width: 100%;
+    }
+
     .more-info-showapply {
-      margin: 0 auto;
+      width: 50%;
+      padding-right: 6px;
     }
 
     .price.premium {
@@ -212,7 +241,6 @@ body[data-step="results"]:not(.moreInfoVisible) {
       }
 
       .lhcText {
-        min-height: 52px;
         padding-bottom: 10px;
       }
 
@@ -228,38 +256,54 @@ body[data-step="results"]:not(.moreInfoVisible) {
     }
 
     .dual-pricing-container {
-      margin: 0 auto;
-      width: 100%;
-      height: 145px;
+      padding-left: 6px;
+      width: 50%;
 
       .april-pricing {
-        @media (@xs-only) {
-          height: 81px;
-        }
 
         .price.premium {
           .frequencyAmount {
             font-size: 36px;
+            color: #DD4C5D;
+            font-weight: lighter;
+
+            @media (max-width: @screen-xs) {
+              font-size: 24px;
+            }
           }
         }
 
         .dollarSign {
           font-size: 15px;
           vertical-align: super;
+
+          @media (max-width: @screen-xs) {
+            font-size: 11px;
+          }
         }
 
         .asterisk {
           font-size: 10px;
-          vertical-align: super;
+          vertical-align: super
         }
 
         .cents {
           font-size: 14px;
           vertical-align: super;
+
+          @media (max-width: @screen-xs) {
+            font-size: 11px;
+          }
         }
 
         .frequencyTitle {
-          top: -5px;
+          font-size: 14px;
+          color: @gray-base;
+          position: initial;
+
+          @media (max-width: @screen-xs) {
+            font-size: 12px;
+          }
         }
 
         .altPriceContainer {
@@ -267,12 +311,12 @@ body[data-step="results"]:not(.moreInfoVisible) {
         }
 
         .altPriceDetailsContainer {
-          color:#ccc;
+          color: #ccc;
           font-size: @font-size-base;
           text-align: left;
 
           .deadline {
-            color:#333;
+            color: #333;
           }
 
           .dual-pricing-learn-more {
@@ -293,6 +337,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       }
 
       /* coming soon styles */
+
       &.comingsoon {
         .april-pricing {
           @media (@xs-only) {
@@ -312,6 +357,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
           .altPriceContainer {
             width: 100%;
+
             .price.premium .frequencyAmount {
               font-size: 16px;
             }
@@ -389,7 +435,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
         margin-top: 16px;
         margin-bottom: 0px;
 
-        @media(@xs-only) {
+        @media (@xs-only) {
           padding-top: 10px;
         }
 
@@ -401,6 +447,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
       .lhcText {
         display: block;
+
         span {
           display: inline;
         }
@@ -415,6 +462,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
     /* CURRENT PRICING */
     /* override the shared module styling */
+
     .current-pricing {
       color: #333333;
       border-left: initial;
@@ -426,7 +474,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       }
 
       .frequencyTitle {
-       top: -11px;
+        top: -11px;
       }
 
       &.no-background {
@@ -478,8 +526,10 @@ body[data-step="results"]:not(.moreInfoVisible) {
     }
 
     /* APRIL PRICING */
+
     .april-pricing {
       color: #333333;
+
       .price.premium {
         .lhcText {
           float: right;
@@ -526,6 +576,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
           float: left;
           font-size: @font-size-small;
           line-height: 47px;
+
           span {
             display: inline;
           }
@@ -540,11 +591,11 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
       .cents,
       .dollarSign {
-        @media(@lg) {
+        @media (@lg) {
           font-size: 16px;
         }
 
-        @media(@xs) {
+        @media (@xs) {
           font-size: 12px;
         }
       }
@@ -587,7 +638,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
 .moreInfoVisible[data-step="results"] {
 
-  @media(@xs-only) {
+  @media (@xs-only) {
     .logo-header {
       display: flex;
       margin-bottom: 20px;
@@ -600,6 +651,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
     .dualPricingStyling();
 
     /* Overrides */
+
     .dual-pricing-container {
       .april-pricing {
         background: lighten(@theme-accent-3, 30%);
@@ -692,8 +744,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
   .moreInfoDropdown,
   .more-info-content {
-    .hasDualPricing
-    {
+    .hasDualPricing {
       .sidebar-widget {
         display: none;
       }
@@ -725,16 +776,19 @@ body[data-step="results"]:not(.moreInfoVisible) {
   }
 
   .dual-pricing-before-after-text {
-    color: @gray-base;
+    color: #555555;
     font-size: @font-size-base;
+    font-weight: bold;
     text-align: center;
   }
 
   .april-pricing {
     margin-top: 5px;
+
     .frequencyAmount {
       color: @theme-accent-3;
     }
+
     .lhcText {
       line-height: initial;
     }
@@ -775,6 +829,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
       padding-left: 20px;
       padding-right: 20px;
       text-align: left;
+
       a {
         float: right;
       }

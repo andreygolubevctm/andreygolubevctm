@@ -310,6 +310,7 @@
   .abd-modal-trigger {
     text-align: center;
     text-decoration: underline;
+    margin: auto;
 
     a {
       color: #333333;
@@ -480,9 +481,26 @@
 
     .frequencyAmount {
       color: @gray-base;
+      font-weight: bolder;
       font-size: 36px;
-      @media(@sm) {
-        font-size: 36px;
+      @media( max-width: @screen-xs) {
+        font-size: 24px;
+      }
+
+      .dollarSign, .cents{
+        @media (max-width: @screen-xs) {
+          font-size: 11px;
+        }
+      }
+
+      .frequencyTitle {
+        font-size: 14px;
+        font-weight : 100;
+
+        @media (max-width: @screen-xs) {
+          font-weight: 100;
+          font-size: 12px;
+        }
       }
 
       &.comingSoon {
