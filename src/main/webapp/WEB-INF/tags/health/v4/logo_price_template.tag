@@ -42,7 +42,7 @@
         		    {{ priceText = premium.lhcfreetext; }}
         		{{ } }}
 				{{ var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount) }}
-				{{ var textLhcFreePricing = 'inc ' + formatCurrency(premium.rebateValue) + ' Govt Rebate'; }}
+				{{ var textLhcFreePricing = 'inc ' + formatCurrency(premium.rebateValue) + ' Govt Rebate';}}
 				{{ var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount) }}
 				{{ var showABDToolTip = premium.abd > 0; }}
 
@@ -67,6 +67,15 @@
 								{{= textLhcFreePricing}}
                     	    </span>
                     	</div>
+
+            		{{ if(obj.custom.reform.yad !== "N" && premium.abd > 0) { }}
+            		    {{ if(info.abdRequestFlag === 'A') { }}
+            		        <health_v4:abd_badge abd="true" />
+            		    {{ } else { }}
+            		        <health_v4:abd_badge abd="false" />
+            		    {{ } }}
+										<health_v4:abd_whats_this shortTitle="true" />
+            		{{ } }}
 
                 		{{ } else { }}
                 		    {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, freq, obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) }}
