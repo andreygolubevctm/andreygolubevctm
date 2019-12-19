@@ -42,7 +42,7 @@ var healthFunds_MYO = {
                     <field_v2:email xpath="${fieldXpath}" title="your partners email address" required="true" size="40" />
                 </form_v2:row>
 
-                <div class="simples-dialogue-164 simples-dialogue row-content simplesDynamicElements mandatory onlyMyo">
+                <div class="simples-dialogue-164 simples-dialogue row-content simplesDynamicElements mandatory onlyMyo hidden">
                     <div class="wrapper">
 
                         <div class="checkbox-custom simples_dialogue-checkbox-164 checkbox">
