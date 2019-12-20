@@ -107,7 +107,13 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                 String productXml = healthSelectedProductService.getProductXML(transactionId, productId);
                 PricesObj<HealthQuoteResult> products = ObjectMapperUtil.getObjectMapper().readValue(productXml, new TypeReference<PricesObj<HealthQuoteResult>>() {});
 
-                Optional<HealthQuoteResult> productForApply = products.getPrice().stream().filter(p -> productId.equals(p.getProductId())).findFirst();
+                Optional<HealthQuoteResult> productForApply = products.getPrice().stream().findFirst();
+
+                productForApply.ifPresent(p -> {
+                    if (!productId.equals(p.getProductId())) {
+                        LOGGER.warn(String.format("Unexpected productId found for apply. TransactionId: '%1$s', expectedProductId (from health request): '%2$s', actualProductId (from database): '%3$s'", transactionId, productId, p.getProductId()));
+                    }
+                });
 
                 if (!productForApply.isPresent()) {
                     throw new IllegalStateException(String.format("Unable to retrieve a single selected product for transactionId: '%1$s', productId: '%2$s'", transactionId, productId));
