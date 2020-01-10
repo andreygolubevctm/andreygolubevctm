@@ -177,9 +177,9 @@
             if(changeDate) {
                 var timeToCheck = getApplicationDateTime();
 
-                afterChangeDate = changeDate.getTime() <= timeToCheck; 
+                afterChangeDate = changeDate.getTime() <= timeToCheck;
             }
-    
+
             ft.displayItem = ft.type != 'section';
             ft.isBenefit = obj.featuresStructureIndexToUse === "4";
             ft.beforeChangeDate = !isSelectedBenefit && !afterChangeDate;
@@ -233,7 +233,7 @@
         }
 
         var nowVal = val[0];
-        var aprilVal = val.length > 1 ? val[1] : '';    
+        var aprilVal = val.length > 1 ? val[1] : '';
 
         ft.isRestricted = false;
         ft.isNotCovered = false;
@@ -362,13 +362,13 @@
 
         var month = date.split(' ')[1];
         var year = date.split(' ')[2] ? date.split(' ')[2] : '2019';
-        
+
         return new Date(Date.parse(dayNumbers + ' ' + month + ' ' + year));
     }
 
     function getApplicationDateTime() {
         var applicationDate = $('#health_searchDate').val();
-        var applicationDateString = ''; 
+        var applicationDateString = '';
 
         if(applicationDate) {
             var dateSplit = applicationDate.split('/');
@@ -398,7 +398,7 @@
         switch(month) {
             case 'January':
                 return day + ' Jan ' + year;
-            case 'February': 
+            case 'February':
                 return day + ' Feb ' + year;
             case 'March':
                 return day + ' Mar ' + year;
@@ -439,7 +439,7 @@
         switch(month) {
             case 'January':
                 return 'From Jan ' + day;
-            case 'February': 
+            case 'February':
                 return 'From Feb ' + day;
             case 'March':
                 return 'From March ' + day;
@@ -566,6 +566,22 @@
     }
 
     /**
+     * check if the special feature list can be displayed.
+     * @param specialFeatures a array of special features.
+     * @return true if at lease one feature is active and has non-empty text.
+     * @return false if none of features is both active and have text.
+     */
+    function checkIfCanDisplaySpecialFeatures( specialFeatures ){
+        var isReadyToDisplay = false;
+        specialFeatures.forEach(function checkDisplay(specialFeature){
+            if (specialFeature.text && specialFeature.active){
+                isReadyToDisplay = true;
+            }
+        });
+        return isReadyToDisplay;
+    }
+
+    /**
 
      * @param {Object} product
      * @param {Number} number of features to render.
@@ -684,7 +700,7 @@
             $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
             $('.featuresListExtrasFullList').removeClass('hidden');
             $('.otherExtrasBenefits .coverTitle .featuresViewAll').removeClass('hidden');
-            $('.featuresListExtrasFullList .children').children('.cell .category').each(function(i) { 
+            $('.featuresListExtrasFullList .children').children('.cell .category').each(function(i) {
                 var element = $(this).first();
                 var selectedBenefits = window.meerkat.modules.healthResults.getSelectedBenefitsList();
                 var featureId = element.get(0).children[0].children[0].getAttribute('data-featureid');
@@ -699,7 +715,7 @@
             $('.featuresListHospitalFullList').removeClass('hidden');
             $('.otherHospitalBenefits .coverTitle .featuresViewAll').removeClass('hidden');
 
-            $('.featuresListHospitalFullList .children').children('.cell .category').each(function(i) { 
+            $('.featuresListHospitalFullList .children').children('.cell .category').each(function(i) {
                 var element = $(this).first();
                 var selectedBenefits = window.meerkat.modules.healthResults.getSelectedBenefitsList();
                 var featureId = element.get(0).children[0].children[0].getAttribute('data-featureid');
@@ -802,7 +818,8 @@
         getDiscountPercentage: getDiscountPercentage,
         fundDiscountExists: fundDiscountExists,
         getCoverDate: getCoverDate,
-        parseChangeDate: parseChangeDate
+        parseChangeDate: parseChangeDate,
+        checkIfCanDisplaySpecialFeatures: checkIfCanDisplaySpecialFeatures
     });
 
 })(jQuery);
