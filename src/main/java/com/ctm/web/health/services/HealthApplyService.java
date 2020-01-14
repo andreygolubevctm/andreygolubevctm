@@ -126,15 +126,18 @@ public class HealthApplyService extends CommonRequestServiceV2 {
             }
 
             // Version 2
+            HealthApplicationRequest applyRequest = RequestAdapterV2.adapt(data, selectedProduct, operator, cid, trialCampaign);
             final ApplicationOutgoingRequest<HealthApplicationRequest> request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
                     .transactionId(transactionId)
                     .brandCode(brand.getCode())
                     .requestAt(data.getRequestAt())
                     .providerFilter(data.getQuote().getApplication().getProvider())
-                    .payload(RequestAdapterV2.adapt(data, selectedProduct, operator, cid, trialCampaign))
+                    .payload(applyRequest)
                     .sessionId(anonymousId)
                     .userId(userId)
                     .build();
+
+
 
             // Getting RootId from the transactionId
             final long rootId = transactionDao.getRootIdOfTransactionId(data.getTransactionId());

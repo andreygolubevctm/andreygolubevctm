@@ -17,6 +17,9 @@ public class PriceResultExtraInfo {
     private String productId;
     private String productType;
     private String abdFlag;
+    private String state;
+    private String membershipType;
+    private String policyType;
 
     private PriceResultExtraInfo(final Builder builder) {
         pricePremiums = builder.pricePremiums;
@@ -32,6 +35,9 @@ public class PriceResultExtraInfo {
         productId = builder.productId;
         productType = builder.productType;
         abdFlag = builder.abdFlag;
+        state = builder.state;
+        membershipType = builder.membershipType;
+        policyType = builder.policyType;
     }
 
 
@@ -54,6 +60,9 @@ public class PriceResultExtraInfo {
         builder.title = copy.title;
         builder.productType = copy.productType;
         builder.abdFlag = copy.abdFlag;
+        builder.state = copy.state;
+        builder.membershipType = copy.membershipType;
+        builder.policyType = copy.policyType;
         return builder;
     }
 
@@ -110,6 +119,9 @@ public class PriceResultExtraInfo {
     }
 
     public static final class Builder {
+        public String state;
+        public String membershipType;
+        public String policyType;
         private PricePremiums pricePremiums;
         private String fundCode;
         private String fundName;

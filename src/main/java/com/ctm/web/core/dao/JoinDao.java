@@ -10,58 +10,113 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
+import com.fasterxml.uuid.Generators;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class JoinDao {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(JoinService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JoinService.class);
 
-	private SimpleDatabaseConnection dbSource;
+    private SimpleDatabaseConnection dbSource;
 
-	public JoinDao() {
-		this.dbSource = new SimpleDatabaseConnection();
-	}
+    public JoinDao() {
+        this.dbSource = new SimpleDatabaseConnection();
+    }
 
-	/**
-	 * Write join details to `ctm`.`joins`
-	 * @param transactionId
-	 * @param productId
-	 * @return joinDate
-	 * @throws SQLException
-	 **/
-	public void writeJoin(long transactionId, String productId) {
-		try {
-			LOGGER.debug("writing join {}, {}", kv("transactionId", transactionId), kv("productId", productId));
-			Connection conn = dbSource.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(
-				"SELECT rootid FROM aggregator.transaction_header " +
-				"WHERE transactionid = ?;"
-			);
+    /**
+     * Write join details to `ctm`.`joins`
+     *
+     * @param transactionId
+     * @param productId
+     * @return boolean
+     * @throws SQLException
+     **/
+    public boolean writeJoin(long transactionId, String productId, String productCode) throws WriteJoinException {
+        try {
+			Instant now = Instant.now();
+			LOGGER.debug("writing join {}, {}, {}", kv("transactionId", transactionId), kv("productId", productId), kv("productCode", productCode));
+            Connection conn = dbSource.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(
+                    "SELECT rootid FROM aggregator.transaction_header " +
+                            "WHERE transactionid = ?;"
+            );
 
-			stmt.setLong(1, transactionId);
-			ResultSet results = stmt.executeQuery();
-			long rootid = 0;
-			if(results.next()) {
-				rootid  = results.getLong("rootid");
+            stmt.setLong(1, transactionId);
+            ResultSet results = stmt.executeQuery();
+            long rootid = 0;
+            if (results.next()) {
+                rootid = results.getLong("rootid");
+            }
+
+            String foundProductId = productId;
+
+			//Only check for productId if the ID is not already a number (Atlas is a UUID)
+			if(isNumeric(productId) == false) {
+				stmt = conn.prepareStatement(
+					"SELECT productId FROM ctm.product_master " +
+					"WHERE ProductCode = ? AND NOW() BETWEEN effectiveStart AND effectiveEnd AND Status != 'X';"
+				);
+
+				stmt.setString(1, productCode);
+				ResultSet productResults = stmt.executeQuery();
+				if(productResults.next()) {
+					foundProductId  = productResults.getString("productId");
+				}
 			}
 
 			stmt = conn.prepareStatement(
 				"INSERT INTO `ctm`.`joins` (rootId, productId, joinDate) " +
 				"VALUES (?,?,CURDATE())" +
-				"ON DUPLICATE KEY UPDATE rootId=rootId,productId=productId ;"
+				"ON DUPLICATE KEY UPDATE rootId=rootId,productId=productId;"
 			);
 
 			stmt.setLong(1, rootid);
-			stmt.setString(2, productId);
+			stmt.setString(2, foundProductId);
+
 			stmt.executeUpdate();
-		}catch (NamingException e) {
-			LOGGER.error("failed to get db connection", e);
-		} catch (Exception e) {
-			LOGGER.error("failed to write join {}, {}", kv("transactionId", transactionId), kv("productId", productId), e);
-		} finally {
-			dbSource.closeConnection();
-		}
-	}
+            return true;
+        } catch (NamingException e) {
+            throw new WriteJoinException(transactionId, productId, "Failed to obtain DB connection to record join", e);
+        } catch (Exception e) {
+            throw new WriteJoinException(transactionId, productId, "An exception occurred recording the join.", e);
+        } finally {
+            dbSource.closeConnection();
+        }
+    }
+
+
+    public static class WriteJoinException extends Exception {
+        private static final long serialVersionUID = 1L;
+        private final long transactionId;
+        private final String productId;
+
+        public WriteJoinException(long transactionId, String productId, String message, Throwable cause) {
+            super(message, cause);
+            this.transactionId = transactionId;
+            this.productId = productId;
+        }
+
+        public long getTransactionId() {
+            return transactionId;
+        }
+
+        public String getProductId() {
+            return productId;
+        }
+    }
+
+	public boolean isNumeric(String strNum) {
+    if (strNum == null) {
+        return false;
+    }
+    try {
+        double d = Double.parseDouble(strNum);
+    } catch (NumberFormatException nfe) {
+        return false;
+    }
+    return true;
+}
 
 }
