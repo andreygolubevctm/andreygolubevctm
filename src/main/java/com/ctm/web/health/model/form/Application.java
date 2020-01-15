@@ -26,6 +26,8 @@ public class Application {
 
     private String productId;
 
+    private String altProductId;
+
     private String provider;
 
     private String providerName;
@@ -108,6 +110,14 @@ public class Application {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getAltProductId() {
+        return altProductId;
+    }
+
+    public void setAltProductId(String altProductId) {
+        this.altProductId = altProductId;
     }
 
     public String getProvider() {

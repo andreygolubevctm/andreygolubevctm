@@ -7,6 +7,7 @@ import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
 import com.ctm.schema.messagequeue.v1_0_0.Header;
 import com.ctm.schema.messagequeue.v1_0_0.MqMessage;
+import com.ctm.schema.messagequeue.v1_0_0.Payload;
 import com.ctm.schema.sessions.v1_0_0.Interaction;
 import com.ctm.schema.sessions.v1_0_0.SessionUpdate;
 import com.ctm.web.core.providers.model.Request;
@@ -34,10 +35,10 @@ public class JourneyUpdateService {
         msg.setPayload(new MqMessage()
                 .withHeader(new Header()
                         .withOrigin(source))
-                .withPayload(new SessionUpdate()
-                        .withUserId(userId)
-                        .withSessionId(sessionId)
-                        .withInteraction(new Interaction()
+                .withPayload(new Payload()
+                        .withAdditionalProperty("userId", userId)
+                        .withAdditionalProperty("sessionId", sessionId)
+                        .withAdditionalProperty("interaction", new Interaction()
                                 .withSourceName(source)
                                 .withLoggedIn((userId != null && !userId.equals("")))
                                 .withInteractionId(interactionId)

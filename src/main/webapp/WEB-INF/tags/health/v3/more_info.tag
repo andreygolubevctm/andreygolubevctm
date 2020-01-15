@@ -175,7 +175,7 @@
       {{ var classificationDate = ''; }}
 
       {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
-          {{ classificationDate = 'As of ' + classification.date; }} }}
+          {{ classificationDate = 'As of ' + classification.date; }}
       {{ } }}
 
 			<c:choose>

@@ -836,6 +836,7 @@
                 meerkat.modules.writeQuote.write({
                     health_application_provider: selectedProduct.info.provider,
                     health_application_productId: selectedProduct.productId,
+                    health_application_altProductId: selectedProduct.altProductId,
                     health_application_productName: selectedProduct.info.productCode,
                     health_application_productTitle: selectedProduct.info.productTitle
                 }, false);
@@ -863,7 +864,13 @@
                 callback(null);
 
             } else {
-
+                var selectedProduct = Results.getSelectedProduct();
+                var changeDate = new Date(selectedProduct.custom.reform.changeDate).getTime();
+                var startDateString = $("#health_payment_details_start").val();
+                var dateStringSplit = startDateString.split('/');
+                var detailsStart = new Date(dateStringSplit[1] + '/' + dateStringSplit[0] + '/' + dateStringSplit[2]).getTime();
+                var getAltProduct = changeDate < detailsStart;
+                
                 var postData = meerkat.modules.journeyEngine.getFormData();
 
                 // Override some form data to only return a single product.
@@ -887,6 +894,13 @@
                 var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
                 if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
                     healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
+                }
+
+                if(selectedProduct.altProductId && getAltProduct) {
+                    postData.push({
+                        name: 'health_application_altProductId',
+                        value: selectedProduct.altProductId
+                    });
                 }
 
                 meerkat.modules.comms.post({

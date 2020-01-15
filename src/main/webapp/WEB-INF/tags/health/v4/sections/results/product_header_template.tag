@@ -16,26 +16,54 @@
             </div>
         </div>
         {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
-            <div class="premium-rising-tag visible-lg"><span class="text-bold">Premiums Rise</span> from April 1st <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a></div>
+            <div class="premium-rising-tag">
+                <span class="text-bold">Premiums Rise</span>
+                from April 1st
+                <br/>
+                <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
+            </div>
         {{ } }}
         <div class="results-header-inner-container">
             <div class="productSummary vertical results{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }} hasDualPricing{{ } }}">
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); var logoHtml = logoTemplate(obj); }}
                 {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
                 {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
+                {{ var frequency = obj._selectedFrequency; }}
+                {{ var frequencyPremium = obj.premium[frequency]; }}
+                {{ var lhtText = frequencyPremium.lhcfreepricing.split("<br>")[0]; }}
+                {{ var abdRequestFlag = obj.info.abdRequestFlag; }}
+                {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
 
                 <div class="hide-on-affix logo-full-width">{{= logoHtml }}</div>
 
-                <div class="more-info-showapply" data-productId='{{= obj.productId }}' data-available='{{= obj.available }}'>
-                    {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
-                        <div class="dual-pricing-before-after-text">Now</div>
-                    {{ } }}
-                    {{= priceTemplate(obj) }}
-                </div>
+                <div class="price-row">
+                    <div class="more-info-showapply" data-productId='{{= obj.productId }}' data-available='{{= obj.available }}'>
+                        {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
+                            <div class="dual-pricing-before-after-text">Now</div>
+                        {{ } }}
+                        {{= priceTemplate(obj) }}
+                    </div>
 
-                {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
-                    {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
+                    {{ if (isDualPricingActive) { }}
+                        {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results', false, true) }}
+                    {{ } }}
+                </div>
+                <div class="premium-LHC-text lhcText">
+                    {{ if (lhtText && isDualPricingActive) { }}
+                        <span>
+                            {{= 'The premiums above may be affected by LHC.' }}
+                        </span>
+                    {{ } }}
+                </div>
+                {{ if(obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 && isDualPricingActive ) { }}
+                    {{ if(abdRequestFlag === 'A') { }}
+                        <health_v4:abd_badge abd="true" />
+                    {{ } else { }}
+                        <health_v4:abd_badge abd="false" />
+                    {{ } }}
+                    <health_v4:abd_whats_this shortTitle="true" />
                 {{ } }}
+
             </div>
 
             {{ if (obj.hasOwnProperty('premium')) { }}
@@ -52,7 +80,7 @@
 
 
             <c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
-            
+
             <c:choose>
             <c:when test="${onlineHealthReformMessaging eq 'Y'}">
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
@@ -61,7 +89,7 @@
                 {{ var classificationDate = ''; }}
 
                 {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
-                    {{ classificationDate = 'As of ' + classification.date; }} }}
+                    {{ classificationDate = 'As of ' + classification.date; }}
                 {{ } }}
 
                 {{ if(!isExtrasOnly) { }}

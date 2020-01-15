@@ -25,6 +25,7 @@
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
+<c:set var="productCode" value="${param.health_application_productName}" />
 <c:set var="continueOnAggregatorValidationError" value="${true}" />
 
 <jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
@@ -37,7 +38,7 @@
 	TODO: move this over to HealthApplicationService
 	--%>
 	<c:when test="${!healthApplicationService.validToken}">
-		<health_v1:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" />
+		<health_v1:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" productCode="${productCode}"/>
 	</c:when>
 	<%-- only output validation errors if call centre --%>
 	<c:when test="${!healthApplicationService.valid && callCentre}">
@@ -50,7 +51,7 @@
 			<c:set var="resultXml">${resultXml}<error><code>${validationError.message}</code><original>${validationError.elementXpath}</original></error></c:set>
 		</c:forEach>
 		<c:set var="resultXml">${resultXml}</errors></result></c:set>
-		<health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+		<health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" productCode="${productCode}" />
 	</c:when>
 	<%-- check the if ONLINE user submitted more than 5 times [HLT-1092] --%>
 	<c:when test="${empty callCentre and not empty touch_count and touch_count > 5}">
@@ -211,7 +212,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 
 		<%-- Collate fund error messages, add fail touch and add quote comment --%>
 			<c:if test="${not empty errorMessage}">
-			    <health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+			    <health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" productCode="${productCode}" />
 				${healthLeadService.sendLead(4, data, pageContext.request, 'PENDING')}
 			</c:if>
 		</x:if>
@@ -224,7 +225,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 
 						<c:set var="ignore">
 								<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
-						${joinService.writeJoin(tranId,productId)}
+						${joinService.writeJoin(tranId,productId,productCode)}
 						</c:set>
 
 								<c:set var="allowedErrors" value="" />
@@ -275,7 +276,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 				<c:choose>
 					<%-- if online user record a join --%>
 					<c:when test="${empty callCentre && empty errorMessage}">
-						<health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" resultJson="${healthApplicationService.createFailedResponse(tranId, pageContext.session.id)}" />
+						<health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" productCode="${productCode}" resultJson="${healthApplicationService.createFailedResponse(tranId, pageContext.session.id)}" />
 						${healthLeadService.sendLead(4, data, pageContext.request, 'PENDING')}
 					</c:when>
 					<%-- else just record a failure --%>
@@ -297,7 +298,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 									<c:set var="resultXml">${resultXml}<error><code>${validationError.message}</code><original>${validationError.elementXpath}</original></error></c:set>
 								</c:forEach>
 								<c:set var="resultXml">${resultXml}</errors></result></c:set>
-								<health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+								<health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" productCode="${productCode}" />
 							</c:when>
 							<c:otherwise>
 				<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}" origin="health_application.jsp" />

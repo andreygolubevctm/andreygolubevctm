@@ -73,10 +73,12 @@
         {{ var headerTemplate = meerkat.modules.templateCache.getTemplate($('#result-header-template')); }}
         {{ var specialFeaturesTemplate = meerkat.modules.templateCache.getTemplate($('#results-product-special-features-template')); }}
         {{ var coverType = meerkat.modules.healthChoices.getCoverType(); }}
-        {{ var headerHtml = headerTemplate(obj); var specialFeaturesHtml = specialFeaturesTemplate(obj); }}
+        {{ var headerHtml = headerTemplate(obj); }}
+        {{ var specialFeaturesHtml = specialFeaturesTemplate(obj); }}
         <div class="result-row result_{{= productId }} not-pinned" data-productId="{{= productId }}">
             {{= headerHtml }}
-            <div class="featuresList featuresElements">{{ if(coverType == 'H' || coverType == 'C') { }}
+            <div class="featuresList featuresElements">
+                {{ if(coverType == 'H' || coverType == 'C') { }}
                 {{= specialFeaturesHtml }}
                 <div class="hospitalCoverSection">
                     <div class="clearfix">
