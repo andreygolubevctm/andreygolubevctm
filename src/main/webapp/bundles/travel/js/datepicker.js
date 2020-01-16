@@ -21,7 +21,7 @@
     departureOptions: {
       dateFormat: "d/m/y",
       minDate: 'today',
-      maxDate: new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()),
+      maxDate: new Date(currentDate.getFullYear() + 2, currentDate.getMonth(), currentDate.getDate()),
       disableMobile: true,
       onOpen: function() {
         display.departure.classList.add('dp__input__item--active');

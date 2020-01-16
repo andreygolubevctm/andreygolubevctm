@@ -20,35 +20,49 @@ The Insurance verticals currently using WebCTM include:
 ## Prerequisites
 * [Java](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Maven](https://maven.apache.org/download.cgi)
-* [Tomcat](https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.65/bin/)
-* [Git](https://git-scm.com/) with [Bitbucket SSH Keys](http://confluence:8090/display/CM/Setting+up+GIT+and+SourceTree+with+SSH+access+to+Bitbucket+Repositories) to pull down repositories.
-* [NodeJS](https://nodejs.org/en/)
-* [Gulp](https://gulpjs.com/)
-* NXI (Dev) database credentials to add to your `settings.xml` for Maven. Speak to your manager if you haven't got them yet.
+* [Git](https://git-scm.com/)
+* NXI (Dev) database credentials to add to your `settings.xml` for Maven. Speak to your manager if you haven't got them yet. See [Maven Settings](https://ctmaus.atlassian.net/wiki/spaces/IT/pages/28147859/Setting+up+IntelliJ+WebCTM+Mac+OS+X+Ubuntu+16.04#Maven-Settings).
 
-## Getting Started
+## Build & Run
 
-To get started with WebCTM you will need to pull down the [WebCTM](http://bitbucket.budgetdirect.com.au/projects/CW/repos/web_ctm/browse) repository locally and setup your IDE. As this is a Java Springboot application it is recommended to use IntelliJ configured with Tomcat and Maven. We currently have a license generator for developers to activate IntelliJ.
+```
+mvn -P embedded-tomcat7-run -P build-frontend -Pskip-tests -Pskip-quality -Pskip-artifacts clean package cargo:run
+```
 
-Please follow these steps very closely for your OS to get WebCTM running on your machine successfully:
+Local endpoints:
 
-* [Setting up IntelliJ & WebCTM (Windows)](http://confluence:8090/pages/viewpage.action?pageId=42769127)
-* [Setting up IntelliJ & WebCTM (Mac OS X & Ubuntu 16.04)](http://confluence:8090/pages/viewpage.action?pageId=128976322)
+* [Health](http://localhost:8080/ctm/health_quote_v4.jsp)
+* [Simples (Health Internal Call Centre Application)](http://localhost:8080/ctm/simples.jsp)
+* [Travel](http://localhost:8080/ctm/travel_quote.jsp)
+* [Car](http://localhost:8080/ctm/car_quote.jsp)
+* [Fuel](http://localhost:8080/ctm/fuel_quote.jsp)
+* [Roadside](http://localhost:8080/ctm/roadside_quote.jsp)
+* [Life](http://localhost:8080/ctm/life_quote.jsp)
+* [Income](http://localhost:8080/ctm/ip_quote.jsp)
+* [Homeloan](http://localhost:8080/ctm/homeloan_quote.jsp)
 
-Once IntelliJ and WebCTM have been configured it is recommended to run the application in debug mode.
+### Frontend Only
 
-Those documents also contain troubleshooting information on resolving issues with building WebCTM.
+```
+mvn -P build-frontend -Pskip-tests -Pskip-quality -Pskip-artifacts
+```
 
-## Compiling The Frontend
+## Debug
 
-WebCTM uses [Gulp.js](https://gulpjs.com/) to compile and build the Frontend CSS and JS. Gulp compiles and watches for LESS and JS changes.
+Remote debugging is available via port `5005`.
 
-To setup and build:
-1. Install the [Latest stable (LTS) NodeJS](https://nodejs.org/en/download/). You can also use [Node Version Management](https://github.com/creationix/nvm) to switch between Node versions.
-2. Open your terminal and install [Gulp.js](https://gulpjs.com/) `npm install gulp-cli -g`.
-3. Open your terminal in the root `web_ctm` folder of the project enter `cd src/main/pipeline`.
-4. Install Project dependencies by entering `npm install`.
-5. Then run `gulp --fast --disableNotify`. Always have this running when making Frontend changes. The build has finished when `Finished 'default` is displayed.
+### IntelliJ
+
+Steps:
+
+1. Select **Run** from the menu.
+2. Select **Edit Configurations**
+3. Click the plus (+) button
+4. Select **Remote**
+5. Name it 'ctm', then Save
+6. Select **Run** from the menu, then select **Debug** 'ctm'
+
+For example, see https://www.baeldung.com/intellij-remote-debugging#run-configuration
 
 ## Updating Partner Logo Sprite Sheets
 Partner logos are generated with a gulp task which creates a sprite sheet from single logos and generates less. To update partmer logos:
