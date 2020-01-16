@@ -8,16 +8,13 @@
 {{ var discountText = healthResultsTemplate.getDiscountText(obj); }}
 <div class="price premium">
     {{ _.each(availableFrequencies, function(freqObj) { }}
-    {{ var formatCurrency = meerkat.modules.currencyField.formatCurrency; }}
     {{ var frequency = freqObj.key; }}
     {{ if (typeof availablePremiums[frequency] === "undefined") { return; } }}
     {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode); }}
     {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
     {{ var property = obj.premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = obj.altPremium; } }}
 	{{ var prem = obj.premium[frequency]; }}
-    {{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
-	{{ var textLhcFreeDualPricing= 'inc ' + formatCurrency(prem.rebateValue) + ' Govt Rebate';}}
-    {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
+	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
         {{ if (!result.hasValidPrice) { }}
@@ -38,25 +35,22 @@
     </div>
     <div class="lhcText hide-on-affix">
         <span>
-            {{ if (isDualPricingActive) { }}
-			    {{= textLhcFreeDualPricing}}
-            {{ } else { }}
-                {{= textLhcFreePricing}}
-            {{ } }}
+			{{= textLhcFreePricing}}
         </span>
     </div>
-    {{ if(obj.custom.reform.yad !== "N" && availablePremiums[frequency].abd > 0 && !obj.isForResultPage && !isDualPricingActive ) { }}
-        {{ if(info.abdRequestFlag === 'A') { }}
-            <health_v4:abd_badge abd="true" />
-        {{ } else { }}
-            <health_v4:abd_badge abd="false" />
-        {{ } }}
-        <health_v4:abd_whats_this shortTitle="true" />
-    {{ } }}
 
-    {{ if (frequency === obj._selectedFrequency && (obj.hasOwnProperty('priceBreakdown') || (!obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown)) && window.meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment') { }}
-        {{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, frequency, false) }}
-    {{ } }}
+        {{ if(obj.custom.reform.yad !== "N" && availablePremiums[frequency].abd > 0) { }}
+            {{ if(info.abdRequestFlag === 'A') { }}
+                <health_v4:abd_badge abd="true" />
+            {{ } else { }}
+                <health_v4:abd_badge abd="false" />
+            {{ } }}
+            <health_v4:abd_whats_this shortTitle="true" />
+        {{ } }}
+
+        {{ if (frequency === obj._selectedFrequency && (obj.hasOwnProperty('priceBreakdown') || (!obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown)) && window.meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment') { }}
+            {{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, frequency, false) }}
+        {{ } }}
 </div>
 {{ }); }}
 </div>

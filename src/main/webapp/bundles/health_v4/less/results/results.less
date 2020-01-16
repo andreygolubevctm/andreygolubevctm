@@ -310,7 +310,6 @@
   .abd-modal-trigger {
     text-align: center;
     text-decoration: underline;
-    margin: auto;
 
     a {
       color: #333333;
@@ -322,17 +321,14 @@
   }
 
   .abd-badge {
-    background-color: #FFFFFF;
-    color: #666666;
+    background-color: #666666;
     border-radius: 20px;
-    border: 1px solid #666666;
-    font-size: 11px;
-    display: inherit;
+    color: white;
+    font-size: 14px;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
     margin: 0 auto;
-    padding: 2px;
     min-height: 25px;
     font-weight: bold;
     width: 85%;
@@ -357,14 +353,12 @@
         text-align: center;
         color: #555555;
         margin: 0 auto;
-        margin-top: 25px;
+        margin-top: 5px;
         margin-bottom: 5px;
         font-size: 16px;
 
         @media (@xs-only) {
-          margin-top: 15px;
           margin-bottom: 25px;
-          font-size: 14px;
         }
       }
 
@@ -396,16 +390,16 @@
 
         &.gov-unclassified {
           background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
-
+    
           &.force-large {
             background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
           }
-
+    
           @media (@sm) {
             background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
           }
         }
-
+    
         &.gov-bronze-plus {
           background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
           &::before {
@@ -424,7 +418,6 @@
           background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
           &::before {
             content: "SILVER";
-            color: #333333;
           }
         }
 
@@ -432,10 +425,9 @@
           background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
           &::before {
             content: "SILVER+";
-            color: #333333;
           }
         }
-
+    
         &.gov-gold {
           background-image: linear-gradient(to right, #f3d838, #fded8d 50%, #f3d838);
           &::before {
@@ -485,26 +477,9 @@
 
     .frequencyAmount {
       color: @gray-base;
-      font-weight: bolder;
       font-size: 36px;
-      @media( max-width: @screen-xs) {
-        font-size: 24px;
-      }
-
-      .dollarSign, .cents{
-        @media (max-width: @screen-xs) {
-          font-size: 11px;
-        }
-      }
-
-      .frequencyTitle {
-        font-size: 14px;
-        font-weight : 100;
-
-        @media (max-width: @screen-xs) {
-          font-weight: 100;
-          font-size: 12px;
-        }
+      @media(@sm) {
+        font-size: 36px;
       }
 
       &.comingSoon {
@@ -656,7 +631,7 @@
 
     .featuresList {
       .hospitalCoverSection,
-      .extrasCoverSection,
+      .extrasCoverSection, 
       .ambulanceCoverSection  {
         .coverTitle {
           padding: 15px 15px 15px;
@@ -685,10 +660,10 @@
           border-bottom: 1px solid @results-border-color;
         }
       }
-
+      
       @media (@lg) {
         .hospitalCoverSection,
-        .extrasCoverSection,
+        .extrasCoverSection, 
         .ambulanceCoverSection  {
           .coverTitle {
             padding: 15px 15px 15px;
@@ -756,10 +731,10 @@
 
         .contentInner {
           color: #333333;
-          .cover-title {
+          .cover-title {	
             font-size: 14px;
             font-weight: 600;
-          }
+          } 
         }
 
           .labelInColumn {
@@ -1017,12 +992,12 @@
                   margin-right: 5px;
                   margin-top: -7px;
                   vertical-align: middle;
-                }
+                } 
               }
             }
           }
 
-
+         
             .contentInner {
               .benefit-container {
                 .noCover {
@@ -1032,7 +1007,7 @@
                     content: '\e601';
                     color: @theme-accent-3;
                     vertical-align: top;
-                  }
+                  } 
                 }
               }
             }
@@ -1048,7 +1023,7 @@
                     right: 2px;
                     margin-top: -12px;
                     vertical-align: top;
-                  }
+                  } 
                 }
               }
             }
@@ -1059,12 +1034,12 @@
               .tbaCover {
               .benefit-icon {
                 margin-left: 0px;
-
+                
                 &::before {
                   .icon-tba();
                   right: 2px;
                   margin-top: -12px;
-                }
+                } 
               }
             }
           }
@@ -1154,31 +1129,21 @@
   }
   .feature-item-text {
     width: 100%;
-    display: flex;
-    padding-top: 4px;
-
-    .offer-text {
-      margin-left: 6px;
-
-      p {
-        margin-bottom: 0;
-      }
-    }
-
-    .icon-star:before {
-      font-size: 10px;
-      color: @theme-secondary;
+    p {
+      margin-bottom: 0;
     }
   }
-
-  .feature-item-offer {
-    color: #000000;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 20px;
-  }
-
   .feature-item {
+    .feature-item-offer {
+      border: 1px solid @theme-tertiary;
+      border-radius: 20px;
+      float: left;
+      color: @theme-tertiary;
+      padding: 5px 10px;
+      margin-right: 10px;
+      margin-bottom: 5px;
+    }
+
     float: left;
     &.item-popover {
       &:hover {
@@ -1197,6 +1162,7 @@
     padding-top: 10px;
     @media(@sm) {
       padding-top: 0;
+      padding-left: 5px;
       &:first-child {
         padding-left: 0;
       }
@@ -1293,7 +1259,7 @@ body {
           }
 
           @media (@lg) {
-            height: 90px;
+            height: 61px;
           }
         }
       }

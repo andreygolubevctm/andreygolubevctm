@@ -36,7 +36,7 @@ public class JoinDao {
     public boolean writeJoin(long transactionId, String productId, String productCode) throws WriteJoinException {
         try {
 			Instant now = Instant.now();
-			LOGGER.debug("writing join {}, {}, {}", kv("transactionId", transactionId), kv("productId", productId), kv("productCode", productCode));
+			LOGGER.info("writing join {}, {}, {}", kv("transactionId", transactionId), kv("productId", productId), kv("productCode", productCode));
             Connection conn = dbSource.getConnection();
             PreparedStatement stmt = conn.prepareStatement(
                     "SELECT rootid FROM aggregator.transaction_header " +
