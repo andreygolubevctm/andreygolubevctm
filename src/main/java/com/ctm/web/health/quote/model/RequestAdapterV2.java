@@ -290,7 +290,7 @@ public class RequestAdapterV2 {
     }
 
     protected static void addProductIdSameExcessAmountFilter(Filters filters, Application application) {
-        if (StringUtils.isNotBlank(application.getProductId())) {
+        if (StringUtils.isNotBlank(application.getProductId()) || StringUtils.isNotBlank(application.getAltProductId())) {
             ProductIdSameExcessAmountFilter excessFilter = new ProductIdSameExcessAmountFilter();
             excessFilter.setProductIdWithSameExcessAmount(getProductId(application));
             filters.setExcessFilter(excessFilter);
@@ -409,7 +409,8 @@ public class RequestAdapterV2 {
 
     protected static Situation addMembership(HealthQuoteRequest quoteRequest, Situation situation) {
         if (situation != null) {
-            if (StringUtils.equals(situation.getState(), "ACT")) {
+            //Only change to NSW if we are not on the new journey
+            if (!quoteRequest.getCurrentJourney().equals("atlas") && StringUtils.equals(situation.getState(), "ACT")) {
                 quoteRequest.setState("NSW");
             } else {
                 quoteRequest.setState(situation.getState());
@@ -481,9 +482,20 @@ public class RequestAdapterV2 {
 
     protected static String getProductId(Application application) {
         String productId = application.getProductId();
-        if (StringUtils.startsWith(application.getProductId(), "PHIO-HEALTH-")) {
+        String altProductId = application.getAltProductId();
+
+        if (StringUtils.startsWith(productId, "PHIO-HEALTH-")) {
             productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
         }
+
+        if (StringUtils.startsWith(altProductId, "PHIO-HEALTH-")) {
+            altProductId = StringUtils.remove(application.getAltProductId(), "PHIO-HEALTH-");
+        }
+
+        if(altProductId != null && !altProductId.isEmpty()) {
+            return altProductId;
+        }
+
         return productId;
     }
 

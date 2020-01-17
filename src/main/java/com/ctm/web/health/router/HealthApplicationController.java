@@ -4,7 +4,14 @@ import com.ctm.reward.model.Campaign;
 import com.ctm.reward.model.GetCampaignsResponse;
 import com.ctm.reward.model.OrderFormResponse;
 import com.ctm.reward.model.SaleStatus;
+import com.ctm.schema.address.v1_0_0.State;
+import com.ctm.schema.event.v1_0_0.Payload;
+import com.ctm.schema.health.v1_0_0.ApplyCompleteEvent;
+import com.ctm.schema.health.v1_0_0.ApplyCompleteStatus;
+import com.ctm.schema.health.v1_0_0.MembershipType;
+import com.ctm.web.core.confirmation.services.DirectToCloudwatchEventsJoinNotificationSender;
 import com.ctm.web.core.confirmation.services.JoinService;
+import com.ctm.web.core.dao.JoinDao;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailServiceHandler;
@@ -47,6 +54,8 @@ import com.ctm.web.health.utils.HealthRequestParser;
 import com.ctm.web.reward.services.RewardCampaignService;
 import com.ctm.web.reward.services.RewardService;
 import com.ctm.web.simples.services.TransactionService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.uuid.Generators;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -70,6 +79,7 @@ import javax.ws.rs.NotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.InvalidParameterException;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -95,6 +105,9 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     @Autowired
     private JoinService joinService;
+
+    @Autowired
+    private DirectToCloudwatchEventsJoinNotificationSender cloudWatchNotifier;
 
     @Autowired
     private TransactionAccessService transactionAccessService;
@@ -150,6 +163,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         updateTransactionIdAndClientIP(request, data);
         updateApplicationDate(request, data);
 
+
         // Create placeholder order, only if ONLINE.
         // There's a chance of failure but RewardService will log any errors.
         // It will also be empty if executed by Consultant, or no active campaigns.
@@ -168,9 +182,11 @@ public class HealthApplicationController extends CommonQuoteRouter {
         final String productId = data.getQuote().getApplication().getProductId()
                 .substring(data.getQuote().getApplication().getProductId().indexOf("HEALTH-") + 7);
 
+        // Get the productCode
+        final String productCode = data.getQuote().getApplication().getProductName();
+
 
         HealthApplicationResult result = new HealthApplicationResult();
-
 
         if (Status.Success.equals(response.getSuccess())) {
             result.setSuccess(true);
@@ -184,8 +200,17 @@ public class HealthApplicationController extends CommonQuoteRouter {
             // Record Confirmation touch
             recordTouch(request, data, productId, Touch.TouchType.SOLD);
 
-            // Write to the join table
-            joinService.writeJoin(data.getTransactionId(), productId);
+            // write to join
+            boolean successfulJoin = joinService.writeJoin(data.getTransactionId(), productId, productCode);
+
+           if(successfulJoin) {
+               String providerCode = data.getQuote().getApplication().getProvider();
+               String productName = data.getQuote().getApplication().getProductTitle();
+               String state = data.getQuote().getSituation().getState();
+               String membershipType = data.getQuote().getSituation().getHealthCvr();
+               ApplyCompleteEvent applyCompleteEvent = createCompleteEvent(providerCode, productName, state, membershipType, productId, ApplyCompleteStatus.SUCCESS);
+               cloudWatchNotifier.send(applyCompleteEvent, response);
+           }
 
             TransactionService.writeAllowableErrors(data.getTransactionId(), getErrors(response.getErrorList(), true));
 
@@ -286,7 +311,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
             // if online user record a join and add to transaction details
             if (!isCallCentre) {
-                setToPending(request, data, confirmationId, productId, getErrors(response.getErrorList(), false));
+                setToPending(request, data, confirmationId, productId, productCode, getErrors(response.getErrorList(), false));
             } else {
                 // just record a failure
                 recordTouch(request, data, productId, Touch.TouchType.FAIL);
@@ -389,7 +414,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         }
     }
 
-    private void setToPending(HttpServletRequest request, HealthRequest data, String confirmationId, String productId, String errorMessage) throws DaoException {
+    private void setToPending(HttpServletRequest request, HealthRequest data, String confirmationId, String productId, String productCode, String errorMessage) throws DaoException {
         recordTouch(request, data, productId, Touch.TouchType.FAIL);
 
         // Add trigger
@@ -400,8 +425,16 @@ public class HealthApplicationController extends CommonQuoteRouter {
         transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -7, "pendingID", confirmationId);
 
         // write to join
-        joinService.writeJoin(data.getTransactionId(), productId);
+        boolean successfulJoin = joinService.writeJoin(data.getTransactionId(), productId, productCode);
 
+        if(successfulJoin) {
+            String providerCode = data.getQuote().getApplication().getProvider();
+            String productName = data.getQuote().getApplication().getProductTitle();
+            String state = data.getQuote().getSituation().getState();
+            String membershipType = data.getQuote().getSituation().getHealthCvr();
+            ApplyCompleteEvent applyCompleteEvent = createCompleteEvent(providerCode, productName, state, membershipType, productId, ApplyCompleteStatus.ERROR);
+            cloudWatchNotifier.send(applyCompleteEvent,  request.getAttribute("applicationResponse"));
+        }
     }
 
     private void recordTouch(HttpServletRequest request, HealthRequest data, String productId, Touch.TouchType type) {
@@ -411,4 +444,38 @@ public class HealthApplicationController extends CommonQuoteRouter {
         TouchService.getInstance().recordTouchWithProductCode(request, touch, productId);
     }
 
+    private ApplyCompleteEvent createCompleteEvent(String providerCode, String productName, String state, String membershipType, String productId, ApplyCompleteStatus status) {
+        ApplyCompleteEvent applyCompleteEvent = new ApplyCompleteEvent()
+                .withWhitelabel("CTM")
+                .withProviderCode(providerCode)
+                .withSaleID(Generators.timeBasedGenerator().generate().toString())
+                .withSaleDate(ZonedDateTime.now())
+                .withProductName(productName)
+                .withState(State.fromValue(state))
+                .withMembershipType(MembershipType.fromValue(getMembershipType(membershipType)))
+                .withProductID(productId)
+                .withApplyCompleteStatus(status)
+                .withSource("healthApply");
+
+        return applyCompleteEvent;
+    }
+
+    private String getMembershipType(String type) {
+        switch(type) {
+            case "SM" :
+            case "SF":
+                return "SINGLE";
+            case "C":
+                return "COUPLE";
+            case "SPF":
+                return "SINGLE_PARENT_FAMILY";
+            case "F":
+                return "FAMILY";
+            case "EF":
+                return "EXTENDED_FAMILY";
+            case "ESPF":
+                return "EXTENDED_SINGLE_PARENT_FAMILY";
+        }
+        return "";
+    }
 }

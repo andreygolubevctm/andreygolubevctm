@@ -15,6 +15,8 @@ public class HealthQuote {
 
     public String productId;
 
+    public String altProductId;
+
     private Info info;
 
     private Premium premium;
@@ -63,6 +65,14 @@ public class HealthQuote {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getAltProductId() {
+        return altProductId;
+    }
+
+    public void setAltProductId(String altProductId) {
+        this.altProductId = altProductId;
     }
 
     public Info getInfo() {

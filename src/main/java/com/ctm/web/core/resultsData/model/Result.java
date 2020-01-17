@@ -19,6 +19,8 @@ public class Result implements Serializable {
 
     private String productId;
 
+    private String altProductId;
+
     public AvailableType getAvailable() {
         return available;
     }
@@ -41,6 +43,14 @@ public class Result implements Serializable {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getAltProductId() {
+        return altProductId;
+    }
+
+    public void setAltProductId(String altProductId) {
+        this.altProductId = altProductId;
     }
 
 }

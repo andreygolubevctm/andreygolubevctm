@@ -83,6 +83,7 @@ public class ResponseAdapterV2 {
                     result.setTransactionId(request.getTransactionId());
                     result.setServiceName("PHIO");
                     result.setProductId(quote.getProductId());
+                    result.setAltProductId(quote.getAltProductId());
 
                     result.setPromo(createPromo(quote.getPromotion(), request.getStaticOverride(), isSimplesUser, brandCode));
                     result.setAwardScheme(createAwardScheme(quote.getPromotion(), isSimplesUser));
@@ -266,7 +267,7 @@ public class ResponseAdapterV2 {
 
         final Price price = new Price();
 
-        final boolean hasDiscount = quotePrice.getDiscountPercentage().compareTo(BigDecimal.ZERO) > 0;
+        final boolean hasDiscount = healthQuote.getApplyDiscounts().equals("Y") && quotePrice.getDiscountPercentage().compareTo(BigDecimal.ZERO) > 0;
         final String rebateValue = formatCurrency(calculateRebateValue(rebatePercentage, quotePrice.getBasePremium(), quotePrice.getRebateAmount()), true, true);
 
         price.setDiscounted(hasDiscount ? "Y" : "N");
