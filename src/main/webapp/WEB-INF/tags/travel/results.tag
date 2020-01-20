@@ -62,6 +62,16 @@
 <%-- DEFAULT RESULT ROW --%>
 <core_v1:js_template id="result-template">
 	{{ var productTitle = (typeof obj.des !== 'undefined') ? obj.des : 'Unknown product name'; }}
+	{{ (function (w) { }}
+	{{ 	w.URLSearchParams = w.URLSearchParams || function (searchString) { }}
+	{{ 		var self = this; }}
+	{{ 		self.searchString = searchString; }}
+	{{ 		self.get = function (name) { }}
+	{{ 			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(self.searchString); }}
+	{{ 			return (results == null) ? results : decodeURI(results[1]) || 0; }}
+	{{ 		}; }}
+	{{ 	} }}
+	{{ })(window) }}
 	{{ var urlParams = new URLSearchParams(window.location.search);}}
     {{ var providerName = obj.providerName; }}
 

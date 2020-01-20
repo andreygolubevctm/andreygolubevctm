@@ -65,7 +65,7 @@
 	{{ } }}
 	<div class="dual-pricing-container">
 		<div class="hidden-xs moreInfoPricingDual">
-			<div class="moreInfoPriceWrapper">
+			<div class="moreInfoPriceWrapper current-price">
 				<div class="moreInfoPriceContainer">
 					<div class="moreInfoPriceHeading">NOW</div>
 					<div class="moreInfoPrice">
@@ -74,8 +74,8 @@
 				</div>
 			</div>
 			<div class="moreInfoPriceWrapper">
-				<div class="moreInfoPriceContainer">
-					<div class="moreInfoPriceHeading">PRICE FROM April 1</div>
+				<div class="moreInfoPriceContainer future-price">
+					<div class="moreInfoPriceHeading">Premiums rise from April 1</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltPriceTemplate }}
 					</div>
