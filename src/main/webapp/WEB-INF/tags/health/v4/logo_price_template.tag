@@ -18,7 +18,8 @@
 
 	{{ if(typeof obj.showRisingTag === 'undefined' || obj.showRisingTag == true) { }}
 	<div class="premium-rising-tag">
-		<span class="icon-arrow-thick-up"></span> Premiums are rising from April 1st, 2019<br/>
+		<span class="icon-arrow-thick-up"></span> Premiums are rising from April 1st, 2019
+		<br/>
 		<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
 	</div>
 	{{ } }}
@@ -42,9 +43,12 @@
         		    {{ priceText = premium.lhcfreetext; }}
         		{{ } }}
 				{{ var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount) }}
-				{{ var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate' }}
+				{{ var textLhcFreeDualPricing = 'inc ' + formatCurrency(premium.rebateValue) + ' Govt Rebate'; }}
 				{{ var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount) }}
 				{{ var showABDToolTip = premium.abd > 0; }}
+				{{ var lhtText = premium.lhcfreepricing.split("<br>")[0]; }}
+				{{ var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate' }}
+				{{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
 
 				<div class="frequency {{=freq}} {{= obj._selectedFrequency === freq.toLowerCase() ? '' : 'displayNone' }}" data-text="{{= priceText }}" data-lhcfreetext="{{= priceLhcfreetext }}">
 					{{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
@@ -63,21 +67,34 @@
 							</span>
             			{{ if ((!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) || window.meerkat.modules.journeyEngine.getCurrentStep().navigationId !=='payment' ) { }}
                     	<div class="lhcText hide-on-affix">
-                    	    <span>
+							{{ if (isDualPricingActive) { }}
+								{{ if (lhtText && !obj.isForResultPage) { }}
+								<span>
+									{{= 'The premiums may be affected by LHC.' }}
+								</span>
+								<br/>
+								{{ } }}
+								<span>
+									{{= textLhcFreeDualPricing}}
+								</span>
+							{{ } else { }}
+							<span>
 								{{= textLhcFreePricing}}
                     	    </span>
+							{{ } }}
                     	</div>
 
-            		{{ if(obj.custom.reform.yad !== "N" && premium.abd > 0) { }}
-            		    {{ if(info.abdRequestFlag === 'A') { }}
-            		        <health_v4:abd_badge abd="true" />
-            		    {{ } else { }}
-            		        <health_v4:abd_badge abd="false" />
-            		    {{ } }}
-										<health_v4:abd_whats_this shortTitle="true" />
-            		{{ } }}
+						{{ if(obj.custom.reform.yad !== "N" && premium.abd > 0 && !obj.isForResultPage) { }}
+							{{ if(info.abdRequestFlag === 'A') { }}
+								<health_v4:abd_badge abd="true" />
+							{{ } else { }}
+								<health_v4:abd_badge abd="false" />
+							{{ } }}
+							<health_v4:abd_whats_this shortTitle="true" />
+						{{ } }}
 
-                		{{ } else { }}
+
+					{{ } else { }}
                 		    {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, freq, obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) }}
                 		{{ } }}
 					{{ } else { }}

@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.192.2</version>
+    <version>1.193.1-RC2</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -67,6 +67,8 @@
         <logback.version>1.1.5</logback.version>
         <!-- Schematic -->
         <schema-model.version>1.7.0</schema-model.version>
+
+        <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -919,7 +921,7 @@
             <properties>
                 <cargo.maven.containerUrl>https://nexus.comparethemarket.com.au/repository/maven-central/org/apache/tomcat/tomcat/${tomcat.version}/tomcat-${tomcat.version}.zip</cargo.maven.containerUrl>
                 <javaagent.args></javaagent.args>
-                <!--<cargo.maven.containerId>tomcat7x</cargo.maven.containerId> defined in developer-properties profile -->
+                <cargo.maven.containerId>tomcat7x</cargo.maven.containerId>
                 <!--<javaagent.args>-javaagent:${project.build.directory}/embedded_jars/springloaded.jar -noverify</javaagent.args>-->
             </properties>
             <build>

@@ -245,7 +245,7 @@
         }
     }
 
-    function renderTemplate(target, product, returnTemplate, isForSidebar, page, isForAffixedHeader) {
+    function renderTemplate(target, product, returnTemplate, isForSidebar, page, isForAffixedHeader, isForResultPage) {
         var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
         selectedProduct = product;
@@ -255,6 +255,8 @@
         }
 
         product.priceBreakdownLHCCopy = '';
+        product.isForResultPage = isForResultPage;
+
         if ($elements.priceBreakdownLHCCopyTemplate.length && meerkat.modules.healthPriceBreakdown.showBreakdown()) {
             var LHCCopy = _.template($elements.priceBreakdownLHCCopyTemplate.html());
             product.priceBreakdownLHCCopy = LHCCopy(product);
