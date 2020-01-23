@@ -1,0 +1,1192 @@
+{
+  "info":{
+    "trackingKey":"c4acb315551fb5f1550f6775c369d0e4eb598c0f",
+    "transactionId":2718755,
+    "pricesHaveChanged":false
+  },
+    "price":[
+      {
+        "available":"Y",
+        "serviceName":"PHIO",
+        "productId":"c635f9f7-aeb5-422b-9b64-9cc4fe6d78d5",
+        "promo":{
+          "promoText":"<p><a class=\"dialogPop\" data-content=\"Get $1,000,000 and a broken leg, when buy health insurance and dont cancel in 2 months\" title=\"Find out more\" data-class=\"results-promo-modal\">Find out more</a></p>",
+          "hospitalPDF":"health/brochures/f492830a-a26a-4f6d-8a4a-b84d5853ecc0/silverplushospital750andlite60extras.pdfhttps://dev-images.comparethemarket.com.au/",
+          "providerPhoneNumber":"",
+          "extrasPDF":"health/brochures/f492830a-a26a-4f6d-8a4a-b84d5853ecc0/silverplushospital750andlite60extras.pdfhttps://dev-images.comparethemarket.com.au/",
+          "discountText":""
+        },
+        "awardScheme":{
+          "text":""
+        },
+        "paymentTypePremiums":{
+          "BankAccount":{
+            "weekly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$41.49",
+              "rebateValue":"$13.33",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$53.18",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $13.33 Govt Rebate.",
+              "lhcfreevalue":41.49,
+              "grossPremium":"$53.18",
+              "text":"$41.49",
+              "value":41.49,
+              "hospitalValue":47.19,
+              "pricing":"Includes rebate of $13.33 & LHC loading of $0.00.",
+              "base":"$53.18",
+              "abd":0,
+              "abdValue":0
+            },
+            "fortnightly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$82.99",
+              "rebateValue":"$26.65",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$106.36",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $26.65 Govt Rebate.",
+              "lhcfreevalue":82.99,
+              "grossPremium":"$106.36",
+              "text":"$82.99",
+              "value":82.99,
+              "hospitalValue":94.38,
+              "pricing":"Includes rebate of $26.65 & LHC loading of $0.00.",
+              "base":"$106.36",
+              "abd":0,
+              "abdValue":0
+            },
+            "monthly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$179.83",
+              "rebateValue":"$57.75",
+              "rebate":25.059,
+              "lhc":"$82.68",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$230.46",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $57.75 Govt Rebate.",
+              "lhcfreevalue":179.83,
+              "grossPremium":"$137.32",
+              "text":"$179.83",
+              "value":179.83,
+              "hospitalValue":204.51,
+              "pricing":"Includes rebate of $57.75 & LHC loading of $0.00.",
+              "base":"$131.83",
+              "abd":0,
+              "abdValue":0
+            },
+            "quarterly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$0.00",
+              "rebateValue":"$0.00",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$0.00",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $0.00 Govt Rebate.",
+              "lhcfreevalue":0,
+              "grossPremium":"$0.00",
+              "text":"$0.00",
+              "value":0,
+              "hospitalValue":0,
+              "pricing":"Includes rebate of $0.00 & LHC loading of $0.00.",
+              "base":"$0.00",
+              "abd":0,
+              "abdValue":0
+            },
+            "halfyearly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$0.00",
+              "rebateValue":"$0.00",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$0.00",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $0.00 Govt Rebate.",
+              "lhcfreevalue":0,
+              "grossPremium":"$0.00",
+              "text":"$0.00",
+              "value":0,
+              "hospitalValue":0,
+              "pricing":"Includes rebate of $0.00 & LHC loading of $0.00.",
+              "base":"$0.00",
+              "abd":0,
+              "abdValue":0
+            },
+            "annually":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$2,158.02",
+              "rebateValue":"$693.01",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$2,765.53",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $693.01 Govt Rebate.",
+              "lhcfreevalue":2158.02,
+              "grossPremium":"$2,765.53",
+              "text":"$2,158.02",
+              "value":2158.02,
+              "hospitalValue":2454.12,
+              "pricing":"Includes rebate of $693.01 & LHC loading of $0.00.",
+              "base":"$2,765.53",
+              "abd":0,
+              "abdValue":0
+            }
+          },
+          "CreditCard":{
+            "weekly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$41.49",
+              "rebateValue":"$13.33",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$53.18",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $13.33 Govt Rebate.",
+              "lhcfreevalue":41.49,
+              "grossPremium":"$53.18",
+              "text":"$41.49",
+              "value":41.49,
+              "hospitalValue":47.19,
+              "pricing":"Includes rebate of $13.33 & LHC loading of $0.00.",
+              "base":"$53.18",
+              "abd":0,
+              "abdValue":0
+            },
+            "fortnightly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$82.99",
+              "rebateValue":"$26.65",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$106.36",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $26.65 Govt Rebate.",
+              "lhcfreevalue":82.99,
+              "grossPremium":"$106.36",
+              "text":"$82.99",
+              "value":82.99,
+              "hospitalValue":94.38,
+              "pricing":"Includes rebate of $26.65 & LHC loading of $0.00.",
+              "base":"$106.36",
+              "abd":0,
+              "abdValue":0
+            },
+            "monthly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$179.83",
+              "rebateValue":"$57.75",
+              "rebate":25.059,
+              "lhc":"$82.68",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$230.46",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $57.75 Govt Rebate.",
+              "lhcfreevalue":179.83,
+              "grossPremium":"$137.32",
+              "text":"$179.83",
+              "value":179.83,
+              "hospitalValue":204.51,
+              "pricing":"Includes rebate of $57.75 & LHC loading of $0.00.",
+              "base":"$137.32",
+              "abd":0,
+              "abdValue":0
+            },
+            "quarterly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$0.00",
+              "rebateValue":"$0.00",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$0.00",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $0.00 Govt Rebate.",
+              "lhcfreevalue":0,
+              "grossPremium":"$0.00",
+              "text":"$0.00",
+              "value":0,
+              "hospitalValue":0,
+              "pricing":"Includes rebate of $0.00 & LHC loading of $0.00.",
+              "base":"$0.00",
+              "abd":0,
+              "abdValue":0
+            },
+            "halfyearly":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$0.00",
+              "rebateValue":"$0.00",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$0.00",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $0.00 Govt Rebate.",
+              "lhcfreevalue":0,
+              "grossPremium":"$0.00",
+              "text":"$0.00",
+              "value":0,
+              "hospitalValue":0,
+              "pricing":"Includes rebate of $0.00 & LHC loading of $0.00.",
+              "base":"$0.00",
+              "abd":0,
+              "abdValue":0
+            },
+            "annually":{
+              "discounted":"N",
+              "lhcPercentage":0,
+              "lhcfreetext":"$2,158.02",
+              "rebateValue":"$693.01",
+              "rebate":25.059,
+              "lhc":"$0.00",
+              "discountAmount":"$0.00",
+              "baseAndLHC":"$2,765.53",
+              "discountPercentage":0,
+              "lhcfreepricing":"The premium may be affected by LHC <br> inc $693.01 Govt Rebate.",
+              "lhcfreevalue":2158.02,
+              "grossPremium":"$2,765.53",
+              "text":"$2,158.02",
+              "value":2158.02,
+              "hospitalValue":2454.12,
+              "pricing":"Includes rebate of $693.01 & LHC loading of $0.00.",
+              "base":"$2,765.53",
+              "abd":0,
+              "abdValue":0
+            }
+          }
+        },
+        "custom":{
+          "reform":{
+            "tier":"silver+",
+            "scripting":"A",
+            "changeDate":"1st June 2019",
+            "yad":"N",
+            "name":null,
+            "tab1":{
+              "excess":"You will have to pay an excess of $750 on admission. This is limited to a maximum of $750 per person per year",
+              "limited":null,
+              "benefits":[
+                {
+                  "category":"Assisted reproductive services",
+                  "covered":"N",
+                  "waitingperiod":"12 Months",
+                  "isclinicalcategory":"true",
+                  "helpid":"629",
+                  "scopeofcover":"Hospital treatment for fertility treatments or procedures. For example: retrieval of eggs or sperm, In vitro Fertilisation (IVF), and Gamete Intra-fallopian Transfer (GIFT). Treatment of the female reproductive system is listed separately under Gynaecology. Pregnancy and birth-related services are listed separately under Pregnancy and birth."
+                },
+                {
+                  "category":"Back, neck and spine",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"620",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the back, neck and spinal column, including spinal fusion. For example: sciatica, prolapsed or herniated disc, spinal disc replacement, and spine curvature disorders such as scoliosis, kyphosis and lordosis. Joint replacements are listed separately under Joint replacements. Joint fusions are listed separately under Bone, joint and muscle. Spinal cord conditions are listed separately under Brain and nervous system. Management of back pain is listed separately under Pain management. Pain management that requires a device is listed separately under Pain management with device. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Blood",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"619",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of blood and blood-related conditions. For example: blood clotting disorders and bone marrow transplants. Treatment for cancers of the blood is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Bone, joint and muscle",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"603",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of diseases, disorders and injuries of the musculoskeletal system. For example: carpal tunnel, fractures, hand surgery, joint fusion, bone spurs, osteomyelitis and bone cancer. Chest surgery is listed separately under Lung and chest. Spinal cord conditions are listed separately under Brain and nervous system. Spinal column conditions are listed separately under Back, neck and spine. Joint reconstructions are listed separately under Joint reconstructions. Joint replacements are listed separately under Joint replacements. Podiatric surgery performed by a registered podiatric surgeon is listed separately under Podiatric surgery (provided by a registered podiatric surgeon). Management of back pain is listed separately under Pain management. Pain management that requires a device is listed separately under Pain management with device. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Brain and Nervous system",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"599",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the brain, brain-related conditions, spinal cord and peripheral nervous system. For example: stroke, brain or spinal cord tumours, head injuries, epilepsy and Parkinson’s disease. Treatment of spinal column (back bone) conditions is listed separately under Back, neck and spine. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Breast surgery (medically necessary)",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"615",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of breast disorders and associated lymph nodes, and reconstruction and/or reduction following breast surgery or a preventative mastectomy. For example: breast lesions, breast tumours, asymmetry due to breast cancer surgery, and gynecomastia. This clinical category does not require benefits to be paid for cosmetic breast surgery that is not medically necessary. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Cataracts",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"625",
+                  "scopeofcover":"Hospital treatment for surgery to remove a cataract and replace with an artificial lens."
+                },
+                {
+                  "category":"Chemotherapy, radiotherapy and immunotherapy for cancer",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"612",
+                  "scopeofcover":"Hospital treatment for chemotherapy, radiotherapy and immunotherapy for the treatment of cancer or benign tumours. Surgical treatment of cancer is listed separately under each body system."
+                },
+                {
+                  "category":"Dental surgery",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"622",
+                  "scopeofcover":"Hospital treatment for surgery to the teeth and gums. For example: surgery to remove wisdom teeth, and dental implant surgery."
+                },
+                {
+                  "category":"Diabetes Management (excluding insulin pumps)",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"616",
+                  "scopeofcover":"Hospital treatment for the investigation and management of diabetes. For example: stabilisation of hypo- or hyper- glycaemia, contour problems due to insulin injections. Treatment for diabetes-related conditions is listed separately under each body system affected. For example, treatment for diabetes-related eye conditions is listed separately under Eye. Treatment for ulcers is listed separately under Skin. Provision and replacement of insulin pumps is listed separately under Insulin pumps"
+                },
+                {
+                  "category":"Dialysis for chronic kidney failure",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"627",
+                  "scopeofcover":"Hospital treatment for dialysis treatment for chronic kidney failure. For example: peritoneal dialysis and haemodialysis."
+                },
+                {
+                  "category":"Digestive system",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"607",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the digestive system, including the oesophagus, stomach, gall bladder, pancreas, spleen, liver and bowel. For example: oesophageal cancer, irritable bowel syndrome, gall stones and haemorrhoids. Endoscopy is listed separately under Gastrointestinal endoscopy. Hernia and appendicectomy procedures are listed separately under Hernia and appendix. Bariatric surgery is listed separately under Weight loss surgery. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Ear, nose and throat",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"601",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the ear, nose, throat, middle ear, thyroid, parathyroid, larynx, lymph nodes and related areas of the head and neck. For example: damaged ear drum, sinus surgery, removal of foreign bodies, stapedectomy and throat cancer. Tonsils, adenoids and grommets are listed separately under Tonsils, adenoids and grommets. The implantation of a hearing device is listed separately under Implantation of hearing devices. Orthopaedic neck conditions are listed separately under Back, neck and spine. Sleep studies are listed separately under Sleep studies Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Eye (not cataracts)",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"600",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the eye and the contents of the eye socket. For example: retinal detachment, tear duct conditions, eye infections and medically managed trauma to the eye. Cataract procedures are listed separately under Cataracts. Eyelid procedures are listed separately under Plastic and reconstructive surgery. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Gastrointestinal endoscopy",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"609",
+                  "scopeofcover":"Hospital treatment for the diagnosis, investigation and treatment of the internal parts of the gastrointestinal system using an endoscope. For example: colonoscopy, gastroscopy, endoscopic retrograde cholangiopancreatography (ERCP). Non-endoscopic procedures for the digestive system are listed separately under Digestive system."
+                },
+                {
+                  "category":"Gynaecology",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"610",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the female reproductive system. For example: endometriosis, polycystic ovaries, female sterilisation and cervical cancer. Fertility treatments are listed separately under Assisted reproductive services. Pregnancy and birth-related conditions are listed separately under Pregnancy and birth. Miscarriage or termination of pregnancy is listed separately under Miscarriage and termination of pregnancy. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Heart and vascular system",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"617",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the heart, heart-related conditions and vascular system. For example: heart failure and heart attack, monitoring of heart conditions, varicose veins and removal of plaque from arterial walls. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Hernia and appendix",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"608",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of a hernia or appendicitis. Digestive conditions are listed separately under Digestive system."
+                },
+                {
+                  "category":"Hospital psychiatric services",
+                  "covered":"R",
+                  "waitingperiod":"2 Months",
+                  "isclinicalcategory":"true",
+                  "helpid":"597",
+                  "scopeofcover":"Hospital treatment for the treatment and care of patients with psychiatric, mental, addiction or behavioural disorders. For example: psychoses such as schizophrenia, mood disorders such as depression, eating disorders and addiction therapy."
+                },
+                {
+                  "category":"Implantation of hearing devices",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"624",
+                  "scopeofcover":"Hospital treatment to correct hearing loss, including implantation of a prosthetic hearing device. Stapedectomy is listed separately under Ear, nose and throat."
+                },
+                {
+                  "category":"Insulin pumps",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"631",
+                  "scopeofcover":"Hospital treatment for the provision and replacement of insulin pumps for treatment of diabetes."
+                },
+                {
+                  "category":"Joint reconstructions",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"604",
+                  "scopeofcover":"Hospital treatment for surgery for joint reconstructions. For example: torn tendons, rotator cuff tears and damaged ligaments. Joint replacements are listed separately under Joint replacements. Bone fractures are listed separately under Bone, joint and muscle. Procedures to the spinal column are listed separately under Back, neck and spine. Podiatric surgery performed by a registered podiatric surgeon is listed separately under Podiatric surgery (provided by a registered podiatric surgeon)."
+                },
+                {
+                  "category":"Joint replacements",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"626",
+                  "scopeofcover":"Hospital treatment for surgery for joint replacements, including revisions, resurfacing, partial replacements and removal of prostheses. For example: replacement of shoulder, wrist, finger, hip, knee, ankle, or toe joint. Joint fusions are listed separately under Bone, joint and muscle. Spinal fusions are listed separately under Back, neck and spine. Joint reconstructions are listed separately under Joint reconstructions. Podiatric surgery performed by a registered podiatric surgeon is listed separately under Podiatric surgery (provided by a registered podiatric surgeon)."
+                },
+                {
+                  "category":"Kidney and bladder",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"605",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the kidney, adrenal gland and bladder. For example: kidney stones, adrenal gland tumour and incontinence. Dialysis is listed separately under Dialysis for chronic kidney failure. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Lung and chest",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"618",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the lungs, lung-related conditions, mediastinum and chest. For example: lung cancer, respiratory disorders such as asthma, pneumonia, and treatment of trauma to the chest. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Male reproductive system",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"606",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of the male reproductive system including the prostate. For example: male sterilisation, circumcision and prostate cancer. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Miscarriage and termination of pregnancy",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"611",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of a miscarriage or for termination of pregnancy."
+                },
+                {
+                  "category":"Pain management",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"613",
+                  "scopeofcover":"Hospital treatment for pain management that does not require the insertion or surgical management of a device. For example: treatment of nerve pain and chest pain due to cancer by injection of a nerve block. Pain management using a device (for example an infusion pump or neurostimulator) is listed separately under Pain management with device."
+                },
+                {
+                  "category":"Pain Management with device",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"632",
+                  "scopeofcover":"Hospital treatment for the implantation, replacement or other surgical management of a device required for the treatment of pain. For example: treatment of nerve pain, back pain, and pain caused by coronary heart disease with a device (for example an infusion pump or neurostimulator). Treatment of pain that does not require a device is listed separately under Pain management."
+                },
+                {
+                  "category":"Palliative care",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months",
+                  "isclinicalcategory":"true",
+                  "helpid":"598",
+                  "scopeofcover":"Hospital treatment for care where the intent is primarily providing quality of life for a patient with a terminal illness, including treatment to alleviate and manage pain."
+                },
+                {
+                  "category":"Plastic and reconstructive surgery (medically necessary)",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"621",
+                  "scopeofcover":"Hospital treatment which is medically necessary for the investigation and treatment of any physical deformity, whether acquired as a result of illness or accident or congenital. For example: burns requiring a graft, cleft palate, club foot and angioma. Plastic surgery that is medically necessary relating to the treatment of a skin-related condition is listed separately under Skin. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Podiatric surgery (provided by a registered podiatric surgeon)",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"623",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of conditions affecting the foot and/or ankle, provided by a registered podiatric surgeon, but limited to cover for: accommodation; and the cost of a prosthesis as listed in the prostheses list set out in the Private Health Insurance (Prostheses) Rules, as in force from time to time. Note: Insurers are not required to pay for any other benefits for hospital treatment for this clinical category but may choose to do so."
+                },
+                {
+                  "category":"Pregnancy and birth",
+                  "covered":"N",
+                  "waitingperiod":"12 Months",
+                  "isclinicalcategory":"true",
+                  "helpid":"628",
+                  "scopeofcover":"Hospital treatment for investigation and treatment of conditions associated with pregnancy and child birth. Treatment for the baby is covered under the clinical category relevant to their condition. For example, respiratory conditions are covered under Lung and chest. Female reproductive conditions are listed separately under Gynaecology. Fertility treatments are listed separately under Assisted reproductive services. Miscarriage and termination of pregnancy is listed separately under Miscarriage and termination of pregnancy."
+                },
+                {
+                  "category":"Rehabilitation",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months",
+                  "isclinicalcategory":"true",
+                  "helpid":"596",
+                  "scopeofcover":"Hospital treatment for physical rehabilitation for a patient related to surgery or illness. For example: inpatient and admitted day patient rehabilitation, stroke recovery, cardiac rehabilitation"
+                },
+                {
+                  "category":"Sleep studies",
+                  "covered":"N",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"633",
+                  "scopeofcover":"Hospital treatment for the investigation of sleep patterns and anomalies. For example: sleep apnoea and snoring."
+                },
+                {
+                  "category":"Skin",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"614",
+                  "scopeofcover":"Hospital treatment for the investigation and treatment of skin, skin-related conditions and nails. The removal of foreign bodies is also included. Plastic surgery that is medically necessary and relating to the treatment of a skin-related condition is also included. For example: melanoma, minor wound repair and abscesses. Removal of excess skin due to weight loss is listed separately under Weight loss surgery. Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer."
+                },
+                {
+                  "category":"Tonsils, adenoids and grommets",
+                  "covered":"Y",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"602",
+                  "scopeofcover":"Hospital treatment of the tonsils, adenoids and insertion or removal of grommets."
+                },
+                {
+                  "category":"Weight loss surgery",
+                  "covered":"N",
+                  "waitingperiod":"2 Months (12 if pre-existing)",
+                  "isclinicalcategory":"true",
+                  "helpid":"630",
+                  "scopeofcover":"Hospital treatment for surgery that is designed to reduce a person’s weight, remove excess skin due to weight loss and reversal of a bariatric procedure. For example: gastric banding, gastric bypass, sleeve gastrectomy."
+                }
+              ]
+            },
+            "tab2":{
+              "excess":"You will have to pay an excess of $750 on admission. This is limited to a maximum of $750 per person per year",
+              "limited":null,
+              "benefits":null
+            }
+          }
+        },
+        "extras":{
+          "Dietetics":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "SpecialFeatures":null,
+          "Chiropractic":{
+            "covered":"Y",
+            "hasSpecialFeatures":"Myotherapy, and Hydrotherapy included in the (physiotherapy,chiropractic, and osteopathy limit) of $300 with 60% back per consultation",
+            "waitingPeriod":"2 Months",
+            "benefits":{
+              "ChiropracticInitial":"60%",
+              "ChiropracticSubsequent":"60%"
+            },
+            "benefitLimits":{
+              "perPerson":"$300",
+              "perPolicy":"$300",
+              "annualLimit":"-",
+              "lifetime":null,
+              "combinedLimit":"Group Limit: Physiotherapy, Chiropractic & Osteopathy",
+              "subLimit":"None",
+              "serviceLimit":""
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "Optical":{
+            "covered":"Y",
+            "hasSpecialFeatures":null,
+            "waitingPeriod":"6 Months",
+            "benefits":{
+              "Frames":"100%",
+              "SingleVision":"100%",
+              "MultiVision":"100%",
+              "ContactLenses":"100%"
+            },
+            "benefitLimits":{
+              "perPerson":"$200",
+              "perPolicy":"$200",
+              "annualLimit":"-",
+              "lifetime":null,
+              "combinedLimit":"",
+              "subLimit":"None",
+              "serviceLimit":""
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "Psychology":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "HearingAids":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "Physiotherapy":{
+            "covered":"Y",
+            "hasSpecialFeatures":"Myotherapy, and Hydrotherapy included in the (physiotherapy,chiropractic, and osteopathy limit) of $300 with 60% back per consultation",
+            "waitingPeriod":"2 Months",
+            "benefits":{
+              "PhysiotherapyInitial":"60%",
+              "PhysiotherapySubsequent":"60%"
+            },
+            "benefitLimits":{
+              "perPerson":"$300",
+              "perPolicy":"$300",
+              "annualLimit":"-",
+              "lifetime":null,
+              "combinedLimit":"Group Limit: Physiotherapy, Chiropractic & Osteopathy",
+              "subLimit":"None",
+              "serviceLimit":""
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "SpeechTherapy":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "GlucoseMonitor":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "Endodontic":{
+            "covered":"Y",
+            "hasSpecialFeatures":null,
+            "waitingPeriod":"12 Months",
+            "benefits":{
+              "Endodontic417RootCanalTherapy":"60%"
+            },
+            "benefitLimits":{
+              "perPerson":"$300",
+              "perPolicy":"$300",
+              "annualLimit":"-",
+              "lifetime":null,
+              "combinedLimit":"Group Limit: Major Dental & Endodontic",
+              "subLimit":"None",
+              "serviceLimit":""
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "Orthodontic":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "Podiatry":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "DentalGeneral":{
+            "covered":"Y",
+            "hasSpecialFeatures":"No annual limit for Preventative Dental (Comprehensive oral examination, Periodic oral examination, Oral examinaion - limited, Consultation)\n\nService limit of 3 Consultations per member per year",
+            "waitingPeriod":"2 Months",
+            "benefits":{
+              "DentalGeneral012PeriodicExam":"60%",
+              "DentalGeneral114ScaleClean":"60%",
+              "DentalGeneral121Fluoride":"60%"
+            },
+            "benefitLimits":{
+              "perPerson":"$600",
+              "perPolicy":"$600",
+              "annualLimit":"-",
+              "lifetime":null,
+              "combinedLimit":"",
+              "subLimit":"None",
+              "serviceLimit":"<p>1 comprehensive oral examination per member per calendar year</p><p><b>Periodic oral examination</b> 2 periodic dental examinations per member per calendar year.</p>"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "OccupationalTherapy":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "LifestyleProducts":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "EyeTherapy":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "Acupuncture":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "Massage":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "DentalMajor":{
+            "covered":"Y",
+            "hasSpecialFeatures":null,
+            "waitingPeriod":"12 Months",
+            "benefits":{
+              "DentalMajor615FullCrownVeneered":"60%",
+              "DentalMajor322Extraction":"60%"
+            },
+            "benefitLimits":{
+              "perPerson":"$300",
+              "perPolicy":"$300",
+              "annualLimit":"-",
+              "lifetime":null,
+              "combinedLimit":"Group Limit: Major Dental & Endodontic",
+              "subLimit":"None",
+              "serviceLimit":""
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "Orthotics":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "NonPBS":{
+            "covered":"N",
+            "hasSpecialFeatures":"-",
+            "waitingPeriod":"-",
+            "benefits":null,
+            "benefitLimits":{
+              "perPerson":"-",
+              "perPolicy":"-",
+              "annualLimit":"-",
+              "lifetime":"-",
+              "combinedLimit":"-",
+              "subLimit":"-",
+              "serviceLimit":"-"
+            },
+            "benefitPayableInitial":null,
+            "benefitpayableSubsequent":null
+          },
+          "hasSpecialFeatures":"N"
+        },
+        "ambulance":{
+          "otherInformation":"<strong>Ambulance cover provided through State Scheme, not myOwn.</strong> (See policy brochure for full details of group limits and sub-limits)",
+          "waitingPeriod":"N/A",
+          "covered":"Y"
+        },
+        "accident":{
+          "overrideDetails":null,
+          "covered":"N"
+        },
+        "hospital":{
+          "inclusions":{
+            "privateHospital":"Y",
+            "publicHospital":"Y",
+            "excess":"You will have to pay an excess of $750 on admission. This is limited to a maximum of $750 per person per year",
+            "excesses":{
+              "type":null,
+              "perAdmission":"$750",
+              "perPerson":"$750",
+              "perPolicy":"$750"
+            },
+            "waivers":null,
+            "copayment":"No Co-Payment",
+            "copayments":{
+              "type":"None",
+              "shared":null,
+              "sharedMax":null,
+              "privateAmount":null,
+              "privateMax":null,
+              "daySurgery":null,
+              "annualMax":null
+            },
+            "GapCoverProvided":null,
+            "LimitedProduct":false,
+            "OtherBLP":false,
+            "OtherExclusions":false,
+            "OtherRestrictions":false,
+            "waitingPeriods":{
+              "SubAcute":null,
+              "PreExisting":null,
+              "Other":null,
+              "Ambulance":null
+            }
+          },
+          "benefits":{
+            "JointReplacement":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "NonMedicare":{
+              "covered":"N",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"-",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "DentalSurgery":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "Cardiac":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "Sterilisation":{
+              "covered":"N",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"-",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "ENT":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "RenalDialysis":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "CataractEyeLens":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "Psychiatric":{
+              "covered":"R",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "BackSurgery":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "PainManagementNoDevice":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "AssistedReproductive":{
+              "covered":"N",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"12 Months",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "HerniaAppendix":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "GastricBanding":{
+              "covered":"N",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"-",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "Palliative":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "BoneMuscleJointRecon":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "Rehabilitation":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "Podiatric":{
+              "covered":"N",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"-",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "Obstetric":{
+              "covered":"N",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"-",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "PlasticNonCosmetic":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            },
+            "Cancer":{
+              "covered":"YY",
+              "benefitLimitationPeriod":"",
+              "WaitingPeriodType":"",
+              "WaitingPeriod":"2 Months (12 if pre-existing)",
+              "ExistingWaitingPeriod":"12 Months"
+            }
+          },
+          "ClassificationHospital":"",
+          "HospitalAmbulance":null
+        },
+        "transactionId":2718755,
+        "info":{
+          "trackCode":"UNKNOWN",
+          "restrictedFund":"N",
+          "productTitle":"Silver Plus Hospital 750 and Lite 60 Extras",
+          "productCode":"J56/QGEA10",
+          "hospitalName":"SILVER PLUS HOSPITAL 750",
+          "extrasName":"LITE 60 EXTRAS",
+          "fundProductCode":"SQSP7L60Z",
+          "des":"Silver Plus Hospital 750 and Lite 60 Extras",
+          "provider":"MYO",
+          "providerId":20,
+          "name":"Silver Plus Hospital 750 and Lite 60 Extras",
+          "rank":1,
+          "popularProductsRank":null,
+          "providerName":"myOwn",
+          "situationFilter":"N",
+          "popularProduct":false,
+          "abdRequestFlag":null,
+          "Category":"Single",
+          "ProductType":"Combined",
+          "FundCode":"MYO",
+          "State":"QLD",
+          "OtherProductFeatures":""
+        },
+        "dropDeadDate":"2019-03-31",
+        "pricingDate":"2019-04-01"
+      }
+    ]
+  }
