@@ -15,6 +15,8 @@ import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.HealthPricePremium;
 import com.ctm.web.health.validation.HealthApplicationTokenValidation;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,7 @@ import org.junit.Test;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +32,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -51,6 +56,7 @@ public class HealthApplicationServiceTest {
 	private HealthApplicationTokenValidation tokenService = mock(HealthApplicationTokenValidation.class);
 	private SettingsService settingsService;
 	private TokenCreatorConfig config;
+	private HealthSelectedProductService healthSelectedProductService = mock(HealthSelectedProductService.class);
 
 	@Before
 	public void setup() throws Exception {
@@ -73,10 +79,14 @@ public class HealthApplicationServiceTest {
 		discPremiums.setMonthlyLhc(86.15);
 		discPremiums.setMonthlyPremium(142.3);
 
+		String selectedProductJson = Resources.toString(Resources.getResource("com/ctm/web/health/services/selected_product_xml.json"), Charsets.UTF_8);
+		when(healthSelectedProductService.getProductXML(anyLong(), anyString())).thenReturn(selectedProductJson);
+		when(healthSelectedProductService.getProductXML(anyLong())).thenReturn(selectedProductJson);
+
 		when(healthPriceDao.getPremiumAndLhc("545038", false)).thenReturn(premiums);
 		when(healthPriceDao.getPremiumAndLhc("545038", true)).thenReturn(discPremiums);
 		FatalErrorService fatalErrorService = mock(FatalErrorService.class);
-		healthApplicationService = new HealthApplicationService(healthPriceDao, fatalErrorService, tokenService);
+		healthApplicationService = new HealthApplicationService(healthPriceDao, fatalErrorService, tokenService, healthSelectedProductService);
 		healthApplicationService.setRequestService(requestService);
 
 		setChangeOverDate();
@@ -107,7 +117,7 @@ public class HealthApplicationServiceTest {
 
 
 	@Test
-	public void shouldInitToken() throws JspException {
+	public void shouldInitToken() throws JspException, DaoException, IOException {
 		when(session.getAttribute("callCentre")).thenReturn(false);
 
 		Long transactionId= 1000L;
@@ -117,6 +127,7 @@ public class HealthApplicationServiceTest {
 		when(requestService.getTransactionId()).thenReturn(transactionId);
 		when(requestService.getToken()).thenReturn(token);
 		when(tokenService.validateToken(anyObject())).thenReturn(true);
+
 		healthApplicationService.setUpApplication(setupData(), request, changeOverDate);
 		assertTrue(healthApplicationService.isValidToken());
 
@@ -196,7 +207,7 @@ public class HealthApplicationServiceTest {
 		assertEquals("121.66" ,paymentFreqResult);
 	}
 
-	private void setupNib() throws DaoException, JspException {
+	private void setupNib() throws DaoException, JspException, IOException {
 		data.put("health/application/provider", "NIB");
 		data.put("health/application/productId", "PHIO-HEALTH-563234");
 
@@ -210,6 +221,10 @@ public class HealthApplicationServiceTest {
 
 		when(healthPriceDao.getPremiumAndLhc("563234", false)).thenReturn(premiums );
 		when(healthPriceDao.getPremiumAndLhc("563234", true)).thenReturn(discPremiums );
+
+		String selectedProductJson = Resources.toString(Resources.getResource("com/ctm/web/health/services/selected_product_nib_xml.json"), Charsets.UTF_8);
+		when(healthSelectedProductService.getProductXML(anyLong(), anyString())).thenReturn(selectedProductJson);
+		when(healthSelectedProductService.getProductXML(anyLong())).thenReturn(selectedProductJson);
 
 		data.put("health/loading", "34");
 		data.put("health/rebate", "29.04");

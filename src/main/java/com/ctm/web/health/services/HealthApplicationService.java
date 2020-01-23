@@ -17,6 +17,7 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.HealthPricePremium;
+import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.request.HealthApplicationRequest;
 import com.ctm.web.health.price.PremiumCalculator;
 import com.ctm.web.health.utils.HealthApplicationParser;
@@ -36,6 +37,8 @@ import java.util.List;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class HealthApplicationService extends CTMEndpointService {
+
+    private HealthSelectedProductService healthSelectedProductService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplicationService.class);
     private final FatalErrorService fatalErrorService;
@@ -61,12 +64,14 @@ public class HealthApplicationService extends CTMEndpointService {
     public HealthApplicationService() {
         this.healthPriceDao = new HealthPriceDao();
         this.fatalErrorService = new FatalErrorService();
+        this.healthSelectedProductService = new HealthSelectedProductService();
     }
 
-    public HealthApplicationService(HealthPriceDao healthPriceDao, FatalErrorService fatalErrorService, HealthApplicationTokenValidation tokenService) {
+    public HealthApplicationService(HealthPriceDao healthPriceDao, FatalErrorService fatalErrorService, HealthApplicationTokenValidation tokenService, HealthSelectedProductService healthSelectedProductService) {
         this.tokenService = tokenService;
         this.healthPriceDao = healthPriceDao;
         this.fatalErrorService = fatalErrorService;
+        this.healthSelectedProductService = healthSelectedProductService;
     }
 
     public JSONObject setUpApplication(Data data, HttpServletRequest httpRequest, Date changeOverDate) throws JspException {
@@ -88,10 +93,19 @@ public class HealthApplicationService extends CTMEndpointService {
             }
             super.validateToken(httpRequest, tokenService, HealthRequestParser.getHealthRequestToken(requestService, isCallCentre));
             request = HealthApplicationParser.parseRequest(data, changeOverDate);
+            String selectedProductJson = healthSelectedProductService.getProductXML(requestService.getTransactionId(), request.application.selectedProductId);
+            JSONObject selectedProduct = null;
+            try {
+                selectedProduct = new JSONObject(selectedProductJson);
+            } catch (JSONException e) {
+                LOGGER.error("Failed to parse selected product JSON {}", kv("selectedProduct", selectedProductJson), e);
+                throw new JspException(e);
+            }
+
             HealthApplicationValidation validationService = new HealthApplicationValidation();
             validationErrors = validationService.validate(request);
             if (validationErrors.size() == 0) {
-                calculatePremiums();
+                calculatePremiums(selectedProduct, request);
                 updateDataBucket(data);
             }
         } catch (DaoException | ConfigSettingException e) {
@@ -102,9 +116,16 @@ public class HealthApplicationService extends CTMEndpointService {
         return handleValidationResult(requestService, validationErrors);
     }
 
-    private void calculatePremiums() throws DaoException {
+    private void calculatePremiums(JSONObject selectedProduct, HealthApplicationRequest request) throws DaoException, JspException {
         Frequency frequency = request.payment.details.frequency;
-        HealthPricePremium premium = fetchHealthResult();
+        HealthPricePremium premium = null;
+
+        try {
+            premium = fetchHealthResult(selectedProduct, request);
+        } catch (JSONException e) {
+            LOGGER.error("Failed to fetched health results {}", kv("selectedProduct", selectedProduct), e);
+            throw new JspException(e);
+        }
 
         premiumCalculator.setRebate(request.rebateValue);
         premiumCalculator.setLoading(request.loading);
@@ -141,9 +162,43 @@ public class HealthApplicationService extends CTMEndpointService {
     /**
      * Fetch single health product based on product id
      */
-    private HealthPricePremium fetchHealthResult() throws DaoException {
-        boolean isDiscountRates = HealthPriceService.hasDiscountRates(request.payment.details.frequency, request.application.provider, request.payment.details.paymentType, false);
-        return healthPriceDao.getPremiumAndLhc(request.application.selectedProductId, isDiscountRates);
+    private HealthPricePremium fetchHealthResult(JSONObject selectedProduct, HealthApplicationRequest request) throws JSONException {
+        HealthPricePremium healthPricePremium = new HealthPricePremium();
+        PaymentType paymentType = request.payment.details.paymentType;
+
+        JSONObject priceObj = selectedProduct.getJSONArray("price").getJSONObject(0).getJSONObject("paymentTypePremiums").getJSONObject(paymentType.equals(PaymentType.BANK) ? "BankAccount" : "CreditCard");
+
+        JSONObject weeklyPrice = priceObj.getJSONObject("weekly");
+        healthPricePremium.setWeeklyLhc(Double.parseDouble(weeklyPrice.getString("lhc").replace("$", "").replace(",","")));
+        healthPricePremium.setWeeklyPremium(Double.parseDouble(weeklyPrice.getString("base").replace("$", "").replace(",","")));
+        healthPricePremium.setGrossWeeklyPremium(Double.parseDouble(weeklyPrice.getString("grossPremium").replace("$", "").replace(",","")));
+
+        JSONObject fortnightlyPrice = priceObj.getJSONObject("fortnightly");
+        healthPricePremium.setFortnightlyLhc(Double.parseDouble(fortnightlyPrice.getString("lhc").replace("$", "").replace(",","")));
+        healthPricePremium.setFortnightlyPremium(Double.parseDouble(fortnightlyPrice.getString("base").replace("$", "").replace(",","")));
+        healthPricePremium.setGrossFortnightlyPremium(Double.parseDouble(fortnightlyPrice.getString("grossPremium").replace("$", "").replace(",","")));
+
+        JSONObject monthlyPrice = priceObj.getJSONObject("monthly");
+        healthPricePremium.setMonthlyLhc(Double.parseDouble(monthlyPrice.getString("lhc").replace("$", "").replace(",","")));
+        healthPricePremium.setMonthlyPremium(Double.parseDouble(monthlyPrice.getString("base").replace("$", "").replace(",","")));
+        healthPricePremium.setGrossMonthlyPremium(Double.parseDouble(monthlyPrice.getString("grossPremium").replace("$", "").replace(",","")));
+
+        JSONObject quarterlyPrice = priceObj.getJSONObject("quarterly");
+        healthPricePremium.setQuarterlyLhc(Double.parseDouble(quarterlyPrice.getString("lhc").replace("$", "").replace(",","")));
+        healthPricePremium.setQuarterlyPremium(Double.parseDouble(quarterlyPrice.getString("base").replace("$", "").replace(",","")));
+        healthPricePremium.setGrossQuarterlyPremium(Double.parseDouble(quarterlyPrice.getString("grossPremium").replace("$", "").replace(",","")));
+
+        JSONObject halfyearlyPrice = priceObj.getJSONObject("halfyearly");
+        healthPricePremium.setHalfYearlyLhc(Double.parseDouble(halfyearlyPrice.getString("lhc").replace("$", "").replace(",","")));
+        healthPricePremium.setHalfYearlyPremium(Double.parseDouble(halfyearlyPrice.getString("base").replace("$", "").replace(",","")));
+        healthPricePremium.setGrossHalfYearlyPremium(Double.parseDouble(halfyearlyPrice.getString("grossPremium").replace("$", "").replace(",","")));
+
+        JSONObject annualPrice = priceObj.getJSONObject("annually");
+        healthPricePremium.setAnnualLhc(Double.parseDouble(annualPrice.getString("lhc").replace("$", "").replace(",","")));
+        healthPricePremium.setAnnualPremium(Double.parseDouble(annualPrice.getString("base").replace("$", "").replace(",","")));
+        healthPricePremium.setGrossAnnualPremium(Double.parseDouble(annualPrice.getString("grossPremium").replace("$", "").replace(",","")));
+
+        return healthPricePremium;
     }
 
     private void setUpPremiumCalculator(double premium, double grossPremium, double lhc) {
