@@ -46,6 +46,22 @@ body {
 
 }
 
+/* Only required whilst AMT is globally disabled */
+body.travel.amt-disabled {
+	#yourcoverfs {
+		.cover-type {
+			label.single-trip-policy {
+				border-bottom-right-radius: 5px;
+				border-top-right-radius: 5px;
+				border-right-width: 1px;
+			}
+			label.multi-trip-policy {
+				visibility: hidden;
+			}
+		}
+	}
+}
+
 body.travel {
 	@media(@sm) {
 		.col-sm-12.non-transparent-background {

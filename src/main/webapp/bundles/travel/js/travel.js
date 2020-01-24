@@ -41,6 +41,10 @@
 				$('body').toggleClass("gtmPromoBanner", true);
 			}
 
+			if(meerkat.site.amtDisabled) {
+				$('body').addClass("amt-disabled");
+			}
+
 			initStickyHeader();
 
 			$policyTypeBtn = $("input[name=travel_policyType]");
