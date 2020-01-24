@@ -16,7 +16,7 @@
     var lastFieldTouchXpath = null;
     var googleAnalyticsClientId = "";
 
-    function recordTouch(touchType, touchComment, productId, includeFormData, callback, customFields) {
+    function recordTouch(touchType, touchComment, productId, includeFormData, callback, customFields, productName, providerCode) {
 
         var data = [];
         if (includeFormData) {
@@ -38,6 +38,14 @@
         data.push({
             name: 'productId',
             value: productId
+        });
+        data.push({
+            name: 'productName',
+            value: productName
+        });
+        data.push({
+            name: 'providerCode',
+            value: providerCode
         });
 
         if(_.isArray(customFields) && !_.isEmpty(customFields)) {
@@ -206,7 +214,7 @@
 
             var includeFormData = false;
             if (typeof eventObject.includeFormData !== 'undefined' && eventObject.includeFormData === true) includeFormData = true;
-            recordTouch(eventObject.touchType, eventObject.touchComment, eventObject.productId, includeFormData, eventObject.callback, eventObject.customFields);
+            recordTouch(eventObject.touchType, eventObject.touchComment, eventObject.productId, includeFormData, eventObject.callback, eventObject.customFields, eventObject.productName, eventObject.providerCode);
         });
 
         meerkat.messaging.subscribe(moduleEvents.EXTERNAL, runTrackingCall);

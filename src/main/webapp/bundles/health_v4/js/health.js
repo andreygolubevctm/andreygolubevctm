@@ -410,7 +410,7 @@
                 meerkat.modules.healthDependants.resetConfig();
 				$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('rule-digits', false);
 				$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('msg-digits', '');
-                
+
                 if (event.isForward && meerkat.site.isCallCentreUser) {
                     $('#journeyEngineSlidesContainer .journeyEngineSlide')
                         .eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
@@ -520,6 +520,8 @@
 
                     this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
                     this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
+                    this.tracking.productName = selectedProduct.info.name;
+                    this.tracking.providerCode = selectedProduct.info.provider;
 	                this.tracking.customFields = [
 	                    {name:"phone",value:meerkat.modules.healthContactNumber.getPhone()}
                     ];

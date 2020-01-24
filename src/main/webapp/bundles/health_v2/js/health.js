@@ -392,7 +392,7 @@
             onBeforeEnter: function enterResultsStep(event) {
                 $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('rule-digits', false);
 				$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').data('msg-digits', '');
-               
+
                 meerkat.modules.sessionCamHelper.stop();
                 meerkat.modules.healthDependants.resetConfig();
                 if (event.isForward && meerkat.site.isCallCentreUser) {
@@ -478,6 +478,8 @@
 
                     this.tracking.touchComment = selectedProduct.info.provider + ' ' + selectedProduct.info.des;
                     this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
+                    this.tracking.productName = selectedProduct.info.name;
+                    this.tracking.providerCode = selectedProduct.info.provider;
 
                     // Load the selected product details.
                     meerkat.modules.healthFunds.load(selectedProduct.info.provider);

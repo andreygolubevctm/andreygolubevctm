@@ -59,7 +59,7 @@
 					<security:populateDataFromParams rootPath="${verticalCode}" delete="false" />
 				</c:when>
 			</c:choose>
-			<core_v1:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" productId="${param.productId}" />
+			<core_v1:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" productId="${param.productId}" productName="${param.productName}" providerCode="${param.providerCode}" />
 		</c:otherwise>
 	</c:choose>
 	<transactionId>${data.current.transactionId}</transactionId>
