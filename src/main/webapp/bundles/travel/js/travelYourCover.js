@@ -94,7 +94,9 @@
 		meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId": "PolicyType-"+$("input[name=travel_policyType]:checked").val()});
 		// single trip
 		var isIe8 = meerkat.modules.performanceProfiling.isIE8(), showMethod = isIe8 ? 'show' : 'slideDown', hideMethod = isIe8 ? 'hide' : 'slideUp';
-		if ($travel_policyType_S.prop('checked')) {
+		if(!$travel_policyType_S.prop('checked') && !$travel_policyType_A.prop('checked') && meerkat.site.amtDisabled) {
+			$travel_policyType_S.click();
+		} else if ($travel_policyType_S.prop('checked')) {
 			// show the green bubble and single trip blue bubble copy
 			$detailsForm.find('.well-info, .well-chatty > .single').show();
 			// hide the amt and default blue bubble copy
