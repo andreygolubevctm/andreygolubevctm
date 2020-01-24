@@ -14,6 +14,13 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-10 policy-info">
 		<content:get key="singleTripInfoText" />
-		<content:get key="annualMultiTripInfoText" />
+		<c:choose>
+			<c:when test="${not empty amtDisabledFlag and amtDisabledFlag eq 'Y'}">
+				<content:get key="annualMultiTripDisabledInfoText" />
+			</c:when>
+			<c:otherwise>
+				<content:get key="annualMultiTripInfoText" />
+			</c:otherwise>
+		</c:choose>
 	</div>
 </div>

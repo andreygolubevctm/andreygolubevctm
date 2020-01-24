@@ -14,6 +14,14 @@
 	<c:set var="isTrackingEnabled" value="${false}" />
 </c:if>
 
+<c:set var="amtDisabledConfigFlag">${pageSettings.getSetting("amtDisabled")}</c:set>
+<c:set var="amtDisabledFlag" scope="request">
+	<c:choose>
+		<c:when test="${not empty amtDisabledConfigFlag and amtDisabledConfigFlag eq 'Y'}">true</c:when>
+		<c:otherwise>false</c:otherwise>
+	</c:choose>
+</c:set>
+
 <c:set var="PHGPostImpressions">
 	<c:choose>
 		<c:when test="${isTrackingEnabled eq true}">
@@ -42,5 +50,6 @@
 	ctmh: {
 		fBase: "${pageSettings.getSetting("handoverRootUrl")}${pageSettings.getContextFolder()}"
 	},
-	africaComp: <c:out value="${africaComp}" />
+	africaComp: <c:out value="${africaComp}" />,
+	amtDisabled: <c:out value="${amtDisabledFlag}" />
 }
