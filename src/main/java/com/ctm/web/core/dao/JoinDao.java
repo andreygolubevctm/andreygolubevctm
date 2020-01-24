@@ -33,7 +33,7 @@ public class JoinDao {
      * @return boolean
      * @throws SQLException
      **/
-    public boolean writeJoin(long transactionId, String productId, String productCode) throws WriteJoinException {
+    public boolean writeJoin(long transactionId, String productId, String productCode, String providerId) throws WriteJoinException {
         try {
 			Instant now = Instant.now();
 			LOGGER.info("writing join {}, {}, {}", kv("transactionId", transactionId), kv("productId", productId), kv("productCode", productCode));
@@ -67,13 +67,14 @@ public class JoinDao {
 			}
 
 			stmt = conn.prepareStatement(
-				"INSERT INTO `ctm`.`joins` (rootId, productId, joinDate) " +
-				"VALUES (?,?,CURDATE())" +
-				"ON DUPLICATE KEY UPDATE rootId=rootId,productId=productId;"
+				"INSERT INTO `ctm`.`joins` (rootId, productId, joinDate, providerId) " +
+				"VALUES (?,?,CURDATE(),?)" +
+				"ON DUPLICATE KEY UPDATE rootId=rootId,productId=productId,providerId=providerId;"
 			);
 
 			stmt.setLong(1, rootid);
 			stmt.setString(2, foundProductId);
+			stmt.setString(3, providerId);
 
 			stmt.executeUpdate();
             return true;

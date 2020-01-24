@@ -101,6 +101,7 @@
 
 		<%-- Product Information --%>
 		<field_v1:hidden xpath="${xpath}/provider" className="health_application_details_provider" />
+		<field_v1:hidden xpath="${xpath}/providerId" className="health_application_details_providerId" />
 		<field_v1:hidden xpath="${xpath}/productId" className="health_application_details_productId" />
 		<field_v1:hidden xpath="${xpath}/productName" className="health_application_details_productNumber" />
 		<field_v1:hidden xpath="${xpath}/productTitle" className="health_application_details_productTitle" />

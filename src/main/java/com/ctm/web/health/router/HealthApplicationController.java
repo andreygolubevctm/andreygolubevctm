@@ -184,7 +184,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         // Get the productCode
         final String productCode = data.getQuote().getApplication().getProductName();
-
+        final String providerId = data.getQuote().getApplication().getProviderId();
 
         HealthApplicationResult result = new HealthApplicationResult();
 
@@ -201,7 +201,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
             recordTouch(request, data, productId, Touch.TouchType.SOLD);
 
             // write to join
-            boolean successfulJoin = joinService.writeJoin(data.getTransactionId(), productId, productCode);
+            boolean successfulJoin = joinService.writeJoin(data.getTransactionId(), productId, productCode, providerId);
 
            if(successfulJoin) {
                String providerCode = data.getQuote().getApplication().getProvider();
@@ -311,7 +311,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
             // if online user record a join and add to transaction details
             if (!isCallCentre) {
-                setToPending(request, data, confirmationId, productId, productCode, getErrors(response.getErrorList(), false));
+                setToPending(request, data, confirmationId, productId, productCode, providerId, getErrors(response.getErrorList(), false));
             } else {
                 // just record a failure
                 recordTouch(request, data, productId, Touch.TouchType.FAIL);
@@ -414,7 +414,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         }
     }
 
-    private void setToPending(HttpServletRequest request, HealthRequest data, String confirmationId, String productId, String productCode, String errorMessage) throws DaoException {
+    private void setToPending(HttpServletRequest request, HealthRequest data, String confirmationId, String productId, String productCode, String providerId, String errorMessage) throws DaoException {
         recordTouch(request, data, productId, Touch.TouchType.FAIL);
 
         // Add trigger
@@ -425,7 +425,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -7, "pendingID", confirmationId);
 
         // write to join
-        boolean successfulJoin = joinService.writeJoin(data.getTransactionId(), productId, productCode);
+        boolean successfulJoin = joinService.writeJoin(data.getTransactionId(), productId, productCode, providerId);
 
         if(successfulJoin) {
             String providerCode = data.getQuote().getApplication().getProvider();

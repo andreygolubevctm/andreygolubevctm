@@ -30,6 +30,8 @@ public class Application {
 
     private String provider;
 
+    private String providerId;
+
     private String providerName;
 
     private String postalMatch;
@@ -126,6 +128,14 @@ public class Application {
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
     public Person getPrimary() {

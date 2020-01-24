@@ -23,8 +23,7 @@ public class RemainingSalesDao {
             "FROM " +
             "    ctm.provider_properties pp " +
             "    JOIN ctm.provider_master pm ON pm.providerId = pp.providerId " +
-            "    LEFT JOIN ctm.product_master p ON p.providerId = pm.ProviderId " +
-            "    LEFT JOIN ctm.joins j ON j.productId = p.productId " +
+            "    LEFT JOIN ctm.joins j ON j.providerId = pm.providerId " +
             "WHERE " +
             "    now() BETWEEN pp.EffectiveStart AND pp.EffectiveEnd " +
             "    AND pp.propertyId = 'MonthlyLimit' " +
