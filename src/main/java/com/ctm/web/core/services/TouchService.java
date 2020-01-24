@@ -30,9 +30,11 @@ public class TouchService {
         return INSTANCE;
     }
 
-    public boolean recordTouchWithProductCode(final HttpServletRequest request, final Touch touch, String productCode){
+    public boolean recordTouchWithProductCode(final HttpServletRequest request, final Touch touch, String productCode, String productName, String providerCode){
         final TouchProductProperty touchProductProperty = new TouchProductProperty();
         touchProductProperty.setProductCode(productCode);
+        touchProductProperty.setProductName(productName);
+        touchProductProperty.setProviderCode(providerCode);
         touch.setTouchProductProperty(touchProductProperty);
         return recordTouch(request, touch);
     }

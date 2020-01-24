@@ -148,7 +148,7 @@ public class TouchDao {
 
         String sql = " SELECT" +
                 " 	DISTINCT t.touchId, t.transaction_id, t.dateTime, t.operator_id, t.type,  " +
-                "     tp.productCode, pm.LongTitle as productName,  pp.providerCode, pp.name as providerName " +
+                "     tp.productCode, tp.productName as productName,  pm.providerCode, pm.name as providerName " +
                 " FROM" +
                 " 	(SELECT " +
                 " 		DISTINCT t.id as touchId, t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
@@ -169,10 +169,8 @@ public class TouchDao {
                 " 	) AS t" +
                 " 	LEFT OUTER JOIN ctm.touches_products AS tp " +
                 " 	ON t.touchId = tp.touchesId " +
-                " 	LEFT OUTER JOIN ctm.product_master AS pm " +
-                " 	ON pm.productId = tp.productCode and CURDATE() BETWEEN pm.effectiveStart and pm.effectiveEnd " +
-                " 	LEFT OUTER JOIN ctm.provider_master AS pp " +
-                " 	ON pm.providerId = pp.providerId" +
+                " 	LEFT OUTER JOIN ctm.provider_master AS pm " +
+                " 	ON tp.providerCode = pm.providerCode" +
                 " ORDER BY " +
                 " 	t.touchId DESC, t.dateTime DESC" +
                 " LIMIT 50;";
@@ -297,12 +295,14 @@ public class TouchDao {
 
             if (touch.getTouchProductProperty() != null) {
                 stmt = dbSource.getConnection().prepareStatement(
-                        "INSERT INTO ctm.touches_products (touchesId, productCode) " +
-                                "VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS
+                        "INSERT INTO ctm.touches_products (touchesId, productCode, productName, providerCode) " +
+                                "VALUES (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS
                 );
 
                 stmt.setLong(1, touch.getId());
                 stmt.setString(2, touch.getTouchProductProperty().getProductCode());
+                stmt.setString(3, touch.getTouchProductProperty().getProductName());
+                stmt.setString(4, touch.getTouchProductProperty().getProviderCode());
 
                 stmt.executeUpdate();
                 // Update the comment model with the insert ID

@@ -26,9 +26,9 @@ public class JoinService {
      * @return joinDate
      * @throws SQLException
      **/
-    public boolean writeJoin(long transactionId, String productId, String productCode) {
+    public boolean writeJoin(long transactionId, String productId, String productCode, String providerId) {
         try {
-            return joinDao.writeJoin(transactionId, productId, productCode);
+            return joinDao.writeJoin(transactionId, productId, productCode, providerId);
         } catch (JoinDao.WriteJoinException e) {
             LOGGER.error(String.format("%1$s. productId '%2$s', transactionId '%3$d'", e.getMessage(), e.getProductId(), e.getTransactionId()), e);
             return false;

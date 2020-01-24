@@ -192,8 +192,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		accessTouchService.setRequest(request);
 		String productID = request.getParameter("productId");
 		productID = productID==null?"":productID.replaceAll("PHIO-HEALTH-","");
-		accessTouchService.recordTouchWithProductCodeDeprecated(emailBrochureRequest.transactionId,
-				Touch.TouchType.BROCHURE.getCode(), productID);
+		accessTouchService.recordTouchWithProductAndProvider(emailBrochureRequest.transactionId, Touch.TouchType.BROCHURE.getCode(), null, productID, emailBrochureRequest.productName, emailBrochureRequest.provider);
 
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
