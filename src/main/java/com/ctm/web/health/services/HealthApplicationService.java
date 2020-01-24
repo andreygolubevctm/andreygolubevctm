@@ -93,7 +93,10 @@ public class HealthApplicationService extends CTMEndpointService {
             }
             super.validateToken(httpRequest, tokenService, HealthRequestParser.getHealthRequestToken(requestService, isCallCentre));
             request = HealthApplicationParser.parseRequest(data, changeOverDate);
-            String selectedProductJson = healthSelectedProductService.getProductXML(requestService.getTransactionId(), request.application.selectedProductId);
+            boolean isUuid = isUuid(request.application.selectedProductId);
+
+            // This is a dirty hack to get Non HPM Products working, they are saved in the database with PHIO-HEALTH-{ID} but are sent here with just the ID
+            String selectedProductJson = healthSelectedProductService.getProductXML(requestService.getTransactionId(), !isUuid ? new StringBuilder("PHIO-HEALTH-").append(request.application.selectedProductId).toString() : request.application.selectedProductId);
             JSONObject selectedProduct = null;
             try {
                 selectedProduct = new JSONObject(selectedProductJson);
@@ -114,6 +117,10 @@ public class HealthApplicationService extends CTMEndpointService {
             throw new JspException(e);
         }
         return handleValidationResult(requestService, validationErrors);
+    }
+
+    private boolean isUuid(String uuid) {
+        return uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
     }
 
     private void calculatePremiums(JSONObject selectedProduct, HealthApplicationRequest request) throws DaoException, JspException {
