@@ -178,9 +178,14 @@ public class HealthApplicationController extends CommonQuoteRouter {
         // Create the confirmationId
         final String confirmationId = request.getSession().getId() + "-" + data.getTransactionId();
 
-        // Get the productId removing the PHIO-HEALTH- prefix
-        final String productId = data.getQuote().getApplication().getProductId()
-                .substring(data.getQuote().getApplication().getProductId().indexOf("HEALTH-") + 7);
+        // Get the productId removing the PHIO-HEALTH- prefix, if required
+        final String productId;
+        if (data.getQuote().getApplication().getProductId().contains("HEALTH-")){
+            productId = data.getQuote().getApplication().getProductId()
+                    .substring(data.getQuote().getApplication().getProductId().indexOf("HEALTH-") + 7);
+        } else {
+            productId = data.getQuote().getApplication().getProductId();
+        }
 
         // Get the productCode
         final String productCode = data.getQuote().getApplication().getProductName();
@@ -438,10 +443,12 @@ public class HealthApplicationController extends CommonQuoteRouter {
     }
 
     private void recordTouch(HttpServletRequest request, HealthRequest data, String productId, Touch.TouchType type) {
+        String providerCode = data.getQuote().getApplication().getProvider();
+        String productName = data.getQuote().getApplication().getProductTitle();
         Touch touch = new Touch();
         touch.setType(type);
         touch.setTransactionId(data.getTransactionId());
-        TouchService.getInstance().recordTouchWithProductCode(request, touch, productId);
+        TouchService.getInstance().recordTouchWithProductCode(request, touch, productId, productName, providerCode);
     }
 
     private ApplyCompleteEvent createCompleteEvent(String providerCode, String productName, String state, String membershipType, String productId, ApplyCompleteStatus status) {

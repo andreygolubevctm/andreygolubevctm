@@ -341,7 +341,9 @@
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: 'H',
                 touchComment: 'MoreInfo',
-                productId: product.hasOwnProperty('productId') ? product.productId : ""
+                productId: product.hasOwnProperty('productId') ? product.productId : "",
+                productName:  product && product.info && product.info.name ? product.info.name : "",
+                providerCode: product && product.info && product.info.provider ? product.info.provider : ""
             });
 
             // Instigate a session poke
@@ -470,7 +472,9 @@
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: 'H',
                 touchComment: 'MoreInfo',
-                productId: product.hasOwnProperty('productId') ? product.productId : ""
+                productId: product.hasOwnProperty('productId') ? product.productId : "",
+                productName:  product && product.info && product.info.name ? product.info.name : "",
+                providerCode: product && product.info && product.info.provider ? product.info.provider : ""
             });
         });
     }
