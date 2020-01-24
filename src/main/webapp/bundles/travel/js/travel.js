@@ -172,6 +172,12 @@
 				meerkat.modules.travelPopularDestinations.initTravelPopularDestinations();
 				meerkat.modules.travelAmtDurations.initAmtDurations();
 
+				var $travel_policyType_S = $('#travel_policyType_S');
+				var $travel_policyType_A = $('#travel_policyType_A');
+				if(!$travel_policyType_S.prop('checked') && !$travel_policyType_A.prop('checked') && meerkat.site.amtDisabled) {
+					$travel_policyType_S.click();
+				}
+
 				// if preloaded or load from EDM
 				if ($policyTypeBtn.is(':checked')) {
 					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
