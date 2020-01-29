@@ -741,11 +741,12 @@
             // Set hidden fields with selected product info.
             var $_main = $('#mainform');
             if (product === null) {
-	            _.each(['provider','productId','productNumber','productTitle','providerName','excessPerAdmission','excessPerPerson','excessPerPolicy','tier'], function(suffix) {
+	            _.each(['provider', 'providerId', 'productId','productNumber','productTitle','providerName','excessPerAdmission','excessPerPerson','excessPerPolicy','tier'], function(suffix) {
 		            $_main.find('.health_application_details_' + suffix).val("");
 	            });
             } else {
                 $_main.find('.health_application_details_provider').val(selectedProduct.info.provider);
+                $_main.find('.health_application_details_providerId').val(selectedProduct.info.providerId);
                 $_main.find('.health_application_details_productId').val(selectedProduct.productId);
                 $_main.find('.health_application_details_productNumber').val(selectedProduct.info.productCode);
                 $_main.find('.health_application_details_productTitle').val(selectedProduct.info.productTitle);
@@ -770,6 +771,7 @@
                 // update transaction details otherwise we will have to wait until people get to payment page
                 meerkat.modules.writeQuote.write({
                     health_application_provider: selectedProduct.info.provider,
+                    health_application_providerId: selectedProduct.info.providerId,
                     health_application_productId: selectedProduct.productId,
                     health_application_productName: selectedProduct.info.productCode,
                     health_application_productTitle: selectedProduct.info.productTitle

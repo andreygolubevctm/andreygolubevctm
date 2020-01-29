@@ -11,6 +11,7 @@
 <%@ attribute name="resultJson" required="false" rtexprvalue="true" description="json to output to page"%>
 <%@ attribute name="productId" required="true" rtexprvalue="true" description="Additional css class attribute"%>
 <%@ attribute name="productCode" required="true" rtexprvalue="true" description="Additional css class attribute"%>
+<%@ attribute name="providerId" required="true" rtexprvalue="true" description="Additional css class attribute"%>
 
 <%
 	RewardService rewardService = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
@@ -34,7 +35,7 @@
 	<c:set var="sandbox">
 		<agg_v1:write_quote rootPath="health" productType="HEALTH" triggeredsave="pending" triggeredsavereason="Pending: ${errorMessage}" />
 	</c:set>
-	${joinService.writeJoin(transactionId,productId,productCode)}
+	${joinService.writeJoin(transactionId,productId,productCode,providerId)}
 </c:set>
 <c:choose>
 	<c:when test="${not empty resultJson}">

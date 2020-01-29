@@ -67,7 +67,6 @@ import static java.util.Optional.ofNullable;
 public class HealthQuoteService extends CommonRequestServiceV2 implements InitializingBean {
 
     public static final String GIFT_CARD_COUPON = "pyrr";
-    private static final String SPLIT_TRAFFIC_ID = "atlas";
     private static Logger LOGGER = LoggerFactory.getLogger(HealthQuoteService.class);
 
     @Autowired
@@ -143,13 +142,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
 
             HealthResponseV2 healthResponse = null;
 
-            if(SPLIT_TRAFFIC_ID.equals(Optional.of(request.getPayload().getCurrentJourney()).orElse(""))) {
-                healthResponse = getHealthResponseV2("v3/quote", request, properties);
-            }else{
-                // This Future is intended to run async and be non-blocking because we are running `v3/quote` (ATLAS) in parallel for all quotes even if it not an atlas journey.
-                CompletableFuture.supplyAsync(() -> getHealthResponseV2("v3/quote", request, properties));
-                healthResponse = getHealthResponseV2("quote", request, properties);
-            }
+            healthResponse = getHealthResponseV2("v3/quote", request, properties);
 
             final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent, brand.getCode());
 
@@ -196,12 +189,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
             request.setBrandCode(brand.getCode());
             request.setRequestAt(data.getRequestAt());
 
-            HealthResponse healthResponse = getHealthResponse("quote", request, properties);
-            final HealthResponse healthResponseNew = getHealthResponse("v3/quote", request, properties);
-
-            if(request.getPayload().getCurrentJourney().equals(SPLIT_TRAFFIC_ID)) {
-                healthResponse = healthResponseNew;
-            }
+            final HealthResponse healthResponse = getHealthResponse("v3/quote", request, properties);
 
             final Pair<Boolean, List<HealthQuoteResult>> response = ResponseAdapter.adapt(data, healthResponse, alternatePricingContent);
 

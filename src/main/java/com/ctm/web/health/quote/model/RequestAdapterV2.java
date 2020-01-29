@@ -409,12 +409,7 @@ public class RequestAdapterV2 {
 
     protected static Situation addMembership(HealthQuoteRequest quoteRequest, Situation situation) {
         if (situation != null) {
-            //Only change to NSW if we are not on the new journey
-            if (!quoteRequest.getCurrentJourney().equals("atlas") && StringUtils.equals(situation.getState(), "ACT")) {
-                quoteRequest.setState("NSW");
-            } else {
-                quoteRequest.setState(situation.getState());
-            }
+            quoteRequest.setState(situation.getState());
             if (StringUtils.equalsIgnoreCase("SPF", situation.getHealthCvr())) {
                 quoteRequest.setMembership(Membership.SINGLE_PARENT);
             } else if (StringUtils.equalsIgnoreCase("SM", situation.getHealthCvr()) ||

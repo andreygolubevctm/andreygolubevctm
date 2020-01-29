@@ -323,7 +323,7 @@
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
 				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
 				var ambulanceAccidentCover = meerkat.modules.healthBenefitsStep.getAmbulanceAccidentCover();
-				
+
 				if(ambulanceAccidentCover) {
 					selectedBenefits.push(ambulanceAccidentCover);
 				}
@@ -564,6 +564,8 @@
 
 					this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
 					this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
+					this.tracking.productName = selectedProduct.info.name;
+					this.tracking.providerCode = selectedProduct.info.provider;
 
 					// Load the selected product details.
 					meerkat.modules.healthFunds.load(selectedProduct.info.provider);

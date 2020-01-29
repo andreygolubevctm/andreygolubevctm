@@ -129,7 +129,21 @@ public class AccessTouchService {
 		return recordTouchDeprecated(touch);
 	}
 
-	public void updateTouch(long transactionId, Touch.TouchType type) {
+    public Boolean recordTouchWithProductAndProvider(long transactionId, String type, String operatorId, String productCode, String productName, String providerCode) {
+        Touch touch = createTouchObject(transactionId, type, operatorId);
+
+        if (StringUtils.isNotBlank(productCode)) {
+            TouchProductProperty touchProductProperty = new TouchProductProperty();
+            touchProductProperty.setProductCode(productCode);
+            touchProductProperty.setProductName(productName);
+            touchProductProperty.setProviderCode(providerCode);
+            touch.setTouchProductProperty(touchProductProperty);
+        }
+
+        return recordTouchDeprecated(touch);
+    }
+
+    public void updateTouch(long transactionId, Touch.TouchType type) {
 		TouchDao touchDao = new TouchDao();
 		try {
 			touchDao.updateTouch(transactionId, type);

@@ -12,6 +12,8 @@
 <%@ attribute name="noResponse"			required="false"	description="Set to 'true' and this tag will not echo back the outcome" %>
 <%@ attribute name="writeQuoteOverride"	required="false"	description="STOP! Do you know what you're doing? Values can be Y or N" %>
 <%@ attribute name="emailAddress"	required="false"	description="emailAddress for transaction details" %>
+<%@ attribute name="productName"	required="false"	description="The product name" %>
+<%@ attribute name="providerCode"	required="false"	description="The provider code" %>
 <%--
 	core:transaction responses:
 	---------------------------
@@ -153,7 +155,7 @@
 
 		<jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 		<c:catch var="error">
-			<c:set var="ignore" value="${touchService.recordTouchWithProductCodeDeprecated(transactionId, type , operator, productId)}" />
+			<c:set var="ignore" value="${touchService.recordTouchWithProductAndProvider(transactionId, type , operator, productId, productName, providerCode)}" />
 		</c:catch>
 		<c:if test="${not empty error}">
 			${logger.error('Failed to record touch. {},{}', log:kv('touch',touch ) , log:kv('productId',productId ), error)}
@@ -271,7 +273,7 @@
 			</c:otherwise>
 		</c:choose>
 </c:if>
-		
+
 
 
 <%-- RESPONSE .................................................................... --%>

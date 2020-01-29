@@ -24,6 +24,7 @@
 
 <c:set var="tranId" value="${data.current.transactionId}"/>
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}"/>
+<c:set var="providerId" value="${param.health_application_providerId}" />
 <c:set var="productCode" value="${param.health_application_productName}" />
 <c:set var="continueOnAggregatorValidationError" value="${true}"/>
 
@@ -41,7 +42,7 @@
 	TODO: move this over to HealthApplicationService
 	--%>
     <c:when test="${!healthApplicationService.validToken}">
-        <health_v1:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" productCode="${productCode}"/>
+        <health_v1:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" productCode="${productCode}" providerId="${providerId}"/>
     </c:when>
     <%-- only output validation errors if call centre --%>
     <c:when test="${!healthApplicationService.valid && callCentre}">
@@ -60,7 +61,7 @@
         </c:forEach>
         <c:set var="resultXml">${resultXml}</errors></result></c:set>
         <health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}"
-                                  productId="${productId}" productCode="${productCode}"/>
+                                  productId="${productId}" productCode="${productCode}" providerId="${providerId}"/>
     </c:when>
     <%-- check the if ONLINE user submitted more than 5 times [HLT-1092] --%>
     <c:when test="${empty callCentre and not empty touch_count and touch_count > 5}">

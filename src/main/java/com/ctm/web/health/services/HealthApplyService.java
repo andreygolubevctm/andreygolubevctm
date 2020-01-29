@@ -137,8 +137,6 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .userId(userId)
                     .build();
 
-
-
             // Getting RootId from the transactionId
             final long rootId = transactionDao.getRootIdOfTransactionId(data.getTransactionId());
             LOGGER.debug("Getting {} from {}", kv("rootId", rootId), kv("transactionId", data.getTransactionId()));
