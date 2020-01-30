@@ -183,13 +183,15 @@
 		});
 
 		// Initialize the text editors
-		var $textAreas = $("#" + this.modalId + " textarea.form-control.editor");
+		var $textAreas = $("#" + that.modalId + " textarea.form-control.editor");
 		if($textAreas.length) {
 			$textAreas.trumbowyg({
 				fullscreenable: false,
 				removeformatPasted: true,
 				resetCss: true,
-				btns: ["strong", "em", "underline", "|", "unorderedList", "orderedList", "|", "link"]
+				btns: ["strong", "em", "underline", "|", "unorderedList", "orderedList", "|", "link"],
+				svgPath: meerkat.site.urls.base + "assets/graphics/trumbowyg/icons.svg",
+				defaultLinkTarget: '_blank'
 			});
 		}
 
