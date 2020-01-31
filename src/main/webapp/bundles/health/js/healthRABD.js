@@ -1,8 +1,8 @@
 ;(function ($, undefined) {
 
   var meerkat = window.meerkat,
-    meerkatEvents = meerkat.modules.events,
-    elements;
+      meerkatEvents = meerkat.modules.events,
+      elements;
 
   function init() {
     $(document).ready(function() {
@@ -69,7 +69,7 @@
     var unsure = e.target.value === 'N' || e.target.value === 'U';
     var modalContent = elements.abdFilterQuestion.find('.abdFilterModalContent').html();
     var $yesScripting = $('.simples-dialogue-138');
-  
+
     if (unsure) {
       $yesScripting.addClass('hidden');
       meerkat.modules.dialogs.show({
@@ -185,7 +185,7 @@
   }
 
   function eligibleForAlreadyHavingABD(type) {
-    return inRange(18,44, elements[type].age) && hasCover(type);
+    return inRange(18,44, elements[type].age) && hasCover(type) && meerkat.modules.age.isBornAfterFirstOfApril1989(elements[type].dob.val());
   }
 
   function inRange(lowerBound, upperBound, value) {
@@ -233,11 +233,11 @@
 
   // ABD - Age Based Discount | RABD - Retained Age Based Discount
   meerkat.modules.register('healthRABD', {
-      init: init,
-      isABD: isABD,
-      isRABD: isRABD,
-      showPaymentsScript: showPaymentsScript,
-      filterAbdProducts: filterAbdProducts
+    init: init,
+    isABD: isABD,
+    isRABD: isRABD,
+    showPaymentsScript: showPaymentsScript,
+    filterAbdProducts: filterAbdProducts
   });
 
 })(jQuery);

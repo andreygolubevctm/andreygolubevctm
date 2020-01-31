@@ -17,7 +17,7 @@
 		$dontClaimHealthRebate,
 		$incomeBase,
 		$healthCoverIncome,
-        $healthCoverIncomeFieldLabel,
+		$healthCoverIncomeFieldLabel,
 		$healthCoverIncomeLabel,
 		$partnerHealthCoverHealthCoverLoading,
 		$tierDropdowns,
@@ -78,18 +78,18 @@
 		$healthSituation = $('input[name="health_situation_healthSitu"]');
 		$abdElements = {
 			primary: {
-					receivesAgeBasedDiscountRow: $('#primary_abd'),
-					receivesAgeBasedDiscount: $('#primary_abd_health_cover'),
-					ageBasedDiscountPolicyStartRow: $('#health_previousfund_primary_abd_start_date'),
-					healthApplicationDOB: $('#health_application_primary_dob'),
+				receivesAgeBasedDiscountRow: $('#primary_abd'),
+				receivesAgeBasedDiscount: $('#primary_abd_health_cover'),
+				ageBasedDiscountPolicyStartRow: $('#health_previousfund_primary_abd_start_date'),
+				healthApplicationDOB: $('#health_application_primary_dob'),
 			},
 			partner: {
-					receivesAgeBasedDiscountRow: $('#partner_abd'),
-					receivesAgeBasedDiscount: $('#partner_abd_health_cover'),
-					ageBasedDiscountPolicyStartRow: $('#health_previousfund_partner_abd_start_date'),
-					healthApplicationDOB: $('#health_application_partner_dob')
+				receivesAgeBasedDiscountRow: $('#partner_abd'),
+				receivesAgeBasedDiscount: $('#partner_abd_health_cover'),
+				ageBasedDiscountPolicyStartRow: $('#health_previousfund_partner_abd_start_date'),
+				healthApplicationDOB: $('#health_application_partner_dob')
 			}
-	};
+		};
 
 
 		if (!meerkat.modules.healthChoices.hasSpouse()) {
@@ -110,27 +110,27 @@
 		});
 
 		$abdElements.primary.healthApplicationDOB.on('change', function() {
-				_toggleAgeBasedDiscountQuestion('primary');
+			_toggleAgeBasedDiscountQuestion('primary');
 		});
 
 		$abdElements.partner.healthApplicationDOB.on('change', function() {
-				_toggleAgeBasedDiscountQuestion('partner');
+			_toggleAgeBasedDiscountQuestion('partner');
 		});
 
 		$abdElements.primary.receivesAgeBasedDiscount.find(':input').on('change', function(event) {
-				if(event.target.value === 'Y') {
-						$abdElements.primary.ageBasedDiscountPolicyStartRow.removeClass('hidden');
-				}else{
-						$abdElements.primary.ageBasedDiscountPolicyStartRow.addClass('hidden');
-				}
+			if(event.target.value === 'Y') {
+				$abdElements.primary.ageBasedDiscountPolicyStartRow.removeClass('hidden');
+			}else{
+				$abdElements.primary.ageBasedDiscountPolicyStartRow.addClass('hidden');
+			}
 		});
 
 		$abdElements.partner.receivesAgeBasedDiscount.find(':input').on('change', function(event) {
-				if(event.target.value === 'Y') {
-						$abdElements.partner.ageBasedDiscountPolicyStartRow.removeClass('hidden');
-				}else{
-						$abdElements.partner.ageBasedDiscountPolicyStartRow.addClass('hidden');
-				}
+			if(event.target.value === 'Y') {
+				$abdElements.partner.ageBasedDiscountPolicyStartRow.removeClass('hidden');
+			}else{
+				$abdElements.partner.ageBasedDiscountPolicyStartRow.addClass('hidden');
+			}
 		});
 
 		$healthCoverDependants.on('change', function setRebateTiers(){
@@ -164,7 +164,7 @@
 			_toggleAgeBasedDiscountQuestion('primary');
 
 			if (meerkat.modules.healthChoices.hasSpouse()) {
-					_toggleAgeBasedDiscountQuestion('partner');
+				_toggleAgeBasedDiscountQuestion('partner');
 			}
 
 			// update rebate
@@ -175,14 +175,14 @@
 
 		$healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
 
-        if(meerkat.site.isCallCentreUser === true){
-            $incomeBase.find('input').on('change', function(){
-                $healthCoverIncome.prop('selectedIndex',0);
-                meerkat.modules.healthTiers.setTiers();
+		if(meerkat.site.isCallCentreUser === true){
+			$incomeBase.find('input').on('change', function(){
+				$healthCoverIncome.prop('selectedIndex',0);
+				meerkat.modules.healthTiers.setTiers();
 
-                updateDynamicIncomeFieldText();
-            });
-        }
+				updateDynamicIncomeFieldText();
+			});
+		}
 	}
 
 	function convertDate(date) {
@@ -203,13 +203,13 @@
 		var applicationDateString = '';
 
 		if(applicationDate) {
-				var dateSplit = applicationDate.split('/');
-				if(dateSplit.length == 3) {
-						var year = dateSplit[2];
-						var month = dateSplit[1];
-						var day = dateSplit[0];
-						applicationDateString = year + '-' + month + '-' + day;
-				}
+			var dateSplit = applicationDate.split('/');
+			if(dateSplit.length == 3) {
+				var year = dateSplit[2];
+				var month = dateSplit[1];
+				var day = dateSplit[0];
+				applicationDateString = year + '-' + month + '-' + day;
+			}
 		}
 
 		var curDate = applicationDateString ? new Date(applicationDateString) : meerkat.site.serverDate;
@@ -227,7 +227,7 @@
 			return;
 		}
 
-		if (age >= 18 && age < 45 && privateHospitalValue === 'Y') {
+		if (age >= 18 && age < 45 && privateHospitalValue === 'Y' && meerkat.modules.age.isBornAfterFirstOfApril1989($abdElements[applicant].healthApplicationDOB.val())) {
 			$abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
 			var hasABD = $abdElements[applicant].receivesAgeBasedDiscount.find(':checked').val();
 			if(hasABD === 'Y') {
@@ -263,7 +263,7 @@
 	}
 
 	function updateClaimHealthRebate(){
-        if(!$dontClaimHealthRebate.is(':checked')){
+		if(!$dontClaimHealthRebate.is(':checked')){
 			$heathClaimHealthCoverRebate.find("input[value='Y']").prop('checked',true).trigger('change');
 		} else {
 			$heathClaimHealthCoverRebate.find("input[value='N']").prop('checked', true).trigger('change');
@@ -293,7 +293,7 @@
 		switch($healthSituationHealthCvr.val())
 		{
 			case 'F':
-            case 'EF':
+			case 'EF':
 				$partnerContainer.slideDown();
 				$healthCoverIncomeMessage.show();
 
@@ -304,7 +304,7 @@
 				$partnersDetails.show();
 				break;
 			case 'SPF':
-            case 'ESP':
+			case 'ESP':
 				$partnerContainer.slideUp();
 
 				if($heathClaimHealthCoverRebate.find('input:checked').val() !== 'N'){
@@ -380,7 +380,7 @@
 		_toggleAgeBasedDiscountQuestion('primary');
 
 		if (meerkat.modules.healthChoices.hasSpouse()) {
-				_toggleAgeBasedDiscountQuestion('partner');
+			_toggleAgeBasedDiscountQuestion('partner');
 		}
 	}
 
