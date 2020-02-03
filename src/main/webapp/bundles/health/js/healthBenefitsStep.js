@@ -14,7 +14,11 @@
         $limitedCoverHidden,
         hospitalBenefits = [],
         extrasBenefits = [],
-        ambulanceAccidentCoverItems = [];
+        ambulanceAccidentCoverItems = [],
+        $boneMusicleJointCheckbox,
+        $earNoseThroatCheckbox,
+        $backSurgeryCheckbox,
+        $birthServicesCheckbox;
 
     var events = {
             healthBenefitsStep: {
@@ -33,6 +37,10 @@
             $benefitsForm = $('#benefitsForm');
             $hiddenFields = $('#mainform').find('.hiddenFields');
             $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
+            $birthServicesCheckbox = $('#health_benefits_benefitsExtras_Obstetric');
+            $boneMusicleJointCheckbox = $('#health_benefits_benefitsExtras_BoneMuscleJointRecon');
+            $earNoseThroatCheckbox = $('#health_benefits_benefitsExtras_ENT');
+            $backSurgeryCheckbox = $('#health_benefits_benefitsExtras_BackSurgery');
 
             $hospitalCover = $('.Hospital_container');
             $hospitalCoverToggles = $('.hospitalCoverToggles a'),
@@ -59,6 +67,7 @@
 
             setupPage();
             eventSubscriptions();
+            benefitClarificationToggle();
 
             if($limitedCoverHidden.val() === 'Y') {
                 var filter = meerkat.modules.deviceMediaState.get() === 'xs' ? '.limited' : '.btn-save';
@@ -73,6 +82,7 @@
 
         $coverType.find('input').on('change', toggleBenefits);
         hospitalCoverToggleEvents();
+        benefitClarificationToggleEvents();
 
         $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
             showModal();
@@ -276,6 +286,36 @@
             $benefitsForm.find("a[data-category=customise]:visible").first().addClass('active');
             $coverType.val('customise');
         });
+    }
+
+
+    function benefitClarificationToggleEvents() {
+        $boneMusicleJointCheckbox.on('click', function toggleJointMuscleScript() {
+            var $item = $(this);
+            $('.simples-dialogue-173').toggleClass('hidden', !$item.is(":checked"));
+        });
+
+        $earNoseThroatCheckbox.on('click', function toggleENTScript() {
+            var $item = $(this);
+            $('.simples-dialogue-174').toggleClass('hidden', !$item.is(":checked"));
+        });
+
+        $backSurgeryCheckbox.on('click', function toggleBackSurgeryScript() {
+            var $item = $(this);
+            $('.simples-dialogue-175').toggleClass('hidden', !$item.is(":checked"));
+        });
+
+        $birthServicesCheckbox.on('click', function togglePregnancyScript() {
+            var $item = $(this);
+            $('.simples-dialogue-176').toggleClass('hidden', !$item.is(":checked"));
+        });
+    }
+
+    function benefitClarificationToggle() {
+        $('.simples-dialogue-173').toggleClass('hidden', !$boneMusicleJointCheckbox.is(":checked"));
+        $('.simples-dialogue-174').toggleClass('hidden', !$earNoseThroatCheckbox.is(":checked"));
+        $('.simples-dialogue-175').toggleClass('hidden', !$backSurgeryCheckbox.is(":checked"));
+        $('.simples-dialogue-176').toggleClass('hidden', !$birthServicesCheckbox.is(":checked"));
     }
 
     function updateHiddenFields(coverType) {
