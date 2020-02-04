@@ -44,9 +44,7 @@ public class HealthApplicationService extends CTMEndpointService {
     private final FatalErrorService fatalErrorService;
 
     private HealthApplicationRequest request = new HealthApplicationRequest();
-    private final PremiumCalculator premiumCalculator = new PremiumCalculator();
     private final HealthPriceDao healthPriceDao;
-    private int periods;
     private static final String PREFIX = "health";
     private static final String REBATE_XPATH = PREFIX + "/healthCover/rebate";
     public static final String MEDICARE_NUMBER_XPATH = PREFIX + "/payment/medicare/number";
@@ -108,8 +106,8 @@ public class HealthApplicationService extends CTMEndpointService {
             HealthApplicationValidation validationService = new HealthApplicationValidation();
             validationErrors = validationService.validate(request);
             if (validationErrors.size() == 0) {
-                calculatePremiums(selectedProduct, request);
-                updateDataBucket(data);
+                HealthCalculatedPremium premium = calculatePremiums(selectedProduct, request);
+                updateDataBucket(data, premium);
             }
         } catch (DaoException | ConfigSettingException e) {
             LOGGER.error("Failed to calculate health premiums {},{}", kv("data", data), kv("changeOverDate", changeOverDate), e);
@@ -123,9 +121,8 @@ public class HealthApplicationService extends CTMEndpointService {
         return uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
     }
 
-    private void calculatePremiums(JSONObject selectedProduct, HealthApplicationRequest request) throws DaoException, JspException {
-        Frequency frequency = request.payment.details.frequency;
-        HealthPricePremium premium = null;
+    private HealthCalculatedPremium calculatePremiums(JSONObject selectedProduct, HealthApplicationRequest request) throws DaoException, JspException {
+        HealthCalculatedPremium premium = null;
 
         try {
             premium = fetchHealthResult(selectedProduct, request);
@@ -133,99 +130,66 @@ public class HealthApplicationService extends CTMEndpointService {
             LOGGER.error("Failed to fetched health results {}", kv("selectedProduct", selectedProduct), e);
             throw new JspException(e);
         }
-
-        premiumCalculator.setRebate(request.rebateValue);
-        premiumCalculator.setLoading(request.loading);
-        premiumCalculator.setMembership(request.membership);
-
-        switch (frequency) {
-            case WEEKLY:
-                setUpPremiumCalculator(premium.getWeeklyPremium(), premium.getGrossWeeklyPremium(), premium.getWeeklyLhc());
-                periods = 52;
-                break;
-            case FORTNIGHTLY:
-                setUpPremiumCalculator(premium.getFortnightlyPremium(), premium.getGrossFortnightlyPremium(), premium.getFortnightlyLhc());
-                periods = 26;
-                break;
-            case QUARTERLY:
-                setUpPremiumCalculator(premium.getQuarterlyPremium(), premium.getGrossQuarterlyPremium(), premium.getQuarterlyLhc());
-                periods = 4;
-                break;
-            case HALF_YEARLY:
-                setUpPremiumCalculator(premium.getHalfYearlyPremium(), premium.getGrossHalfYearlyPremium(), premium.getHalfYearlyLhc());
-                periods = 2;
-                break;
-            case ANNUALLY:
-                setUpPremiumCalculator(premium.getAnnualPremium(), premium.getGrossAnnualPremium(), premium.getAnnualLhc());
-                periods = 1;
-                break;
-            default:
-                setUpPremiumCalculator(premium.getMonthlyPremium(), premium.getGrossMonthlyPremium(), premium.getMonthlyLhc());
-                periods = 12;
-        }
-
+        return premium;
     }
 
     /**
      * Fetch single health product based on product id
      */
-    private HealthPricePremium fetchHealthResult(JSONObject selectedProduct, HealthApplicationRequest request) throws JSONException {
-        HealthPricePremium healthPricePremium = new HealthPricePremium();
+    private HealthCalculatedPremium fetchHealthResult(JSONObject selectedProduct, HealthApplicationRequest request) throws JSONException {
+        HealthCalculatedPremium healthPricePremium = new HealthCalculatedPremium();
         PaymentType paymentType = request.payment.details.paymentType;
-
         JSONObject priceObj = selectedProduct.getJSONArray("price").getJSONObject(0).getJSONObject("paymentTypePremiums").getJSONObject(paymentType.equals(PaymentType.BANK) ? "BankAccount" : "CreditCard");
 
-        JSONObject weeklyPrice = priceObj.getJSONObject("weekly");
-        healthPricePremium.setWeeklyLhc(Double.parseDouble(weeklyPrice.getString("lhc").replace("$", "").replace(",","")));
-        healthPricePremium.setWeeklyPremium(Double.parseDouble(weeklyPrice.getString("base").replace("$", "").replace(",","")));
-        healthPricePremium.setGrossWeeklyPremium(Double.parseDouble(weeklyPrice.getString("grossPremium").replace("$", "").replace(",","")));
+        JSONObject payFrequencyPrice;
+        switch (request.payment.details.frequency) {
+            case WEEKLY:
+                payFrequencyPrice = priceObj.getJSONObject("weekly");
+                healthPricePremium.setPeriods(52);
+                break;
+            case FORTNIGHTLY:
+                payFrequencyPrice = priceObj.getJSONObject("fortnightly");
+                healthPricePremium.setPeriods(26);
+                break;
+            case QUARTERLY:
+                payFrequencyPrice = priceObj.getJSONObject("quarterly");
+                healthPricePremium.setPeriods(4);
+                break;
+            case HALF_YEARLY:
+                payFrequencyPrice = priceObj.getJSONObject("halfyearly");
+                healthPricePremium.setPeriods(2);
+                break;
+            case ANNUALLY:
+                payFrequencyPrice = priceObj.getJSONObject("annually");
+                healthPricePremium.setPeriods(1);
+                break;
+            default:
+                payFrequencyPrice = priceObj.getJSONObject("monthly");
+                healthPricePremium.setPeriods(12);
+        }
 
-        JSONObject fortnightlyPrice = priceObj.getJSONObject("fortnightly");
-        healthPricePremium.setFortnightlyLhc(Double.parseDouble(fortnightlyPrice.getString("lhc").replace("$", "").replace(",","")));
-        healthPricePremium.setFortnightlyPremium(Double.parseDouble(fortnightlyPrice.getString("base").replace("$", "").replace(",","")));
-        healthPricePremium.setGrossFortnightlyPremium(Double.parseDouble(fortnightlyPrice.getString("grossPremium").replace("$", "").replace(",","")));
+        healthPricePremium.setHospitalValue(Double.parseDouble(payFrequencyPrice.getString("hospitalValue").replace("$", "").replace(",","")));
+        healthPricePremium.setGrossPremium(Double.parseDouble(payFrequencyPrice.getString("grossPremium").replace("$", "").replace(",","")));
+        healthPricePremium.setPaymentValue(Double.parseDouble(payFrequencyPrice.getString("value").replace("$", "").replace(",","")));
+        healthPricePremium.setDiscountValue(Double.parseDouble(payFrequencyPrice.getString("discountAmount").replace("$", "").replace(",","")));
+        healthPricePremium.setDiscountPercentage(Double.parseDouble(payFrequencyPrice.getString("discountPercentage").replace("$", "").replace(",","")));
+        healthPricePremium.setLhcValue(Double.parseDouble(payFrequencyPrice.getString("lhc").replace("$", "").replace(",","")));
 
-        JSONObject monthlyPrice = priceObj.getJSONObject("monthly");
-        healthPricePremium.setMonthlyLhc(Double.parseDouble(monthlyPrice.getString("lhc").replace("$", "").replace(",","")));
-        healthPricePremium.setMonthlyPremium(Double.parseDouble(monthlyPrice.getString("base").replace("$", "").replace(",","")));
-        healthPricePremium.setGrossMonthlyPremium(Double.parseDouble(monthlyPrice.getString("grossPremium").replace("$", "").replace(",","")));
-
-        JSONObject quarterlyPrice = priceObj.getJSONObject("quarterly");
-        healthPricePremium.setQuarterlyLhc(Double.parseDouble(quarterlyPrice.getString("lhc").replace("$", "").replace(",","")));
-        healthPricePremium.setQuarterlyPremium(Double.parseDouble(quarterlyPrice.getString("base").replace("$", "").replace(",","")));
-        healthPricePremium.setGrossQuarterlyPremium(Double.parseDouble(quarterlyPrice.getString("grossPremium").replace("$", "").replace(",","")));
-
-        JSONObject halfyearlyPrice = priceObj.getJSONObject("halfyearly");
-        healthPricePremium.setHalfYearlyLhc(Double.parseDouble(halfyearlyPrice.getString("lhc").replace("$", "").replace(",","")));
-        healthPricePremium.setHalfYearlyPremium(Double.parseDouble(halfyearlyPrice.getString("base").replace("$", "").replace(",","")));
-        healthPricePremium.setGrossHalfYearlyPremium(Double.parseDouble(halfyearlyPrice.getString("grossPremium").replace("$", "").replace(",","")));
-
-        JSONObject annualPrice = priceObj.getJSONObject("annually");
-        healthPricePremium.setAnnualLhc(Double.parseDouble(annualPrice.getString("lhc").replace("$", "").replace(",","")));
-        healthPricePremium.setAnnualPremium(Double.parseDouble(annualPrice.getString("base").replace("$", "").replace(",","")));
-        healthPricePremium.setGrossAnnualPremium(Double.parseDouble(annualPrice.getString("grossPremium").replace("$", "").replace(",","")));
+        healthPricePremium.setRebateValue(Double.parseDouble(payFrequencyPrice.getString("rebateValue").replace("$", "").replace(",","")));
 
         return healthPricePremium;
     }
 
-    private void setUpPremiumCalculator(double premium, double grossPremium, double lhc) {
-        premiumCalculator.setLhc(lhc);
-        premiumCalculator.setBasePremium(premium);
-        premiumCalculator.setGrossPremium(grossPremium);
+    private void updateDataBucket(Data data, HealthCalculatedPremium premium) {
 
-    }
-
-    private void updateDataBucket(Data data) {
-        double paymentAmt = premiumCalculator.getPremiumWithRebateAndLHC();
-
-        data.put("health/application/paymentHospital", premiumCalculator.getLhc() * periods);
-        data.put("health/application/grossPremium", premiumCalculator.getGrossPremium() * periods);
-        data.putDouble(PREFIX + "/application/paymentAmt", paymentAmt * periods);
-        data.put("health/application/paymentFreq", paymentAmt);
-        data.put("health/application/discountAmt", premiumCalculator.getDiscountValue() * periods);
-        data.put("health/application/discount", premiumCalculator.getDiscountPercentage());
-        data.put("health/loadingAmt", premiumCalculator.getLoadingAmount() * periods);
-        data.put("health/rebateAmt", premiumCalculator.getRebateAmount());
+        data.put("health/application/paymentHospital", premium.getHospitalValue() * premium.getPeriods());
+        data.put("health/application/grossPremium", premium.getGrossPremium() * premium.getPeriods());
+        data.putDouble("health/application/paymentAmt", premium.getPaymentValue() * premium.getPeriods());
+        data.put("health/application/paymentFreq", premium.getPaymentValue());
+        data.put("health/application/discountAmt", premium.getDiscountValue() * premium.getPeriods());
+        data.put("health/application/discount", premium.getDiscountPercentage());
+        data.put("health/loadingAmt", premium.getLhcValue() * premium.getPeriods());
+        data.put("health/rebateAmt", premium.getRebateValue());
 
         data.putInteger("healthCover/income", request.income);
 
@@ -233,7 +197,7 @@ public class HealthApplicationService extends CTMEndpointService {
         // Refactor so that we aren't swapping this around. The actual value coming from the form is
         // request.frequency.getDescription()
         data.put(PREFIX + "/payment/details/frequency", request.payment.details.frequency.getCode());
-        data.putDouble(PREFIX + "/application/paymentFreq", paymentAmt);
+        data.putDouble(PREFIX + "/application/paymentFreq", premium.getPaymentValue());
         data.putDouble(REBATE_HIDDEN_XPATH, request.rebateValue);
         data.putDouble(LOADING_XPATH, request.loadingValue);
         data.put(REBATE_XPATH, request.hasRebate ? "Y" : "N");

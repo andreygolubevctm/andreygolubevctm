@@ -141,8 +141,8 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
-		assertEquals("1707.6000000000001", paymentAmtResult);
-		assertEquals("142.3", paymentFreqResult);
+		assertEquals("2157.96", paymentAmtResult);
+		assertEquals("179.83", paymentFreqResult);
 	}
 
 	@Test
@@ -153,8 +153,8 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
-		assertEquals("100.98" ,paymentFreqResult);
-		assertEquals("1211.76" ,paymentAmtResult);
+		assertEquals("179.83" ,paymentFreqResult);
+		assertEquals("2157.96" ,paymentAmtResult);
 	}
 
 	@Test
@@ -164,8 +164,8 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
-		assertEquals("171.59" ,paymentFreqResult);
-		assertEquals("2059.08" ,paymentAmtResult);
+		assertEquals("179.83" ,paymentFreqResult);
+		assertEquals("2157.96" ,paymentAmtResult);
 	}
 
 
@@ -176,8 +176,8 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
-		assertEquals("1563.2400000000002" ,paymentAmtResult);
-		assertEquals("130.27" ,paymentFreqResult);
+		assertEquals("2157.96" ,paymentAmtResult);
+		assertEquals("179.83" ,paymentFreqResult);
 	}
 
 	@Test
@@ -189,8 +189,8 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
-		assertEquals("1506.6" ,paymentAmtResult);
-		assertEquals("125.55" ,paymentFreqResult);
+		assertEquals("2157.96" ,paymentAmtResult);
+		assertEquals("179.83" ,paymentFreqResult);
 	}
 
 
@@ -203,8 +203,8 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult = (String) data.get("health/application/paymentFreq");
-		assertEquals("1459.92" ,paymentAmtResult);
-		assertEquals("121.66" ,paymentFreqResult);
+		assertEquals("2157.96" ,paymentAmtResult);
+		assertEquals("179.83" ,paymentFreqResult);
 	}
 
 	private void setupNib() throws DaoException, JspException, IOException {
@@ -235,8 +235,8 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
-		assertEquals("1506.6" ,paymentAmtResult);
-		assertEquals("125.55" ,paymentFreqResult);
+		assertEquals("2157.96" ,paymentAmtResult);
+		assertEquals("179.83" ,paymentFreqResult);
 
 		//bank
 		data.put("health/payment/details/type", "ba");
@@ -244,8 +244,8 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		paymentFreqResult =  (String) data.get("health/application/paymentFreq");
-		assertEquals("1459.92" ,paymentAmtResult);
-		assertEquals("121.66" ,paymentFreqResult);
+		assertEquals("2157.96" ,paymentAmtResult);
+		assertEquals("179.83" ,paymentFreqResult);
 		data.put(PREFIX + "/payment/details/frequency", Frequency.MONTHLY.getDescription());
 
 	}
