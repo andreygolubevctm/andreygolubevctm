@@ -1,9 +1,9 @@
 ;(function ($, undefined) {
 
   var meerkat = window.meerkat,
-    meerkatEvents = meerkat.modules.events,
-    elements,
-    state;
+      meerkatEvents = meerkat.modules.events,
+      elements,
+      state;
 
   function init() {
     $(document).ready(function() {
@@ -159,7 +159,7 @@
   }
 
   function eligibleForAlreadyHavingABD(type) {
-    return inRange(18,44, state[type].age) && state[type].hasCurrentCover;
+    return inRange(18,44, state[type].age) && state[type].hasCurrentCover && meerkat.modules.age.isBornAfterFirstOfApril1989(elements[type].dob.val());
   }
 
   function hideResultsFilter() {

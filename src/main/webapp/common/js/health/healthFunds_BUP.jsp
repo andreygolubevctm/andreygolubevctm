@@ -230,9 +230,9 @@ var healthFunds_BUP = {
 	updateMessage: function() {
 		var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
 		if (freq == 'fortnightly') {
-			var deductionText = "Your initial payment will be one month's premium and a fortnightly amount thereafter. Your account will be debited within the next 24 hours.";
+			var deductionText = "Your initial payment will be one month's premium and a fortnightly amount thereafter. If your policy start date is within the next 14 days from today, your 1st payment will be deducted on your start date. If your start day is outside 14 days, your initial payment will be taken within the next 24 hours.";
 		} else {
-			var deductionText = 'Your account will be debited within the next 24 hours.';
+			var deductionText = 'If your policy start date is within the next 14 days from today, your 1st payment will be deducted on your start date. If your start day is outside 14 days, your initial payment will be taken within the next 24 hours.';
 		};
 
 		meerkat.modules.healthFunds.setPayments({ 'min':6, 'max':7, 'weekends':false });
