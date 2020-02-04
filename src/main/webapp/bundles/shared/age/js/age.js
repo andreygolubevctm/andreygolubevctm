@@ -58,6 +58,23 @@
     }
 
     /**
+     * Checks if DOB is after 1/4/1989, which makes them eligible for ABD
+     * Accepts date in the format DD/MM/YYYY
+     * @param dobString
+     * @returns {number}
+     */
+    function isBornAfterFirstOfApril1989(dobString) {
+        if(dobString === '') return false;
+        var dobLimit = new Date(1989, 3, 1);
+        dobLimit.setHours(0,0,0);
+        dobString = dobString.split("/");
+        var fixedDob = new Date(dobString[2], dobString[1]-1, dobString[0]);
+        fixedDob.setHours(0,0,0);
+
+        return fixedDob > dobLimit;
+    }
+
+    /**
      * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
      * 31 or is currently 31 but the current date is before 1st July following their birthday.
      *
@@ -141,6 +158,7 @@
         returnAge : returnAge,
         isLessThan31Or31AndBeforeJuly1: isLessThan31Or31AndBeforeJuly1,
         isTooOldForLHC: isTooOldForLHC,
-        isAgeLhcApplicable: isAgeLhcApplicable
+        isAgeLhcApplicable: isAgeLhcApplicable,
+        isBornAfterFirstOfApril1989: isBornAfterFirstOfApril1989
     });
 })(jQuery);
