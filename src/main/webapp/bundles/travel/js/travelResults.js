@@ -386,23 +386,26 @@
 		var disclaimerText = "", oSMedical2ColText = "", cancelFeeColText = "", luggageColText = "";
 
 		if (isDomestic ) {
-			disclaimerText = "Before choosing a Policy, please note that for cancellation fee cover* and luggage** there are some exclusions and sub-limits that apply for each Policy. Always read the Product Disclosure Statement (PDS) before purchasing.";
 			oSMedical2ColText = "Expenses";
 			cancelFeeColText = "Cancellation Fee&nbsp;Cover*";
 			luggageColText = "Luggage**";
 		} else {
-			disclaimerText = "Before choosing a Policy, please note that for overseas medical expenses*, cancellation fee cover** and luggage*** there are some exclusions and sub-limits that apply for each Policy.  Always read the Product Disclosure Statement (PDS) before purchasing.";
 			oSMedical2ColText = "Expenses*";
 			cancelFeeColText = "Cancellation Fee&nbsp;Cover**";
 			luggageColText = "Luggage***";
 		}
-		$(".travelResultsDisclaimerHeader").html(disclaimerText);
+
+		// This is coming from the WebCTM database, ctm.content_control contentKey = travelAdvisoryMessageDomestic, travelAdvisoryMessageInternational
+		disclaimerText = isDomestic ? meerkat.site.advisoryMessage.domestic : meerkat.site.advisoryMessage.international;
+		var disclaimerHtml = $('<div />').html(disclaimerText).text();
+		
+		$(".travelResultsDisclaimerHeader").html(disclaimerHtml);
 		$(".oSMedical2ColText").html(oSMedical2ColText);
 		$(".cancelFeeColText").html(cancelFeeColText);
 		$(".luggageColText").html(luggageColText);
 
 		setColVisibilityAndStylesByTravelType(isDomestic);
-	}
+	}	
 
 	function setColVisibilityAndStylesByTravelType(isDomestic) {
 		var destination = $('#travel_destination').val();
