@@ -10,6 +10,14 @@
 	<content:get key="trackingEnabled" />
 </c:set>
 
+<c:set var="travelAdvisoryMessageInternational">
+	<content:get key="travelAdvisoryMessageInternational" />
+</c:set>
+
+<c:set var="travelAdvisoryMessageDomestic">
+	<content:get key="travelAdvisoryMessageDomestic" />
+</c:set>
+
 <c:if test="${empty isTrackingEnabled}">
 	<c:set var="isTrackingEnabled" value="${false}" />
 </c:if>
@@ -35,6 +43,10 @@
 {
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['travel/journey/stage']}"/>",
+	advisoryMessage: {
+		domestic: '<c:out value="${travelAdvisoryMessageDomestic}" />',
+		international: '<c:out value="${travelAdvisoryMessageInternational}" />',
+	},
 	pageAction: '<c:out value="${param.action}"  escapeXml="true"/>',
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,
