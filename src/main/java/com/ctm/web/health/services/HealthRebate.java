@@ -3,8 +3,10 @@ package com.ctm.web.health.services;
 
 import com.ctm.web.simples.model.ChangeOverRebate;
 import com.ctm.web.simples.services.ChangeOverRebatesService;
+import com.google.common.collect.ImmutableMap;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public class HealthRebate {
 
@@ -24,6 +26,7 @@ public class HealthRebate {
     private String rebateTier1Future;
     private String rebateTier2Future;
     private String rebateTier3Future;
+	private ImmutableMap<String, String> rebatePercentageAdjustments;
 
     /**
      * used by health_rebate.jsp
@@ -31,10 +34,12 @@ public class HealthRebate {
     @SuppressWarnings("unused")
     public HealthRebate() {
         this(new ChangeOverRebatesService());
+	    setRebatePercentageAdjustments();
     }
 
     public HealthRebate(ChangeOverRebatesService changeOverRebatesService){
         this.changeOverRebatesService = changeOverRebatesService;
+        setRebatePercentageAdjustments();
     }
 
     public void calcRebate(String rebateChoice, String commencementDate, int age, int income) {
@@ -93,24 +98,7 @@ public class HealthRebate {
         String rebatePercentage= rebate.multiply(multiplier).setScale(3, BigDecimal.ROUND_FLOOR).toString();
         //hardcoding as there is no common formula to get exact decimal precision value
 
-        // Pre April 2018
-        if(rebatePercentage.equals("34.578"))
-            rebatePercentage = "34.579";
-        else if(rebatePercentage.equals("12.967"))
-            rebatePercentage = "12.966";
-        else if(rebatePercentage.equals("21.611"))
-            rebatePercentage = "21.612";
-        else if(rebatePercentage.equals("8.645"))
-            rebatePercentage = "8.644";
-            // Post April 2018
-        else if(rebatePercentage.equals("8.472"))
-            rebatePercentage = "8.471";
-        else if(rebatePercentage.equals("21.179"))
-            rebatePercentage = "21.180";
-        else if(rebatePercentage.equals("8.353"))
-            rebatePercentage = "8.352";
-
-        return rebatePercentage;
+        return getRebatePercentageAdjustment(rebatePercentage);
     }
 
     public String getCurrentRebate() {
@@ -172,4 +160,24 @@ public class HealthRebate {
     public String getRebateTier3Future() {
         return rebateTier3Future;
     }
+
+    private String getRebatePercentageAdjustment(String rebate) {
+	    return Optional.ofNullable(rebatePercentageAdjustments.get(rebate)).orElse(rebate);
+    }
+
+	private void setRebatePercentageAdjustments() {
+		rebatePercentageAdjustments = ImmutableMap.<String, String>builder()
+				.put("34.578", "34.579")
+				.put("12.967", "12.966")
+				.put("21.611", "21.612")
+				.put("8.645", "8.644")
+				.put("8.472", "8.471")
+				.put("21.179", "21.180")
+				.put("8.353", "8.352")
+				// Post April 2020
+				.put("24.809", "24.808") // Base Tier - Under 65 && Tier 1 - Over 70
+				.put("8.269", "8.268") // Tier 2 - Under 65
+				.put("33.078", "33.079") // Base Tier - Over 70
+				.build();
+	}
 }
