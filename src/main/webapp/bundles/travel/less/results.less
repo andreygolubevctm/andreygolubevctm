@@ -67,6 +67,11 @@
 		font-size: 12px;
 		font-family: 'SourceSansProRegular';
 		line-height: normal;
+		margin-left: 65px;
+
+		p {
+			margin: 9px 0 9px;
+		}
 
 		@media screen and (@xs-only) {
 			flex: 6;
@@ -87,18 +92,16 @@
 
 	.travel-disclaimer-banner {
 		display: flex;
+		position: relative;
 		margin: 0 auto;
 		background-color: #fafcfe;
 		border: 2px solid #f5f6f8;
-		height: 80px;
+		min-height: 80px;
 		color: #414141;
 		margin-bottom: 20px;
 		align-items: center;
 		width: 100%;
-
-		@media screen and (@xs-only) {
-			height: 120px;
-		}
+		padding: 1rem 0;
 
 		.travel-disclaimer-banner-icon {
 			display: flex;
@@ -110,6 +113,8 @@
 			border-left: 5px solid #91c0f3;
 			height: 100%;
 			align-items: center;
+			position: absolute;
+			width: 65px;
 
 			@media (min-width: 992px) {
 				flex: 1;
