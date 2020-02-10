@@ -27,6 +27,8 @@
 				
 				<simples:dialogue id="140" vertical="health" mandatory="true" />
 
+				<simples:dialogue id="172" vertical="health" mandatory="true"  className="simplesAgrElementsToggle hidden"  />
+
 				<health_v2:whats-next />
 
 				<simples:dialogue id="107" vertical="health" />

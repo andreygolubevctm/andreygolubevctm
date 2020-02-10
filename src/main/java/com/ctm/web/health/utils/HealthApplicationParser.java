@@ -88,6 +88,7 @@ public class HealthApplicationParser {
 		medicare.firstName = data.getString(prefix + "firstName");
 		medicare.surname = data.getString(prefix + "surname");
 		medicare.cover = data.getString(prefix + "cover");
+		medicare.cardExpiryDay = data.getString(prefix + "cardExpiryDay");
 		medicare.cardExpiryMonth = data.getString(prefix + "cardExpiryMonth");
 		medicare.cardExpiryYear = data.getString(prefix + "cardExpiryYear");
 		return medicare;

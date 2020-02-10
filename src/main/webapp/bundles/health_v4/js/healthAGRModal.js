@@ -18,6 +18,7 @@
         $dependantsIncome = null,
         $fields = {},
         $hiddenFields = {},
+        $simplesHiddenAgrFields = {},
         _tempStartDate = null,
         // because we will never know the membership is going to be until they have paid, this is hardcoded
         _defaultFundMembershipNum = 'To be provided by your new health fund';
@@ -36,6 +37,16 @@
             entitledToMedicare: $('#health_application_govtRebateDeclaration_entitledToMedicare'),
             declare: $('#health_application_govtRebateDeclaration_declaration'),
             declareDate: $('#health_application_govtRebateDeclaration_declarationDate')
+        };
+
+        $simplesHiddenAgrFields = {
+            voiceConsent: $('#health_application_agr_compliance_voiceConsent'),
+            applicantCovered: $('#health_application_agr_compliance_applicantCovered'),
+            childOnlyPolicy: $('#health_application_agr_compliance_childOnlyPolicy'),
+            removeRebate1: $('#health_application_agr_compliance_removeRebate1'),
+            removeRebate2: $('#health_application_agr_compliance_removeRebate2'),
+            voiceConsentHidden: $('#health_application_govtRebateDeclaration_voiceConsent'),
+            childOnlyPolicyHidden: $('#health_application_govtRebateDeclaration_childOnlyPolicy')
         };
 
         _template = _.template($('#agr-modal-template').html());
@@ -608,6 +619,14 @@
         $hiddenFields.declare.val(flushIt ? '' : $elements.declare.is(':checked') ? 'Y' : 'N');
         $hiddenFields.declareDate.val(flushIt ? '' :
             meerkat.modules.dateUtils.format(meerkat.modules.dateUtils.returnDate($elements.declareDate.text()), 'YYYY-MM-DD'));
+
+        $simplesHiddenAgrFields.voiceConsent.val('');
+        $simplesHiddenAgrFields.applicantCovered.val('');
+        $simplesHiddenAgrFields.childOnlyPolicy.val('');
+        $simplesHiddenAgrFields.removeRebate1.val('');
+        $simplesHiddenAgrFields.removeRebate2.val('');
+        $simplesHiddenAgrFields.voiceConsentHidden.val('');
+        $simplesHiddenAgrFields.childOnlyPolicyHidden.val('');
     }
 
     meerkat.modules.register('healthAGRModal', {

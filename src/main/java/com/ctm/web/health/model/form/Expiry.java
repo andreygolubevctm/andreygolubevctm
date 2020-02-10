@@ -6,6 +6,8 @@ public class Expiry {
 
     private String cardExpiryYear;
 
+    private String cardExpiryDay;
+
     public String getCardExpiryMonth() {
         return cardExpiryMonth;
     }
@@ -20,5 +22,11 @@ public class Expiry {
 
     public void setCardExpiryYear(String cardExpiryYear) {
         this.cardExpiryYear = cardExpiryYear;
+    }
+
+    public String getCardExpiryDay() { return cardExpiryDay; }
+
+    public void setCardExpiryDay(String cardExpiryDay) {
+        this.cardExpiryDay = cardExpiryDay;
     }
 }

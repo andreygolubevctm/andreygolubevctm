@@ -32,12 +32,24 @@
 				<%-- The reason for the multiple forms here is because of an issue with iOS7 --%>
 
 				<form  id="applicationForm_1" autocomplete="off" class="form-horizontal" role="form">
+					<c:set var="xpath" value="${pageSettings.getVerticalCode()}/application/govtRebateDeclaration" />
+					<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+
+					<field_v1:hidden xpath="${xpath}/entitledToMedicare" />
+					<field_v1:hidden xpath="${xpath}/declaration" />
+					<field_v1:hidden xpath="${xpath}/declarationDate" />
+					<field_v1:hidden xpath="${xpath}/applicantCovered" />
+					<field_v1:hidden xpath="${xpath}/voiceConsent" />
+					<field_v1:hidden xpath="${xpath}/childOnlyPolicy" />
+					<field_v1:hidden xpath="${xpath}/removeRebate1" />
+					<field_v1:hidden xpath="${xpath}/removeRebate2" />
+
 					<c:set var="xpath" value="${pageSettings.getVerticalCode()}/application/agr/compliance" />
 					<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
-					<c:set var="fieldXpath" value="${xpath}/consent" />
-					<form_v3:row fieldXpath="${fieldXpath}" label="Do you agree to have your personal information collected by %FUND_NAME% for the purposes of completing the Rebate Application form?<br /><i>Customer must answer with a clear yes or no response.</i>" id="${name}_consentRow" className="agrConsent simplesAgrElementsNoToggle hidden simples-dialogue row-content red optionalDialogue noMarginLeftRight">
-						<field_v2:array_radio id="${name}_consent" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="Do you give consent for claiming the Australian Government Rebate?" />
+					<c:set var="fieldXpath" value="${xpath}/voiceConsent" />
+					<form_v3:row fieldXpath="${fieldXpath}" label="Do you agree to have your personal information collected by %FUND_NAME% for the purposes of completing the Rebate Application form?<br /><i>Customer must answer with a clear yes or no response.</i>" id="${name}_voiceConsentRow" className="agrConsent simplesAgrElementsNoToggle hidden simples-dialogue row-content red optionalDialogue noMarginLeftRight">
+						<field_v2:array_radio id="${name}_voiceConsent" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="Do you give consent for claiming the Australian Government Rebate?" />
 					</form_v3:row>
 
 					<simples:dialogue id="170" vertical="health" mandatory="true" className="agrRemoveRebate1 simplesAgrElementsNoToggle hidden"  />
@@ -47,9 +59,9 @@
 						<field_v2:checkbox id="${name}_removeRebate1" xpath="${fieldXpath}" required="true" value="Y" title="Remove rebate and continue" label="true" errorMsg="You must remove the rebate to continue" className="validate row-content"/>
 					</form_v2:row>
 
-					<c:set var="fieldXpath" value="${xpath}/coveredByPolicy" />
-					<form_v3:row fieldXpath="${fieldXpath}" label="Can I confirm, Are you covered by this policy?" id="${name}_coveredByPolicyRow" className="argCoveredByPolicy simplesAgrElementsNoToggle hidden simples-dialogue row-content red optionalDialogue noMarginLeftRight">
-						<field_v2:array_radio id="${name}_coveredByPolicy" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="Are you covered by this policy?" />
+					<c:set var="fieldXpath" value="${xpath}/applicantCovered" />
+					<form_v3:row fieldXpath="${fieldXpath}" label="Can I confirm, Are you covered by this policy?" id="${name}_applicantCoveredRow" className="argCoveredByPolicy simplesAgrElementsNoToggle hidden simples-dialogue row-content red optionalDialogue noMarginLeftRight">
+						<field_v2:array_radio id="${name}_applicantCovered" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="Are you covered by this policy?" />
 					</form_v3:row>
 
 					<c:set var="fieldXpath" value="${xpath}/childOnlyPolicy" />

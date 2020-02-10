@@ -15,6 +15,10 @@
                 paymentMedicareColour: $('input[name=health_payment_medicare_colour]'),
                 paymentMedicareCover: $("#health_payment_medicare_cover"),
                 medicareYellowMessage: $("#health_medicareDetails_yellowCardMessage"),
+                medicareExpiryDayWrapper: $("#health_payment_medicare_expiry_cardExpiryDay").parent().parent(),
+                medicareExpiryMonthWrapper: $("#health_payment_medicare_expiry_cardExpiryMonth").parent().parent(),
+                medicareExpiryYearWrapper: $("#health_payment_medicare_expiry_cardExpiryYear").parent().parent(),
+                medicareExpiryGroupWrapper: $("#health_payment_medicare_expiry_cardExpiryMonth").parent().parent().parent().parent(),
                 genderToggle: $('.person-gender-toggle input[type=radio]'),
                 appMobile: $('#health_application_mobileinput'),
                 appPostcode: $('#health_application_address_postCode'),
@@ -150,6 +154,17 @@
 
                 // toggle message for Yellow card holders
                 $elements.medicareYellowMessage.toggleClass('hidden', value !== 'yellow');
+
+                // Show expiry day field if yellow or blue medicare card and adjust field widths to suit
+                var showMedicareDayField = (value === 'yellow' || value === 'blue');
+
+                $elements.medicareExpiryDayWrapper.toggleClass('hidden', !showMedicareDayField);
+
+                $elements.medicareExpiryMonthWrapper.toggleClass('col-xs-4 allow-for-exp-day', showMedicareDayField);
+                $elements.medicareExpiryMonthWrapper.toggleClass('col-xs-6', !showMedicareDayField);
+                
+                $elements.medicareExpiryYearWrapper.toggleClass('col-xs-4', showMedicareDayField);
+                $elements.medicareExpiryYearWrapper.toggleClass('col-xs-6', !showMedicareDayField);
             })
             .trigger('change');
 

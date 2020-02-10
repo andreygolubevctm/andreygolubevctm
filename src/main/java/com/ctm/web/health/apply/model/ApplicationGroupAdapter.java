@@ -4,10 +4,8 @@ import com.ctm.web.core.model.request.Gender;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
 import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
 import com.ctm.web.health.apply.model.request.application.Emigrate;
-import com.ctm.web.health.apply.model.request.application.GovernmentRebate.ApplicantCovered;
-import com.ctm.web.health.apply.model.request.application.GovernmentRebate.EntitledToMedicare;
+import com.ctm.web.health.apply.model.request.application.GovernmentRebate.AGRBoolean;
 import com.ctm.web.health.apply.model.request.application.GovernmentRebate.GovernmentRebateAcknowledgement;
-import com.ctm.web.health.apply.model.request.application.GovernmentRebate.GovernmentRebateDeclaration;
 import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
 import com.ctm.web.health.apply.model.request.application.applicant.CertifiedAgeEntry;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.Cover;
@@ -75,25 +73,33 @@ public class ApplicationGroupAdapter {
     }
 
 
-    protected static GovernmentRebateAcknowledgement createGovernmentRebateAck(final Optional<GovtRebateDeclaration> govtRebateDeclaration){
+    protected static GovernmentRebateAcknowledgement createGovernmentRebateAck(final Optional<GovtRebateDeclaration> govtRebateDeclaration) {
         final GovernmentRebateAcknowledgement governmentRebateAcknowledgement = govtRebateDeclaration.map(governmentRebateDeclaration -> {
-            return new GovernmentRebateAcknowledgement(govtRebateDeclaration.map(GovtRebateDeclaration::getApplicantCovered)
-                    .map(ApplicantCovered::valueOf)
-                    .orElse(null),
+            return new GovernmentRebateAcknowledgement(
+                    govtRebateDeclaration.map(GovtRebateDeclaration::getApplicantCovered)
+                            .map(AGRBoolean::valueOf)
+                            .orElse(null),
                     govtRebateDeclaration.map(GovtRebateDeclaration::getEntitledToMedicare)
-                            .map(EntitledToMedicare::valueOf)
+                            .map(AGRBoolean::valueOf)
                             .orElse(null),
                     govtRebateDeclaration.map(GovtRebateDeclaration::getDeclaration)
-                            .map(GovernmentRebateDeclaration::valueOf)
+                            .map(AGRBoolean::valueOf)
                             .orElse(null),
                     govtRebateDeclaration.map(GovtRebateDeclaration::getDeclarationDate)
                             .map(LocalDateUtils::parseISOLocalDate)
+                            .orElse(null),
+                    govtRebateDeclaration.map(GovtRebateDeclaration::getVoiceConsent)
+                            .map(AGRBoolean::valueOf)
+                            .orElse(null),
+                    govtRebateDeclaration.map(GovtRebateDeclaration::getChildOnlyPolicy)
+                            .map(AGRBoolean::valueOf)
                             .orElse(null));
         }).orElseGet(() -> {
             return null;
         });
         return governmentRebateAcknowledgement;
     }
+
 
     protected static com.ctm.web.health.apply.model.request.application.situation.Situation createSituation(Optional<com.ctm.web.health.model.form.Situation> situation) {
         if (situation.isPresent()) {
@@ -221,5 +227,4 @@ public class ApplicationGroupAdapter {
             return null;
         }
     }
-
 }

@@ -9,6 +9,7 @@ import com.ctm.web.health.apply.model.request.payment.Payment;
 import com.ctm.web.health.apply.model.request.payment.bank.Bank;
 import com.ctm.web.health.apply.model.request.payment.bank.account.*;
 import com.ctm.web.health.apply.model.request.payment.common.Expiry;
+import com.ctm.web.health.apply.model.request.payment.common.ExpiryDay;
 import com.ctm.web.health.apply.model.request.payment.common.ExpiryMonth;
 import com.ctm.web.health.apply.model.request.payment.common.ExpiryYear;
 import com.ctm.web.health.apply.model.request.payment.credit.*;
@@ -93,7 +94,7 @@ public class PaymentAdapter {
                     medicare.map(com.ctm.web.health.model.form.Medicare::getFirstName)
                             .map(FirstName::new)
                             .orElse(null),
-                    medicare.map(com.ctm.web.health.model.form.Medicare::getMiddleInitial)
+                    medicare.map(com.ctm.web.health.model.form.Medicare::getMiddleName)
                             .map(MiddleInitial::new)
                             .orElse(null),
                     medicare.map(com.ctm.web.health.model.form.Medicare::getSurname)
@@ -102,15 +103,14 @@ public class PaymentAdapter {
                     new Position(1),
                     medicare.map(com.ctm.web.health.model.form.Medicare::getExpiry)
                             .map(e -> {
-                                Optional<com.ctm.web.health.model.form.Expiry> expiry = Optional.ofNullable(e);
+                                Optional<ExpiryDay> cardExpiryDay = Optional.ofNullable(e.getCardExpiryDay()).map(ExpiryDay::new);
+                                Optional<ExpiryMonth> cardExpiryMonth = Optional.ofNullable(e.getCardExpiryMonth()).map(ExpiryMonth::new);
+                                Optional<ExpiryYear> cardExpiryYear = Optional.ofNullable(e.getCardExpiryYear()).map(ExpiryYear::new);
+
                                 return new Expiry(
-                                        expiry.map(com.ctm.web.health.model.form.Expiry::getCardExpiryMonth)
-                                                .map(ExpiryMonth::new).orElse(null),
-                                        expiry.map(com.ctm.web.health.model.form.Expiry::getCardExpiryYear)
-                                                .map(ExpiryYear::new).orElse(null)
+                                        cardExpiryDay.orElse(null), cardExpiryMonth.orElse(null), cardExpiryYear.orElse(null)
                                 );
-                            })
-                            .orElse(null));
+                            }).orElse(null));
         } else {
             return null;
         }
@@ -269,7 +269,8 @@ public class PaymentAdapter {
                                                 .map(ExpiryMonth::new).orElse(null),
                                         expiry.map(com.ctm.web.health.model.form.Expiry::getCardExpiryYear)
                                                 .map(ExpiryYear::new).orElse(null)
-                                );})
+                                );
+                            })
                             .orElse(null),
                     credit.map(Credit::getCcv)
                             .map(CCV::new)
@@ -309,7 +310,8 @@ public class PaymentAdapter {
                                                 .map(ExpiryMonth::new).orElse(null),
                                         expiry.map(com.ctm.web.health.model.form.Expiry::getCardExpiryYear)
                                                 .map(ExpiryYear::new).orElse(null)
-                                );})
+                                );
+                            })
                             .orElse(null));
         } else {
             return null;
@@ -332,7 +334,7 @@ public class PaymentAdapter {
                 return credit.map(Credit::getPolicyDay)
                         .map(LocalDate::parse)
                         .orElse(null);
-            } else if(payment.map(com.ctm.web.health.model.form.Payment::getPolicyDate).isPresent()) { // For BUD, GMB and Frank
+            } else if (payment.map(com.ctm.web.health.model.form.Payment::getPolicyDate).isPresent()) { // For BUD, GMB and Frank
                 return payment.map(com.ctm.web.health.model.form.Payment::getPolicyDate)
                         .map(LocalDateUtils::parseISOLocalDate)
                         .orElse(null);

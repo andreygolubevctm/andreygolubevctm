@@ -72,6 +72,7 @@ public class PaymentAdapterTest {
         verify(medicare, times(1)).getExpiry();
         verify(expiry, times(1)).getCardExpiryMonth();
         verify(expiry, times(1)).getCardExpiryYear();
+        verify(expiry, times(1)).getCardExpiryDay();
     }
 
     @Test
