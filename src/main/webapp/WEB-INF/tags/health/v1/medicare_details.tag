@@ -37,8 +37,7 @@
 		</form_v2:row>
 	</form_v2:row>
 
-	<simples:dialogue id="158" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
-
 	<field_v3:medicare_name_group_hidden_names xpath="${xpath}" showInitial="${true}" />
 
+    <simples:dialogue id="158" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
 </div>

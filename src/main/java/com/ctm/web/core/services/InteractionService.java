@@ -23,7 +23,7 @@ public class InteractionService {
         this.callDetailDao = callDetailDao;
     }
 
-    public void persistInteractionId(final Integer transactionId , final String interactionId) {
+    public void persistInteractionId(final Integer transactionId, final String interactionId) {
         CallDetail callDetail = new CallDetail(interactionId, transactionId);
         try {
             callDetailDao.insert(callDetail);

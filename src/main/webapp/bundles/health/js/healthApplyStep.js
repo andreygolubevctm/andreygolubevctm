@@ -8,6 +8,10 @@
         $paymentMedicareColour,
         $paymentMedicareCover,
         $medicareYellowMessage,
+        $medicareExpiryDayWrapper,
+        $medicareExpiryMonthWrapper,
+        $medicareExpiryYearWrapper,
+        $medicareExpiryGroupWrapper,
         $unitElements,
         $personName,
         $primaryName,
@@ -21,6 +25,11 @@
             $paymentMedicareColour = $("#health_payment_medicare_colour");
             $paymentMedicareCover = $("#health_payment_medicare_cover");
             $medicareYellowMessage = $("#health_medicareDetails_yellowCardMessage");
+            $medicareExpiryDayWrapper = $("#health_payment_medicare_expiry_cardExpiryDay").parent().parent();
+            $medicareExpiryMonthWrapper = $("#health_payment_medicare_expiry_cardExpiryMonth").parent().parent();
+            $medicareExpiryYearWrapper = $("#health_payment_medicare_expiry_cardExpiryYear").parent().parent();
+            $medicareExpiryGroupWrapper = $("#health_payment_medicare_expiry_cardExpiryMonth").parent().parent().parent().parent();
+
             $unitElements = {
                 appAddressUnitShop: $('#health_application_address_unitShop'),
                 appAddressStreetNum: $('#health_application_address_streetNum'),
@@ -74,6 +83,17 @@
 
                 // toggle message for Yellow card holders
                 $medicareYellowMessage.toggleClass('hidden', value !== 'yellow');
+
+                // Show expiry day field if yellow or blue medicare card and adjust field widths to suit
+                var showMedicareDayField = (value === 'yellow' || value === 'blue');
+
+                $medicareExpiryDayWrapper.toggleClass('hidden', !showMedicareDayField);
+
+                $medicareExpiryMonthWrapper.toggleClass('col-xs-4  allow-for-exp-day', showMedicareDayField);
+                $medicareExpiryMonthWrapper.toggleClass('col-xs-6', !showMedicareDayField);
+
+                $medicareExpiryYearWrapper.toggleClass('col-xs-4', showMedicareDayField);
+                $medicareExpiryYearWrapper.toggleClass('col-xs-6', !showMedicareDayField);
             })
             .trigger('change');
 

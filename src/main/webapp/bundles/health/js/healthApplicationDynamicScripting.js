@@ -17,6 +17,16 @@
         $dynamicDialogueBoxPartnerDOB = null,
         $dynamicDialogueBoxDependants = null,
         $fundSpecificDynamicDialogueBoxes_MYO = null,
+        $nonDynamicDialogueBoxMedicareCardSpelling = null,
+        $nonDynamicDialogueBoxYourFullName = null,
+        $nonDynamicDialogueBoxResidentialAddress = null,
+        $nonDynamicDialogueBoxPostalAddress = null,
+        $nonDynamicDialogueBoxEmailAddress = null,
+        $nonDynamicDialogueBoxAllOnMedicareCard = null,
+        $nonDynamicDialogueBoxAdditionalPeopleCovered = null,
+        $nonDynamicDialogueBoxPartnersGender = null,
+        $nonDynamicDialogueBoxThisCallIsRecorded = null,
+        $nonDynamicDialogueBoxLodgingFormToClaimAGRPrivacyNote = null,
         $primaryDob = null,
         $partnerDob = null,
         _selectedProductFundCode = '',
@@ -182,7 +192,17 @@
                         return '';
                     }
 
-                    return (_derivedData.medicare.expMonth && _derivedData.medicare.expYear ? _derivedData.medicare.expMonth + ' / ' + _derivedData.medicare.expYear : '');
+                    if (_derivedData.medicare.colour) {
+                        if (_derivedData.medicare.colour === 'blue' || _derivedData.medicare.colour === 'yellow') {
+                            if (!_.isUndefined(_derivedData.medicare.expDay)) {
+                                return (_derivedData.medicare.expDay && _derivedData.medicare.expMonth && _derivedData.medicare.expYear ? _derivedData.medicare.expDay + ' / ' + _derivedData.medicare.expMonth + ' / ' + _derivedData.medicare.expYear : '');
+                            }
+                        } else {
+                            return (_derivedData.medicare.expMonth && _derivedData.medicare.expYear ? _derivedData.medicare.expMonth + ' / ' + _derivedData.medicare.expYear : '');
+                        }
+                    }
+
+                    return '';
                 }
             },
             {
@@ -364,6 +384,17 @@
         _setupPartnerGenderDynamicTextTemplates();
         _setupPartnerDOBDynamicTextTemplate();
         _setupDependantsDynamicTextTemplate();
+
+        _setupMedicareCardSpellingNonDynamicTextTemplate();
+        _setupYourFullNameNonDynamicTextTemplate();
+        _setupResidentialAddressNonDynamicTextTemplate();
+        _setupPostalAddressNonDynamicTextTemplate();
+        _setupEmailAddressNonDynamicTextTemplate();
+        _setupAllOnMedicareCardNonDynamicTextTemplate();
+        _setupAdditionalPeopleCoveredNonDynamicTextTemplate();
+        _setupPartnersGenderNonDynamicTextTemplate();
+        _setupThisCallIsRecordedNonDynamicTextTemplate();
+        _setupLodgingFormToClaimAGRPrivacyNoteNonDynamicTextTemplate();
     }
 
 
@@ -539,6 +570,7 @@
 
         $fields.medicare.colour.on('change.dynamicScriptingMedicareColour', dynamicScriptingMedicareDtlsUpdated);
         $fields.medicare.number.on('change.dynamicScriptingMedicareNumber', dynamicScriptingMedicareDtlsUpdated);
+        $fields.medicare.expDay.on('change.dynamicScriptingMedicareExpDay', dynamicScriptingMedicareDtlsUpdated);
         $fields.medicare.expMonth.on('change.dynamicScriptingMedicareExpMonth', dynamicScriptingMedicareDtlsUpdated);
         $fields.medicare.expYear.on('change.dynamicScriptingMedicareExpYear', dynamicScriptingMedicareDtlsUpdated);
         $fields.medicare.number.on('change.dynamicScriptingMedicarePosition', dynamicScriptingMedicareDtlsUpdated);
@@ -852,6 +884,146 @@
 
     }
 
+    function _setupMedicareCardSpellingNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxMedicareCardSpelling = {
+                'elementRef':$('.simples-dialogue-145'),
+                'template': $('.simples-dialogue-145').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required Medicare Card Spelling dialogue box does not exist");
+        }
+
+    }
+
+    function _setupYourFullNameNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxYourFullName = {
+                'elementRef':$('.simples-dialogue-148'),
+                'template': $('.simples-dialogue-148').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required Spelling of Your Full Name dialogue box does not exist");
+        }
+
+    }
+
+    function _setupResidentialAddressNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxResidentialAddress = {
+                'elementRef':$('.simples-dialogue-150'),
+                'template': $('.simples-dialogue-150').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required Residential Address dialogue box does not exist");
+        }
+
+    }
+
+    function _setupPostalAddressNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxPostalAddress = {
+                'elementRef':$('.simples-dialogue-152'),
+                'template': $('.simples-dialogue-152').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required Postal Address dialogue box does not exist");
+        }
+
+    }
+
+    function _setupEmailAddressNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxEmailAddress = {
+                'elementRef':$('.simples-dialogue-155'),
+                'template': $('.simples-dialogue-155').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required Email Address dialogue box does not exist");
+        }
+
+    }
+
+    function _setupAllOnMedicareCardNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxAllOnMedicareCard = {
+                'elementRef':$('.simples-dialogue-157'),
+                'template': $('.simples-dialogue-157').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required Are All people listed on a Medicare Card dialogue box does not exist");
+        }
+
+    }
+
+    function _setupAdditionalPeopleCoveredNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxAdditionalPeopleCovered = {
+                'elementRef':$('.simples-dialogue-159'),
+                'template': $('.simples-dialogue-159').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required There are Additional People Covered By This Policy dialogue box does not exist");
+        }
+
+    }
+
+    function _setupPartnersGenderNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxPartnersGender = {
+                'elementRef':$('.simples-dialogue-162'),
+                'template': $('.simples-dialogue-162').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required What Is Your Partners Gender dialogue box does not exist");
+        }
+
+    }
+
+    function _setupThisCallIsRecordedNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxThisCallIsRecorded = {
+                'elementRef':$('.simples-dialogue-167'),
+                'template': $('.simples-dialogue-167').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required This Call Is Recorded dialogue box does not exist");
+        }
+
+    }
+
+    function _setupLodgingFormToClaimAGRPrivacyNoteNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxLodgingFormToClaimAGRPrivacyNote = {
+                'elementRef':$('.simples-dialogue-169'),
+                'template': $('.simples-dialogue-169').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required Lodging Form To Claim AGR Privacy Note dialogue box does not exist");
+        }
+
+    }
+
     function _setupFields() {
         $fields = {
             primary: {
@@ -909,6 +1081,7 @@
             medicare: {
                 colour: $('#health_payment_medicare_colour'),
                 number: $('#health_payment_medicare_number'),
+                expDay: $('#health_payment_medicare_expiry_cardExpiryDay'),
                 expMonth: $('#health_payment_medicare_expiry_cardExpiryMonth'),
                 expYear: $('#health_payment_medicare_expiry_cardExpiryYear'),
                 position: $('#health_payment_medicare_cardPosition')
@@ -971,6 +1144,17 @@
         performUpdatePartnerGenderDynamicDialogueBoxes();
         performUpdatePartnerDOBDynamicDialogueBox();
         performUpdateDependantsDynamicDialogueBox();
+
+        performResetMedicareCardSpellingNonDynamicDialogueBox();
+        performResetYourFullNameNonDynamicDialogueBox();
+        performResetResidentialAddressNonDynamicDialogueBox();
+        performResetPostalAddressNonDynamicDialogueBox();
+        performResetEmailAddressNonDynamicDialogueBox();
+        performResetAllOnMedicareCardNonDynamicDialogueBox();
+        performResetAdditionalPeopleCoveredNonDynamicDialogueBox();
+        performResetPartnersGenderNonDynamicDialogueBox();
+        performResetThisCallIsRecordedNonDynamicDialogueBox();
+        performResetLodgingFormToClaimAGRPrivacyNoteNonDynamicDialogueBox();
     }
 
     function performUpdatePrimaryDataDynamicDialogueBoxes() {
@@ -1139,6 +1323,117 @@
         });
     }
 
+
+    function performResetMedicareCardSpellingNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxMedicareCardSpelling.template.valueOf();
+            $nonDynamicDialogueBoxMedicareCardSpelling.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory Medicare Card Spelling dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetYourFullNameNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxYourFullName.template.valueOf();
+            $nonDynamicDialogueBoxYourFullName.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory Your Full Name dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetResidentialAddressNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxResidentialAddress.template.valueOf();
+            $nonDynamicDialogueBoxResidentialAddress.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory Residential Address dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetPostalAddressNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxPostalAddress.template.valueOf();
+            $nonDynamicDialogueBoxPostalAddress.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory Postal Address dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetEmailAddressNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxEmailAddress.template.valueOf();
+            $nonDynamicDialogueBoxEmailAddress.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory Email Address dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetAllOnMedicareCardNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxAllOnMedicareCard.template.valueOf();
+            $nonDynamicDialogueBoxAllOnMedicareCard.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory Are All people listed on a Medicare Card dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetAdditionalPeopleCoveredNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxAdditionalPeopleCovered.template.valueOf();
+            $nonDynamicDialogueBoxAdditionalPeopleCovered.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory There are Additional People Covered By This Policy dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetPartnersGenderNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxPartnersGender.template.valueOf();
+            $nonDynamicDialogueBoxPartnersGender.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory What Is Your Partners Gender dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetThisCallIsRecordedNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxThisCallIsRecorded.template.valueOf();
+            $nonDynamicDialogueBoxThisCallIsRecorded.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory This Call Is Recorded dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetLodgingFormToClaimAGRPrivacyNoteNonDynamicDialogueBox() {
+
+        try {
+            var newHtml = $nonDynamicDialogueBoxLodgingFormToClaimAGRPrivacyNote.template.valueOf();
+            $nonDynamicDialogueBoxLodgingFormToClaimAGRPrivacyNote.elementRef.html(newHtml);
+        }
+        catch(err) {
+            console.error( "Resetting the Mandatory Lodging Form To Claim AGR Privacy Note dialogue box did not occur due to an error");
+        }
+    }
+
     function _eventSubscriptions() {
         _stepChangedSubscribe = meerkat.messaging.subscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, function stepChangedEvent(navInfo) {
             if (navInfo.isBackward && navInfo.navigationId !== 'apply') {
@@ -1194,6 +1489,7 @@
                 $fields.address.postal.fullAddress.off('change.dynamicScriptingPostalFullAddress');
                 $fields.medicare.colour.off('change.dynamicScriptingMedicareColour');
                 $fields.medicare.number.off('change.dynamicScriptingMedicareNumber');
+                $fields.medicare.expDay.off('change.dynamicScriptingMedicareExpDay');
                 $fields.medicare.expMonth.off('change.dynamicScriptingMedicareExpMonth');
                 $fields.medicare.expYear.off('change.dynamicScriptingMedicareExpYear');
                 $fields.medicare.number.off('change.dynamicScriptingMedicarePosition');
@@ -1575,6 +1871,13 @@
                 expYear: expYear,
                 position: position
             };
+
+        if (data.colour === 'yellow' || data.colour === 'blue') {
+            var expDay = (!_.isUndefined($fields.medicare.expDay) ? $fields.medicare.expDay.val() : '');
+            if (expDay) {
+                data.expDay = expDay;
+            }
+        }
 
         return data;
     }
