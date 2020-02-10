@@ -11,6 +11,7 @@
 <%@ attribute name="isNestedField" required="false" rtexprvalue="true" description="Toggle to automatically set some styling values for the nested fields eg name_group.tag" %>
 <%@ attribute name="isNestedStyleGroup" required="false" rtexprvalue="true" description="Toggle to remove the col-xs-12 class. If not removed breaks the nesting design introduced to health" %>
 <%@ attribute name="rowContentClass" required="false" rtexprvalue="true" description="additional css class attribute" %>
+<%@ attribute name="lgRowColSize" required="false" rtexprvalue="true" description="additional css class for col-lg" %>
 
 <%-- Attributes to pass through --%>
 <%@ attribute name="fieldXpath" required="false" rtexprvalue="true" description="The xpath of the field the label needs to point to" %>
@@ -29,6 +30,7 @@
 <c:if test="${empty label or label eq '' or label eq 'empty'}"><c:set var="showLabel" value="${false}" /></c:if>
 <c:set var="inputWidthSm" value="8 " />
 <c:if test="${not empty smRowOverride}"><c:set var="inputWidthSm" value="${smRowOverride} " /></c:if>
+<c:if test="${not empty lgRowColSize}"><c:set var="inputWidthLg"/></c:if>
 <c:set var="labelWidthXs" value="10" />
 <c:if test="${showHelpIcon eq false}"><c:set var="labelWidthXs" value="12" /></c:if>
 <c:set var="formGroupClasses" value="" />
@@ -67,7 +69,7 @@
         </c:if>
     </c:if>
     <%-- Row Input --%>
-    <div class="col-xs-12 col-sm-<c:out value="${inputWidthSm}" /> <c:out value="${inputClass}" /> <c:out value="${inputOffsetSm}" /> <c:out value="${rowContentClass}" /> row-content">
+    <div class="col-xs-12 col-sm-<c:out value="${inputWidthSm}" /> <c:out value="${inputWidthLg}"/> <c:out value="${inputClass}" /> <c:out value="${inputOffsetSm}" /> <c:out value="${rowContentClass}" /> row-content">
         <jsp:doBody />
     </div>
 </div>

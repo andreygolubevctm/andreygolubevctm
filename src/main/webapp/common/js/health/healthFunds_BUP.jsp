@@ -14,8 +14,6 @@ var healthFunds_BUP = {
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
-	$primaryMiddleName: $('#health_application_primary_middleName'),
-	$partnerMiddleName: $('#health_application_partner_middleName'),
     extendedFamilyMinAge: 21,
     extendedFamilyMaxAge: 25,
     healthDependantMaxAge: 25,
@@ -159,8 +157,6 @@ var healthFunds_BUP = {
 		$('#health_previousfund_partner_authority').setRequired(true, 'Bupa requires authorisation to contact your partner\'s previous fund');
 		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(false).attr('maxlength', '10');
 		meerkat.modules.healthFunds._previousfund_authority(true);
-		healthFunds_BUP.$primaryMiddleName.setRequired(false);
-		healthFunds_BUP.$partnerMiddleName.setRequired(false);
 
 		<%--fund offset check--%>
 		meerkat.modules.healthFundTimeOffset.onInitialise({
@@ -215,16 +211,6 @@ var healthFunds_BUP = {
 		healthFunds_BUP.$claimsAccountOptin.find("input:checked").each(function(){
 		  $(this).prop("checked",null).trigger("change");
 		});
-
-		<%-- Fix name field widths to account for the middleName field --%>
-		healthFunds_BUP.$primaryFirstname = $('#health_application_primary_firstname').closest('.row-content');
-		healthFunds_BUP.$primarySurname = $('#health_application_primary_surname').closest('.row-content');
-		healthFunds_BUP.$partnerFirstname = $('#health_application_partner_firstname').closest('.row-content');
-		healthFunds_BUP.$partnerSurname = $('#health_application_partner_surname').closest('.row-content');
-		healthFunds_BUP.$primaryFirstname.removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
-		healthFunds_BUP.$primarySurname.removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
-		healthFunds_BUP.$partnerFirstname.removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
-		healthFunds_BUP.$partnerSurname.removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
 
 	},
 	updateMessage: function() {
@@ -295,12 +281,6 @@ var healthFunds_BUP = {
 		healthFunds_BUP.$paymentStartDate.off("changeDate.BUP");
 
 		$('.bup-payment-legend').remove();
-
-		<%-- Fix name field widths to account for removal of middleName field --%>
-		healthFunds_BUP.$primaryFirstname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
-		healthFunds_BUP.$primarySurname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
-		healthFunds_BUP.$partnerFirstname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
-		healthFunds_BUP.$partnerSurname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
 
 		<%-- Unset any ipp tokenisation --%>
 		meerkat.modules.healthPaymentIPP.reset();

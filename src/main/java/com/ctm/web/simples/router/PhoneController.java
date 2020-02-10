@@ -11,11 +11,10 @@ import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.InteractionService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.simples.phone.inin.InInIcwsService;
 import com.ctm.web.simples.phone.inin.model.PauseResumeResponse;
+import com.ctm.web.simples.phone.inin.model.RecordSnippetResponse;
 import com.ctm.web.simples.phone.verint.VerintPauseResumeService;
-import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,17 +48,17 @@ public class PhoneController extends CommonQuoteRouter {
     private InteractionService interactionService;
 
     @Autowired
-    public PhoneController(SessionDataServiceBean sessionDataServiceBean, InInIcwsService inInIcwsService, IPAddressHandler ipAddressHandler, InteractionService interactionService ) {
+    public PhoneController(SessionDataServiceBean sessionDataServiceBean, InInIcwsService inInIcwsService, IPAddressHandler ipAddressHandler, InteractionService interactionService) {
         super(sessionDataServiceBean, ipAddressHandler);
         this.inInIcwsService = inInIcwsService;
         this.interactionService = interactionService;
     }
 
     @RequestMapping(
-        value = "/pauseResumeCall.json",
-        method = RequestMethod.GET,
-        consumes = MediaType.ALL_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
+            value = "/pauseResumeCall.json",
+            method = RequestMethod.GET,
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public PauseResumeResponse pauseResumeCall(@RequestParam pauseResumeActions action, HttpServletRequest request, HttpServletResponse response) throws ConfigSettingException, DaoException, ServletException {
         final VerintPauseResumeService verintPauseResumeService = new VerintPauseResumeService();
@@ -67,12 +66,12 @@ public class PhoneController extends CommonQuoteRouter {
 
         final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", pageSettings.getSetting("inInEnabled"));
         PauseResumeResponse pauseResumeResponse = PauseResumeResponse.fail("Failed");
-        Integer transactionId =null;
+        Integer transactionId = null;
 
-        if(null != request.getParameter("transactionId")) {
-            try{
+        if (null != request.getParameter("transactionId")) {
+            try {
                 transactionId = Integer.parseInt(request.getParameter("transactionId"));
-            }catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 LOGGER.error("Unable to parse TransactionId={} ", transactionId);
             }
         }
@@ -91,17 +90,17 @@ public class PhoneController extends CommonQuoteRouter {
             } else {
                 if (action == PauseRecord) {
                     pauseResumeResponse = inInIcwsService.pause(authName, Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
-                      if(null != transactionId && null != pauseResumeResponse.getInteractionId()) {
-                          interactionService.persistInteractionId(transactionId, pauseResumeResponse.getInteractionId());
-                      }
+                    if (null != transactionId && null != pauseResumeResponse.getInteractionId()) {
+                        interactionService.persistInteractionId(transactionId, pauseResumeResponse.getInteractionId());
+                    }
                 } else if (action == ResumeRecord) {
                     pauseResumeResponse = inInIcwsService.resume(authName, Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
-                    if(null != transactionId && null != pauseResumeResponse.getInteractionId()) {
+                    if (null != transactionId && null != pauseResumeResponse.getInteractionId()) {
                         interactionService.persistInteractionId(transactionId, pauseResumeResponse.getInteractionId());
                     }
                 }
             }
-        // Normal Verint telephony system
+            // Normal Verint telephony system
         } else {
             // Verint service throws exceptions which will be caught by our handleException()
             verintPauseResumeService.pauseResumeRecording(request, pageSettings);
@@ -165,6 +164,36 @@ public class PhoneController extends CommonQuoteRouter {
         }
         return pauseResumeResponse;
     }
+
+
+    @RequestMapping(
+            value = "/apiCallSnipping",
+            method = RequestMethod.POST,
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RecordSnippetResponse apiVoiceSnipping(HttpServletRequest request, HttpServletResponse response) {
+        final String isSnippingOn = request.getParameter("snippingOn");
+        final String operatorId = request.getParameter("operatorId");
+        final String transactionId = request.getParameter("transactionId");
+        RecordSnippetResponse snippingResponse;
+
+        if (StringUtils.isEmpty(isSnippingOn)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            snippingResponse = RecordSnippetResponse.fail("GET request missing snippingOn param");
+        } else if (StringUtils.isEmpty(operatorId)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            snippingResponse = RecordSnippetResponse.fail("GET request missing operatorId param");
+        } else {
+            snippingResponse = inInIcwsService.recordSnippet(isSnippingOn, "false", operatorId, transactionId).observeOn(Schedulers.io()).toBlocking().first();
+            if (!snippingResponse.isSuccess()) {
+                response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                LOGGER.error("apiVoiceSnipping, recordSnippet failed with  transactionId : {} and error : {}", transactionId, snippingResponse.getError());
+            }
+        }
+        return snippingResponse;
+    }
+
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

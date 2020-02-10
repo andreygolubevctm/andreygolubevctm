@@ -40,11 +40,14 @@
 <c:set var="validationAttributes"> data-rule-cardExpiry='{"prefix":"${go:nameFromXpath(xpath)}"}' data-msg-cardExpiry='Please choose a valid ${title}' </c:set>
 
 <%-- HTML --%>
-<div class="row">
-	<div class="col-xs-6">
+<div class="row cardExpiryDateGroupWrapper">
+	<div class="col-xs-4 hidden cardExpiryDayFieldWrapper">
+		<field_v2:import_select xpath="${xpath}/cardExpiryDay" url="/WEB-INF/option_data/dd.html"	title="expiry day" required="true" className="${className}" placeHolder="DD" disableErrorContainer="${disableErrorContainer}"/>
+	</div>
+	<div class="col-xs-6 cardExpiryMonthFieldWrapper">
 		<field_v2:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" className="${className}" placeHolder="MM" disableErrorContainer="${disableErrorContainer}"/>
 	</div>
-	<div class="col-xs-6 row">
+	<div class="col-xs-6 row cardExpiryYearFieldWrapper">
 		<field_v2:array_select
 			items="=,${year_list}"
 			xpath="${xpath}/cardExpiryYear"

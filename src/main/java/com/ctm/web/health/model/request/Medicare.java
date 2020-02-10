@@ -14,6 +14,7 @@ public class Medicare {
 	@Name
 	public String middleInitial;
 
+	public String cardExpiryDay;
 	public String cardExpiryYear;
 	public String cardExpiryMonth;
 	public String firstName;
