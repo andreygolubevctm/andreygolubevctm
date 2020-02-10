@@ -62,18 +62,7 @@
 <%-- DEFAULT RESULT ROW --%>
 <core_v1:js_template id="result-template">
 	{{ var productTitle = (typeof obj.des !== 'undefined') ? obj.des : 'Unknown product name'; }}
-	{{ (function (w) { }}
-	{{ 	w.URLSearchParams = w.URLSearchParams || function (searchString) { }}
-	{{ 		var self = this; }}
-	{{ 		self.searchString = searchString; }}
-	{{ 		self.get = function (name) { }}
-	{{ 			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(self.searchString); }}
-	{{ 			return (results == null) ? results : decodeURI(results[1]) || 0; }}
-	{{ 		}; }}
-	{{ 	} }}
-	{{ })(window) }}
-	{{ var urlParams = new URLSearchParams(window.location.search);}}
-    {{ var providerName = obj.providerName; }}
+  {{ var providerName = obj.providerName; }}
 
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var logo = _.template(template); }}
@@ -83,7 +72,6 @@
 	{{ var tripTypes = meerkat.modules.tripType.get(); }}
 	{{ var tripTypeClass = isTripType ? "trip-type-container" : ""; }}
 	{{ var specialOfferClass = hasSpecialOffer ? "specialOffer" : ""; }}
-	{{ var abTestingFlag = urlParams.get('testB');}}
 	<div class="result-row available result_{{= obj.productId }}"
 		 data-productId="{{= obj.productId }}"
 		 data-available="Y"
@@ -181,12 +169,7 @@
 							</div>
 							<div class="col-sm-4 col-sm-pull-8 col-lg-pull-0 col-lg-12 buyNow">
 								<a class="btn btn-primary btn-block btn-apply btn-long-text" href="javascript:;" data-productId="{{= obj.productId }}">
-									{{ if (abTestingFlag == 'ctm2005') { }}
-										<%-- TODO display provider name insdead of productTitle --%>
-										<span>Go to {{= providerName }}</span>
-									{{ } else { }}
-										<span>Continue to Insurer</span>
-									{{ } }}
+									<span>Go to {{= providerName }}</span>
 									<span class="icon icon-arrow-right" />
                                 </a>
 							</div>
@@ -227,12 +210,7 @@
 									</div>
 									<div class="col-xs-6 gotoContainer">
 										<a class="btn btn-primary btn-block btn-apply btn-long-text" href="javascript:;" data-productId="{{= obj.productId }}">
-											{{ if (abTestingFlag == 'ctm2005') { }}
-												<%-- TODO display provider name insdead of productTitle --%>
 											<span>Go to {{= providerName }}</span>
-											{{ } else { }}
-											<span>Go to Insurer </span>
-											{{ } }}
 											<span class="icon icon-arrow-right" />
 										</a>
 									</div>
