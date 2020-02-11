@@ -2,6 +2,7 @@
 
     var meerkat = window.meerkat,
         $fields = {},
+        $yourDetailsNoOfDependents = null,
         $rebateIncomeThresholdDropdownBox = null,
         $dynamicDialogueBoxRebateIncomeThresholdsConfirmation = null,
         // this was adapted from simplesDynamicDialogue.js
@@ -36,7 +37,9 @@
         ];
 
     function onInitialise() {
+        $yourDetailsNoOfDependents = $('#health_healthCover_dependants');
         $rebateIncomeThresholdDropdownBox = $('#health_healthCover_income');
+
         _setupRebateIncomeThresholdsConfirmationDynamicTextTemplate();
     }
 
@@ -48,6 +51,7 @@
             performUpdateRebateIncomeThresholdsConfirmationDynamicDialogueBox();
         };
 
+        $yourDetailsNoOfDependents.on('change.yourDetailsNoOfDependentsUpdated', yourDetailsRebateTierUpdated);
         $rebateIncomeThresholdDropdownBox.on('change.yourDetailsRebateIncomeThresholdUpdated', yourDetailsRebateTierUpdated);
     }
 
