@@ -349,6 +349,7 @@
 				validate: true
 			},
 			onInitialise: function onContactInit(event){
+				meerkat.modules.healthYourDetailsDynamicScripting.onInitialise();
 				meerkat.modules.resultsFeatures.fetchStructure(simplesCategoryVersion);
 				meerkat.modules.healthLHC.displayLHC();
 
@@ -375,6 +376,7 @@
 				incrementTranIdBeforeEnteringSlide();
 
 				meerkat.modules.healthContactType.togglePhoneEmailRequired();
+				meerkat.modules.healthYourDetailsDynamicScripting.onBeforeEnterYourDetails();
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},

@@ -84,16 +84,16 @@ Handling of the rebate tiers based off situation
 				// Single tiers
 				switch(_value) {
 					case '0':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeBaseTier) +' or less';
+						_text = '$'+ formatMoney(rebateTiers.single.incomeBaseTier) +' or less (Base Tier, Tier 0)';
 						break;
 					case '1':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier1.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier1.to);
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier1.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier1.to) + ' (Tier 1)';
 						break;
 					case '2':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier2.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier2.to);
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier2.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier2.to) + ' (Tier 2)';
 						break;
 					case '3':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier3) + '+ (no rebate)';
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier3) + '+ (Tier 3 - no rebate)';
 						break;
 				}
 			} else {
@@ -102,16 +102,16 @@ Handling of the rebate tiers based off situation
 
 				switch(_value) {
 					case '0':
-						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + _allowance) +' or less';
+						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + _allowance) +' or less (Base Tier, Tier 0)';
 						break;
 					case '1':
-						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier1.from + _allowance) +' - $'+ formatMoney(rebateTiers.familyOrCouple.incomeTier1.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier1.from + _allowance) +' - $'+ formatMoney(rebateTiers.familyOrCouple.incomeTier1.to + _allowance) + '  (Tier 1)';
 						break;
 					case '2':
-						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier2.from + _allowance) +' - $'+ formatMoney(rebateTiers.familyOrCouple.incomeTier2.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier2.from + _allowance) +' - $'+ formatMoney(rebateTiers.familyOrCouple.incomeTier2.to + _allowance) + '  (Tier 2)';
 						break;
 					case '3':
-						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier3 + _allowance) + '+ (no rebate)';
+						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier3 + _allowance) + '+ (Tier 3 - no rebate)';
 						break;
 					}
 			}
