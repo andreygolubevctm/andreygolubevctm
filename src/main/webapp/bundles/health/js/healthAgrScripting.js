@@ -69,6 +69,19 @@
                 }
             },
             {
+                text: '%INCOME_THRESHOLD%',
+                get: function() {
+                    if(!_derivedData) {
+                        return '';
+                    }
+                    if (!_derivedData.rebate) {
+                        return '';
+                    }
+
+                    return _derivedData.rebate.incomeThreshold ? _derivedData.rebate.incomeThreshold : '';
+                }
+            },
+            {
                 text: '%TRANSACTION_ID%',
                 get: function() {
                     return $('#contactForm .transactionIdContainer .transactionId').text() || '';
@@ -567,11 +580,13 @@
             rebatePercent = $fields.rebate.currentPercentage.val() + '%',
             rebatePretty = ((!_.isUndefined(rebateTier) &&  !_.isUndefined(rebatePercent))? (rebateTier + ' - ' + rebatePercent) : ''),
             aboutYouPageApplyRebateFieldVal = $fields.rebate.applyRebate.filter(':checked').val(),
+            incomeTier = _getRebateIncomeThreshold($fields.rebate.tier.find('option:selected').text()),
             data =  {
                 tier: rebateTier,
                 percent: rebatePercent,
                 prettyPrinted: rebatePretty,
-                aboutYouPageApplyRebateFieldVal: aboutYouPageApplyRebateFieldVal
+                aboutYouPageApplyRebateFieldVal: aboutYouPageApplyRebateFieldVal,
+                incomeThreshold: incomeTier
             };
 
         return data;
@@ -582,6 +597,19 @@
             return 'Tier ' + rebateTierEnum;
         } else {
             return 'Base tier';
+        }
+    }
+
+    function _getRebateIncomeThreshold(rebateIncomeThresholdDropdownText) {
+        if (rebateIncomeThresholdDropdownText.length > 0) {
+
+            if (rebateIncomeThresholdDropdownText == 'Please choose...') {
+                return 'PLEASE SELECT YOUR TAXABLE INCOME';
+            } else {
+                return rebateIncomeThresholdDropdownText.slice(0, rebateIncomeThresholdDropdownText.indexOf(' ('));
+            }
+        } else {
+            return 'PLEASE SELECT YOUR TAXABLE INCOME';
         }
     }
 
@@ -645,7 +673,7 @@
     }
 
     function _onSubmitPaymentStepFinished() {
-        if ((_states.scriptingAgrFund && _states.showScripting) || (_states.scriptingAgrFund && $agrComplianceElements.removeRebate1Fields.filter(':checked').val() === 'Y')) {
+        if ((_states.scriptingAgrFund && _states.showScripting) || (_states.scriptingAgrFund && $agrComplianceElements.removeRebate1Fields.filter(':checked').val() === 'Y') || (_states.scriptingAgrFund && $agrComplianceElements.removeRebate2Fields.filter(':checked').val() === 'Y')) {
             // Send a snippet recording stop request when user submits the application
             _performCallSnippetRequest(false);
         }
