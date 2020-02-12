@@ -10,6 +10,10 @@ public class GovtRebateDeclaration {
 
     private String declarationDate;
 
+    private String voiceConsent;
+
+    private String childOnlyPolicy;
+
     public String getApplicantCovered() {
         return applicantCovered;
     }
@@ -42,4 +46,19 @@ public class GovtRebateDeclaration {
         this.declarationDate = declarationDate;
     }
 
+    public String getVoiceConsent() {
+        return voiceConsent;
+    }
+
+    public void setVoiceConsent(String voiceConsent) {
+        this.voiceConsent = voiceConsent;
+    }
+
+    public String getChildOnlyPolicy() {
+        return childOnlyPolicy;
+    }
+
+    public void setChildOnlyPolicy(String childOnlyPolicy) {
+        this.childOnlyPolicy = childOnlyPolicy;
+    }
 }

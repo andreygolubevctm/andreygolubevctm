@@ -6,6 +6,7 @@ import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.EverHadCover;
 import com.ctm.web.health.apply.model.request.application.situation.Situation;
 import com.ctm.web.health.model.form.*;
+import lombok.SneakyThrows;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
 
 public class ApplicationGroupAdapterTest {
 
@@ -51,6 +53,8 @@ public class ApplicationGroupAdapterTest {
         verify(govtRebateDeclaration, times(1)).getDeclarationDate();
         verify(govtRebateDeclaration, times(1)).getEntitledToMedicare();
         verify(govtRebateDeclaration, times(1)).getDeclaration();
+        verify(govtRebateDeclaration, times(1)).getChildOnlyPolicy();
+        verify(govtRebateDeclaration, times(1)).getVoiceConsent();
     }
 
 

@@ -10,7 +10,7 @@ public class Medicare {
 
     private String firstName;
 
-    private String middleInitial;
+    private String middleName;
 
     private String surname;
 
@@ -46,12 +46,12 @@ public class Medicare {
         this.firstName = firstName;
     }
 
-    public String getMiddleInitial() {
-        return middleInitial;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setMiddleInitial(String middleInitial) {
-        this.middleInitial = middleInitial;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getSurname() {

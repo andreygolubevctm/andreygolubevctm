@@ -349,6 +349,7 @@
 				validate: true
 			},
 			onInitialise: function onContactInit(event){
+				meerkat.modules.healthYourDetailsDynamicScripting.onInitialise();
 				meerkat.modules.resultsFeatures.fetchStructure(simplesCategoryVersion);
 				meerkat.modules.healthLHC.displayLHC();
 
@@ -375,6 +376,7 @@
 				incrementTranIdBeforeEnteringSlide();
 
 				meerkat.modules.healthContactType.togglePhoneEmailRequired();
+				meerkat.modules.healthYourDetailsDynamicScripting.onBeforeEnterYourDetails();
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
@@ -710,9 +712,9 @@
 						secondaryValidation = meerkat.modules.healthSplitTransaction.checkTLAuthorised();
 					}
 
-					// Validation passed, submit the application after showing confirmation modal - see subscribe event below.
+					// Submits an HTTP request to InIn to stop VAGR call snipping if required then submits the application
 					if (valid && secondaryValidation) {
-						submitApplication();
+						meerkat.modules.healthAGRScripting.submitSnipKeepIfRequired(submitApplication);
 					}
 				});
 
@@ -726,6 +728,7 @@
 				$('.simples-dialogue-140').toggleClass('hidden', !meerkat.modules.healthRABD.showPaymentsScript());
 
 				if(event.isForward === true){
+					meerkat.modules.healthAGRScripting.updateAgrXpaths();
 
 					meerkat.modules.healthPaymentStep.rebindCreditCardRules();
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
@@ -749,7 +752,7 @@
 
 					if(meerkat.modules.healthVouchers) {
 						meerkat.modules.healthVouchers.showHideVouchers();
-				}
+				    }
 				}
 			}
 		};
