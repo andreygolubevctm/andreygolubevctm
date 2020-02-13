@@ -52,7 +52,7 @@
 		</form_v3:row>
 
 		<c:if test="${isDualPriceActive eq true}">
-			<div class="hidden frequencyWarning simples-dialogue mandatory"></div>
+			<div class="frequencyWarning simples-dialogue mandatory"></div>
 		</c:if>
 
 		<c:set var="fieldXpath" value="${xpath}/claims" />
