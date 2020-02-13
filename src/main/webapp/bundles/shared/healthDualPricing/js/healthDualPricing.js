@@ -83,7 +83,7 @@
 
             if (_.isEmpty($(this).val())) return;
 
-            $elements.frequencyWarning.text(`If you elect to pay your premium ${frequency}, only payments made by ${pricingDateFormatted} will be at the current amount, thereafter the new premium will apply.`);
+            $elements.frequencyWarning.text('If you elect to pay your premium ${frequency}, only payments made by ${pricingDateFormatted} will be at the current amount, thereafter the new premium will apply.');
 
             // hide if cover start date after or on April 1st or altPremium price is $0 on online journey
             if (coverStartDateTime >= aprilFirstTime || (!meerkat.site.isCallCentreUser && selectedProduct.altPremium[frequency].value === 0)) {
