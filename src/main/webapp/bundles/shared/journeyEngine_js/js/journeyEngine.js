@@ -843,7 +843,7 @@
 
         if ($ele.attr('data-active') !== '1'){
             $ele.attr('data-active', '1');
-            $ele.find('.message').attr('data-oldtext', $ele.find('.message').text()).text(messageText);
+            $ele.find('.message').attr('data-oldtext', $ele.find('.message').text()).html(messageText);
             $ele.addClass('displayBlock');
             if (showInstantly){
                 $ele.addClass('opacity1');
