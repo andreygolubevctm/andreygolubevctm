@@ -14,6 +14,10 @@
 	<content:get key="travelAdvisoryMessageInternational" />
 </c:set>
 
+<c:set var="quoteLoadingMessage">
+	<content:get key="quoteLoadingMessage" />
+</c:set>
+
 <c:set var="travelAdvisoryMessageDomestic">
 	<content:get key="travelAdvisoryMessageDomestic" />
 </c:set>
@@ -47,6 +51,7 @@
 		domestic: '<c:out value="${travelAdvisoryMessageDomestic}" />',
 		international: '<c:out value="${travelAdvisoryMessageInternational}" />',
 	},
+	quoteLoadingMessage: '<c:out value="${quoteLoadingMessage}" />',
 	pageAction: '<c:out value="${param.action}"  escapeXml="true"/>',
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,

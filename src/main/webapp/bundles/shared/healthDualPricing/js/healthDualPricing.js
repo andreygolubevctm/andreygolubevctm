@@ -18,7 +18,7 @@
             'A': 'annual'
         },
         isActive = null,
-        _aprilFirst = '04/01/2019',
+        _aprilFirst = '04/01/' + new Date().getFullYear(),
         _trackModalClose = true;
 
     function initDualPricing() {
@@ -83,6 +83,8 @@
 
             if (_.isEmpty($(this).val())) return;
 
+            $elements.frequencyWarning.text('If you elect to pay your premium ${frequency}, only payments made by ${pricingDateFormatted} will be at the current amount, thereafter the new premium will apply.');
+
             // hide if cover start date after or on April 1st or altPremium price is $0 on online journey
             if (coverStartDateTime >= aprilFirstTime || (!meerkat.site.isCallCentreUser && selectedProduct.altPremium[frequency].value === 0)) {
                 $elements.frequencyWarning.slideUp();
@@ -111,7 +113,6 @@
                     altPremium: selectedProduct.paymentTypeAltPremiums[selectedPayment][frequency].text
                 };
             }
-
             $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
         });
 

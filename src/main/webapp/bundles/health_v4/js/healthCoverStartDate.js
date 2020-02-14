@@ -91,10 +91,11 @@
 	}
 	
 	function isAfterMarch() {
+		var now = new Date();
 		var coverDateString = getVal();
 		var dates = coverDateString.split("/");
 		var coverDate = new Date(dates[1] + "/" + dates[0] + "/" + dates[2]);
-		var aprilDate = new Date("04/01/2019");
+		var aprilDate = new Date("04/01/" + now.getFullYear());
 
 		return coverDate.getTime() >= aprilDate.getTime();
 	}
