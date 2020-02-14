@@ -277,8 +277,10 @@
 
 		// Start fetching results
 		$(document).on("resultsFetchStart", function onResultsFetchStart() {
+			var loadingMessage =  $('<div />').html(meerkat.site.quoteLoadingMessage).text();
+
 			$(".travelResultsDisclaimerHeader").hide();
-			meerkat.modules.journeyEngine.loadingShow('...getting your quotes...');
+			meerkat.modules.journeyEngine.loadingShow(loadingMessage);
 			$component.removeClass('hidden');
 			meerkat.modules.travelResultFilters.updateFilterForDestination();
 

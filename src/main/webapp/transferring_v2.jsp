@@ -90,15 +90,17 @@
 								</c:otherwise>
 							</c:choose>
 						</p>
-                        <p class="no-redirect">If you are not redirected in 3 seconds <a href="${quoteUrl}">click here</a></p>
-                        <div class="spinner">
-                            <div class="bounce1"></div>
-                            <div class="bounce2"></div>
-                            <div class="bounce3"></div>
-                        </div>
-                        <c:if test='${contentService.getContentValue(pageContext.getRequest(), "transferringLogoEnabled", verticalBrandCode, param.vertical) eq "Y"}'>
-                            <img src="assets/graphics/logos/${param.vertical}/src/${providerCode}.png" />
-                        </c:if>
+						    <c:if test='${contentService.getContentValue(pageContext.getRequest(), "transferringLogoEnabled", verticalBrandCode, param.vertical) eq "Y"}'>
+                    <img src="assets/graphics/logos/${param.vertical}/src/${providerCode}.png" />
+                </c:if>
+								  <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                  </div>
+
+                  <p class="no-redirect">If you are not redirected to your insurer within 5 seconds, please <a href="${quoteUrl}">click here</a></p>
+  
 						<div class="quoteUrl" quoteUrl="${quoteUrl}"></div>
 					</div>
 				</div>
