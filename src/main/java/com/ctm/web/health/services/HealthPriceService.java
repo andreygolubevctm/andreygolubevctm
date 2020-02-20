@@ -263,8 +263,8 @@ public class HealthPriceService {
 	/**
 	 * set up alternate product Id for returned result
 	 */
-	public HealthPriceResult setUpAltProductId(HealthPriceResult healthPriceResult) throws DaoException {
-		return healthPriceDao.setUpAltProductId(healthPriceRequest, healthPriceResult);
+	public HealthPriceResult setUpProductUpi(HealthPriceResult healthPriceResult) throws DaoException {
+		return healthPriceDao.setUpProductUpi(healthPriceRequest, healthPriceResult);
 	}
 
 

@@ -16,7 +16,7 @@ public class HealthPriceResult {
 	private HealthPricePremium altHealthPricePremium = new HealthPricePremium();
 
 	private boolean isDiscountRates = false;
-	private String altProductId;
+	private String productUpi;
 	private String fundCode;
 	private String fundName;
 	private String extrasName;
@@ -111,12 +111,12 @@ public class HealthPriceResult {
 		return altHealthPricePremium;
 	}
 
-	public String getAltProductId() {
-		return altProductId;
+	public String getProductUpi() {
+		return productUpi;
 	}
 
-	public void setAltProductId(String altProductId) {
-		this.altProductId = altProductId;
+	public void setProductUpi(String productUpi) {
+		this.productUpi = productUpi;
 	}
 
 	public String getFundCode() {
@@ -197,7 +197,7 @@ public class HealthPriceResult {
 				", healthPricePremium=" + healthPricePremium +
 				", altHealthPricePremium=" + altHealthPricePremium +
 				", isDiscountRates=" + isDiscountRates +
-				", altProductId='" + altProductId + '\'' +
+				", productUpi='" + productUpi + '\'' +
 				", fundCode='" + fundCode + '\'' +
 				", fundName='" + fundName + '\'' +
 				", extrasName='" + extrasName + '\'' +

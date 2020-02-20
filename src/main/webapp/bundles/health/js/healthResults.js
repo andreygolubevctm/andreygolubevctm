@@ -801,12 +801,6 @@
 
             } else {
                 var selectedProduct = Results.getSelectedProduct();
-                var changeDate = new Date(selectedProduct.custom.reform.changeDate).getTime();
-                var startDateString = $("#health_payment_details_start").val();
-                var dateStringSplit = startDateString.split('/');
-                var detailsStart = new Date(dateStringSplit[1] + '/' + dateStringSplit[0] + '/' + dateStringSplit[2]).getTime();
-                var getAltProduct = changeDate < detailsStart;
-                
                 var postData = meerkat.modules.journeyEngine.getFormData();
 
                 // Override some form data to only return a single product.
@@ -830,10 +824,10 @@
                     healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
                 }
 
-                if(selectedProduct.altProductId && getAltProduct) {
+                if(selectedProduct.productUpi) {
                     postData.push({
-                        name: 'health_application_altProductId',
-                        value: selectedProduct.altProductId
+                        name: 'health_application_productUpi',
+                        value: selectedProduct.productUpi
                     });
                 }
 
@@ -860,7 +854,6 @@
 
         });
     }
-
 
     // Change the results templates to promote features to the 'selected' features row.
 
