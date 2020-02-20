@@ -290,7 +290,7 @@ public class RequestAdapterV2 {
     }
 
     protected static void addProductIdSameExcessAmountFilter(Filters filters, Application application) {
-        if (StringUtils.isNotBlank(application.getProductId()) || StringUtils.isNotBlank(application.getAltProductId())) {
+        if (StringUtils.isNotBlank(application.getProductId()) || StringUtils.isNotBlank(application.getProductUpi())) {
             ProductIdSameExcessAmountFilter excessFilter = new ProductIdSameExcessAmountFilter();
             excessFilter.setProductIdWithSameExcessAmount(getProductId(application));
             filters.setExcessFilter(excessFilter);
@@ -477,18 +477,18 @@ public class RequestAdapterV2 {
 
     protected static String getProductId(Application application) {
         String productId = application.getProductId();
-        String altProductId = application.getAltProductId();
+        String productUpi = application.getProductUpi();
 
         if (StringUtils.startsWith(productId, "PHIO-HEALTH-")) {
             productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
         }
 
-        if (StringUtils.startsWith(altProductId, "PHIO-HEALTH-")) {
-            altProductId = StringUtils.remove(application.getAltProductId(), "PHIO-HEALTH-");
+        if (StringUtils.startsWith(productUpi, "PHIO-HEALTH-")) {
+            productUpi = StringUtils.remove(application.getProductUpi(), "PHIO-HEALTH-");
         }
 
-        if(altProductId != null && !altProductId.isEmpty()) {
-            return altProductId;
+        if(productUpi != null && !productUpi.isEmpty()) {
+            return productUpi;
         }
 
         return productId;
