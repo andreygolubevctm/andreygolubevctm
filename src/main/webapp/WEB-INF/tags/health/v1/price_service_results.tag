@@ -58,7 +58,7 @@
 		<c:if test="${healthPriceDetailService.isAlternatePriceDisabledForResult(pageContext.getRequest(), healthPriceRequest.getStyleCodeId(), row) eq false}">
 
 				<%-- ALTERNATE PRICING --%>
-			<c:set var="row" value="${healthPriceService.setUpAltProductId(row)}" />
+			<c:set var="row" value="${healthPriceService.setUpProductUpi(row)}" />
 
 				<%-- Get the alternate product prices - if alt product exists then use that product
 				Otherwise the premium will be 0 and says coming soon --%>

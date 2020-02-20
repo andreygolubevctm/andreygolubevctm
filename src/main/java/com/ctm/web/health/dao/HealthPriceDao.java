@@ -666,8 +666,8 @@ public class HealthPriceDao {
         String productId = null;
         if (!isAlt) {
             productId = healthPriceResult.getProductId();
-        } else if (healthPriceResult.getAltProductId() != null && !healthPriceResult.getAltProductId().isEmpty()) {
-            productId = healthPriceResult.getAltProductId();
+        } else if (healthPriceResult.getProductUpi() != null && !healthPriceResult.getProductUpi().isEmpty()) {
+            productId = healthPriceResult.getProductUpi();
         } else {
             return healthPriceResult;
         }
@@ -853,7 +853,7 @@ public class HealthPriceDao {
         return healthPriceResult;
     }
 
-    public HealthPriceResult setUpAltProductId(HealthPriceRequest healthPriceRequest, HealthPriceResult healthPriceResult) throws DaoException {
+    public HealthPriceResult setUpProductUpi(HealthPriceRequest healthPriceRequest, HealthPriceResult healthPriceResult) throws DaoException {
 
         Date searchDate = new java.sql.Date(healthPriceRequest.getSearchDateValue().getTime());
 
@@ -901,7 +901,7 @@ public class HealthPriceDao {
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
-                healthPriceResult.setAltProductId(result.getString("ProductId"));
+                healthPriceResult.setProductUpi(result.getString("ProductId"));
             }
 
         } catch (SQLException | NamingException e) {

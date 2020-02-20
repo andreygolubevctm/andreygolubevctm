@@ -15,7 +15,7 @@ public class HealthQuote {
 
     public String productId;
 
-    public String altProductId;
+    public String productUpi;
 
     private Info info;
 
@@ -67,12 +67,12 @@ public class HealthQuote {
         this.productId = productId;
     }
 
-    public String getAltProductId() {
-        return altProductId;
+    public String getProductUpi() {
+        return productUpi;
     }
 
-    public void setAltProductId(String altProductId) {
-        this.altProductId = altProductId;
+    public void setProductUpi(String productUpi) {
+        this.productUpi = productUpi;
     }
 
     public Info getInfo() {
