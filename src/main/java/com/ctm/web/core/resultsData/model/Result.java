@@ -19,7 +19,7 @@ public class Result implements Serializable {
 
     private String productId;
 
-    private String altProductId;
+    private String productUpi;
 
     public AvailableType getAvailable() {
         return available;
@@ -45,12 +45,12 @@ public class Result implements Serializable {
         this.productId = productId;
     }
 
-    public String getAltProductId() {
-        return altProductId;
+    public String getProductUpi() {
+        return productUpi;
     }
 
-    public void setAltProductId(String altProductId) {
-        this.altProductId = altProductId;
+    public void setProductUpi(String productUpi) {
+        this.productUpi = productUpi;
     }
 
 }

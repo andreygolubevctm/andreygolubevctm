@@ -83,7 +83,7 @@ public class ResponseAdapterV2 {
                     result.setTransactionId(request.getTransactionId());
                     result.setServiceName("PHIO");
                     result.setProductId(quote.getProductId());
-                    result.setAltProductId(quote.getAltProductId());
+                    result.setProductUpi(quote.getProductUpi());
 
                     result.setPromo(createPromo(quote.getPromotion(), request.getStaticOverride(), isSimplesUser, brandCode));
                     result.setAwardScheme(createAwardScheme(quote.getPromotion(), isSimplesUser));

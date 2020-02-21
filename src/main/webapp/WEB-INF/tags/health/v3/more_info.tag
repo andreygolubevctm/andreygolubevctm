@@ -556,7 +556,7 @@
 				<h2>Hospital cover</h2>
 				<p><strong>Hospital Excess:</strong><br>{{= custom.reform.tab1.excess }}</p>
 				<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
-				<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
+				<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= custom.reform.tab1.coPayment }}</p>
 
 				<p><strong>Accident Override:</strong>
 					{{ if(accidentSelected) { }}
@@ -730,7 +730,13 @@
 						</p>
 
 						<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
-					<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
+					<p><strong>Co-payment / % Hospital Contribution:</strong><br>
+						  {{ if(custom.reform.tab2.coPayment !== custom.reform.tab1.coPayment) { }}
+								<span class="scripting-text"><strong>{{= custom.reform.tab2.coPayment }}</strong></span>
+							{{ }else { }}
+								<span>{{= custom.reform.tab2.coPayment }}</span>
+							{{ } }}
+					</p>
 
 					<p><strong>Accident Override:</strong>
 						{{ if(accidentSelected) { }}
