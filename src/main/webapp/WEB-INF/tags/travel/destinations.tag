@@ -18,7 +18,7 @@
         <div class="col-sm-3">
             <h6 class="region-title">Asia</h6>
             <ul>
-                <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"AS","countryName":"Asia"}'>South East Asia</a></li>
+                <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"AS","countryName":"Asia"}'>Asia</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"BAL","countryName":"Bali"}'>Bali</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"THA","countryName":"Thailand"}'>Thailand</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"CHN","countryName":"China"}'>China</a></li>
