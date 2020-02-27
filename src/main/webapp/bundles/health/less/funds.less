@@ -293,6 +293,56 @@ body{
 	  }
 	}
 
+	/* HEA */
+	&.HEA{
+		.ifExpectingMessage {
+			color: #0C4DA2;
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+		}
+		.ifExpectingMessage .fieldrow_label {
+			float: left;
+		}
+		.ifExpectingMessage .fieldrow_value {
+			max-width: 400px;
+		}
+
+		.health_previous_fund_authority {
+			display: block !important;
+		}
+
+		.health_payment_bank-details_policyDay-group,
+		.health_payment_credit-details_policyDay-group{
+			display: block !important;
+		}
+
+		.health_payment_credit-details_day_group,
+		.health_payment_credit-details_day-group,
+		.health_payment_bank-details_day-group,
+		.health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_name,
+		.health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+		.health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+		.health-credit_card_details .fieldrow.nestedGroup,
+		.health-credit_card_details .payment_assurance_message {
+			display: none !important;
+		}
+
+		.hea {
+			padding-top: 0.5em;
+		}
+
+		.health-credit_card_details .fieldrow {
+			display:none;
+		}
+		.health_contact_authority{
+			display:none !important;
+		}
+
+		.agg-privacy-cc-has-values-styles();
+	}
+
 
 	/* BUDGET DIRECT */
 	&.BUD{

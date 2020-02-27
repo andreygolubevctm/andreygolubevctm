@@ -22,6 +22,7 @@ public enum HealthFundTimeZone {
     QCH("Australia/Queensland"),
     QTU("Australia/Queensland"),
     WFD("Australia/NSW"),
+    HEA("Australia/Queensland"),
     DEFAULT("Australia/Queensland");
 
     private final String timezone;
