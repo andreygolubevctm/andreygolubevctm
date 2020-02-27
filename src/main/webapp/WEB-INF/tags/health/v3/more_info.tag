@@ -221,13 +221,14 @@
 		{{ var coverType = meerkat.modules.healthBenefitsStep.getCoverType(); }}
 		{{ var limitedCover = meerkat.modules.healthBenefitsStep.getLimitedCover() == "Y" ? true : false; }}
 		{{ var isOutbound = meerkat.modules.healthContactType.is('outbound'); }}
+		{{ var isInbound = meerkat.modules.healthContactType.is('inbound'); }}
 		{{ var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound'); }}
 		{{ var isNextGenCli = meerkat.modules.healthContactType.is('nextgenCLI'); }}
 		{{ var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits(); }}
 		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return selectedBenefitsList.indexOf(benefit.value) > -1; }); }}
 		{{ var scriptTerm = 'everything'; }}
 		{{ var isBasic = custom.reform.tier && custom.reform.tier.toLowerCase().indexOf('basic') > -1; }}
-		{{ if(isOutbound || isNextGenOutbound) { }}
+		{{ if(isOutbound || isNextGenOutbound || isInbound) { }}
 		  {{ scriptTerm = 'anything'; }}
 			{{ if(custom.reform.scripting !== 'D') { }}
 				{{ if(coverType === 'c' || coverType === 'h') { }}
@@ -830,7 +831,7 @@
 		</div>
     </c:if>
 
-		{{ if((isOutbound || isNextGenOutbound) && coverType === 'c') { }}
+		{{ if((isOutbound || isInbound || isNextGenOutbound) && coverType === 'c') { }}
 			<simples:dialogue id="128" vertical="health" />
 		{{ } }}
 
@@ -905,7 +906,7 @@
 		</div>
 		{{ } }}
 
-		{{ if((isOutbound || isNextGenOutbound) && (coverType === 'c' || coverType === 'e')) { }}
+		{{ if((isOutbound || isInbound || isNextGenOutbound) && (coverType === 'c' || coverType === 'e')) { }}
 			<simples:dialogue id="130" vertical="health" mandatory="true" dynamic="true" />
 		{{ } }}
 
@@ -939,7 +940,7 @@
         </div>
 
 		<div>
-			{{ if(isOutbound || isNextGenOutbound || isNextGenCli) { }}
+			{{ if(isOutbound || isNextGenOutbound || isNextGenCli || isInbound) { }}
 				<simples:dialogue id="129" vertical="health" dynamic="true" />
 			{{ } else { }}
 				<simples:dialogue id="99" vertical="health" />
