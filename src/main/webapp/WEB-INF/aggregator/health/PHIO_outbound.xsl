@@ -26,6 +26,7 @@
 		<xsl:when test="$name = 'BUD'">54</xsl:when>
 		<xsl:when test="$name = 'QCH'">16</xsl:when>
 		<xsl:when test="$name = 'NHB'">17</xsl:when>
+		<xsl:when test="$name = 'HEA'">456</xsl:when>
 		<xsl:otherwise>0</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
@@ -85,6 +86,7 @@
 								<xsl:when test="situation/providerKey = 'qchf_63422354'">16</xsl:when>
 								<xsl:when test="situation/providerKey = 'nhb_42694269'">17</xsl:when>
                                 <xsl:when test="situation/providerKey = 'hbf_89564575'">18</xsl:when>
+								<xsl:when test="situation/providerKey = 'hea_8281277'">456</xsl:when>
 								<xsl:otherwise>-1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>

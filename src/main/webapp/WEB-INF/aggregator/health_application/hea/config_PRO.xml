@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
+			xmlns="http://com.disc_au.soap.aggregator">
+
+	<merge-root>soap-response</merge-root>
+	<merge-xsl>merge-results.xsl</merge-xsl>
+	<config-dir>aggregator/health_application</config-dir>
+	<debug-dir>health_application/debug</debug-dir>
+	<validation-file>WEB-INF/xsd/health/HEA/healthApplication.xsd</validation-file>
+
+	<service name="HEA" type="soap">
+		<soap-url></soap-url>
+		<soap-user></soap-user>
+		<soap-password></soap-password>
+		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembershipSTP</soap-action>
+		<outbound-xsl>hea/outbound.xsl</outbound-xsl>
+		<inbound-xsl>hea/inbound.xsl</inbound-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
+		<timeoutMillis>240000</timeoutMillis>
+	</service>
+
+</aggregator>
