@@ -366,7 +366,7 @@
 		if ($healthCoverIncome.val() === '3') {
 			$hasRebateDialogue.hide();
 			$tier3Dialogue.toggleClass('hidden', false);
-		} else {
+		} else if(meerkat.modules.healthCoverDetails.isRebateApplied()) {
 			$hasRebateDialogue.show();
 			$tier3Dialogue.toggleClass('hidden', true);
 		}
