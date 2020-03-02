@@ -1004,6 +1004,11 @@
                     {"providerBlurb" : "Westfund are a not for profit health fund who are really highly rated in terms of customer satisfaction, and for what you need they are giving really great value."}
                 );
                 break;
+            case 'HEA':
+                extraPopOverData.push(
+                    {"providerBlurb" : "Health.com.au is a very simple fund to understand. They have one thing in mind, and that’s to do what’s right for their customers. They take the complexity out of health insurance with simple and easy-to-understand products, and for what you need, they are giving really great value."}
+                );
+                break;
             default:
                 break;
         }

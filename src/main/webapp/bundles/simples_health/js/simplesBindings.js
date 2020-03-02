@@ -632,7 +632,7 @@
         var isOutbound = meerkat.modules.healthContactType.is('outbound');
         var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound');
 
-        $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || isNextGenOutbound || !isChecked);
+        $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', isNextGenOutbound || !isChecked);
         $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', !(isOutbound || isNextGenOutbound) || !isChecked);
     }
 
@@ -641,7 +641,7 @@
         var isOutbound = meerkat.modules.healthContactType.is('outbound');
         var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound');
 
-        $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', isOutbound || isNextGenOutbound || !isChecked);
+        $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', isNextGenOutbound || !isChecked);
         $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', !(isOutbound || isNextGenOutbound) || !isChecked);
     }
 
