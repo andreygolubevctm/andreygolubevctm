@@ -102,6 +102,12 @@
             </c:when>
             </c:choose>
 
+            {{ if(obj.promo.providerPhoneNumber) { }}
+            <div class="callCentreNumber">
+                <span class="icon icon-phone icon-results"></span><a href="tel:{{= obj.promo.providerPhoneNumber }}">{{= obj.promo.providerPhoneNumber }}</a>
+            </div>
+            {{ } }}
+
             <div class="clearfix show-on-affix"></div>
             <a class="btn btn-cta btn-block btn-more-info more-info-showapply hide-on-affix" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
                 <div class="more-info-text">Review product and join <span class="icon icon-angle-right"></span></div>
