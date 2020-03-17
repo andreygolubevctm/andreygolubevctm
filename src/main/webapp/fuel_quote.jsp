@@ -2,7 +2,15 @@
 	FUEL quote page
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link rel="manifest" href="manifest.json" />
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+<script type="application/javascript">
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('./service-worker.js', { scope: '/ctm/fuel_quote.jsp' }).catch(function(err) {
+			console.warn('Error whilst registering service worker', err);
+		});
+	}
+</script>
 
 <session:new verticalCode="FUEL" authenticated="true" />
 
