@@ -64,6 +64,7 @@
 <c:set var="defaultToHealthApply"><content:get key="makeHealthApplyMainJourney" /></c:set>
 
 <c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
+<c:set var="showMoreInfoPriceLock" scope="request"><content:get key="showMoreInfoPriceLock" /></c:set>
 
 <c:set var="fund1800NumberActive">
 	<c:set var="temp"><content:get key="fundCallCentreNumber" /></c:set>
@@ -147,6 +148,7 @@
 	isTaxTime: '<content:get key="taxTime"/>',
 	isDualPricingActive: ${isDualPriceActive},
 	isHealthReformMessaging: '<content:get key="onlineHealthReformMessaging"/>',
+	showMoreInfoPriceLock: <c:out value="${showMoreInfoPriceLock eq 'Y'}" />,
 	isPyrrActive: ${isPyrrActive},
 	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>
