@@ -64,7 +64,7 @@
 										variableListArray="${locationsService.getCountrySelectionList()}"
 										xpath="travel/destinations"
 										xpathhidden="travel/destination"
-										label="Which countries or regions will you be visiting (excluding stopovers of less than 48 hours)?"
+										label="Which countries or regions will you be visiting on your trip (excluding stopovers of less than 48 hours)?"
                                         additionalAttributes="autocomplete='no'"
 										title="Where are you travelling?"
 										validationErrorPlacementSelector=".travel_details_destinations"
