@@ -2,7 +2,6 @@ package com.ctm.web.core.security.token.config;
 
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.utils.SessionUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,20 +13,18 @@ public class TokenConfigFactory {
         TokenCreatorConfig tokenCreatorConfig = new TokenCreatorConfig();
         tokenCreatorConfig.setTouchType(touchType);
         tokenCreatorConfig.setVertical(vertical.getCode());
-            Long secondsUtilNextTokenConfig = Long.parseLong(vertical.getSettingValueForName("jwtSecondsUntilNextToken" + touchType.getCode()));
-            if (!RequestUtils.isTestIp(request)) {
-                switch (touchType) {
-                    case NEW:
-                        // no minimum seconds until next token if preload or loading a quote
-                        if (!isPreload(request) && !isAction(request)) {
-                            secondsUntilToken = secondsUtilNextTokenConfig;
-                        }
-                        break;
-                    default:
-                        secondsUntilToken = secondsUtilNextTokenConfig;
-                        break;
+        Long secondsUtilNextTokenConfig = Long.parseLong(vertical.getSettingValueForName("jwtSecondsUntilNextToken" + touchType.getCode()));
+        switch (touchType) {
+            case NEW:
+                // no minimum seconds until next token if preload or loading a quote
+                if (!isPreload(request) && !isAction(request)) {
+                    secondsUntilToken = secondsUtilNextTokenConfig;
                 }
-            }
+                break;
+            default:
+                secondsUntilToken = secondsUtilNextTokenConfig;
+                break;
+        }
         tokenCreatorConfig.setSecondsUntilToken(secondsUntilToken);
         return tokenCreatorConfig;
     }

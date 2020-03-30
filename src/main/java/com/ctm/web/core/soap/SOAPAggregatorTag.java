@@ -264,7 +264,7 @@ public class SOAPAggregatorTag extends TagSupport {
 		if(configuration == null){
 			configuration = new SoapAggregatorConfiguration();
 		}
-		
+
 		SoapConfiguration.setUpConfigurationFromDatabase(configDbKey, configuration, brand, verticalCode, manuallySetProviderIds, authToken, pageContext.getRequest().getLocalPort());
 	}
 

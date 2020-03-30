@@ -332,7 +332,7 @@ public class SOAPClientThread implements Runnable {
 		}
 
 		this.responseTime = System.currentTimeMillis() - startTime;
-		
+
 		// Return the result
 		return returnData.toString();
 	}

@@ -34,7 +34,7 @@
         <spring-boot-legacy.version>1.0.2.RELEASE</spring-boot-legacy.version>
         <spring.version>4.2.5.RELEASE</spring.version> <!-- must match spring version -->
         <spring.ws.version>2.3.0.RELEASE</spring.ws.version>
-        <tomcat.version>7.0.65</tomcat.version>
+        <tomcat.version>8.5.42</tomcat.version>
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
         <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
         <frontend-maven-plugin.version>0.0.26</frontend-maven-plugin.version>
@@ -422,10 +422,17 @@
 
         <!-- CTM libraries -->
 
+        <!-- Dependencies required to remove com.ctm.common:common-logging -->
         <dependency>
             <groupId>com.ctm.common</groupId>
             <artifactId>common-logging</artifactId>
             <version>${common-logging.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
+            <version>4.1.1</version>
         </dependency>
 
         <dependency>
@@ -450,6 +457,12 @@
             <groupId>com.ctm.health</groupId>
             <artifactId>health-common</artifactId>
             <version>${health-common.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.ctm.springframework.boot</groupId>
+                    <artifactId>ctm-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -460,6 +473,10 @@
                 <exclusion>
                     <groupId>org.apache.tomcat</groupId>
                     <artifactId>tomcat-jdbc</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.ctm.springframework.boot</groupId>
+                    <artifactId>ctm-logging</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -921,7 +938,7 @@
             <properties>
                 <cargo.maven.containerUrl>https://nexus.comparethemarket.com.au/repository/maven-central/org/apache/tomcat/tomcat/${tomcat.version}/tomcat-${tomcat.version}.zip</cargo.maven.containerUrl>
                 <javaagent.args></javaagent.args>
-                <cargo.maven.containerId>tomcat7x</cargo.maven.containerId>
+                <!--<cargo.maven.containerId>tomcat7x</cargo.maven.containerId> defined in developer-properties profile -->
                 <!--<javaagent.args>-javaagent:${project.build.directory}/embedded_jars/springloaded.jar -noverify</javaagent.args>-->
             </properties>
             <build>
