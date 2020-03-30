@@ -72,8 +72,20 @@
 
 								{{ if (result.applicationEmail !== '') { }}
 									<div class="text-info">{{= result.applicationEmail }}</div>
-								{{ } else if (result.email !== '') { }}
-									<div class="text-info">{{= result.email }}</div>
+								{{ } else if (result.contacts.yourDtlsEmail !== '') { }}
+									<div class="text-info">{{= result.contacts.yourDtlsEmail }}</div>
+								{{ } }}
+
+								{{ if (result.contacts.primary.dob !== '') { }}
+									<div class="text-info">{{= result.contacts.primary.dob }}</div>
+								{{ } else if (result.contacts.primary.yourDtlsDob !== '') { }}
+									<div class="text-info">{{= result.contacts.primary.yourDtlsDob }}</div>
+								{{ } }}
+
+								{{ if (result.resultData.address !== '') { }}
+									<div class="text-info">{{= result.resultData.address }}</div>
+								{{ } else if (result.resultData.location !== '') { }}
+									<div class="text-info">{{= result.resultData.location }}</div>
 								{{ } }}
 
 								<ul class="core-properties list-unstyled small">
