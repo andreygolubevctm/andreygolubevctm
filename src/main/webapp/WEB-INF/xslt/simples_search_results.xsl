@@ -56,6 +56,7 @@
 							<dob><xsl:value-of select="application/partner/dob" /></dob>
 							<yourDtlsDob><xsl:value-of select="healthCover/partner/dob" /></yourDtlsDob>
 						</partner>
+						<yourDtlsEmail><xsl:value-of select="contactDetails/email" /></yourDtlsEmail>
 					</contacts>
 
 					<resultData>
@@ -78,6 +79,7 @@
 						<situation><xsl:value-of select="situation/healthCvr" /><xsl:text> - </xsl:text><xsl:value-of select="situation/healthSitu" /></situation>
 						<income><xsl:value-of select="healthCover/incomelabel" /></income>
 						<state><xsl:value-of select="situation/state" /></state>
+						<location><xsl:value-of select="situation/state" /><xsl:text> </xsl:text><xsl:value-of select="situation/postcode" /></location>
 						<dependants>
 							<xsl:choose>
 								<xsl:when test="string-length(healthCover/dependants) &gt; 0"><xsl:value-of select="healthCover/dependants" /></xsl:when>
@@ -103,7 +105,7 @@
 								</xsl:call-template>
 							</xsl:variable>
 							<xsl:value-of select="$street" />
-							<xsl:if test="string-length($street) &gt; 0">, </xsl:if>
+							<xsl:if test="string-length(normalize-space($street)) &gt; 0">, </xsl:if>
 
 							<xsl:if test="string-length(application/address/suburbName) &gt; 0">
 								<xsl:value-of select="application/address/suburbName" />

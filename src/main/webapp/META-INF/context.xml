@@ -5,7 +5,8 @@
 	<!--
 	CTM Active Directory Login Realm
 -->
-	<Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
+	<Realm
+		className="org.apache.catalina.realm.JNDIRealm" debug="99"
 		connectionURL="ldap://argon.budgetdirect.com.au:389"
 		connectionName="CTM LDAP"
 		connectionPassword="Bind_Ldap$"
@@ -18,6 +19,8 @@
 		roleSubtree="true"
 		roleSearch="(member={0})"
 	/>
+
+	<Loader delegate="true" />
 
 	<!-- This is deployed on environments that require hazelcast session replication -->
 	<!--<Valve className="com.ctm.tomcat.authenticator.HazelcastFormAuthenticator"/>-->

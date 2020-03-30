@@ -198,7 +198,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
 
     }
 
-    public Data healthCompetitionEntry(HttpServletRequest request, HealthRequest data, HealthQuote quote, boolean competitionEnabled, Data dataBucket) throws ConfigSettingException, DaoException, EmailDetailsException {
+    public Data healthCompetitionEntry(HttpServletRequest request, HealthRequest healthRequest, HealthQuote quote, boolean competitionEnabled, Data data) throws ConfigSettingException, DaoException, EmailDetailsException {
         ContactDetails contactDetails = quote.getContactDetails();
         String firstName = StringUtils.trim(contactDetails.getName());
         String email = StringUtils.trim(contactDetails.getEmail());
@@ -215,7 +215,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
         }
         String concat = firstName + "::" + email + "::" + phoneNumber;
 
-        XmlNode health = dataBucket.getFirstChild("health");
+        XmlNode health = data.getFirstChild("health");
         XmlNode contactDetailsNode = health.getFirstChild("contactDetails");
         XmlNode competitionNode = contactDetailsNode.getFirstChild("competition");
 
@@ -228,7 +228,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
             entry.setEmail(email);
             entry.setPhoneNumber(phoneNumber);
             updateCompetitionEntry(request, entry);
-            competitionService.addToCompetitionEntry(request, data.getTransactionId(), entry);
+            competitionService.addToCompetitionEntry(request, healthRequest.getTransactionId(), entry);
             // add to the data bucket competition/previous
 
             if (competitionNode == null) {
@@ -238,7 +238,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
 
             competitionNode.addChild(new XmlNode("previous", concat));
         }
-        return dataBucket;
+        return data;
     }
 
     private HealthResponseV2 getHealthResponseV2(String url, RatesheetOutgoingRequest<HealthQuoteRequest> request, QuoteServiceProperties properties) {
