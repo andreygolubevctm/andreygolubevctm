@@ -323,7 +323,7 @@
 			</div>
 
 			<div class="unavailable priceMode center clearfix">
-				<p>Some of our partners did not return quotes. This might be due to commercial reasons (for example, based on the information you provided,<br>they may have decided not to offer certain products to you) or because of technical issues.</p>
+				<p>Some of our partners did not return quotes. In most cases this will be due to the current travel restrictions as a result of the coronavirus (COVID-19).<br> In some cases this might be due to commercial reasons (for example, based on the information you provided they may have decided not to offer certain products to you) or because of technical issues.</p>
 				<div class="clearfix"></div>
 			</div>
 		</div>

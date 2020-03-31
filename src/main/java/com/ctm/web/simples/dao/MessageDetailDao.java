@@ -19,13 +19,13 @@ public class MessageDetailDao {
 		try {
 			final PreparedStatement stmt = dbSource.getConnection().prepareStatement(
 				"SELECT xpath, textValue FROM aggregator.transaction_details WHERE " +
-					"(xpath LIKE 'health/benefits/benefitsExtras/%' OR xpath IN ('health/situation/healthCvr', 'health/situation/healthSitu', 'health/healthCover/primary/dob', 'health/healthCover/incomelabel')) " +
+					"(xpath LIKE 'health/benefits/benefitsExtras/%' OR xpath IN ('health/situation/healthCvr', 'health/situation/healthSitu', 'health/healthCover/primary/dob', 'health/healthCover/incomelabel', 'health/contactDetails/email', 'health/application/address/fullAddress','health/application/primary/dob')) " +
 					"AND transactionId = ? " +
 				"UNION ALL " +
 				"SELECT tf.fieldCode as xpath, textValue FROM aggregator.transaction_details2_cold tdc " +
 				"INNER JOIN aggregator.transaction_fields tf ON tf.fieldId = tdc.fieldId " +
 				"WHERE " +
-					"(tf.fieldCode LIKE 'health/benefits/benefitsExtras/%' OR tf.fieldCode IN ('health/situation/healthCvr', 'health/situation/healthSitu', 'health/healthCover/primary/dob', 'health/healthCover/incomelabel')) " +
+					"(tf.fieldCode LIKE 'health/benefits/benefitsExtras/%' OR tf.fieldCode IN ('health/situation/healthCvr', 'health/situation/healthSitu', 'health/healthCover/primary/dob', 'health/healthCover/incomelabel', 'health/contactDetails/email', 'health/application/address/fullAddress','health/application/primary/dob')) " +
 					"AND transactionId = ? " +
 				"ORDER BY xpath"
 			);
@@ -64,8 +64,14 @@ public class MessageDetailDao {
 					}
 					continue;
 				}
-				else if (key.equals("health/healthCover/primary/dob")) {
+				else if(key.equals("health/application/primary/dob")) {
 					key = "Primary DOB";
+				}
+				else if(key.equals("health/healthCover/primary/dob")) {
+					key = "Primary DOB";
+					if(properties.containsKey(key)){
+						continue;
+					}
 				}
 				else if (key.equals("health/healthCover/incomelabel")) {
 					key = "Income level";
@@ -82,6 +88,12 @@ public class MessageDetailDao {
 					}
 					benefitsValue.append(value);
 					continue;
+				}
+				else if (key.equals("health/contactDetails/email")) {
+					key = "Email";
+				}
+				else if (key.equals("health/application/address/fullAddress")) {
+					key = "Address";
 				}
 
 				// General property
