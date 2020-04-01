@@ -47,6 +47,16 @@ Local endpoints:
 mvn -P build-frontend -Pskip-tests -Pskip-quality -Pskip-artifacts
 ```
 
+### JS gulp listener
+
+Install Node and NPM with https://nodejs.org/en/ - LTS. Can also use   Node Version Management
+
+Browse to ```/web_ctm/src/main/pipeline``` and run ```npm install```
+
+Install gulp-cli from npm: ```npm install --global gulp-cli@2.2.0```
+
+Run in your terminal: ```gulp --fast --disable-notify```
+
 ## Debug
 
 Remote debugging is available via port `5005`.
