@@ -956,7 +956,7 @@
                 break;
             case 'GMH':
                 extraPopOverData.push(
-                    {"providerBlurb" : "GMHBA are proudly Victorian, giving you the peace of mind to know you are dealing with a local fund with over 80 years&apos; experience, and for what you need they are giving really great value."}
+                    {"providerBlurb" : "GMHBA are a not for profit health fund with over 80 year&apos;s industry experience and for what you need they are giving really great value."}
                 );
                 break;
             case 'HBF':
