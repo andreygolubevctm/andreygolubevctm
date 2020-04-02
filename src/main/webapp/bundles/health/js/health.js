@@ -329,6 +329,7 @@
 				}
 
 				meerkat.modules.healthResultsChange.onAmbulanceAccidentCoverChange(selectedBenefits);
+				meerkat.modules.healthLHC.displayLHC();
 			},
 			onBeforeLeave:function(event){}
 		};
@@ -351,7 +352,6 @@
 			onInitialise: function onContactInit(event){
 				meerkat.modules.healthYourDetailsDynamicScripting.onInitialise();
 				meerkat.modules.resultsFeatures.fetchStructure(simplesCategoryVersion);
-				meerkat.modules.healthLHC.displayLHC();
 
 				$('#contactForm').find(':input').on('change',
 					function (event) {
@@ -377,6 +377,7 @@
 
 				meerkat.modules.healthContactType.togglePhoneEmailRequired();
 				meerkat.modules.healthYourDetailsDynamicScripting.onBeforeEnterYourDetails();
+				meerkat.modules.healthLHC.displayLHC();
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
@@ -1045,7 +1046,8 @@
 			primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
 			primary_current: meerkat.modules.healthAboutYou.getPrimaryCurrentCover(),
 			primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
-			cover: $('#startForm').find(':input[name="health_situation_healthCvr"]').val()
+			cover: $('#startForm').find(':input[name="health_situation_healthCvr"]').val(),
+			cover_type: getCoverType()
 		};
 
 		// If the customer answers Yes for current health insurance, assume 0% LHC
@@ -1082,7 +1084,8 @@
 			partner_loading:$healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
 			partner_current:meerkat.modules.healthAboutYou.getPartnerCurrentCover(),
 			partner_loading_manual: $healthCoverDetails.find('.partner-lhc').val(),
-			cover: $('#startForm').find(':input[name="health_situation_healthCvr"]').val()
+			cover: $('#startForm').find(':input[name="health_situation_healthCvr"]').val(),
+			cover_type: getCoverType()
 		};
 
 		if( $('#health_application_provider, #health_application_productId').val() === '' ) {

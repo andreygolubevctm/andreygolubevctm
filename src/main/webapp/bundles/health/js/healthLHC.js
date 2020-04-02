@@ -32,7 +32,7 @@
     }
 
     function getOverallLoadingText(loading){
-        return 'Overall  LHC ' + loading + '%';
+        return 'Overall LHC ' + loading + '%';
     }
 
 

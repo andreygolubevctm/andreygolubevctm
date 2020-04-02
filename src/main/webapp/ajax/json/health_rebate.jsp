@@ -101,7 +101,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 	<c:when test="${param.primary_loading_manual == 'undefined' || empty param.primary_loading_manual}">
 		<%-- calc the rebate --%>
 		<c:choose>
-			<c:when test="${(param.primary_loading == 'Y' && param.primary_current == 'Y' ) || ( (primaryDobYear < 1934) || (primaryDobYear == 1934 && primaryDobMonth < 7) || (primaryDobYear == 1934 && primaryDobMonth == 7 && primaryDobDay == 1) )}">
+			<c:when test="${(param.primary_loading == 'Y' && param.primary_current == 'Y' ) || ( (primaryDobYear < 1934) || (primaryDobYear == 1934 && primaryDobMonth < 7) || (primaryDobYear == 1934 && primaryDobMonth == 7 && primaryDobDay == 1) ) || param.cover_type == 'E'}">
 				<c:set var="primary_loading_rate" value="${0}" />
 			</c:when>
 			<c:otherwise>
@@ -157,7 +157,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 		<c:when test="${param.partner_loading_manual == 'undefined' || empty param.partner_loading_manual}">
 				<%-- Calc the partner rate --%>
 				<c:choose>
-					<c:when test="${(param.partner_loading == 'Y' && param.partner_current == 'Y' ) || ( (partnerDobYear < 1934) || (partnerDobYear == 1934 && partnerDobMonth < 7) || (partnerDobYear == 1934 && partnerDobMonth == 7 && partnerDobDay == 1) )}">
+					<c:when test="${(param.partner_loading == 'Y' && param.partner_current == 'Y' ) || ( (partnerDobYear < 1934) || (partnerDobYear == 1934 && partnerDobMonth < 7) || (partnerDobYear == 1934 && partnerDobMonth == 7 && partnerDobDay == 1) ) || param.cover_type == 'E'}">
 						<c:set var="partner_loading_rate" value="${0}" />
 					</c:when>
 					<c:otherwise>
