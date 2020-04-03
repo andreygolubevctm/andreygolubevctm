@@ -13,8 +13,10 @@
 <%@ attribute name="rule" 		required="false"	rtexprvalue="true"	description="Create a new rule name in case of conflict"%>
 <%@ attribute name="maxYears" 		required="false"	rtexprvalue="true"	description="The number of years to display"%>
 <%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="medicareCardValidationField" 	required="false" 	rtexprvalue="true"    	 description="selector for the medicare card colour field" %>
 
 <%-- VARIABLES --%>
+<c:set var="cardExpiryDay" value="${go:nameFromXpath(xpath)}_cardExpiryDay" />
 <c:set var="cardExpiryMonth" value="${go:nameFromXpath(xpath)}_cardExpiryMonth" />
 <c:set var="cardExpiryYear" value="${go:nameFromXpath(xpath)}_cardExpiryYear" />
 
@@ -37,7 +39,15 @@
 	</c:forEach>
 </c:set>
 
-<c:set var="validationAttributes"> data-rule-cardExpiry='{"prefix":"${go:nameFromXpath(xpath)}"}' data-msg-cardExpiry='Please choose a valid ${title}' </c:set>
+
+<c:choose>
+	<c:when test="${empty medicareCardValidationField}">
+		<c:set var="validationAttributes"> data-rule-cardExpiry='{"prefix":"${go:nameFromXpath(xpath)}"}' data-msg-cardExpiry='Please choose a valid ${title}' </c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="validationAttributes"> data-rule-medicareCardExpiry='{"prefix":"${go:nameFromXpath(xpath)}", "medicareCardSelector":"${go:nameFromXpath(medicareCardValidationField)}"}' data-msg-cardExpiry='Please choose a valid ${title}' </c:set>
+	</c:otherwise>
+</c:choose>
 
 <%-- HTML --%>
 <div class="row cardExpiryDateGroupWrapper">
