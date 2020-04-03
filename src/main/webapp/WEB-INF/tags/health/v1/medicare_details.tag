@@ -33,7 +33,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/expiry" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Medicare Expiry Date" isNestedField="${true}" smRowOverride="7" hideHelpIconCol="${true}">
-			<field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="Medicare card expiry date" required="true" className="health-medicare_details-expiry" maxYears="10" disableErrorContainer="${true}" />
+			<field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="Medicare card expiry date" required="true" className="health-medicare_details-expiry" maxYears="10" disableErrorContainer="${true}" medicareCardValidationField="${xpath}/colour" />
 		</form_v2:row>
 	</form_v2:row>
 
