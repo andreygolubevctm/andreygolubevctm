@@ -4,6 +4,7 @@
 <%@ include file="/WEB-INF/security/core.jsp" %>
 
 <jsp:useBean id="brandsDao" class="com.ctm.web.core.dao.BrandsDao" scope="page" />
+<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
@@ -98,7 +99,7 @@
 <script>
     var providers = [
             { value: '-1', text: "Select a Provider" },
-            <c:set var="providers" value="${providerDao.getProviders('HEALTH', 0, true)}" />
+            <c:set var="providers" value="${healthApplicationService.getAllProviders(pageSettings.getBrandId())}" />
             <c:forEach items="${providers}" var="provider">
             { value: ${provider.getId()}, text: "${provider.getName()}" },
             </c:forEach>

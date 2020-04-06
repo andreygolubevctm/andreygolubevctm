@@ -4,7 +4,8 @@
 <%@ include file="/WEB-INF/security/core.jsp" %>
  
  <jsp:useBean id="providerDao" class="com.ctm.web.core.dao.ProviderDao" scope="page" />
- 
+ <jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
+
 <layout_v1:simples_page fullWidth="true">
 	<jsp:attribute name="head"></jsp:attribute>
 	<jsp:body>
@@ -94,7 +95,7 @@
 <script>
 	var providers = [
 			{ value: '-1', text: "Select a Provider" },
-			<c:set var="providers" value="${providerDao.getProviders('HEALTH', 0, true)}" />
+			<c:set var="providers" value="${healthApplicationService.getAllProviders(pageSettings.getBrandId())}" />
 			<c:forEach items="${providers}" var="provider">
 			{ value: ${provider.getId()}, text: "${provider.getName()}" },
 			</c:forEach>
