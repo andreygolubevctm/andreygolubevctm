@@ -60,11 +60,13 @@
 			</div>
 		</form_v2:fieldset>
 
-        <simples:dialogue id="125" className="simples-dialogue-hospital-cover simples-dialog-inbound" vertical="health" />
+		<simples:dialogue id="125" className="simples-dialogue-hospital-cover simples-dialog-inbound" vertical="health" />
 		<simples:dialogue id="125" className="simples-dialogue-hospital-cover simples-dialog-outbound" vertical="health" />
-		<simples:dialogue id="118" className="simples-dialogue-hospital-cover simples-dialog-nextgencli"      vertical="health" />
+		<simples:dialogue id="118" className="simples-dialogue-hospital-cover simples-dialog-nextgencli" vertical="health" />
 		<simples:dialogue id="137" className="simples-dialogue-hospital-cover simples-dialog-nextgenoutbound" vertical="health" />
-        <simples:dialogue id="81"  className="simples-dialogue-hospital-cover"                                vertical="health" />
+    <simples:dialogue id="81"  className="simples-dialogue-hospital-cover" vertical="health" />
+
+    <simples:dialogue id="177" vertical="health" />
 
 		<%-- TEMPLATES --%>
 		<core_v1:js_template id="benefits-explanation">

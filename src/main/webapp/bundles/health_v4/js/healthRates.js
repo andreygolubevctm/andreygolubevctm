@@ -86,7 +86,8 @@
                 primary_loading: '',
                 primary_current: '',
                 primary_loading_manual: $elements.primaryLoadingManual.val(),
-                cover: meerkat.modules.healthSituation.getSituation()
+                cover: meerkat.modules.healthSituation.getSituation(),
+                cover_type: getCoverType()
             };
 
             var oldPrimaryObj = _getEverHadAnyCover_and_ContinuousCover_Equivalent('primary');
@@ -124,7 +125,8 @@
                 primary_loading: '',
                 primary_current: '',
                 primary_loading_manual: $elements.primaryLoadingManual.val(),
-                cover: meerkat.modules.healthSituation.getSituation()
+                cover: meerkat.modules.healthSituation.getSituation(),
+                cover_type: getCoverType()
             };
 
             var oldPrimaryObj = _getEverHadAnyCover_and_ContinuousCover_Equivalent('primary');
@@ -255,6 +257,10 @@
         $("#health_rebate").val(rates.rebate);
         $("#health_rebateChangeover").val(rates.rebateChangeover);
         $("#health_previousRebate").val(rates.previousRebate);
+    }
+
+    function getCoverType() {
+        return $('#health_situation_coverType input').filter(":checked").val();
     }
 
     meerkat.modules.register("healthRates", {

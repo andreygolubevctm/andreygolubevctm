@@ -327,9 +327,9 @@
 							(If customer objects or asks about adding services in the future): <br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
 							<br/><br/>
-							{{ if((isOutbound || isNextGenOutbound)&& (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
-							{{ if(obj.hospital.inclusions.excesses.perPerson) { }}
-								<span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital.</span>
+							{{ if((isOutbound || isNextGenOutbound || isInbound) && (custom.reform.tab1.excess || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
+							{{ if(custom.reform.tab1.excess) { }}
+								<span class="clinicalCatInfo">{{= custom.reform.tab1.excess }}.</span>
 							{{ } }}
 							{{ if(obj.hospital.inclusions.copayment != 'No Co-Payment') { }}
 								<span class="clinicalCatInfo"> {{= obj.hospital.inclusions.copayment }}</span>
@@ -343,9 +343,9 @@
 					<div class="readWelcomeFlag row">
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
 						<br/><br/>
-						{{ if((isOutbound || isNextGenOutbound)&& (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
-							{{ if(obj.hospital.inclusions.excesses.perPerson) { }}
-								<span class="clinicalCatInfo">There is an excess of {{= obj.hospital.inclusions.excesses.perPerson }} per person per year, however you only pay this if admitted to hospital.</span>
+						{{ if((isOutbound || isNextGenOutbound || isInbound) && (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
+							{{ if(custom.reform.tab1.excess) { }}
+								<span class="clinicalCatInfo">{{= custom.reform.tab1.excess }}.</span>
 							{{ } }}
 							{{ if(obj.hospital.inclusions.copayment != 'No Co-Payment') { }}
 								<span class="clinicalCatInfo"> {{= obj.hospital.inclusions.copayment }}</span>
