@@ -131,6 +131,62 @@
         return false;
     });
 
+    $.validator.addMethod("medicareCardExpiry", function (value, elem, param) {
+
+        if (typeof param !== 'undefined' && param.medicareCardSelector && param.prefix) {
+
+            var check = false;
+
+            var selectedCardColour = $('input[name=' + param.medicareCardSelector + ']').filter(':checked').val();
+
+            if (selectedCardColour === 'yellow' || selectedCardColour === 'blue') {
+
+                // blue and yellow medicare cards use dd/mm/yyyy input
+
+                if ($('#' + param.prefix + '_cardExpiryYear').val() !== '' && $('#' + param.prefix + '_cardExpiryMonth').val() !== '' && $('#' + param.prefix + '_cardExpiryDay').val() !== '') {
+
+                    var d = parseInt($('#' + param.prefix + '_cardExpiryDay').val());
+                    var m = parseInt($('#' + param.prefix + '_cardExpiryMonth').val());
+                    var y = parseInt("20" + $('#' + param.prefix + '_cardExpiryYear').val());
+
+                    var theDateEntered = new Date(y, m - 1, d);
+
+                    var theExtrapolatedDay = theDateEntered.getDate();
+                    var theExtrapolatedMonth = theDateEntered.getMonth() + 1;
+                    var theExtrapolatedYear = theDateEntered.getFullYear();
+
+                    // check if date entered is equal to values pulled from date object (if they dont match then it will error (eg choosing 29th of feb on a non leap year or choosing 31st for september)
+                    check = (theExtrapolatedYear === y) && (theExtrapolatedMonth === m) && (theExtrapolatedDay === d);
+
+                    if (check) {
+                        // check that the card has not expired
+                        theDateEntered.setHours(0,0,0,0);
+                        var today = new Date();
+                        today.setHours(0,0,0,0);
+
+                        check = theDateEntered >= today;
+                    }
+
+                }
+
+            } else {
+                // green medicare cards use mm/yyyy input
+
+                if ($('#' + param.prefix + '_cardExpiryYear').val() !== '' && $('#' + param.prefix + '_cardExpiryMonth').val() !== '') {
+                    var now_ym = parseInt(meerkat.site.serverDate.getFullYear() + '' + getMonth());
+                    var sel_ym = parseInt('20' + $('#' + param.prefix + '_cardExpiryYear').val() + '' + $('#' + param.prefix + '_cardExpiryMonth').val());
+                    check =  sel_ym >= now_ym;
+                }
+            }
+
+            return check;
+        } else {
+
+            //this validation rule requires both the prefix and  medicareCardSelector parameters to to be supplied against the param object
+            return false;
+        }
+    });
+
     // Was never working in __health_legacy.js as it used ${name} instead of javascript. Would always pass I believe.
     $.validator.addMethod("validateMinDependants", function (value, element, param) {
             return !$("#" + param.prefix + "_threshold").is(":visible");
