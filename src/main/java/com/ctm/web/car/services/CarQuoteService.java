@@ -78,6 +78,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteService.class);
     private static final String PROPENSITY_SCORE = "PropensityScore";
     private static final String DATA_ROBOT_KEY = "datarobot-key";
+    private static final String DATA_ROBOT_AUTH_TYPE = "Bearer";
     private static final String BUDD_PRODUCT_ID_PREFIX = "BUDD";
     public static final String QUOTE_CONTACT_PHONE = "quote/contact/phone";
     public static final String QUOTE_CONTACT_PHONEINPUT = "quote/contact/phoneinput";
@@ -99,7 +100,6 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     public static final String QUOTE_VEHICLE_FACTORY_OPTIONS = "quote/vehicle/factoryOptions";
     public static final String QUOTE_VEHICLE_MAKE_DES = "quote/vehicle/makeDes";
     public static final String QUOTE_VEHICLE_DAMAGE = "quote/vehicle/damage";
-    public static final String BASIC = "Basic";
     public static final String QUOTE_TYPE_OF_COVER = "quote/typeOfCover";
     public static final String COVER_TYPE_COMPREHENSIVE = "COMPREHENSIVE";
 
@@ -115,8 +115,6 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     private String dataRobotUrl;
     @Value("${data.robot.key}")
     private String dataRobotKey;
-    @Value("${data.robot.username}")
-    private String dataRobotUsername;
     @Value("${data.robot.api.token}")
     private String dataRobotApiToken;
 
@@ -408,6 +406,10 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         }
     }
 
+    public String getDataRobotBearerToken() {
+        return DATA_ROBOT_AUTH_TYPE + " " + dataRobotApiToken;
+    }
+
     /**
      * Call Data Robot api to get propensity score.
      * <p>
@@ -422,7 +424,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.set(HttpHeaders.AUTHORIZATION, getDataRobotBasicAuthHeaderValue());
+        headers.set(HttpHeaders.AUTHORIZATION, getDataRobotBearerToken());
         headers.setCacheControl(NO_CACHE);
         headers.set(DATA_ROBOT_KEY, dataRobotKey);
 
@@ -448,11 +450,6 @@ public class CarQuoteService extends CommonRequestServiceV2 {
             LOGGER.error("Invalid or empty response from Data Robot");
             return null;
         });
-    }
-
-    protected String getDataRobotBasicAuthHeaderValue() {
-        final String userPassword = dataRobotUsername + ":" + dataRobotApiToken;
-        return BASIC + " " + Base64.encodeBase64String(userPassword.getBytes());
     }
 
     /**
