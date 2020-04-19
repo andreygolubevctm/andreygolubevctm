@@ -62,7 +62,6 @@ public class CarQuoteServiceTest {
         initMocks(this);
         service = new CarQuoteService(providerFilterDao, serviceConfigurationServiceBean, sessionDataServiceBean, transactionDetailService, restTemplate);
         ReflectionTestUtils.setField(service, "dataRobotUrl", "http://test.com");
-        ReflectionTestUtils.setField(service, "dataRobotUsername", "test@test.com");
         ReflectionTestUtils.setField(service, "dataRobotApiToken", "xyz");
 
     }
@@ -351,9 +350,9 @@ public class CarQuoteServiceTest {
     public void GivenValidUsernamePassword_WhenGetHeaderValue_ThenReturnValidBasicAuthHeaderValue() {
         //Given
         //When
-        final String response = service.getDataRobotBasicAuthHeaderValue();
+        final String response = service.getDataRobotBearerToken();
         //Then
-        assertEquals("Basic dGVzdEB0ZXN0LmNvbTp4eXo=", response);
+        assertEquals("Bearer xyz", response);
     }
 
     @Test
