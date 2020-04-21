@@ -976,7 +976,7 @@
                 break;
             case 'MYO':
                 extraPopOverData.push(
-                    {"providerBlurb" : "My Own are partnered by the AIA insurance group who are one of the biggest in the world. They have a really different approach to health insurance which is a mixture of great returns and rewarding their members for leading a healthy lifestyle and for what you need they are giving really great value."}
+                    {"providerBlurb" : "AIA Australia is a leading life insurer with over 45 years of local experience. When it comes to their health insurance, they believe it should benefit you every day – not just when things go wrong. That’s why they include AIA Vitality, the health and wellbeing program that rewards you for learning more about your health and taking steps to improve it. <p>Before getting into the hospital cover, let me explain how to get the best value out of the program. This is done by reaching AIA Vitality Silver Status which anyone can achieve. Getting there is as simple as spending 30 minutes in total doing online activities focused on your health and visiting a pharmacy or doctor for a health check to unlock additional benefits and discounts, which I will get to in a moment.</p>"}
                 );
                 break;
             case 'NHB':
@@ -1108,10 +1108,10 @@
                 break;
             case 'MYO':
                 usefulLinks.push(
-                    {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/myown"},
-                    {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/myown-agreement-hopspitals"},
-                    {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/myown-agreement-hopspitals"},
-                    {"name": "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/myown-dental-agreements"}
+                    {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/aia-health-insurance"},
+                    {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/agreement-hospitals-amp-gap-scheme-aia-health-insurance"},
+                    {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/agreement-hospitals-amp-gap-scheme-aia-health-insurance"},
+                    {"name": "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/aia-health-insurance-dental-agreements"}
                 );
                 break;
             case 'NHB':

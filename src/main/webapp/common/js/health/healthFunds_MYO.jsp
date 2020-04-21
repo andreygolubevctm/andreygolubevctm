@@ -67,7 +67,7 @@ var healthFunds_MYO = {
         }
 
         <%--Contact Point question--%>
-        meerkat.modules.healthFunds.showHowToSendInfo('MYO', true);
+        meerkat.modules.healthFunds.showHowToSendInfo('AIA', true);
 
         <%--Authority--%>
         meerkat.modules.healthFunds._previousfund_authority(true);
