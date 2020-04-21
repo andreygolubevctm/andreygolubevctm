@@ -4,7 +4,7 @@
             xmlns="http://com.disc_au.soap.aggregator">
 
     <nabGateway>
-        <gatewayURL>https://members.myown.com.au/nab/AIAMerino_CTM_Prod_IFrame.aspx</gatewayURL>
+        <gatewayURL>https://members.health.aia.com.au/nab/AIAHealth_CTM_Prod_IFrame.aspx</gatewayURL>
         <domain>https://members.myown.com.au</domain>
     </nabGateway>
 
