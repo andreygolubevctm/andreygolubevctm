@@ -9,12 +9,16 @@
 <%@ attribute name="title" 				required="false" rtexprvalue="true"	 description="subject of the select box" %>
 <%@ attribute name="productCategories" 	required="true"  rtexprvalue="true"	 description="the product categories (delimited by ,) for which to look for the providers" %>
 
+
+ <jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
+
 <%-- whitelist to prevent SQL injection --%>
 <c:set var="productCategories" value='<%=productCategories.replaceAll("[^a-zA-Z,]","")%>' />
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:set var="providers" value="${healthApplicationService.getAllProviders(pageSettings.getBrandId())}" />
 
 <%-- CSS --%>
 <go:style marker="css-head">
@@ -22,6 +26,7 @@
 	text-transform:capitalize;
 }
 </go:style>
+
 
 
 <%-- Database Query --%>
@@ -87,29 +92,31 @@
 	<%-- Write the initial "please choose" option --%>
 	<option value="">Please choose&hellip;</option>
 
-	<%-- Write the options for each row --%>
-	<c:forEach var="row" items="${result.rows}" varStatus='idx'>
-			<c:if test="${pageSettings.getVerticalCode() == 'health'}">
-		<c:choose>
-			<c:when test="${row.ProviderId == value}">
-				<option value="${row.ProviderId}" selected="selected">${row.Name}</option>
-			</c:when>
-			<c:otherwise>
-				<option value="${row.ProviderId}">${row.Name}</option>
-			</c:otherwise>
-		</c:choose>
-			</c:if>
-			<c:if test="${pageSettings.getVerticalCode() ne 'health'}">
-				<c:choose>
-					<c:when test="${row.ProviderCode == value}">
-						<option value="${row.ProviderCode}" selected="selected">${row.Name}</option>
-					</c:when>
-					<c:otherwise>
-						<option value="${row.ProviderCode}">${row.Name}</option>
-					</c:otherwise>
-				</c:choose>
-			</c:if>
+	<c:if test="${pageSettings.getVerticalCode() == 'health'}">
+		<c:forEach var="provider" items="${providers}" varStatus='idx'>
+			<c:choose>
+				<c:when test="${provider.getId() == value}">
+					<option value="${provider.getId()}" selected="selected">${provider.getName()}</option>
+				</c:when>
+				<c:otherwise>
+					<option value="${provider.getId()}">${provider.getName()}</option>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+	</c:if>
 
-	</c:forEach>
+	<%-- Write the options for each row --%>
+	<c:if test="${pageSettings.getVerticalCode() ne 'health'}">
+		<c:forEach var="row" items="${result.rows}" varStatus='idx'>
+			<c:choose>
+				<c:when test="${row.ProviderCode == value}">
+					<option value="${row.ProviderCode}" selected="selected">${row.Name}</option>
+				</c:when>
+				<c:otherwise>
+					<option value="${row.ProviderCode}">${row.Name}</option>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+	</c:if>
 	</select>
 </div>
