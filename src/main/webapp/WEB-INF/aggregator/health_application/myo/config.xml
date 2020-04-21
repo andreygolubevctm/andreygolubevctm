@@ -4,8 +4,8 @@
             xmlns="http://com.disc_au.soap.aggregator">
 
     <nabGateway>
-        <gatewayURL>https://testservices.myown.com.au/nab/AIAMerino_CTM_IFrame.aspx</gatewayURL>
-        <domain>https://testservices.myown.com.au</domain>
+        <gatewayURL>https://membersuat.healthuat.aia.com.au/NAB/AIAHealth_CTM_IFrame.aspx</gatewayURL>
+        <domain>https://membersuat.healthuat.aia.com.au</domain>
     </nabGateway>
 
     <config-dir>aggregator/health_application</config-dir>
