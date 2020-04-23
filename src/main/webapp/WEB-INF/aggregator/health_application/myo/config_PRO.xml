@@ -5,7 +5,7 @@
 
     <nabGateway>
         <gatewayURL>https://members.health.aia.com.au/nab/AIAHealth_CTM_Prod_IFrame.aspx</gatewayURL>
-        <domain>https://members.myown.com.au</domain>
+        <domain>https://members.health.aia.com.au</domain>
     </nabGateway>
 
     <config-dir>aggregator/health_application</config-dir>
