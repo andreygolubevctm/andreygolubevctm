@@ -145,10 +145,10 @@
             toggleFollowupCallDialog();
 	          toggleReferralCallDialog();
             initNaturpathyDialog();
-
             applyEventListeners();
             eventSubscriptions();
             _toggleInternationalStudentField();
+            toggleEnergyCrossSell();
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
@@ -225,6 +225,7 @@
             toggleWebChatDialog();
             toggleAfricaCompDialog();
 	        toggleBenefitsDialogue();
+	        toggleEnergyCrossSell();
             cleanupOptins();
         });
         // Handle callback checkbox 68
@@ -327,6 +328,8 @@
                 .removeClass('nextgen')
 	            .removeClass('nextgenoutbound')
 	            .removeClass('nextgencli')
+                .removeClass('energycross')
+                .removeClass('energytransfer')
                 .addClass('inbound');
         }
         else if(healthContactTypeSelection === 'nextgen') {
@@ -337,13 +340,15 @@
                 .removeClass('outbound trial')
                 .removeClass('outbound cli')
                 .removeClass('inbound')
+                .removeClass('energycross')
+                .removeClass('energytransfer')
                 .addClass('nextgen');
         }
         // Outbound
         else {
 	        var healthContactTypeSelectionStr = healthContactTypeSelection.toLowerCase();
             $body
-                .removeClass('inbound cli trial nextgen nextgenoutbound nextgencli')
+                .removeClass('inbound cli trial nextgen nextgenoutbound nextgencli energycross energytransfer')
 	            .toggleClass(healthContactTypeSelectionStr, isOutboundNextGenContactType(healthContactTypeSelection))
                 .addClass('outbound');
 
@@ -401,6 +406,21 @@
 		return $type.toLowerCase() === "nextgencli";
 	}
 
+	function toggleEnergyCrossSell() {
+        if ($healthContactTypeField.val() === 'energyCrossSell') {
+            $('body')
+                .removeClass('outbound')
+                .addClass('inbound')
+                .toggleClass('energycross');
+        }
+        else if ($healthContactTypeField.val() === 'energyTransfer') {
+            $('body')
+                .removeClass('outbound')
+                .addClass('inbound')
+                .toggleClass('energytransfer');
+        }
+    }
+
     function getRawCallType() {
         var healthContactTypeSelection = $healthContactTypeField.val();
         var callTypeToBeReturned = $healthContactTypeSelectOption.is(':selected') ? (healthContactTypeSelection != "" ? healthContactTypeSelection : null) : null;
@@ -436,7 +456,7 @@
         // Set the calltype variables
         callType = getCallType();
         if (!_.isEmpty(callType)) {
-            isValidCallType = _.indexOf(['outbound','inbound','cli','nextgen','nextgenoutbound','nextgencli'], callType) >= 0;
+            isValidCallType = _.indexOf(['outbound','inbound','cli','nextgen','nextgenoutbound','nextgencli','energyCrossSell','energyTransfer'], callType) >= 0;
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
