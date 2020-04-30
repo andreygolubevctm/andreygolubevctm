@@ -222,13 +222,15 @@
 		{{ var limitedCover = meerkat.modules.healthBenefitsStep.getLimitedCover() == "Y" ? true : false; }}
 		{{ var isOutbound = meerkat.modules.healthContactType.is('outbound'); }}
 		{{ var isInbound = meerkat.modules.healthContactType.is('inbound'); }}
+		{{ var isEnergyCrossSell = meerkat.modules.healthContactType.is('energyCrossSell'); }}
+		{{ var isEnergyTransfer = meerkat.modules.healthContactType.is('energyTransfer'); }}
 		{{ var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound'); }}
 		{{ var isNextGenCli = meerkat.modules.healthContactType.is('nextgenCLI'); }}
 		{{ var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits(); }}
 		{{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return selectedBenefitsList.indexOf(benefit.value) > -1; }); }}
 		{{ var scriptTerm = 'everything'; }}
 		{{ var isBasic = custom.reform.tier && custom.reform.tier.toLowerCase().indexOf('basic') > -1; }}
-		{{ if(isOutbound || isNextGenOutbound || isInbound) { }}
+		{{ if(isOutbound || isNextGenOutbound || isInbound || isEnergyCrossSell || isEnergyTransfer) { }}
 		  {{ scriptTerm = 'anything'; }}
 			{{ if(custom.reform.scripting !== 'D') { }}
 				{{ if(coverType === 'c' || coverType === 'h') { }}
@@ -327,7 +329,7 @@
 							(If customer objects or asks about adding services in the future): <br/><br/>
 							Based on our conversation these restrictions and exclusions are there to ensure you are not paying for things you don't need, should that change in the future you can add any of those additional services at any time, and you'll just need to serve the relevant waiting periods.
 							<br/><br/>
-							{{ if((isOutbound || isNextGenOutbound || isInbound) && (custom.reform.tab1.excess || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
+							{{ if((isOutbound || isNextGenOutbound || isInbound || isEnergyCrossSell || isEnergyTransfer) && (custom.reform.tab1.excess || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
 							{{ if(custom.reform.tab1.excess) { }}
 								<span class="clinicalCatInfo">{{= custom.reform.tab1.excess }}.</span>
 							{{ } }}
@@ -343,7 +345,7 @@
 					<div class="readWelcomeFlag row">
 						Great, we'll send the full documents at the end of the call, but based on what you've told me, you are covered for all the things you said are most important.
 						<br/><br/>
-						{{ if((isOutbound || isNextGenOutbound || isInbound) && (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
+						{{ if((isOutbound || isNextGenOutbound || isInbound || isEnergyCrossSell || isEnergyTransfer) && (obj.hospital.inclusions.excesses.perPerson || obj.hospital.inclusions.copayment !== 'No Co-Payment')) { }}
 							{{ if(custom.reform.tab1.excess) { }}
 								<span class="clinicalCatInfo">{{= custom.reform.tab1.excess }}.</span>
 							{{ } }}
@@ -831,7 +833,7 @@
 		</div>
     </c:if>
 
-		{{ if((isOutbound || isInbound || isNextGenOutbound) && coverType === 'c') { }}
+		{{ if((isOutbound || isInbound || isNextGenOutbound || isEnergyCrossSell || isEnergyTransfer) && coverType === 'c') { }}
 			<simples:dialogue id="128" vertical="health" />
 		{{ } }}
 
@@ -906,7 +908,7 @@
 		</div>
 		{{ } }}
 
-		{{ if((isOutbound || isInbound || isNextGenOutbound) && (coverType === 'c' || coverType === 'e')) { }}
+		{{ if((isOutbound || isInbound || isNextGenOutbound || isEnergyCrossSell || isEnergyTransfer) && (coverType === 'c' || coverType === 'e')) { }}
 			<simples:dialogue id="130" vertical="health" mandatory="true" dynamic="true" />
 		{{ } }}
 
@@ -940,7 +942,7 @@
         </div>
 
 		<div>
-			{{ if(isOutbound || isNextGenOutbound || isNextGenCli || isInbound) { }}
+			{{ if(isOutbound || isNextGenOutbound || isNextGenCli || isInbound || isEnergyCrossSell || isEnergyTransfer) { }}
 				<simples:dialogue id="129" vertical="health" dynamic="true" />
 			{{ } else { }}
 				<simples:dialogue id="99" vertical="health" />

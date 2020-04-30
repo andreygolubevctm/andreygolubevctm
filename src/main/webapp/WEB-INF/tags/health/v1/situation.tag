@@ -87,6 +87,12 @@
             <simples:dialogue id="116" vertical="health" className="simples-dialog-nextgenoutbound" />
             <simples:dialogue id="122" vertical="health" className="simples-dialog-nextgencli" />
             <simples:dialogue id="49" vertical="health" />
+            <simples:dialogue id="178" vertical="health" className="simples-dialog-energycross" />
+            <simples:dialogue id="179" vertical="health" className="simples-dialog-energycross" />
+            <simples:dialogue id="180" vertical="health" className="simples-dialog-energycross" />
+            <simples:dialogue id="181" vertical="health" className="simples-dialog-energytransfer" />
+            <simples:dialogue id="182" vertical="health" className="simples-dialog-energytransfer" />
+            <simples:dialogue id="183" vertical="health" className="simples-dialog-energytransfer" />
             <simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
             <simples:dialogue id="36" vertical="health" mandatory="true" className="simples-dialog-inbound show-nextgen" />
 
