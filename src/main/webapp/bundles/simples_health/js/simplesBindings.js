@@ -408,12 +408,16 @@
 
 	function toggleEnergyCrossSell() {
         if ($healthContactTypeField.val() === 'energyCrossSell') {
+            $healthContactType.val('energyCrossSell');
+
             $('body')
                 .removeClass('outbound')
                 .addClass('inbound')
                 .toggleClass('energycross');
         }
         else if ($healthContactTypeField.val() === 'energyTransfer') {
+            $healthContactType.val('energyTransfer');
+
             $('body')
                 .removeClass('outbound')
                 .addClass('inbound')
