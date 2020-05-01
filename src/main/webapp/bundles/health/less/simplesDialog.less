@@ -2,7 +2,7 @@
 .simples-dialogue {
 	.alert;
 	.alert-info;
-	
+
 	border: none;
 	padding-bottom: 10px;
 	margin-left: 0px;
@@ -75,21 +75,24 @@
 	.simples-dialogue-70,
 	.simples-dialogue-71 {
 		a {
-			display:block;
+			display: block;
 			text-decoration: underline;
 			margin: 5px 0px;
-			font-weight:bold;
+			font-weight: bold;
 		}
 	}
+
 	.simples-dialogue-49,
 	.simples-dialogue-52,
 	.simples-dialogue-63 {
-		display:block;
+		display: block;
 	}
 
 	.simples-dialog-nextgen,
 	.simples-dialog-nextgenoutbound,
-	.simples-dialog-nextgencli {
+	.simples-dialog-nextgencli,
+	.simples-dialog-energycross,
+	.simples-dialog-energytransfer {
 		display: none;
 	}
 
@@ -101,6 +104,7 @@
 				background-color: whitesmoke;
 			}
 		}
+
 		&[data-step=results].moreInfoVisible,
 		&[data-step=payment],
 		&[data-step=apply] {
@@ -124,17 +128,18 @@
 		.simples-dialog-nextgencli,
 		.simples-dialogue-63,
 		.simples-dialogue-49,
-		.simples-dialogue-52
-		{
+		.simples-dialogue-52 {
 			display: none;
 		}
 	}
+
 	&.nextgen {
 		.simples-dialog-inbound {
 			&.show-nextgen {
 				display: block !important;
 			}
 		}
+
 		.simples-dialogue-63,
 		.simples-dialog-nextgen,
 		.simples-dialogue-49,
@@ -142,19 +147,23 @@
 			display: block;
 		}
 	}
+
 	&.nextgenoutbound {
 		.simples-dialog-nextgenoutbound {
 			display: block;
 		}
+
 		.simples-dialogue-48 {
 			display: none !important;
 		}
 	}
+
 	&.nextgencli {
 		.simples-dialog-nextgencli {
 			display: block;
 		}
 	}
+
 	&.outbound {
 		&[data-step=start] {
 			#pageContent {
@@ -179,18 +188,20 @@
 				background-color: whitesmoke;
 			}
 		}
-	
+
 		&[data-step=results].moreInfoVisible,
 		&[data-step=payment],
 		&[data-step=apply] {
 			#pageContent {
 				background-color: @btn-hollow-red-color;
 			}
+
 			&.trial {
 				#pageContent {
 					background-color: #c18eda;
 				}
-			}		
+			}
+
 			&.cli {
 				#pageContent {
 					background-color: #9fc3e0;
@@ -217,6 +228,39 @@
 	&.inbound {
 		.simples-dialog-outbound {
 			display: none;
+		}
+	}
+
+	&.energycross {
+		.simples-dialog-energycross {
+			display: block;
+		}
+	}
+
+	&.energytransfer {
+		.simples-dialog-energytransfer {
+			display: block;
+		}
+	}
+
+	&.energycross,
+	&.energytransfer {
+		.simples-dialog-outbound,
+		.simples-dialog-cli,
+		.simples-dialog-nextgenoutbound,
+		.simples-dialog-nextgencli,
+		.simples-dialogue-48,
+		.simples-dialogue-19,
+		.simples-dialogue-63 {
+			display: none;
+		}
+
+		&[data-step=results].moreInfoVisible,
+		&[data-step=payment],
+		&[data-step=apply] {
+			#pageContent {
+				background-color: #fcdb03;
+			}
 		}
 	}
 
