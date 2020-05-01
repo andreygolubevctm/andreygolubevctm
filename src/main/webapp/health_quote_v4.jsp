@@ -7,6 +7,7 @@
 <c:set var="comparisonMode" scope="request"><content:get key="comparisonMode" /></c:set>
 <c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
 <c:set var="reformsBannerText" scope="request"><content:get key="reformsBanner" /></c:set>
+<c:set var="covidBanner" scope="request"><content:get key="covidBanner" /></c:set>
 
 <jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
 <agg_v1:remember_me_settings vertical="health" />
@@ -165,6 +166,28 @@
                         </div>
                     </div>
                 </div>
+                <c:if test="${covidBanner eq 'Y'}">
+                    <div id="covid-banner">
+                        <div class="container">
+                            <img id="covid-icon-desktop" src="./assets/graphics/covid_19/covid-19-icon.png"/>
+                            <div class="text-container">
+                                <div class="title-container">
+                                    <img id="covid-icon-mobile" src="./assets/graphics/covid_19/covid-19-icon.png"/>
+                                    <span class="">
+                                        You're covered for COVID-19
+                                    </span>
+                                </div>
+                                <p>
+                                    All hospital products on our panel include coverage for COVID-19. Refer to policy brochure for standard waiting periods.
+                                </p>
+                            </div>
+                        </div>
+
+                        <button id="covid-banner-close-button">
+                            <img src="./assets/graphics/covid_19/close-button.png"/>
+                        </button>
+                    </div>
+                </c:if>
             </jsp:attribute>
 
             <jsp:attribute name="body_end">
