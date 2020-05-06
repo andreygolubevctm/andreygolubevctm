@@ -125,7 +125,6 @@
           <c:if test="${octoberComp && (pageSettings.getVerticalCode() eq 'home' || pageSettings.getVerticalCode() eq 'health' || pageSettings.getVerticalCode() eq 'car')}">
             <c:set var="octoberCompRender" value="${true}"></c:set>
           </c:if >
-            
             <article class="container">
               <c:set var="octoberCompClass" value=""></c:set>
               <c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberCompRender}">
@@ -137,11 +136,11 @@
                 <c:set var="iframeURL" value="${additionWaitMessageIframeURL.getSupplementaryValueByKey(envKey)}" />
 
                 <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingPageContent.getSupplementaryValueByKey("className")}<c:if test="${iframeURL ne null}"> iframeURLActive</c:if>">
-                  
+
                     <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
 
                         <div class="loading-logo"></div>
-                        
+
                         <p class="message">Please wait...</p>
                         <c:choose>
                             <c:when test="${octoberCompRender && !callCentre}">
@@ -154,7 +153,7 @@
                                 <jsp:invoke fragment="results_loading_message" />
                                 ${additionalLoadingPageContent.getSupplementaryValueByKey("htmlContent")}
                             </c:otherwise>
-                        </c:choose>          
+                        </c:choose>
                     </div>
 
                     <div id="mainform" class="form-horizontal">

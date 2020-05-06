@@ -64,6 +64,9 @@
 		        meerkat.logging.error("Exception thrown launching logrocket: " + e.message);
 	        }
 
+	        $("#covid-banner-close-button").click(function () {
+	            $("#covid-banner").remove();
+            })
         });
     }
 
