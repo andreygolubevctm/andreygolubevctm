@@ -12,7 +12,6 @@ import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.providers.model.ApplicationOutgoingRequest;
 import com.ctm.web.core.services.CommonRequestServiceV2;
-import com.ctm.web.core.services.JourneyUpdateService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
@@ -64,9 +63,6 @@ public class HealthApplyService extends CommonRequestServiceV2 {
     private SessionDataServiceBean sessionDataServiceBean;
 
     @Autowired
-    private JourneyUpdateService journeyUpdateService;
-
-    @Autowired
     private HealthSelectedProductService healthSelectedProductService;
 
     @Autowired
@@ -86,7 +82,6 @@ public class HealthApplyService extends CommonRequestServiceV2 {
 
         if (anonymousId != null || userId != null) {
             transactionDao.writeAuthIDs(transactionId, anonymousId, userId);
-            journeyUpdateService.publishInteraction("health", transactionId.toString(), anonymousId, userId);
         }
 
         if (properties.getServiceUrl().matches(".*://.*/health-apply-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
