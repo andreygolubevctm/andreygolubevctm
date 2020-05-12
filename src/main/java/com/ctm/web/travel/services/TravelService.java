@@ -11,7 +11,6 @@ import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.CommonRequestServiceV2;
-import com.ctm.web.core.services.JourneyUpdateService;
 import com.ctm.web.core.services.ResultsService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
@@ -57,9 +56,6 @@ public class TravelService extends CommonRequestServiceV2 {
         super(providerFilterDAO, serviceConfigurationServiceBean);
     }
 
-    @Autowired
-    private JourneyUpdateService journeyUpdateService;
-
     /**
      * Call travel-quote aggregation service.
      *
@@ -77,7 +73,6 @@ public class TravelService extends CommonRequestServiceV2 {
         String userId = data.getUserId();
         if (anonymousId!=null||userId!=null) {
             transactionDao.writeAuthIDs(transactionId,anonymousId,userId);
-            journeyUpdateService.publishInteraction("health", transactionId.toString(), anonymousId, userId);
         }
 
 

@@ -21,7 +21,6 @@ import com.ctm.web.core.providers.model.RatesheetOutgoingRequest;
 import com.ctm.web.core.providers.model.Request;
 import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.web.core.services.JourneyUpdateService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
@@ -56,7 +55,6 @@ import rx.schedulers.Schedulers;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
@@ -100,8 +98,6 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
         super(providerFilterDAO, serviceConfigurationServiceBean);
     }
 
-    @Autowired
-    private JourneyUpdateService journeyUpdateService;
 
     public ResponseAdapterModel getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent,
                                           boolean isSimples, final Content payYourRateRise) throws Exception {
@@ -114,7 +110,6 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
 
         if (anonymousId!=null || userId!=null) {
             transactionDao.writeAuthIDs(transactionId,anonymousId,userId);
-            journeyUpdateService.publishInteraction("health", transactionId.toString(), anonymousId, userId);
         }
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthQuoteServiceBER", brand, HEALTH.getCode(), ofNullable(data.getEnvironmentOverride()));

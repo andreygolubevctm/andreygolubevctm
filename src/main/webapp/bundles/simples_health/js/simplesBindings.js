@@ -381,7 +381,13 @@
                 $healthContactTypeTrial.val('');
 
                 if (healthContactTypeSelection === 'webchat') {
-	                $healthContactType.val('webchat');
+                    $healthContactType.val('webchat');
+                } else if(healthContactTypeSelection === 'energyCrossSell') {
+                    $healthContactType.val('outbound');
+                    $healthContactTypeTrial.val('energyCrossSell');
+                } else if(healthContactTypeSelection === 'energyTransfer') {
+                    $healthContactType.val('inbound');
+                    $healthContactTypeTrial.val('energyTransfer');
                 } else {
                     // cli outbound
                     $healthContactType.val('cli');
@@ -408,7 +414,7 @@
 
 	function toggleEnergyCrossSell() {
         if ($healthContactTypeField.val() === 'energyCrossSell') {
-            $healthContactType.val('energyCrossSell');
+            $healthContactType.val('outbound');
 
             $('body')
                 .removeClass('outbound')
@@ -416,7 +422,7 @@
                 .toggleClass('energycross');
         }
         else if ($healthContactTypeField.val() === 'energyTransfer') {
-            $healthContactType.val('energyTransfer');
+            $healthContactType.val('inbound');
 
             $('body')
                 .removeClass('outbound')
