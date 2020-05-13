@@ -93,9 +93,13 @@
             </a>
 
             {{ var result = meerkat.modules.healthResultsTemplate.getSpecialOffer(obj); }}
+            {{ var additionalFeatures = meerkat.modules.healthResultsTemplate.getAdditionalFeatures(obj); }}
 
             <div class="hide-on-affix result-special-offer {{ if (!result.pathValue) { }}invisible{{ } }}">
                 Special Offer - {{= result.displayValue }}
+            </div>
+            <div class="hide-on-affix result-special-offer {{ if (!additionalFeatures.displayValue) { }}invisible{{ } }}">
+                Additional Features - {{= additionalFeatures.displayValue }}
             </div>
             </div>
         </div>
