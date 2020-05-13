@@ -545,15 +545,12 @@
                 text: product.promo.discountText,
                 active: !_.isEmpty(product.promo) && !_.isEmpty(product.promo.discountText),
                 productId: product.productId
-            },
-            {
-                id: 'customisedCover',
-                title: Object.byString(product, 'custom.info.content.results.header.label'),
-                className: 'icon-customise',
-                text: Object.byString(product, 'custom.info.content.results.header.text'),
-                active: !!Object.byString(product, 'custom.info.content.results.header'),
-                productId: product.productId
-            },
+            }
+        ];
+    }
+
+    function parseAdditionalFeatures(product) {
+        return [
             {
                 id: 'awardScheme',
                 title: "Award Scheme",
@@ -611,6 +608,17 @@
             templateToUse = '#results-product-special-features-popover-template';
         }
         return _templateIterator(specialFeatureStructure, templateToUse, numberToRender).slice(0,2).join('');
+    }
+
+    function getAdditionalFeaturesContent(product, additionalFeatureStructure, numberToRender) {
+
+        var featureCount = getAvailableFeatureCount(additionalFeatureStructure);
+
+        var templateToUse = '#results-product-additional-features-inline-template';
+        if (featureCount >= 3 && numberToRender >= 3) {
+            templateToUse = '#results-product-additional-features-popover-template';
+        }
+        return _templateIterator(additionalFeatureStructure, templateToUse, numberToRender).slice(0,2).join('');
     }
 
     /**
@@ -811,8 +819,10 @@
         numberOfSelectedExtras: numberOfSelectedExtras,
         toggleRemoveResultPagination: toggleRemoveResultPagination,
         getSpecialFeaturesContent: getSpecialFeaturesContent,
+        getAdditionalFeaturesContent: getAdditionalFeaturesContent,
         getAvailableFeatureCount: getAvailableFeatureCount,
         parseSpecialFeatures: parseSpecialFeatures,
+        parseAdditionalFeatures: parseAdditionalFeatures,
         unhideFilteredProducts: unhideFilteredProducts,
         getDiscountText: getDiscountText,
         getDiscountPercentage: getDiscountPercentage,

@@ -1,20 +1,20 @@
 <%@ tag description="The Results Special Offers/Discounts/Restricted Template" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<core_v1:js_template id="results-product-special-features-template">
+<core_v1:js_template id="results-product-additional-features-template">
     {{ var module = meerkat.modules.healthResultsTemplate; }}
-    {{ var structure = module.parseSpecialFeatures(obj); }}
-    {{ var content = module.getSpecialFeaturesContent(obj, structure, 2);}}
+    {{ var structure = module.parseAdditionalFeatures(obj); }}
+    {{ var content = module.getAdditionalFeaturesContent(obj, structure, 0);}}
     {{ var canDisplaySpecialFeatures = module.checkIfCanDisplaySpecialFeatures(structure)}}
-    <div class="product-special-features features-1 content isMultiRow" data-featureId="888888">
+    <div class="product-additional-features features-1 content isMultiRow" data-featureId="888889">
         {{ if (canDisplaySpecialFeatures){ }}
-            <span class="feature-item-offer">SPECIAL OFFER:</span>
+            <span class="feature-item-offer">ADDITIONAL FEATURES:</span>
         {{ } }}
         {{= content }}
         <div class="clearfix"></div>
     </div>
 </core_v1:js_template>
-<core_v1:js_template id="results-product-special-features-popover-template">
+<core_v1:js_template id="results-product-additional-features-popover-template">
     <div class="feature-item item-popover">
         <span class="icon {{= obj.className }}"
               data-title="{{= obj.title }}"
@@ -28,14 +28,13 @@
     </div>
     <div class="hidden" id="content{{= obj.id }}-{{= obj.productId}}">{{= obj.text }}</div>
 </core_v1:js_template>
-<core_v1:js_template id="results-product-special-features-inline-template">
+<core_v1:js_template id="results-product-additional-features-inline-template">
     {{ if(obj.id === 'restrictedFund') { }}
         <span class="icon {{= obj.className }}"></span>
     {{ } }}
     {{ if(obj.text) { }}
     <div class="feature-item">
         <div class="feature-item-text">
-            <span class="icon-star"/>
             <div class="offer-text">
                 {{= obj.text }}
             </div>
