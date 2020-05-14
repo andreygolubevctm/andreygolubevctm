@@ -72,14 +72,18 @@
     <jsp:attribute name="resultsContainerTemplate">
         {{ var headerTemplate = meerkat.modules.templateCache.getTemplate($('#result-header-template')); }}
         {{ var specialFeaturesTemplate = meerkat.modules.templateCache.getTemplate($('#results-product-special-features-template')); }}
+        {{ var additionalFeaturesTemplate = meerkat.modules.templateCache.getTemplate($('#results-product-additional-features-template')); }}
         {{ var coverType = meerkat.modules.healthChoices.getCoverType(); }}
         {{ var headerHtml = headerTemplate(obj); }}
         {{ var specialFeaturesHtml = specialFeaturesTemplate(obj); }}
+        {{ var additionalFeaturesHtml = additionalFeaturesTemplate(obj); }}
+
         <div class="result-row result_{{= productId }} not-pinned" data-productId="{{= productId }}">
             {{= headerHtml }}
             <div class="featuresList featuresElements">
                 {{ if(coverType == 'H' || coverType == 'C') { }}
                 {{= specialFeaturesHtml }}
+                {{= additionalFeaturesHtml }}
                 <div class="hospitalCoverSection">
                     <div class="clearfix">
                         <h2>Hospital cover</h2>
@@ -228,6 +232,7 @@
         <health_v4_results:brochure_template />
         <health_v4_results:excess_template />
         <health_v4_results:product_special_features_template />
+        <health_v4_results:product_additional_features_template />
         <health_v4_results:extras_list_template />
         <health_v4_results:credit_card_template />
         <health_v4_refine_results:refine_results />
