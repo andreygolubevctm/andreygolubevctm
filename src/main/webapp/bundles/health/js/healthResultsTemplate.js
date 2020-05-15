@@ -409,6 +409,12 @@
         return result;
     }
 
+    function getAdditionalFeatures(obj) {
+        var result = {};
+        result.displayValue = obj.awardScheme.text;
+        return result;
+    }
+
     function getNewProductName(obj) {
         return obj.custom.reform.name;
     }
@@ -689,6 +695,7 @@
         getExcessPrices: getExcessPrices,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
+        getAdditionalFeatures: getAdditionalFeatures,
         getNewProductName: getNewProductName,
         getClassification: getClassification,
         getItem: getItem,

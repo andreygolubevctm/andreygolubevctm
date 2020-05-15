@@ -66,7 +66,7 @@
 
 	        $("#covid-banner-close-button").click(function () {
 	            $("#covid-banner").remove();
-            })
+            });
         });
     }
 

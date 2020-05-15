@@ -306,6 +306,11 @@
         return result;
     }
 
+    function getAdditionalFeatures(obj) {
+        var result = {};
+        result.displayValue = obj.awardScheme.text;
+        return result;
+    }
 
     function init() {
         $(document).ready(function () {
@@ -433,6 +438,7 @@
         getExcessPrices: getExcessPrices,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
+        getAdditionalFeatures: getAdditionalFeatures,
         getItem: getItem,
         postRenderFeatures: postRenderFeatures,
         numberOfSelectedExtras: numberOfSelectedExtras,
