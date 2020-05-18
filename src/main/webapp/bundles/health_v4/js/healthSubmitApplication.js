@@ -11,6 +11,9 @@
         $submitBtns = $('.slide-control-submit-application, #paymentDetailsForm .journeyNavButton');
 
     function initHealthSubmitApplication() {
+        // There are some issues in PROD where the initial init of this obj is not finding the submit button
+        // This method gets called when we navigate to the payment page so it should exist when this happens
+        $submitBtns = $('.slide-control-submit-application, #paymentDetailsForm .journeyNavButton');
         _applyEventListeners();
     }
 
