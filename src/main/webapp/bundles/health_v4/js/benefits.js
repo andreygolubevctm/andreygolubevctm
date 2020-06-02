@@ -88,7 +88,7 @@
             // If health filters needs any other properties in filters_benefits.tag, add them here.
             benefits[benefitType].push({
                 id: $this.attr('data-benefit-id'),
-                label: $this.next('label').find('.benefitTitle').text(),
+                label: $this.next('label').find('.benefitTitle').text() || $this.next('label').find('.benefitTitle_v2').text(),
                 value: $this.attr('data-benefit-id'), // this is needed for filters - filters.deferred.js requires a .value node
                 code: $this.attr('data-benefit-code') // this is needed for quote ranking and best price email
             });

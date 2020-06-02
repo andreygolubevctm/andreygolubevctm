@@ -5,5 +5,6 @@
 <c:set var="abdModalContent" scope="request"><content:get key="abdModalContent"/></c:set>
 
 <div class="abd-modal-trigger">
+  <span class="help-icon icon-info"></span>
   <a class="dialogPop" data-content="${abdModalContent}" title="What is the Age-Based Discount?">${shortTitle ? "What's this?" : "What is an Age-Based Discount?" }</a>
 </div>

@@ -1082,15 +1082,19 @@ body[data-is-single="true"] {
 }
 
 .abd-modal-trigger {
-  text-align: center;
-  text-decoration: underline;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  text-decoration: none;
 
   a {
-    color: #333333;
+    color: @primary500;
+    text-decoration: none !important;
   }
 
-  &:hover {
-    cursor: pointer;
+  .help-icon {
+    line-height: 20px;
+    color: @primary500;
   }
 }
 

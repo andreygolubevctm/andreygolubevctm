@@ -85,6 +85,7 @@
 					</div>
                 </div>
             </div>
+						
 			<div class="moreInfoTopLeftColumn Hospital_container">
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">

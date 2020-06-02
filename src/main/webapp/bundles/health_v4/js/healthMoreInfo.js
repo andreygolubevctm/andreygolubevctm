@@ -255,9 +255,14 @@
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
 
+        $('.price-promise-container').find('iframe').each(function() {
+            this.contentWindow.postMessage('refresh');
+        });
+
         _setupDualPricing(product);
         dynamicPyrrBanner(product);
         _setTabs();
+        openSelectedExtrasBenefits();
 
         // HLT-4339: AUF discount override
         if (product.info.FundCode === 'AUF' && meerkat.modules.healthResultsTemplate.fundDiscountExists(product.info.FundCode)) {
@@ -268,8 +273,9 @@
             $('.about-this-fund-row').hide();
         }
 
-        meerkat.modules.healthPricePromise.updateIframeSrc();
+        meerkat.modules.healthPricePromise.updateIframeSrc('moreinfo');
         meerkat.modules.healthPricePromise.applyHeight();
+        meerkat.modules.Accordion.initClickEvent('more_info_switching_accordion');
     }
 
     function _setupDualPricing(product) {
@@ -352,6 +358,8 @@
         };
 
         _setTabs();
+        openSelectedExtrasBenefits();
+        meerkat.modules.Accordion.initClickEvent('more_info_switching_accordion');
 
         var toggleBarInitSettings = {
                 container: '.moreInfoVisible .modal-dialog',
@@ -387,6 +395,19 @@
             $moreInfoContent.css({ '-webkit-overflow-scrolling': 'touch' });
             contentTop = isDocked ? $moreInfoContent.position().top : 0;
         // });
+    }
+
+    function openSelectedExtrasBenefits() {
+        var extras = Features.pageStructure[5];
+        var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();
+
+        for(var i = 0; i < extras.children.length; i++) {
+            var child = extras.children[i];
+
+            if(selectedBenefits.indexOf(child.id.toString()) > -1 && !$('#extrasCollapsedContent-' + child.shortlistKey).hasClass('in')) {
+                $('#extrasCollapseContentLink-' + child.shortlistKey).click();
+            }
+        }
     }
 
     /**

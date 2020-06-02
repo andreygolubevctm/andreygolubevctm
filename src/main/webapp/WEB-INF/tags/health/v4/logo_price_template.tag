@@ -90,7 +90,7 @@
 							{{ } else { }}
 								<health_v4:abd_badge abd="false" />
 							{{ } }}
-							<health_v4:abd_whats_this shortTitle="true" />
+							<health_v4:abd_whats_this shortTitle="false" />
 						{{ } }}
 
 

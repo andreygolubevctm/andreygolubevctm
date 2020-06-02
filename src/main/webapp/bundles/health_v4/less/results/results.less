@@ -308,16 +308,19 @@
   }
 
   .abd-modal-trigger {
+    font-size: 14px;
+    line-height: 1.5;
     text-align: center;
-    text-decoration: underline;
-    margin: auto;
-
+    text-decoration: none;
+  
     a {
-      color: #333333;
+      color: @primary500;
+      text-decoration: none !important;
     }
-
-    &:hover {
-      cursor: pointer;
+  
+    .help-icon {
+      line-height: 20px;
+      color: @primary500;
     }
   }
 
@@ -1331,6 +1334,11 @@ body {
       #journeyEngineContainer.additionalWaitMsgActive {
         p.message {
           font-size: @font-size-large;
+        }
+
+        p.message_v2 {
+          margin-top: 2rem;
+          font-size: @font-size-larger;
         }
 
         & .results-loading-additional-text {
