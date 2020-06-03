@@ -21,13 +21,13 @@
 
                 <%-- HTML --%>
             <div id="${name}-selection" class="health-situation">
-                <form_v3:fieldset_columns nextLabel="Insurance preferences" sideHidden="true">
+                <form_v3:fieldset_columns nextLabel="Insurance preferences" sideHidden="true" sticky="true" stickyTopClass="top60">
 
                     <jsp:attribute name="rightColumn">
                         <competition:snapshot vertical="health" />
                         <reward:campaign_tile_container />
                         <health_v4_aboutyou:medicarecheck />
-                        <health_v4:price_promise step="start" />
+                        <health_v4:price_promise step="start" dismissible="true" />
                     </jsp:attribute>
                     <jsp:body>
 
@@ -71,8 +71,6 @@
                             <health_v4_aboutyou:currentlyhaveabd xpath="${xpath}" />
                             <health_v4_aboutyou:abdstartdate xpath="${xpath}" />
 
-
-
                             <h3 id="health_insurance_preferences_additional_partner_title" class="allow-margin-top">Your partner's details</h3>
 
                             <health_v4_aboutyou:partner_dob xpath="${xpath}" />
@@ -82,6 +80,10 @@
                                 <health_v4_aboutyou:partner_currentlyhaveabd xpath="${xpath}" />
                                 <health_v4_aboutyou:partner_abdstartdate xpath="${xpath}" />
                             </div>
+
+                            <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
+                                <health_v4:switching_accordion id="about_you_switching_accordion" hidden="true"/>
+                            </c:if>
 
                             <health_v4_aboutyou:optin xpath="${xpath}" />
 

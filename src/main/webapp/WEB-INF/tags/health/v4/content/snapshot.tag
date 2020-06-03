@@ -2,6 +2,8 @@
 <%@ tag description="Home & Contents Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<%@ attribute name="showInclusions"	 rtexprvalue="true"	 description="show inclusions" %>
+
 <jsp:useBean id="sessionDataUtils" class="com.ctm.web.core.utils.SessionDataUtils" scope="page" />
 
 <fieldset class="quoteSnapshot sidebar-box hidden-sm">
@@ -62,6 +64,17 @@
             <span class="snapshot-items sub-text"></span>
         </div>
     </div>
+    <c:if test="${showInclusions eq true}">
+        <div class="row snapshot inclusions">
+            <div class="col-md-4">
+                <span class="snapshot-title">Inclusions</span>
+            </div>
+            <div class="col-md-8">
+                <div class="snapshot-items snapshot-benefits-selected"></div>
+                <div class="snapshot-items snapshot-extras-selected"></div>
+            </div>
+        </div>
+    </c:if>
     <div class="row snapshot hospital">
         <div class="col-md-4">
             <span class="snapshot-title">Hospital</span>

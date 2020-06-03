@@ -6,7 +6,12 @@
 
     <layout_v3:slide_content>
         <health_v4_results:results />
-        <health_v4_moreinfo:more_info />
+        <c:if test="${data.health.currentJourney != null && data.health.currentJourney != 2}">
+            <health_v4_moreinfo:more_info />
+        </c:if>
+        <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
+            <health_v4_moreinfo_v2:more_info />
+        </c:if>
         <health_v4_results:prices_have_changed_notification />
         <health_v4:dual_pricing_modal />
         <health_v4:logo_price_template />

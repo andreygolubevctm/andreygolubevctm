@@ -634,6 +634,10 @@
         // Validate current slide before updating hash.
         try{
 
+            if($target) {
+                $target.parent().find('.journeyNavButtonError').toggleClass('hidden', true);
+            }
+
             if(isLocked()){
                 throw "Journey engine action in progress (isLocked)";
             }else{
@@ -695,6 +699,11 @@
             unlock();
             meerkat.logging.info('[journeyEngineListener]',e);
             if(typeof $target !== 'undefined') meerkat.modules.loadingAnimation.hide($target);
+
+            // We failed due to a validation error, lets add the validation error message
+            if($target && e.indexOf('Validation failed') > -1) {
+                $target.parent().find('.journeyNavButtonError').toggleClass('hidden', false);
+            }
         }
     }
 
@@ -833,10 +842,12 @@
     }
 
     function loadingShow(message, showInstantly, footerMessage) {
-        var messageText = message || 'Please wait...';
+        var messageText = message || (meerkat.modules.splitTest.get() === '2' ? 'Hold your meerkats. Finding the right cover for you...' : 'Please wait...');
         var $ele = $('#journeyEngineLoading');
         $('body,html').css('overflow','hidden');
-        
+
+        $('.results-control-container').toggleClass('hidden', true);
+
         if (footerMessage) {
           $ele.append('<div id="loading-footer"><span>' + footerMessage + '</span></div>');
         }
@@ -844,6 +855,7 @@
         if ($ele.attr('data-active') !== '1'){
             $ele.attr('data-active', '1');
             $ele.find('.message').attr('data-oldtext', $ele.find('.message').text()).html(messageText);
+
             $ele.addClass('displayBlock');
             if (showInstantly){
                 $ele.addClass('opacity1');
@@ -863,6 +875,7 @@
         $ele.removeClass('opacity1');
         $('body,html').css('overflow','auto');
         $("#journeyEngineSlidesContainer").css('opacity', '1');
+        $('.results-control-container').toggleClass('hidden', false);
 
         var speed = $ele.transitionDuration();
 

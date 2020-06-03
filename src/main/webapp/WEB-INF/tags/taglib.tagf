@@ -45,10 +45,12 @@
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/layout"	    prefix="health_v4_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/aboutyou"	    prefix="health_v4_aboutyou" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/insurancepreferences"	    prefix="health_v4_insuranceprefs" %>
+<%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/insurancepreferences_v2"	    prefix="health_v4_insuranceprefs_v2" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/contact"	    prefix="health_v4_contact" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/content"	    prefix="health_v4_content" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/results"	    prefix="health_v4_results" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/moreinfo"	    prefix="health_v4_moreinfo" %>
+<%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/moreinfo_v2"	    prefix="health_v4_moreinfo_v2" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/application"	prefix="health_v4_application" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/application/agr"	prefix="health_v4_agr" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/application/partner"	prefix="health_v4_application_partner" %>

@@ -5,20 +5,33 @@
 <layout_v3:slide formId="paymentDetailsForm">
 
     <layout_v3:slide_content>
-        <form_v3:fieldset_columns nextLabel="Submit Application" sideHidden="true">
+        <form_v3:fieldset_columns nextLabel="Submit Application" sideHidden="true" submitButton="true">
 
             <jsp:attribute name="rightColumn">
                 <competition:snapshot vertical="health" />
                 <reward:campaign_tile_container />
                 <health_v4_payment:policySummary showProductDetails="true" />
-                <health_v4:price_promise step="payment" />
+                <health_v4:price_promise step="payment" dismissible="true" />
             </jsp:attribute>
 
             <jsp:body>
                 <health_v4_payment:payment xpath="${pageSettings.getVerticalCode()}/payment" />
-                <health_v4_payment:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
+                <c:if test="${data.health.currentJourney == null || data.health.currentJourney != 2}">
+                    <health_v4_payment:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
+                </c:if>
+                <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
+                    <health_v4_payment:declaration_v2 xpath="${pageSettings.getVerticalCode()}/declaration" />
+                </c:if>
+
                 <health_v4_payment:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
-                <health_v4_payment:whatsNext />
+
+                <c:if test="${data.health.currentJourney == null || data.health.currentJourney != 2}">
+                    <health_v4_payment:whatsNext />
+                </c:if>
+                <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
+                    <health_v4_payment:whatsNext_v2 />
+                </c:if>
+
                 <health_v1:fund_timezone_message_modal />
 
                 <c:if test="${callCentre and not empty worryFreePromo and worryFreePromo eq '35'}">

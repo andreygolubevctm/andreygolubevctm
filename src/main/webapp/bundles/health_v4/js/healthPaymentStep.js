@@ -163,6 +163,30 @@
 		});
 	}
 
+	function getDeclaration() {
+		var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+		var data = {};
+		data.providerId = selectedProduct.info.providerId;
+		data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
+		data.styleCode = meerkat.site.tracking.brandCode;
+
+		meerkat.modules.comms.get({
+			url: "health/provider/content/get.json",
+			data: data,
+			cache: true,
+			errorLevel: "silent",
+			onSuccess: function getProviderContentSuccess(result) {
+				if (result.hasOwnProperty('providerContentText')) {
+											var callback = function applyCustomisedProviderContentCallback(content) {
+													$('.join_declaration_content').html(content);
+											};
+											// Call function to update placeholder copy
+											applyCustomisedProviderContent(selectedProduct, result.providerContentText, callback);
+				}
+			}
+		});
+	}
+
 	function validateCoupon() {
 		var couponInput = $('.coupon-code-field').val();
 		if(currentCoupon === false || currentCoupon !== couponInput) {
@@ -601,7 +625,8 @@
 		getPaymentMethodNode: getPaymentMethodNode,
 		rebindCreditCardRules: rebindCreditCardRules,
 		updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
-		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway
+		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway,
+		getDeclaration: getDeclaration
 	});
 
 })(jQuery);

@@ -2,6 +2,27 @@
   margin-bottom: 15px;
   width: 100%;
   height: 108px;
+  position: relative;
+
+  .price-promise-close {
+    color: @gray700;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 60px;
+
+    @media (min-width: @screen-sm-min) {
+      top: 20px;
+    }
+
+    &:hover {
+      color: @primary500;
+    }
+
+    .icon {
+      pointer-events: none;
+    }
+  }
 
   @media (@sm) {
     height: 150px;

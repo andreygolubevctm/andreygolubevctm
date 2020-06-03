@@ -9,6 +9,7 @@
 <%@ attribute name="bundleFileName" required="false" rtexprvalue="true" description="Pass in an alternate file name" %>
 <%@ attribute name="displayNavigationBar" required="false" rtexprvalue="true" description="Pass false to remove the navigation bar" %>
 <%@ attribute name="ignorePageHeader" required="false" rtexprvalue="true" description="Pass true/false to remove the page header bar" %>
+<%@ attribute name="currentJourney" required="false" rtexprvalue="true" description="The AB test journey" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -133,15 +134,19 @@
 
                 <c:set var="additionalLoadingPageContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionalWaitMessageHtml")}'/>
                 <c:set var="additionWaitMessageIframeURL" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionWaitMessageIframeURL")}'/>
+                <c:set var="additionWaitMessageIframeURL_v2" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionWaitMessageIframeURL_v2")}'/>
+
                 <c:set var="iframeURL" value="${additionWaitMessageIframeURL.getSupplementaryValueByKey(envKey)}" />
+
+                <c:if test="${currentJourney != null && currentJourney == 2}">
+                    <c:set var="iframeURL" value="${additionWaitMessageIframeURL_v2.getSupplementaryValueByKey(envKey)}" />
+                </c:if>
 
                 <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingPageContent.getSupplementaryValueByKey("className")}<c:if test="${iframeURL ne null}"> iframeURLActive</c:if>">
 
-                    <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
-
+                        <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
+                        <p class="message ${currentJourney != null && currentJourney == 2 ? 'marginTop largeFont': ''}">Please wait...</p>
                         <div class="loading-logo"></div>
-
-                        <p class="message">Please wait...</p>
                         <c:choose>
                             <c:when test="${octoberCompRender && !callCentre}">
                                 <competition:loading vertical="${pageSettings.getVerticalCode()}"/>

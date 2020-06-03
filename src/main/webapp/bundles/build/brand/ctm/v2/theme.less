@@ -332,6 +332,14 @@ ul.themed {
   }
 }
 
+.journeyNavButtonError {
+  color: @theme-accent-3;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
+  margin-top: 5px;
+}
+
 //
 // Images
 // NOT USED by framework.build.core.less
@@ -1017,7 +1025,7 @@ fieldset h3 {
   padding-bottom: 3px;
   margin-top: 0;
   margin-bottom: (@padding-base-vertical);
-  color: @fieldset-heading-colour;
+  color: @primary700;
 
   &.allow-margin-top {
     margin-top: 18px;
@@ -1462,6 +1470,25 @@ select {
     .originalDisclaimer {
       position: static;
     }
+  }
+
+  .message {
+    &.marginTop {
+      margin-top: 2rem;
+    }
+    &.largeFont {
+      font-size: @font-size-larger;
+    }
+  }
+  
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+
+  &.top60 {
+    top: 60px;
   }
 }
 
