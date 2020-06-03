@@ -83,15 +83,17 @@
 					<div class="moreInfoTopRightColumn">
 						<health_v4_moreinfo_v2:more_info_product_widget />
 					</div>
-						<health_v4_moreinfo_v2:more_info_price_lock />
-                </div>
+					    {{ if(meerkat.site.showMoreInfoPriceLock) { }}
+            		<health_v4_moreinfo:more_info_price_lock />
+        			{{ } }}
+              </div>
             </div>
 
 			<health_v4_moreinfo_v2:more_info_product_extra_info />
-				<div class="col-xs-3 more-info-price-promise-container">
+				<div class="col-xs-3 col-sm-4 col-md-3 more-info-price-promise-container {{= meerkat.site.showMoreInfoPriceLock ? '' : 'extra-margin' }}">
 				  <health_v4:price_promise step="moreinfo" dismissible="false" />
 			</div>
-			<div class="col-xs-12 col-md-9">
+			<div class="col-xs-12 col-sm-8 col-md-9">
 				<health_v4:switching_accordion id="more_info_switching_accordion"/>
 			</div>
 			<div class="moreInfoTopLeftColumn_v2 Hospital_container">
@@ -370,6 +372,7 @@
 								<div class="row row-eq-height">
 									<div class="col-xs-12 col-sm-6 no-padding">
 										<h2 class="bold">Extras cover</h2>
+										<div class="group-limit-disclaimer">* Group Limits may apply to some benefits</div>
 									</div>
 									<div class="col-xs-12 col-sm-6 heading-brochure no-padding">
 										{{ if(promo.extrasPDF.indexOf('http') === -1) { }}
@@ -443,6 +446,12 @@
 											</div>
 											<div class="col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
+													{{ var hasCombinedLimit = benefit.benefitLimits.combinedLimit && benefit.benefitLimits.combinedLimit !== 'None' && benefit.benefitLimits.combinedLimit !== '-'; }}
+													{{ var hasGroupLimit = benefit.groupLimit && benefit.groupLimit.codes && benefit.groupLimit.codes !== 'None' && benefit.groupLimit.codes !== '-'; }}
+
+													{{ if(hasCombinedLimit || hasGroupLimit) { }}
+														<div class="group-limit-disclaimer top-left">*</div>
+													{{ } }}
 												{{ var coverType = window.meerkat.modules.healthSituation.getSituation(); }}
 													{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
 														<div>per person: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>

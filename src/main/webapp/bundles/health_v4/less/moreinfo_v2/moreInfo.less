@@ -515,11 +515,13 @@
   }
 
   .moreInfoTopLeftColumn_v2 {
-    .make-sm-column(9);
+    .make-sm-column(8);
+    .make-md-column(9);
   }
 
   .moreInfoTopRightColumn {
-    .make-sm-column(3);
+    .make-sm-column(4);
+    .make-md-column(3);
 
     @media (min-width: @screen-sm-min) {
       position: absolute;
@@ -915,6 +917,21 @@
     font-size: 14px;
   }
 
+  .group-limit-disclaimer {
+    display: none;
+
+    @media(@lg) {
+      display: block;
+      margin: 0 0 10px 10px;
+    }
+
+    &.top-left {
+      position: absolute;
+      top: 6px;
+      right: 12px;
+    }
+  }
+
   @media (@xs-only) {
     .benefitsColumn {
       width: 100%;
@@ -1203,4 +1220,8 @@ body[data-is-single="true"] {
   margin-top: 20px;
   position: absolute;
   right: 0;
+
+  &.extra-margin {
+    margin-top: 165px;
+  }
 }
