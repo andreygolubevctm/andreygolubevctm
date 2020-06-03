@@ -362,6 +362,7 @@
 								<div class="row row-eq-height">
 									<div class="col-xs-12 col-sm-6 no-padding">
 										<h2>Extras cover</h2>
+										<div class="group-limit-disclaimer">* Group Limits may apply to some benefits</div>
 									</div>
 									<div class="col-xs-12 col-sm-6 heading-brochure no-padding">
 										{{ if(promo.extrasPDF.indexOf('http') === -1) { }}
@@ -429,6 +430,12 @@
 											</div>
 											<div class="col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
+													{{ var hasCombinedLimit = benefit.benefitLimits.combinedLimit && benefit.benefitLimits.combinedLimit !== 'None' && benefit.benefitLimits.combinedLimit !== '-'; }}
+													{{ var hasGroupLimit = benefit.groupLimit && benefit.groupLimit.codes && benefit.groupLimit.codes !== 'None' && benefit.groupLimit.codes !== '-'; }}
+
+													{{ if(hasCombinedLimit || hasGroupLimit) { }}
+														<div class="group-limit-disclaimer top-left">*</div>
+													{{ } }}
 												{{ var coverType = window.meerkat.modules.healthSituation.getSituation(); }}
 													{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
 														<div>per person: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
