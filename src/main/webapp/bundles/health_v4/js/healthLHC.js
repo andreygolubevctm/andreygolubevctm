@@ -251,6 +251,42 @@
         return _newLhc;
     }
 
+    function getNewPrimaryCAE() {
+        if(!getCompleteLhcResult() || !getCompleteLhcResult().primary) {
+            return '';
+        }
+
+        var primaryLhc = getCompleteLhcResult().primary.lhcPercentage;
+
+        if(primaryLhc === 0) {
+            return '30';
+        }
+
+        if(primaryLhc >= 70) {
+            return '65';
+        }
+
+        return ((primaryLhc / 2) + 30).toString();
+    }
+
+    function getNewPartnerCAE() {
+        if(!getCompleteLhcResult() || !getCompleteLhcResult().partner) {
+            return '';
+        }
+
+        var partnerLhc = getCompleteLhcResult().partner.lhcPercentage;
+
+        if(partnerLhc === 0) {
+            return '30';
+        }
+
+        if(partnerLhc >= 70) {
+            return '65';
+        }
+
+        return ((partnerLhc / 2) + 30).toString();
+    }
+
     function resetNewLHC() {
         _newLhc = null;
         _newLhcCompleteResult = null;
@@ -265,7 +301,9 @@
         getPartner: getPartner,
         getCompleteLhcResult: getCompleteLhcResult,
         getNewLHC: getNewLHC,
-        resetNewLHC: resetNewLHC
+        resetNewLHC: resetNewLHC,
+        getNewPrimaryCAE: getNewPrimaryCAE,
+        getNewPartnerCAE: getNewPartnerCAE
     });
 
 })(jQuery);
