@@ -56,6 +56,19 @@ body.health {
         .categoriesCell_v2 {
           border-top: 1px solid @gray-light;
           padding: 0;
+
+          @media(@sm) {
+            min-height: 145px;
+          }
+
+          @media(@md) {
+            min-height: 145px;
+          }
+
+          @media(@lg) {
+            min-height: 100px;
+          }
+
           min-height: 100px;
 
           &:hover {
@@ -68,6 +81,7 @@ body.health {
 
           .limited-cover-text {
             margin: 15px 0px;
+            padding: 10px;
           }
 
           .checkbox {
@@ -200,7 +214,14 @@ body.health {
 
       #limited-pane,
       .Hospital-wrapper {
-        padding-top: 15px;
+
+        &.active {
+          padding-top: 0;
+        }
+
+        &:not(.active) {
+          padding-top: 15px;
+        }
       }
 
       .Extras-wrapper {

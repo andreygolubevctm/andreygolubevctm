@@ -7,7 +7,6 @@
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
-    "plugins/stickyfill",
     "shared/results/v4",
     "shared/resultsFeaturesPagination/v1",
     "shared/features",

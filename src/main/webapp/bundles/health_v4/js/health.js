@@ -186,9 +186,6 @@
                 }
             });
         }
-
-        var elements = $('.sticky');
-        Stickyfill.add(elements);
     }
 
 

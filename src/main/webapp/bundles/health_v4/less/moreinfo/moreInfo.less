@@ -842,6 +842,21 @@
     font-size: 14px;
   }
 
+  .group-limit-disclaimer {
+    display: none;
+
+    @media(@lg) {
+      display: block;
+      margin: 0 0 10px 10px;
+    }
+
+    &.top-left {
+      position: absolute;
+      top: 6px;
+      right: 12px;
+    }
+  }
+
   @media (@xs-only) {
     .benefitsColumn {
       width: 100%;
