@@ -490,23 +490,25 @@
 															<div class="col-xs-12 col-sm-12 extraBenefitSubHeading"><strong>Claim Benefit:</strong></div>
 															<div class="col-xs-12 col-sm-12">
 																{{ if (benefit.benefits !== undefined) { }}
-																	{{ _.each(benefit.benefits, function (option, key) { }}
-																	<div class="row">
-																		<div class="col-xs-9 col-sm-6 extraBenefitOption">
+																		{{ _.each(benefit.benefits, function (option, key) { }}
+																		{{ var benefitLimitsName = ''; }}
 																		{{ if(featureIteratorChild) { }}
-																			{{ var benefitLimitsName = ''; }}
 																				{{ _.each(featureIteratorChild.children, function (child) { }}
 																					{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																						{{ benefitLimitsName = child.safeName; }}
 																					{{ } }}
 																				{{ }); }}
-																			{{= benefitLimitsName }}
 																		{{ } }}
+																	{{ if(benefitLimitsName) { }}
+																	<div class="row">
+																		<div class="col-xs-9 col-sm-6 extraBenefitOption">
+																			{{= benefitLimitsName }}
 																		</div>
 																		<div class="col-xs-3 col-sm-6 extraBenefitOption align-center">
 																			{{= option }}
 																		</div>
 																	</div>
+																	{{ } }}
 																	{{ }); }}
 																{{ } }}
 																{{ _.each(benefit, function (option, key) { }}
