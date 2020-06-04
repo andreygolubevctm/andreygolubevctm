@@ -378,6 +378,9 @@
         _trackScroll();
 
         $(toggleBarInitSettings.container).find('.toggleBar').toggleClass('hidden', initToggleBar === false);
+        // Remove the scroll on the modal body as we only want the modal-content to scroll. This fixes some 
+        // Dodgy scroll issues on mobile
+        $('#' + moreInfoDialogId).find('.modal-body').css('overflowY', 'hidden'); 
         $('#' + moreInfoDialogId).find('.navbar-text.modal-title-label').html('<span class="quoteRefHdr">Quote Ref: <span class="quoteRefHdrTransId">' + meerkat.modules.transactionId.get() + '</span></span>');
     }
 
