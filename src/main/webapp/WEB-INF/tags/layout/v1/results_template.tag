@@ -121,8 +121,6 @@
         </div>
     </c:if>
 
-    <div class="clearfix"></div>
-
     <jsp:doBody/>
 
     <jsp:invoke fragment="hiddenInputs"/>

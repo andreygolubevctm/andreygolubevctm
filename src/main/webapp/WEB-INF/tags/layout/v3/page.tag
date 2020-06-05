@@ -122,7 +122,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 		<%--  Modernizr --%>
 		<script src='${assetUrl}js/bundles/plugins/modernizr${pageSettings.getSetting('minifiedFileString')}.js'></script>
-
 	</c:if>
 
 <jsp:invoke fragment="head" />

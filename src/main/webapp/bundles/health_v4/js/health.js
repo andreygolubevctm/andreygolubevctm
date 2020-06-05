@@ -584,12 +584,23 @@
 
                     // Insert fund into checkbox label
                     $('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
+                    $('#mainform').find('.health_declaration_v2 span').text( selectedProduct.info.providerName  );
+
                     // Insert fund into Contact Authority
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
                     meerkat.modules.healthLHC.onInitialise();
 
                     meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
+                    meerkat.modules.healthPaymentStep.getDeclaration();
+
+                    var product = Results.getSelectedProduct();
+
+                    if(!product) {
+                        return;
+                    }
+                    
+                    $('.next-steps-content').html(product.whatHappensNext);
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {

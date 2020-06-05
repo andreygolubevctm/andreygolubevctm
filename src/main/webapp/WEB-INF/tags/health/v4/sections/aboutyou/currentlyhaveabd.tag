@@ -11,7 +11,7 @@
 
 <c:set var="fieldXpath" value="${xpath}/primary/abd" />
 <c:set var="abdSubLabel">
-	<health_v4:abd_whats_this shortTitle='true' />
+	<health_v4:abd_whats_this shortTitle='false' />
 </c:set>
 
 <form_v4:row hideRowBorder="true" label="Does your current health cover include an Age-Based Discount?" subLabel="${abdSubLabel}" id="${name}_primaryhasABD" fieldXpath="${fieldXpath}"  className="lhcRebateCalcTrigger primaryHasABD hidden">
@@ -28,10 +28,8 @@
 
 <div class="abd-support-text hidden" id="single_18_to_30">
 	<p>Because you’re under 30, you may be eligible to receive an Age-Based discount on applicable health insurance policies. Look out for the <health_v4:abd_badge abd='true' /> badge when you get to your comparison results.</p>
-	<health_v4:abd_whats_this shortTitle='false' />
 </div>
 
 <div class="abd-support-text hidden" id="single_has_abd_policy">
 	<p>Based on what you’ve told us, because you currently hold a policy with an Age-Based Discount, you may be eligible to retain that discount provided you choose a policy with the badge <health_v4:abd_badge abd='false' /> when you get to your comparison results.</p>
-	<health_v4:abd_whats_this shortTitle='false' />
 </div>

@@ -90,7 +90,7 @@
 
         <%-- ####### PRE JOURNEY SETUP --%>
 
-        <layout_v1:journey_engine_page title="Health Quote" bundleFileName="health_v4" displayNavigationBar="${false}">
+        <layout_v1:journey_engine_page title="Health Quote" bundleFileName="health_v4" displayNavigationBar="${false}" currentJourney="${param.j}">
 
             <jsp:attribute name="head">
             </jsp:attribute>
@@ -232,7 +232,7 @@
                 <health_v4_layout:slide_payment />
 
                 <div class="visible-xs">
-                    <health_v4:price_promise step="start" />
+                    <health_v4:price_promise step="start" dismissible="true" />
                     <div class="coupon-tile-xs">
                         <coupon:promo_tile />
                     </div>

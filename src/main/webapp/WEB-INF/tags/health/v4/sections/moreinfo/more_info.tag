@@ -85,6 +85,7 @@
 					</div>
                 </div>
             </div>
+						
 			<div class="moreInfoTopLeftColumn Hospital_container">
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">
@@ -361,6 +362,7 @@
 								<div class="row row-eq-height">
 									<div class="col-xs-12 col-sm-6 no-padding">
 										<h2>Extras cover</h2>
+										<div class="group-limit-disclaimer">* Group Limits may apply to some benefits</div>
 									</div>
 									<div class="col-xs-12 col-sm-6 heading-brochure no-padding">
 										{{ if(promo.extrasPDF.indexOf('http') === -1) { }}
@@ -428,6 +430,12 @@
 											</div>
 											<div class="col-sm-2 newBenefitRow benefitRowTitle align-center hidden-xs hidden-sm hidden-md">
 												<div class="benefitRowTableCell">
+													{{ var hasCombinedLimit = benefit.benefitLimits.combinedLimit && benefit.benefitLimits.combinedLimit !== 'None' && benefit.benefitLimits.combinedLimit !== '-'; }}
+													{{ var hasGroupLimit = benefit.groupLimit && benefit.groupLimit.codes && benefit.groupLimit.codes !== 'None' && benefit.groupLimit.codes !== '-'; }}
+
+													{{ if(hasCombinedLimit || hasGroupLimit) { }}
+														<div class="group-limit-disclaimer top-left">*</div>
+													{{ } }}
 												{{ var coverType = window.meerkat.modules.healthSituation.getSituation(); }}
 													{{ if((coverType === 'C' || coverType === 'SPF' || coverType === 'F') && benefit.benefitLimits.perPerson && benefit.benefitLimits.perPerson !== '-') { }}
 														<div>per person: {{= benefit.benefitLimits.perPerson ? benefit.benefitLimits.perPerson : '' }}</div>
@@ -467,22 +475,24 @@
 															<div class="col-xs-12 col-sm-12">
 																{{ if (benefit.benefits !== undefined) { }}
 																	{{ _.each(benefit.benefits, function (option, key) { }}
-																	<div class="row">
-																		<div class="col-xs-9 col-sm-6 extraBenefitOption">
+																		{{ var benefitLimitsName = ''; }}
 																		{{ if(featureIteratorChild) { }}
-																			{{ var benefitLimitsName = ''; }}
 																				{{ _.each(featureIteratorChild.children, function (child) { }}
 																					{{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
 																						{{ benefitLimitsName = child.safeName; }}
 																					{{ } }}
 																				{{ }); }}
-																			{{= benefitLimitsName }}
 																		{{ } }}
+																	{{ if(benefitLimitsName) { }}
+																	<div class="row">
+																		<div class="col-xs-9 col-sm-6 extraBenefitOption">
+																			{{= benefitLimitsName }}
 																		</div>
 																		<div class="col-xs-3 col-sm-6 extraBenefitOption align-center">
 																			{{= option }}
 																		</div>
 																	</div>
+																	{{ } }}
 																	{{ }); }}
 																{{ } }}
 																{{ _.each(benefit, function (option, key) { }}

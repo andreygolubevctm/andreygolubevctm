@@ -58,10 +58,24 @@
                                 {{ } }}
                             </div>
                             <div class="col-xs-8 extraBenefitOption align-center">
+                                {{ var isOptical = benefitName === 'Optical'; }}
+                                {{ var isMajorDental = benefitName === 'Major Dental'; }}
+
                                 {{ if(!option || option.trim() === '-') { }}
-                                None
+                                    None
                                 {{ } else { }}
-                                {{= option }}
+                                    {{ if(isOptical) { }}
+                                        {{ var singleVisionValue = benefit.benefits.SingleVision; }}
+                                        {{ if(singleVisionValue.indexOf('$') > -1 && (option.indexOf('$') > -1 || option.indexOf('%') > -1)) { }}
+                                            <span class="text-highlight">For {{= benefitName.toLowerCase() }} you can claim up to: {{= option}}</span>
+                                        {{ } else if(singleVisionValue.indexOf('%') > -1 && option.indexOf('$') > -1) { }}
+                                             <span class="text-highlight">For {{= benefitName.toLowerCase() }} you'll be able to claim {{= singleVisionValue}} up to: {{= option }}</span>
+                                        {{ } else { }}
+                                            {{= option }}
+                                        {{ } }}
+                                    {{ } else { }}
+                                        {{= option }}
+                                    {{ } }}
                                 {{ } }}
                             </div>
                         </div>
@@ -113,26 +127,34 @@
                         {{ if(isSingle && trimmedKey === 'per person') { }}
                         {{ return; }}
                         {{ } }}
+                        {{ var benefitLimitsName = ''; }}
+                        {{ if(featureIteratorChild) { }}
+                            {{ _.each(featureIteratorChild.children, function (child) { }}
+                                {{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
+                                    {{ benefitLimitsName = child.safeName; }}
+                                {{ } }}
+                            {{ }); }}
+                        {{ } }}
+                        {{ if(benefitLimitsName) { }}
                         <div class="row">
                             <div class="col-xs-9 extraBenefitOption">
-                                {{ if(featureIteratorChild) { }}
-                                {{ var benefitLimitsName = ''; }}
-                                {{ _.each(featureIteratorChild.children, function (child) { }}
-                                {{ if(child.resultPath.substr(child.resultPath.lastIndexOf('.') + 1) === key) { }}
-                                {{ benefitLimitsName = child.safeName; }}
-                                {{ } }}
-                                {{ }); }}
                                 {{= benefitLimitsName }}
-                                {{ } }}
                             </div>
                             <div class="col-xs-3 extraBenefitOption align-center">
+                                {{ var isOptical = benefitName === 'Optical'; }}
+
                                 {{ if(!option) { }}
-                                None
+                                    None
                                 {{ } else { }}
-                                {{= option }}
+                                    {{ if(isOptical && option.indexOf('$') > -1) { }}
+                                        Up to: {{= option }}
+                                    {{ } else { }}
+                                        {{= option }}
+                                    {{ } }}
                                 {{ } }}
                             </div>
                         </div>
+                        {{ } }}
                         {{ }); }}
                         {{ if(benefitName === 'General Dental') { }}
                         {{ if(benefit.benefits.DentalGeneral012PeriodicExam.indexOf('$') !== -1) { }}

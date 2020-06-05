@@ -13,7 +13,10 @@
                 <competition:snapshot vertical="health" />
                 <health_v4:cta_panel />
                 <reward:campaign_tile_container />
-                <health_v4:price_promise step="contact" />
+                <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
+                    <health_v4_content:snapshot showInclusions="true"/>
+                </c:if>
+                <health_v4:price_promise step="contact" dismissible="true" />
             </jsp:attribute>
 
             <jsp:body>

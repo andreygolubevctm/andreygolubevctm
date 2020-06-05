@@ -15,6 +15,10 @@
         benefitsLabels = {},
         flattenedBenefits = [],
         meerkatEvents = meerkat.modules.events,
+        selectedHospitalLabel,
+        selectedExtrasLabel,
+        snapshotSelectedHospitalLabel,
+        snapshotSelectedExtrasLabel,
         events = {
             benefitsModel: {
                 UPDATE_SELECTED_BENEFITS_CHECKBOX: 'UPDATE_SELECTED_BENEFITS_CHECKBOX',
@@ -26,6 +30,12 @@
     function init() {
         _setupPreselectData();
         _eventsSubscription();
+
+        selectedHospitalLabel = $('#selected-hospital-count');
+        selectedExtrasLabel = $('#selected-extras-count');
+
+        snapshotSelectedHospitalLabel = $('.snapshot-benefits-selected');
+        snapshotSelectedExtrasLabel = $('.snapshot-extras-selected');
     }
 
     // do an ajax request to retrieve the supplementary data for the health pre-select data
@@ -88,7 +98,30 @@
             }
         }
 
+        updateUIElements();
+
         meerkat.messaging.publish(moduleEvents.BENEFITS_MODEL_UPDATE_COMPLETED);
+    }
+
+    function updateUIElements() {
+        var selectedHospitalCount = selectedBenefits.hospital.length;
+        var selectedExtrasCount = selectedBenefits.extras.length;
+
+        selectedHospitalLabel.text(selectedHospitalCount + ' selected');
+        selectedExtrasLabel.text(selectedExtrasCount + ' selected');
+
+        snapshotSelectedHospitalLabel.text(selectedHospitalCount + ' Hospital benefit' + (selectedHospitalCount !== 1 ? 's' : '') + ' selected');
+        snapshotSelectedExtrasLabel.text(selectedExtrasCount + ' Extra' + (selectedExtrasCount !== 1 ? 's' : '') + ' selected');
+
+        $('.categoriesCell_v2').each(function() {
+            $(this).removeClass('active');
+
+            var input = $(this).children()[0].firstElementChild;
+            if(selectedBenefits.hospital.indexOf(input.dataset.benefitId) > -1 || 
+                selectedBenefits.extras.indexOf(input.dataset.benefitId) > -1) {
+                    $(this).addClass('active');
+            }
+        });
     }
 
     // return a string of hospital or events depending on value of _isHospital
@@ -125,6 +158,8 @@
     function setBenefits(updatedBenefits) {
         selectedBenefits[getBenefitType()] = updatedBenefits;
         meerkat.messaging.publish(moduleEvents.UPDATE_SELECTED_BENEFITS_CHECKBOX, selectedBenefits[getBenefitType()]);
+
+        updateUIElements();
     }
 
     // run once to initialise labels store.
