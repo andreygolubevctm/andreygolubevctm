@@ -60,7 +60,7 @@
 					</form_v2:row>
 
 					<c:set var="fieldXpath" value="${xpath}/applicantCovered" />
-					<form_v3:row fieldXpath="${fieldXpath}" label="Can I confirm, Are you covered by this policy?" id="${name}_applicantCoveredRow" className="argCoveredByPolicy simplesAgrElementsNoToggle hidden simples-dialogue row-content red optionalDialogue noMarginLeftRight">
+					<form_v3:row fieldXpath="${fieldXpath}" label="<p><strong class='bold'>Must read word for word</strong></p>Can I confirm, Are you covered by this policy?" id="${name}_applicantCoveredRow" className="argCoveredByPolicy simplesAgrElementsNoToggle hidden simples-dialogue row-content red optionalDialogue noMarginLeftRight">
 						<field_v2:array_radio id="${name}_applicantCovered" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="Are you covered by this policy?" />
 					</form_v3:row>
 
