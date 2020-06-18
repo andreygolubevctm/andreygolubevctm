@@ -10,13 +10,98 @@
 	var $component, //Stores the jQuery object for the component group
 			best_price_count = 10, price_log_count = 10,
 			initialised = false;
+	var $destinationsfs;
 
 	function initPage(){
 		if(!initialised) {
 			initialised = true;
 			initResults();
+			initFilterProviderNames();
 			eventSubscriptions();
 		}
+	}
+
+	function initFilterProviderNames() {
+
+
+		var data = {};
+		$destinationsfs = $("#travel-filter-brands");
+		//$travelDestinations = $('#travel_destinations');
+
+		if(meerkat.site.isDev === true){
+			// need to wait for the development.deferred module to be initialised
+			// then wait for the ajax call there to get all available service URL
+			// IE8-10 is not working because for some reason the promise doesn't get set until 10 secs later
+
+			meerkat.modules.utils.pluginReady("development").done(function() {
+				meerkat.modules.development.getAggregationServicePromise().done(function() {
+					data.environmentOverride = $("#developmentAggregatorEnvironment").val();
+					getActiveProviderNames(data);
+				});
+			});
+
+			return;
+		}
+		 getActiveProviderNames(data);
+	}
+
+	function invokeBrandFilter(value){
+		var _filters = Results.model.travelFilters;
+		if (_filters.PROVIDERS.indexOf(value) == -1) {
+			_filters.PROVIDERS.push(value);
+		} else {
+			_filters.PROVIDERS.splice(_filters.PROVIDERS.indexOf(value), 1);
+		}
+		Results.model.travelFilters = _filters;
+		_displayCustomResults(false, true);
+
+		var TOTAL_PROVIDERS = 28;
+
+		if(_filters.PROVIDERS.length > 0 && _filters.PROVIDERS.length < TOTAL_PROVIDERS) {
+			$('.brands-select-toggle').data('brands-toggle', 'none');
+			$('.brands-select-toggle').empty().text('Select none');
+		}else{
+			$('.brands-select-toggle').data('brands-toggle', 'all');
+			$('.brands-select-toggle').empty().text('Select all');
+		}
+
+	}
+	function _displayCustomResults(customFilter, matchAllFilter) {
+		if (meerkat.modules.deviceMediaState.get() === 'lg') {
+			Results.model.travelResultFilter(true, true, matchAllFilter);
+			meerkat.modules.coverLevelTabs.buildCustomTab();
+		}
+		if (customFilter) {
+			$('input[name="reset-filters-radio-group"]').prop('checked', false);
+		}
+	}
+
+	function getActiveProviderNames(data) {
+		meerkat.modules.comms.get({
+			url: "spring/rest/travel/filterProviderList/list.json",
+			data: data,
+			cache: true,
+			errorLevel: "warning",
+			dataType: 'json'
+		})
+			.done(function onSuccess(providerList) {
+				$.each(providerList,function(i,prov){
+					$('#travel-filter-brands').append('<div class="col-sm-6 col-md-4 text-left col-brand">'+
+						           '<div class="checkbox">'+
+						              '<input type="checkbox" data-provider-code='+
+										prov.code +' name='+prov.dashedName+' id='+prov.dashedName+' class="checkbox-custom  checkbox" value='+prov.dashedName+
+										' checked="checked">'+
+						              '<label for='+prov.dashedName+'>'+prov.name+'</label>'+
+						          '</div>'+
+						      ' </div>');
+				});
+				 $('.col-brand input[type="checkbox"]').change(function () {
+				 	invokeBrandFilter($(this).data('provider-code'));
+				 });
+			})
+			.fail(function onError(obj, txt, errorThrown) {
+				exception(txt + ': ' + errorThrown);
+			});
 	}
 
 	function initResults(){
@@ -110,7 +195,7 @@
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.travelResults.initResults(); '+e.message, e);
 		}
 	}
-	 
+
 	 function getDestinationsValue(isAus, isComprehensive) {
 		 if (isAus) {
 			 return 0;
@@ -125,7 +210,7 @@
 		 var medicalValue = tripInfo.medicalValue;
 		 var cxdfeeValue = tripInfo.cxdfeeValue;
 		 var luggageValue = tripInfo.luggageValue;
-		
+
 		 var compCancelValue = isAus ? 10000 : 20000;
 		 var isComprehensive = excessValue && cxdfeeValue >= compCancelValue && luggageValue >= 5000;
 		 var isMidRange = excessValue && cxdfeeValue >= 5000 && luggageValue >= 2500;
@@ -149,7 +234,7 @@
 			 return level;
 		 }
 	 }
-	 
+
 	 function getCoverLevelForMultiTrip(tripInfo, result) {
 		 var level;
 
@@ -169,7 +254,7 @@
      meerkat.modules.coverLevelTabs.incrementCount(level);
      return level;
 	 }
-	 
+
 	/**
 	* Pre-filter the results object to add another parameter. This will be unnecessary when the field comes back from Java.
 	*/
@@ -347,7 +432,7 @@
 				} else {
 					var fromDateElement = document.getElementById('travel_dates_fromDate');
 					var fromDates = fromDateElement.value.split('/');
-					
+
 					if(fromDates && fromDates.length === 3) {
 						var fromDate = new Date(fromDates[1] + '/' + fromDates[0] + '/' + fromDates[2]);
 						var todayDate = meerkat.site.serverDate;
@@ -376,7 +461,7 @@
 	}
 
 	function isDomestic() {
-		
+
 		if (meerkat.modules.travel.getVerticalFilter() === 'Single Trip') {
 			return $('#travel_destination').val() === 'AUS';
 		}
@@ -400,14 +485,14 @@
 		// This is coming from the WebCTM database, ctm.content_control contentKey = travelAdvisoryMessageDomestic, travelAdvisoryMessageInternational
 		disclaimerText = isDomestic ? meerkat.site.advisoryMessage.domestic : meerkat.site.advisoryMessage.international;
 		var disclaimerHtml = $('<div />').html(disclaimerText).text();
-		
+
 		$(".travelResultsDisclaimerHeader").html(disclaimerHtml);
 		$(".oSMedical2ColText").html(oSMedical2ColText);
 		$(".cancelFeeColText").html(cancelFeeColText);
 		$(".luggageColText").html(luggageColText);
 
 		setColVisibilityAndStylesByTravelType(isDomestic);
-	}	
+	}
 
 	function setColVisibilityAndStylesByTravelType(isDomestic) {
 		var destination = $('#travel_destination').val();

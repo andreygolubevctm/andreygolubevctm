@@ -1,5 +1,6 @@
 package com.ctm.web.travel.router;
 
+import com.ctm.web.core.model.ProviderName;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
@@ -9,15 +10,18 @@ import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.results.TravelResult;
+import com.ctm.web.travel.services.TravelProviderNameService;
 import com.ctm.web.travel.services.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,15 +34,17 @@ public class TravelQuoteController extends CommonQuoteRouter<TravelRequest> {
 
     @Autowired
     private TravelService travelService;
+    @Autowired
+    private TravelProviderNameService providerNameService;
 
     @Autowired
     public TravelQuoteController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
-        super(sessionDataServiceBean,  ipAddressHandler);
+        super(sessionDataServiceBean, ipAddressHandler);
     }
 
     @RequestMapping(value = "/quote/get.json",
-            method= RequestMethod.POST,
-            consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
+            method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultsWrapper getTravelQuote(@Valid final TravelRequest data, HttpServletRequest request) throws Exception {
 
@@ -71,5 +77,23 @@ public class TravelQuoteController extends CommonQuoteRouter<TravelRequest> {
 
     }
 
+    @RequestMapping(value = "/filterProviderList/list.json",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ProviderName> filterProviderNames(HttpServletRequest request, @RequestParam(value = "environmentOverride", required = false) String environmentOverride) throws Exception {
+
+        Vertical.VerticalType vertical = Vertical.VerticalType.TRAVEL;
+
+        // Initialise request
+        Brand brand = initRouter(request, vertical);
+
+        checkIPAddressCount(brand, vertical, request);
+        // Check IP Address Count
+
+        final Optional<LocalDateTime> applicationDate = getApplicationDate(request);
+
+        // Get Providers
+        return providerNameService.getProviderNames(brand, vertical, environmentOverride);
+    }
 
 }

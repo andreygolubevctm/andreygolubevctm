@@ -17,6 +17,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -174,8 +176,8 @@ public class ProviderDao {
 			PreparedStatement stmt;
 
 			String statementSQL = "SELECT ProviderId, providerCode, Name " +
-				"FROM ctm.provider_master " +
-				"WHERE ProviderId IN (" +
+					"FROM ctm.provider_master " +
+					"WHERE ProviderId IN (" +
 					"SELECT DISTINCT providerId " +
 					"FROM product_master " +
 					"WHERE productCat = ? ";
@@ -226,7 +228,11 @@ public class ProviderDao {
 
 			if (conn != null) {
 				stmt = dbSource.getConnection().prepareStatement(
-						"SELECT * FROM ctm.stylecode_providers WHERE verticalCode = ? AND stylecodeId = ? AND Status != 'X' AND providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM ctm.stylecode_products WHERE productCat = ?) AND CURRENT_DATE BETWEEN EffectiveStart AND EffectiveEnd ORDER BY `Name`"
+						"SELECT p.Name,p.providerCode FROM ctm.stylecode_providers p WHERE " +
+								"verticalCode = ? AND stylecodeId = ? AND Status != 'X' AND " +
+								"providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM " +
+								"ctm.stylecode_products WHERE productCat = ?) AND " +
+								"CURRENT_DATE BETWEEN EffectiveStart AND EffectiveEnd ORDER BY `Name`"
 				);
 
 				stmt.setString(1, verticalType);
