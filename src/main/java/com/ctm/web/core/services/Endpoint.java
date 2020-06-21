@@ -13,7 +13,7 @@ public class Endpoint {
     public static final Endpoint PRODUCT_INFO = Endpoint.instanceOf("product");
     public static final Endpoint VALIDATE = Endpoint.instanceOf("validate");
     public static final Endpoint POPULAR_DESTINATIONS = Endpoint.instanceOf("popularDestinations");
-
+    public static final Endpoint ACTIVE_PROVIDER_CODES = Endpoint.instanceOf("activeProviderCodes");
     public static Endpoint instanceOf(String value) {
         return new Endpoint(value);
     }

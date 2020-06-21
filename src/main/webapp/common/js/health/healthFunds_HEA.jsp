@@ -106,8 +106,6 @@
 				});
 
 				healthFunds_HEA.$claimsY.trigger('click');
-
-				healthFunds_HEA.$paymentMethod.parent().hide();
 			},
 			renderPaymentDays: function (){
 				meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28});
