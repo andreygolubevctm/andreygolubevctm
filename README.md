@@ -17,6 +17,12 @@ The Insurance verticals currently using WebCTM include:
 * [Income](https://secure.comparethemarket.com.au/ctm/ip_quote.jsp)
 * [Homeloan](https://secure.comparethemarket.com.au/ctm/homeloan_quote.jsp)
 
+## Getting Started
+
+[Setting up WebCTM and IntelliJ - Mac OSX & Ubuntu](https://ctmaus.atlassian.net/wiki/spaces/IT/pages/28147859/IntelliJ+WebCTM+Mac+OS+X+Ubuntu+16.04)
+
+[Setting up WebCTM and IntelliJ - Windows](https://ctmaus.atlassian.net/wiki/spaces/IT/pages/28082387/IntelliJ+WebCTM+Windows)
+
 ## Prerequisites
 * [Java](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Maven](https://maven.apache.org/download.cgi)
