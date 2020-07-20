@@ -66,7 +66,7 @@
                 element.val('');
             }
             noneOption.remove();
-        } else if (hasCover == 'N') {
+        } else if (hasCover === 'N') {
 
             // This inserts 'No current health fund', in future it could be displayed at this point, so that users could select their previous fund
             // if they have previously had extras cover and previously served waiting periods etc.. but dont currently have cover

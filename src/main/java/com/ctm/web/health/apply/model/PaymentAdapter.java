@@ -100,7 +100,7 @@ public class PaymentAdapter {
                     medicare.map(com.ctm.web.health.model.form.Medicare::getSurname)
                             .map(LastName::new)
                             .orElse(null),
-                    new Position(1),
+                    new Position(medicare.get().getCardPosition()),
                     medicare.map(com.ctm.web.health.model.form.Medicare::getExpiry)
                             .map(e -> {
                                 Optional<ExpiryDay> cardExpiryDay = Optional.ofNullable(e.getCardExpiryDay()).map(ExpiryDay::new);

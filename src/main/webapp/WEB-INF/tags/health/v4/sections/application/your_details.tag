@@ -17,13 +17,17 @@
 
         <c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
         <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+
+        <form_v4:fieldset legend="Hospital cover" id="primaryHospitalCover">
+        </form_v4:fieldset>
+
         <div id="${name}">
 
-            <div id="yourpreviousfund" legend="Previous Fund Details" class="health-previous_fund">
+            <div id="primarypreviousfund" legend="Previous Fund Details" class="health-previous_fund">
 
                 <c:set var="fieldXpath" value="${xpath}/primary/fundName" />
-                <form_v4:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium">
-                    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+                <form_v4:row fieldXpath="${fieldXpath}" label="Who is your current health fund?" id="clientFund" className="changes-premium">
+                    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
                 </form_v4:row>
 
                     <%-- Optional Membership ID's --%>
@@ -34,8 +38,8 @@
                     </form_v4:row>
 
                     <c:set var="fieldXpath" value="${xpath}/primary/abd" />
-                    <form_v4:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger hidden primaryHasABD">
-	                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_details_abd_current" id="primary_abd_health_cover" />
+                    <form_v4:row label="Does your current hospital cover include an Age-Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger hidden primaryHasABD">
+                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your current hospital cover include an Age-Based Discount?" required="true" className="health-cover_details_abd_current" id="primary_abd_health_cover" />
                         <health_v4_application:abd_details className="abd-details-application-single hidden" />
                     </form_v4:row>
 
@@ -50,6 +54,29 @@
                     </form_v4:row>
                 </div>
             </div>
+        </div>
+
+        <div id="primaryextrasfund" class="health-extras_fund">
+            <form_v4:fieldset legend="Extras cover">
+
+                <c:set var="fieldXpath" value="${xpath}/primary/extras/fundName" />
+                <form_v4:row fieldXpath="${fieldXpath}" label="Who is your current extras cover provider?" id="extrasClientFund" className="changes-premium">
+                    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your extra cover provider" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+                </form_v4:row>
+
+                <%-- Optional Membership ID's --%>
+                <div id="extrasClientMemberID" class="membership">
+                    <c:set var="fieldXpath" value="${xpath}/primary/extras/memberID" />
+                    <form_v4:row fieldXpath="${fieldXpath}" label="Membership Number" className="extrasClientMemberID" smRowOverride="3">
+                        <field_v2:input xpath="${fieldXpath}" title="your extras member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." maxlength="10" />
+                    </form_v4:row>
+
+                    <c:set var="fieldXpath" value="${xpath}/primary/extras/authority" />
+                    <form_v4:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden">
+                        <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="I authorise <span>the fund</span> to contact my previous extras fund to obtain a clearance certificate" label="I authorise <span>the fund</span> to contact my previous extras fund to obtain a transfer certificate" required="false" customAttribute=" data-attach='true' " helpId="522" />
+                    </form_v4:row>
+                </div>
+            </form_v4:fieldset>
         </div>
 
         <%-- reset xpath to the same as used on About You page --%>

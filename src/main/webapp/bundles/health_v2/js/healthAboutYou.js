@@ -7,6 +7,7 @@
 		currentSituation = null,
 		$aboutYouContainer,
 		$primaryCurrentCover,
+		$primaryHealthCurrentCover,
 		$primaryContinuousCoverContainer,
 		$partnerContainer,
 		$partnerCurrentCover,
@@ -57,6 +58,7 @@
 			$healthCoverDetailsDependants = $('.health_cover_details_dependants'),
 			$healthCoverIncomeMessage = $('#health_healthCover_incomeMessage'),
 			$primaryCurrentCover = $aboutYouContainer.find('#health_healthCover_health_cover'),
+			$primaryHealthCurrentCover = $('#health-current-cover-primary'),
 			$primaryContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-primary'),
 			$partnerContainer = $aboutYouContainer.find('#partner-health-cover'),
 			$partnerCurrentCover = $aboutYouContainer.find('#health_healthCover_partner_health_cover'),
@@ -162,8 +164,10 @@
 	function togglePrimaryContinuousCover(isInitMode) {
 		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && meerkat.modules.age.isAgeLhcApplicable($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
+			$primaryHealthCurrentCover.slideDown();
 		} else {
 			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
+			isInitMode === true ? $primaryHealthCurrentCover.hide() : $primaryHealthCurrentCover.find('input[name=health_healthCover_primary_healthCurrentCover]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 

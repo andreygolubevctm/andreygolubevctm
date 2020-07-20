@@ -357,6 +357,28 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				.map(Application::getProductTitle)
 				.orElse(""));
 
+		emailEventRequest.setStartDate(getParamSafely(dataBucket, "health/payment/details/start"));
+		emailEventRequest.setPaymentDateBank(getParamSafely(dataBucket, "health/payment/bank/policyDay"));
+		emailEventRequest.setPaymentDateCreditCard(getParamSafely(dataBucket, "health/payment/credit/policyDay"));
+		emailEventRequest.setGovernmentRebate(getParamSafely(dataBucket, "payload/paymentdetails/rebate"));
+		emailEventRequest.setGovernmentRebatePct(getParamSafely(dataBucket, "payload/paymentdetails/rebatePercentage"));
+
+		emailEventRequest.setPrimaryHasCover(getParamSafely(dataBucket, "health/application/primary/cover") != null ? getParamSafely(dataBucket, "health/application/primary/cover") : getParamSafely(dataBucket, "health/healthCover/primary/cover"));
+		emailEventRequest.setPrimaryCoverType(getParamSafely(dataBucket, "health/application/primary/cover/type") != null ? getParamSafely(dataBucket, "health/application/primary/cover/type") : getParamSafely(dataBucket, "health/healthCover/primary/cover/type"));
+		emailEventRequest.setPrimaryHasDifferentProviders(getParamSafely(dataBucket, "health/application/primary/cover/differentProviders") != null ? getParamSafely(dataBucket, "health/application/primary/cover/differentProviders") : getParamSafely(dataBucket, "health/previousfund/primary/differentFunds"));
+		emailEventRequest.setPrimaryFundName(getParamSafely(dataBucket, "health/application/primary/fundName") != null ? getParamSafely(dataBucket, "health/application/primary/fundName") : getParamSafely(dataBucket, "health/previousfund/primary/fundName"));
+		emailEventRequest.setPrimaryMemberID(getParamSafely(dataBucket, "health/application/primary/memberID") != null ? getParamSafely(dataBucket, "health/application/primary/memberID") : getParamSafely(dataBucket, "health/previousfund/primary/memberID"));
+		emailEventRequest.setPrimaryExtrasFundName(getParamSafely(dataBucket, "health/application/primary/extras/fundName") != null ? getParamSafely(dataBucket, "health/application/primary/extras/fundName") : getParamSafely(dataBucket, "health/previousfund/primary/extras/fundName"));
+		emailEventRequest.setPrimaryExtrasMemberID(getParamSafely(dataBucket, "health/application/primary/extras/memberID") != null ? getParamSafely(dataBucket, "health/application/primary/extras/memberID") : getParamSafely(dataBucket, "health/previousfund/primary/extras/memberID"));
+
+		emailEventRequest.setPartnerHasCover(getParamSafely(dataBucket, "health/application/partner/cover") != null ? getParamSafely(dataBucket, "health/application/partner/cover") : getParamSafely(dataBucket, "health/healthCover/partner/cover"));
+		emailEventRequest.setPartnerCoverType(getParamSafely(dataBucket, "health/application/partner/cover/type") != null ? getParamSafely(dataBucket, "health/application/partner/cover/type") : getParamSafely(dataBucket, "health/healthCover/partner/cover/type"));
+		emailEventRequest.setPartnerHasDifferentProviders(getParamSafely(dataBucket, "health/application/partner/cover/differentProviders") != null ? getParamSafely(dataBucket, "health/application/partner/cover/differentProviders") : getParamSafely(dataBucket, "health/previousfund/partner/differentFunds"));
+		emailEventRequest.setPartnerFundName(getParamSafely(dataBucket, "health/application/partner/fundName") != null ? getParamSafely(dataBucket, "health/application/partner/fundName") : getParamSafely(dataBucket, "health/previousfund/partner/fundName"));
+		emailEventRequest.setPartnerMemberID(getParamSafely(dataBucket, "health/application/partner/memberID") != null ? getParamSafely(dataBucket, "health/application/partner/memberID") : getParamSafely(dataBucket, "health/previousfund/partner/memberID"));
+		emailEventRequest.setPartnerExtrasFundName(getParamSafely(dataBucket, "health/application/partner/extras/fundName") != null ? getParamSafely(dataBucket, "health/application/partner/extras/fundName") : getParamSafely(dataBucket, "health/previousfund/partner/extras/fundName"));
+		emailEventRequest.setPartnerExtrasMemberID(getParamSafely(dataBucket, "health/application/partner/extras/memberID") != null ? getParamSafely(dataBucket, "health/application/partner/extras/memberID") : getParamSafely(dataBucket, "health/previousfund/partner/extras/memberID"));
+
 		try {
 			emailEventRequest.setConfirmationUrl(createActionUrl(confirmationId));
 		} catch (ConfigSettingException e) {

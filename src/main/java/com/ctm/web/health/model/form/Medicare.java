@@ -14,6 +14,9 @@ public class Medicare {
 
     private String surname;
 
+    private int cardPosition;
+
+
     public String getCover() {
         return cover;
     }
@@ -60,5 +63,13 @@ public class Medicare {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public int getCardPosition() {
+        return cardPosition;
+    }
+
+    public void setCardPosition(int cardPosition) {
+        this.cardPosition = cardPosition;
     }
 }
