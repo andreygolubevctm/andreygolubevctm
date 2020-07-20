@@ -21,19 +21,48 @@
 
         var primaryFund = meerkat.modules.healthPreviousFund.getPrimaryFund();
         var partnerFund = meerkat.modules.healthPreviousFund.getPartnerFund();
-        if (primaryFund !== 'NONE' && primaryFund !== '') {
+        var primaryExtrasFund = meerkat.modules.healthPreviousFund.getPrimaryExtrasFund();
+        var partnerExtrasFund = meerkat.modules.healthPreviousFund.getPartnerExtrasFund();
+        var primaryDifferentFund = meerkat.modules.healthPreviousFund.getPrimaryHasDifferentFund();
+        var partnerDifferentFund = meerkat.modules.healthPreviousFund.getPartnerHasDifferentFund();
+
+        if (primaryFund !== 'NONE' && primaryFund !== '' && hasPrimaryCover()) {
             $_previousFund.find('#clientMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onA');
         } else {
+            if(!hasPrimaryCover())
+                $_previousFund.find('#clientFund').slideUp();
             $_previousFund.find('#clientMemberID').slideUp();
             $_previousFund.find('.membership').removeClass('onA');
         }
 
-        if (meerkat.modules.healthChoices.hasSpouse() && partnerFund !== 'NONE' && partnerFund !== '') {
+        if (!primaryDifferentFund && primaryExtrasFund !== 'NONE' && primaryExtrasFund !== '' && hasPrimaryCover()) {
+            $_previousFund.find('#clientExtrasMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onA');
+        } else {
+            if(!hasPrimaryCover())
+                $_previousFund.find('#clientExtrasFund').slideUp();
+            $_previousFund.find('#clientExtrasMemberID').slideUp();
+            $_previousFund.find('.membership').removeClass('onA');
+        }
+
+        if (meerkat.modules.healthChoices.hasSpouse() && partnerFund !== 'NONE' && partnerFund !== '' && hasPartnerCover()) {
             $_previousFund.find('#partnerMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onB');
         } else {
+            if(!hasPartnerCover())
+                $_previousFund.find('#partnerFund').slideUp();
             $_previousFund.find('#partnerMemberID').slideUp();
+            $_previousFund.find('.membership').removeClass('onB');
+        }
+
+        if (!partnerDifferentFund && meerkat.modules.healthChoices.hasSpouse() && partnerExtrasFund !== 'NONE' && partnerExtrasFund !== '' && hasPartnerCover()) {
+            $_previousFund.find('#partnerExtrasMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onB');
+        } else {
+            if(!hasPartnerCover())
+                $_previousFund.find('#partnerExtrasFund').slideUp();
+            $_previousFund.find('#partnerExtrasMemberID').slideUp();
             $_previousFund.find('.membership').removeClass('onB');
         }
     }
@@ -41,21 +70,26 @@
     function setHealthFunds(initMode) {
         setHealthFundsForPerson(initMode,
             $('#health_healthCover_primaryCover') ,
+            $('#health-current-cover-primary'),
             $('#health-continuous-cover-primary'),
             $('#health_healthCover_primary_dob'),
             $('#primaryLHCRow'));
         setHealthFundsForPerson(initMode,
             $('#health_healthCover_partnerCover') ,
+            $('#health-current-cover-partner'),
             $('#health-continuous-cover-partner'),
             $('#health_healthCover_partner_dob'),
             $('#partnerLHCRow'));
     }
 
-    function setHealthFundsForPerson(initMode, $healthCover , $continuousCover, $dob, $lhcRow){
+    function setHealthFundsForPerson(initMode, $healthCover , $currentCover, $continuousCover, $dob, $lhcRow){
 
         var isAgeLhcApplicable = meerkat.modules.age.isAgeLhcApplicable($dob.val());
         var healthCoverValue = $healthCover.find(':checked').val();
-        if( healthCoverValue == 'Y' ) {
+        var healthCurrentCoverValue = $currentCover.find(':input').filter(':checked').val();
+        var hasHospitalCover = ['H', 'C'].indexOf(healthCurrentCoverValue) > -1;
+
+        if( healthCoverValue === 'Y' && hasHospitalCover ) {
 
             if( isAgeLhcApplicable ) {
                 show(initMode , $continuousCover);
@@ -64,14 +98,14 @@
             }
 
         } else {
-            if( healthCoverValue == 'N'){
+            if( healthCoverValue === 'N'){
                 resetRadio($continuousCover,'N');
             }
             hide(initMode , $continuousCover);
         }
         if(meerkat.site.isCallCentreUser === true) {
-            var noContinuousCover = $continuousCover.find(':checked').val() == 'N';
-            var noHealthCover = healthCoverValue == 'N';
+            var noContinuousCover = $continuousCover.find(':checked').val() === 'N';
+            var noHealthCover = healthCoverValue === 'N';
 
             // only show LHC override if LHC is being applied to the person
             if (isAgeLhcApplicable && (noContinuousCover || noHealthCover)) {
@@ -91,8 +125,8 @@
             hide(initMode , $incomeBase);
         }
     }
-    
-    
+
+
 
     function show(initMode , $element) {
         if(initMode){
@@ -111,11 +145,11 @@
     }
 
     function hasPrimaryCover() {
-        return meerkat.site.hasPrimaryCover === 'Y';
+        return $('#health_healthCover_health_cover').find('input').filter(':checked').val() === 'Y';
     }
 
     function hasPartnerCover() {
-        return meerkat.site.hasPartnerCover === 'Y';
+        return $('#health_healthCover_partner_health_cover').find('input').filter(':checked').val() === 'Y';
     }
 
     meerkat.modules.register("healthCoverDetails", {

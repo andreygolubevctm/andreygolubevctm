@@ -53,7 +53,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/cardPosition" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Position you appear on your medicare card"  className="health_payment_medicare_cardPosition-group">
-			<field_v2:count_select xpath="${fieldXpath}" min="1" max="5" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition"/>
+			<field_v2:count_select xpath="${fieldXpath}" min="1" max="9" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition"/>
 		</form_v3:row>
 
 	</form_v3:fieldset>

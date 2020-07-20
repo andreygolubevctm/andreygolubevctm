@@ -329,7 +329,6 @@
 				}
 
 				meerkat.modules.healthResultsChange.onAmbulanceAccidentCoverChange(selectedBenefits);
-				meerkat.modules.healthLHC.displayLHC();
 			},
 			onBeforeLeave:function(event){}
 		};
@@ -352,14 +351,6 @@
 			onInitialise: function onContactInit(event){
 				meerkat.modules.healthYourDetailsDynamicScripting.onInitialise();
 				meerkat.modules.resultsFeatures.fetchStructure(simplesCategoryVersion);
-
-				$('#contactForm').find(':input').on('change',
-					function (event) {
-						var $this = $(this);
-						// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
-						if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
-						meerkat.modules.healthLHC.displayLHC();
-					});
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				if (event.isForward) {
@@ -377,7 +368,6 @@
 
 				meerkat.modules.healthContactType.togglePhoneEmailRequired();
 				meerkat.modules.healthYourDetailsDynamicScripting.onBeforeEnterYourDetails();
-				meerkat.modules.healthLHC.displayLHC();
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
@@ -545,7 +535,7 @@
 				});
 
 				// Show/hide membership number and authorisation checkbox questions for previous funds.
-				$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').on('change', function(){
+				$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName, #health_previousfund_primary_extras_fundName, #health_previousfund_partner_extras_fundName').on('change', function(){
 					meerkat.modules.healthCoverDetails.displayHealthFunds();
 				});
 
@@ -1037,7 +1027,13 @@
 	function loadRatesBeforeResultsPage(forceRebate, callback) {
 
 		var $healthCoverDetails = $('#contactForm');
+		var dob = $healthCoverDetails.find('#health_healthCover_primary_dob').val();
 
+		if (dob) {
+			meerkat.modules.healthLHC.onInitialise();
+		}
+
+		// We need to continue to do this for the rebate value
 		var postData = {
 			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
 			income:$healthCoverDetails.find(':input[name="health_healthCover_income"]').val() || 0,
@@ -1070,8 +1066,15 @@
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
 	function loadRates(callback){
 
-		var $healthCoverDetails = $('#contactForm');
 
+		var $healthCoverDetails = $('#contactForm');
+		var dob = $healthCoverDetails.find('#health_healthCover_primary_dob').val();
+
+		if (dob) {
+			meerkat.modules.healthLHC.onInitialise();
+		}
+
+		// We need to continue to do this for the rebate value
 		var postData = {
 			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
 			income:$healthCoverDetails.find(':input[name="health_healthCover_income"]').val() || 0,
