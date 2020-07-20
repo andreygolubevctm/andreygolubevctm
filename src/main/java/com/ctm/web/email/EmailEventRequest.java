@@ -44,4 +44,30 @@ public class EmailEventRequest {
     private String premiumLabel;
     private String source;
     private String uid;
+
+    //New health applications properties
+    private String startDate;
+    private String paymentDateBank;
+    private String paymentDateCreditCard;
+    private String governmentRebate;
+    private String governmentRebatePct;
+
+    //Primary specific properties
+    private String primaryHasCover;
+    private String primaryCoverType;
+    private String primaryHasDifferentProviders;
+    private String primaryFundName;
+    private String primaryMemberID;
+    private String primaryExtrasFundName;
+    private String primaryExtrasMemberID;
+
+    //Partner specific properties
+    private String partnerHasCover;
+    private String partnerCoverType;
+    private String partnerHasDifferentProviders;
+    private String partnerFundName;
+    private String partnerMemberID;
+    private String partnerExtrasFundName;
+    private String partnerExtrasMemberID;
+
 }

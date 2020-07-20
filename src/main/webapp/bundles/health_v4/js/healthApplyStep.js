@@ -55,9 +55,12 @@
             healthFundHistoryRow: $('#' + applicant + 'FundHistory'),
             healthApplicationDOB: $('#health_application_' + applicant + '_dob'),
             aboutYouPreviousFund: $('select[name=health_healthCover_' + applicant + '_fundName]').children('option'),
-            healthApplicationPreviousFundRow: $('#' + applicant + 'previousfund'),
             healthApplicationPreviousFund: $('select[name=health_previousfund_' + applicant + '_fundName]').children('option'),
             healthApplicationPreviousFundLabel: $('[for=health_previousfund_' + applicant + '_fundName]'),
+            previousCoverTypeRow: $('#health_application_' + applicant + 'CoverType'),
+            previousCoverType: $('input[name=health_application_' + applicant + '_cover_type]'),
+            previousCoverDifferentProvidersCheckboxRow: $('#health_application_' + applicant + 'CoverDifferentProviders'),
+            hospitalFundHeader: $('#' + applicant + 'HospitalCover'),
             everHadPrivateHospitalRow_1: $('#health_application_' + applicant + 'CoverEverHadPrivateHospital1'),
             everHadPrivateHospitalBtnGroup_1: $('#health_application_' + applicant + '_ever_had_health_coverPrivateHospital1'),
             everHadPrivateHospital_1: $('input[name=health_application_' + applicant + '_everHadCoverPrivateHospital1]'),
@@ -74,14 +77,14 @@
             iDontKnowMyDateRangesPromptText: $('#' + applicant + 'LhcDatesUnsureApplyFullLHC .applyFullLHCAdditionalText'),
             receivesAgeBasedDiscountRow: $('#' + applicant + '_abd'),
             receivesAgeBasedDiscount: $('#' + applicant + '_abd_health_cover'),
-            ageBasedDiscountPolicyStartRow: $('#' + applicant + '_abd_start_date'),
-            previousFundNumber: $('input[name=health_previousfund_' + applicant + '_memberID]')
+            ageBasedDiscountPolicyStartRow: $('#health_previousfund_' + applicant + '_abd_start_date'),
+            previousFundNumber: $('input[name=health_previousfund_' + applicant + '_memberID]'),
+            extrasFund: $('#' + applicant + 'extrasfund')
         };
 
         if (applicant === 'primary') {
             applicantFields['currentlyHaveAnyKindOfCoverPreResultsBtnGroup'] = $('#health_healthCover_health_cover');
             applicantFields['currentlyHaveAnyKindOfCoverApplyPage'] = $('#health_application_health_cover');
-            applicantFields['healthApplicationPreviousFundRow'] = $('#yourpreviousfund');
             applicantFields['everHadPrivateHospitalBtnGroup_1'] = $('#health_application_ever_had_health_coverPrivateHospital1');
             applicantFields['everHadPrivateHospitalBtnGroup_2'] = $('#health_application_ever_had_health_coverPrivateHospital2');
             applicantFields['healthContinuousCoverBtnGroup'] = $('#health_healthCover_health_cover_loading');
@@ -162,7 +165,7 @@
 
                 $elements.medicareExpiryMonthWrapper.toggleClass('col-xs-4 allow-for-exp-day', showMedicareDayField);
                 $elements.medicareExpiryMonthWrapper.toggleClass('col-xs-6', !showMedicareDayField);
-                
+
                 $elements.medicareExpiryYearWrapper.toggleClass('col-xs-4', showMedicareDayField);
                 $elements.medicareExpiryYearWrapper.toggleClass('col-xs-6', !showMedicareDayField);
             })
@@ -218,14 +221,6 @@
             input.val(value);
         });
 
-        $elements[applicant].receivesAgeBasedDiscount.find(':input').on('change', function(event) {
-            if(event.target.value === 'Y') {
-                $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
-            }else{
-                $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
-            }
-        });
-
         $elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find(':input').on('change', function() {
             _toggleCurrentlyHaveAnyKindOfCover(applicant);
             _toggleAgeBasedDiscountQuestion(applicant);
@@ -236,6 +231,14 @@
             _toggleAgeBasedDiscountQuestion(applicant);
 
             meerkat.messaging.publish(meerkatEvents.healthPreviousFund['POPULATE_' + applicant.toUpperCase()], ($elements[applicant].everHadPrivateHospital_1.filter(':checked').val() === 'Y' ? 'Y' : 'N' ));
+        });
+
+        $elements[applicant].previousCoverDifferentProvidersCheckboxRow.find(':input').on('change', function() {
+            _toggleDifferentProviders(applicant);
+        });
+
+        $elements[applicant].previousCoverTypeRow.find(':input').on('change', function() {
+            _toggleDifferentProvidersCheckbox(applicant);
         });
 
         $elements[applicant].healthContinuousCoverRow.find(':input').on('change', function() {
@@ -265,42 +268,37 @@
 
         var coverDate = convertDate(meerkat.modules.healthCoverStartDate.getVal());
 
-        var curDate = (meerkat.site.serverDate.getTime() != coverDate.getTime()) ? coverDate : meerkat.site.serverDate;
+        var curDate = (meerkat.site.serverDate.getTime() !== coverDate.getTime()) ? coverDate : meerkat.site.serverDate;
 
         var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
         var selectedProduct = Results.getSelectedProduct();
 
-        if(selectedProduct.custom.reform) {
-            var abdValue = selectedProduct.custom.reform.yad;
-            if(abdValue !== 'R') {
-              $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
-              $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
-              return;
-            }
-        }
-
-        if($elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N') {
+        if((selectedProduct.custom.reform && selectedProduct.custom.reform.yad !== 'R') ||
+            ($elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N')) {
             $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
             $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
             return;
         }
 
-        if(age >= 18 && age < 45) {
-          $elements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
-          var hasABD = $elements[applicant].receivesAgeBasedDiscount.find(':checked').val();
-          if(hasABD === 'Y') {
-              $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
-          }
-        }else{
-          $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
-          $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+        if(age >= 18 && age < 45 && ($elements[applicant].previousCoverType.filter(':checked').val() === 'C' || $elements[applicant].previousCoverType.filter(':checked').val() === 'H')) {
+            $elements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
+            if($elements[applicant].receivesAgeBasedDiscount.find(':checked').val() === 'Y') {
+                $elements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+            } else {
+                $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+            }
+        } else {
+            $elements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+            $elements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
         }
     }
 
     function _toggleCurrentlyHaveAnyKindOfCover(applicant) {
+
         var hideRowPrivateHospital1 = true,
+            hideRowCoverType1 = false,
+            hideRowCoverDifferentProvidersCheckbox1 = true,
             hideRowContinuousCover = true,
-            changeCurrentFundLabelToPreviousFund = true,
             hideRowPrivateHospital2 = true,
             hideRowFundHistory = true,
             hideDontKnowMyDateRanges = true,
@@ -308,7 +306,6 @@
             hideNoHospitalAdditionalTextPH1 = true,
             hideNoHospitalAdditionalTextPH2 = true;
 
-        var applicantPrefix = ((applicant === 'primary') ? "Your" : "Partner's");
         var isLHCPossiblyApplicable = _isLHCPossiblyApplicable(applicant);
 
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund['POPULATE_' + applicant.toUpperCase()],
@@ -317,7 +314,9 @@
         if (getCurrentCover(applicant) === 'Y') {
             $elements[applicant].currentlyHaveAnyKindOfCoverPreResultsBtnGroup.find("input[value='Y']").prop('checked',true).trigger('change');
 
-            changeCurrentFundLabelToPreviousFund = false;
+            if ($elements[applicant].previousCoverType.filter(':checked').val() === 'C')
+                hideRowCoverDifferentProvidersCheckbox1 = false;
+
             if (isLHCPossiblyApplicable) {
                 hideRowContinuousCover = false;
 
@@ -341,6 +340,7 @@
             $elements[applicant].currentlyHaveAnyKindOfCoverPreResultsBtnGroup.find("input[value='N']").prop('checked', true).trigger('change');
 
             if ($elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N') {
+                hideRowCoverType1 = true;
                 hideRowPrivateHospital1 = false;
 
                 meerkat.messaging.publish(meerkatEvents.healthPreviousFund['POPULATE_' + applicant.toUpperCase()], ($elements[applicant].everHadPrivateHospital_1.filter(':checked').val() === 'Y' ? 'Y' : 'N' ));
@@ -364,7 +364,18 @@
             }
         }
 
-        $elements[applicant].healthApplicationPreviousFundLabel.html(applicantPrefix + (changeCurrentFundLabelToPreviousFund ? " Previous" : " Current") + " Health Fund");
+        _toggleDifferentProviders(applicant);
+        _toggleAgeBasedDiscountQuestion(applicant);
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[applicant].previousCoverDifferentProvidersCheckboxRow,
+            hideRowCoverDifferentProvidersCheckbox1
+        );
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[applicant].previousCoverTypeRow,
+            hideRowCoverType1
+        );
 
         meerkat.modules.fieldUtilities.toggleVisible(
             $elements[applicant].everHadPrivateHospitalRow_1,
@@ -451,6 +462,61 @@
 
     function _isLHCPossiblyApplicable(applicant) {
         return _isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(applicant);
+    }
+
+    /*
+     * Controls visibility for the hospital and extras fund details
+     *      Only displayed if all of the following conditions are met:
+     *
+     *         -  Must be currently holding a private health insurance
+     *         -  said currently held cover must be hospital and extras, not just hospital or just extras
+     *         -  applicant has 2 different providers for hospital and extras
+     *
+    */
+    function _toggleDifferentProviders(applicant) {
+        var applicantPrefix = ((applicant === 'primary') ? "your" : "your partner's");
+        if (getCurrentCover(applicant) === 'Y') {
+            $elements[applicant].healthApplicationPreviousFundLabel.html("Who is " + applicantPrefix + " current health fund?");
+            if ($elements[applicant].previousCoverType.filter(':checked').val() === 'C' && $elements[applicant].previousCoverDifferentProvidersCheckboxRow.find(':input').filter(':checked').val() === 'Y') {
+                $elements[applicant].healthApplicationPreviousFundLabel.html("Who is " + applicantPrefix + " current hospital cover provider?");
+                $elements[applicant].hospitalFundHeader.show();
+                $elements[applicant].extrasFund.show();
+            } else {
+                $elements[applicant].hospitalFundHeader.hide();
+                $elements[applicant].extrasFund.hide();
+            }
+        } else {
+            $elements[applicant].healthApplicationPreviousFundLabel.html("Who is " + applicantPrefix + " previous health fund?");
+            $elements[applicant].hospitalFundHeader.hide();
+            $elements[applicant].extrasFund.hide();
+        }
+    }
+
+
+    /*
+     * Controls visibility for 'I have hospital and extras cover with different providers'
+     *      Only displayed if all of the following conditions are met:
+     *
+     *         -  Must be currently holding a private health insurance
+     *         -  said currently held cover must be hospital and extras, not just hospital or just extras
+     *
+    */
+    function _toggleDifferentProvidersCheckbox(applicant) {
+
+        var hideRowCoverDifferentProvidersCheckbox = true;
+
+        if ($elements[applicant].previousCoverType.filter(':checked').val() === 'C') {
+            hideRowCoverDifferentProvidersCheckbox = false;
+        }
+
+        _toggleAgeBasedDiscountQuestion(applicant);
+        _toggleDifferentProviders(applicant);
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[applicant].previousCoverDifferentProvidersCheckboxRow,
+            hideRowCoverDifferentProvidersCheckbox
+        );
+
     }
 
     /*

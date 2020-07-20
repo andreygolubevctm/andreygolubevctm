@@ -150,6 +150,14 @@ public class HealthApplicationController extends CommonQuoteRouter {
             }
         }
 
+        if(data.getHealth().getApplication().getPrimary().getFirstname() != null && data.getHealth().getPayment().getMedicare().getFirstName() == null) {
+            data.getHealth().getPayment().getMedicare().setFirstName(data.getHealth().getApplication().getPrimary().getFirstname());
+        }
+
+        if(data.getHealth().getApplication().getPrimary().getSurname() != null && data.getHealth().getPayment().getMedicare().getSurname() == null) {
+            data.getHealth().getPayment().getMedicare().setSurname(data.getHealth().getApplication().getPrimary().getSurname());
+        }
+
         List<SchemaValidationError> validationErrors = HealthApplicationValidation.validateCoverType(data);
         if(!validationErrors.isEmpty()) {
             throw new RouterException(data.getTransactionId(), validationErrors);

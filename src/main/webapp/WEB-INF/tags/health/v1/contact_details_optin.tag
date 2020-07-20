@@ -168,14 +168,42 @@
             --%>
 
             <c:set var="fieldXpath" value="${xpath}/primary/cover" />
-            <form_v3:row label="Do you currently hold private Hospital insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
+            <form_v3:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
+            </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/primary/cover/type" />
+            <form_v3:row label="What type of cover do you currently hold?" fieldXpath="${fieldXpath}" id="health-current-cover-primary" className="health-your_details-opt-group text-danger">
+                <field_v2:array_radio items="C=Hospital & Extras,H=Hospital Only,E=Extras Only" style="group" xpath="${fieldXpath}" title="your current health cover" required="true" id="${name}_health_current_cover" className="loading"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/healthCoverLoading" />
             <form_v3:row label="Have you had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group text-danger"  helpId="239" additionalHelpAttributes="data-content-replace='{{year}},${continuousCoverYear}'">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your health cover loading" required="true" id="${name}_health_cover_loading" className="loading"/>
             </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/primary/healthEverHeld" />
+            <form_v3:row label="Have you ever held Hospital cover?" fieldXpath="${fieldXpath}" id="health-ever-held-cover-primary" className="health-your_details-opt-group text-danger">
+                <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your previous health cover" required="true" id="${name}_health_ever_held_cover" className="loading"/>
+            </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/primary/previousFundName" />
+			<form_v3:row fieldXpath="${fieldXpath}" label="Your Previous Hospital Fund" id="clientPreviousFund" className="hidden">
+				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your previous health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+			</form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/primary/fundHistory" />
+            <form_v3:row fieldXpath="${fieldXpath}" label="Based on your answers it looks like you may be affected by the Government Lifetime Health Cover loading, please enter the approximate date ranges you have held <span class='text-bold'>private hospital</span> cover so we can estimate the impact on your premiums." id="health-primary-fund-history" className="changes-premium text-danger hidden">
+                <field_v2:coverage_dates_input xpath="${fieldXpath}" footerText="Based on your answers, you may be affected by LHC. The LHC amount will be shown in the premium on the next page, if applicable." />
+            </form_v3:row>
+            <%-- I don't know my LHC history - apply full LHC --%>
+            <div id="primaryLhcDatesUnsureApplyFullLHC" class="applyFullLHC hidden">
+                <c:set var="fieldXpath" value="${xpath}/primary/fundHistory/dates/unsure" />
+                <form_v3:row fieldXpath="${fieldXpath}">
+                    <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="I don&apos;t know the date ranges for the periods that I have held private hospital insurance in the past" label="I don&apos;t know my date ranges" required="false" helpId="586" />
+                    <div class="applyFullLHCAdditionalText matchCheckboxLabelStyles hidden">Full applicable LHC will be applied to your policy until your new fund receives a transfer certificate from your previous fund, it will then be adjusted from the start date of your policy and you will be credited any amount you have overpaid.</div>
+                </form_v3:row>
+            </div>
 
             <c:set var="fieldXpath" value="${xpath}/primary/abd" />
             <form_v3:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger primary_currentPolicyAbd-group hidden">
@@ -208,14 +236,43 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/cover" />
-            <form_v3:row label="Does your partner currently hold private Hospital insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover">
+            <form_v3:row label="Does your partner currently hold private health insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_partner_health_cover"/>
+            </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/partner/cover/type" />
+            <form_v3:row label="What type of cover does your partner currently hold?" fieldXpath="${fieldXpath}" id="health-current-cover-partner" className="health-your_details-opt-group text-danger">
+                <field_v2:array_radio items="C=Hospital & Extras,H=Hospital Only,E=Extras Only" style="group" xpath="${fieldXpath}" title="your partners current health cover" required="true" id="${name}_health_current_cover" className="loading"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/healthCoverLoading" />
             <form_v3:row label="Has your partner had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group text-danger" helpId="239" additionalHelpAttributes="data-content-replace='{{year}},${continuousCoverYear}'">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading"/>
             </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/partner/healthEverHeld" />
+            <form_v3:row label="Has your partner ever held Hospital cover?" fieldXpath="${fieldXpath}" id="health-ever-held-cover-partner" className="health-your_details-opt-group text-danger">
+                <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's previous health cover" required="true" id="${name}_health_ever_held_cover" className="loading"/>
+            </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/partner/previousFundName" />
+			<form_v3:row fieldXpath="${fieldXpath}" label="Partner's Previous Hospital Fund" id="partnerPreviousFund" className="hidden">
+				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your partner's health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+			</form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/partner/fundHistory" />
+            <form_v3:row fieldXpath="${fieldXpath}" label="Based on your answers it looks like your partner may be affected by the Government Lifetime Health Cover loading, please enter the approximate date ranges your partner has held <span class='text-bold'>private hospital</span> cover so we can estimate the impact on your premiums." id="health-partner-fund-history" className="changes-premium hidden">
+                <field_v2:coverage_dates_input xpath="${fieldXpath}" footerText="Based on your answers, your partner may be affected by LHC. The LHC amount will be shown in the premium on the next page, if applicable." />
+            </form_v3:row>
+
+            <%-- I don't know my LHC history - apply full LHC --%>
+            <div id="partnerLhcDatesUnsureApplyFullLHC" class="applyFullLHC hidden">
+                <c:set var="fieldXpath" value="${xpath}/partner/fundHistory/dates/unsure" />
+                <form_v3:row fieldXpath="${fieldXpath}">
+                    <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="I don&apos;t know the date ranges for the periods that my partner has held private hospital insurance in the past" label="I don&apos;t know my partner&apos;s date ranges" required="false" helpId="586" />
+                    <div class="applyFullLHCAdditionalText matchCheckboxLabelStyles hidden">Full applicable LHC will be applied to your policy until your new fund receives a transfer certificate from your partner&apos;s previous fund, it will then be adjusted from the start date of your policy and you will be credited any amount you have overpaid.</div>
+                </form_v3:row>
+            </div>
 
             <c:set var="fieldXpath" value="${xpath}/partner/abd" />
             <form_v3:row label="Does your partner currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="partner_abd" className="lhcRebateCalcTrigger partner_currentPolicyAbd-group hidden">
