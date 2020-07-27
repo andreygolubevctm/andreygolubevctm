@@ -23,8 +23,10 @@
         var partnerFund = meerkat.modules.healthPreviousFund.getPartnerFund();
         var primaryExtrasFund = meerkat.modules.healthPreviousFund.getPrimaryExtrasFund();
         var partnerExtrasFund = meerkat.modules.healthPreviousFund.getPartnerExtrasFund();
-        var primaryDifferentFund = meerkat.modules.healthPreviousFund.getPrimaryHasDifferentFund();
-        var partnerDifferentFund = meerkat.modules.healthPreviousFund.getPartnerHasDifferentFund();
+        var primarySameFund = meerkat.modules.healthPreviousFund.getPrimaryHasSameFund();
+        var partnerSameFund = meerkat.modules.healthPreviousFund.getPartnerHasSameFund();
+        var primaryPreviousFund = meerkat.modules.healthPreviousFund.getPrimaryPreviousFund();
+        var partnerPreviousFund = meerkat.modules.healthPreviousFund.getPartnerPreviousFund();
 
         if (primaryFund !== 'NONE' && primaryFund !== '' && hasPrimaryCover()) {
             $_previousFund.find('#clientMemberID').slideDown();
@@ -36,7 +38,7 @@
             $_previousFund.find('.membership').removeClass('onA');
         }
 
-        if (!primaryDifferentFund && primaryExtrasFund !== 'NONE' && primaryExtrasFund !== '' && hasPrimaryCover()) {
+        if (!primarySameFund && primaryExtrasFund !== 'NONE' && primaryExtrasFund !== '' && hasPrimaryCover()) {
             $_previousFund.find('#clientExtrasMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onA');
         } else {
@@ -56,7 +58,7 @@
             $_previousFund.find('.membership').removeClass('onB');
         }
 
-        if (!partnerDifferentFund && meerkat.modules.healthChoices.hasSpouse() && partnerExtrasFund !== 'NONE' && partnerExtrasFund !== '' && hasPartnerCover()) {
+        if (!partnerSameFund && meerkat.modules.healthChoices.hasSpouse() && partnerExtrasFund !== 'NONE' && partnerExtrasFund !== '' && hasPartnerCover()) {
             $_previousFund.find('#partnerExtrasMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onB');
         } else {
@@ -64,6 +66,18 @@
                 $_previousFund.find('#partnerExtrasFund').slideUp();
             $_previousFund.find('#partnerExtrasMemberID').slideUp();
             $_previousFund.find('.membership').removeClass('onB');
+        }
+
+        if(!hasPrimaryCover() && hasPrimaryPreviousCover() && primaryPreviousFund !== 'NONE' && primaryPreviousFund !== '') {
+            $_previousFund.find('#clientFund').slideDown();
+            $_previousFund.find('#clientMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onA');
+        }
+
+        if(!hasPartnerCover() && hasPartnerPreviousCover() && partnerPreviousFund !== 'NONE' && partnerPreviousFund !== '') {
+            $_previousFund.find('#partnerFund').slideDown();
+            $_previousFund.find('#partnerMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onB');
         }
     }
 
@@ -148,8 +162,16 @@
         return $('#health_healthCover_health_cover').find('input').filter(':checked').val() === 'Y';
     }
 
+    function hasPrimaryPreviousCover() {
+        return $('#health-ever-held-cover-primary').find('#health_healthCover_health_ever_held_cover').first().find('input').filter(':checked').val() === 'Y';
+    }
+
     function hasPartnerCover() {
         return $('#health_healthCover_partner_health_cover').find('input').filter(':checked').val() === 'Y';
+    }
+
+    function hasPartnerPreviousCover() {
+        return $('#health-ever-held-cover-partner').find('#health_healthCover_health_ever_held_cover').first().find('input').filter(':checked').val() === 'Y';
     }
 
     meerkat.modules.register("healthCoverDetails", {
@@ -159,7 +181,9 @@
         setHealthFunds: setHealthFunds,
         setIncomeBase: setIncomeBase,
         hasPrimaryCover: hasPrimaryCover,
-        hasPartnerCover: hasPartnerCover
+        hasPartnerCover: hasPartnerCover,
+        hasPrimaryPreviousCover: hasPrimaryPreviousCover,
+        hasPartnerPreviousCover: hasPartnerPreviousCover
     });
 
 })(jQuery);

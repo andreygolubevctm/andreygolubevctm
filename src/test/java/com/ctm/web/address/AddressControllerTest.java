@@ -24,20 +24,20 @@ public class AddressControllerTest {
     @Test
     public void testGetSuburbsEmpty() throws Exception {
       Address[] suburbs = addressService.getSuburbs("0000");
-      assertEquals(0 , suburbs.length);
+      assertEquals(1 , suburbs.length);
     }
 
     @Test
     public void testGetSuburbs() throws Exception {
         Address[] suburbs = addressService.getSuburbs("4066");
-      assertEquals(3 , suburbs.length);
+      assertEquals(5 , suburbs.length);
     }
 
     @Test
     public void testGetMultipleAddress() throws Exception {
       AddressSuburbRequest request = new AddressSuburbRequest("80 Jephson St, Toowong QLD 4066", "4066");
         AddressSuburb[] suburbs = addressService.getStreet(request);
-      assertEquals(3 , suburbs.length);
+      assertEquals(1 , suburbs.length);
     }
 
     @Test
