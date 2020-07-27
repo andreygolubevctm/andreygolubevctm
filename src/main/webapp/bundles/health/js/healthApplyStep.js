@@ -18,8 +18,8 @@
         _postalNonStdStreetRegexRule,
         $primaryMemberNumber,
         $partnerMemberNumber,
-        $primaryDifferentFundsScript,
-        $partnerDifferentFundsScript;
+        $primarySameFundsScript,
+        $partnerSameFundsScript;
 
     function init(){
         $(document).ready(function () {
@@ -55,8 +55,8 @@
 
             $primaryMemberNumber = $('#health_previousfund_primary_memberID');
             $partnerMemberNumber = $('#health_previousfund_partner_memberID');
-            $primaryDifferentFundsScript = $('.simples-dialogue-different-funds-primary');
-            $partnerDifferentFundsScript = $('.simples-dialogue-different-funds-partner');
+            $primarySameFundsScript = $('.simples-dialogue-same-funds-primary');
+            $partnerSameFundsScript = $('.simples-dialogue-same-funds-partner');
             _postalNonStdStreetRegexRule = $unitElements.appPostalNonStdStreet.attr('data-rule-regex');
         });
     }
@@ -75,9 +75,9 @@
         // Default Check format message on person name field
         $personName.parent().find('.person-name-check-format').addClass('hidden');
         
-        $primaryDifferentFundsScript.toggleClass('hidden', meerkat.modules.healthAboutYou.getPrimaryCurrentCover() === 'N' || meerkat.modules.healthAboutYou.getPrimaryHealthCurrentCover() !== 'C');
+        $primarySameFundsScript.toggleClass('hidden', meerkat.modules.healthAboutYou.getPrimaryCurrentCover() === 'N' || meerkat.modules.healthAboutYou.getPrimaryHealthCurrentCover() !== 'C');
 
-        $partnerDifferentFundsScript.toggleClass('hidden', meerkat.modules.healthAboutYou.getPartnerCurrentCover() === 'N' || meerkat.modules.healthAboutYou.getPartnerHealthCurrentCover() !== 'C');
+        $partnerSameFundsScript.toggleClass('hidden', meerkat.modules.healthAboutYou.getPartnerCurrentCover() === 'N' || meerkat.modules.healthAboutYou.getPartnerHealthCurrentCover() !== 'C');
 
         meerkat.modules.healthCancellationType.init();
 

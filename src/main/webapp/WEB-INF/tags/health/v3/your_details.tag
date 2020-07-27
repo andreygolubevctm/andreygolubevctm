@@ -17,19 +17,19 @@
 
 		<div id="yourpreviousfund" legend="Previous Fund Details" class="health-previous_fund">
 
-		<c:set var="fieldXpath" value="${xpath}/primary/differentFunds" />
+		<c:set var="fieldXpath" value="${xpath}/primary/sameFunds" />
 
-		<div class="simples-dialogue-different-funds-primary simples-dialogue row-content mandatory hidden">
+		<div class="simples-dialogue-same-funds-primary simples-dialogue row-content mandatory hidden">
 				<div class="wrapper">
 					<field_v2:checkbox
-						xpath="health/simples/dialogue-checkbox-different-funds-primary"
+						xpath="health/simples/dialogue-checkbox-same-funds-primary"
 						value="Y"
 						required="true"
 						label="true"
 						errorMsg="Please confirm each mandatory dialog has been read to the client"
-						className="checkbox-custom simples_dialogue-checkbox-different-funds-primary"
+						className="checkbox-custom simples_dialogue-checkbox-same-funds-primary"
 						title="You've let us know you currently hold both hospital and extras cover. Are these with the same fund?" />
-						<field_v2:array_radio id="health_previous_fund_different_funds_primary" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="" className="health-cover-different-funds" />
+						<field_v2:array_radio id="health_previous_fund_same_funds_primary" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="" className="health-cover-different-funds" />
 				</div>
 		</div>
 

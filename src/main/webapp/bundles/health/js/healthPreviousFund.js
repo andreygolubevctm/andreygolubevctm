@@ -17,12 +17,14 @@
         $primaryFundContainer,
         $partnerFundContainer,
         noCurrentFund = 'NONE',
-        $primaryDifferentFund,
-        $partnerDifferentFund,
+        $primarySameFund,
+        $partnerSameFund,
         $primaryExtrasFund,
         $primaryExtrasMemberID,
         $partnerExtrasFund,
-        $partnerExtrasMemberID;
+        $partnerExtrasMemberID,
+        $primaryPreviousFund,
+        $partnerPreviousFund;
 
 
     function init() {
@@ -34,8 +36,8 @@
             $partnerFund = $('#partnerFund').find('select');
             $partnerFundLabel = $('#partnerFund').find('label');
 
-            $primaryDifferentFund = $('#health_previous_fund_different_funds_primary');
-            $partnerDifferentFund = $('#health_previous_fund_different_funds_partner');
+            $primarySameFund = $('#health_previous_fund_same_funds_primary');
+            $partnerSameFund = $('#health_previous_fund_same_funds_partner');
 
             $primaryExtrasFund = $('#clientExtrasFund');
             $partnerExtrasFund = $('#partnerExtrasFund');
@@ -46,6 +48,9 @@
             $primaryFundContainer = $('#health_previousfund');
             $partnerFundContainer = $('#partnerpreviousfund');
 
+            $primaryPreviousFund = $('#health_healthCover_primary_previousFundName');
+            $partnerPreviousFund = $('#health_healthCover_partner_previousFundName');
+
             meerkat.messaging.subscribe(moduleEvents.POPULATE_PRIMARY, coverChangePrimary);
             meerkat.messaging.subscribe(moduleEvents.POPULATE_PARTNER, coverChangePartner);
 
@@ -54,14 +59,14 @@
     }
 
     function setupEventListeners() {
-        $primaryDifferentFund.find('input').on('change', function(event) {
-            var value = $primaryDifferentFund.find(':input').filter(':checked').val();
+        $primarySameFund.find('input').on('change', function(event) {
+            var value = $primarySameFund.find(':input').filter(':checked').val();
             $primaryExtrasFund.toggleClass('hidden', value === 'Y');
             meerkat.modules.healthCoverDetails.displayHealthFunds();
         });
 
-        $partnerDifferentFund.find('input').on('change', function(event) {
-            var value = $partnerDifferentFund.find(':input').filter(':checked').val();
+        $partnerSameFund.find('input').on('change', function(event) {
+            var value = $partnerSameFund.find(':input').filter(':checked').val();
             $partnerExtrasFund.toggleClass('hidden', value === 'Y');
             meerkat.modules.healthCoverDetails.displayHealthFunds();
         });
@@ -125,12 +130,20 @@
         return typeof $(select) !== 'undefined' ? $(select).val() : '';
     }
 
-    function getPrimaryHasDifferentFund(){
-        return $primaryDifferentFund.find(':input').filter(':checked').val() === 'Y';
+    function getPrimaryHasSameFund(){
+        return $primarySameFund.find(':input').filter(':checked').val() === 'Y';
     }
 
-    function getPartnerHasDifferentFund(){
-        return $partnerDifferentFund.find(':input').filter(':checked').val() === 'Y';
+    function getPartnerHasSameFund(){
+        return $partnerSameFund.find(':input').filter(':checked').val() === 'Y';
+    }
+
+    function getPrimaryPreviousFund() {
+        return $primaryPreviousFund.val();
+    }
+
+    function getPartnerPreviousFund() {
+        return $partnerPreviousFund.val();
     }
 
     meerkat.modules.register('healthPreviousFund', {
@@ -140,8 +153,10 @@
         getPartnerFund : getPartnerFund,
         getPrimaryExtrasFund: getPrimaryExtrasFund,
         getPartnerExtrasFund: getPartnerExtrasFund,
-        getPrimaryHasDifferentFund: getPrimaryHasDifferentFund,
-        getPartnerHasDifferentFund: getPartnerHasDifferentFund
+        getPrimaryHasSameFund: getPrimaryHasSameFund,
+        getPartnerHasSameFund: getPartnerHasSameFund,
+        getPrimaryPreviousFund: getPrimaryPreviousFund,
+        getPartnerPreviousFund: getPartnerPreviousFund
     });
 
 })(jQuery);

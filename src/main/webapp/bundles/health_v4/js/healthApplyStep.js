@@ -59,7 +59,7 @@
             healthApplicationPreviousFundLabel: $('[for=health_previousfund_' + applicant + '_fundName]'),
             previousCoverTypeRow: $('#health_application_' + applicant + 'CoverType'),
             previousCoverType: $('input[name=health_application_' + applicant + '_cover_type]'),
-            previousCoverDifferentProvidersCheckboxRow: $('#health_application_' + applicant + 'CoverDifferentProviders'),
+            previousCoverSameProvidersCheckboxRow: $('#health_application_' + applicant + 'CoverSameProviders'),
             hospitalFundHeader: $('#' + applicant + 'HospitalCover'),
             everHadPrivateHospitalRow_1: $('#health_application_' + applicant + 'CoverEverHadPrivateHospital1'),
             everHadPrivateHospitalBtnGroup_1: $('#health_application_' + applicant + '_ever_had_health_coverPrivateHospital1'),
@@ -233,12 +233,12 @@
             meerkat.messaging.publish(meerkatEvents.healthPreviousFund['POPULATE_' + applicant.toUpperCase()], ($elements[applicant].everHadPrivateHospital_1.filter(':checked').val() === 'Y' ? 'Y' : 'N' ));
         });
 
-        $elements[applicant].previousCoverDifferentProvidersCheckboxRow.find(':input').on('change', function() {
-            _toggleDifferentProviders(applicant);
+        $elements[applicant].previousCoverSameProvidersCheckboxRow.find(':input').on('change', function() {
+            _toggleSameProviders(applicant);
         });
 
         $elements[applicant].previousCoverTypeRow.find(':input').on('change', function() {
-            _toggleDifferentProvidersCheckbox(applicant);
+            _toggleSameProvidersCheckbox(applicant);
         });
 
         $elements[applicant].healthContinuousCoverRow.find(':input').on('change', function() {
@@ -297,7 +297,7 @@
 
         var hideRowPrivateHospital1 = true,
             hideRowCoverType1 = false,
-            hideRowCoverDifferentProvidersCheckbox1 = true,
+            hideRowCoverSameProvidersCheckbox1 = true,
             hideRowContinuousCover = true,
             hideRowPrivateHospital2 = true,
             hideRowFundHistory = true,
@@ -315,7 +315,7 @@
             $elements[applicant].currentlyHaveAnyKindOfCoverPreResultsBtnGroup.find("input[value='Y']").prop('checked',true).trigger('change');
 
             if ($elements[applicant].previousCoverType.filter(':checked').val() === 'C')
-                hideRowCoverDifferentProvidersCheckbox1 = false;
+                hideRowCoverSameProvidersCheckbox1 = false;
 
             if (isLHCPossiblyApplicable) {
                 hideRowContinuousCover = false;
@@ -364,12 +364,12 @@
             }
         }
 
-        _toggleDifferentProviders(applicant);
+        _toggleSameProviders(applicant);
         _toggleAgeBasedDiscountQuestion(applicant);
 
         meerkat.modules.fieldUtilities.toggleVisible(
-            $elements[applicant].previousCoverDifferentProvidersCheckboxRow,
-            hideRowCoverDifferentProvidersCheckbox1
+            $elements[applicant].previousCoverSameProvidersCheckboxRow,
+            hideRowCoverSameProvidersCheckbox1
         );
 
         meerkat.modules.fieldUtilities.toggleVisible(
@@ -473,11 +473,11 @@
      *         -  applicant has 2 different providers for hospital and extras
      *
     */
-    function _toggleDifferentProviders(applicant) {
+    function _toggleSameProviders(applicant) {
         var applicantPrefix = ((applicant === 'primary') ? "your" : "your partner's");
         if (getCurrentCover(applicant) === 'Y') {
             $elements[applicant].healthApplicationPreviousFundLabel.html("Who is " + applicantPrefix + " current health fund?");
-            if ($elements[applicant].previousCoverType.filter(':checked').val() === 'C' && $elements[applicant].previousCoverDifferentProvidersCheckboxRow.find(':input').filter(':checked').val() === 'Y') {
+            if ($elements[applicant].previousCoverType.filter(':checked').val() === 'C' && $elements[applicant].previousCoverSameProvidersCheckboxRow.find(':input').filter(':checked').val() === 'Y') {
                 $elements[applicant].healthApplicationPreviousFundLabel.html("Who is " + applicantPrefix + " current hospital cover provider?");
                 $elements[applicant].hospitalFundHeader.show();
                 $elements[applicant].extrasFund.show();
@@ -501,20 +501,20 @@
      *         -  said currently held cover must be hospital and extras, not just hospital or just extras
      *
     */
-    function _toggleDifferentProvidersCheckbox(applicant) {
+    function _toggleSameProvidersCheckbox(applicant) {
 
-        var hideRowCoverDifferentProvidersCheckbox = true;
+        var hideRowCoverSameProvidersCheckbox = true;
 
         if ($elements[applicant].previousCoverType.filter(':checked').val() === 'C') {
-            hideRowCoverDifferentProvidersCheckbox = false;
+            hideRowCoverSameProvidersCheckbox = false;
         }
 
         _toggleAgeBasedDiscountQuestion(applicant);
-        _toggleDifferentProviders(applicant);
+        _toggleSameProviders(applicant);
 
         meerkat.modules.fieldUtilities.toggleVisible(
-            $elements[applicant].previousCoverDifferentProvidersCheckboxRow,
-            hideRowCoverDifferentProvidersCheckbox
+            $elements[applicant].previousCoverSameProvidersCheckboxRow,
+            hideRowCoverSameProvidersCheckbox
         );
 
     }

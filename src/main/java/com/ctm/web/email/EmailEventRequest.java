@@ -55,19 +55,21 @@ public class EmailEventRequest {
     //Primary specific properties
     private String primaryHasCover;
     private String primaryCoverType;
-    private String primaryHasDifferentProviders;
+    private String primaryHasSameProviders;
     private String primaryFundName;
     private String primaryMemberID;
     private String primaryExtrasFundName;
     private String primaryExtrasMemberID;
+    private String primaryFundCancellationType;
 
     //Partner specific properties
     private String partnerHasCover;
     private String partnerCoverType;
-    private String partnerHasDifferentProviders;
+    private String partnerHasSameProviders;
     private String partnerFundName;
     private String partnerMemberID;
     private String partnerExtrasFundName;
     private String partnerExtrasMemberID;
+    private String partnerFundCancellationType;
 
 }
