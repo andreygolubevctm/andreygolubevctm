@@ -31,8 +31,8 @@
 		<field_v2:array_radio items="C=Hospital & Extras Cover,H=Hospital Cover,E=Extra Cover" style="group" xpath="${fieldXpath}/type" title="- What type of cover do you currently have?" required="true" className="health-cover_type_details" id="${name}_health_cover_type" additionalLabelAttributes="${analyticsAttr}"/>
 	</form_v4:row>
 
-	<form_v4:row id="${name}_primaryCoverDifferentProviders">
-		<field_v2:checkbox xpath="${fieldXpath}/differentProviders" value="Y" title="I have hospital and extras cover with different providers" required="false" label="I have hospital and extras cover with different providers" />
+	<form_v4:row id="${name}_primaryCoverSameProviders">
+		<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}/sameProviders" title="Is your hospital and extras cover with the same fund?" required="true" />
 	</form_v4:row>
 
 </form_v4:fieldset>

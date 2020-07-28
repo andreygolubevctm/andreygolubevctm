@@ -477,7 +477,7 @@
         var applicantPrefix = ((applicant === 'primary') ? "your" : "your partner's");
         if (getCurrentCover(applicant) === 'Y') {
             $elements[applicant].healthApplicationPreviousFundLabel.html("Who is " + applicantPrefix + " current health fund?");
-            if ($elements[applicant].previousCoverType.filter(':checked').val() === 'C' && $elements[applicant].previousCoverSameProvidersCheckboxRow.find(':input').filter(':checked').val() === 'Y') {
+            if ($elements[applicant].previousCoverType.filter(':checked').val() === 'C' && $elements[applicant].previousCoverSameProvidersCheckboxRow.find(':input').filter(':checked').val() === 'N') {
                 $elements[applicant].healthApplicationPreviousFundLabel.html("Who is " + applicantPrefix + " current hospital cover provider?");
                 $elements[applicant].hospitalFundHeader.show();
                 $elements[applicant].extrasFund.show();
