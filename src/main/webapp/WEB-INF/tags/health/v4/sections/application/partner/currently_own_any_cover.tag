@@ -32,7 +32,7 @@
 		<field_v2:array_radio items="C=Hospital & Extras Cover,H=Hospital Cover,E=Extra Cover" style="group" xpath="${fieldXpath}/type" title="- What type of cover does your partner currently have?" required="true" className="health-cover_type_details" id="${name}_partner_health_cover_type" additionalLabelAttributes="${analyticsAttr}"/>
 	</form_v4:row>
 
-	<form_v4:row id="${name}_partnerCoverSameProviders">
+	<form_v4:row id="${name}_partnerCoverSameProviders" label="Is your partner's hospital and extras cover with the same fund?">
 		<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}/sameProviders" title="Is your partner's hospital and extras cover with the same fund?" required="true" />
 	</form_v4:row>
 
