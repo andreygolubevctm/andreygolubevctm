@@ -30,7 +30,7 @@
             initCancellationComponent(components, 'primary', primaryCoverType, productType);
 
             if (meerkat.modules.health.hasPartner()) {
-              var partnerCoverType = meerkat.modules.healthAboutYou.getPrimaryHealthCurrentCover();
+              var partnerCoverType = meerkat.modules.healthAboutYou.getPartnerHealthCurrentCover();
               initCancellationComponent(components, 'partner', partnerCoverType, productType);
             }
           }
