@@ -15,7 +15,7 @@
 	<div id="${name}">
 		<div id="partnerpreviousfund" legend="Previous Fund Details" class="health-previous_fund">
 
-		<c:set var="fieldXpath" value="${xpath}/partner/sameFunds" />
+		<c:set var="fieldXpath" value="health/application/partner/cover/sameProviders" />
 			<div class="simples-dialogue-same-funds-partner simples-dialogue row-content mandatory hidden">
 					<div class="wrapper">
 						<field_v2:checkbox
