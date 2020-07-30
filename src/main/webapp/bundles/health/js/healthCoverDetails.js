@@ -39,10 +39,11 @@
         }
 
         if (!primarySameFund && primaryExtrasFund !== 'NONE' && primaryExtrasFund !== '' && hasPrimaryCover()) {
+            $_previousFund.find('#clientExtrasFund').slideDown();
             $_previousFund.find('#clientExtrasMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onA');
         } else {
-            if(!hasPrimaryCover())
+           if(!hasPrimaryCover())
                 $_previousFund.find('#clientExtrasFund').slideUp();
             $_previousFund.find('#clientExtrasMemberID').slideUp();
             $_previousFund.find('.membership').removeClass('onA');
@@ -59,6 +60,7 @@
         }
 
         if (!partnerSameFund && meerkat.modules.healthChoices.hasSpouse() && partnerExtrasFund !== 'NONE' && partnerExtrasFund !== '' && hasPartnerCover()) {
+            $_previousFund.find('#partnerExtrasFund').slideDown();
             $_previousFund.find('#partnerExtrasMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onB');
         } else {

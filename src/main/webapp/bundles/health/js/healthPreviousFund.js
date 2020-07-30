@@ -55,6 +55,11 @@
             meerkat.messaging.subscribe(moduleEvents.POPULATE_PARTNER, coverChangePartner);
 
             setupEventListeners();
+
+            _.defer(function(){
+                $primarySameFund.find(':input').filter(':checked').change();
+                $partnerSameFund.find(':input').filter(':checked').change();
+            });
         });
     }
 

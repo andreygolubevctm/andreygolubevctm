@@ -17,7 +17,7 @@
 
 		<div id="yourpreviousfund" legend="Previous Fund Details" class="health-previous_fund">
 
-		<c:set var="fieldXpath" value="${xpath}/primary/sameFunds" />
+		<c:set var="fieldXpath" value="health/application/primary/cover/sameProviders" />
 
 		<div class="simples-dialogue-same-funds-primary simples-dialogue row-content mandatory hidden">
 				<div class="wrapper">

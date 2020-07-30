@@ -172,7 +172,7 @@
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
             </form_v3:row>
 
-            <c:set var="fieldXpath" value="${xpath}/primary/cover/type" />
+            <c:set var="fieldXpath" value="health/application/primary/cover/type" />
             <form_v3:row label="What type of cover do you currently hold?" fieldXpath="${fieldXpath}" id="health-current-cover-primary" className="health-your_details-opt-group text-danger">
                 <field_v2:array_radio items="C=Hospital & Extras,H=Hospital Only,E=Extras Only" style="group" xpath="${fieldXpath}" title="your current health cover" required="true" id="${name}_health_current_cover" className="loading"/>
             </form_v3:row>
@@ -240,7 +240,7 @@
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_partner_health_cover"/>
             </form_v3:row>
 
-            <c:set var="fieldXpath" value="${xpath}/partner/cover/type" />
+            <c:set var="fieldXpath" value="health/application/partner/cover/type" />
             <form_v3:row label="What type of cover does your partner currently hold?" fieldXpath="${fieldXpath}" id="health-current-cover-partner" className="health-your_details-opt-group text-danger">
                 <field_v2:array_radio items="C=Hospital & Extras,H=Hospital Only,E=Extras Only" style="group" xpath="${fieldXpath}" title="your partners current health cover" required="true" id="${name}_health_current_cover" className="loading"/>
             </form_v3:row>
