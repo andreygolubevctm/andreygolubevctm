@@ -6,6 +6,10 @@ public class Insured {
 
     private String cover;
 
+    private String healthCurrentCover;
+
+    private String healthEverHeld;
+
     private String healthCoverLoading;
 
     private String everHadCover;
@@ -28,6 +32,22 @@ public class Insured {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public String getHealthCurrentCover() {
+        return healthCurrentCover;
+    }
+
+    public void setHealthCurrentCover(String healthCurrentCover) {
+        this.healthCurrentCover = healthCurrentCover;
+    }
+
+    public String getHealthEverHeld() {
+        return healthEverHeld;
+    }
+
+    public void setHealthEverHeld(String healthEverHeld) {
+        this.healthEverHeld = healthEverHeld;
     }
 
     public String getHealthCoverLoading() {

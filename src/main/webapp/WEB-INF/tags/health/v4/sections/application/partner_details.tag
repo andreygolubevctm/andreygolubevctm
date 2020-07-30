@@ -16,11 +16,15 @@
 
     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
     <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+
+    <form_v4:fieldset legend="Hospital cover" id="partnerHospitalCover">
+    </form_v4:fieldset>
+
     <div id="${name}">
         <div id="partnerpreviousfund" legend="Previous Fund Details" class="health-previous_fund">
             <c:set var="fieldXpath" value="${xpath}/partner/fundName" />
             <form_v4:row fieldXpath="${fieldXpath}" label="Partner&apos;s Current Health Fund" id="partnerFund" className="changes-premium">
-                <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="partner&apos;s health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+                <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="partner&apos;s health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
             </form_v4:row>
 
             <div id="partnerMemberID" class="membership">
@@ -46,6 +50,29 @@
                 </form_v4:row>
             </div>
         </div>
+    </div>
+
+    <div id="partnerextrasfund" class="health-extras_fund">
+        <form_v4:fieldset legend="Extras cover">
+
+            <c:set var="fieldXpath" value="${xpath}/partner/extras/fundName" />
+            <form_v4:row fieldXpath="${fieldXpath}" label="Who is your partner's current extras cover provider?" id="extrasPartnerFund" className="changes-premium">
+                <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your partner's extra cover provider" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+            </form_v4:row>
+
+            <%-- Optional Membership ID's --%>
+            <div id="extrasPartnerMemberID" class="membership">
+                <c:set var="fieldXpath" value="${xpath}/partner/extras/memberID" />
+                <form_v4:row fieldXpath="${fieldXpath}" label="Membership Number" className="extrasPartnerMemberID" smRowOverride="3">
+                    <field_v2:input xpath="${fieldXpath}" title="your partner's extras member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." maxlength="10" />
+                </form_v4:row>
+
+                <c:set var="fieldXpath" value="${xpath}/partner/extras/authority" />
+                <form_v4:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden">
+                    <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="My partner authorises <span>the fund</span> to contact my previous extras fund to obtain a clearance certificate" label="My partner authorises <span>the fund</span> to contact my previous extras fund to obtain a transfer certificate" required="false" customAttribute=" data-attach='true' " helpId="522" />
+                </form_v4:row>
+            </div>
+        </form_v4:fieldset>
     </div>
 
     <%-- reset xpath to the same as used on Insurance Preferences page --%>

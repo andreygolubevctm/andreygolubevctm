@@ -5,10 +5,14 @@
 	var meerkat = window.meerkat,
 		log = meerkat.logging.info,
 		$primaryCurrentCover,
+		$primaryHealthCurrentCover,
 		$primaryContinuousCoverContainer,
+		$primaryEverHeldCover,
 		$partnerContainer,
 		$partnerCurrentCover,
+		$partnerHealthCurrentCover,
 		$partnerContinuousCoverContainer,
+		$partnerEverHeldCover,
 		$partnerDOB,
 		$healthCoverDependants,
 		$healthCoverRebate,
@@ -54,11 +58,21 @@
 		$tier3Dialogue = $('.simples-dialogue-144'),
 		$hasRebateDialogue = $('.simples-dialogue-37'),
 		$primaryCurrentCover = $('#health_healthCover_health_cover'),
+		$primaryHealthCurrentCover = $('#health-current-cover-primary'),
 		$primaryContinuousCoverContainer = $('#health-continuous-cover-primary'),
+		$primaryEverHeldCover = $('#health-ever-held-cover-primary'),
+		$primaryPreviousFund = $('#clientPreviousFund'),
+		$primaryFundHistory = $('#health-primary-fund-history'),
+		$primaryFundHistoryUnsure = $('#primaryLhcDatesUnsureApplyFullLHC'),
 		$partnerContainer = $('#partner-health-cover'),
 		$partnerCurrentCover = $('#health_healthCover_partner_health_cover'),
+		$partnerHealthCurrentCover = $('#health-current-cover-partner'),
 		$partnerContinuousCoverContainer = $('#health-continuous-cover-partner'),
 		$partnerHealthCoverHealthCoverLoading = $('input[name=health_healthCover_partner_healthCoverLoading]'),
+		$partnerEverHeldCover = $('#health-ever-held-cover-partner'),
+		$partnerPreviousFund = $('#partnerPreviousFund'),
+		$partnerFundHistory = $('#health-partner-fund-history'),
+		$partnerFundHistoryUnsure = $('#partnerLhcDatesUnsureApplyFullLHC'),
 		$partnerDOB = $('#health_healthCover_partner_dob'),
 		$healthCoverDependants = $('#health_healthCover_dependants'),
 		$healthCoverRebate = $('.health_cover_details_rebate'),
@@ -80,13 +94,13 @@
 			primary: {
 				receivesAgeBasedDiscountRow: $('#primary_abd'),
 				receivesAgeBasedDiscount: $('#primary_abd_health_cover'),
-				ageBasedDiscountPolicyStartRow: $('#health_previousfund_primary_abd_start_date'),
+				ageBasedDiscountPolicyStartRow: $('#primary_abd_start_date'),
 				healthApplicationDOB: $('#health_application_primary_dob'),
 			},
 			partner: {
 				receivesAgeBasedDiscountRow: $('#partner_abd'),
 				receivesAgeBasedDiscount: $('#partner_abd_health_cover'),
-				ageBasedDiscountPolicyStartRow: $('#health_previousfund_partner_abd_start_date'),
+				ageBasedDiscountPolicyStartRow: $('#partner_abd_start_date'),
 				healthApplicationDOB: $('#health_application_partner_dob')
 			}
 		};
@@ -148,6 +162,19 @@
 			setupForm();
 		});
 
+		$primaryFundHistoryUnsure.find(':input').on('change', function onPrimaryFundDatesUnsure(event) {
+			var value = $primaryFundHistoryUnsure.find(':input').filter(':checked').val();
+		});
+
+		$primaryPreviousFund.find('select').on('change', function(event) {
+			$('#clientFund').find('select').val(event.target.value);
+		});
+
+		$partnerPreviousFund.find('select').on('change', function(event) {
+			$('#partnerFund').find('select').val(event.target.value);
+		});
+
+
 		$lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
 
 			var $this = $(this);
@@ -160,6 +187,42 @@
 
 			togglePrimaryContinuousCover();
 			togglePartnerContinuousCover();
+
+			var lhcApplicablePrimary = meerkat.modules.age.isAgeLhcApplicable($primaryDOB.val());
+			var lhcApplicablePartner = meerkat.modules.age.isAgeLhcApplicable($partnerDOB.val());
+
+			var hasCoverPrimary = $primaryCurrentCover.find('input').filter(':checked').val();
+			var hasContinuousCoverPrimary = $primaryContinuousCoverContainer.find('input').filter(':checked').val();
+
+			var hasCoverPartner = $partnerCurrentCover.find('input').filter(':checked').val();
+			var hasContinuousCoverPartner = $partnerContinuousCoverContainer.find('input').filter(':checked').val();
+
+			var hasEverHeldCoverPrimary = $primaryEverHeldCover.find('input').filter(':checked').val();
+			var hasEverHeldCoverPartner = $partnerEverHeldCover.find('input').filter(':checked').val();
+
+			togglePrimaryCurrentCoverType(hasCoverPrimary && hasCoverPrimary === 'Y');
+			togglePartnerCurrentCoverType(hasCoverPartner && hasCoverPartner === 'Y');
+
+			togglePrimaryEverHeldCoverType((hasCoverPrimary && hasCoverPrimary === 'N') || (hasContinuousCoverPrimary && hasContinuousCoverPrimary === 'N'));
+			togglePartnerEverHeldCoverType((hasCoverPartner && hasCoverPartner === 'N') || (hasContinuousCoverPartner && hasContinuousCoverPartner === 'N'));
+
+			var showFundHistoryPrimary = lhcApplicablePrimary && ((hasCoverPrimary === 'Y' && hasContinuousCoverPrimary === 'N' && hasEverHeldCoverPrimary  === 'Y') || (hasCoverPrimary === 'N' && hasEverHeldCoverPrimary === 'Y'));
+			var showFundHistoryPartner = lhcApplicablePartner && ((hasCoverPartner === 'Y' && hasContinuousCoverPartner === 'N' && hasEverHeldCoverPartner  === 'Y') || (hasCoverPartner === 'N' && hasEverHeldCoverPartner === 'Y'));
+
+			var unsureValuePrimary = $primaryFundHistoryUnsure.find(':input').filter(':checked').val();
+			var unsureValuePartner = $partnerFundHistoryUnsure.find(':input').filter(':checked').val();
+
+			$primaryFundHistory.toggleClass('hidden', !showFundHistoryPrimary || unsureValuePrimary === 'Y');
+			$partnerFundHistory.toggleClass('hidden', !showFundHistoryPartner || unsureValuePartner === 'Y');
+
+			$('#clientFund').find('label').text(showFundHistoryPrimary ? 'Your Previous Hospital Fund' : 'Your Current Hospital Fund');
+			$('#partnerFund').find('label').text(showFundHistoryPartner ? "Your Partner's Previous Hospital Fund" : "Your Partner's Current Hospital Fund");
+
+			$primaryFundHistoryUnsure.toggleClass('hidden', !showFundHistoryPrimary);
+			$partnerFundHistoryUnsure.toggleClass('hidden', !showFundHistoryPartner);
+
+			$primaryPreviousFund.toggleClass('hidden', !showFundHistoryPrimary);
+			$partnerPreviousFund.toggleClass('hidden', !showFundHistoryPartner);
 
 			_toggleAgeBasedDiscountQuestion('primary');
 
@@ -183,6 +246,22 @@
 				updateDynamicIncomeFieldText();
 			});
 		}
+	}
+
+	function getContinuousCoverPrimary() {
+		return $primaryContinuousCoverContainer.find('input').filter(':checked').val() === 'Y';
+	}
+
+	function getContinuousCoverPartner() {
+		return $partnerContinuousCoverContainer.find('input').filter(':checked').val() === 'Y';
+	}
+
+	function neverHadCoverPrimary() {
+		return $primaryEverHeldCover.find('input').filter(':checked').val() === 'N';
+	}
+
+	function neverHadCoverPartner() {
+		return $partnerEverHeldCover.find('input').filter(':checked').val() === 'N';
 	}
 
 	function convertDate(date) {
@@ -214,9 +293,11 @@
 
 		var curDate = applicationDateString ? new Date(applicationDateString) : meerkat.site.serverDate;
 		var privateHospitalValue = $primaryCurrentCover.find('input').filter(':checked').val();
+		var hasExtrasCover = getPrimaryHealthCurrentCover() === 'E' || !getPrimaryHealthCurrentCover();
 
 		if(applicant === 'partner') {
 			privateHospitalValue = $partnerCurrentCover.find('input').filter(':checked').val();
+			hasExtrasCover = getPartnerHealthCurrentCover() === 'E'  || !getPartnerHealthCurrentCover();
 		}
 
 		var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
@@ -227,7 +308,7 @@
 			return;
 		}
 
-		if (age >= 18 && age < 45 && privateHospitalValue === 'Y' && meerkat.modules.age.isBornAfterFirstOfApril1989($abdElements[applicant].healthApplicationDOB.val())) {
+		if (!hasExtrasCover && age >= 18 && age < 45 && privateHospitalValue === 'Y' && meerkat.modules.age.isBornAfterFirstOfApril1989($abdElements[applicant].healthApplicationDOB.val())) {
 			$abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
 			var hasABD = $abdElements[applicant].receivesAgeBasedDiscount.find(':checked').val();
 			if(hasABD === 'Y') {
@@ -236,6 +317,7 @@
 		} else {
 			$abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
 			$abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+			$abdElements[applicant].receivesAgeBasedDiscountRow.find(':input').filter(':checked').prop('checked', false).parent().removeClass('active');
 		}
 	}
 
@@ -270,19 +352,69 @@
 		}
 	}
 
+	function togglePrimaryCurrentCoverType(show) {
+		if(show) {
+			$primaryHealthCurrentCover.slideDown();
+		} else {
+			$primaryHealthCurrentCover.find(':input').filter(':checked').prop('checked', false).parent().removeClass('active');
+			$primaryHealthCurrentCover.slideUp();
+		}
+	}
+
+	function togglePartnerCurrentCoverType(show) {
+		if(show) {
+			$partnerHealthCurrentCover.slideDown();
+		} else {
+			$partnerHealthCurrentCover.find(':input').filter(':checked').prop('checked', false).parent().removeClass('active');
+			$partnerHealthCurrentCover.slideUp();
+		}
+	}
+
+	function togglePrimaryEverHeldCoverType(show) {
+		if(show) {
+			$primaryEverHeldCover.slideDown();
+		} else {
+			$primaryEverHeldCover.find(':input').filter(':checked').prop('checked', false).parent().removeClass('active');
+			$primaryEverHeldCover.slideUp();
+		}
+	}
+
+	function togglePartnerEverHeldCoverType(show) {
+		if(show) {
+			$partnerEverHeldCover.slideDown();
+		} else {
+			$partnerEverHeldCover.find(':input').filter(':checked').prop('checked', false).parent().removeClass('active');
+			$partnerEverHeldCover.slideUp();
+		}
+	}
+
+	function getPrimaryHealthCurrentCover() {
+		return $primaryHealthCurrentCover.find(':input').filter(':checked').val();
+	}
+
+	function getPartnerHealthCurrentCover() {
+		return $partnerHealthCurrentCover.find(':input').filter(':checked').val();
+	}
+
 	function togglePrimaryContinuousCover(isInitMode) {
-		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && meerkat.modules.age.isAgeLhcApplicable($primaryDOB.val())) {
+		var healthCurrentCoverValue = $primaryHealthCurrentCover.find(':input').filter(':checked').val();
+		var hasHospitalCover = ['H', 'C'].indexOf(healthCurrentCoverValue) > -1;
+
+		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && hasHospitalCover && meerkat.modules.age.isAgeLhcApplicable($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
+			(isInitMode === true || hasHospitalCover) ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 
 	function togglePartnerContinuousCover(isInitMode) {
-		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && meerkat.modules.age.isAgeLhcApplicable($partnerDOB.val())) {
+		var healthCurrentCoverValue = $partnerHealthCurrentCover.find(':input').filter(':checked').val();
+		var hasHospitalCover = ['H', 'C'].indexOf(healthCurrentCoverValue) > -1;
+
+		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && hasHospitalCover && meerkat.modules.age.isAgeLhcApplicable($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
+			(isInitMode === true || hasHospitalCover) ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 
@@ -336,13 +468,17 @@
 
 	function setRebate(){
 		meerkat.modules.health.loadRatesBeforeResultsPage(true, function (rates) {
-			if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
-				$rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
-				$healthCoverRebate.slideDown();
-			} else {
-				$rebateLegend.html('');
-			}
+			setRebateRates(rates);
 		});
+	}
+
+	function setRebateRates(rates) {
+		if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
+			$rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
+			$healthCoverRebate.slideDown();
+		} else {
+			$rebateLegend.html('');
+		}
 	}
 
 	function resetPartnerDetails() {
@@ -388,8 +524,15 @@
 		init: init,
 		getPartnerCurrentCover : getPartnerCurrentCover,
 		getPrimaryCurrentCover : getPrimaryCurrentCover,
+		getContinuousCoverPrimary: getContinuousCoverPrimary,
+		getContinuousCoverPartner: getContinuousCoverPartner,
+		neverHadCoverPrimary :neverHadCoverPrimary,
+		neverHadCoverPartner: neverHadCoverPartner,
+		getPrimaryHealthCurrentCover: getPrimaryHealthCurrentCover,
+		getPartnerHealthCurrentCover: getPartnerHealthCurrentCover,
 		getSituation : getSituation,
-		setRabdQuestions: setRabdQuestions
+		setRabdQuestions: setRabdQuestions,
+		setRebateRates: setRebateRates
 	});
 
 })(jQuery);

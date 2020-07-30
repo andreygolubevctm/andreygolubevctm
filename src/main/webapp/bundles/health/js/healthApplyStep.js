@@ -17,7 +17,9 @@
         $primaryName,
         _postalNonStdStreetRegexRule,
         $primaryMemberNumber,
-        $partnerMemberNumber;
+        $partnerMemberNumber,
+        $primarySameFundsScript,
+        $partnerSameFundsScript;
 
     function init(){
         $(document).ready(function () {
@@ -53,7 +55,8 @@
 
             $primaryMemberNumber = $('#health_previousfund_primary_memberID');
             $partnerMemberNumber = $('#health_previousfund_partner_memberID');
-
+            $primarySameFundsScript = $('.simples-dialogue-same-funds-primary');
+            $partnerSameFundsScript = $('.simples-dialogue-same-funds-partner');
             _postalNonStdStreetRegexRule = $unitElements.appPostalNonStdStreet.attr('data-rule-regex');
         });
     }
@@ -71,6 +74,26 @@
 
         // Default Check format message on person name field
         $personName.parent().find('.person-name-check-format').addClass('hidden');
+        
+        $primarySameFundsScript.toggleClass('hidden', meerkat.modules.healthAboutYou.getPrimaryCurrentCover() === 'N' || meerkat.modules.healthAboutYou.getPrimaryHealthCurrentCover() !== 'C');
+
+        $partnerSameFundsScript.toggleClass('hidden', meerkat.modules.healthAboutYou.getPartnerCurrentCover() === 'N' || meerkat.modules.healthAboutYou.getPartnerHealthCurrentCover() !== 'C');
+
+        meerkat.modules.healthCancellationType.init();
+
+        if(meerkat.modules.healthAboutYou.getPrimaryCurrentCover() === 'N') {
+            $primaryMemberNumber.removeAttr('required');
+        }else {
+            $primaryMemberNumber.attr('required', true);
+        }
+
+        if(meerkat.modules.health.hasPartner()) {
+            if(meerkat.modules.healthAboutYou.getPartnerCurrentCover() === 'N') {
+                $partnerMemberNumber.removeAttr('required');
+            }else {
+                $partnerMemberNumber.attr('required', true);
+            }
+        }
     }
 
     function onInitialise() {

@@ -23,8 +23,10 @@
     function _setupFields() {
         $elements = {
             appFirstname: $('#health_application_primary_firstname'),
+            appMiddleName: $('#health_application_primary_middleName'),
             appSurname: $('#health_application_primary_surname'),
             medFirstname: $('#health_payment_medicare_firstName'),
+            medMiddleName: $('#health_payment_medicare_middleName'),
             medSurname: $('#health_payment_medicare_surname'),
             selectionNestedGroups: $('#health_payment_medicare-selection > .nestedGroup')
         };
@@ -38,14 +40,7 @@
 
     // Did think of moving healthApplyStep.js in health_v2 but it had some dependancies that exist only in v2
     function _updateMedicareLabel() {
-        var currentProduct = Results.getSelectedProduct().info.FundCode,
-            $medicareLabel = $('#medicare_group').find('label:first');
-
-        if (currentProduct === 'NHB' || currentProduct === 'QCH') {
-            $medicareLabel.text('Position and name on Medicare card');
-        } else {
-            $medicareLabel.text('Name on Medicare card');
-        }
+        $('#medicare_group').find('label:first').text('IRN');
     }
 
     function _applyEventListeners() {
@@ -59,13 +54,9 @@
     }
 
     function _prepopulateNameFields() {
-        if (_.isEmpty($elements.medFirstname.val())) {
-            $elements.medFirstname.val($elements.appFirstname.val());
-        }
-
-        if (_.isEmpty($elements.medSurname.val())) {
-            $elements.medSurname.val($elements.appSurname.val());
-        }
+        $elements.medFirstname.val($elements.appFirstname.val());
+        $elements.medMiddleName.val($elements.appMiddleName.val());
+        $elements.medSurname.val($elements.appSurname.val());
     }
 
     function _toggleSelectionNestedGroups() {
