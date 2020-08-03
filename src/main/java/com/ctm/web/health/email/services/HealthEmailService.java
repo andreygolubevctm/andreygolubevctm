@@ -363,6 +363,10 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		emailEventRequest.setGovernmentRebate(getParamSafely(dataBucket, "payload/paymentdetails/rebate"));
 		emailEventRequest.setGovernmentRebatePct(getParamSafely(dataBucket, "payload/paymentdetails/rebatePercentage"));
 
+		emailEventRequest.setPostCode(getParamSafely(dataBucket, "health/application/address/postCode"));
+
+		emailEventRequest.setPrimaryFirstName(getParamSafely(dataBucket, "health/application/primary/firstname"));
+		emailEventRequest.setPrimaryLastName(getParamSafely(dataBucket, "health/application/primary/surname"));
 		emailEventRequest.setPrimaryHasCover(getParamSafely(dataBucket, "health/application/primary/cover") != null ? getParamSafely(dataBucket, "health/application/primary/cover") : getParamSafely(dataBucket, "health/healthCover/primary/cover"));
 		emailEventRequest.setPrimaryCoverType(getParamSafely(dataBucket, "health/application/primary/cover/type"));
 		emailEventRequest.setPrimaryHasSameProviders(getParamSafely(dataBucket, "health/application/primary/cover/sameProviders"));
@@ -372,6 +376,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		emailEventRequest.setPrimaryExtrasFundName(getParamSafely(dataBucket, "health/application/primary/extras/fundName") != null ? getParamSafely(dataBucket, "health/application/primary/extras/fundName") : getParamSafely(dataBucket, "health/previousfund/primary/extras/fundName"));
 		emailEventRequest.setPrimaryExtrasMemberID(getParamSafely(dataBucket, "health/application/primary/extras/memberID") != null ? getParamSafely(dataBucket, "health/application/primary/extras/memberID") : getParamSafely(dataBucket, "health/previousfund/primary/extras/memberID"));
 
+		emailEventRequest.setPartnerFirstName(getParamSafely(dataBucket, "health/application/partner/firstname"));
+		emailEventRequest.setPartnerLastName(getParamSafely(dataBucket, "health/application/partner/surname"));
 		emailEventRequest.setPartnerHasCover(getParamSafely(dataBucket, "health/application/partner/cover") != null ? getParamSafely(dataBucket, "health/application/partner/cover") : getParamSafely(dataBucket, "health/healthCover/partner/cover"));
 		emailEventRequest.setPartnerCoverType(getParamSafely(dataBucket, "health/application/partner/cover/type"));
 		emailEventRequest.setPartnerHasSameProviders(getParamSafely(dataBucket, "health/application/partner/cover/sameProviders"));
