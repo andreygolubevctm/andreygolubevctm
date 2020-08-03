@@ -488,7 +488,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                 return "FAMILY";
             case "EF":
                 return "EXTENDED_FAMILY";
-            case "ESPF":
+            case "ESP":
                 return "EXTENDED_SINGLE_PARENT_FAMILY";
         }
         return "";
