@@ -94,6 +94,14 @@
                 $partnerMemberNumber.attr('required', true);
             }
         }
+
+        if(_.indexOf(['E','H'], meerkat.modules.healthAboutYou.getPrimaryHealthCurrentCover()) >= 0 && !meerkat.modules.healthPreviousFund.getPrimaryHasSameFund()) {
+            $('#health_application_primary_cover_sameProviders_Y').prop('checked', true).change();
+        }
+
+        if(meerkat.modules.health.hasPartner() && _.indexOf(['E','H'], meerkat.modules.healthAboutYou.getPartnerHealthCurrentCover()) >= 0 && !meerkat.modules.healthPreviousFund.getPartnerHasSameFund()) {
+            $('#health_application_partner_cover_sameProviders_Y').prop('checked', true).change();
+        }
     }
 
     function onInitialise() {
