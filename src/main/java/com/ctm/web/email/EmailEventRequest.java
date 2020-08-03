@@ -41,6 +41,7 @@ public class EmailEventRequest {
     private String lastName;
     private String optIn;
     private String phoneNumber;
+    private String postCode;
     private String premiumLabel;
     private String source;
     private String uid;
@@ -53,6 +54,8 @@ public class EmailEventRequest {
     private String governmentRebatePct;
 
     //Primary specific properties
+    private String primaryFirstName;
+    private String primaryLastName;
     private String primaryHasCover;
     private String primaryCoverType;
     private String primaryHasSameProviders;
@@ -63,6 +66,8 @@ public class EmailEventRequest {
     private String primaryFundCancellationType;
 
     //Partner specific properties
+    private String partnerFirstName;
+    private String partnerLastName;
     private String partnerHasCover;
     private String partnerCoverType;
     private String partnerHasSameProviders;
