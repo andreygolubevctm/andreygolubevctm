@@ -66,7 +66,8 @@
         <sentry-logback.version>1.7.10</sentry-logback.version>
         <logback.version>1.1.5</logback.version>
         <!-- Schematic -->
-        <schema-model.version>1.8.0</schema-model.version>
+        <schema-model.version>1.15.0-SNAPSHOT</schema-model.version>
+        <schema-model.feature.classifier></schema-model.feature.classifier>
 
         <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
     </properties>
@@ -119,11 +120,6 @@
             <groupId>com.fasterxml.uuid</groupId>
             <artifactId>java-uuid-generator</artifactId>
             <version>${java-uuid-generator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ctm.schema</groupId>
-            <artifactId>schema-model</artifactId>
-            <version>${schema-model.version}</version>
         </dependency>
 
         <dependency>
@@ -762,6 +758,13 @@
             <groupId>com.ctm.schema</groupId>
             <artifactId>schema-model</artifactId>
             <version>${schema-model.version}</version>
+            <classifier>${schema-model.feature.classifier}</classifier>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.ctm.schema</groupId>
+                    <artifactId>schema-support</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

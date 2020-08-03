@@ -4,6 +4,7 @@ import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
 import com.ctm.schema.event.v1_0_0.EventPublishRequest;
 import com.ctm.schema.event.v1_0_0.Payload;
+import com.ctm.schema.health.v1_0_0.SimplesQuoteEvent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -22,9 +23,8 @@ public class DirectToCloudwatchEventsJoinNotificationSender implements JoinNotif
     @Autowired
     private Client<EventPublishRequest, UUID> eventServiceClient;
 
-
-  @Value("${event-broker.service.url}")
-  private String eventBrokerUrl;
+    @Value("${event-broker.service.url}")
+    private String eventBrokerUrl;
 
     @Override
     public void send(final Payload payload, final Object origin) {
@@ -39,6 +39,9 @@ public class DirectToCloudwatchEventsJoinNotificationSender implements JoinNotif
                 .responseType(MediaType.APPLICATION_JSON)
                 .response(UUID.class)
                 .build())
-                .observeOn(Schedulers.io()).toBlocking().single();
-        }
+                .observeOn(Schedulers.io())
+                .toBlocking()
+                .single();
+    }
+
 }
