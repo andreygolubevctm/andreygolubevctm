@@ -193,36 +193,41 @@
 
 			var hasCoverPrimary = $primaryCurrentCover.find('input').filter(':checked').val();
 			var hasContinuousCoverPrimary = $primaryContinuousCoverContainer.find('input').filter(':checked').val();
+			var primaryCurrentCoverType = $('#health-current-cover-primary').find(':input').filter(':checked').val();
 
 			var hasCoverPartner = $partnerCurrentCover.find('input').filter(':checked').val();
 			var hasContinuousCoverPartner = $partnerContinuousCoverContainer.find('input').filter(':checked').val();
+            var partnerCurrentCoverType = $('#health-current-cover-partner').find(':input').filter(':checked').val();
 
 			var hasEverHeldCoverPrimary = $primaryEverHeldCover.find('input').filter(':checked').val();
 			var hasEverHeldCoverPartner = $partnerEverHeldCover.find('input').filter(':checked').val();
 
+            var primaryEverHeldCover = (hasCoverPrimary && hasCoverPrimary === 'N') || (hasContinuousCoverPrimary && hasContinuousCoverPrimary === 'N') || (hasCoverPrimary && hasCoverPrimary === 'Y' && lhcApplicablePrimary && primaryCurrentCoverType === 'E');
+            var partnerEverHeldCover = (hasCoverPartner && hasCoverPartner === 'N') || (hasContinuousCoverPartner && hasContinuousCoverPartner === 'N') || (hasCoverPartner && hasCoverPartner === 'Y' && lhcApplicablePartner && partnerCurrentCoverType === 'E');
+
+            var primaryHasFundHistory = lhcApplicablePrimary && ((hasCoverPrimary === 'Y' && hasContinuousCoverPrimary === 'N' && hasEverHeldCoverPrimary  === 'Y') || (hasCoverPrimary === 'N' && hasEverHeldCoverPrimary === 'Y') || (primaryEverHeldCover && hasCoverPrimary === 'Y' && primaryCurrentCoverType === 'E' && hasEverHeldCoverPrimary === 'Y'));
+            var partnerHasFundHistory = lhcApplicablePartner && ((hasCoverPartner === 'Y' && hasContinuousCoverPartner === 'N' && hasEverHeldCoverPartner  === 'Y') || (hasCoverPartner === 'N' && hasEverHeldCoverPartner === 'Y') || (partnerEverHeldCover && hasCoverPartner === 'Y' && partnerCurrentCoverType === 'E' && hasEverHeldCoverPartner === 'Y'));
+
 			togglePrimaryCurrentCoverType(hasCoverPrimary && hasCoverPrimary === 'Y');
 			togglePartnerCurrentCoverType(hasCoverPartner && hasCoverPartner === 'Y');
 
-			togglePrimaryEverHeldCoverType((hasCoverPrimary && hasCoverPrimary === 'N') || (hasContinuousCoverPrimary && hasContinuousCoverPrimary === 'N'));
-			togglePartnerEverHeldCoverType((hasCoverPartner && hasCoverPartner === 'N') || (hasContinuousCoverPartner && hasContinuousCoverPartner === 'N'));
-
-			var showFundHistoryPrimary = lhcApplicablePrimary && ((hasCoverPrimary === 'Y' && hasContinuousCoverPrimary === 'N' && hasEverHeldCoverPrimary  === 'Y') || (hasCoverPrimary === 'N' && hasEverHeldCoverPrimary === 'Y'));
-			var showFundHistoryPartner = lhcApplicablePartner && ((hasCoverPartner === 'Y' && hasContinuousCoverPartner === 'N' && hasEverHeldCoverPartner  === 'Y') || (hasCoverPartner === 'N' && hasEverHeldCoverPartner === 'Y'));
+			togglePrimaryEverHeldCoverType(primaryEverHeldCover);
+			togglePartnerEverHeldCoverType(partnerEverHeldCover);
 
 			var unsureValuePrimary = $primaryFundHistoryUnsure.find(':input').filter(':checked').val();
 			var unsureValuePartner = $partnerFundHistoryUnsure.find(':input').filter(':checked').val();
 
-			$primaryFundHistory.toggleClass('hidden', !showFundHistoryPrimary || unsureValuePrimary === 'Y');
-			$partnerFundHistory.toggleClass('hidden', !showFundHistoryPartner || unsureValuePartner === 'Y');
+			$primaryFundHistory.toggleClass('hidden', !primaryHasFundHistory || unsureValuePrimary === 'Y');
+			$partnerFundHistory.toggleClass('hidden', !partnerHasFundHistory || unsureValuePartner === 'Y');
 
-			$('#clientFund').find('label').text(showFundHistoryPrimary ? 'Your Previous Hospital Fund' : 'Your Current Hospital Fund');
-			$('#partnerFund').find('label').text(showFundHistoryPartner ? "Your Partner's Previous Hospital Fund" : "Your Partner's Current Hospital Fund");
+			$('#clientFund').find('label').text(primaryHasFundHistory ? 'Your Previous Hospital Fund' : 'Your Current Hospital Fund');
+			$('#partnerFund').find('label').text(partnerHasFundHistory ? "Your Partner's Previous Hospital Fund" : "Your Partner's Current Hospital Fund");
 
-			$primaryFundHistoryUnsure.toggleClass('hidden', !showFundHistoryPrimary);
-			$partnerFundHistoryUnsure.toggleClass('hidden', !showFundHistoryPartner);
+			$primaryFundHistoryUnsure.toggleClass('hidden', !primaryHasFundHistory);
+			$partnerFundHistoryUnsure.toggleClass('hidden', !partnerHasFundHistory);
 
-			$primaryPreviousFund.toggleClass('hidden', !showFundHistoryPrimary);
-			$partnerPreviousFund.toggleClass('hidden', !showFundHistoryPartner);
+			$primaryPreviousFund.toggleClass('hidden', !primaryHasFundHistory);
+			$partnerPreviousFund.toggleClass('hidden', !partnerHasFundHistory);
 
 			_toggleAgeBasedDiscountQuestion('primary');
 
