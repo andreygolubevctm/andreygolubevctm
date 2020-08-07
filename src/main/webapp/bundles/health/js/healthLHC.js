@@ -13,7 +13,9 @@
             partner: {}
         },
         _newLhc = null,
-        _newLhcCompleteResult = null;
+        _newLhcCompleteResult = null,
+        _primary_lhc_override = null,
+        _partner_lhc_override = null;
 
     function onInitialise(callback) {
         var $healthCoverDetails = $('#contactForm');
@@ -232,7 +234,17 @@
             errorLevel: 'silent',
             data: JSON.stringify(_calculateRequestData),
             onSuccess: function(res) {
-                _newLhc = meerkat.modules.health.hasPartner() ? res.combined.lhcPercentage : res.primary.lhcPercentage;
+                var hasPartner = meerkat.modules.health.hasPartner();
+                if(_primary_lhc_override !== null) {
+                    res.primary.lhcPercentage = _primary_lhc_override;
+                }
+                if(_partner_lhc_override !== null) {
+                    res.partner.lhcPercentage = _partner_lhc_override;
+                }
+                if(hasPartner && res.hasOwnProperty('combined')) {
+                    res.combined.lhcPercentage = (res.primary.lhcPercentage + res.partner.lhcPercentage) / 2;
+                }
+                _newLhc = hasPartner ? res.combined.lhcPercentage : res.primary.lhcPercentage;
                 _newLhcCompleteResult = res;
                 displayLHC();
             },
@@ -303,18 +315,23 @@
     function displayLHC() {
         var rates = getCompleteLhcResult();
         if(rates) {
+            var hasPartner = meerkat.modules.health.hasPartner();
             meerkat.modules.healthCoverDetails.setHealthFunds();
-            if(meerkat.site.isCallCentreUser === true){
-               $('.health_cover_details_rebate .fieldrow_legend').html(getOverallLoadingText(rates.primary.lhcPercentage));
+            if(meerkat.site.isCallCentreUser === true && rates.hasOwnProperty('primary') && (!hasPartner || (rates.hasOwnProperty('combined')))){
 
-               $('.simples_dialogue-checkbox-26 span[data-loading=true]').html(rates.primary.lhcPercentage);
+                // Exit method if rates are invalid
+                if(rates.hasOwnProperty('primary') && !rates.primary.hasOwnProperty('lhcPercentage')) return;
+                if(rates.hasOwnProperty('partner') && !rates.partner.hasOwnProperty('lhcPercentage')) return;
+                if(rates.hasOwnProperty('combined') && !rates.combined.hasOwnProperty('lhcPercentage')) return;
 
-                if(meerkat.modules.health.hasPartner() && rates.partner){
-                    $('#health_healthCover_primaryCover .fieldrow_legend')
-                        .html(getLoadingText(rates.primary.lhcPercentage, rates.combined.lhcPercentage));
+                $('.health_cover_details_rebate .fieldrow_legend').html(getOverallLoadingText(rates.primary.lhcPercentage));
 
-                    $('#health_healthCover_partnerCover .fieldrow_legend')
-                        .html(getLoadingText(rates.partner.lhcPercentage , rates.combined.lhcPercentage));
+                $('.simples_dialogue-checkbox-26 span[data-loading=true]').html(rates[hasPartner ? 'combined' : 'primary'].lhcPercentage);
+
+                if(hasPartner && rates.partner){
+                    $('#health_healthCover_primaryCover .fieldrow_legend').html(getLoadingText(rates.primary.lhcPercentage, rates.combined.lhcPercentage));
+
+                    $('#health_healthCover_partnerCover .fieldrow_legend').html(getLoadingText(rates.partner.lhcPercentage , rates.combined.lhcPercentage));
 
                     $('.health_cover_details_rebate .fieldrow_legend').html(getOverallLoadingText(rates.combined.lhcPercentage));
                 } else {
@@ -333,6 +350,22 @@
         return 'Overall LHC ' + loading + '%';
     }
 
+    function setPrimaryLHCOverride(lhc_override) {
+        _primary_lhc_override = null;
+        try {
+            var num = parseInt(lhc_override);
+            _primary_lhc_override = _.isNaN(num) ? null : num;
+        } catch(ex) {}
+    }
+
+    function setPartnerLHCOverride(lhc_override) {
+        _partner_lhc_override = null;
+        try {
+            var num = parseInt(lhc_override);
+            _partner_lhc_override = _.isNaN(num) ? null : num;
+        } catch(ex) {}
+    }
+
     meerkat.modules.register('healthLHC', {
         onInitialise: onInitialise,
         setCoverDates: setCoverDates,
@@ -345,7 +378,9 @@
         resetNewLHC: resetNewLHC,
         getNewPrimaryCAE: getNewPrimaryCAE,
         getNewPartnerCAE: getNewPartnerCAE,
-        displayLHC: displayLHC
+        displayLHC: displayLHC,
+        setPrimaryLHCOverride: setPrimaryLHCOverride,
+        setPartnerLHCOverride: setPartnerLHCOverride
     });
 
 })(jQuery);
