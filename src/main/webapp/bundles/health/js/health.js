@@ -351,6 +351,14 @@
 			onInitialise: function onContactInit(event){
 				meerkat.modules.healthYourDetailsDynamicScripting.onInitialise();
 				meerkat.modules.resultsFeatures.fetchStructure(simplesCategoryVersion);
+
+                $('#contactForm').find(':input').on('change',
+                    function (event) {
+                        var $this = $(this);
+                        // Don't action on the DOB input fields; wait until it's serialised to the hidden field.
+                        if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
+                        meerkat.modules.healthLHC.displayLHC();
+                    });
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				if (event.isForward) {
@@ -368,6 +376,8 @@
 
 				meerkat.modules.healthContactType.togglePhoneEmailRequired();
 				meerkat.modules.healthYourDetailsDynamicScripting.onBeforeEnterYourDetails();
+
+                meerkat.modules.healthLHC.displayLHC();
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
@@ -1106,7 +1116,7 @@
 
 		}
 
-		if(!fetchRates(postData, true, callback)) {
+        if(!fetchRates(postData, true, callback)) {
 			exception("Failed to Fetch Health Rebate Rates");
 		}
 	}
@@ -1114,6 +1124,18 @@
 	function fetchRates(postData, canSetRates, callback) {
 		// Check if there is enough data to ask the server.
 		var coverTypeHasPartner = hasPartner();
+		if(postData.hasOwnProperty("primary_loading_manual")) {
+			if(_.isEmpty(postData.primary_loading_manual)) {
+                postData.primary_loading_manual = null;
+            }
+			meerkat.modules.healthLHC.setPrimaryLHCOverride(postData.primary_loading_manual);
+		}
+        if(postData.hasOwnProperty("partner_loading_manual")) {
+            if(_.isEmpty(postData.partner_loading_manual)) {
+                postData.partner_loading_manual = null;
+            }
+            meerkat.modules.healthLHC.setPartnerLHCOverride(postData.partner_loading_manual);
+        }
 		if(postData.cover === '') return false;
 		if (postData.rebate_choice === '') return false;
 		if(postData.primary_dob === '') return false;
@@ -1138,7 +1160,7 @@
 			postData.commencementDate = searchDate.val();
 		}
 
-		return meerkat.modules.comms.post({
+        return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",
 			data: postData,
 			cache:true,

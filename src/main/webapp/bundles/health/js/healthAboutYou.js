@@ -87,7 +87,7 @@
 		$primaryDOB = $('#health_healthCover_primary_dob'),
 		$rebateLegend = $('#health_healthCover_tier_row_legend'),
 		$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
-		$lhcContainers = $('#health-contact-fieldset, #partner-health-cover, #australian-government-rebate'),
+		$lhcContainers = $('#health_situation_coverType, #health-contact-fieldset, #partner-health-cover, #australian-government-rebate'),
 		$medicare = $('.health-medicare_details'),
 		$healthSituation = $('input[name="health_situation_healthSitu"]');
 		$abdElements = {
