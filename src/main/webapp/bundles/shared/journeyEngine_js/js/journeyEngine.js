@@ -4,6 +4,17 @@
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
 
+    function getBaseUrl() {
+        if (meerkat.site && typeof meerkat.site.urls !== 'undefined') {
+            if (typeof meerkat.site.urls.context !== 'undefined') {
+                return '/'+meerkat.site.urls.context;
+            }
+            else if (typeof meerkat.site.urls.base !== 'undefined') {
+                return meerkat.site.urls.base;
+            }
+        }
+    }
+
     var events = {
             journeyEngine: {
                 BEFORE_STEP_CHANGED: 'BEFORE_STEP_CHANGED',
@@ -245,10 +256,32 @@
 
             if(eventObject.navigationId === "") eventObject.navigationId = settings.startStepId; // assume it is the start step if blank
             var step = getStep(eventObject.navigationId);
+            // Send event status to in progress
             if(step === null) {
                 step = getStep(0);
             }
             step.stepIndex = getStepIndex(step.navigationId); //Also return the index on the event.
+            if(meerkat.site.vertical === 'health'
+                && meerkat.site.gaClientId
+                && meerkat.modules.transactionId.get() !== meerkat.modules.transactionId.getRootId()) {
+                meerkat.modules.comms.post({
+                    url: getBaseUrl() + 'spring/rest/simples/events/sendEvent.json',
+                    contentType: 'application/json;',
+                    cache: false,
+                    errorLevel: 'silent',
+                    data: JSON.stringify({
+                        transactionId: meerkat.modules.transactionId.get(),
+                        rootId: meerkat.modules.transactionId.getRootId(),
+                        gaId: meerkat.site.gaClientId,
+                        step: step.title
+                    }),
+                    onSuccess: function onSuccess(json) {
+                    },
+                    onError: function onError(obj, txt, errorThrown) {
+                        console.warn('Could not send event');
+                    }
+                });
+            }
 
             if(currentStep === null){
 

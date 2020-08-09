@@ -166,6 +166,7 @@
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 	pageAction: '<c:out value="${pageAction}"/>',
+	rootId: "<c:out value="${data['current/rootId']}"/>",
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,
 	productId: '<c:out value="${data.health.application.productId}" />',
