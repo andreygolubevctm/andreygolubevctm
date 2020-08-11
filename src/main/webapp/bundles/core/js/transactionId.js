@@ -21,14 +21,12 @@
 		waitingOnNewTransactionId = false;
 
 	var $transactionId;
-	var $rootId;
 
 	function init(){
 		setTransactionIdFromPage();
 
 		jQuery(document).ready(function($) {
 			$transactionId = $(".transactionId");
-			$rootId = $(".rootId");
 			set(transactionId, rootId);
 			updateSimples();
 		});
@@ -49,7 +47,7 @@
 	}
 
 	function set( newTransactionId, newRootId ) {
-		if(newTransactionId != transactionId) {
+		if(newTransactionId !== transactionId) {
 			meerkat.messaging.publish(moduleEvents.CHANGED, {transactionId: transactionId});
 			if(meerkat.site.isCallCentreUser && meerkat.modules.hasOwnProperty("simplesInteraction")) {
                 meerkat.modules.simplesInteraction.storeCallId(newTransactionId);
@@ -66,7 +64,7 @@
 	function setTransactionIdFromPage(){
 		if(meerkat.site.initialTransactionId !== null && typeof meerkat.site.initialTransactionId === "number"){
 			transactionId = meerkat.site.initialTransactionId;
-			rootId = meerkat.site.initialTransactionId;
+			rootId = meerkat.site.rootId;
 			meerkat.site.initialTransactionId = null;
 		}
 	}
