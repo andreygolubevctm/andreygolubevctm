@@ -16,21 +16,11 @@
 
             <jsp:body>
                 <health_v4_payment:payment xpath="${pageSettings.getVerticalCode()}/payment" />
-                <c:if test="${data.health.currentJourney == null || data.health.currentJourney != 2}">
-                    <health_v4_payment:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
-                </c:if>
-                <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
-                    <health_v4_payment:declaration_v2 xpath="${pageSettings.getVerticalCode()}/declaration" />
-                </c:if>
+                <health_v4_payment:declaration_v2 xpath="${pageSettings.getVerticalCode()}/declaration" />
 
                 <health_v4_payment:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 
-                <c:if test="${data.health.currentJourney == null || data.health.currentJourney != 2}">
-                    <health_v4_payment:whatsNext />
-                </c:if>
-                <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
-                    <health_v4_payment:whatsNext_v2 />
-                </c:if>
+                <health_v4_payment:whatsNext_v2 />
 
                 <health_v1:fund_timezone_message_modal />
 

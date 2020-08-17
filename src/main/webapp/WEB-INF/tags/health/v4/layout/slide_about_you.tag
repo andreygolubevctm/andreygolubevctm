@@ -81,9 +81,7 @@
                                 <health_v4_aboutyou:partner_abdstartdate xpath="${xpath}" />
                             </div>
 
-                            <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
-                                <health_v4:switching_accordion id="about_you_switching_accordion" hidden="true"/>
-                            </c:if>
+                            <health_v4:switching_accordion id="about_you_switching_accordion" hidden="true"/>
 
                             <health_v4_aboutyou:optin xpath="${xpath}" />
 
