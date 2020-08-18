@@ -14,7 +14,6 @@
 <%@ attribute name="stickyTopClass" 	required="false"	description="Should the fieldset be sticky"%>
 
 <c:if test="${empty nextStepId}"><c:set var="nextStepId" value="next" /></c:if>
-<c:if test="${data.health.currentJourney == null || data.health.currentJourney != 2 && sticky}"><c:set var="sticky" value="false" /></c:if>
 
 <div class="row">
 
@@ -28,9 +27,7 @@
 					<div class="row slideAction">
 						<div class="col-sm-offset-3 col-xs-12 col-sm-6 col-md-4">
 							<a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton ${submitButton ? 'btn-submit' : ''}" data-slide-control="${nextStepId}" href="javascript:;" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />><c:out value='${nextLabel} ' /> <span class="icon icon-angle-right"></span></a>
-							<c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
-								<div class="journeyNavButtonError hidden">Please complete all required fields to continue</div>
-							</c:if>
+							<div class="journeyNavButtonError hidden">Please complete all required fields to continue</div>
 						</div>
 					</div>
 				</div>

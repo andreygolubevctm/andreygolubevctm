@@ -436,7 +436,7 @@
 				meerkat.modules.healthDependants.resetConfig();
 				if(meerkat.site.isCallCentreUser) {
 					// For Simples we need to only unload healthFund specific changes
-                    meerkat.modules.healthFunds.unload();
+                    			meerkat.modules.healthFunds.unload();
 				} else {
 					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 					meerkat.modules.healthResults.resetSelectedProduct();
@@ -468,13 +468,9 @@
 							meerkat.modules.simplesDynamicDialogue.parse(62, function() {
 								var $modal = $('#' + modalId);
 								$modal.find('.simples-dialogue').removeClass('hidden');
-								meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $modal.find('#complianceForm') );
-								$modal.find('.btn-simples-dialogue-62').off().on('click', function() {
-									var $form = $('#' + modalId).find('#complianceForm');
-									$form.data().validator.resetForm();
-									if ($form.valid()){
-										meerkat.modules.dialogs.close(modalId);
-									}
+					
+								$modal.find('.btn-simples-dialogue-62').off().on('click', function() {	
+									meerkat.modules.dialogs.close(modalId);	
 								});
 
 								meerkat.modules.dialogs.resizeDialog(modalId);
@@ -488,9 +484,6 @@
                                 }
 							},
 							onClose: function(modalId) {
-								// Save the checkbox values to hidden inputs as Y/N
-								$('#health_simples_dialogue-checkbox-62')
-									.val($('#health_simples_dialogue-checkbox-62-modal').prop('checked') ? 'Y' : 'N');
 
                                 if (meerkat.site.tracking.brandCode === 'wfdd') {
                                     $('#health_application_wfd_heardAbout').val($('#health_application_wfd_heardAboutSelect').val());

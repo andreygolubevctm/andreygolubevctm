@@ -136,16 +136,12 @@
                 <c:set var="additionWaitMessageIframeURL" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionWaitMessageIframeURL")}'/>
                 <c:set var="additionWaitMessageIframeURL_v2" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionWaitMessageIframeURL_v2")}'/>
 
-                <c:set var="iframeURL" value="${additionWaitMessageIframeURL.getSupplementaryValueByKey(envKey)}" />
-
-                <c:if test="${currentJourney != null && currentJourney == 2}">
-                    <c:set var="iframeURL" value="${additionWaitMessageIframeURL_v2.getSupplementaryValueByKey(envKey)}" />
-                </c:if>
+                <c:set var="iframeURL" value="${additionWaitMessageIframeURL_v2.getSupplementaryValueByKey(envKey)}" />
 
                 <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingPageContent.getSupplementaryValueByKey("className")}<c:if test="${iframeURL ne null}"> iframeURLActive</c:if>">
 
                         <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
-                        <p class="message ${currentJourney != null && currentJourney == 2 ? 'marginTop largeFont': ''}">Please wait...</p>
+                        <p class="message marginTop largeFont">Please wait...</p>
                         <div class="loading-logo"></div>
                         <c:choose>
                             <c:when test="${octoberCompRender && !callCentre}">

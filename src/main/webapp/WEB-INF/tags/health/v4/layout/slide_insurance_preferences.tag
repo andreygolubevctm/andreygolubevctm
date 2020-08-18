@@ -19,12 +19,7 @@
                         className="benefitsContainer">
 
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/benefits" />
-                    <c:if test="${data.health.currentJourney == null || data.health.currentJourney != 2}">
-                        <health_v4_insuranceprefs:benefits xpath="${xpath}" />
-                    </c:if>
-                    <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
-                        <health_v4_insuranceprefs_v2:benefits xpath="${xpath}" />
-                    </c:if>
+                    <health_v4_insuranceprefs_v2:benefits xpath="${xpath}" />
 
                 </form_v4:fieldset>
 
