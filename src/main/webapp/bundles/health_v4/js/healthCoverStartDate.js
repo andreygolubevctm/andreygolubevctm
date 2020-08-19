@@ -12,7 +12,8 @@
     	    input : null,
 	        row : null
         },
-		_weekends = true;
+		_weekends = true,
+		_rateRiseMonth = '10/01/';
 
     function init(){
         $(document).ready(function () {
@@ -90,14 +91,14 @@
 	    }
 	}
 	
-	function isAfterMarch() {
+	function isAfterOldRatesExpire() {
 		var now = new Date();
 		var coverDateString = getVal();
 		var dates = coverDateString.split("/");
 		var coverDate = new Date(dates[1] + "/" + dates[0] + "/" + dates[2]);
-		var aprilDate = new Date("04/01/" + now.getFullYear());
+		var rateRiseDate = new Date(_rateRiseMonth + now.getFullYear());
 
-		return coverDate.getTime() >= aprilDate.getTime();
+		return coverDate.getTime() >= rateRiseDate.getTime();
 	}
 
 	function setCoverStartRange(min, max){
@@ -201,7 +202,7 @@
 	    resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway,
 		setDaysOfWeekDisabled: setDaysOfWeekDisabled,
 		setToNextDay: setToNextDay,
-		isAfterMarch: isAfterMarch
+        isAfterOldRatesExpire: isAfterOldRatesExpire
     });
 
 })(jQuery);

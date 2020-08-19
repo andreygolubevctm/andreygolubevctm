@@ -8,7 +8,7 @@
 <core_v1:js_template id="price-frequency-template">
 	<c:set var="dialogueText">
 		{{ var altPremiumText = altPremium === '$0.00' ? 'at the higher premium' : altPremium; }}
-		You've chosen to pay {{= frequency }}, which means premiums paid before 1st April will be {{= premium }} and then your ongoing premiums will be {{= altPremiumText }}
+		You've chosen to pay {{= frequency }}, which means premiums paid before October 1st will be {{= premium }} and then your ongoing premiums will be {{= altPremiumText }}
 	</c:set>
 	<field_v2:checkbox
 			xpath="health/simples/dialogue-checkbox-dual-pricing-frequency"
@@ -37,10 +37,10 @@
 </core_v1:js_template>
 
 <c:set var="note">You must purchase before {{= obj.dropDeadDateFormatted }}.</c:set>
-<c:set var="heading">Premiums are rising April 1</c:set>
+<c:set var="heading">Premiums are rising October 1</c:set>
 <c:set var="whyPremiumsRising"><a href="javascript:;" class="why-rising-premiums">Why are premiums rising?</a></c:set>
-<c:set var="april1Header">from April 1</c:set>
-<c:set var="april1HeaderNoSup">from April 1st</c:set>
+<c:set var="rateRiseDay1Header">from October 1</c:set>
+<c:set var="rateRiseDay1HeaderNoSup">from October 1st</c:set>
 
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
@@ -56,9 +56,9 @@
 			</div>
 			{{= renderedPriceTemplate }}
 		</div>
-		<div class="april-pricing">
+		<div class="raterisemonth-pricing">
 			<div>
-				${april1Header}
+				${rateRiseDay1Header}
 			</div>
 			{{= renderedAltPriceTemplate }}
 		</div>
@@ -73,8 +73,8 @@
 			<h3>Now</h3>
 			{{= renderedPriceTemplate }}
 		</div>
-		<div class="april-pricing">
-			<h3>From April 1</h3>
+		<div class="raterisemonth-pricing">
+			<h3>From October 1</h3>
 			{{= renderedAltPriceTemplate }}
 		</div>
 	</div>
@@ -93,10 +93,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="april-pricing">
+		<div class="raterisemonth-pricing">
 			<div class="row">
 				<div class="col-xs-6 priceContainer">
-					<span class="heading">{{= obj._selectedFrequency }} premium<br/>${april1HeaderNoSup}</span>
+					<span class="heading">{{= obj._selectedFrequency }} premium<br/>${rateRiseDay1HeaderNoSup}</span>
 					{{= renderedAltPriceTemplate }}
 				</div>
 				<div class="col-xs-6 detailsContainer">
@@ -115,7 +115,7 @@
 		</div>
 		<hr />
 		{{ if (showAltPremium) { }}
-		<div class="april-pricing">
+		<div class="raterisemonth-pricing">
 			{{= renderedAltPriceTemplate }}
 		</div>
 		{{ } }}
@@ -129,7 +129,7 @@
 		</div>
 		<hr />
 		{{ if (showAltPremium) { }}
-		<div class="april-pricing">
+		<div class="raterisemonth-pricing">
 			{{= renderedAltPriceTemplate }}
 		</div>
 		{{ } }}
