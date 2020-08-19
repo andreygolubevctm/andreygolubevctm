@@ -98,7 +98,7 @@
         product.showAltPremium = false;
         product.priceBreakdown = meerkat.modules.healthPriceBreakdown.showBreakdown();
 
-        if (!meerkat.modules.healthCoverStartDate.isAfterMarch() && meerkat.modules.healthDualPricing.isDualPricingActive()) {
+        if (!meerkat.modules.healthCoverStartDate.isAfterOldRatesExpire() && meerkat.modules.healthDualPricing.isDualPricingActive()) {
             product.displayLogo = false;
             if (typeof product.dropDeadDate === 'undefined') {
                 var selectedProduct = Results.getSelectedProduct();

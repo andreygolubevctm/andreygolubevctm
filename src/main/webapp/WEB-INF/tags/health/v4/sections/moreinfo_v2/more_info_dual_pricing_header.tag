@@ -7,5 +7,3 @@
 <c:if test="${isDualPriceActive eq true}">
     {{= renderedDualPricing }}
 </c:if>
-
-{{= renderedDualPricing }}

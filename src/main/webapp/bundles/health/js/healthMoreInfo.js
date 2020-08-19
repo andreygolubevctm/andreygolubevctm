@@ -471,8 +471,8 @@
         product.aboutFund = '<p>Apologies. This information did not download successfully.</p>';
         product.whatHappensNext = '<p>Apologies. This information did not download successfully.</p>';
         product.warningAlert = '';
-        product.dropDeadDate = '1/4/2018';
-        product.dropDeadDateFormatted = 'April 1st';
+        product.dropDeadDate = '1/10/2018';
+        product.dropDeadDateFormatted = 'October 1st';
 
         // Get the "about fund", "what happens next" and warningAlert info
         return $.when(

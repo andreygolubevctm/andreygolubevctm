@@ -27,9 +27,6 @@
 	{{ } }}
 </core_v1:js_template>
 
-<c:set var="heading">Premiums are rising April 1</c:set>
-<c:set var="april1Header">from April 1st</c:set>
-
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
 	{{ var comingSoonClass = ''; }}
@@ -38,8 +35,8 @@
 		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
 	{{ } }}
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
-		<div class="april-pricing">
-		  <div class="dual-pricing-before-after-text">From April 1</div>
+		<div class="raterisemonth-pricing">
+		  <div class="dual-pricing-before-after-text">From October 1</div>
 			<div class="altPriceContainer">
 				{{= renderedAltPriceTemplate }}
 			</div>
@@ -75,7 +72,7 @@
 			</div>
 			<div class="moreInfoPriceWrapper">
 				<div class="moreInfoPriceContainer future-price">
-					<div class="moreInfoPriceHeading">Premiums rise from April 1</div>
+					<div class="moreInfoPriceHeading">Premiums rise from October 1</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltPriceTemplate }}
 					</div>
@@ -113,9 +110,9 @@
 					{{= renderedPriceTemplate }}
 				</div>
 			</div>
-			<div class="col-xs-6 april-container">
-				<div class="april-pricing">
-					<div class="dual-pricing-before-after-text">Price after April 1</div>
+			<div class="col-xs-6 raterisemonth-container">
+				<div class="raterisemonth-pricing">
+					<div class="dual-pricing-before-after-text">Price after October 1</div>
 					{{= renderedAltPriceTemplate }}
 				</div>
 			</div>
@@ -130,7 +127,7 @@
 			{{= renderedPriceTemplate }}
 		</div>
 		<hr />
-		<div class="april-pricing">
+		<div class="raterisemonth-pricing">
 			{{= renderedAltPriceTemplate }}
 		</div>
 	</div>
@@ -141,7 +138,7 @@
 		<div class="current-pricing">
 			{{= renderedPriceTemplate }}
 		</div>
-		<div class="april-pricing">
+		<div class="raterisemonth-pricing">
 			{{= renderedAltPriceTemplate }}
 		</div>
 	</div>
