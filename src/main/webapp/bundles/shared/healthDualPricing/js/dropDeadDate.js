@@ -36,8 +36,8 @@
 
     function setDefaultDropDeadDate(product) {
         var d = new Date();
-        product.dropDeadDateFormatted = 'April 1st';
-        product.dropDeadDate =  new Date('1/4/'+d.getFullYear());
+        product.dropDeadDateFormatted = 'October 1st';
+        product.dropDeadDate =  new Date('1/10/'+d.getFullYear());
     }
 
 

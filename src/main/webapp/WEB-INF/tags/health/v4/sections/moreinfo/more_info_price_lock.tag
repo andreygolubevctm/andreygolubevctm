@@ -9,6 +9,6 @@
     <div class="extraInfoItemText">
         <p>Love that price? Lock it in today!</p>
         <p>Did you know that you can pay up to 12 months in advance, to lock in a price you love? More money in your pocket, simples!</p>
-        <p>Premiums often rise on April 1st. It’s important to note that some funds do not allow pre-payment of premiums in the final days of April, so don’t miss out.</p>
+        <p>Premiums may rise on October 1st. It’s important to note that some funds do not allow pre-payment of premiums in the final days of September, so don’t miss out.</p>
     </div>
 </div>
