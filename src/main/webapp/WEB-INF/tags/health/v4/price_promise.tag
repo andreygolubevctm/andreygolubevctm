@@ -10,16 +10,11 @@
 
 <c:if test="${pageSettings.getSetting('pricePromiseEnabled') eq 'Y' and iframeUrl ne ''}">
     <div class="price-promise-container" data-dismissible="${dismissible}">
-        <c:if test="${dismissible && data.health.currentJourney != null && data.health.currentJourney == 2}">
+        <c:if test="${dismissible}">
             <div class="price-promise-close">
                 <span class="icon icon-cross"></span>
             </div>
         </c:if>
-        <c:if test="${data.health.currentJourney != null && data.health.currentJourney == 2}">
-            <iframe frameborder="0" scrolling="no" data-src="${iframeUrlNew}" data-step="${step}"></iframe>
-        </c:if>
-        <c:if test="${data.health.currentJourney == null || data.health.currentJourney != 2}">
-            <iframe frameborder="0" scrolling="no" data-src="${iframeUrl}" data-step="${step}"></iframe>
-        </c:if>
+        <iframe frameborder="0" scrolling="no" data-src="${iframeUrlNew}" data-step="${step}"></iframe>
     </div>
 </c:if>
