@@ -83,8 +83,8 @@
 					<div class="moreInfoTopRightColumn">
 						<health_v4_moreinfo_v2:more_info_product_widget />
 					</div>
-					    {{ if(meerkat.site.showMoreInfoPriceLock) { }}
-            		<health_v4_moreinfo:more_info_price_lock />
+					{{ if(meerkat.site.showMoreInfoPriceLock) { }}
+            			<health_v4_moreinfo:more_info_price_lock />
         			{{ } }}
               </div>
             </div>

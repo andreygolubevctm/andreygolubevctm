@@ -13,7 +13,7 @@
 
     <div class="row">
         <div class="col-xs-12 text-center">
-            Health funds adjust their premiums on April 1st every year. The amounts you see reflect the premiums <span class="text-bold">before</span> and <span class="text-bold">after</span> April 1st.
+            Health funds adjust their premiums on October 1st every year. The amounts you see reflect the premiums <span class="text-bold">before</span> and <span class="text-bold">after</span> October 1st.
         </div>
     </div>
 
@@ -41,7 +41,7 @@
             Pay your annual  <br class="hidden-xs"/>premium in full by
             <br>
             <span class="dual-pricing-highlight dual-pricing-date">
-                <span class="dual-pricing-date-month">April</span>
+                <span class="dual-pricing-date-month">October</span>
                 <span class="dual-pricing-date-day">1<sup>st</sup></span>
             </span>
         </div>
@@ -51,7 +51,7 @@
 
     <div class="row">
         <div class="col-xs-12 text-center">
-            <small>Alternatively, if you elect to pay your premium weekly, monthly, fortnightly, quarterly or half-yearly before {{= obj.dropDeadDate }}, <span class="text-bold">only payments made by 1st April will be at the current amount.</span> Thereafter the new premium will apply.</small>
+            <small>Alternatively, if you elect to pay your premium weekly, monthly, fortnightly, quarterly or half-yearly before {{= obj.dropDeadDate }}, <span class="text-bold">only payments made by October 1st will be at the current amount.</span> Thereafter the new premium will apply.</small>
         </div>
     </div>
 

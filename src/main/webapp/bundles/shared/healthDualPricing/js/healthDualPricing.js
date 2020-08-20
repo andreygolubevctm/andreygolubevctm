@@ -18,7 +18,7 @@
             'A': 'annual'
         },
         isActive = null,
-        _aprilFirst = '04/01/' + new Date().getFullYear(),
+        _startMonthFirst = '10/01/' + new Date().getFullYear(),
         _trackModalClose = true;
 
     function initDualPricing() {
@@ -72,7 +72,7 @@
     function _applyEventListeners() {
         $elements.paymentDetailsFrequency.on('change.healthDualPricing', function updateWarningLabel() {
             var coverStartDateTime = meerkat.modules.dateUtils.parse($("#health_payment_details_start").val(), 'DD/MM/YYYY').getTime(),
-                aprilFirstTime = new Date(_aprilFirst).getTime(),
+                startMonthFirstTime = new Date(_startMonthFirst).getTime(),
                 frequency = $(this).val().toLowerCase(),
                 selectedProduct = meerkat.modules.healthResults.getSelectedProduct(),
                 selectedPayment = meerkat.modules.healthPaymentStep.getPaymentMethodNode(),
@@ -85,8 +85,8 @@
 
             $elements.frequencyWarning.text('If you elect to pay your premium ${frequency}, only payments made by ${pricingDateFormatted} will be at the current amount, thereafter the new premium will apply.');
 
-            // hide if cover start date after or on April 1st or altPremium price is $0 on online journey
-            if (coverStartDateTime >= aprilFirstTime || (!meerkat.site.isCallCentreUser && selectedProduct.altPremium[frequency].value === 0)) {
+            // hide if cover start date after or on 1st of start month or altPremium price is $0 on online journey
+            if (coverStartDateTime >= startMonthFirstTime || (!meerkat.site.isCallCentreUser && selectedProduct.altPremium[frequency].value === 0)) {
                 $elements.frequencyWarning.slideUp();
                 return;
             }
