@@ -819,9 +819,9 @@
         $("#health_rebate").val((rates.rebate || ''));
         $("#health_rebateChangeover").val((rates.rebateChangeover || ''));
         $("#health_previousRebate").val((rates.previousRebate || ''));
-        $("#health_loading").val((rates.loading || ''));
-        $("#health_primaryCAE").val((rates.primaryCAE || ''));
-        $("#health_partnerCAE").val((rates.partnerCAE || ''));
+        $("#health_loading").val(!_.isNull(meerkat.modules.healthLHC.getNewLHC()) ? meerkat.modules.healthLHC.getNewLHC() : (rates.loading || ''));
+        $("#health_primaryCAE").val(!_.isNull(meerkat.modules.healthLHC.getNewPrimaryCAE()) ? meerkat.modules.healthLHC.getNewPrimaryCAE() : (rates.primaryCAE || ''));
+        $("#health_partnerCAE").val(!_.isNull(meerkat.modules.healthLHC.getNewPartnerCAE()) ? meerkat.modules.healthLHC.getNewPartnerCAE() : (rates.partnerCAE || ''));
 
         meerkat.modules.healthResults.setLhcApplicable(rates.loading);
     }
