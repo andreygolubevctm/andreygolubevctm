@@ -364,5 +364,9 @@
 			} catch(e) {
 				// ignore
 			}
+			// If a consultant updates results while the call is on hold, a new transaction id is issued but no
+			// longer associated with the call. Thus, we call transactionId.set() again here to set the transactionId
+			// if it has changed
+			meerkat.modules.transactionId.set(transactionId);
 		</c:if>
 	</script>
