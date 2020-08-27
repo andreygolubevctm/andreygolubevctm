@@ -66,7 +66,7 @@
         <sentry-logback.version>1.7.10</sentry-logback.version>
         <logback.version>1.1.5</logback.version>
         <!-- Schematic -->
-        <schema-model.version>1.16.0</schema-model.version>
+        <schema-model.version>1.21.0</schema-model.version>
         <schema-model.feature.classifier></schema-model.feature.classifier>
 
         <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
