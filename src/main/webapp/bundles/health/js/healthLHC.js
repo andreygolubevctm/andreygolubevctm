@@ -286,7 +286,7 @@
             return '65';
         }
 
-        return ((primaryLhc / 2) + 30).toString();
+        return Math.floor(((primaryLhc / 2) + 30)).toString();
     }
 
     function getNewPartnerCAE() {
@@ -304,7 +304,7 @@
             return '65';
         }
 
-        return ((partnerLhc / 2) + 30).toString();
+        return Math.floor(((partnerLhc / 2) + 30)).toString();
     }
 
     function resetNewLHC() {
