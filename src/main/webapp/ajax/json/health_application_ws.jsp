@@ -86,12 +86,13 @@
         <c:set var="ct_outcome">
             <core_v1:transaction touch="P"/>
         </c:set>
-        ${logger.info('Application has been set to pending. {}',  log:kv('productId', productId))}
+        ${logger.info('Application has been set to pending. {}, {}',  log:kv('ct_outcome', ct_outcome),  log:kv('productId', productId))}
 
 
         <c:choose>
             <c:when test="${ct_outcome == 'C'}">
                 <c:set var="errorMessage" value="Quote has already been submitted and confirmed."/>
+                ${logger.info("${errorMessage}")}
                 <core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" />
                 ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "confirmed")}
             </c:when>
@@ -99,6 +100,7 @@
             <c:when test="${ct_outcome == 'V' or ct_outcome == 'I'}">
                 <c:set var="errorMessage"
                        value="Important details are missing from your session. Your session may have expired."/>
+                ${logger.info("${errorMessage}")}
                 <core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" />
 
                 ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "transaction")}
@@ -106,6 +108,7 @@
 
             <c:when test="${not empty ct_outcome}">
                 <c:set var="errorMessage" value="Application submit error. Code=${ct_outcome}"/>
+                ${logger.info("${errorMessage}")}
                 <core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" />
 
                 <c:if test="${not empty data['health/privacyoptin'] and data['health/privacyoptin'] eq 'Y'}">
@@ -115,6 +118,7 @@
                 ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "")}
             </c:when>
             <c:otherwise>
+                ${logger.info('Application request being forwarded to: /spring/rest/health/apply/get.json')}
                 <jsp:forward page="/spring/rest/health/apply/get.json"/>
             </c:otherwise>
         </c:choose>
