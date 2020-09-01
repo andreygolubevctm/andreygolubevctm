@@ -1,7 +1,5 @@
 package com.ctm.web.health.router;
 
-import com.ctm.schema.health.v1_0_0.*;
-import com.ctm.web.core.confirmation.services.DirectToCloudwatchEventsSender;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.dao.GeneralDao;
@@ -18,13 +16,11 @@ import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.tracking.TrackingKeyService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.health.model.form.ContactDetails;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.HealthQuoteResult;
@@ -73,20 +69,15 @@ public class HealthQuoteController extends CommonQuoteRouter {
     private HealthSelectedProductService selectedProductService;
 
     @Autowired
-    private DirectToCloudwatchEventsSender cloudWatchNotifier;
-
-    @Autowired
     public HealthQuoteController(SessionDataServiceBean sessionDataServiceBean,
                                  IPAddressHandler ipAddressHandler,
                                  ContentService contentService,
                                  HealthQuoteService healthQuoteService,
-                                 HealthSelectedProductService selectedProductService,
-                                 DirectToCloudwatchEventsSender cloudWatchNotifier) {
+                                 HealthSelectedProductService selectedProductService) {
         super(sessionDataServiceBean, ipAddressHandler);
         this.contentService = contentService;
         this.healthQuoteService = healthQuoteService;
         this.selectedProductService = selectedProductService;
-        this.cloudWatchNotifier = cloudWatchNotifier;
     }
 
     // call by rest/health/dropdown/list.json?type=X
@@ -105,12 +96,6 @@ public class HealthQuoteController extends CommonQuoteRouter {
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultsWrapper getHealthQuote(@Valid final HealthRequest data, HttpServletRequest request) throws Exception {
-
-        ContactDetails contactDetails = data.getHealth().getContactDetails();
-        String trackingID = data.getQuote().getTracking() != null ? data.getQuote().getTracking().getCid() : "";
-        Long transactionID = data.getTransactionId();
-        DetailsEvent detailsEvent = createDetailsEvent(Math.toIntExact(transactionID), contactDetails, trackingID);
-        cloudWatchNotifier.send(detailsEvent, data.getHealth());
 
         // Initialise request
         Brand brand = initRouter(request);
@@ -165,12 +150,9 @@ public class HealthQuoteController extends CommonQuoteRouter {
                 isCallCentre, payYourRateRise);
 
         if (quotes.getResults().isEmpty()) {
-            QuoteIsEmptyEvent quoteIsEmptyEvent = createQuoteIsEmptyEvent(Math.toIntExact(transactionID), contactDetails, trackingID);
-            cloudWatchNotifier.send(quoteIsEmptyEvent, data.getHealth());
             return handleEmptyResults(request, data, healthQuoteTokenService, info);
         } else {
-            QuoteHasResultsEvent quoteHasResultsEvent = createQuoteHasResultEvent(Math.toIntExact(transactionID), contactDetails, trackingID);
-            cloudWatchNotifier.send(quoteHasResultsEvent, quotes);
+
             String trackingKey = TrackingKeyService.generate(request, data.getTransactionId());
             info.setTrackingKey(trackingKey);
 
@@ -199,54 +181,6 @@ public class HealthQuoteController extends CommonQuoteRouter {
             // create resultsWrapper with the token
             return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), results);
         }
-    }
-
-    private DetailsEvent createDetailsEvent(Integer transactionID, ContactDetails contactDetails, String trackingID) {
-        return new DetailsEvent()
-                .withTransactionID(transactionID)
-                .withName(contactDetails.getName())
-                .withContactNumber(new ContactNumber()
-                        .withMobile(contactDetails.getContactNumber().getMobile())
-                        .withOther(contactDetails.getContactNumber().getOther())
-                )
-                .withCall(contactDetails.getCall())
-                .withOptIn(contactDetails.getOptin())
-                .withEmail(contactDetails.getEmail())
-                .withOptInEmail(contactDetails.getOptInEmail())
-                .withTrackingID(trackingID)
-                .withSource("healthQuote");
-    }
-
-    private QuoteIsEmptyEvent createQuoteIsEmptyEvent(Integer transactionID, ContactDetails contactDetails, String trackingID) {
-        return new QuoteIsEmptyEvent()
-                .withTransactionID(transactionID)
-                .withName(contactDetails.getName())
-                .withContactNumber(new ContactNumber()
-                        .withMobile(contactDetails.getContactNumber().getMobile())
-                        .withOther(contactDetails.getContactNumber().getOther())
-                )
-                .withCall(contactDetails.getCall())
-                .withOptIn(contactDetails.getOptin())
-                .withEmail(contactDetails.getEmail())
-                .withOptInEmail(contactDetails.getOptInEmail())
-                .withTrackingID(trackingID)
-                .withSource("healthQuote");
-    }
-
-    private QuoteHasResultsEvent createQuoteHasResultEvent(Integer transactionID, ContactDetails contactDetails, String trackingID) {
-        return new QuoteHasResultsEvent()
-                .withTransactionID(transactionID)
-                .withName(contactDetails.getName())
-                .withContactNumber(new ContactNumber()
-                        .withMobile(contactDetails.getContactNumber().getMobile())
-                        .withOther(contactDetails.getContactNumber().getOther())
-                )
-                .withCall(contactDetails.getCall())
-                .withOptIn(contactDetails.getOptin())
-                .withEmail(contactDetails.getEmail())
-                .withOptInEmail(contactDetails.getOptInEmail())
-                .withTrackingID(trackingID)
-                .withSource("healthQuote");
     }
 
     protected ResultsWrapper handleEmptyResults(HttpServletRequest request, HealthRequest data, HealthQuoteEndpointService healthQuoteTokenService, InfoHealth info) {

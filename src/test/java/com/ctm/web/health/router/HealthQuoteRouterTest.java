@@ -1,6 +1,5 @@
 package com.ctm.web.health.router;
 
-import com.ctm.web.core.confirmation.services.DirectToCloudwatchEventsSender;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.model.settings.PageSettings;
@@ -10,7 +9,10 @@ import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.health.model.form.*;
+import com.ctm.web.health.model.form.Benefits;
+import com.ctm.web.health.model.form.HealthQuote;
+import com.ctm.web.health.model.form.HealthRequest;
+import com.ctm.web.health.model.form.Simples;
 import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.services.HealthQuoteService;
 import com.ctm.web.health.services.HealthSelectedProductService;
@@ -38,7 +40,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
         RequestService.class, ServiceConfigurationService.class, SimpleConnection.class, CommonRequestService.class, RestClient.class})
 public class HealthQuoteRouterTest {
 
-
+    private HealthQuoteController healthQuoteRouter;
     @Mock
     private HttpServletRequest httpServletRequest;
     @Mock
@@ -61,10 +63,6 @@ public class HealthQuoteRouterTest {
     private IPAddressHandler ipAddressHandler;
     @Mock
     private HealthQuoteService healthQuoteService;
-    @Mock
-    private DirectToCloudwatchEventsSender cloudWatchNotifier;
-
-    private HealthQuoteController healthQuoteRouter;
 
     private HealthRequest data;
     private Long transactionId = 100000L;
@@ -103,8 +101,6 @@ public class HealthQuoteRouterTest {
         data.setTransactionId(transactionId);
         HealthQuote health = new HealthQuote();
         Simples simples = new Simples();
-        ContactDetails contactDetails = new ContactDetails();
-        contactDetails.setContactNumber(new ContactNumber());
         simples.setContactType(contactType);
         health.setSimples(simples);
         health.setShowAll("Y");
@@ -113,14 +109,13 @@ public class HealthQuoteRouterTest {
         benefits.setBenefitsExtras(benefitsExtras);
         health.setBenefits(benefits);
         health.setExcess("");
-        health.setContactDetails(contactDetails);
         data.setHealth(health);
         dataB = new Data();
         PowerMockito.when(ApplicationService.getBrandFromRequest(eq(httpServletRequest))).thenReturn(brand);
         when(sessionDataServiceBean.getDataForTransactionId(httpServletRequest, transactionId.toString(), true)).thenReturn(dataB);
         when(httpServletRequest.getSession()).thenReturn(session);
         when(healthQuoteService.getQuotes(any(), any(), any(), anyBoolean(), any())).thenReturn(mock(ResponseAdapterModel.class));
-        healthQuoteRouter = new HealthQuoteController(sessionDataServiceBean, ipAddressHandler, contentService, healthQuoteService, new HealthSelectedProductService(), cloudWatchNotifier);
+        healthQuoteRouter = new HealthQuoteController(sessionDataServiceBean, ipAddressHandler, contentService, healthQuoteService, new HealthSelectedProductService());
     }
 
     @Test
