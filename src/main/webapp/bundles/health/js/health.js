@@ -1428,14 +1428,14 @@
 	}
 
 	function onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, data) {
-		meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
+	    meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
 		stateSubmitInProgress = false;
 		if(errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
 			// Handling of this error is defined in comms module
 		} else if (textStatus == 'Server generated error') {
-			handleSubmittedApplicationErrors( errorThrown );
+		    handleSubmittedApplicationErrors( _.isEmpty(errorThrown) ? jqXHR.responseJSON : errorThrown );
 		} else {
-			handleSubmittedApplicationErrors( data );
+            handleSubmittedApplicationErrors( data );
 		}
 	}
 
@@ -1465,30 +1465,30 @@
 				}
 				// Handle internal SOAP error
 			} else if (error && error.hasOwnProperty("type")) {
-				switch(error.type) {
-					case "validation":
-						validationFailure = true;
-						break;
-					case "timeout":
-						msg = "Fund application service timed out.";
-						break;
-					case "parsing":
-						msg = "Error parsing the XML request - report issue to developers.";
-						break;
-					case "confirmed":
-						msg = error.message;
-						break;
-					case "transaction":
-						msg = error.message;
-						break;
-					case "submission":
-						msg = error.message;
-						break;
-					default:
-						msg ='['+error.code+'] ' + error.message + " (Please report to IT before continuing)";
-						break;
-				}
-				// Handle unhandled error
+                switch (error.type) {
+                    case "validation":
+                        validationFailure = true;
+                        break;
+                    case "timeout":
+                        msg = "Fund application service timed out.";
+                        break;
+                    case "parsing":
+                        msg = "Error parsing the XML request - report issue to developers.";
+                        break;
+                    case "confirmed":
+                        msg = error.message;
+                        break;
+                    case "transaction":
+                        msg = error.message;
+                        break;
+                    case "submission":
+                        msg = error.message;
+                        break;
+                    default:
+                        msg = '[' + error.code + '] ' + error.message + " (Please report to IT before continuing)";
+                        break;
+                }
+			// Handle unhandled error
 			} else {
 				msg='An unhandled error was received.';
 			}

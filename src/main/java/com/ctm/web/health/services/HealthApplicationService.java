@@ -15,11 +15,8 @@ import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.dao.HealthPriceDao;
-import com.ctm.web.health.model.Frequency;
-import com.ctm.web.health.model.HealthPricePremium;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.request.HealthApplicationRequest;
-import com.ctm.web.health.price.PremiumCalculator;
 import com.ctm.web.health.utils.HealthApplicationParser;
 import com.ctm.web.health.utils.HealthRequestParser;
 import com.ctm.web.health.validation.HealthApplicationTokenValidation;
@@ -94,18 +91,35 @@ public class HealthApplicationService extends CTMEndpointService {
             boolean isUuid = isUuid(request.application.selectedProductId);
 
             // This is a dirty hack to get Non HPM Products working, they are saved in the database with PHIO-HEALTH-{ID} but are sent here with just the ID
-            String selectedProductJson = healthSelectedProductService.getProductXML(requestService.getTransactionId(), !isUuid ? new StringBuilder("PHIO-HEALTH-").append(request.application.selectedProductId).toString() : request.application.selectedProductId);
+            String selectedProductId = !isUuid ? new StringBuilder("PHIO-HEALTH-").append(request.application.selectedProductId).toString() : request.application.selectedProductId;
+            String selectedProductJson = healthSelectedProductService.getProductXML(requestService.getTransactionId(), selectedProductId);
             JSONObject selectedProduct = null;
-            try {
-                selectedProduct = new JSONObject(selectedProductJson);
-            } catch (JSONException e) {
-                LOGGER.error("Failed to parse selected product JSON {}", kv("selectedProduct", selectedProductJson), e);
-                throw new JspException(e);
+            if(!isCallCentre || selectedProductJson != null) {
+                try {
+                    selectedProduct = new JSONObject(selectedProductJson);
+                } catch (JSONException e) {
+                    LOGGER.error(String.format("Selected product JSON was not a valid JSON object for transactionId %1$s, productId %2$s.", requestService.getTransactionId().toString(), selectedProductId));
+                    JSONObject response = createBrokenSelectedProductResponse(requestService.transactionId, requestService.sessionId, String.format("Apologies, an error has occured and you'll neeed to select your chosen product again. Transaction reference is: %1$s", requestService.getTransactionId().toString()));
+                    if(response != null) {
+                        return response;
+                    } else {
+                        throw new JspException(e);
+                    }
+                }
+            } else {
+                String errorCopy = String.format("Selected product JSON was NULL for transactionId %1$s, productId %2$s.", requestService.getTransactionId().toString(), selectedProductId);
+                LOGGER.error(errorCopy);
+                JSONObject response = createNoSelectedProductResponse(requestService.transactionId, requestService.sessionId, String.format("Apologies, an error has occured and you'll need to select your chosen product again. Transaction reference is: %1$s", requestService.getTransactionId().toString()));
+                if(response != null) {
+                    return response;
+                } else {
+                    throw new JspException(errorCopy);
+                }
             }
 
             HealthApplicationValidation validationService = new HealthApplicationValidation();
             validationErrors = validationService.validate(request);
-            if (validationErrors.size() == 0) {
+            if (selectedProduct != null && validationErrors.size() == 0) {
                 HealthCalculatedPremium premium = calculatePremiums(selectedProduct, request);
                 updateDataBucket(data, premium);
             }
@@ -226,16 +240,34 @@ public class HealthApplicationService extends CTMEndpointService {
 
     public String createTokenValidationFailedResponse(Long transactionId, String sessionId) {
         try {
-            return createFailedResponseObject(transactionId, sessionId, "Token Validation").toString();
+            return createFailedResponseObject(transactionId, sessionId, "Token Validation", null).toString();
         } catch (JSONException e) {
             LOGGER.error("failed to create Response");
         }
         return "";
     }
 
+    public JSONObject createNoSelectedProductResponse(Long transactionId, String sessionId, String message) {
+        return createSelectedProductErrorResponse(transactionId, sessionId, "NO_PRODUCT", message);
+    }
+
+    public JSONObject createBrokenSelectedProductResponse(Long transactionId, String sessionId, String message) {
+        return createSelectedProductErrorResponse(transactionId, sessionId, "PRODUCT_ERROR", message);
+    }
+
+    public JSONObject createSelectedProductErrorResponse(Long transactionId, String sessionId, String type, String message) {
+        try {
+            JSONObject response = createFailedResponseObject(transactionId, sessionId, type, message);
+            return appendValuesToResponse(response, transactionId);
+        } catch (JSONException e) {
+            LOGGER.error("failed to create No Selected Product Response");
+        }
+        return null;
+    }
+
     public String createFailedResponse(Long transactionId, String sessionId) {
         try {
-            JSONObject response = createFailedResponseObject(transactionId, sessionId, "Failed Application");
+            JSONObject response = createFailedResponseObject(transactionId, sessionId, "Failed Application", null);
             appendValuesToResponse(response, transactionId);
             return response.toString();
         } catch (JSONException e) {
@@ -244,7 +276,7 @@ public class HealthApplicationService extends CTMEndpointService {
         return "";
     }
 
-    private JSONObject createFailedResponseObject(Long transactionId, String sessionId, String reason) throws JSONException {
+    private JSONObject createFailedResponseObject(Long transactionId, String sessionId, String reason, String message) throws JSONException {
         JSONObject response = new JSONObject();
         JSONObject result = new JSONObject();
         response.put("result", result);
@@ -254,6 +286,9 @@ public class HealthApplicationService extends CTMEndpointService {
         JSONObject error = new JSONObject();
         error.put("code", reason);
         error.put("original", reason);
+        if(message != null) {
+            error.put("text", message);
+        }
         errors.put("error", error);
         String pendingId = sessionId + "-" + transactionId;
         result.put("pendingID", pendingId);
