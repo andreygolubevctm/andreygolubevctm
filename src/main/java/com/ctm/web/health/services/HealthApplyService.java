@@ -4,7 +4,6 @@ import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.resultsData.PricesObj;
@@ -16,12 +15,11 @@ import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.utils.ObjectMapperUtil;
-import com.ctm.web.health.apply.model.RequestAdapter;
 import com.ctm.web.health.apply.model.RequestAdapterV2;
 import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
-import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponsePrev;
+import com.ctm.web.health.exceptions.HealthApplyServiceException;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Simples;
@@ -70,7 +68,9 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         super(providerFilterDAO, serviceConfigurationServiceBean);
     }
 
-    public HealthApplyResponse apply(HttpServletRequest httpServletRequest, Brand brand, HealthRequest data) throws DaoException, IOException, ServiceConfigurationException {
+    public HealthApplyResponse apply(HttpServletRequest httpServletRequest, Brand brand, HealthRequest data) throws DaoException, IOException, ServiceConfigurationException, HealthApplyServiceException {
+
+        LOGGER.info("Calling HealthApplyService.apply");
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthApplyService", brand, HEALTH.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
@@ -81,97 +81,124 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         final String userId = Optional.ofNullable(httpServletRequest.getAttribute(TOKEN_REQUEST_PARAM_USER_ID)).map(Object::toString).orElse(null);
 
         if (anonymousId != null || userId != null) {
-            transactionDao.writeAuthIDs(transactionId, anonymousId, userId);
+            // Removed as change is from Jun'19 but DB changes only exist in NXI and no migration script was ever prepared
+            // Issues have never been reported so assumed it's not essential but will leave here for historical purposes.
+            //transactionDao.writeAuthIDs(transactionId, anonymousId, userId);
         }
 
-        if (properties.getServiceUrl().matches(".*://.*/health-apply-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
-            LOGGER.info("Calling health-apply v2");
-
-            String operator = null;
-            String trialCampaign = getTrialCampaignFromData(data);
-            String cid = getCidFromData(data);
-            AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(httpServletRequest);
-            if (authenticatedSessionData != null) {
-                operator = authenticatedSessionData.getUid();
-            }
-
-            LOGGER.debug("Found {}, {}, {} from {}", kv("operator", operator), kv("cid", cid), kv("trialCampaign", trialCampaign), kv("transactionId", data.getTransactionId()));
-            final HealthQuoteResult selectedProduct;
-            try {
-                String productId = HealthRequestParser.getProductIdFromHealthRequest(data);
-                String productXml = healthSelectedProductService.getProductXML(transactionId, productId);
-                PricesObj<HealthQuoteResult> products = ObjectMapperUtil.getObjectMapper().readValue(productXml, new TypeReference<PricesObj<HealthQuoteResult>>() {});
-
-                Optional<HealthQuoteResult> productForApply = products.getPrice().stream().findFirst();
-
-                productForApply.ifPresent(p -> {
-                    if (!productId.equals(p.getProductId())) {
-                        LOGGER.warn(String.format("Unexpected productId found for apply. TransactionId: '%1$s', expectedProductId (from health request): '%2$s', actualProductId (from database): '%3$s'", transactionId, productId, p.getProductId()));
-                    }
-                });
-
-                if (!productForApply.isPresent()) {
-                    throw new IllegalStateException(String.format("Unable to retrieve a single selected product for transactionId: '%1$s', productId: '%2$s'", transactionId, productId));
-                }
-
-                selectedProduct = productForApply.get();
-            } catch (Exception ex) {
-                LOGGER.error(String.format("Failed to retrieve selected product - %1$s", ex.getMessage()), ex);
-                throw ex;
-            }
-
-            // Version 2
-            HealthApplicationRequest applyRequest = RequestAdapterV2.adapt(data, selectedProduct, operator, cid, trialCampaign);
-            final ApplicationOutgoingRequest<HealthApplicationRequest> request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
-                    .transactionId(transactionId)
-                    .brandCode(brand.getCode())
-                    .requestAt(data.getRequestAt())
-                    .providerFilter(data.getQuote().getApplication().getProvider())
-                    .payload(applyRequest)
-                    .sessionId(anonymousId)
-                    .userId(userId)
-                    .build();
-
-            // Getting RootId from the transactionId
-            final long rootId = transactionDao.getRootIdOfTransactionId(data.getTransactionId());
-            LOGGER.debug("Getting {} from {}", kv("rootId", rootId), kv("transactionId", data.getTransactionId()));
-
-            return clientV2Application.post(RestSettings.<ApplicationOutgoingRequest<HealthApplicationRequest>>builder()
-                    .request(request)
-                    .header("rootId", Long.toString(rootId))
-                    .jsonHeaders()
-                    .url(properties.getServiceUrl() + "/apply")
-                    .timeout(properties.getTimeout())
-                    .responseType(MediaType.APPLICATION_JSON)
-                    .response(HealthApplyResponse.class)
-                    .build())
-                    .doOnError(this::logHttpClientError)
-                    .observeOn(Schedulers.io()).toBlocking().single();
-
-        } else {
-            LOGGER.info("Calling health-apply v1");
-            // Version 1
-            final com.ctm.web.core.providers.model.Request<HealthApplicationRequest> request = createRequest(brand, data, RequestAdapter.adapt(data));
-
-            final HealthApplyResponsePrev response = clientApplication.post(RestSettings.<com.ctm.web.core.providers.model.Request<HealthApplicationRequest>>builder()
-                    .request(request)
-                    .jsonHeaders()
-                    .url(properties.getServiceUrl() + "/apply")
-                    .timeout(properties.getTimeout())
-                    .responseType(MediaType.APPLICATION_JSON)
-                    .response(HealthApplyResponsePrev.class)
-                    .build())
-                    .doOnError(this::logHttpClientError)
-                    .observeOn(Schedulers.io()).toBlocking().single();
-            HealthApplyResponse healthApplyResponse = new HealthApplyResponse();
-            healthApplyResponse.setTransactionId(response.getTransactionId());
-            final HealthApplicationResponse healthApplicationResponse = response.getPayload().getQuotes()
-                    .stream()
-                    .findFirst()
-                    .orElseThrow(() -> new RouterException("No Payload from response"));
-            healthApplyResponse.setPayload(healthApplicationResponse);
-            return healthApplyResponse;
+        String operator = null;
+        String trialCampaign = getTrialCampaignFromData(data);
+        String cid = getCidFromData(data);
+        AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(httpServletRequest);
+        if (authenticatedSessionData != null) {
+            operator = authenticatedSessionData.getUid();
         }
+        LOGGER.info("Found {}, {}, {} from {}", kv("operator", operator), kv("cid", cid), kv("trialCampaign", trialCampaign), kv("transactionId", transactionId));
+
+        final HealthQuoteResult selectedProduct;
+
+        String productId;
+        try {
+            productId = HealthRequestParser.getProductIdFromHealthRequest(data);
+            LOGGER.info(String.format("productId retrieved from health request: transactionId %1$s, productId %2$s.", transactionId, productId));
+        } catch(Exception e) {
+            String errorCopy = String.format("Exception (%1$s) retrieving productId from health-request with message: %2$s", e.getClass(), e.getMessage());
+            LOGGER.error(errorCopy, e);
+            throw new HealthApplyServiceException(errorCopy);
+        }
+
+        String productXml;
+        try {
+            productXml = healthSelectedProductService.getProductXML(transactionId, productId);
+        } catch(Exception e) {
+            String errorCopy = String.format("Exception (%1$s) retrieving productXML with message: %2$s", e.getClass(), e.getMessage());
+            LOGGER.error(errorCopy, e);
+            throw new HealthApplyServiceException(errorCopy);
+        }
+
+        final PricesObj<HealthQuoteResult> products;
+        try {
+            products = ObjectMapperUtil.getObjectMapper().readValue(productXml, new TypeReference<PricesObj<HealthQuoteResult>>() {});
+        } catch(Exception e) {
+            String errorCopy = String.format("Exception (%1$s) retrieving products list from productXML with message: %2$s", e.getClass(), e.getMessage());
+            LOGGER.error(errorCopy, e);
+            throw new HealthApplyServiceException(errorCopy);
+        }
+
+        final Optional<HealthQuoteResult> productForApply;
+        try {
+            productForApply = products.getPrice().stream().findFirst();
+        } catch(Exception e) {
+            String errorCopy = String.format("Exception (%1$s) retrieving first product from product list with message: %2$s", e.getClass(), e.getMessage());
+            LOGGER.error(errorCopy, e);
+            throw new HealthApplyServiceException(errorCopy);
+        }
+
+        productForApply.ifPresent(p -> {
+            if (!productId.equals(p.getProductId())) {
+                LOGGER.error(String.format("Unexpected productId found for apply. TransactionId: '%1$s', expectedProductId (from health request): '%2$s', actualProductId (from database): '%3$s'", transactionId, productId, p.getProductId()));
+            } else {
+                LOGGER.info(String.format("Retrieved productId of product matches that from original request. TransactionId: '%1$s', expectedProductId (from health request): '%2$s', actualProductId (from database): '%3$s'", transactionId, productId, p.getProductId()));
+            }
+        });
+
+        if (!productForApply.isPresent()) {
+            String errorCopy = String.format("Unable to retrieve a single selected product for transactionId: '%1$s', productId: '%2$s'", transactionId, productId);
+            LOGGER.error(errorCopy);
+            throw new HealthApplyServiceException(errorCopy);
+        }
+
+        selectedProduct = productForApply.get();
+
+        // Version 2
+        final HealthApplicationRequest applyRequest;
+        try {
+            applyRequest = RequestAdapterV2.adapt(data, selectedProduct, operator, cid, trialCampaign);
+        } catch(Exception e) {
+            String errorCopy = String.format("Exception %1$s adapting request to HealthApplicationRequest with message: %2$s.", e.getClass(), e.getMessage());
+            LOGGER.error(errorCopy, e);
+            throw new HealthApplyServiceException(errorCopy);
+        }
+
+        final ApplicationOutgoingRequest<HealthApplicationRequest> request;
+        try {
+            request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
+                .transactionId(transactionId)
+                .brandCode(brand.getCode())
+                .requestAt(data.getRequestAt())
+                .providerFilter(data.getQuote().getApplication().getProvider())
+                .payload(applyRequest)
+                .sessionId(anonymousId)
+                .userId(userId)
+                .build();
+        } catch(Exception e) {
+            String errorCopy = String.format("Exception %1$s building request to ApplicationOutgoingRequest with message: %2$s.", e.getClass(), e.getMessage());
+            LOGGER.error(errorCopy, e);
+            throw new HealthApplyServiceException(errorCopy);
+        }
+
+        // Getting RootId from the transactionId
+        final long rootId;
+        try {
+            rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+            LOGGER.info(String.format("Successfully retrieved the RootId (%1$s) using TransactionId (%2$s).", rootId, transactionId));
+        } catch(Exception e) {
+            String errorCopy = String.format("Exception %1$s getting RootID from the TransactionID (%2$s) with message: %3$s.", e.getClass(), transactionId, e.getMessage());
+            LOGGER.error(errorCopy, e);
+            throw new HealthApplyServiceException(errorCopy);
+        }
+
+        return clientV2Application.post(RestSettings.<ApplicationOutgoingRequest<HealthApplicationRequest>>builder()
+                .request(request)
+                .header("rootId", Long.toString(rootId))
+                .jsonHeaders()
+                .url(properties.getServiceUrl() + "/apply")
+                .timeout(properties.getTimeout())
+                .responseType(MediaType.APPLICATION_JSON)
+                .response(HealthApplyResponse.class)
+                .build())
+                .doOnError(this::logHttpClientError)
+                .observeOn(Schedulers.io()).toBlocking().single();
     }
 
     private String getCidFromData(HealthRequest data) {

@@ -5,13 +5,11 @@ import com.ctm.reward.model.GetCampaignsResponse;
 import com.ctm.reward.model.OrderFormResponse;
 import com.ctm.reward.model.SaleStatus;
 import com.ctm.schema.address.v1_0_0.State;
-import com.ctm.schema.event.v1_0_0.Payload;
 import com.ctm.schema.health.v1_0_0.ApplyCompleteEvent;
 import com.ctm.schema.health.v1_0_0.ApplyCompleteStatus;
 import com.ctm.schema.health.v1_0_0.MembershipType;
 import com.ctm.web.core.confirmation.services.DirectToCloudwatchEventsJoinNotificationSender;
 import com.ctm.web.core.confirmation.services.JoinService;
-import com.ctm.web.core.dao.JoinDao;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailServiceHandler;
@@ -39,6 +37,7 @@ import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponse;
 import com.ctm.web.health.apply.model.response.PartnerError;
 import com.ctm.web.health.apply.model.response.Status;
+import com.ctm.web.health.exceptions.HealthApplyServiceException;
 import com.ctm.web.health.model.form.Application;
 import com.ctm.web.health.model.form.ContactDetails;
 import com.ctm.web.health.model.form.HealthQuote;
@@ -54,7 +53,6 @@ import com.ctm.web.health.utils.HealthRequestParser;
 import com.ctm.web.reward.services.RewardCampaignService;
 import com.ctm.web.reward.services.RewardService;
 import com.ctm.web.simples.services.TransactionService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.uuid.Generators;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -79,9 +77,9 @@ import javax.ws.rs.NotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.InvalidParameterException;
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -142,7 +140,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
     public HealthResultWrapper getHealthApply(@ModelAttribute final HealthRequest data,
                                               BindingResult bindingResult,
                                               HttpServletRequest request,
-                                              final HttpServletResponse httpServletResponse) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException , GeneralSecurityException {
+                                              final HttpServletResponse httpServletResponse) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException , GeneralSecurityException, HealthApplyServiceException {
 
         if (bindingResult.hasErrors()) {
             for (ObjectError e : bindingResult.getAllErrors()) {
@@ -179,7 +177,30 @@ public class HealthApplicationController extends CommonQuoteRouter {
         placeholderRedemptionId.ifPresent(id -> persistRedemptionId(id, data.getTransactionId()));
 
         // get the response
-        final HealthApplyResponse applyResponse = healthApplyService.apply(request, brand, data);
+        HealthApplyResponse applyResponse;
+        try {
+            applyResponse = healthApplyService.apply(request, brand, data);
+        } catch(HealthApplyServiceException e) {
+            LOGGER.error(String.format("healthApplyService.apply threw an exception with message: %1$s", e.getMessage()), e);
+            if(isCallCentre) {
+                final List<ResponseError> errors = new ArrayList<>();
+                ResponseError error = new ResponseError();
+                error.setCode("APPLY_ERROR");
+                error.setDescription(e.getMessage());
+                error.setText(e.getMessage());
+                error.setOriginal(e.getMessage());
+                errors.add(error);
+                HealthApplicationResult result = new HealthApplicationResult();
+                result.setSuccess(false);
+                result.setErrors(errors);
+                final HealthResultWrapper resultWrapper = new HealthResultWrapper();
+                resultWrapper.setResult(result);
+                return resultWrapper;
+            } else {
+                throw e;
+            }
+        }
+
         // Should only be one payload response
         final HealthApplicationResponse response = applyResponse.getPayload();
 
@@ -199,9 +220,13 @@ public class HealthApplicationController extends CommonQuoteRouter {
         final String productCode = data.getQuote().getApplication().getProductName();
         final String providerId = data.getQuote().getApplication().getProviderId();
 
+        LOGGER.info(String.format("isCallCentre: %1$s, confirmationId: %2$s, productId: %3$s, productCode: %4$s, providerId: %5$s", (isCallCentre ? "Y" : "N"), confirmationId, productId, productCode, providerId));
+
         HealthApplicationResult result = new HealthApplicationResult();
 
         if (Status.Success.equals(response.getSuccess())) {
+            LOGGER.info("Successful response received from health-apply service.");
+
             result.setSuccess(true);
             result.setConfirmationID(confirmationId);
 
@@ -287,6 +312,8 @@ public class HealthApplicationController extends CommonQuoteRouter {
             LOGGER.info("Transaction has been set to confirmed. {},{}", kv("transactionId", data.getTransactionId()), kv("confirmationID", confirmationId));
 
         } else {
+            LOGGER.info("Valid but failed response received from health-apply service.");
+
             // Update the online placeholder with the outcome of the join
             if (!isCallCentre && placeholderRedemptionId.isPresent()) {
                 rewardService.setOrderSaleStatusToFailed(placeholderRedemptionId.get());
@@ -333,7 +360,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
             leadService.sendLead(4, getDataBucket(request, data.getTransactionId()), request, "PENDING",brand.getCode());
         }
 
-        LOGGER.debug("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
+        LOGGER.info("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
 
         rememberMeService.deleteCookie(Vertical.VerticalType.HEALTH.name(), httpServletResponse);
 
