@@ -47,6 +47,11 @@
             name: 'providerCode',
             value: providerCode
         });
+        // Always return the last known transactionin case a transaction recovery is required.
+        data.push({
+            name: 'lastKnownTransactionId',
+            value: meerkat.modules.transactionId.get()
+        });
 
         if(_.isArray(customFields) && !_.isEmpty(customFields)) {
             _.each(customFields, function(field) {
@@ -353,6 +358,9 @@
         object.trackingKey = meerkat.modules.trackingKey.get();
 
         object.lastFieldTouch = lastFieldTouch;
+
+        // Always return the last known transactionin case a transaction recovery is required.
+        object.lastKnownTransactionId = meerkat.modules.transactionId.get();
 
         return object;
     }
