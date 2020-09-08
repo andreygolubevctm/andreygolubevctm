@@ -126,12 +126,13 @@ public class EnvironmentService {
 		return getEnvironment() == Environment.LOCALHOST ||
 				getEnvironment() == Environment.NXI ||
 				getEnvironment() == Environment.NXS ||
-				getEnvironment() == Environment.NXQ;
+				getEnvironment() == Environment.NXQ ||
+				getEnvironment() == Environment.PRO;
 	}
 
 	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode, String verticalCode) throws EnvironmentException {
 
-		if ( brandCode != null && verticalCode != null &&  (brandCode.equalsIgnoreCase("wfdd") || brandCode.equalsIgnoreCase("bddd")) && ( verticalCode.equalsIgnoreCase("HEALTH") || verticalCode.equalsIgnoreCase("SIMPLES"))) {
+		if ( brandCode != null && verticalCode != null &&  (brandCode.equalsIgnoreCase("ctm") || brandCode.equalsIgnoreCase("wfdd") || brandCode.equalsIgnoreCase("bddd")) && ( verticalCode.equalsIgnoreCase("HEALTH") || verticalCode.equalsIgnoreCase("SIMPLES"))) {
 			return true;
 		}
 
@@ -140,7 +141,7 @@ public class EnvironmentService {
 
 	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode) throws EnvironmentException {
 
-		if (brandCode != null && (brandCode.equalsIgnoreCase("wfdd") || brandCode.equalsIgnoreCase("bddd"))) {
+		if (brandCode != null && (brandCode.equalsIgnoreCase("ctm") || brandCode.equalsIgnoreCase("wfdd") || brandCode.equalsIgnoreCase("bddd"))) {
 			return true;
 		}
 
