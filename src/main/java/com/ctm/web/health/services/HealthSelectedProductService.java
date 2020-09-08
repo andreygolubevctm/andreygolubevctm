@@ -141,6 +141,14 @@ public class HealthSelectedProductService {
         selectedProductDao.addSelectedProduct(transactionId, productId, productXML);
     }
 
+    public void cloneSelectedProduct(final String sourceTransactionId, final String destinationTransactionId, final String productId) {
+	    try {
+	        selectedProductDao.cloneSelectedProduct(Long.valueOf(sourceTransactionId), Long.valueOf(destinationTransactionId), productId);
+        } catch(DaoException e) {
+	        LOGGER.error(e.getMessage(), e);
+        }
+    }
+
     private TransactionDetail getProductIdFromTransactionDetails(final long transactionId) throws DaoException {
 		TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
 		return transactionDetailsDao.getTransactionDetailByXpath(transactionId, "health/application/productId");

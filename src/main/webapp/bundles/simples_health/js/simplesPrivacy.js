@@ -62,16 +62,19 @@
     }
 
     function triggerTouchEvent(comment) {
-	    _.defer(function() {
-		    meerkat.messaging.publish('TRACKING_TOUCH', {
-			    touchType: 'H',
-			    touchComment: comment,
-			    includeFormData: true,
-			    productId: null,
-			    callback: null,
-			    customFields: null
-		    });
-	    });
+        _.defer(function() {
+            var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+            meerkat.messaging.publish('TRACKING_TOUCH', {
+                touchType: 'H',
+                touchComment: comment,
+                includeFormData: true,
+                productId: selectedProduct.productId.replace("PHIO-HEALTH-", ""),
+                productName: selectedProduct.info.name,
+                providerCode: selectedProduct.info.FundCode,
+                callback: null,
+                customFields: null
+            });
+        });
     }
 
     function toggle($_obj) {

@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+<jsp:useBean id="selectedProductService" class="com.ctm.web.health.services.HealthSelectedProductService" scope="application" />
 
 <c:set var="logger" value="${log:getLogger('tag.error.recover')}" />
 
@@ -10,6 +11,8 @@
 
 <%@ attribute name="quoteType" 	required="true" rtexprvalue="true" description="The vertical (Required: will attempt to load the settings file)" %>
 <%@ attribute name="origin"		required="true" rtexprvalue="true" description="Page/Tag where the recovery has been called" %>
+<%@ attribute name="lastKnownTransactionId" required="false" rtexprvalue="true" description="TransationId used to perform and vertical specific recover operations" %>
+<%@ attribute name="selectedProductId" required="false" rtexprvalue="true" description="ProductId of the selected product" %>
 
 ${logger.info('core:recover START. {},{}', log:kv('quoteType',quoteType ), log:kv('origin',origin ))}
 
@@ -49,4 +52,14 @@ ${logger.info('core:recover START. {},{}', log:kv('quoteType',quoteType ), log:k
 </c:catch>
 <c:if test="${error}">
 	${logger.warn('Failed to insert into error log. {}', log:kv('message', message), error)}
+</c:if>
+
+<%-- Perform vertical specific recovery operations if last known transactionId provided --%>
+<c:if test="${not empty lastKnownTransactionId}">
+    <c:choose>
+        <%-- For HEALTH we want to recover the selected product data if available --%>
+        <c:when test="${quoteType.compareToIgnoreCase('health') eq 0 and not empty lastKnownTransactionId and not empty selectedProductId}">
+            ${selectedProductService.cloneSelectedProduct(lastKnownTransactionId, data['current/transactionId'], selectedProductId)}
+        </c:when>
+    </c:choose>
 </c:if>

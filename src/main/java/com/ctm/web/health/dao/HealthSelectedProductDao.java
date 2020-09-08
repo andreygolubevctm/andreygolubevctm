@@ -96,4 +96,12 @@ public class HealthSelectedProductDao {
         return productXML;
     }
 
+    public void cloneSelectedProduct(final long sourceTransactionId, final long destinationTransactionId, final String productId) throws DaoException {
+	    addSelectedProduct(
+	        destinationTransactionId,
+            productId,
+            getSelectedProduct(sourceTransactionId, productId)
+        );
+    }
+
 }
