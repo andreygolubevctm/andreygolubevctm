@@ -142,7 +142,7 @@
 <%-- TOUCH ....................................................................... --%>
 <c:choose>
 	<c:when test="${empty touch}"></c:when>
- 	<c:when test="${touch_with_productId and not empty productId}">
+ 	<c:when test="${touch_with_productId and not empty productId and not empty productName and not empty providerCode}">
 
 		<c:choose>
 			<c:when test="${touch == 'H' and not empty comment}">

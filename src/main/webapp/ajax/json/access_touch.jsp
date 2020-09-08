@@ -10,6 +10,10 @@
 	<c:set var="proceedinator">${0}</c:set>
 </c:if>
 
+<c:set var="lastKnownTransactionId" value="${param.lastKnownTransactionId}" />
+<c:set var="selectedProductId" value="${param.productId}" />
+<c:set var="currentTransactionId" value="${data.current.transactionId}" />
+
 <%--
 	These are the touch types that are allowed via ajax.
 	All other touches need to be done using <core_v1:transaction touch="?" />
@@ -59,6 +63,30 @@
 					<security:populateDataFromParams rootPath="${verticalCode}" delete="false" />
 				</c:when>
 			</c:choose>
+
+            <%-- RECOVER: if things have gone pear shaped --%>
+            <c:if test="${empty data.current.transactionId}">
+                <c:choose>
+                    <c:when test="${verticalCode.compareToIgnoreCase('health') eq 0 and not empty lastKnownTransactionId and not empty selectedProductId}">
+                        <error:recover origin="ajax/json/access_touch.jsp" quoteType="${verticalCode}" lastKnownTransactionId="${lastKnownTransactionId}" selectedProductId="${selectedProductId}" />
+                    </c:when>
+                    <c:otherwise>
+                        <error:recover origin="ajax/json/access_touch.jsp" quoteType="${verticalCode}" />
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
+
+            <%-- Perform vertical specific recovery operations if current transactionId and last known transactionId don't match --%>
+            <c:if test="${data.current.transactionId ne lastKnownTransactionId}">
+                <c:choose>
+                    <%-- For HEALTH we want to recover the selected product data if available --%>
+                    <c:when test="${verticalCode.compareToIgnoreCase('health') eq 0 and not empty lastKnownTransactionId and not empty selectedProductId}">
+                        <jsp:useBean id="selectedProductService" class="com.ctm.web.health.services.HealthSelectedProductService" scope="application" />
+                        ${selectedProductService.cloneSelectedProduct(lastKnownTransactionId, data.current.transactionId, selectedProductId)}
+                    </c:when>
+                </c:choose>
+            </c:if>
+
 			<core_v1:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" productId="${param.productId}" productName="${param.productName}" providerCode="${param.providerCode}" />
 		</c:otherwise>
 	</c:choose>
