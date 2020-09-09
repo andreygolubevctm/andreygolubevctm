@@ -279,51 +279,56 @@
 	}
 
 	function _toggleAgeBasedDiscountQuestion(applicant) {
-		var dob = convertDate($abdElements[applicant].healthApplicationDOB.val());
+	    if($abdElements && applicant && _.has($abdElements, applicant)) {
 
-		if(!dob) return;
+            var dob = convertDate($abdElements[applicant].healthApplicationDOB.val());
 
-		var applicationDate = $('#health_searchDate').val();
-		var applicationDateString = '';
+            if (!dob) return;
 
-		if(applicationDate) {
-			var dateSplit = applicationDate.split('/');
-			if(dateSplit.length == 3) {
-				var year = dateSplit[2];
-				var month = dateSplit[1];
-				var day = dateSplit[0];
-				applicationDateString = year + '-' + month + '-' + day;
-			}
-		}
+            var applicationDate = $('#health_searchDate').val();
+            var applicationDateString = '';
 
-		var curDate = applicationDateString ? new Date(applicationDateString) : meerkat.site.serverDate;
-		var privateHospitalValue = $primaryCurrentCover.find('input').filter(':checked').val();
-		var hasExtrasCover = getPrimaryHealthCurrentCover() === 'E' || !getPrimaryHealthCurrentCover();
+            if (applicationDate) {
+                var dateSplit = applicationDate.split('/');
+                if (dateSplit.length == 3) {
+                    var year = dateSplit[2];
+                    var month = dateSplit[1];
+                    var day = dateSplit[0];
+                    applicationDateString = year + '-' + month + '-' + day;
+                }
+            }
 
-		if(applicant === 'partner') {
-			privateHospitalValue = $partnerCurrentCover.find('input').filter(':checked').val();
-			hasExtrasCover = getPartnerHealthCurrentCover() === 'E'  || !getPartnerHealthCurrentCover();
-		}
+            var curDate = applicationDateString ? new Date(applicationDateString) : meerkat.site.serverDate;
+            var privateHospitalValue = $primaryCurrentCover.find('input').filter(':checked').val();
+            var hasExtrasCover = getPrimaryHealthCurrentCover() === 'E' || !getPrimaryHealthCurrentCover();
 
-		var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
+            if (applicant === 'partner') {
+                privateHospitalValue = $partnerCurrentCover.find('input').filter(':checked').val();
+                hasExtrasCover = getPartnerHealthCurrentCover() === 'E' || !getPartnerHealthCurrentCover();
+            }
 
-		if(meerkat.modules.healthBenefitsStep.getCoverType() === 'e') {
-			$abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
-			$abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
-			return;
-		}
+            var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
 
-		if (!hasExtrasCover && age >= 18 && age < 45 && privateHospitalValue === 'Y' && meerkat.modules.age.isBornAfterFirstOfApril1989($abdElements[applicant].healthApplicationDOB.val())) {
-			$abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
-			var hasABD = $abdElements[applicant].receivesAgeBasedDiscount.find(':checked').val();
-			if(hasABD === 'Y') {
-				$abdElements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
-			}
-		} else {
-			$abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
-			$abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
-			$abdElements[applicant].receivesAgeBasedDiscountRow.find(':input').filter(':checked').prop('checked', false).parent().removeClass('active');
-		}
+            if (meerkat.modules.healthBenefitsStep.getCoverType() === 'e') {
+                $abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+                $abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+                return;
+            }
+
+            if (!hasExtrasCover && age >= 18 && age < 45 && privateHospitalValue === 'Y' && meerkat.modules.age.isBornAfterFirstOfApril1989($abdElements[applicant].healthApplicationDOB.val())) {
+                $abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
+                var hasABD = $abdElements[applicant].receivesAgeBasedDiscount.find(':checked').val();
+                if (hasABD === 'Y') {
+                    $abdElements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
+                }
+            } else {
+                $abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
+                $abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
+                $abdElements[applicant].receivesAgeBasedDiscountRow.find(':input').filter(':checked').prop('checked', false).parent().removeClass('active');
+            }
+        } else {
+	        return;
+        }
 	}
 
 	function updateDynamicIncomeFieldText() {
