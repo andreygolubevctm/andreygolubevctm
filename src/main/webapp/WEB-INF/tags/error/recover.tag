@@ -27,7 +27,15 @@ ${logger.info('core:recover START. {},{}', log:kv('quoteType',quoteType ), log:k
 
 <%-- Recreate the settings and Transaction Id --%>
 <c:set var="id_return">
-	<core_v1:get_transaction_id quoteType="${quoteType}" id_handler="new_tranId" />
+    <c:choose>
+        <c:when test="${not empty lastKnownTransactionId}">
+            <core_v1:get_transaction_id quoteType="${quoteType}" transactionId="${lastKnownTransactionId}" id_handler="preserve_tranId" />
+        </c:when>
+        <c:otherwise>
+            <core_v1:get_transaction_id quoteType="${quoteType}" id_handler="new_tranId" />
+        </c:otherwise>
+    </c:choose>
+
 </c:set>
 
 <core_v1:transaction touch="H" comment="Recover" noResponse="true" writeQuoteOverride="N" />
