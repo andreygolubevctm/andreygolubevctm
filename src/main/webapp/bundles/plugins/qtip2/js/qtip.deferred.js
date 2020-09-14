@@ -2,7 +2,7 @@
  * qTip2 - Pretty powerful tooltips - v2.2.1
  * http://qtip2.com
  *
- * Copyright (c) 2014 
+ * Copyright (c) 2014
  * Released under the MIT licenses
  * http://jquery.org/license
  *
@@ -620,7 +620,7 @@
 			// Wait for content to be loaded, and reposition
 			return this._waitForContent(element).then(function(images) {
 				if(self.rendered && self.tooltip[0].offsetWidth > 0) {
-					self.reposition(cache.event, !images.length);
+					self.reposition(cache.event, !images || !images.length);
 				}
 			});
 		};
