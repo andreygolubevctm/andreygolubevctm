@@ -34,7 +34,7 @@
 								<c:forEach items="${brands}" var="brand">
 
 									<li style="padding:5px 0px;">
-										<a style="text-decoration:underline" class="needs-loadsafe" href="${baseUrl}simples/redirectToBrand.jsp?brandId=${brand.getId()}&verticalCode=${verticalCode}&vdn=${param.vdn}">
+										<a style="text-decoration:underline" class="needs-loadsafe" href="${baseUrl}simples/redirectToBrand.jsp?brandId=${brand.getId()}&brandCode=${brand.getCode()}&verticalCode=${verticalCode}&vdn=${param.vdn}">
 											<c:out value="${brand.getName()}" />
 										</a>
 									</li>
@@ -55,7 +55,7 @@
 
 		<%-- Only one brand is enabled, redirect automatically. --%>
 		<c:set var="brand" value="${brands.get(0)}" />
-		<c:redirect url="${baseUrl}simples/redirectToBrand.jsp?brandId=${brand.getId()}&verticalCode=${verticalCode}&vdn=${param.vdn}"/>
+		<c:redirect url="${baseUrl}simples/redirectToBrand.jsp?brandId=${brand.getId()}&brandCode=${brand.getCode()}&verticalCode=${verticalCode}&vdn=${param.vdn}"/>
 
 	</c:when>
 	<c:otherwise>
