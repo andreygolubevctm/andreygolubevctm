@@ -11,6 +11,7 @@
 </c:if>
 
 <jsp:useBean id="callCentreService" class="com.ctm.web.simples.services.CallCentreService" scope="application" />
+<jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="application" />
 
 <%--
 
@@ -34,17 +35,18 @@
 			<%-- Menu options --%>
 			<ul class="nav navbar-nav">
 				<c:set var="consultantStyleCodeId">${callCentreService.getConsultantStyleCodeId(pageContext.getRequest())}</c:set>
+                <c:set var="brandCode" value="${applicationService.getBrandFromRequest(pageContext.getRequest()).getCode()}" />
 				<c:choose>
 					<c:when test="${fn:contains(consultantStyleCodeId,',')}">
 						<li class="dropdown">
 							<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">New <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a class="newquote needs-loadsafe" href="${assetUrl}simples/startQuote.jsp?verticalCode=HEALTH">Health quote</a></li>
+								<li><a class="newquote needs-loadsafe" href="${assetUrl}simples/startQuote.jsp?verticalCode=HEALTH&brandCode=${brandCode}">Health quote</a></li>
 							</ul>
 						</li>
 					</c:when>
 					<c:otherwise>
-						<li><a class="needs-loadsafe" href="${assetUrl}simples/redirectToBrand.jsp?brandId=${consultantStyleCodeId}&verticalCode=HEALTH&vdn=">New</a></li>
+						<li><a class="needs-loadsafe" href="${assetUrl}simples/redirectToBrand.jsp?brandId=${consultantStyleCodeId}&brandCode=${brandCode}&verticalCode=HEALTH&vdn=">New</a></li>
 					</c:otherwise>
 				</c:choose>
 

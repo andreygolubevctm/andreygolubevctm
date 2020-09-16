@@ -85,6 +85,10 @@ var ResultsModel = {
 			}
 		}
 
+        if(!_.isUndefined(meerkat.site.urlStyleCodeId) && !_.isEmpty(meerkat.site.urlStyleCodeId)) {
+            url += (url.indexOf('?') == -1 ? '?' : '&') + 'brandCode=' + meerkat.site.urlStyleCodeId;
+        }
+
 		var request = {
 			url: url,
 			data: data,
