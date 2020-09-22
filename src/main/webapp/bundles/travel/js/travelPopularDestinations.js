@@ -114,4 +114,4 @@ function initTravelDropDown() {
         }
     });
 
-};
+}
