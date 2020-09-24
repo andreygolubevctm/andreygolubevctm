@@ -54,12 +54,12 @@ public class OpeningHoursController extends CommonQuoteRouter<OpeningHoursReques
     @RequestMapping(value = "/data.json",
             method= RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public OpeningHoursDataResponse getOpeningHoursData(@RequestParam("vertical") String vertical, HttpServletRequest request, HttpServletResponse response) throws DaoException,ConfigSettingException {
+    public OpeningHoursDataResponse getOpeningHoursData(@RequestParam("vertical") String vertical, @RequestParam(value = "special", required = false) String special, HttpServletRequest request, HttpServletResponse response) throws DaoException,ConfigSettingException {
         addAllowOriginHeader(request, response);
 
         ApplicationService.setVerticalCodeOnRequest(request, vertical.toUpperCase());
         openingHoursService = new OpeningHoursService();
-        List<OpeningHours> openingHours = openingHoursService.getAllOpeningHoursForDisplay(request, false);
+        List<OpeningHours> openingHours = openingHoursService.getAllOpeningHoursForDisplay(request, special != null);
         OpeningHoursDataResponse openingHoursDataResponse = new OpeningHoursDataResponse(openingHours);
         return openingHoursDataResponse;
     }
