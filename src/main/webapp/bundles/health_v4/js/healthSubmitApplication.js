@@ -84,7 +84,7 @@
 
             var healthApplicationUrl = "ajax/json/health_application.jsp";
             if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
-                healthApplicationUrl = "ajax/json/health_application_ws.jsp";
+                healthApplicationUrl = "ajax/json/health_application_ws.jsp?lastKnownTransactionId=" + meerkat.modules.transactionId.get() + "&productId=" + meerkat.modules.healthResults.getSelectedProduct().productId;
             }
 
             meerkat.modules.comms.post({
