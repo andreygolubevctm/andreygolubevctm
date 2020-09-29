@@ -1377,7 +1377,7 @@
 
 			var healthApplicationUrl = "ajax/json/health_application.jsp";
 			if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
-				healthApplicationUrl = "ajax/json/health_application_ws.jsp";
+				healthApplicationUrl = "ajax/json/health_application_ws.jsp?lastKnownTransactionId=" + meerkat.modules.transactionId.get() + "&productId=" + meerkat.modules.healthResults.getSelectedProduct().productId;
 			}
 
 			meerkat.modules.comms.post({
@@ -1431,7 +1431,18 @@
 	    meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
 		stateSubmitInProgress = false;
 		if(errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
-			// Handling of this error is defined in comms module
+			var result = {
+				result: {
+					errors: [
+                        {
+                        	type: "session",
+                            text: "Your Simples login session has been lost. Please open Simples in a separate tab, login, then you can continue and submit this application to the fund.",
+                            code: "SIMPLES_LOGGED_OUT"
+                        }
+					]
+                }
+            };
+            handleSubmittedApplicationErrors(result);
 		} else if (textStatus == 'Server generated error') {
 		    handleSubmittedApplicationErrors( _.isEmpty(errorThrown) ? jqXHR.responseJSON : errorThrown );
 		} else {
@@ -1482,6 +1493,9 @@
                         msg = error.message;
                         break;
                     case "submission":
+                        msg = error.message;
+                        break;
+                    case "session":
                         msg = error.message;
                         break;
                     default:
