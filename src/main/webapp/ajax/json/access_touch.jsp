@@ -9,10 +9,10 @@
 <%-- Get latest session object --%>
 <c:choose>
     <c:when test="${not empty lastKnownTransactionId}">
-        <session:get settings="true" authenticated="true" throwCheckAuthenticatedError="true" verticalCode="${fn:toUpperCase(param.quoteType)}" transactionId="${lastKnownTransactionId}" />
+        <session:get settings="true" throwCheckAuthenticatedError="true" verticalCode="${fn:toUpperCase(param.quoteType)}" transactionId="${lastKnownTransactionId}" />
     </c:when>
     <c:otherwise>
-        <session:get settings="true" authenticated="true" throwCheckAuthenticatedError="true" verticalCode="${fn:toUpperCase(param.quoteType)}"/>
+        <session:get settings="true" throwCheckAuthenticatedError="true" verticalCode="${fn:toUpperCase(param.quoteType)}"/>
     </c:otherwise>
 </c:choose>
 
