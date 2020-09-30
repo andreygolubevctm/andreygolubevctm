@@ -3,13 +3,36 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application_ws')}" />
 
-<session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true"/>
+<c:set var="lastKnownTransactionId" value="${param.lastKnownTransactionId}" />
+<c:set var="selectedProductId" value="${param.productId}" />
+
+<%-- Get latest session object --%>
+<c:choose>
+    <c:when test="${not empty lastKnownTransactionId}">
+        <session:get settings="true" throwCheckAuthenticatedError="true" verticalCode="HEALTH" transactionId="${lastKnownTransactionId}" />
+    </c:when>
+    <c:otherwise>
+        <session:get settings="true" throwCheckAuthenticatedError="true" verticalCode="HEALTH"/>
+    </c:otherwise>
+</c:choose>
+
+<%-- RECOVER: if things have gone pear shaped --%>
+<c:if test="${empty data['current/transactionId']}">
+    <c:choose>
+        <c:when test="${not empty lastKnownTransactionId and not empty selectedProductId}">
+            <error:recover origin="ajax/json/health_application_ws.jsp" quoteType="HEALTH" lastKnownTransactionId="${lastKnownTransactionId}" selectedProductId="${selectedProductId}"/>
+        </c:when>
+        <c:otherwise>
+            <error:recover origin="ajax/json/health_application_ws.jsp" quoteType="HEALTH" />
+        </c:otherwise>
+    </c:choose>
+</c:if>
 
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="health"/>
 
 <%-- Adjust the base rebate using multiplier - this is to ensure the rebate applicable to the
-					commencement date is sent to the provider --%>
+                    commencement date is sent to the provider --%>
 <c:set var="effectiveDate" value="${data.health.payment.details.start}"/>
 <jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
 <c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(effectiveDate)}"/>
@@ -37,10 +60,10 @@
 
 <c:choose>
     <%--
-	token can only be invalid for ONLINE.
-	If invalid send the user to the pending page and let the call centre sort out
-	TODO: move this over to HealthApplicationService
-	--%>
+    token can only be invalid for ONLINE.
+    If invalid send the user to the pending page and let the call centre sort out
+    TODO: move this over to HealthApplicationService
+    --%>
     <c:when test="${!healthApplicationService.validToken}">
         <health_v1:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" productCode="${productCode}" providerId="${providerId}"/>
     </c:when>
