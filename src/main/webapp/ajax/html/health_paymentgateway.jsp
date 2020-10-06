@@ -45,7 +45,7 @@
 	<x:out select="$configXml/aggregator/westpacGateway/cd_supplier_business" />
 </c:set>
 <c:set var="returnURL">
-	${pageSettings.getBaseUrl()}ajax/html/health_paymentgateway_return.jsp
+	${pageSettings.getBaseUrl()}spring/samesite/proxy
 </c:set>
 
 ${logger.debug('Parsed request for health paymentgateway. {},{},{}', log:kv('username', username) , log:kv('id',id ), log:kv('tokenUrl',tokenUrl ))}
