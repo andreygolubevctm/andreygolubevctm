@@ -179,7 +179,7 @@ var healthFunds_CBH = {
 		else {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/partnerrel" />
-				<form_v2:row id="cbh_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
+				<form_v2:row id="cbh_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you" renderLabelAsSimplesDialog="true">
 					<field_v2:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto"  placeHolder="Relationship" disableErrorContainer="${true}" />
 				</form_v2:row>
 			</c:set>

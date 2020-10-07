@@ -11,6 +11,6 @@
 
 <%-- HTML --%>
 <c:set var="fieldXpath" value="${xpath}/start" />
-<form_v3:row fieldXpath="${fieldXpath}" label="Cover start date" className="changes-premium">
+<form_v3:row fieldXpath="${fieldXpath}" label="Cover start date" className="changes-premium" renderLabelAsSimplesDialog="true">
 	<field_v2:calendar xpath="${fieldXpath}" required="true" title="start date" className="health-payment_details-start" mode="separated" disableRowHack="${true}" analyticsPrefix="Cover Start" />
 </form_v3:row>

@@ -202,7 +202,7 @@
             else {
               <c:set var="html">
               <c:set var="fieldXpath" value="health/application/nhb/partnerrel" />
-              <form_v2:row id="nhb_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
+              <form_v2:row id="nhb_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you" renderLabelAsSimplesDialog="true">
               <field_v2:array_select xpath="${fieldXpath}"
                       required="true"
                       title="Relationship to you" items="=Please choose...,Ptnr=Partner,Sps=Spouse" placeHolder="Relationship" disableErrorContainer="${true}" />
