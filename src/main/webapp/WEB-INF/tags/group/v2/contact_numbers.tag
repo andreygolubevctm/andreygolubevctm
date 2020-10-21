@@ -18,7 +18,7 @@
 </c:if>
 
 <c:set var="fieldXPath" value="${xpath}/mobile" />
-<form_v2:row label="Mobile Number" id="${fieldXpath}input" smRowOverride="3" renderLabelAsSimplesDialog="true">
+<form_v2:row label="Mobile Number" id="${fieldXpath}input" smRowOverride="3">
 	<field_v1:flexi_contact_number xpath="${fieldXPath}"
 								maxLength="20"
 								required="false"
@@ -30,7 +30,7 @@
 </form_v2:row>
 
 <c:set var="fieldXPath" value="${xpath}/other" />
-<form_v2:row label="Other Number" id="${fieldXpath}input" smRowOverride="3" renderLabelAsSimplesDialog="true">
+<form_v2:row label="Other Number" id="${fieldXpath}input" smRowOverride="3">
 	<field_v1:flexi_contact_number xpath="${fieldXPath}"
 								maxLength="20"
 								required="false"

@@ -71,8 +71,6 @@
 
         _derivedData = _getTemplateData();
         performUpdateRebateIncomeThresholdsConfirmationDynamicDialogueBox();
-
-        meerkat.modules.healthAboutYou.updateComplianceDialogCopy();
     }
 
     // This is used to cache selectors and the original HTML for for field labels dialogue boxes etc that have

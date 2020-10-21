@@ -68,17 +68,17 @@
             </c:set>
 
             <c:set var="fieldXpath" value="${xpath}/name" />
-            <form_v3:row label="Can I please have your first Name?" fieldXpath="${fieldXpath}" className="clear required_input" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="Your first name" fieldXpath="${fieldXpath}" className="clear required_input">
                 <field_v1:person_name xpath="${fieldXpath}" title="name" required="true" />
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
-            <form_v3:row label="Your Best contact Number?" fieldXpath="${fieldXpath}" className="clear" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="Your phone number" fieldXpath="${fieldXpath}" className="clear">
                 <field_v1:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/email" />
-            <form_v3:row label="Your email address" fieldXpath="${fieldXpath}" className="clear" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="Your email address" fieldXpath="${fieldXpath}" className="clear">
                 <field_v2:email xpath="${fieldXpath}" title="your email address" required="${required}"  />
                 <field_v1:hidden xpath="${xpath}/emailsecondary" />
                 <field_v1:hidden xpath="${xpath}/emailhistory" />
@@ -121,10 +121,10 @@
 
             <%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
             <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
-            <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+            <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
             <c:set var="fieldXpath" value="${xpath}/primary/dob" />
-            <form_v3:row label="What's your Date of Birth?" fieldXpath="${fieldXpath}" className="health-your_details-dob-group" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
                 <field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
             </form_v3:row>
 
@@ -133,70 +133,31 @@
                 <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/cover" />
                 <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
                 <c:set var="medicareQuestionLabel"><content:get key="medicareQuestionLabel" /></c:set>
-
-                <form_v3:row label="To confirm your Medicare eligibility, are all people to be covered on this policy Australian citizens or permanent residents?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564" renderLabelAsSimplesDialog="red">
+                <c:set var="nzMedicareRules"><content:get key="nzMedicareRules" /></c:set>
+                <form_v3:row label="${medicareQuestionLabel}" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
                     <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
                                           title="your Medicare card cover" required="true" className="health-medicare_details-card"
-                                          id="${name}_cover" />
-                </form_v3:row>
-
-                <div id="medicare-questions-nzcitizen" class="hidden">
-                    <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/nzcitzen" />
-                    <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
-                    <c:set var="nzMedicareRulesLabel">Are all people to be covered on this policy New Zealand Citizens?</c:set>
-                    <form_v3:row label="${nzMedicareRulesLabel}" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare_nz" renderLabelAsSimplesDialog="blue">
-                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
-                                              title="${nzMedicareRulesLabel}r" required="true" />
-                    </form_v3:row>
-
-                    <div id="medicare-questions-hasmedicarecard" class="hidden">
-                        <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/hasmedicarecard" />
-                        <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
-                        <form_v3:row label="Do you currently have a medicare card or details?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare_hasmedicarecard" renderLabelAsSimplesDialog="blue">
-                            <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
-                                                  title="Do you currently have a medicare card or details?" required="true" />
-                        </form_v3:row>
-
-                        <div id="medicare-questions-intendingmedicarcard" class="hidden">
-                            <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/intendingmedicarcard" />
-                            <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
-                            <form_v3:row label="Are you intending to get a medicare card?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare_intendingmedicarcard" renderLabelAsSimplesDialog="blue">
-                                <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
-                                                      title="Are you intending to get a medicare card?" required="true" />
-                            </form_v3:row>
-
-                            <div id="medicare-questions-confirmeligibilitymedicarecard" class="hidden">
-
-                                <simples:dialogue id="190" vertical="health" />
-                            </div>
-
-                            <div id="medicare-questions-medicarelevysurcharge" class="hidden">
-                                <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/medicarelevysurcharge" />
-                                <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
-                                <form_v3:row label="Do you need a policy for Medicare Levy Surcharge?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare_medicarelevysurcharge" renderLabelAsSimplesDialog="blue">
-                                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
-                                                          title="Do you need a policy for Medicare Levy Surcharge?" required="true" />
-                                </form_v3:row>
-
-                                <simples:dialogue id="196" vertical="health" className="hidden" />
-
-                                <div id="medicare-questions-internationalstudent" class="hidden">
-                                    <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/internationalstudent" />
-                                    <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
-                                    <form_v3:row label="Are you on a student Visa?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare_internationalstudent" renderLabelAsSimplesDialog="blue">
-                                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
-                                                              title="Are you on a student Visa?" required="true"
-                                                              additionalAttributes="data-rule-isCheckedYes='true' data-rule-isCheckedNo='true'"/>
-                                    </form_v3:row>
-
-                                    <simples:dialogue id="198" vertical="health" className="hidden" />
-
-                                    <simples:dialogue id="199" vertical="health" className="hidden" />
-                                </div>
-                            </div>
-                        </div>
+                                          id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='${ovcScripting}'" />
+                    <div class="nz-medicare-rules">
+                        <a href="javascript:void;" data-copy-on="Hide NZ medicare rules" data-copy-off="Show NZ medicare rules"><!-- empty --></a>
+                        <div class="copy">${nzMedicareRules}</div>
                     </div>
-                </div>
+                </form_v3:row>
+                <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/internationalstudent" />
+                <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                <c:set var="internationalStudentY"><content:get key="healthInternationalStudentY" /></c:set>
+                <c:set var="internationalStudentN"><content:get key="healthInternationalStudentN" /></c:set>
+                <form_v3:row label="Are you an international student studying here in Australia?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_internationalstudent text-danger hidden">
+                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                                          title="Are you an international student studying here in Australia?" required="true" className="health-international_student"
+                                          id="${name}_ovc_international_student" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes=' '" />
+                    <div class="healthInternationalStudentMsg1 hidden">
+                        <div>${internationalStudentY}</div>
+                    </div>
+                    <div class="healthInternationalStudentMsg2 hidden">
+                        <div>${internationalStudentN}</div>
+                    </div>
+                </form_v3:row>
             </c:if>
 
             <%--
@@ -207,32 +168,32 @@
             --%>
 
             <c:set var="fieldXpath" value="${xpath}/primary/cover" />
-            <form_v3:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="health/application/primary/cover/type" />
-            <form_v3:row label="What type of cover do you currently hold?" fieldXpath="${fieldXpath}" id="health-current-cover-primary" className="health-your_details-opt-group text-danger" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="What type of cover do you currently hold?" fieldXpath="${fieldXpath}" id="health-current-cover-primary" className="health-your_details-opt-group text-danger">
                 <field_v2:array_radio items="C=Hospital & Extras,H=Hospital Only,E=Extras Only" style="group" xpath="${fieldXpath}" title="your current health cover" required="true" id="${name}_health_current_cover" className="loading"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/healthCoverLoading" />
-            <form_v3:row label="Have you had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group text-danger"  helpId="239" additionalHelpAttributes="data-content-replace='{{year}},${continuousCoverYear}'" renderLabelAsSimplesDialog="red">
+            <form_v3:row label="Have you had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group text-danger"  helpId="239" additionalHelpAttributes="data-content-replace='{{year}},${continuousCoverYear}'">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your health cover loading" required="true" id="${name}_health_cover_loading" className="loading"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/healthEverHeld" />
-            <form_v3:row label="Have you ever held Hospital cover?" fieldXpath="${fieldXpath}" id="health-ever-held-cover-primary" className="health-your_details-opt-group text-danger" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="Have you ever held Hospital cover?" fieldXpath="${fieldXpath}" id="health-ever-held-cover-primary" className="health-your_details-opt-group text-danger">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your previous health cover" required="true" id="${name}_health_ever_held_cover" className="loading"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/previousFundName" />
-			<form_v3:row fieldXpath="${fieldXpath}" label="Your Previous Hospital Fund" id="clientPreviousFund" className="hidden" renderLabelAsSimplesDialog="true">
+			<form_v3:row fieldXpath="${fieldXpath}" label="Your Previous Hospital Fund" id="clientPreviousFund" className="hidden">
 				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your previous health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
 			</form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/fundHistory" />
-            <form_v3:row fieldXpath="${fieldXpath}" label="Based on your answers it looks like you may be affected by the Government Lifetime Health Cover loading, please enter the approximate date ranges you have held <span class='text-bold'>private hospital</span> cover so we can estimate the impact on your premiums." id="health-primary-fund-history" className="changes-premium text-danger hidden" renderLabelAsSimplesDialog="true">
+            <form_v3:row fieldXpath="${fieldXpath}" label="Based on your answers it looks like you may be affected by the Government Lifetime Health Cover loading, please enter the approximate date ranges you have held <span class='text-bold'>private hospital</span> cover so we can estimate the impact on your premiums." id="health-primary-fund-history" className="changes-premium text-danger hidden">
                 <field_v2:coverage_dates_input xpath="${fieldXpath}" footerText="Based on your answers, you may be affected by LHC. The LHC amount will be shown in the premium on the next page, if applicable." />
             </form_v3:row>
             <%-- I don't know my LHC history - apply full LHC --%>
@@ -245,12 +206,12 @@
             </div>
 
             <c:set var="fieldXpath" value="${xpath}/primary/abd" />
-            <form_v3:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger primary_currentPolicyAbd-group hidden" renderLabelAsSimplesDialog="red">
+            <form_v3:row label="Do you currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="primary_abd" className="lhcRebateCalcTrigger primary_currentPolicyAbd-group hidden">
 	            <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Do you currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_detailsAbd" id="primary_abd_health_cover" />
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/abdPolicyStart" />
-            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="primary_abd_start_date" className="changes-premium hidden" renderLabelAsSimplesDialog="blue">
+            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="primary_abd_start_date" className="changes-premium hidden">
                 <field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
             </form_v3:row>
 
@@ -266,41 +227,41 @@
         <%--dynamic script--%>
         <%--if customer has cover--%>
         <simples:dialogue id="53" vertical="health" className="simples-dialogue-primary-current-cover hidden" />
+        <simples:dialogue id="134" vertical="health" className="simples-dialog-outbound simples-dialog-nextgenoutbound simples-dialogue-primary-current-cover hidden" />
 
         <form_v3:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
-
             <c:set var="fieldXpath" value="${xpath}/partner/dob" />
-            <form_v3:row label="What is your Partner&apos;s Date of Birth?" fieldXpath="${fieldXpath}" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="Your partner's date of birth" fieldXpath="${fieldXpath}">
                 <field_v2:person_dob xpath="${fieldXpath}" title="partner's" required="true" ageMin="16" ageMax="120" />
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/cover" />
-            <form_v3:row label="Does your partner currently hold private health insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="Does your partner currently hold private health insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_partner_health_cover"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="health/application/partner/cover/type" />
-            <form_v3:row label="What type of cover does your partner currently hold?" fieldXpath="${fieldXpath}" id="health-current-cover-partner" className="health-your_details-opt-group text-danger" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="What type of cover does your partner currently hold?" fieldXpath="${fieldXpath}" id="health-current-cover-partner" className="health-your_details-opt-group text-danger">
                 <field_v2:array_radio items="C=Hospital & Extras,H=Hospital Only,E=Extras Only" style="group" xpath="${fieldXpath}" title="your partners current health cover" required="true" id="${name}_health_current_cover" className="loading"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/healthCoverLoading" />
-            <form_v3:row label="Has your partner had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group" helpId="239" additionalHelpAttributes="data-content-replace='{{year}},${continuousCoverYear}'" renderLabelAsSimplesDialog="red">
+            <form_v3:row label="Has your partner had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group text-danger" helpId="239" additionalHelpAttributes="data-content-replace='{{year}},${continuousCoverYear}'">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/healthEverHeld" />
-            <form_v3:row label="Has your partner ever held Hospital cover?" fieldXpath="${fieldXpath}" id="health-ever-held-cover-partner" className="health-your_details-opt-group text-danger" renderLabelAsSimplesDialog="blue">
+            <form_v3:row label="Has your partner ever held Hospital cover?" fieldXpath="${fieldXpath}" id="health-ever-held-cover-partner" className="health-your_details-opt-group text-danger">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's previous health cover" required="true" id="${name}_health_ever_held_cover" className="loading"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/previousFundName" />
-			<form_v3:row fieldXpath="${fieldXpath}" label="Partner's Previous Hospital Fund" id="partnerPreviousFund" className="hidden" renderLabelAsSimplesDialog="true">
+			<form_v3:row fieldXpath="${fieldXpath}" label="Partner's Previous Hospital Fund" id="partnerPreviousFund" className="hidden">
 				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your partner's health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
 			</form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/fundHistory" />
-            <form_v3:row fieldXpath="${fieldXpath}" label="Based on your answers it looks like your partner may be affected by the Government Lifetime Health Cover loading, please enter the approximate date ranges your partner has held <span class='text-bold'>private hospital</span> cover so we can estimate the impact on your premiums." id="health-partner-fund-history" className="changes-premium hidden" renderLabelAsSimplesDialog="blue">
+            <form_v3:row fieldXpath="${fieldXpath}" label="Based on your answers it looks like your partner may be affected by the Government Lifetime Health Cover loading, please enter the approximate date ranges your partner has held <span class='text-bold'>private hospital</span> cover so we can estimate the impact on your premiums." id="health-partner-fund-history" className="changes-premium hidden">
                 <field_v2:coverage_dates_input xpath="${fieldXpath}" footerText="Based on your answers, your partner may be affected by LHC. The LHC amount will be shown in the premium on the next page, if applicable." />
             </form_v3:row>
 
@@ -314,12 +275,12 @@
             </div>
 
             <c:set var="fieldXpath" value="${xpath}/partner/abd" />
-            <form_v3:row label="Does your partner currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="partner_abd" className="lhcRebateCalcTrigger partner_currentPolicyAbd-group hidden" renderLabelAsSimplesDialog="red">
+            <form_v3:row label="Does your partner currently hold a policy which has an Age Based Discount?" fieldXpath="${fieldXpath}" id="partner_abd" className="lhcRebateCalcTrigger partner_currentPolicyAbd-group hidden">
               <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your partner currently hold a policy which has an Age Based Discount?" required="true" className="health-cover_detailsAbdPartner" id="partner_abd_health_cover" />
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/abdPolicyStart" />
-            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="partner_abd_start_date" className="changes-premium hidden" renderLabelAsSimplesDialog="blue">
+            <form_v3:row fieldXpath="${fieldXpath}" label="What was the policy start date?" id="partner_abd_start_date" className="changes-premium hidden">
                 <field_v2:calendar xpath="${fieldXpath}" required="true" title="- What was the policy start date?" className="health-payment_details-start" mode="separated" disableRowHack="${true}" showCalendarOnXS="${true}" />
             </form_v3:row>
 
@@ -334,10 +295,10 @@
         <form_v3:fieldset id="abd_filter" legend="ABD Filtering" className="hidden">
             <div class="hidden abdFilterModalContent">
                 <div class="simples-dialogue abd-filter-dialogue">
-                    <p class="blue">Private Health Insurers can offer discounts on hospital cover for people under 30. The discount applies from the age you were when you purchased your policy. If you switch policies you can keep your discount as long as you switch to a policy that allows you to retain your age-based discount.</p>
-                    <p class='red'>If you choose to retain your discount you will remain eligible. However, if you move to a policy that does not have a retained age based discount you will lose the discount you are currently eligible for.</p>
+                    <p>Private Health Insurers can offer discounts on hospital cover for people under 30. The discount applies from the age you were when you purchased your policy. If you switch policies you can keep your discount as long as you switch to a policy that allows you to retain your age-based discount.</p>
+                    <p class='text-danger well'>If you choose to retain your discount you will remain eligible. However, if you move to a policy that does not have a retained age based discount you will lose the discount you are currently eligible for.</p>
                     <div style="display: flex;">
-                        <p class="blue">With that in mind, when comparing policies, do you want us to only look at policies that allow you to retain your age-based discount.</p>
+                        <p>With that in mind, when comparing policies, do you want us to only look at policies that allow you to retain your age-based discount</p>
                         <div class="btn-group btn-group-justified" data-toggle="radio">
                             <label class="btn btn-form-inverse">
                                 <input type="radio" name="health_healthCover_filter_abd_final" id="health_healthCover_filter_abd_final_Y" value="Y" data-msg-required="Please choose - Choose whether you " required="required" aria-required="true">
@@ -353,9 +314,8 @@
                 </div>
             </div>
 
-            <simples:dialogue id="209" vertical="health" />
             <c:set var="fieldXpath" value="${xpath}/filter/abd" />
-            <form_v3:row label="When comparing policies, do you want us to only look at policies that allow you to retain your Age-Based discount?" fieldXpath="${fieldXpath}" id="abd_filter" className="no-label">
+            <form_v3:row label="When comparing policies, do you want us to only look at policies that allow you to retain your Age-Based discount?" fieldXpath="${fieldXpath}" id="abd_filter">
                 <field_v2:array_radio xpath="${fieldXpath}" required="true" title="- Choose whether you " items="Y=Yes,N=No,U=Unsure" style="group" />
             </form_v3:row>
             <simples:dialogue id="138" className="hidden" vertical="health" mandatory="true" />
@@ -363,14 +323,12 @@
 
         <%--dynamic script--%>
         <%--if customer has cover--%>
-        <simples:dialogue id="191" vertical="health" className="simples-dialogue-partner-current-cover hidden" />
+        <simples:dialogue id="53" vertical="health" className="simples-dialogue-partner-current-cover hidden" />
+        <simples:dialogue id="134" vertical="health" className="simples-dialog-outbound simples-dialog-nextgenoutbound simples-dialogue-partner-current-cover hidden" />
 
         <simples:dialogue id="26" vertical="health" mandatory="true" />
 
-        <form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" className="no-label">
-
-            <simples:dialogue id="210" vertical="health" />
-
+        <form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
             <c:set var="mandatory" value=""/>
 
             <c:if test="${callCentre}">
@@ -379,18 +337,18 @@
 
             <c:if test="${callCentre}">
                 <c:set var="fieldXpath" value="${xpath}/incomeBasedOn" />
-                <form_v3:row label="I wish to calculate my rebate based on" fieldXpath="${fieldXpath}" helpId="288" className="health_cover_details_incomeBasedOn no-label" id="${name}_incomeBase">
-                    <field_v2:array_radio items="S=Single income,H=Household" style="group" xpath="${fieldXpath}" title="income based on" required="true"  />
+                <form_v3:row label="I wish to calculate my rebate based on" fieldXpath="${fieldXpath}" helpId="288" className="health_cover_details_incomeBasedOn" id="${name}_incomeBase">
+                    <field_v2:array_radio items="S=Single income,H=Household income" style="group" xpath="${fieldXpath}" title="income based on" required="true"  />
                 </form_v3:row>
             </c:if>
 
             <c:set var="fieldXpath" value="${xpath}/dependants" />
-            <form_v3:row label="This is based on your taxable income and number of dependants, so can I confirm, how many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants ${mandatory} no-label">
+            <form_v3:row label="This is based on your taxable income and number of dependants, so can I confirm, how many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants ${mandatory}">
                 <field_v2:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/income" />
-            <form_v3:row label="Default income copy" fieldXpath="${fieldXpath}" id="${name}_tier" className="${mandatory} " renderLabelAsSimplesDialog="red">
+            <form_v3:row label="To receive the correct rebate, please select your expected annual income?" fieldXpath="${fieldXpath}" id="${name}_tier" className="${mandatory}">
                 <field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income"/>
                 <span class="fieldrow_legend" id="${name}_incomeMessage"></span>
                 <c:set var="income_label_xpath" value="${xpath}/incomelabel" />
@@ -416,14 +374,6 @@
         <simples:dialogue id="37" vertical="health" mandatory="true" />
         <simples:dialogue id="143" vertical="health" mandatory="true" className="hidden"/>
         <simples:dialogue id="144" vertical="health" mandatory="true" className="hidden"/>
-
-
-        <%-- Compliance Copy --%>
-        <simples:dialogue id="62" vertical="health" className="hidden" />
-        <simples:dialogue id="212" vertical="health" className="hidden" />
-        <simples:dialogue id="213" vertical="health" className="hidden" />
-        <simples:dialogue id="214" vertical="health" className="hidden" />
-        <simples:dialogue id="215" vertical="health" className="hidden" />
 
 
     </jsp:body>

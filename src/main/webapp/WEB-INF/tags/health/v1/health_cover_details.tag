@@ -77,7 +77,7 @@
 				</form_v2:row>
 
 				<c:set var="fieldXpath" value="${xpath}/partner/healthCoverLoading" />
-				<form_v2:row label="Has your partner had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following their 31st birthday?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group" helpId="239" renderLabelAsSimplesDialog="true">
+				<form_v2:row label="Has your partner had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following their 31st birthday?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group" helpId="239">
 					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading"/>
 				</form_v2:row>
 
@@ -88,6 +88,7 @@
 					</form_v2:row>
 				</c:if>
 			</form_v2:fieldset>
+			  <simples:dialogue id="134" vertical="health" className="simples-dialog-outbound" />
 			  <simples:dialogue id="26" vertical="health" mandatory="true" />
 		</jsp:body>
 

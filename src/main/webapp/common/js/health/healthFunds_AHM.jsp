@@ -14,7 +14,7 @@ var healthFunds_AHM = {
   $paymentType : $('#health_payment_details_type input'),
   $paymentFrequency : $('#health_payment_details_frequency'),
   $paymentStartDate: $("#health_payment_details_start"),
-  $paymentTypeContainer: $('#simples-dialogue-222'),
+  $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
   schoolMinAge: 21,
   schoolMaxAge: 24,
   extendedFamilyMinAge: 21,
@@ -129,11 +129,11 @@ var healthFunds_AHM = {
   populateFuturePaymentDays: function() {
     if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
       meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, false);
-      healthFunds_AHM.$paymentTypeContainer.removeClass('hidden');
+      healthFunds_AHM.$paymentTypeContainer.text('*AHM will apply a 0.25% surcharge for all credit card transactions').slideDown();
     }
     else {
       meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, true);
-      healthFunds_AHM.$paymentTypeContainer.addClass('hidden');
+      healthFunds_AHM.$paymentTypeContainer.slideUp();
     }
   },
   unset: function(){
@@ -162,7 +162,7 @@ var healthFunds_AHM = {
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
 
-    healthFunds_AHM.$paymentTypeContainer.addClass('hidden');
+    healthFunds_AHM.$paymentTypeContainer.text('').slideUp();
 
     healthFunds_AHM.$paymentType.off('change.AHM');
     healthFunds_AHM.$paymentFrequency.off('change.AHM');

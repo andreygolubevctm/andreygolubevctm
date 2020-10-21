@@ -1,15 +1,30 @@
 // Simples messaging dialogs
 .simples-dialogue {
+	.alert;
+	.alert-info;
 
-	padding: 0.5em 1em 0 1em;
-	margin: 1em auto;
-	border: 2px solid #333333;
-	background-color: #f1f1f1;
-	color: #333333;
-	.blue {color:#485f94;}
-	.red {color:#ff5f5f;}
-	.black {color: #333333;}
-	a {text-decoration: underline;}
+	border: none;
+	padding-bottom: 10px;
+	margin-left: 0px;
+	margin-right: 0px;
+
+	&.green {
+		.alert-success;
+	}
+	&.yellow {
+		.alert-warning;
+
+		&.mandatory{
+			.alert-warning;
+		}
+	}
+	&.red, &.mandatory {
+		.alert-danger;
+
+		&.has-success .checkbox label {
+			color: @alert-danger-text;
+		}
+	}
 
 	&.abd-filter-dialogue {
 		.btn-group,
@@ -19,13 +34,10 @@
 		}
 	}
 
-	div, h2, h3, h4, p, ul, ol, label {
-		display: block;
-		font-size: @font-size-base;
-		line-height: @line-height-computed;
+	h2, h3 {
 		margin-top: 0;
-		margin-bottom: 0.5em;
-		color: #333333;
+		margin-bottom: 5px;
+		color: inherit;
 
 		&.toggle:after {
 			.icon;
@@ -40,55 +52,16 @@
 				display: none;
 			}
 		}
-		/*& + div {
+		& + div {
 			padding-top: 0;
-		}*/
+		}
 	}
-
-	div.red, ol.red, ul.red {
-		p, li, label {color: #ff5f5f;}
-	}
-
-	div.blue, ol.blue, ul.blue {
-		p, ul, li, label {color: #485f94;}
-	}
-
-    div.checkbox {
-      label {
-        p {
-          color: #ff5f5f;
-			&.blue {color: #485f94;}
-			&.black {color: #333333;}
-        }
-      }
-    }
-
-	h2 {
-		font-family: @headings-font-family;
-		font-size: ceil((@font-size-h3 * 1.25));
-		line-height: floor((ceil((@font-size-h3 * 1.25)) * @line-height-base));
-		margin-bottom: 0.1em;
-	}
-
-	h3 {
-		font-size: @font-size-h3;
-		line-height: floor((@font-size-h3 * @line-height-base));
-		margin-bottom: 0.25em;
-	}
-
-	h4 {
-		font-size: @font-size-h5;
-		line-height: floor((@font-size-h5 * @line-height-base));
-	}
-
-	label.has-error {text-color: #ff5f5f;}
 
 	// Restore the font size etc
 	.checkbox input + label {
 		font-size: @font-size-base;
 		line-height: @line-height-computed;
 		padding-top: 0;
-		margin-bottom: 0.6em;
 	}
 
 	&.simples-affiliate-dialogue {
@@ -99,10 +72,6 @@
 }
 
 .simples {
-  .simples-dialog-inbound,
-  .simples-dialog-outbound {
-    display:none;
-  }
 	.simples-dialogue-70,
 	.simples-dialogue-71 {
 		a {
@@ -117,12 +86,6 @@
 	.simples-dialogue-52,
 	.simples-dialogue-63 {
 		display: block;
-	}
-
-	.simples-dialogue-105 {
-		h2 {
-			text-transform: uppercase;
-		}
 	}
 
 	.simples-dialog-nextgen,
@@ -245,9 +208,10 @@
 				}
 			}
 		}
-      .simples-dialog-outbound {
-        display: block;
-      }
+
+		.simples-dialog-inbound {
+			display: none;
+		}
 	}
 
 	&.nextgenoutbound,
@@ -261,11 +225,11 @@
 		}
 	}
 
-    &.inbound {
-      .simples-dialog-inbound {
-        display: block;
-      }
-    }
+	&.inbound {
+		.simples-dialog-outbound {
+			display: none;
+		}
+	}
 
 	&.energycross {
 		.simples-dialog-energycross {
@@ -345,39 +309,4 @@
 			}
 		}
 	}
-  .qe-window.fieldset,
-  .form-group.fieldrow {
-    &.no-label {
-      label.control-label,
-      legend {
-        display: none;
-      }
-    }
-    label.invisible {
-      display: none;
-    }
-  }
-  .form-group.fieldrow {
-    margin-left: 0;
-    margin-right: 0;
-
-	  &.nestedGroup {
-		  .row-content.has-error {
-			  .error-field {
-				  display: none !important;
-			  }
-		  }
-	  }
-  }
-
-  &:not(.AHM) {
-	  .simples-dialogue-222 {
-		  display: none !important;
-	  }
-  }
 }
-
-#health_payment_medicare_colour-error {
-	color: black;
-}
-

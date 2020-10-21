@@ -19,6 +19,8 @@
 
 				<simples:dialogue id="38" vertical="health" mandatory="true" className="simples-dialog-inbound" />
 				<simples:dialogue id="40" vertical="health" mandatory="true" className="simples-dialog-inbound" />
+				<simples:dialogue id="94" vertical="health" mandatory="true" className="simples-dialog-referral" />
+				<simples:dialogue id="95" vertical="health" mandatory="true" className="simples-dialog-referral" />
 
 				<health_v2:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
 				<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />

@@ -25,6 +25,8 @@
 	      $followupCallCheckbox,
 	      $referralCallCheckboxDialogue,
 	      $referralCallCheckbox,
+	      $referralCallPaymentStepDialogue1,
+	      $referralCallPaymentStepDialogue2,
         $dialogue97,
         $dialogue102,
         $cliCallCheckboxDialogue,
@@ -46,8 +48,9 @@
         $dialogue26,
         $dialogue36,
         $dialogue37,
-        $dialogue38,
-        $dialogue40,
+        $nzMedicareRules,
+        $nzMedicareRulesToggle,
+        $nzMedicareRulesCopy,
         $pricePromisePromotionDialogue,
         $affiliatesDialogue,
         $dialogue106,
@@ -67,18 +70,7 @@
 	          "trialcampaignOptimise",
 	          "nextgenOutbound",
 	          "nextgenCLI"
-        ],
-        $medicare_isaustralian,
-        $medicare_nzcitizen,
-        $medicare_hasmedicarecard,
-        $medicare_intendingmedicarcard,
-        $medicare_confirmeligibilitymedicarecard,
-        $medicare_medicarelevysurcharge,
-        $medicare_medicarelevysurcharge_yes,
-        $medicare_internationalstudent,
-        $medicare_nooverseasstudentcover,
-        $medicare_overseasvistorcover,
-        $norebate_checkbox
+        ]
     ;
 
     function init() {
@@ -108,6 +100,8 @@
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
 	          $referralCallCheckboxDialogue = $('.simples-dialogue-93');
 	          $referralCallCheckbox = $('#health_simples_dialogue-checkbox-93');
+	          $referralCallPaymentStepDialogue1 = $('.simples-dialogue-94');
+	          $referralCallPaymentStepDialogue2 = $('.simples-dialogue-95');
 	          $dialogue97 = $('.simples-dialogue-97');
 	          $dialogue102 = $('.simples-dialogue-102');
             $cliCallCheckboxDialogue = $('.simples-dialogue-78');
@@ -129,8 +123,9 @@
             $dialogue26 = $('.simples-dialogue-26');
             $dialogue36 = $('.simples-dialogue-36');
             $dialogue37 = $('.simples-dialogue-37');
-            $dialogue38 = $('.simples-dialogue-38');
-            $dialogue40 = $('.simples-dialogue-40');
+            $nzMedicareRules = $('#health_situation_cover_wrapper .nz-medicare-rules');
+            $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
+            $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
             $pricePromisePromotionDialogue = $('.simples-dialogue-101');
             $affiliatesDialogue = $('.simples-dialogue-105');
             $dialogue106 = $('.simples-dialogue-106');
@@ -141,17 +136,6 @@
 	          $optin_phone = $('#health_contactDetails_call');
 	          $optin_privacy = $('#health_privacyoptin');
 	          $optin_optin = $('#health_contactDetails_optin');
-            $medicare_isaustralian = $('#health_healthCover_cover');
-            $medicare_nzcitizen = $('#medicare-questions-nzcitizen');
-            $medicare_hasmedicarecard = $('#medicare-questions-hasmedicarecard');
-            $medicare_intendingmedicarcard = $('#medicare-questions-intendingmedicarcard');
-            $medicare_confirmeligibilitymedicarecard = $('#medicare-questions-confirmeligibilitymedicarecard');
-            $medicare_medicarelevysurcharge = $('#medicare-questions-medicarelevysurcharge');
-            $norebate_checkbox = $('#health_healthCover_health_cover_rebate_dontApplyRebate');
-            $medicare_medicarelevysurcharge_yes = $('#simples-dialogue-196');
-            $medicare_internationalstudent = $('#medicare-questions-internationalstudent');
-            $medicare_nooverseasstudentcover = $('#simples-dialogue-198');
-            $medicare_overseasvistorcover = $('#simples-dialogue-199');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -159,13 +143,12 @@
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
             toggleFollowupCallDialog();
-            toggleReferralCallDialog();
+	          toggleReferralCallDialog();
             initNaturpathyDialog();
             applyEventListeners();
             eventSubscriptions();
             _toggleInternationalStudentField();
             toggleEnergyCrossSell();
-            toggleCoverDialogues();
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
@@ -250,10 +233,7 @@
 	    // Handle callback checkbox 93
 	    $referralCallCheckbox.on('change', toggleReferralCallCheckbox);
         // Handle toggle rebateDialogue
-        $healthCoverRebate.add($healthSituationCvr).on('change', function(){
-            toggleRebateDialogue();
-            toggleCoverDialogues();
-        });
+        $healthCoverRebate.add($healthSituationCvr).on('change', toggleRebateDialogue);
         // Handle toggle benefitsDialogue
         $healthSitCoverType.on('change', toggleBenefitsDialogue);
         // Handle toggle primaryCoverDialogue
@@ -268,38 +248,20 @@
             $dialogue36.find('.simples-dialogue-36-extra-text').toggleClass('hidden');
         });
 
+	    $nzMedicareRulesToggle.text($nzMedicareRulesToggle.attr('data-copy-off'));
+        $nzMedicareRulesToggle.on('click', function(){
+            var $btn = $(this);
+            var isOn = $nzMedicareRulesCopy.is(':visible');
+            $btn.text($btn.attr('data-copy-' + (isOn?'off':'on')));
+            $nzMedicareRulesCopy.toggle(!isOn);
+        });
+
         $healthSituationMedicareField.on('change', function(){
             _toggleInternationalStudentField();
         });
 
         $healthInternationalStudentField.on('change', function(){
             _toggleInternationalStudentFieldMsg();
-        });
-
-        // Medicare Questions
-        $medicare_isaustralian.find(':input').on('click', function() {
-            $medicare_nzcitizen.toggleClass('hidden', $(this).val() === 'Y');
-        });
-        $medicare_nzcitizen.find('.health_situation_medicare_nz').find(':input').on('click', function(){
-            $medicare_hasmedicarecard.toggleClass('hidden', $(this).val() === 'Y');
-        });
-        $medicare_hasmedicarecard.find('.health_situation_medicare_hasmedicarecard').find(':input').on('click', function(){
-            $medicare_intendingmedicarcard.toggleClass('hidden', $(this).val() === 'Y');
-        });
-        $medicare_intendingmedicarcard.find('.health_situation_medicare_intendingmedicarcard').find(':input').on('click', function(){
-            $medicare_confirmeligibilitymedicarecard.toggleClass('hidden', $(this).val() === 'N');
-            $medicare_medicarelevysurcharge.toggleClass('hidden', $(this).val() === 'Y');
-        });
-        $medicare_medicarelevysurcharge.find('.health_situation_medicare_medicarelevysurcharge').find(':input').on('click', function(){
-            $medicare_medicarelevysurcharge_yes.toggleClass('hidden', $(this).val() === 'N');
-            $medicare_internationalstudent.toggleClass('hidden', $(this).val() === 'Y');
-            $norebate_checkbox.prop("checked", $(this).val() === 'Y');
-            $('#health_healthCover_tier').toggle();
-            $('#health_healthCover_incomeBase').toggle();
-        });
-        $medicare_internationalstudent.find('.health_situation_medicare_internationalstudent').find(':input').on('click', function(){
-            $medicare_nooverseasstudentcover.toggleClass('hidden', $(this).val() === 'Y');
-            $medicare_overseasvistorcover.toggleClass('hidden', $(this).val() === 'N');
         });
     }
 
@@ -515,7 +477,6 @@
         }else{
             $nonCliCallCheckboxDialogue.toggleClass('hidden',!(getCallType() === null ? true : isValidCallType));
         }
-
         if (isFollowupCall && isValidCallType) {
             if (_.indexOf(['outbound','cli'], callType) >= 0) {
                 // Hide inbound dialogs and show outbound
@@ -589,12 +550,16 @@
         var isReferral = callType !== false && isInbound === false && $referralCallCheckbox.is(':checked');
 
         if(isOutboundNextGenContactType()) {
-	        $dialogue36.add($dialogue97).show();
+	        $dialogue36.add($dialogue97).add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).show();
         } else {
 	        if (!isInbound && isReferral) {
-	            $dialogue36.toggle(isReferral);
+	            $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(isReferral);
 	        } else {
+	            $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
 	            $dialogue36.toggle(isInbound);
+	            if (brandCodeIsCtm && _.indexOf(["trial","nextgen","nextgenoutbound","nextgencli"], callType) >= 0) {
+	                $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(true);
+	            }
 	        }
         }
 	}
@@ -692,28 +657,22 @@
         }
     }
 
-    function toggleCoverDialogues() {
-        togglePrimaryCoverDialogue();
-        togglePartnerCoverDialogue();
-    }
-
     function togglePrimaryCoverDialogue() {
         var isChecked = $healthPrimaryCover.filter(':checked').val() === "Y";
         var isOutbound = meerkat.modules.healthContactType.is('outbound');
         var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound');
 
-        $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', !isChecked);
+        $dialoguePrimaryCover.filter('.simples-dialogue-53').toggleClass('hidden', isNextGenOutbound || !isChecked);
         $dialoguePrimaryCover.filter('.simples-dialogue-134').toggleClass('hidden', !(isOutbound || isNextGenOutbound) || !isChecked);
     }
 
     function togglePartnerCoverDialogue() {
-        var hasPartner = meerkat.modules.healthChoices.hasSpouse();
         var isChecked = $healthPartnerCover.filter(':checked').val() === "Y";
         var isOutbound = meerkat.modules.healthContactType.is('outbound');
         var isNextGenOutbound = meerkat.modules.healthContactType.is('nextgenOutbound');
 
-        $dialoguePartnerCover.filter('.simples-dialogue-191').toggleClass('hidden', !hasPartner || !isChecked);
-        $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', !hasPartner || (!(isOutbound || isNextGenOutbound) || !isChecked));
+        $dialoguePartnerCover.filter('.simples-dialogue-53').toggleClass('hidden', isNextGenOutbound || !isChecked);
+        $dialoguePartnerCover.filter('.simples-dialogue-134').toggleClass('hidden', !(isOutbound || isNextGenOutbound) || !isChecked);
     }
 
     function toggleAffiliateRewardsDialogue() {

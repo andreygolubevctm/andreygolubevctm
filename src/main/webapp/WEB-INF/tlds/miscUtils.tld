@@ -34,18 +34,5 @@
 			]]>
 		</example>
 	</function>
-	<function>
-		<description>MiscUtils</description>
-		<name>getRandomUUID</name>
-		<function-class>com.ctm.web.core.utils.MiscUtils</function-class>
-		<function-signature>
-			java.lang.String getRandomUUID()
-		</function-signature>
-		<example>
-			<![CDATA[
-				${miscUtils:getRandomUUID()};
-			]]>
-		</example>
-	</function>
 
 </taglib>

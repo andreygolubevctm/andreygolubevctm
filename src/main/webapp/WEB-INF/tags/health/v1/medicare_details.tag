@@ -19,12 +19,12 @@
 	<field_v1:hidden xpath="${fieldXpath}" defaultValue="Y" />
 
 	<c:set var="fieldXpath" value="${xpath}/colour" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Does your Medicare card have any restrictions like reciprocal or interim?" id="medicareCoveredRow" helpId="291" smRowOverride="5" renderLabelAsSimplesDialog="blue">
+	<form_v2:row fieldXpath="${fieldXpath}" label="What colour is your Medicare card?" id="medicareCoveredRow" helpId="291" smRowOverride="5">
 		<p id="health_medicareDetails_coverMessage"></p>
 		<field_v1:medicare_colour xpath="${fieldXpath}" />
 	</form_v2:row>
 
-	<form_v2:row label="Medicare card number and expiry" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}" renderLabelAsSimplesDialog="true">
+	<form_v2:row label="Medicare card number and expiry" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">
 		<p id="health_medicareDetails_message"></p>
 		<c:set var="fieldXpath" value="${xpath}/number" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Your Medicare Card Number" smRowOverride="4" isNestedField="${true}" hideHelpIconCol="${true}">

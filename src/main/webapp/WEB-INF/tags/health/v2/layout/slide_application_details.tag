@@ -47,9 +47,8 @@
 					<c:set var="xpath" value="${pageSettings.getVerticalCode()}/application/agr/compliance" />
 					<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
-					<simples:dialogue id="218" vertical="health" className="simplesAgrElementsNoToggle hidden" />
 					<c:set var="fieldXpath" value="${xpath}/voiceConsent" />
-					<form_v3:row fieldXpath="${fieldXpath}" label="Do you agree to have your personal information collected by %FUND_NAME% for the purposes of completing the Rebate Application form?<br /><i>Customer must answer with a clear yes or no response.</i>" id="${name}_voiceConsentRow" className="agrConsent simplesAgrElementsNoToggle hidden optionalDialogue noMarginLeftRight no-label">
+					<form_v3:row fieldXpath="${fieldXpath}" label="Do you agree to have your personal information collected by %FUND_NAME% for the purposes of completing the Rebate Application form?<br /><i>Customer must answer with a clear yes or no response.</i>" id="${name}_voiceConsentRow" className="agrConsent simplesAgrElementsNoToggle hidden simples-dialogue row-content red optionalDialogue noMarginLeftRight">
 						<field_v2:array_radio id="${name}_voiceConsent" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="Do you give consent for claiming the Australian Government Rebate?" />
 					</form_v3:row>
 
@@ -60,17 +59,15 @@
 						<field_v2:checkbox id="${name}_removeRebate1" xpath="${fieldXpath}" required="true" value="Y" title="Remove rebate and continue" label="true" errorMsg="You must remove the rebate to continue" className="validate row-content"/>
 					</form_v2:row>
 
-					<simples:dialogue id="219" vertical="health" className="simplesAgrElementsNoToggle hidden" />
-
 					<c:set var="fieldXpath" value="${xpath}/applicantCovered" />
-					<form_v3:row fieldXpath="${fieldXpath}" label="<p><strong class='bold'>Must read word for word</strong></p>Can I confirm, Are you covered by this policy?" id="${name}_applicantCoveredRow" className="argCoveredByPolicy simplesAgrElementsNoToggle optionalDialogue noMarginLeftRight no-label hidden">
+					<form_v3:row fieldXpath="${fieldXpath}" label="<p><strong class='bold'>Must read word for word</strong></p>Can I confirm, Are you covered by this policy?" id="${name}_applicantCoveredRow" className="argCoveredByPolicy simplesAgrElementsNoToggle hidden simples-dialogue row-content red optionalDialogue noMarginLeftRight">
 						<field_v2:array_radio id="${name}_applicantCovered" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="Are you covered by this policy?" />
 					</form_v3:row>
 
-                    <c:set var="fieldXpath" value="${xpath}/childOnlyPolicy" />
-                    <form_v3:row fieldXpath="${fieldXpath}" label="Is this a child only policy?" id="${name}_childOnlyPolicyRow" className="agrChildOnlyPolicy simplesAgrElementsNoToggle optionalDialogue noMarginLeftRight hidden" renderLabelAsSimplesDialog="red">
-                        <field_v2:array_radio id="${name}_childOnlyPolicy" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="Is this a child only policy?" />
-                    </form_v3:row>
+					<c:set var="fieldXpath" value="${xpath}/childOnlyPolicy" />
+					<form_v3:row fieldXpath="${fieldXpath}" label="Is this a child only policy?" id="${name}_childOnlyPolicyRow" className="agrChildOnlyPolicy simplesAgrElementsNoToggle hidden simples-dialogue row-content red optionalDialogue noMarginLeftRight">
+						<field_v2:array_radio id="${name}_childOnlyPolicy" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="Is this a child only policy?" />
+					</form_v3:row>
 
 					<simples:dialogue id="171" vertical="health" mandatory="true" className="agrRemoveRebate2 simplesAgrElementsNoToggle hidden"  />
 

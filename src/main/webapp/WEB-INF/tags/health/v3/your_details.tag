@@ -34,14 +34,14 @@
 		</div>
 
 			<c:set var="fieldXpath" value="${xpath}/primary/fundName" />
-			<form_v2:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium" renderLabelAsSimplesDialog="true">
+			<form_v2:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium">
 				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
 			</form_v2:row>
 
 			<%-- Optional Membership ID's --%>
 			<div id="clientMemberID" class="membership">
 				<c:set var="fieldXpath" value="${xpath}/primary/memberID" />
-				<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3" renderLabelAsSimplesDialog="true">
+				<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3">
 					<field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." />
 				</form_v2:row>
 
@@ -52,13 +52,13 @@
 			</div>
 
 			<c:set var="fieldXpath" value="${xpath}/primary/extras/fundName" />
-			<form_v2:row fieldXpath="${fieldXpath}" label="Your Current Extras Fund" id="clientExtrasFund" className="changes-premium hidden" renderLabelAsSimplesDialog="true">
+			<form_v2:row fieldXpath="${fieldXpath}" label="Your Current Extras Fund" id="clientExtrasFund" className="changes-premium hidden">
 				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your extras fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
 			</form_v2:row>
 
 			<div id="clientExtrasMemberID" class="membership">
 				<c:set var="fieldXpath" value="${xpath}/primary/extras/memberID" />
-				<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3" renderLabelAsSimplesDialog="true">
+				<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3">
 					<field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." />
 				</form_v2:row>
 

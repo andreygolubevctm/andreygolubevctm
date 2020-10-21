@@ -20,19 +20,19 @@
 		<health_v1:payment_external xpath="${gatewayXpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Type" className="health_credit-card_details_type_group" renderLabelAsSimplesDialog="true">
+		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Type" className="health_credit-card_details_type_group">
 			<field_v2:array_radio items="v=Visa,m=Mastercard,a=AMEX" xpath="${fieldXpath}" title="type of credit card" required="true" className="health-credit_card_details-type" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/name" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="Name on Credit Card" className="health_credit-card-details_name" renderLabelAsSimplesDialog="true">
+		<form_v3:row fieldXpath="${fieldXpath}" label="Name on Credit Card" className="health_credit-card-details_name">
 			<field_v2:input xpath="${fieldXpath}"
 							 title="account name" required="true"
 							 className="health-credit_card_details-name sessioncamexclude" additionalAttributes=" data-rule-regex='[^0-9]*' data-msg-regex='For credit card name, please do not use numbers' "/>
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/number" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number_group" renderLabelAsSimplesDialog="true">
+		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number_group">
 			<field_v2:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number sessioncamexclude" placeHolder="Card #" />
 		</form_v3:row>
 

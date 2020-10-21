@@ -7,20 +7,12 @@
 		$primaryCurrentCover,
 		$primaryHealthCurrentCover,
 		$primaryContinuousCoverContainer,
-        $primaryContinuousCoverDialog,
 		$primaryEverHeldCover,
-        $primaryFundHistory,
-        $primaryFundHistoryUnsure,
-        $primaryPreviousFund,
 		$partnerContainer,
 		$partnerCurrentCover,
 		$partnerHealthCurrentCover,
 		$partnerContinuousCoverContainer,
-        $partnerContinuousCoverDialog,
 		$partnerEverHeldCover,
-        $partnerPreviousFund,
-        $partnerFundHistory,
-        $partnerFundHistoryUnsure,
 		$partnerDOB,
 		$healthCoverDependants,
 		$healthCoverRebate,
@@ -29,8 +21,8 @@
 		$dontClaimHealthRebate,
 		$incomeBase,
 		$healthCoverIncome,
-        $healthCoverIncomeDialog,
 		$healthCoverIncomeFieldLabel,
+		$healthCoverIncomeLabel,
 		$partnerHealthCoverHealthCoverLoading,
 		$tierDropdowns,
 		$primaryDOB,
@@ -43,13 +35,7 @@
 		$healthSituation,
 		$abdElements,
 		$tier3Dialogue,
-		$hasRebateDialogue,
-        $australianGovtRebateIntroDialog,
-        $complianceCopyWaitingPeriods,
-        $complianceCopyPreviousCover,
-        $complianceCopyExtrasOnly,
-        $complianceCopyHospitalChoices,
-        $complianceCopyExtrasChoices;
+		$hasRebateDialogue;
 
 	function init(){
 		$(document).ready(function () {
@@ -74,7 +60,6 @@
 		$primaryCurrentCover = $('#health_healthCover_health_cover'),
 		$primaryHealthCurrentCover = $('#health-current-cover-primary'),
 		$primaryContinuousCoverContainer = $('#health-continuous-cover-primary'),
-		$primaryContinuousCoverDialog = $('#simples-dialogue-201'),
 		$primaryEverHeldCover = $('#health-ever-held-cover-primary'),
 		$primaryPreviousFund = $('#clientPreviousFund'),
 		$primaryFundHistory = $('#health-primary-fund-history'),
@@ -83,7 +68,6 @@
 		$partnerCurrentCover = $('#health_healthCover_partner_health_cover'),
 		$partnerHealthCurrentCover = $('#health-current-cover-partner'),
 		$partnerContinuousCoverContainer = $('#health-continuous-cover-partner'),
-		$partnerContinuousCoverDialog = $('#simples-dialogue-206'),
 		$partnerHealthCoverHealthCoverLoading = $('input[name=health_healthCover_partner_healthCoverLoading]'),
 		$partnerEverHeldCover = $('#health-ever-held-cover-partner'),
 		$partnerPreviousFund = $('#partnerPreviousFund'),
@@ -96,8 +80,8 @@
 		$dontClaimHealthRebate = $('#health_healthCover_health_cover_rebate_dontApplyRebate'),
 		$healthSituationHealthCvr = $('#health_situation_healthCvr'),
 		$healthCoverIncome = $('#health_healthCover_income'),
-        $healthCoverIncomeDialog = $('#health_healthCover_tier .simples-dialogue').hide(),
-		$healthCoverIncomeFieldLabel = $healthCoverIncomeDialog.find("p:first"),
+		$healthCoverIncomeFieldLabel = $("label[for='health_healthCover_income']"),
+		$healthCoverIncomeLabel = $('#health_healthCover_incomelabel'),
 		$incomeBase = $('#health_healthCover_incomeBase'),
 		$tierDropdowns = $('#health_situation_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $('#health_healthCover_primary_dob'),
@@ -108,36 +92,24 @@
 		$healthSituation = $('input[name="health_situation_healthSitu"]');
 		$abdElements = {
 			primary: {
-				ageBasedDiscountDialog: $('#simples-dialogue-202'),
 				receivesAgeBasedDiscountRow: $('#primary_abd'),
 				receivesAgeBasedDiscount: $('#primary_abd_health_cover'),
-				policyStartDateDialog: $('#simples-dialogue-203'),
 				ageBasedDiscountPolicyStartRow: $('#primary_abd_start_date'),
 				healthApplicationDOB: $('#health_application_primary_dob'),
 			},
 			partner: {
-                ageBasedDiscountDialog: $('#simples-dialogue-207'),
 				receivesAgeBasedDiscountRow: $('#partner_abd'),
 				receivesAgeBasedDiscount: $('#partner_abd_health_cover'),
-                policyStartDateDialog: $('#simples-dialogue-208'),
 				ageBasedDiscountPolicyStartRow: $('#partner_abd_start_date'),
 				healthApplicationDOB: $('#health_application_partner_dob')
 			}
 		};
-        $australianGovtRebateIntroDialog = $('#simples-dialogue-210');
-
-        $complianceCopyWaitingPeriods = $('#simples-dialogue-62');
-        $complianceCopyPreviousCover = $('#simples-dialogue-212');
-        $complianceCopyExtrasOnly = $('#simples-dialogue-213');
-        $complianceCopyHospitalChoices = $('#simples-dialogue-214');
-        $complianceCopyExtrasChoices = $('#simples-dialogue-215');
 
 
 		if (!meerkat.modules.healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
 		}
 
-        initComplianceCopyDialogs();
 		setupForm(true);
 	}
 
@@ -161,20 +133,16 @@
 
 		$abdElements.primary.receivesAgeBasedDiscount.find(':input').on('change', function(event) {
 			if(event.target.value === 'Y') {
-				$abdElements.primary.policyStartDateDialog.removeClass('hidden');
-                $abdElements.primary.ageBasedDiscountPolicyStartRow.removeClass('hidden');
+				$abdElements.primary.ageBasedDiscountPolicyStartRow.removeClass('hidden');
 			}else{
-                $abdElements.primary.policyStartDateDialog.addClass('hidden');
 				$abdElements.primary.ageBasedDiscountPolicyStartRow.addClass('hidden');
 			}
 		});
 
 		$abdElements.partner.receivesAgeBasedDiscount.find(':input').on('change', function(event) {
 			if(event.target.value === 'Y') {
-                $abdElements.partner.policyStartDateDialog.removeClass('hidden');
 				$abdElements.partner.ageBasedDiscountPolicyStartRow.removeClass('hidden');
 			}else{
-                $abdElements.partner.policyStartDateDialog.addClass('hidden');
 				$abdElements.partner.ageBasedDiscountPolicyStartRow.addClass('hidden');
 			}
 		});
@@ -271,8 +239,6 @@
 			if ($this.valid()) {
 				setRebate();
 			}
-
-            setupComplianceCopy();
 		});
 
 		$healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
@@ -313,17 +279,18 @@
 	}
 
 	function _toggleAgeBasedDiscountQuestion(applicant) {
-        if($abdElements && applicant && _.has($abdElements, applicant)) {
+	    if($abdElements && applicant && _.has($abdElements, applicant)) {
+
             var dob = convertDate($abdElements[applicant].healthApplicationDOB.val());
 
-            if(!dob) return;
+            if (!dob) return;
 
             var applicationDate = $('#health_searchDate').val();
             var applicationDateString = '';
 
-            if(applicationDate) {
+            if (applicationDate) {
                 var dateSplit = applicationDate.split('/');
-                if(dateSplit.length == 3) {
+                if (dateSplit.length == 3) {
                     var year = dateSplit[2];
                     var month = dateSplit[1];
                     var day = dateSplit[0];
@@ -335,29 +302,26 @@
             var privateHospitalValue = $primaryCurrentCover.find('input').filter(':checked').val();
             var hasExtrasCover = getPrimaryHealthCurrentCover() === 'E' || !getPrimaryHealthCurrentCover();
 
-            if(applicant === 'partner') {
+            if (applicant === 'partner') {
                 privateHospitalValue = $partnerCurrentCover.find('input').filter(':checked').val();
-                hasExtrasCover = getPartnerHealthCurrentCover() === 'E'  || !getPartnerHealthCurrentCover();
+                hasExtrasCover = getPartnerHealthCurrentCover() === 'E' || !getPartnerHealthCurrentCover();
             }
 
             var age = new Date(curDate.getTime() - dob.getTime()).getFullYear() - 1970;
 
-            if(meerkat.modules.healthBenefitsStep.getCoverType() === 'e') {
-                $abdElements[applicant].ageBasedDiscountDialog.addClass('hidden');
+            if (meerkat.modules.healthBenefitsStep.getCoverType() === 'e') {
                 $abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
                 $abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
                 return;
             }
 
             if (!hasExtrasCover && age >= 18 && age < 45 && privateHospitalValue === 'Y' && meerkat.modules.age.isBornAfterFirstOfApril1989($abdElements[applicant].healthApplicationDOB.val())) {
-                $abdElements[applicant].ageBasedDiscountDialog.removeClass('hidden');
                 $abdElements[applicant].receivesAgeBasedDiscountRow.removeClass('hidden');
                 var hasABD = $abdElements[applicant].receivesAgeBasedDiscount.find(':checked').val();
-                if(hasABD === 'Y') {
+                if (hasABD === 'Y') {
                     $abdElements[applicant].ageBasedDiscountPolicyStartRow.removeClass('hidden');
                 }
             } else {
-                $abdElements[applicant].ageBasedDiscountDialog.addClass('hidden');
                 $abdElements[applicant].receivesAgeBasedDiscountRow.addClass('hidden');
                 $abdElements[applicant].ageBasedDiscountPolicyStartRow.addClass('hidden');
                 $abdElements[applicant].receivesAgeBasedDiscountRow.find(':input').filter(':checked').prop('checked', false).parent().removeClass('active');
@@ -371,7 +335,7 @@
 
 		var rebateIncomeBracket = $healthCoverIncome.find('option#health_healthCover_income_0').text().replace(/\s(.*)/g,'');
 
-		var rebateIncomeBracketQuestionStartText = 'Do you earn above or below ';
+		var rebateIncomeBracketQuestionStartText = 'This is based on your taxable income, so can i confirm do you earn above or below ';
 
 		switch($healthSituationHealthCvr.val()) {
 			case 'C':
@@ -388,8 +352,6 @@
 				$healthCoverIncomeFieldLabel.text(rebateIncomeBracketQuestionStartText + rebateIncomeBracket + rebateIncomeBracketQuestionEndText);
 				break;
 		}
-
-        $healthCoverIncomeDialog.show();
 	}
 
 	function updateClaimHealthRebate(){
@@ -449,14 +411,9 @@
 		var hasHospitalCover = ['H', 'C'].indexOf(healthCurrentCoverValue) > -1;
 
 		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && hasHospitalCover && meerkat.modules.age.isAgeLhcApplicable($primaryDOB.val())) {
-            $primaryContinuousCoverDialog.removeClass('hidden');
 			$primaryContinuousCoverContainer.slideDown();
-		} else if (isInitMode === true || hasHospitalCover) {
-            $primaryContinuousCoverDialog.addClass('hidden');
-            $primaryContinuousCoverContainer.hide();
-        } else {
-            $primaryContinuousCoverDialog.addClass('hidden');
-			$primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
+		} else {
+			(isInitMode === true || hasHospitalCover) ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 
@@ -465,14 +422,9 @@
 		var hasHospitalCover = ['H', 'C'].indexOf(healthCurrentCoverValue) > -1;
 
 		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && hasHospitalCover && meerkat.modules.age.isAgeLhcApplicable($partnerDOB.val())) {
-            $partnerContinuousCoverDialog.removeClass('hidden');
 			$partnerContinuousCoverContainer.slideDown();
-		} else if (isInitMode === true || hasHospitalCover) {
-            $partnerContinuousCoverDialog.addClass('hidden');
-            $partnerContinuousCoverContainer.hide();
-        } else {
-            $partnerContinuousCoverDialog.addClass('hidden');
-			$partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
+		} else {
+			(isInitMode === true || hasHospitalCover) ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 
@@ -480,9 +432,7 @@
 
 		updateClaimHealthRebate();
 
-		var familyType = $healthSituationHealthCvr.val();
-
-		switch(familyType)
+		switch($healthSituationHealthCvr.val())
 		{
 			case 'F':
 			case 'EF':
@@ -494,7 +444,6 @@
 				}
 				$partnerContainer.slideDown();
 				$partnersDetails.show();
-				$incomeBase.hide();
 				break;
 			case 'SPF':
 			case 'ESP':
@@ -504,13 +453,11 @@
 					$healthCoverDetailsDependants.slideDown();
 				}
 				$partnersDetails.hide();
-                $incomeBase.hide();
 				break;
 			case 'C':
 				$healthCoverDetailsDependants.slideUp();
 				$partnerContainer.slideDown();
 				$partnersDetails.show();
-				$incomeBase.hide();
 				break;
 			default:
 				isInitMode === true ? $partnerContainer.hide() : $partnerContainer.slideUp();
@@ -518,74 +465,16 @@
 				resetPartnerDetails();
 				$healthCoverIncomeMessage.hide();
 				$partnersDetails.hide();
-				$incomeBase.show();
 				break;
 		}
 
 		if(meerkat.site.isCallCentreUser === true){
 			updateDynamicIncomeFieldText();
-            setupAustralianGovtRebateIntroCopy(familyType);
-            setupComplianceCopy();
 		}
 
 		togglePrimaryContinuousCover();
 		togglePartnerContinuousCover();
 	}
-
-	function setupAustralianGovtRebateIntroCopy(familyType) {
-        var isSingle = _.indexOf(['S', 'SM', 'SF'], familyType) !== -1;
-        var isCouple = _.indexOf(['C'], familyType) !== -1;
-        $australianGovtRebateIntroDialog.find('.single-couple-copy').toggleClass('hidden', !isSingle);
-        $australianGovtRebateIntroDialog.find('.family-copy').toggleClass('hidden', isSingle || isCouple);
-    }
-
-    function setupComplianceCopy() {
-	    var coverType = meerkat.modules.health.getCoverType();
-        var hasCoverPrimary = $primaryCurrentCover.find('input').filter(':checked').val() === 'Y';
-        var hasCoverPartner = $partnerCurrentCover.find('input').filter(':checked').val() === 'Y';
-        var hasEverHeldCoverPrimary = $primaryEverHeldCover.find('input').filter(':checked').val() === 'Y';
-        var hasEverHeldCoverPartner = $partnerEverHeldCover.find('input').filter(':checked').val() === 'Y';
-        var primaryHasPreviousCover = hasCoverPrimary || hasEverHeldCoverPrimary;
-        var partnerHasPreviousCover = hasCoverPartner || hasEverHeldCoverPartner;
-        var isCombinedOrHospital = _.indexOf(['C','H'], coverType) >= 0;
-        var isCombinedOrExtras = _.indexOf(['C','E'], coverType) >= 0;
-        var isCombinedOrHospitalWithPreviousCover = isCombinedOrHospital && (primaryHasPreviousCover || partnerHasPreviousCover);
-        var isExtrasWithPreviousCover = _.indexOf(['E'], coverType) >= 0 && (primaryHasPreviousCover || partnerHasPreviousCover);
-
-        updateComplianceDialogCopy();
-
-        $complianceCopyWaitingPeriods.toggleClass('hidden', !isCombinedOrHospital);
-        $complianceCopyPreviousCover.toggleClass('hidden', !isCombinedOrHospitalWithPreviousCover);
-        $complianceCopyExtrasOnly.toggleClass('hidden', !isExtrasWithPreviousCover);
-        $complianceCopyHospitalChoices.toggleClass('hidden', !isCombinedOrHospital);
-        $complianceCopyExtrasChoices.toggleClass('hidden', !isCombinedOrExtras);
-    }
-
-    function initComplianceCopyDialogs() {
-        var copy = $complianceCopyHospitalChoices.html();
-        $complianceCopyHospitalChoices.prop('data-backup', copy);
-        copy = $complianceCopyExtrasChoices.html();
-        $complianceCopyExtrasChoices.prop('data-backup', copy);
-    }
-
-    function restoreComplianceCopyDialogs() {
-        restoreHospitalComplianceCopyDialogs();
-        restoreExtrasComplianceCopyDialogs();
-    }
-
-    function restoreHospitalComplianceCopyDialogs() {
-        $complianceCopyHospitalChoices.html($complianceCopyHospitalChoices.prop('data-backup'));
-    }
-
-    function restoreExtrasComplianceCopyDialogs() {
-        $complianceCopyExtrasChoices.html($complianceCopyExtrasChoices.prop('data-backup'));
-    }
-
-    function updateComplianceDialogCopy() {
-        restoreComplianceCopyDialogs();
-        meerkat.modules.simplesDynamicDialogue.parse(214);
-        meerkat.modules.simplesDynamicDialogue.parse(215);
-    }
 
 	function setRebate(){
 		meerkat.modules.health.loadRatesBeforeResultsPage(true, function (rates) {
@@ -653,11 +542,7 @@
 		getPartnerHealthCurrentCover: getPartnerHealthCurrentCover,
 		getSituation : getSituation,
 		setRabdQuestions: setRabdQuestions,
-		setRebateRates: setRebateRates,
-        setupComplianceCopy: setupComplianceCopy,
-        restoreHospitalComplianceCopyDialogs: restoreHospitalComplianceCopyDialogs,
-        restoreExtrasComplianceCopyDialogs: restoreExtrasComplianceCopyDialogs,
-        updateComplianceDialogCopy: updateComplianceDialogCopy
+		setRebateRates: setRebateRates
 	});
 
 })(jQuery);

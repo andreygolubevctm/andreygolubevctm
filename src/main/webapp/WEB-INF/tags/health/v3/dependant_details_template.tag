@@ -147,16 +147,7 @@
             </form_v2:row>
             {{ } }}
 
-            <div id="simples-dialogue-dependant{{= obj.dependantId }}" class="simples-dialogue-dependant{{= obj.dependantId }} simples-dialogue row-content simplesDynamicElements mandatory hidden"  data-scripting-template="%DEPENDANTS_SCRIPT_TEMPLATE%. Is that correct?">
-                <div class="wrapper">
-                    <div class="checkbox-custom simples_dialogue-checkbox-dependant{{= obj.dependantId }} checkbox">
-                        <input type="checkbox" name="health_simples_dialogue-checkbox-dependant{{= obj.dependantId }}" id="health_simples_dialogue-checkbox-dependant{{= obj.dependantId }}" class="checkbox-custom  checkbox" value="Y" required="" data-msg-required="Please confirm each mandatory dialog has been read to the client" aria-required="true">
-                        <label for="health_simples_dialogue-checkbox-dependant{{= obj.dependantId }}">
-                            <p class="red">default copy to be replaced</p><p><i>Customer must answer with a clear yes or no response</i></p>
-                        </label>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </core_v1:js_template>

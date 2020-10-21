@@ -24,7 +24,7 @@
 
     <c:choose>
         <c:when test="${callCentre}">
-            <form_v3:row fieldXpath="${xpath}/coupon/code" label="If you have a promo code, enter it here" className="coupon-input-group" renderLabelAsSimplesDialog="true">
+            <form_v3:row fieldXpath="${xpath}/coupon/code" label="If you have a promo code, enter it here" className="coupon-input-group">
                 <div class="coupon-error-container hidden"><label></label></div>
                 <field_v2:input type="password" xpath="${xpath}/coupon/code" title="Promo Code" required="false" className="coupon-code-field" />
                 <field_v1:hidden xpath="${xpath}/coupon/id" className="coupon-id-field" />

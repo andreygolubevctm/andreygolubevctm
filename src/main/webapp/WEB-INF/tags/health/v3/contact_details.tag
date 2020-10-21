@@ -68,7 +68,7 @@
 		<simples:dialogue id="155" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
 
 		<c:set var="fieldXpath" value="${xpath}/email" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Email Address" id="${name}_emailGroup" className="no-label">
+		<form_v2:row fieldXpath="${fieldXpath}" label="Email Address" id="${name}_emailGroup">
 			<field_v2:email xpath="${fieldXpath}" title="your email address" required="true" size="40" />
 			<span class="fieldrow_legend" id="${name}_emailMessage">(we'll send your confirmation here)</span>
 			<field_v1:hidden xpath="${xpath}/emailsecondary" />
