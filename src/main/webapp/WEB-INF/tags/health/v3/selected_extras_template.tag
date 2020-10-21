@@ -68,7 +68,7 @@
                                         {{ var singleVisionValue = benefit.benefits.SingleVision; }}
                                         {{ if(singleVisionValue.indexOf('$') > -1 && (option.indexOf('$') > -1 || option.indexOf('%') > -1)) { }}
                                             <span class="text-highlight">For {{= benefitName.toLowerCase() }} you can claim up to: {{= option}}</span>
-                                        {{ } else if(singleVisionValue.indexOf('%') > -1 && option.indexOf('$') > -1 && key !== 'subLimit') { }}
+                                        {{ } else if(singleVisionValue.indexOf('%') > -1 && option.indexOf('$') > -1 && key !== 'subLimit' && key != 'combinedLimit') { }}
                                              <span class="text-highlight">For {{= benefitName.toLowerCase() }} you'll be able to claim {{= singleVisionValue}} up to: {{= option }}</span>
                                         {{ } else { }}
                                             {{= option }}
