@@ -58,8 +58,6 @@
 			</form_v2:row>
 		</div>
 
-		<simples:dialogue id="165" vertical="health" mandatory="true"  className="simplesDynamicElements"  />
-
 	</form_v2:fieldset>
 
 </div>

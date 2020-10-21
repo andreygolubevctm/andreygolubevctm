@@ -22,6 +22,7 @@
         $dynamicDialogueBoxCoverStartDate = null,
         $nonDynamicDialogueBoxRemoveRebate1 = null,
         $nonDynamicDialogueBoxRemoveRebate2 = null,
+        $nonDynamicDialogueBoxRebateApplicationForm = null,
         $agrOnlineComplianceElements = null,
         $simplesHiddenAgrFields = null,
         $dynamicDialogueBoxAGRApplicationComplete = null,
@@ -104,9 +105,10 @@
         $dependantsIncome = $('#health_application_dependants_income');
 
         $agrComplianceElements = {
+            consentCopy: $('#simples-dialogue-218'),
             consentBtnGroup: $('#health_application_agr_compliance_voiceConsentRow'),
             removeRebate1BtnGroup: $('#health_application_agr_compliance_removeRebate1Row'),
-            coveredByPolicyBtnGroup: $('#health_application_agr_compliance_applicantCoveredRow'),
+            coveredByPolicyBtnGroup: $('#health_application_agr_compliance_applicantCoveredRow').add($('#simples-dialogue-219')),
             childOnlyPolicyBtnGroup: $('#health_application_agr_compliance_childOnlyPolicyRow'),
             removeRebate2BtnGroup: $('#health_application_agr_compliance_removeRebate2Row'),
             consentFields: $('input[name=health_application_agr_compliance_voiceConsent]'),
@@ -136,6 +138,8 @@
         _setupAllRemoveRebate1NonDynamicTextTemplate();
         _setupAllRemoveRebate2NonDynamicTextTemplate();
         _setupAGRApplicationCompleteDynamicTextTemplate();
+
+        _setupRebateApplicationFormNonDynamicTextTemplate();
 
         _clearAgrFields();
     }
@@ -344,6 +348,20 @@
 
     }
 
+    function _setupRebateApplicationFormNonDynamicTextTemplate() {
+
+        try {
+            $nonDynamicDialogueBoxRebateApplicationForm = {
+                'elementRef':$('.simples-dialogue-218'),
+                'template': $('.simples-dialogue-218').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required Process your application without the Rebate Application form dialogue box does not exist");
+        }
+
+    }
+
 
     function _setupAGRApplicationCompleteDynamicTextTemplate() {
 
@@ -394,6 +412,7 @@
 
                 performResetRemoveRebate1NonDynamicDialogueBox();
                 performResetRemoveRebate2NonDynamicDialogueBox();
+                performResetRebateApplicationForm();
 
                 performUpdateAGRApplicationCompleteDynamicDialogueBox();
 
@@ -506,6 +525,16 @@
         }
         catch(err) {
             console.error( "Resetting the Process your application without the Australian government rebate 1 dialogue box did not occur due to an error");
+        }
+    }
+
+    function performResetRebateApplicationForm() {
+        try {
+            var newHtml = $nonDynamicDialogueBoxRebateApplicationForm.template.valueOf();
+            replacePlaceholderText($nonDynamicDialogueBoxRebateApplicationForm.elementRef, newHtml, null);
+        }
+        catch(err) {
+            console.error( "Resetting the Process your application without the Rebate Application form dialogue box did not occur due to an error");
         }
     }
 
