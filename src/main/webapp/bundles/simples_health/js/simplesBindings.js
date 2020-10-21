@@ -71,11 +71,19 @@
         $medicare_isaustralian,
         $medicare_nzcitizen,
         $medicare_hasmedicarecard,
+        $medicare_isreciprocalorinterim,
+        $medicare_hasreciprocalorinterim,
         $medicare_intendingmedicarcard,
         $medicare_confirmeligibilitymedicarecard,
         $medicare_medicarelevysurcharge,
+        $medicare_medicarelevysurchargereci,
         $medicare_medicarelevysurcharge_yes,
+        $medicare_medicarelevysurcharge_yesreci,
+        $medicare_nooverseasstudentcoverreci,
+        $medicare_LHCmedicarelevysurcharge,
+        $medicare_overseasvistorcoverreci,
         $medicare_internationalstudent,
+        $medicare_internationalstudentreci,
         $medicare_nooverseasstudentcover,
         $medicare_overseasvistorcover,
         $norebate_checkbox
@@ -144,12 +152,20 @@
             $medicare_isaustralian = $('#health_healthCover_cover');
             $medicare_nzcitizen = $('#medicare-questions-nzcitizen');
             $medicare_hasmedicarecard = $('#medicare-questions-hasmedicarecard');
+            $medicare_hasreciprocalorinterim = $('#medicare-questions-hasreceiprocalorinterim');
+            $medicare_isreciprocalorinterim = $('#medicare-questions-isreceiprocalorinterim');
             $medicare_intendingmedicarcard = $('#medicare-questions-intendingmedicarcard');
             $medicare_confirmeligibilitymedicarecard = $('#medicare-questions-confirmeligibilitymedicarecard');
             $medicare_medicarelevysurcharge = $('#medicare-questions-medicarelevysurcharge');
+            $medicare_medicarelevysurchargereci = $('#medicare-questions-medicarelevysurchargereci');
             $norebate_checkbox = $('#health_healthCover_health_cover_rebate_dontApplyRebate');
             $medicare_medicarelevysurcharge_yes = $('#simples-dialogue-196');
+            $medicare_medicarelevysurcharge_yesreci = $('.simples_reciprocal_dialogue_196');
+            $medicare_nooverseasstudentcoverreci = $('.simples_reciprocal_dialogue_198');
+            $medicare_overseasvistorcoverreci = $('.simples_reciprocal_dialogue_199');
+            $medicare_LHCmedicarelevysurcharge = $('.simples_dialogue_medicare_143');
             $medicare_internationalstudent = $('#medicare-questions-internationalstudent');
+            $medicare_internationalstudentreci = $('#medicare-questions-internationalstudentreci');
             $medicare_nooverseasstudentcover = $('#simples-dialogue-198');
             $medicare_overseasvistorcover = $('#simples-dialogue-199');
 
@@ -166,6 +182,7 @@
             _toggleInternationalStudentField();
             toggleEnergyCrossSell();
             toggleCoverDialogues();
+            _toggleRebateFromMedicareDetails();
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
@@ -279,28 +296,70 @@
         // Medicare Questions
         $medicare_isaustralian.find(':input').on('click', function() {
             $medicare_nzcitizen.toggleClass('hidden', $(this).val() === 'Y');
+            _toggleRebateFromMedicareDetails();
         });
         $medicare_nzcitizen.find('.health_situation_medicare_nz').find(':input').on('click', function(){
             $medicare_hasmedicarecard.toggleClass('hidden', $(this).val() === 'Y');
+            _toggleRebateFromMedicareDetails();
         });
         $medicare_hasmedicarecard.find('.health_situation_medicare_hasmedicarecard').find(':input').on('click', function(){
             $medicare_intendingmedicarcard.toggleClass('hidden', $(this).val() === 'Y');
+            $medicare_hasreciprocalorinterim.toggleClass('hidden', $(this).val() === 'N');
+            _toggleRebateFromMedicareDetails();
+        });
+        $medicare_hasreciprocalorinterim.find('.health_situation_medicare_hasreciprocalorinterim').find(':input').on('click', function(){
+            $medicare_isreciprocalorinterim.toggleClass('hidden', $(this).val() === 'N');
+            _toggleRebateFromMedicareDetails();
+        });
+        $medicare_isreciprocalorinterim.find('.health_situation_medicare_isreciprocalorinterim').find(':input').on('click', function(){
+            $medicare_medicarelevysurchargereci.toggleClass('hidden', $(this).val() === 'I');
+            _toggleRebateFromMedicareDetails();
+        });
+        $medicare_medicarelevysurchargereci.find('.health_situation_medicare_medicarelevysurchargereci').find(':input').on('click', function(){
+            $medicare_medicarelevysurcharge_yesreci.toggleClass('hidden', $(this).val() === 'N');
+            $medicare_LHCmedicarelevysurcharge.toggleClass('hidden', $(this).val() === 'N');
+            $medicare_internationalstudentreci.toggleClass('hidden', $(this).val() === 'Y');
+            _toggleRebateFromMedicareDetails();
+        });
+        $medicare_internationalstudentreci.find('.health_situation_medicare_internationalstudentreci').find(':input').on('click', function(){
+            $medicare_nooverseasstudentcoverreci.toggleClass('hidden', $(this).val() === 'N');
+            $medicare_overseasvistorcoverreci.toggleClass('hidden', $(this).val() === 'Y');
+            _toggleRebateFromMedicareDetails();
         });
         $medicare_intendingmedicarcard.find('.health_situation_medicare_intendingmedicarcard').find(':input').on('click', function(){
             $medicare_confirmeligibilitymedicarecard.toggleClass('hidden', $(this).val() === 'N');
             $medicare_medicarelevysurcharge.toggleClass('hidden', $(this).val() === 'Y');
+            _toggleRebateFromMedicareDetails();
         });
         $medicare_medicarelevysurcharge.find('.health_situation_medicare_medicarelevysurcharge').find(':input').on('click', function(){
             $medicare_medicarelevysurcharge_yes.toggleClass('hidden', $(this).val() === 'N');
+            $medicare_LHCmedicarelevysurcharge.toggleClass('hidden', $(this).val() === 'N');
             $medicare_internationalstudent.toggleClass('hidden', $(this).val() === 'Y');
-            $norebate_checkbox.prop("checked", $(this).val() === 'Y');
-            $('#health_healthCover_tier').toggle();
-            $('#health_healthCover_incomeBase').toggle();
+            _toggleRebateFromMedicareDetails();
         });
         $medicare_internationalstudent.find('.health_situation_medicare_internationalstudent').find(':input').on('click', function(){
-            $medicare_nooverseasstudentcover.toggleClass('hidden', $(this).val() === 'Y');
-            $medicare_overseasvistorcover.toggleClass('hidden', $(this).val() === 'N');
+            $medicare_nooverseasstudentcover.toggleClass('hidden', $(this).val() === 'N');
+            $medicare_overseasvistorcover.toggleClass('hidden', $(this).val() === 'Y');
         });
+    }
+
+    function _toggleRebateFromMedicareDetails() {
+        $norebate_checkbox.prop("checked", false);
+        $('#health_healthCover_tier').show();
+
+        var situation = $('.health-situation-healthCvr').val();
+        if(_.indexOf(["SM","SF","C"], situation) !== -1) {
+            $('#health_healthCover_incomeBase').show();
+        } else {
+            $('.health_cover_details_dependants').show();
+        }
+
+        if ($medicare_medicarelevysurcharge_yes.is(':visible')) {
+            $norebate_checkbox.prop("checked", true);
+            $('#health_healthCover_tier').hide();
+            $('#health_healthCover_incomeBase').hide();
+            $('.health_cover_details_dependants').hide();
+        }
     }
 
     function openBridgingPage(e) {

@@ -194,6 +194,51 @@
                                     <simples:dialogue id="199" vertical="health" className="hidden" />
                                 </div>
                             </div>
+
+                        </div>
+
+                        <div id="medicare-questions-hasreceiprocalorinterim" class="hidden">
+                            <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/hasreciprocalorinterim" />
+                            <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                            <form_v3:row label="Does your Medicare Card have any restrictions like reciprocal or Interim?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare_hasreciprocalorinterim" renderLabelAsSimplesDialog="blue">
+                                <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                                                      title="Does your Medicare Card have any restrictions like reciprocal or Interim" required="true" />
+                            </form_v3:row>
+
+                            <div id="medicare-questions-isreceiprocalorinterim" class="hidden">
+                                <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/isreciprocalorinterim" />
+                                <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                                <form_v3:row label="Is the restriction Interim or Reciprocal?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare_isreciprocalorinterim no-label">
+                                    <field_v2:array_radio items="I=Interim,R=Reciprocal" style="group" xpath="${fieldXpath}"
+                                                          title="Is Interim or Reciprocal?" required="true" />
+                                </form_v3:row>
+
+                                <div id="medicare-questions-medicarelevysurchargereci" class="hidden">
+                                    <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/medicarelevysurchargereci" />
+                                    <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                                    <form_v3:row label="Do you need a policy for Medicare Levy Surcharge?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare_medicarelevysurchargereci" renderLabelAsSimplesDialog="blue">
+                                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                                                              title="Do you need a policy for Medicare Levy Surcharge? (for reciprocal)" required="true" />
+                                    </form_v3:row>
+
+                                    <simples:dialogue id="196" vertical="health" className=" simples_reciprocal_dialogue_196 hidden" />
+
+                                    <div id="medicare-questions-internationalstudentreci" class="hidden">
+                                        <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/internationalstudentreci" />
+                                        <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                                        <form_v3:row label="Are you on a student Visa?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare_internationalstudentreci" renderLabelAsSimplesDialog="blue">
+                                            <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                                                                  title="Are you on a student Visa? for reciprocal" required="true"
+                                                                  additionalAttributes="data-rule-isCheckedYes='true' data-rule-isCheckedNo='true'"/>
+                                        </form_v3:row>
+
+                                        <simples:dialogue id="198" vertical="health" className=" simples_reciprocal_dialogue_198 hidden" />
+
+                                        <simples:dialogue id="199" vertical="health" className=" simples_reciprocal_dialogue_199 hidden" />
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -413,8 +458,7 @@
         </form_v3:fieldset>
 
         <%--dynamic scripts--%>
-        <simples:dialogue id="37" vertical="health" mandatory="true" />
-        <simples:dialogue id="143" vertical="health" mandatory="true" className="hidden"/>
+        <simples:dialogue id="143" vertical="health" mandatory="true" className=" simples_dialogue_medicare_143 hidden"/>
         <simples:dialogue id="144" vertical="health" mandatory="true" className="hidden"/>
 
 

@@ -549,7 +549,8 @@
         var partnerHasPreviousCover = hasCoverPartner || hasEverHeldCoverPartner;
         var isCombinedOrHospital = _.indexOf(['C','H'], coverType) >= 0;
         var isCombinedOrExtras = _.indexOf(['C','E'], coverType) >= 0;
-        var isCombinedOrHospitalWithPreviousCover = isCombinedOrHospital && (primaryHasPreviousCover || partnerHasPreviousCover);
+		var isNotExtrasOnly = $primaryHealthCurrentCover.find('input').filter(':checked').val() !== 'E';
+		var isCombinedOrHospitalWithPreviousCover = isNotExtrasOnly && (isCombinedOrHospital && (primaryHasPreviousCover || partnerHasPreviousCover));
         var isExtrasWithPreviousCover = _.indexOf(['E'], coverType) >= 0 && (primaryHasPreviousCover || partnerHasPreviousCover);
 
         updateComplianceDialogCopy();
