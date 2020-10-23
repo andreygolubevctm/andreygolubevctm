@@ -54,12 +54,47 @@ ${newPage.init(pageContext.request, pageSettings)}
     <c:if test="${not empty param.brandCode and (fn:toLowerCase(param.brandCode) eq 'ctm' or fn:toLowerCase(param.brandCode) eq 'wfdd' or fn:toLowerCase(param.brandCode) eq 'wfdd' or fn:toLowerCase(param.brandCode) eq 'bddd')}">${fn:toLowerCase(param.brandCode)}</c:if>
 </c:set>
 
+<%-- Google Tag Manager IDs --%>
+<c:set var="optimize360">
+	<c:choose>
+		<c:when test="${environmentCode == 'PRO'}">GTM-MH83ZZ</c:when>
+		<c:otherwise>GTM-5ZDDGS2</c:otherwise>
+	</c:choose>
+</c:set>
+<c:set var="gtm">
+	<c:choose>
+		<c:when test="${environmentCode == 'PRO'}">GTM-W9GR9M</c:when>
+		<c:otherwise>GTM-W9GR9M</c:otherwise>
+	</c:choose>
+</c:set>
+
 <!DOCTYPE html>
 <go:html>
     <head>
-            <%-- Google Optimise 360 --%>
+        <%-- Google Optimise 360 --%>
         <c:if test="${empty callCentre or not callCentre}">
-            <content:get key="googleOptimise360"/>
+            <style>.async-hide { opacity: 0 !important} </style>
+        
+            <script data-cfasync="false">(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+            h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+            (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+            })(window,document.documentElement,'async-hide','CtMDataLayer',4000,
+            {'${optimize360}':true});</script>
+            
+            <script data-cfasync="false" src="https://www.googleoptimize.com/optimize.js?id=${optimize360}"></script>
+        </c:if>
+
+
+        <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
+            <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
+                <script data-cfasync="false">
+                    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl+ '&gtm_auth=JAQiyf1Jul0mbAeEJPDUQA&gtm_preview=env-47&gtm_cookies_win=x';f.parentNode.insertBefore(j,f);
+                    })(window,document,'script','CtMDataLayer','${gtm}');
+                </script>
+            </c:if>
         </c:if>
 
         <title>${title} - ${pageSettings.getSetting('brandName')}</title>
@@ -122,11 +157,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 
     <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
         <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
-            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','CtMDataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
+            <noscript>
+                <iframe src="https://www.googletagmanager.com/ns.html?id=${pageSettings.getSetting('GTMPropertyId')}&gtm_auth=JAQiyf1Jul0mbAeEJPDUQA&gtm_preview=env-47&gtm_cookies_win=x" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+            </noscript>
         </c:if>
     </c:if>
 
