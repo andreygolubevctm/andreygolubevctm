@@ -55,7 +55,7 @@ public class PreviouslyHeldCoverCalculationStrategy implements LHCCalculationStr
         GapData gapData = new GapData.Builder()
                 .allCoveredDays(allCoveredDaysAfterBaseDate)
                 .lastDayOfFirstCover(lastDayOfFirstCover)
-                .when(now)
+                .when(now).heldCoverOnOrAfterBaseDate(LHCDateCalculationSupport.heldCoverOnOrAfterBaseDate(baseDate, coverDates))
                 .createGapData();
 
         if (LHCDateCalculationSupport.hasYearsContiguousCover(Constants.CONTIGUOUS_YEARS_COVER_LHC_RESET_THRESHOLD, coverDates, now, gapData.getPermittedGapDays())) {

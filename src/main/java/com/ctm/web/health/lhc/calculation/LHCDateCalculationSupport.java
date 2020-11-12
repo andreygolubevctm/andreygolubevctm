@@ -158,6 +158,18 @@ public class LHCDateCalculationSupport {
     }
 
     /**
+     * Returns whether any date contained in the {@link CoverDateRange} is equal to or after the given {@code baseDate}
+     *
+     * @param baseDate   the base date to check.
+     * @param coverDates the collection of {@link CoverDateRange} instances.
+     * @return true if any date contained in the {@link CoverDateRange} is equal to or after the given {@code baseDate}
+     */
+    public static boolean heldCoverOnOrAfterBaseDate(LocalDate baseDate, List<CoverDateRange> coverDates) {
+        return getCoveredDaysInRange(coverDates)
+                .stream().anyMatch(d -> d.isAfter(baseDate) || d.equals(baseDate));
+    }
+
+    /**
      * Return a set of unique days included in a collection of {@link CoverDateRange} instances. Overlapping dates
      * between {@link CoverDateRange} instances will be ignored.
      *

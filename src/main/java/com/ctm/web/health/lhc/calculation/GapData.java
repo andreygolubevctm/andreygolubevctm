@@ -2,6 +2,7 @@ package com.ctm.web.health.lhc.calculation;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -56,6 +57,7 @@ public class GapData {
         private LocalDate lastDayOfFirstCover;
         private Set<LocalDate> allCoveredDays;
         private LocalDate calculationDate;
+        private boolean heldCoverOnOrAfterBaseDate;
 
         public Builder lastDayOfFirstCover(LocalDate lastDayOfFirstCover) {
             this.lastDayOfFirstCover = lastDayOfFirstCover;
@@ -72,8 +74,14 @@ public class GapData {
             return this;
         }
 
+        public Builder heldCoverOnOrAfterBaseDate(boolean heldCoverOnBaseDate) {
+            this.heldCoverOnOrAfterBaseDate = heldCoverOnBaseDate;
+            return this;
+        }
+
         public GapData createGapData() {
-            LocalDate firstPermittedGapDay = LHCDateCalculationSupport.getFirstNonCoveredDay(lastDayOfFirstCover, calculationDate, allCoveredDays).orElse(calculationDate);
+            Optional<LocalDate> firstNonCoveredDay = LHCDateCalculationSupport.getFirstNonCoveredDay(lastDayOfFirstCover, calculationDate, allCoveredDays);
+            LocalDate firstPermittedGapDay = heldCoverOnOrAfterBaseDate ? firstNonCoveredDay.orElse(calculationDate) : calculationDate;
             List<LocalDate> permittedGapDays = LHCDateCalculationSupport.calculatePermittedGapDays(firstPermittedGapDay, calculationDate, allCoveredDays);
             LocalDate lastPermittedGapDay = permittedGapDays.isEmpty() ? firstPermittedGapDay : permittedGapDays.get(permittedGapDays.size() - 1);
             LocalDate firstNonPermittedGapDay = LHCDateCalculationSupport.getFirstNonCoveredDay(lastPermittedGapDay.plusDays(1), calculationDate, allCoveredDays).orElse(calculationDate);
