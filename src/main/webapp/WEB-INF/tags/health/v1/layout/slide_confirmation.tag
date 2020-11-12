@@ -94,8 +94,6 @@
 					{{ } }}
 				</div>
 
-				<simples:dialogue id="41" vertical="health" className="yellow" />
-
 			</layout_v1:slide_content>
 
 		</jsp:body>

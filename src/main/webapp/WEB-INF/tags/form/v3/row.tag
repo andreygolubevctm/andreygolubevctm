@@ -21,6 +21,9 @@
 <%@ attribute name="isNestedField" 		required="false" rtexprvalue="true"	 description="Toggle to automatically set some styling values for the nested fields eg name_group.tag" %>
 <%@ attribute name="isNestedStyleGroup" required="false" rtexprvalue="true"	 description="Toggle to remove the col-xs-12 class. If not removed breaks the nesting design introduced to health" %>
 
+<%-- Added to allow option of rendering lable as simples dialogue --%>
+<%@ attribute name="renderLabelAsSimplesDialog"	required="false" rtexprvalue="true" description="Flag to render the label as a simples dialog box" %>
+
 <c:if test="${not isNestedField eq true}">
 	<c:set var="formGroupClasses" value="form-group row" />
 </c:if>
@@ -98,7 +101,19 @@
 				<c:set var="label" value="" />
 			</c:if>
 
-			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
+            <c:set var="hideLabelClass" value="" />
+            <c:if test="${not empty renderLabelAsSimplesDialog and (renderLabelAsSimplesDialog eq 'true' or renderLabelAsSimplesDialog eq 'blue' or renderLabelAsSimplesDialog eq 'red' or renderLabelAsSimplesDialog eq 'black')}">
+				<c:set var="dialogClass">
+					<c:choose>
+						<c:when test="${renderLabelAsSimplesDialog eq 'true'}"></c:when>
+						<c:otherwise>class="${renderLabelAsSimplesDialog}"</c:otherwise>
+					</c:choose>
+				</c:set>
+                <simples:dialogue id="666" vertical="health" dialogueText="<p ${dialogClass}>${label}</p>" />
+                <c:set var="hideLabelClass" value="invisible" />
+            </c:if>
+
+			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName} ${hideLabelClass}" addForAttr="${addForAttr}" />
 
 			<div class="col-xs-1 visible-xs helpIconXSColumn">
 				<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" additionalAttributes="${additionalHelpAttributes}" />

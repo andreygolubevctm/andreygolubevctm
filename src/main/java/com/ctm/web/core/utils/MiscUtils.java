@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 
@@ -82,6 +83,10 @@ public class MiscUtils {
             LOGGER.warn("Unable to convert to JSON", e);
             return "";
         }
+    }
+
+    public static String getRandomUUID() {
+        return UUID.randomUUID().toString();
     }
 
 }

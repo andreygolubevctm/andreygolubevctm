@@ -21,12 +21,12 @@
 		<c:set var="openingQuestion"><content:get key="voucherFirstQuestionCopy" /></c:set>
 		<c:set var="fieldXpath" value="${xpath}/available" />
 		<div id="healthVouchers">
-			<form_v3:row label="${openingQuestion}" fieldXpath="${fieldXpath}" className="healthVoucherAvailableRow">
+			<form_v3:row label="${openingQuestion}" fieldXpath="${fieldXpath}" className="healthVoucherAvailableRow" renderLabelAsSimplesDialog="true">
 				<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="voucher available" required="true" />
 			</form_v3:row>
 			<div class="voucherIsAvailable">
 				<c:set var="fieldXpath" value="${xpath}/type" />
-				<form_v3:row label="Voucher type?" fieldXpath="${fieldXpath}" className="healthVoucherTypeRow">
+				<form_v3:row label="Voucher type?" fieldXpath="${fieldXpath}" className="healthVoucherTypeRow" renderLabelAsSimplesDialog="true">
 					<field_v2:general_select xpath="${fieldXpath}" type="healthVoucherTypes" required="true" title="the type of voucher" />
 				</form_v3:row>
 				<div class="voucher mando">
