@@ -56,8 +56,10 @@
                 $elements.primaryCurrentFundName,
                 hideField
             );
-            
+
             meerkat.modules.Accordion.toggleAccordions('about_you_switching_accordion', hideField);
+
+            if ($checked.val() === 'Y') $elements.primaryCurrentFundName.find('option[value="NONE"]').hide();
         });
 
     }
