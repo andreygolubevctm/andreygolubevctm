@@ -711,7 +711,7 @@
         var isReferral = callType !== false && isInbound === false && $referralCallCheckbox.is(':checked');
 
         if(isOutboundNextGenContactType()) {
-	        $dialogue36.add($dialogue97).show();
+	        $dialogue36.show();
         } else {
 	        if (!isInbound && isReferral) {
 	            $dialogue36.toggle(isReferral);
@@ -764,19 +764,21 @@
             selectedProduct = Results.getSelectedProduct(),
             isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'custom') && selectedProduct.custom.reform.tab1.benefits && selectedProduct.custom.reform.tab1.benefits.find(function(benefit) { return benefit.covered === 'Y'; }) === undefined && selectedProduct.accident.covered === 'N';
 
+        $dialogue97.add($dialogue102).toggleClass('hidden', true);
+
 	    switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
 	            toggleCoverTypeScripts($hospitalScripts, true);
-	              $dialogue97.show();
-	              $dialogue102.show();
+                $dialogue97.toggleClass('hidden', isHospitalPublic);
+                $dialogue102.toggleClass('hidden', !isHospitalPublic);
                 $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
                 $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
 	            toggleCoverTypeScripts($extrasScripts, true);
                 break;
             case 'h':
 	            toggleCoverTypeScripts($hospitalScripts, true);
-              $dialogue97.show();
-              $dialogue102.show();
+                $dialogue97.toggleClass('hidden', isHospitalPublic);
+                $dialogue102.toggleClass('hidden', !isHospitalPublic);
 	            $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
 	            $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
 	            toggleCoverTypeScripts($extrasScripts, false);

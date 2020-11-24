@@ -102,6 +102,12 @@
 			color: #ff5f5f;
 		}
 	}
+
+	.red {
+		.black {
+			color: #333333;
+		}
+	}
 }
 
 .simples {
@@ -109,248 +115,274 @@
   .simples-dialog-outbound {
     display:none;
   }
-	.simples-dialogue-70,
-	.simples-dialogue-71 {
-		a {
-			display: block;
-			text-decoration: underline;
-			margin: 5px 0px;
-			font-weight: bold;
-		}
-	}
-
-	.simples-dialogue-49,
-	.simples-dialogue-52,
-	.simples-dialogue-63 {
-		display: block;
-	}
-
-	.simples-dialogue-105 {
-		h2 {
-			text-transform: uppercase;
-		}
-	}
-
-	.simples-dialog-nextgen,
-	.simples-dialog-nextgenoutbound,
-	.simples-dialog-nextgencli,
-	.simples-dialog-energycross,
-	.simples-dialog-energytransfer {
-		display: none;
-	}
-
-	&.nextgen,
-	&.nextgenoutbound,
-	&.nextgencli {
-		&[data-step=start] {
-			#pageContent {
-				background-color: whitesmoke;
-			}
-		}
-
-		&[data-step=results].moreInfoVisible,
-		&[data-step=payment],
-		&[data-step=apply] {
-			#pageContent {
-				background-color: whitesmoke;
-			}
-		}
-
-		.simples-dialog-inbound {
-			&.show-nextgen {
-				display: none;
-			}
-
-			display: none;
-		}
-
-		.simples-dialog-outbound,
-		.simples-dialog-cli,
-		.simples-dialog-nextgen,
-		.simples-dialog-nextgenoutbound,
-		.simples-dialog-nextgencli,
-		.simples-dialogue-63,
-		.simples-dialogue-49,
-		.simples-dialogue-52 {
-			display: none;
-		}
-	}
-
-	&.nextgen {
-		.simples-dialog-inbound {
-			&.show-nextgen {
-				display: block !important;
-			}
-		}
-
-		.simples-dialogue-63,
-		.simples-dialog-nextgen,
-		.simples-dialogue-49,
-		.simples-dialogue-52 {
-			display: block;
-		}
-	}
-
-	&.nextgenoutbound {
-		.simples-dialog-nextgenoutbound {
-			display: block;
-		}
-
-		.simples-dialogue-48 {
-			display: none !important;
-		}
-	}
-
-	&.nextgencli {
-		.simples-dialog-nextgencli {
-			display: block;
-		}
-	}
-
-	&.outbound {
-		&[data-step=start] {
-			#pageContent {
-				background-color: whitesmoke;
-			}
-		}
-
-		&[data-step=benefits] {
-			#pageContent {
-				background-color: whitesmoke;
-			}
-		}
-
-		&[data-step=contact] {
-			#pageContent {
-				background-color: whitesmoke;
-			}
-		}
-
-		&[data-step=results] {
-			#pageContent {
-				background-color: whitesmoke;
-			}
-		}
-
-		&[data-step=results].moreInfoVisible,
-		&[data-step=payment],
-		&[data-step=apply] {
-			#pageContent {
-				background-color: @btn-hollow-red-color;
-			}
-
-			&.trial {
-				#pageContent {
-					background-color: #c18eda;
-				}
-			}
-
-			&.cli {
-				#pageContent {
-					background-color: #9fc3e0;
-				}
-			}
-		}
-      .simples-dialog-outbound {
-        display: block;
+  .simples-dialogue-70,
+  .simples-dialogue-71 {
+      a {
+          display: block;
+          text-decoration: underline;
+          margin: 5px 0px;
+          font-weight: bold;
       }
-	}
+  }
 
-	&.nextgenoutbound,
-	&.nextgencli {
-		&[data-step=results].moreInfoVisible,
-		&[data-step=payment],
-		&[data-step=apply] {
-			#pageContent {
-				background-color: #ccffcc;
-			}
-		}
-	}
+  .simples-dialogue-49,
+  .simples-dialogue-52,
+  .simples-dialogue-63 {
+      display: block;
+  }
 
-    &.inbound {
+  .simples-dialogue-105 {
+      h2 {
+          text-transform: uppercase;
+      }
+  }
+
+  .simples-dialog-nextgen,
+  .simples-dialog-nextgenoutbound,
+  .simples-dialog-nextgencli,
+  .simples-dialog-energycross,
+  .simples-dialog-energytransfer {
+      display: none;
+  }
+
+  &.nextgen,
+  &.nextgenoutbound,
+  &.nextgencli {
+      &[data-step=start] {
+          #pageContent {
+              background-color: whitesmoke;
+          }
+      }
+
+      &[data-step=results].moreInfoVisible,
+      &[data-step=payment],
+      &[data-step=apply] {
+          #pageContent {
+              background-color: whitesmoke;
+          }
+      }
+
       .simples-dialog-inbound {
-        display: block;
+          &.show-nextgen {
+              display: none;
+          }
+
+          display: none;
       }
+
+      .simples-dialog-outbound,
+      .simples-dialog-cli,
+      .simples-dialog-nextgen,
+      .simples-dialog-nextgenoutbound,
+      .simples-dialog-nextgencli,
+      .simples-dialogue-63,
+      .simples-dialogue-49,
+      .simples-dialogue-52 {
+          display: none;
+      }
+  }
+
+  &.nextgen {
+      .simples-dialog-inbound {
+          &.show-nextgen {
+              display: block !important;
+          }
+      }
+
+      .simples-dialogue-63,
+      .simples-dialog-nextgen,
+      .simples-dialogue-49,
+      .simples-dialogue-52 {
+          display: block;
+      }
+  }
+
+  &.nextgenoutbound {
+      .simples-dialog-nextgenoutbound {
+          display: block;
+      }
+
+      .simples-dialogue-48 {
+          display: none !important;
+      }
+  }
+
+  &.nextgencli {
+      .simples-dialog-nextgencli {
+          display: block;
+      }
+  }
+
+  &.outbound {
+      &[data-step=start] {
+          #pageContent {
+              background-color: whitesmoke;
+          }
+      }
+
+      &[data-step=benefits] {
+          #pageContent {
+              background-color: whitesmoke;
+          }
+      }
+
+      &[data-step=contact] {
+          #pageContent {
+              background-color: whitesmoke;
+          }
+      }
+
+      &[data-step=results] {
+          #pageContent {
+              background-color: whitesmoke;
+          }
+      }
+
+      &[data-step=results].moreInfoVisible,
+      &[data-step=payment],
+      &[data-step=apply] {
+          #pageContent {
+              background-color: @btn-hollow-red-color;
+          }
+
+          &.trial {
+              #pageContent {
+                  background-color: #c18eda;
+              }
+          }
+
+          &.cli {
+              #pageContent {
+                  background-color: #9fc3e0;
+              }
+          }
+      }
+    .simples-dialog-outbound {
+      display: block;
     }
+  }
 
-	&.energycross {
-		.simples-dialog-energycross {
-			display: block;
-		}
-	}
+  &.nextgenoutbound,
+  &.nextgencli {
+      &[data-step=results].moreInfoVisible,
+      &[data-step=payment],
+      &[data-step=apply] {
+          #pageContent {
+              background-color: #ccffcc;
+          }
+      }
+  }
 
-	&.energytransfer {
-		.simples-dialog-energytransfer {
-			display: block;
-		}
-	}
+  &.inbound {
+    .simples-dialog-inbound {
+      display: block;
+    }
+  }
 
-	&.energycross,
-	&.energytransfer {
-		.simples-dialog-outbound,
-		.simples-dialog-cli,
-		.simples-dialog-nextgenoutbound,
-		.simples-dialog-nextgencli,
-		.simples-dialogue-48,
-		.simples-dialogue-19,
-		.simples-dialogue-63 {
-			display: none;
-		}
+  &.energycross {
+      .simples-dialog-energycross {
+          display: block;
+      }
+  }
 
-		&[data-step=results].moreInfoVisible,
-		&[data-step=payment],
-		&[data-step=apply] {
-			#pageContent {
-				background-color: #fcdb03;
-			}
-		}
-	}
+  &.energytransfer {
+      .simples-dialog-energytransfer {
+          display: block;
+      }
+  }
 
-	.featuresMode {
-		.result-row.active {
-			.result {
-				border-color: @theme-tertiary;
-			}
-		}
-	}
+  &.energycross,
+  &.energytransfer {
+      .simples-dialog-outbound,
+      .simples-dialog-cli,
+      .simples-dialog-nextgenoutbound,
+      .simples-dialog-nextgencli,
+      .simples-dialogue-48,
+      .simples-dialogue-19,
+      .simples-dialogue-63 {
+          display: none;
+      }
 
-	#health_situation_cover_wrapper {
-		 .nz-medicare-rules {
-			 a {
-				 display: block;
-				 margin: 10px 0;
-			 }
-			 .copy {
-				 display:none;
-				 color:@text-color;
-			 }
-		 }
-	 }
+      &[data-step=results].moreInfoVisible,
+      &[data-step=payment],
+      &[data-step=apply] {
+          #pageContent {
+              background-color: #fcdb03;
+          }
+      }
+  }
 
-	.simples-dialog-referral {
-		display:none;
-	}
+  #simples-dialogue-63,
+  #simplea-dialogue-133 {
+    display: none;
+  }
 
-	#collapseDialogue62 {
-		margin-top: 10px;
-	}
+  &.inbound {
+    #simples-dialogue-63 {
+      display: block;
+    }
+    #simples-dialogue-133 {
+      display: none;
+    }
+  }
 
-	&.moreInfoVisible {
-		.simples-dialogue-109 {
-			display: none;
-		}
+  &.outbound,
+  &.cli,
+  &.energycross,
+  &.energytransfer {
+    #simplea-dialogue-133 {
+      display: block;
+    }
+    #simples-dialogue-63 {
+      display: none;
+    }
+  }
 
-		.simples-dialogue-99, .simples-dialogue-129 {
-			p {
-				font-size: 14px;
-			}
+  .featuresMode {
+      .result-row.active {
+          .result {
+              border-color: @theme-tertiary;
+          }
+      }
+  }
 
-			ul {
-				list-style: disc;
-				padding-left: 40px;
-			}
-		}
-	}
+  #health_situation_cover_wrapper {
+       .nz-medicare-rules {
+           a {
+               display: block;
+               margin: 10px 0;
+           }
+           .copy {
+               display:none;
+               color:@text-color;
+           }
+       }
+   }
+
+  .simples-dialog-referral {
+      display:none;
+  }
+
+  #collapseDialogue62 {
+      margin-top: 10px;
+  }
+
+  &.moreInfoVisible {
+      .simples-dialogue-109 {
+          display: none;
+      }
+
+      .simples-dialogue-99, .simples-dialogue-129 {
+          p {
+              font-size: 14px;
+          }
+
+          ul {
+              list-style: disc;
+              padding-left: 40px;
+          }
+      }
+  }
   .qe-window.fieldset,
   .form-group.fieldrow {
     &.no-label {
