@@ -437,6 +437,8 @@
 
         </form_v3:fieldset>
 
+        <simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />
+
         <%--dynamic scripts--%>
         <simples:dialogue id="143" vertical="health" mandatory="true" className=" simples_dialogue_medicare_143 hidden"/>
         <simples:dialogue id="144" vertical="health" mandatory="true" className="hidden"/>

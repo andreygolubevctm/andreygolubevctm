@@ -223,6 +223,7 @@
 
         {{ var coverType = meerkat.modules.healthBenefitsStep.getCoverType(); }}
         {{ var limitedCover = meerkat.modules.healthBenefitsStep.getLimitedCover() == "Y" ? true : false; }}
+        {{ var isLimitedProduct = !_.isUndefined(hospital.inclusions) && hospital.inclusions.LimitedProduct === true; }}
         {{ var isOutbound = meerkat.modules.healthContactType.is('outbound'); }}
         {{ var isInbound = meerkat.modules.healthContactType.is('inbound'); }}
         {{ var isEnergyCrossSell = meerkat.modules.healthContactType.is('energyCrossSell'); }}
@@ -234,7 +235,7 @@
         {{ var selectedBenefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel().filter(function(benefit) { return selectedBenefitsList.indexOf(benefit.value) > -1; }); }}
         {{ var scriptTerm = 'everything'; }}
         {{ var isBasic = custom.reform.tier && custom.reform.tier.toLowerCase().indexOf('basic') > -1; }}
-        {{ if(!limitedCover) { }}
+        {{ if(!limitedCover || (limitedCover && !isLimitedProduct)) { }}
         <simples:dialogue id="126" vertical="health" dynamic="true" />
         {{ } }}
         {{ if(isOutbound || isNextGenOutbound || isInbound || isEnergyCrossSell || isEnergyTransfer || isCLI) { }}

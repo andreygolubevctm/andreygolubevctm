@@ -82,7 +82,8 @@
             <simples:dialogue id="121" vertical="health" className="simples-dialog-nextgencli"/>
             <simples:dialogue id="78" vertical="health" className="simples-dialog-cli"/>
             <simples:dialogue id="48" vertical="health" />
-            <simples:dialogue id="63" vertical="health" className="simples-dialog-inbound" />
+            <simples:dialogue id="63" vertical="health" />
+            <simples:dialogue id="133" vertical="health" />
             <simples:dialogue id="116" vertical="health" className="simples-dialog-nextgenoutbound" />
             <simples:dialogue id="122" vertical="health" className="simples-dialog-nextgencli" />
             <simples:dialogue id="49" vertical="health" />
