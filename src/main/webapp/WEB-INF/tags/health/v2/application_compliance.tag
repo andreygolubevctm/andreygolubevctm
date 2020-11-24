@@ -16,6 +16,6 @@
 <health_v1:payment_day_details xpath="${xpath}/credit" />
 
 <simples:dialogue id="29"  vertical="health" mandatory="true" />
-<simples:dialogue id="97"  vertical="health" className="simples-dialogue-hospital-cover classification-nonPublic" />
-<simples:dialogue id="102" vertical="health" className="simples-dialogue-hospital-cover classification-public" />
+<simples:dialogue id="97"  vertical="health" className="simples-dialogue-hospital-cover classification-nonPublic hidden" />
+<simples:dialogue id="102" vertical="health" className="simples-dialogue-hospital-cover classification-public hidden" />
 <simples:dialogue id="169" vertical="health" mandatory="true"  className="simplesAgrElementsToggle hidden"  />

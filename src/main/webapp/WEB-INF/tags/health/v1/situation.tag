@@ -82,8 +82,8 @@
             <simples:dialogue id="121" vertical="health" className="simples-dialog-nextgencli"/>
             <simples:dialogue id="78" vertical="health" className="simples-dialog-cli"/>
             <simples:dialogue id="48" vertical="health" />
-            <simples:dialogue id="63" vertical="health" className="simples-dialog-inbound" />
-            <simples:dialogue id="133" vertical="health" className="simples-dialog-outbound" />
+            <simples:dialogue id="63" vertical="health" />
+            <simples:dialogue id="133" vertical="health" />
             <simples:dialogue id="116" vertical="health" className="simples-dialog-nextgenoutbound" />
             <simples:dialogue id="122" vertical="health" className="simples-dialog-nextgencli" />
             <simples:dialogue id="49" vertical="health" />
@@ -104,7 +104,7 @@
             <form_v3:fieldset id="healthAboutYou" legend="About you" postLegend="${subText}" className="health-about-you">
 
                 <c:set var="fieldXpath" value="${xpath}/healthCvr" />
-                <form_v3:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
+                <form_v3:row label="Are you looking for yourself, a couple, or a family?" fieldXpath="${fieldXpath}" className="health-cover" renderLabelAsSimplesDialog="blue">
                     <field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" excludeCodes="${healthCvrExcludeItems}" />
                 </form_v3:row>
 
@@ -114,7 +114,7 @@
                 <c:set var="state" value="${data['health/situation/state']}" />
                 <c:set var="location" value="${data['health/situation/location']}" />
 
-                <form_v3:row label="Living in" fieldXpath="${fieldXpath}" className="health-location">
+                <form_v3:row label="So I can get the right price, what is your postcode?" fieldXpath="${fieldXpath}" className="health-location" renderLabelAsSimplesDialog="blue">
 
                     <c:choose>
                         <c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">

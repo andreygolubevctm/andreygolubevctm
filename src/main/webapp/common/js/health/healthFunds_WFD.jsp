@@ -85,7 +85,7 @@ var healthFunds_WFD = {
         else {
             <c:set var="html">
             <c:set var="fieldXpath" value="health/application/wfd/partnerrel" />
-            <form_v2:row id="wfd_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
+            <form_v2:row id="wfd_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you" renderLabelAsSimplesDialog="true">
             <field_v2:array_select xpath="${fieldXpath}"
                     required="true"
                     title="Relationship to you" items="=Please choose...,2=Spouse,3=Defacto" placeHolder="Relationship" disableErrorContainer="${true}" />

@@ -65,11 +65,7 @@
                         return '';
                     }
 
-                    if (_selectedProductFundCode === 'NIB' || _selectedProductFundCode === 'BUP') {
-                        return ', middle initial ' + natoPhoneticText(_derivedData.primary.middleInitial);
-                    } else {
-                        return '';
-                    }
+                    return ', middle initial ' + natoPhoneticText(_derivedData.primary.middleInitial);
                 }
             },
             {
@@ -300,7 +296,7 @@
             },
             {
                 text: '%DEPENDANTS_SCRIPT_TEMPLATE%',
-                get: function() {
+                get: function(position) {
                     if(!_derivedData) {
                         return '';
                     }
@@ -308,37 +304,18 @@
                         return '';
                     }
 
-                    var returnStr = '';
+                    var returnStr = 'Dependant ' + position + '&apos;s details are ';
 
-                    var dependantsCount = meerkat.modules.healthDependants.getNumberOfDependants();
+                    _createFieldsDependants();
+                    var dependant = _getPersonData('dependant' + position);
 
-                    if (dependantsCount > 1) {
-                        returnStr = dependantsCount + ' dependant children on the policy and their details are ';
-                    } else {
-                        returnStr = dependantsCount + ' dependant child on the policy and their details are ';
+                    returnStr += dependant.fullName + ', spelled ' + natoPhoneticText(dependant.firstName);
+
+                    if (_selectedProductFundCode === 'BUP') {
+                        returnStr += ', middle name ' + natoPhoneticText(dependant.middleName);
                     }
-                    _derivedData.dependants = undefined;
-                    if (meerkat.modules.healthDependants.getNumberOfDependants() > 0) {
 
-                        _createFieldsDependants();
-                        _derivedData.dependants = [];
-                        for (var i = 1; i <= meerkat.modules.healthDependants.getNumberOfDependants(); i++) {
-                            _derivedData.dependants.push(_getPersonData('dependant'+i));
-                        }
-
-                        _derivedData.dependants.forEach(function(dependant, index) {
-                            returnStr += dependant.fullName + ', spelled ' + natoPhoneticText(dependant.firstName);
-
-                            if (_selectedProductFundCode === 'BUP') {
-                                returnStr += ', middle name ' + natoPhoneticText(dependant.middleName);
-                            }
-
-                            returnStr += ', surname ' + natoPhoneticText(dependant.surname) + ', ' + dependant.gender + ', ' + dependant.dateOfBirth;
-                            if (index + 1 < dependantsCount) {
-                                returnStr += ', And ';
-                            }
-                        });
-                    }
+                    returnStr += ', surname ' + natoPhoneticText(dependant.surname) + ', ' + dependant.gender + ', ' + dependant.dateOfBirth;
 
                     return returnStr;
                 }
@@ -418,7 +395,8 @@
         }
 
         var dynamicScripting_DependentDtlsUpdated = function(){
-            performUpdateDependantsDynamicDialogueBox();
+            _setupDependantsDynamicTextTemplate();
+            _.defer(performUpdateDependantsDynamicDialogueBox);
         };
 
         $('#dependents_list_options').on('click.dynamicScriptingDependentAdded', '.add-new-dependent', dynamicScripting_DependentDtlsUpdated);
@@ -446,10 +424,7 @@
 
         $fields.primary.title.on('change.dynamicScriptingPrimaryTitle', dynamicScriptingPrimaryTitleUpdated);
         $fields.primary.firstName.on('change.dynamicScriptingPrimaryFirstName', dynamicScriptingPrimaryNameDtlsUpdated);
-
-        if (_selectedProductFundCode === 'NIB' || _selectedProductFundCode === 'BUP') {
-            $fields.primary.middleName.on('change.dynamicScriptingPrimaryMiddleName', dynamicScriptingPrimaryNameDtlsUpdated);
-        }
+        $fields.primary.middleName.on('change.dynamicScriptingPrimaryMiddleName', dynamicScriptingPrimaryNameDtlsUpdated);
 
         $fields.primary.surname.on('change.dynamicScriptingPrimarySurname', dynamicScriptingPrimaryNameDtlsUpdated);
         $fields.primary.gender.on('change.dynamicScriptingPrimaryGender', dynamicScriptingPrimaryGenderUpdated);
@@ -871,17 +846,21 @@
     }
 
     function _setupDependantsDynamicTextTemplate() {
-
-        try {
-            $dynamicDialogueBoxDependants = {
-                'elementRef':$('.simples-dialogue-165'),
-                'template': $('.simples-dialogue-165').html()
-            };
+        if (meerkat.modules.healthDependants.getNumberOfDependants() > 0) {
+            $dynamicDialogueBoxDependants = $dynamicDialogueBoxDependants || {};
+            for (var i = 1; i <= meerkat.modules.healthDependants.getNumberOfDependants(); i++) {
+                try {
+                    $dynamicDialogueBoxDependants[i.toString()] = {
+                        'dialog': $('#simples-dialogue-dependant' + i.toString()),
+                        'elementRef': $('#simples-dialogue-dependant' + i.toString()).find('p').first(),
+                        'template': $('#simples-dialogue-dependant' + i.toString()).attr('data-scripting-template')
+                    };
+                }
+                catch (err) {
+                    console.error("Required dependant" + i + " details dialogue box does not exist");
+                }
+            }
         }
-        catch(err) {
-            console.error( "Required dependants details dialogue box does not exist");
-        }
-
     }
 
     function _setupMedicareCardSpellingNonDynamicTextTemplate() {
@@ -1285,12 +1264,22 @@
     }
 
     function performUpdateDependantsDynamicDialogueBox() {
-        try {
-            var newHtml = $dynamicDialogueBoxDependants.template.valueOf();
-            replacePlaceholderText($dynamicDialogueBoxDependants.elementRef, newHtml, null);
-        }
-        catch(err) {
-            console.error( "Dependants details dynamic text replacement did not occur due to an error");
+        if (meerkat.modules.healthDependants.getNumberOfDependants() > 0) {
+            for (var i = 1; i <= meerkat.modules.healthDependants.getNumberOfDependants(); i++) {
+                if(_.has($dynamicDialogueBoxDependants, i.toString())) {
+                    try {
+                        var newHtml = $dynamicDialogueBoxDependants[i.toString()].template.valueOf();
+                        replacePlaceholderText($dynamicDialogueBoxDependants[i.toString()].elementRef, newHtml, null, i);
+                        $dynamicDialogueBoxDependants[i.toString()].dialog.removeClass("hidden");
+                    }
+                    catch (err) {
+                        console.error("Dependant" + i + " details dynamic text replacement did not occur due to an error", err);
+                        $dynamicDialogueBoxDependants[i.toString()].dialog.addClass("hidden");
+                    }
+                } else {
+                    console.error("Dependant" + i + " has no dynamic template defined in $dynamicDialogueBoxDependants");
+                }
+            }
         }
     }
 
@@ -1301,8 +1290,9 @@
     // onParse ( a function that can be run upon updating the element)
     //
     // It searches the _dynamicValues array for any matching placeholders and replaces any matching placeholders
-    function replacePlaceholderText(elementRef, newHtml, onParse) {
+    function replacePlaceholderText(elementRef, newHtml, onParse, position) {
         if(!elementRef || !newHtml) return;
+        position = position || null;
 
         _.defer(function () {
             var dialogue = elementRef;
@@ -1311,7 +1301,7 @@
             for(var i = 0; i < _dynamicValues.length; i++) {
                 var value = _dynamicValues[i];
                 if(html.indexOf(value.text) > -1) {
-                    html = html.replace(new RegExp(value.text, 'g'), value.get());
+                    html = html.replace(new RegExp(value.text, 'g'), value.get(position));
                 }
             }
 
@@ -1892,15 +1882,10 @@
             surname = (!_.isUndefined($fields[person].surname) ? $fields[person].surname.val().trim() : ''),
             gender = _getGender($fields[person]);
 
-        if (_selectedProductFundCode === 'NIB' || _selectedProductFundCode === 'BUP') {
-            middleName = (!_.isUndefined($fields[person].middleName) ? $fields[person].middleName.val() : '');
-            middleInitial = (middleName.length > 0 ? middleName.charAt(0) : '');
-            fullName += (!_.isUndefined($fields[person].middleName) ? $fields[person].middleName.val() + ' ' : '') +
-                (!_.isUndefined($fields[person].surname) ? $fields[person].surname.val() : '');
-        } else {
-            fullName += (!_.isUndefined($fields[person].surname) ? $fields[person].surname.val() : '');
-        }
-
+        middleName = (!_.isUndefined($fields[person].middleName) ? $fields[person].middleName.val() : '');
+        middleInitial = (middleName.length > 0 ? middleName.charAt(0) : '');
+        fullName += (!_.isUndefined($fields[person].middleName) ? $fields[person].middleName.val() + ' ' : '') +
+            (!_.isUndefined($fields[person].surname) ? $fields[person].surname.val() : '');
 
         var data = {
                 fullName: fullName,

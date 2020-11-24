@@ -206,6 +206,8 @@
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
+
+        $('#simples-dialogue-128').add($('#simples-dialogue-130')).toggleClass('hidden', meerkat.modules.healthBenefitsStep.getCoverType() === 'h');
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
