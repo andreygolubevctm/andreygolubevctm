@@ -21,6 +21,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%@ attribute fragment="true" required="false" name="header" %>
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
+<%@ attribute fragment="true" required="false" name="header_nav_section" %>
 
 <%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute fragment="true" required="false" name="navbar_outer" %>
@@ -59,6 +60,15 @@ ${newPage.init(pageContext.request, pageSettings)}
 	</c:choose>
 </c:set>
 
+<c:choose>
+    <c:when test="${customerAccountsAuthHeaderSplitTest eq true}">
+        <c:set var="authClass" value="isAuthHeader"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="authClass" value=""/>
+    </c:otherwise>
+</c:choose>
+
 <%-- for Health V2 A/B testing --%>
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
 <c:if test="${not empty bundleFileName}"><c:set var="fileName" value="${bundleFileName}" /></c:if>
@@ -71,6 +81,18 @@ ${newPage.init(pageContext.request, pageSettings)}
 	<c:choose>
 		<c:when test="${callCentreOpen eq true}">callcentreopen</c:when>
 		<c:otherwise>callcentreclosed</c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="verticalPageType">
+	<c:choose>
+		<c:when test="${fileName eq 'health_v4'}"><c:out value="health_v4_journey"/></c:when>
+		<c:when test="${fileName eq 'health_v2'}"><c:out value="health_v4_confirmation"/></c:when>
+		<c:when test="${pageSettings.getVerticalCode() eq 'health' and fileName eq 'health'}"><c:out value="simples_journey"/></c:when>
+		<c:when test="${pageSettings.getVerticalCode() eq 'simples' and fileName eq 'simples'}"><c:out value="simples_dashboard"/></c:when>
+		<c:when test="${verticalPageType eq 'roadside'}"><c:out value="${true}"/></c:when>
+		<c:when test="${verticalPageType eq 'travel'}"><c:out value="${true}"/></c:when>
+		<c:otherwise><c:out value="${fileName}"/></c:otherwise>
 	</c:choose>
 </c:set>
 
@@ -200,7 +222,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 						<%-- Brand and toggle get grouped for better mobile display --%>
 						<jsp:invoke var="header_button_left_class" fragment="header_button_left" />
-						<nav class="navbar-header header-buttons-logos<c:if test='${not empty header_button_left_class}'> header_button_left</c:if>" role="navigation">
+						<nav class="${authClass} navbar-header header-buttons-logos<c:if test='${not empty header_button_left_class}'> header_button_left</c:if>" role="navigation">
 
 							<jsp:invoke fragment="header_button_left" />
 
@@ -242,8 +264,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 							<c:if test="${not empty exitUrl}"><a id="js-logo-link" href="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" title="${pageSettings.getSetting('windowTitle')}"></c:if>
 							<span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
 							<c:if test="${not empty exitUrl}"></a></c:if>
-
 						</nav>
+						
+						<jsp:invoke fragment="header_nav_section" />
+
 						<c:if test="${pageSettings.getVerticalCode() eq 'home'}">
 							<competition:navSection vertical="home and/or contents" />
 						</c:if>
