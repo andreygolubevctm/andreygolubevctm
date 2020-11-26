@@ -9,6 +9,9 @@
 <core_v2:quote_check quoteType="roadside"/>
 <core_v2:load_preload/>
 
+<%-- Set global variable to flags for active split tests --%>
+<roadside:splittest_helper />
+
 
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Roadside Assistance Quote">
@@ -19,8 +22,36 @@
 	<jsp:attribute name="head_meta">
 	</jsp:attribute>
 
-	<jsp:attribute name="header">
-	</jsp:attribute>
+	<jsp:attribute name="header"></jsp:attribute>
+
+
+    <jsp:attribute name="header_nav_section">
+        <c:if test="${not empty customerAccountsAuthHeaderSplitTest and customerAccountsAuthHeaderSplitTest eq true}">
+            <c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+                <div class="authHeaderContainer smallAuth">
+                    <div data-microui-component="AuthHeader" class="authHeaderSmall authHeaderElement"></div>
+                    <script type="application/javascript">
+                        // @param n = UMD library name ie soarExampleMicroUI
+                        // @param c = component name ie Foo
+                        // @param p = props to be passed to mounted component
+                        (function(n, c, p) {
+                            var w = window, m = function(e){
+                                if (e.detail.name === n) {
+                                    var env = w['__MicroUIcustomerAccountsMicroUIEnvironment__'];
+                                    w[n].Render(document.querySelector('div.authHeaderSmall[data-microui-component="' +c +'"]'),c, { env: env });
+                                }
+                            };
+                            if (w[n]) {
+                                m();
+                            } else {
+                                w.addEventListener('microUILoaded', m);
+                            }
+                        })('customerAccountsMicroUI', 'AuthHeader', {});
+                    </script>
+                </div>
+            </c:if>
+        </c:if>
+    </jsp:attribute>
 
 
 	<jsp:attribute name="navbar">

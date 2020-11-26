@@ -16,6 +16,7 @@
 
 <%@ attribute fragment="true" required="false" name="header" %>
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
+<%@ attribute fragment="true" required="false" name="header_nav_section" %>
 
 <%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute fragment="true" required="false" name="navbar_additional" %>
@@ -35,10 +36,36 @@
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
+<c:set var="env" value="${environmentService.getEnvironmentAsString()}" />
+
+<c:set var="envKey">
+    <c:choose>
+        <c:when test="${env eq 'localhost' || env eq 'NXI'}">
+            DEV
+        </c:when>
+        <c:when test="${env eq 'NXQ' || env eq 'NXS'}">
+            UAT
+        </c:when>
+        <c:otherwise>
+            PRO
+        </c:otherwise>
+    </c:choose>
+</c:set>
+
 <layout_v1:page_fluid title="${title}" body_class_name="${body_class_name}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
+        <c:if test="${not empty customerAccountsAuthHeaderSplitTest and customerAccountsAuthHeaderSplitTest eq true}">
+            <c:choose>
+                <c:when test="${envKey eq 'DEV' || envKey eq 'UAT'}">
+                    <script async type="application/javascript" src="https://dev.comparethemarket.com.au/customer-accounts-micro-ui/bootstrap.js"></script>
+                </c:when>
+                <c:otherwise>
+                    <script async type="application/javascript" src="https://www.comparethemarket.com.au/customer-accounts-micro-ui/bootstrap.js"></script>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
 	</jsp:attribute>
 
     <jsp:attribute name="head_meta">
@@ -50,6 +77,10 @@
 	</jsp:attribute>
 
     <jsp:attribute name="header_button_left"><jsp:invoke fragment="header_button_left" /></jsp:attribute>
+
+    <jsp:attribute name="header_nav_section">
+		<jsp:invoke fragment="header_nav_section" />
+	</jsp:attribute>
 
     <jsp:attribute name="navbar">
 		<jsp:invoke fragment="navbar" />

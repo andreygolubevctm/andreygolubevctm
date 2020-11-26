@@ -12,6 +12,15 @@
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursModal /></c:set>
 
+<%-- CA2-478 Split Test J=customerAccounts test --%>
+<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
+<c:set var="customerAccountsAuthHeaderSplitTest" scope="request">
+	<c:choose>
+		<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 40)}">${true}</c:when>
+		<c:otherwise>${false}</c:otherwise>
+	</c:choose>
+</c:set>
+
 <core_v1:quote_check quoteType="health" />
 
 <layout_v1:journey_engine_page title="Health Confirmation" bundleFileName="health_v2" ignore_journey_tracking="true">
@@ -45,6 +54,37 @@
 			</ul>
 
 		</div>
+	</jsp:attribute>
+
+	<jsp:attribute name="header_nav_section">
+		<c:if test="${not empty customerAccountsAuthHeaderSplitTest and customerAccountsAuthHeaderSplitTest eq true}">
+			<c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+
+				<div class="authHeaderContainer smallAuth">
+					<div data-microui-component="AuthHeader" class="authHeaderSmall authHeaderElement"></div>
+					<script type="application/javascript">
+						// @param n = UMD library name ie soarExampleMicroUI
+						// @param c = component name ie Foo
+						// @param p = props to be passed to mounted component
+						(function(n, c, p) {
+							var w = window, m = function(e){
+								if (e.detail.name === n) {
+									var env = w['__MicroUIcustomerAccountsMicroUIEnvironment__'];
+									w[n].Render(document.querySelector('div.authHeaderSmall[data-microui-component="' +c +'"]'),c, { env: env });
+								}
+							};
+							if (w[n]) {
+								m();
+							} else {
+								w.addEventListener('microUILoaded', m);
+							}
+						})('customerAccountsMicroUI', 'AuthHeader', {});
+					</script>
+				</div>
+
+			</c:if>
+		</c:if>
+
 	</jsp:attribute>
 
 	<jsp:attribute name="progress_bar">
