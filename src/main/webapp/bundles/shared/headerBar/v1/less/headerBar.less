@@ -235,10 +235,6 @@ body > div > header {
     }
   }
 
-  .header-buttons-logos {
-    padding-bottom: 1rem;
-  }
-
   //
   // This is a hack which makes the desktop elements come back in from the sides
   //
@@ -246,8 +242,7 @@ body > div > header {
     .header-collapse-contact,
     .header-buttons-logos {
       margin-left: -15px;
-      margin-right: -15px;
-      min-height: 40px; //in case there's no buttons available to provide this
+      min-height: 36px; //in case there's no buttons available to provide this
     }
 
     .header-collapse-contact > .navbar-nav {
@@ -283,6 +278,8 @@ body > div > header {
     }
 
     .header-buttons-logos {
+      float: left;
+
       .contact {
         box-shadow: none;
         &.collapsed {
@@ -322,16 +319,6 @@ body.roadside {
         font-size: 28px;
         margin-top: 8px;
       }
-    }
-  }
-}
-
-body.roadside,
-body.travel {
-  &:not([data-step="results"]) {
-    #logo.stuck {
-      height: 44px;
-      transition: all 200ms ease;
     }
   }
 }

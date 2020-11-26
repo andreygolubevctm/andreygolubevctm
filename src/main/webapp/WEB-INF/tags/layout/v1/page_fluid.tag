@@ -19,6 +19,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%@ attribute fragment="true" required="false" name="header" %>
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
+<%@ attribute fragment="true" required="false" name="header_nav_section" %>
 
 <%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute fragment="true" required="false" name="navbar_outer" %>
@@ -176,6 +177,8 @@ ${newPage.init(pageContext.request, pageSettings)}
                             <span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
                             <c:if test="${not empty exitUrl}"></a></c:if>
                         </nav>
+
+                        <jsp:invoke fragment="header_nav_section" />
 
                         <jsp:invoke fragment="header"/>
 
