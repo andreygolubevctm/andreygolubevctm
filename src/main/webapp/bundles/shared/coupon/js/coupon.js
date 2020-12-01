@@ -46,9 +46,8 @@
 				$couponErrorContainer = $('.coupon-error-container'),
 				$couponSuccessContainer = $('.coupon-success-container');
 
-				preload();
-
 				_.defer(function() {
+                    preload();
 					eventSubscriptions();
 				});
 			}
@@ -110,14 +109,13 @@
 	function loadCoupon(type, dataParam, successCallBack) {
 		if (isAvailable !== true && meerkat.site.isCallCentreUser !== true) return;
 		if (!type) return;
-
 		var url = '',
 			data = {};
 
 		data.transactionId = meerkat.modules.transactionId.get();
 
-		if(_.isEmpty(data.transactionId) || isNaN(String(data.transactionId))) {
-			exception("invalid transactionId to load coupon");
+		if((_.isString(data.transactionId) && isNaN(parseInt(data.transactionId))) || isNaN(data.transactionId)) {
+			exception("invalid transactionId (" + data.transactionId + ") to load coupon (" + dataParam + ")");
 			return;
 		}
 
@@ -185,20 +183,21 @@
 	}
 
 
-	function validateCouponCode(couponCode) {
+	function validateCouponCode(couponCode, couponId) {
 		if (isAvailable !== true) return;
 
 		var transactionId = meerkat.modules.transactionId.get();
 
 		meerkat.modules.comms.get({
-			url: 'coupon/code/validate.json',
+			url: 'coupon/code/validate.json?brandCode=' + meerkat.site.tracking.brandCode,
 			cache: false,
 			errorLevel: 'silent',
 			dataType: 'json',
 			useDefaultErrorHandling: false,
 			data: {
 				transactionId: transactionId,
-				couponCode: couponCode
+				couponCode: couponCode,
+				couponId: couponId
 			}
 		})
 		.then(function onSuccess(json) {

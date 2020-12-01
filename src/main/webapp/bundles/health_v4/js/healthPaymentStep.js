@@ -189,9 +189,10 @@
 
 	function validateCoupon() {
 		var couponInput = $('.coupon-code-field').val();
+        var couponId = $('.coupon-id-field').val();
 		if(currentCoupon === false || currentCoupon !== couponInput) {
 			currentCoupon = couponInput;
-			meerkat.modules.coupon.validateCouponCode(currentCoupon);
+            meerkat.modules.coupon.validateCouponCode(currentCoupon, couponId);
 		}
 	}
 
