@@ -46,6 +46,7 @@
 		$hasRebateDialogue,
         $australianGovtRebateIntroDialog,
         $complianceCopyWaitingPeriods,
+		$complianceCopyReServe,
         $complianceCopyPreviousCover,
         $complianceCopyExtrasOnly,
         $complianceCopyHospitalChoices,
@@ -103,7 +104,7 @@
 		$primaryDOB = $('#health_healthCover_primary_dob'),
 		$rebateLegend = $('#health_healthCover_tier_row_legend'),
 		$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
-		$lhcContainers = $('#health_situation_coverType, #health-contact-fieldset, #partner-health-cover, #australian-government-rebate'),
+		$lhcContainers = $('#health_situation_coverType, #health-contact-fieldset, #partner-health-cover, #australian-government-rebate, #health-current-cover-primary, #health-current-cover-partner'),
 		$medicare = $('.health-medicare_details'),
 		$healthSituation = $('input[name="health_situation_healthSitu"]');
 		$abdElements = {
@@ -127,6 +128,7 @@
         $australianGovtRebateIntroDialog = $('#simples-dialogue-210');
 
         $complianceCopyWaitingPeriods = $('#simples-dialogue-62');
+		$complianceCopyReServe = $('#simples-dialogue-226');
         $complianceCopyPreviousCover = $('#simples-dialogue-212');
         $complianceCopyExtrasOnly = $('#simples-dialogue-213');
         $complianceCopyHospitalChoices = $('#simples-dialogue-214');
@@ -543,21 +545,27 @@
 	    var coverType = meerkat.modules.health.getCoverType();
         var hasCoverPrimary = $primaryCurrentCover.find('input').filter(':checked').val() === 'Y';
         var hasCoverPartner = $partnerCurrentCover.find('input').filter(':checked').val() === 'Y';
-        var hasEverHeldCoverPrimary = $primaryEverHeldCover.find('input').filter(':checked').val() === 'Y';
-        var hasEverHeldCoverPartner = $partnerEverHeldCover.find('input').filter(':checked').val() === 'Y';
-        var primaryHasPreviousCover = hasCoverPrimary || hasEverHeldCoverPrimary;
-        var partnerHasPreviousCover = hasCoverPartner || hasEverHeldCoverPartner;
+		var primaryCurrentCover = $primaryHealthCurrentCover.find('input').filter(':checked').val();
+		var partnerCurrentCover = $partnerHealthCurrentCover.find('input').filter(':checked').val();
         var isCombinedOrHospital = _.indexOf(['C','H'], coverType) >= 0;
         var isCombinedOrExtras = _.indexOf(['C','E'], coverType) >= 0;
-		var isNotExtrasOnly = $primaryHealthCurrentCover.find('input').filter(':checked').val() !== 'E';
-		var isCombinedOrHospitalWithPreviousCover = isNotExtrasOnly && (isCombinedOrHospital && (primaryHasPreviousCover || partnerHasPreviousCover));
-        var isExtrasWithPreviousCover = _.indexOf(['E'], coverType) >= 0 && (primaryHasPreviousCover || partnerHasPreviousCover);
+        var primaryHasCombinedOrHospital = _.indexOf(['C','H'], primaryCurrentCover) >= 0;
+        var partnerHasCombinedOrHospital = _.indexOf(['C','H'], partnerCurrentCover) >= 0;
+		var primaryHasCombinedOrExtras = _.indexOf(['C','E'], primaryCurrentCover) >= 0;
+		var partnerHasCombinedOrExtras = _.indexOf(['C','E'], partnerCurrentCover) >= 0;
+		var primaryHasHospitalCover = _.indexOf(['C','H'], primaryCurrentCover) !== -1;
+		var partnerHasHospitalCover = _.indexOf(['C','H'], partnerCurrentCover) !== -1;
+		var primaryHasExtrasCover = _.indexOf(['C','E'], $primaryHealthCurrentCover.find('input').filter(':checked').val()) !== -1;
+		var partnerHasExtrasCover = _.indexOf(['C','E'], $partnerHealthCurrentCover.find('input').filter(':checked').val()) !== -1;
+		var nonSingleFamilyType = _.indexOf(['S','SF', 'SM', 'SPF', 'ESPF'], $healthSituationHealthCvr.val()) === -1;
 
         updateComplianceDialogCopy();
 
         $complianceCopyWaitingPeriods.toggleClass('hidden', !isCombinedOrHospital);
-        $complianceCopyPreviousCover.toggleClass('hidden', !isCombinedOrHospitalWithPreviousCover);
-        $complianceCopyExtrasOnly.toggleClass('hidden', !isExtrasWithPreviousCover);
+		$complianceCopyReServe.toggleClass('hidden', !((hasCoverPrimary && ((isCombinedOrHospital && primaryHasCombinedOrHospital) || (isCombinedOrExtras && primaryHasCombinedOrExtras)) || (nonSingleFamilyType && hasCoverPartner && ((isCombinedOrHospital && partnerHasCombinedOrHospital) || (isCombinedOrExtras && partnerHasCombinedOrExtras))))));
+        $complianceCopyPreviousCover.toggleClass('hidden', !((primaryHasHospitalCover || (nonSingleFamilyType && partnerHasHospitalCover)) && isCombinedOrHospital));
+        $complianceCopyExtrasOnly.toggleClass('hidden', !((primaryHasExtrasCover || (nonSingleFamilyType && partnerHasExtrasCover)) && isCombinedOrExtras));
+
         $complianceCopyHospitalChoices.toggleClass('hidden', !isCombinedOrHospital);
         $complianceCopyExtrasChoices.toggleClass('hidden', !isCombinedOrExtras);
     }
