@@ -40,7 +40,7 @@
     </div>
 
         {{ if(obj.custom.reform.yad !== "N" && availablePremiums[frequency].abd > 0) { }}
-            {{ if(info.abdRequestFlag === 'A') { }}
+            {{ if(obj.custom.reform.yad === "A" || (obj.custom.reform.yad === "R" && !meerkat.modules.healthRABD.isRABD())) { }}
                 <health_v4:abd_badge abd="true" />
             {{ } else { }}
                 <health_v4:abd_badge abd="false" />
