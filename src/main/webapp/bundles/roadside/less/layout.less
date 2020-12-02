@@ -1,22 +1,12 @@
 body {
-  padding-top: 60px;
+  padding-top: 48px;
 
   nav.navbar-header.header-buttons-logos {
-    padding-bottom: 8px;
     font-size: 2px;
-    padding-top: 8px;
   }
 
-  @media(@xs-only) {
+  @media (min-width: 767px) {
     padding-top: 60px;
-  }
-  @media(@sm) {
-    #js-logo-link {
-      font-size: 4px;
-    }
-    #logo {
-      margin-top: 8px;
-    }
   }
 
   &[data-step="results"] {
@@ -30,7 +20,6 @@ body {
 
       .header-top .navbar-toggle.collapsed.hamburger {
         padding-top: 5px;
-
 
         .icon {
           font-size: 28px;
@@ -49,30 +38,6 @@ body {
         }
       }
 
-      &:not(.stuck){
-        @media(@sm) {
-          .header-top.dropdown-interactive-base.navMenu-row-fixed{
-            .container-fluid {
-              .col-sm-12 {
-                padding-left: 9px;
-              }
-            }
-          }
-          nav.navbar-header.header-buttons-logos{
-            padding-top: 4px;
-            #logo {
-              margin-top: 0px;
-            }
-          }
-        }
-      }
-      .header-top {
-        @media (@xs-only) {
-          .container-fluid > div.col-sm-12 {
-            margin-top: -1.6px;
-          }
-        }
-      }
       &.stuck {
         box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 40px 0px;
         @media(@sm) {
@@ -83,21 +48,19 @@ body {
             }
           }
         }
+        @media (min-width: 767px) {
+          #logo {
+            height: 32px;
+            transition: all 200ms ease;
+          }
+        }
         @media(@xs-only) {
           transition: all 200ms ease;
           .header-top.dropdown-interactive-base.navMenu-row-fixed {
             padding-bottom: 0;
           }
           #logo {
-            width: 32px;
-            height: 32px;
-            background-size: 32px 32px;
             transition: all 200ms ease;
-          }
-          nav.navbar-header.header-buttons-logos {
-            height: 44px;
-            margin-top: -8px;
-            padding-top: 12px;
           }
           .container-fluid {
             height: 38px;
@@ -123,57 +86,30 @@ body:not([data-step="results"]) {
       }
   }
 
-  .header-top {
-    @media (@sm) {
-      .container-fluid > div.col-sm-12 {
-        padding-left: 9px;
-      }
-    }
-  }
-
   #js-logo-link{
     font-size: 2px;
   }
   .header-wrap {
     nav.navbar-header.header-buttons-logos {
-      height: 60px;
       @media(@sm) {
         padding-top: 0;
-        #logo {
-          margin-top: 7px;
-        }
-      }
-      @media(@xs-only) {
-        padding-top: 8px;
       }
     }
   }
   .header-wrap.stuck{
     transition: all 200ms ease;
-    #logo {
-      margin-top: 6px;
-      height: 32px;
-    }
     nav.navbar-header.header-buttons-logos {
-      padding-bottom: 6px;
-      @media(@sm) {
-        height: 44px;
+      @media (min-width: 767px) {
+        #logo {
+          height: 32px;
+          transition: all 200ms ease;
+        }
       }
     }
 
     @media(@xs-only) {
-
-      .header-top.dropdown-interactive-base.navMenu-row-fixed {
-        padding-bottom: 6px;
-      }
       #logo {
-        width: 32px;
-        background-size: 32px 32px;
         transition: all 200ms ease;
-      }
-      nav.navbar-header.header-buttons-logos {
-        height: 44px;
-        margin-top: -8px;
       }
       .container-fluid {
         height: 38px;
@@ -188,16 +124,8 @@ body:not([data-step="results"]) {
   top: 0;
   width: 100%;
   z-index: 20000;
-  .header-top {
-    @media (@xs-only) {
-      .container-fluid > div.col-sm-12 {
-        margin-top: -1.6px;
-      }
-    }
-  }
 
   &.stuck {
-    height: 44px;
     transition: all 200ms ease;
     box-shadow: rgba(0, 0, 0, .1) 0px 10px 40px 0px;
   }

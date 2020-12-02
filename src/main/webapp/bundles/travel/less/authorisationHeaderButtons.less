@@ -1,0 +1,70 @@
+.authHeaderContainer{
+  float: right;
+  .authHeaderElement {
+    display: flex;
+  }
+  &&.smallAuth {
+    height: 48px;
+    margin-right: -30px;
+    @media (min-width: 767px) {
+      height: 60px;
+    }
+    .authHeaderElement {
+      height:48px;
+      @media (min-width: 767px) {
+        height: 60px;
+      }
+    }
+    ~.mobile-callCentreNo {
+      margin-right: 235px;
+    }
+  }
+}
+
+.col-sm-12.stuck {
+  .authHeaderContainer.smallAuth {
+    @media (max-width: 767px) {
+      margin-right: -30px;
+    }
+
+    @media (min-width: 767px) {
+      height: 48px;
+    }
+  }
+
+  .authHeaderElement {
+    @media (min-width: 767px) {
+      height: 48px !important;
+    }
+  }
+}
+
+
+.header-wrap .affix.stuck {
+  .authHeaderContainer.smallAuth {
+    @media (max-width: 766px) {
+      margin-right: -30px;
+    }
+
+    @media (min-width: 767px) {
+      display: block;
+      position: absolute;
+      right: 0;
+      margin-right: 0px;
+    }
+  }
+  .authHeaderContainer.largeAuth {
+    @media (min-width: 767px) {
+      display: none;
+    }
+  }
+
+}
+
+.travel[data-step="results"] {
+  .header-wrap .col-sm-12.stuck {
+    .authHeaderContainer.smallAuth {
+      margin-right: -30px;
+    }
+  }
+}

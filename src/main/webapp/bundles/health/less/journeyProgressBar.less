@@ -10,3 +10,62 @@
   border-top: 1px solid @border-color;
   background-color: whitesmoke;
 }
+
+/*
+Fix for simples Header
+*/
+body.simples.health.callCentre {
+  .header-wrap {
+    .header-top {
+      .container-fluid {
+        .col-sm-12 {
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+}
+
+/*
+Fix for simples when screen 767px wide
+*/
+@media (min-width: @screen-xs-max) and (max-width: @screen-xs-max) {
+
+  body.simples.health.callCentre {
+    .header-top .header-collapse-contact {
+      background-color: #ffffff;
+    }
+
+    .header-wrap {
+      .header-top.dropdown-interactive-base.navMenu-row-fixed {
+        .container-fluid {
+          .col-sm-12 {
+            height: 68px;
+          }
+        }
+      }
+    }
+
+    #js-logo-link {
+      font-size: 1px;
+      vertical-align: top;
+    }
+
+    .mobile-callCentreNo {
+      .icon-phone:before {
+        font-size: 14px;
+      }
+    }
+
+    .progress-bar-row :not(.v4confirmation).journeyProgressBar_v2 li.current div:before {
+      display: none;
+    }
+    .progress-bar-row :not(.v4confirmation).journeyProgressBar_v2 li div:before {
+      display: none;
+    }
+
+    .callCentreNumberSection {
+      display: none;
+    }
+  }
+}
