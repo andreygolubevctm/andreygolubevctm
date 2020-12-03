@@ -396,14 +396,16 @@
 
     function _toggleRebateFromMedicareDetails() {
         if((isNZCitizen === true && hasMedicareCard === false) || (isNZCitizen === false && hasMedicareCard === false)) {
-            $norebate_checkbox.prop("checked", true);
+            $norebate_checkbox.prop("checked", true).change();
+			$dialogue37.toggleClass('hidden', true);
             $dialogue210.hide();
             $medicare_LHCmedicarelevysurcharge.removeClass('hidden');
             $('#health_healthCover_tier').hide();
             $('#health_healthCover_incomeBase').hide();
             $('.health_cover_details_dependants').hide();
         } else {
-            $norebate_checkbox.prop("checked", false);
+            $norebate_checkbox.prop("checked", false).change();
+			$dialogue37.toggleClass('hidden', false);
             $dialogue210.show();
             $medicare_LHCmedicarelevysurcharge.addClass('hidden');
             $('#health_healthCover_tier').show();
@@ -416,7 +418,8 @@
             }
 
             if ($medicare_medicarelevysurcharge_yes.is(':visible')) {
-                $norebate_checkbox.prop("checked", true);
+                $norebate_checkbox.prop("checked", true).change();
+				$dialogue37.toggleClass('hidden', true);
                 $medicare_LHCmedicarelevysurcharge.removeClass('hidden');
                 $('#health_healthCover_tier').hide();
                 $('#health_healthCover_incomeBase').hide();
