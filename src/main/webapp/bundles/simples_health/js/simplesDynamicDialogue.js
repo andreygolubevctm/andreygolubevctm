@@ -109,11 +109,15 @@
     {
         text: '%DYNAMIC_PRODUCT_PROMOTION%',
         get: function(product) {
-            if(! product.promo.promoText) {
+            var copy = product.promo.promoText;
+            if(!copy || _.isEmpty(copy)) {
                 return '';
             }
 
-            return '(Discuss promotions)' + '<p>' + product.promo.promoText + '</p>';
+            // Remove empty tags that leak in from Simples
+            copy = copy.replaceAll("<p></p>", "").replaceAll("&lt;p&gt;&lt;/p&gt;", "");
+
+            return '<p class="blue"><span class="black">(Discuss promotions)</span><br/>' + copy + '</p>';
         }
     },
     {
