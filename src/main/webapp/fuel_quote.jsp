@@ -62,7 +62,7 @@
                             var w = window, m = function(e){
                               if (e.detail.name === n) {
                                 var env = w['__MicroUIcustomerAccountsMicroUIEnvironment__'];
-                                w[n].Render(document.querySelector('div.authHeaderSmall[data-microui-component="' +c +'"]'),c, env);
+                                w[n].Render(document.querySelector('div.authHeaderSmall[data-microui-component="' +c +'"]'),c, { env: env });
                               }
                             };
                             if (w[n]) {
