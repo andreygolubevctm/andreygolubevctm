@@ -207,7 +207,14 @@
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
 
-        $('#simples-dialogue-128').add($('#simples-dialogue-130')).toggleClass('hidden', meerkat.modules.healthBenefitsStep.getCoverType() === 'h');
+        var isExtrasOnly = meerkat.modules.healthBenefitsStep.getCoverType() === 'e';
+        var isHospitalOnly = meerkat.modules.healthBenefitsStep.getCoverType() === 'h';
+		var isCombined = meerkat.modules.healthBenefitsStep.getCoverType() === 'c';
+
+		$('#simples-dialogue-126').toggleClass('hidden', isExtrasOnly);
+		$('#simples-dialogue-127').toggleClass('hidden', !isExtrasOnly);
+		$('#simples-dialogue-128').toggleClass('hidden', !isCombined);
+		$('#simples-dialogue-130').toggleClass('hidden', isHospitalOnly);
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
