@@ -58,8 +58,11 @@
 		<jsp:invoke fragment="head" />
         <c:if test="${not empty customerAccountsAuthHeaderSplitTest and customerAccountsAuthHeaderSplitTest eq true}">
             <c:choose>
-                <c:when test="${envKey eq 'DEV' || envKey eq 'UAT'}">
+                <c:when test="${envKey eq 'DEV'}">
                     <script async type="application/javascript" src="https://dev.comparethemarket.com.au/customer-accounts-micro-ui/bootstrap.js"></script>
+                </c:when>
+                <c:when test="${envKey eq 'UAT'}">
+                    <script async type="application/javascript" src="https://uat.comparethemarket.com.au/customer-accounts-micro-ui/bootstrap.js"></script>
                 </c:when>
                 <c:otherwise>
                     <script async type="application/javascript" src="https://www.comparethemarket.com.au/customer-accounts-micro-ui/bootstrap.js"></script>
