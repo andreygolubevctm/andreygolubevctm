@@ -59,11 +59,11 @@ Handling of the rebate tiers based off situation
 		}
 
 		//Set the tier type based on hierarchy of selection
-		var _cover;
-		if( $incomeBase.is(':visible') && $('#health_healthCover_incomeBase').find(':checked').length > 0 ) {
-			_cover = $incomeBase.find(':checked').val();
-		} else {
-			_cover = meerkat.modules.healthChoices.returnCoverCode();
+		var _isSingleFamilyType = _.indexOf(['','S', 'SF', 'SM'], meerkat.modules.healthChoices.returnCoverCode()) !== -1;
+		var _cover = meerkat.modules.healthChoices.returnCoverCode();
+		var _base = false;
+		if( $incomeBase.css('display') !== 'none' && $incomeBase.find(':checked').length > 0 ) {
+			_base = $incomeBase.find(':checked').val();
 		}
 
 		// Reset and then loop through all of the options
@@ -80,7 +80,7 @@ Handling of the rebate tiers based off situation
 				_ageBonus = parseInt(meerkat.modules.health.getRates().ageBonus);
 			}
 
-			if(_cover === 'S' || _cover === 'SM' || _cover === 'SF' || _cover === ''){
+			if((_isSingleFamilyType && _base !== 'H') || _base === 'S'){
 				// Single tiers
 				switch(_value) {
 					case '0':
