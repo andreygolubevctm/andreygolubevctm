@@ -373,6 +373,7 @@
                 meerkat.modules.healthLHC.displayLHC();
 			},
 			onAfterEnter: function enteredContactStep(event) {
+				meerkat.modules.healthTiers.setTiers();
 			},
 			onAfterLeave:function leaveContactStep(event){
 				/*
