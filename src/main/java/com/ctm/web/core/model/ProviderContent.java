@@ -1,11 +1,13 @@
 package com.ctm.web.core.model;
 
+import com.ctm.web.core.model.constraints.ValidProviderContent;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@ValidProviderContent
 public class ProviderContent {
 
 	private int providerContentId;
