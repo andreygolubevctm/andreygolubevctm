@@ -32,16 +32,20 @@ public class ProviderContentValidator implements ConstraintValidator<ValidProvid
 	@Override
 	public boolean isValid (ProviderContent content, ConstraintValidatorContext context) {
 		// Provider content is a Drop Dead Date
-		if(content.getProviderContentTypeId() == 6 && content.getProviderContentText().matches("(\\s)*\\<p\\>\\d\\d\\/\\d\\d\\/\\d\\d\\d\\d\\<\\/p\\>(\\s)*")) {
-			// Confirm date is in format dd/mm/yyyy, is valid date and is in the future
-			Pattern pattern = Pattern.compile("\\d\\d\\/\\d\\d\\/\\d\\d\\d\\d");
-			Matcher matcher = pattern.matcher(content.getProviderContentText());
-			if (matcher.find()) {
-				String dateToTest = matcher.group(0);
-				Date parsedDate = parseDateFromForm(dateToTest);
-				return parsedDate != null && parsedDate.after(new Date());
+		if(content.getProviderContentTypeId() == 6) {
+			if(content.getProviderContentText().matches("(\\s)*\\<p\\>\\d\\d\\/\\d\\d\\/\\d\\d\\d\\d\\<\\/p\\>(\\s)*")) {
+				// Confirm date is in format dd/mm/yyyy, is valid date and is in the future
+				Pattern pattern = Pattern.compile("\\d\\d\\/\\d\\d\\/\\d\\d\\d\\d");
+				Matcher matcher = pattern.matcher(content.getProviderContentText());
+				if (matcher.find()) {
+					String dateToTest = matcher.group(0);
+					Date parsedDate = parseDateFromForm(dateToTest);
+					return parsedDate != null && parsedDate.after(new Date());
+				}
+				return true;
+			} else {
+				return false;
 			}
-			return true;
 		}
 		return true;
 	}
