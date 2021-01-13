@@ -7,7 +7,7 @@
 
 <div class="opening-hours-bubble callCentreNumberSection">
 	<h6>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h6>
-	<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
+	<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest())}">
 		<a href="javascript:;" data-toggle="dialog"
 			data-content="#view_all_hours"
 			data-dialog-hash-id="view_all_hours"

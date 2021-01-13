@@ -30,7 +30,7 @@
                         </c:if>
                         <div class="all-times-callback-modal hidden">
                             <c:forEach var="hoursOfDay"
-                                       items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
+                                       items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest())}">
 
                                 <c:set var="matchClass" value="" />
                                 <c:if test="${hoursOfDay.description eq todays_day}">
@@ -177,7 +177,7 @@
                         </c:if>
                         <div class="all-times-callback-modal hidden">
                             <c:forEach var="hoursOfDay"
-                                       items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
+                                       items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest())}">
 
                                 <c:set var="matchClass" value="" />
                                 <c:if test="${hoursOfDay.description eq todays_day}">

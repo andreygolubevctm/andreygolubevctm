@@ -14,7 +14,7 @@
 				<div class="col-md-12">
 					<h3>Normal Opening Hours</h3>
 					<c:forEach var="hoursOfDay"
-						items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
+						items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest())}">
 
 						<div class="row day_row">
 							<div class="day-description col-md-6 col-xs-6"> ${hoursOfDay.description}</div>
@@ -31,7 +31,7 @@
 						</div>
 					</c:forEach>
 				</div>
-				<c:set var="openingHours" value="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),true)}"/>
+				<c:set var="openingHours" value="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest())}"/>
 				<c:if test="${not empty openingHours }">
 					<div class="col-md-12 special-hours" >
 						<h3>Changes To Opening Hours</h3>
