@@ -43,7 +43,7 @@ public class ProviderContentValidator implements ConstraintValidator<ValidProvid
 			}
 			return true;
 		}
-		return false;
+		return true;
 	}
 
 	private Date parseDateFromForm(String searchDate) {
