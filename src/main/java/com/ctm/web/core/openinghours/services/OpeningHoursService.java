@@ -2,56 +2,39 @@ package com.ctm.web.core.openinghours.services;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.openinghours.dao.OpeningHoursDao;
 import com.ctm.web.core.openinghours.model.OpeningHours;
-import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.core.utils.common.utils.DateUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
+
+import static com.ctm.web.core.services.ApplicationService.getApplicationDate;
+import static com.ctm.web.core.utils.common.utils.DateUtils.toLocalDateTime;
 
 @Component
 public class OpeningHoursService {
 
     private final OpeningHoursDao openingHoursDao;
 
-    public OpeningHoursService(){
+    public OpeningHoursService() {
         openingHoursDao = new OpeningHoursDao();
     }
 
-    public List<OpeningHours> getAllOpeningHoursForDisplay(
-            HttpServletRequest request, boolean isSpecial) throws DaoException,
-            ConfigSettingException {
-        PageSettings pageSettings = SettingsService
-                .getPageSettingsForPage(request);
-        int verticalId = pageSettings.getVertical().getId();
-        Date serverDate = ApplicationService.getApplicationDate(request);
-
-        return openingHoursDao.getAllOpeningHoursForDisplay(verticalId,
-                serverDate, isSpecial);
+    public List<OpeningHours> getAllOpeningHoursForDisplay(final HttpServletRequest request) throws DaoException, ConfigSettingException {
+        return openingHoursDao.getAllOpeningHoursForDisplay(getVerticalId(request), getApplicationDate(request));
     }
 
     public String getCurrentOpeningHoursForEmail(HttpServletRequest request) throws DaoException, ConfigSettingException {
-        String currentOpeningHours;
-        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-        int verticalId = pageSettings.getVertical().getId();
-        Date serverDate = ApplicationService.getApplicationDate(request);
-        List<OpeningHours> openingHoursList = openingHoursDao.getCurrentNormalOpeningHoursForEmail(verticalId, serverDate);
-        currentOpeningHours = openingHoursDao.toHTMLString(openingHoursList);
-        return currentOpeningHours;
+        List<OpeningHours> openingHoursList = openingHoursDao.getCurrentNormalOpeningHoursForEmail(
+                getVerticalId(request), getApplicationDate(request));
+        return openingHoursDao.toHTMLString(openingHoursList);
     }
 
-    public String getOpeningHoursForDisplay(HttpServletRequest request,String dayType) throws DaoException,ConfigSettingException {
-        PageSettings pageSettings = SettingsService
-                .getPageSettingsForPage(request);
-        int verticalId = pageSettings.getVertical().getId();
-        Date serverDate = ApplicationService.getApplicationDate(request);
-        return openingHoursDao.getOpeningHoursForDisplay(dayType, serverDate,verticalId);
+    public String getOpeningHoursForDisplay(HttpServletRequest request, String dayType) throws DaoException, ConfigSettingException {
+        return openingHoursDao.getOpeningHoursForDisplay(dayType, getApplicationDate(request), getVerticalId(request));
     }
 
     public boolean isCallCentreOpen(final int verticalId, final LocalDateTime effectiveDate) throws DaoException {
@@ -59,8 +42,10 @@ public class OpeningHoursService {
     }
 
     public boolean isCallCentreOpenNow(final int verticalId, HttpServletRequest request) throws DaoException {
-        Date theAppDate = ApplicationService.getApplicationDate(request);
-        LocalDateTime theLocalAppDate =  DateUtils.toLocalDateTime(theAppDate);
-        return openingHoursDao.isCallCentreOpen(verticalId, theLocalAppDate);
+        return openingHoursDao.isCallCentreOpen(verticalId, toLocalDateTime(getApplicationDate(request)));
+    }
+
+    private int getVerticalId(HttpServletRequest request) throws DaoException, ConfigSettingException {
+        return SettingsService.getPageSettingsForPage(request).getVertical().getId();
     }
 }

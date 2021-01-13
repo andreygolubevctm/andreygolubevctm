@@ -21,10 +21,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class OpeningHoursDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpeningHoursDao.class);
+    private static final String START_TIME = "startTime";
+    private static final String END_TIME = "endTime";
+    private static final String DESCRIPTION = "description";
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private final OpeningHoursHelper helper = new OpeningHoursHelper();
     private final SimpleDatabaseConnection dbSource;
 
@@ -37,59 +42,55 @@ public class OpeningHoursDao {
     }
 
     /**
-     * Get data to display on website
+     * Get data to display on website, Query result returns all weeks data including special hours entry, if available
      *
      * @param verticalId Required to display opening hours for respective vertical
      * @param effectiveDate Required. The effective datetime.
-     * @param isSpecial If true returns special hours records else returns normal hours
      * @return Data to display on website
      */
-    public List<OpeningHours> getAllOpeningHoursForDisplay(int verticalId, Date effectiveDate, boolean isSpecial) throws DaoException {
-        List<OpeningHours> mapOpeningHoursDetails = new ArrayList<>();
-        try {
-            PreparedStatement stmt;
-            String sql = "SELECT daySequence, startTime,endTime,description, date FROM ctm.opening_hours "
-                    + "where ? between effectiveStart and effectiveEnd and verticalId=? ";
-            if (isSpecial) {
-                sql += " and date is not null  and date between  ? and ?  and hoursType='S'  order by date";
-            } else {
-                sql += "  and date is null  and hoursType='N' order by daySequence";
-            }
-            stmt = dbSource.getConnection().prepareStatement(sql);
-            stmt.setDate(1, new java.sql.Date(effectiveDate.getTime()));
-            stmt.setInt(2, verticalId);
-            if (isSpecial) {
-                stmt.setDate(3, new java.sql.Date(effectiveDate.getTime()));
-                stmt.setDate(4, new java.sql.Date(DateUtils.addDays(effectiveDate, 20).getTime()));
-            }
+    public List<OpeningHours> getAllOpeningHoursForDisplay(final int verticalId, final Date effectiveDate) throws DaoException {
+        final String specialHoursSql = " ctm.opening_hours where ? between effectiveStart "
+                + " and effectiveEnd and verticalId = ? and date between ? and ? and hoursType = 'S'";
 
-            ResultSet resultSet = stmt.executeQuery();
+        final String sql = "SELECT daySequence,startTime,endTime,description,date FROM ctm.opening_hours normal "
+                + "where ? between normal.effectiveStart and normal.effectiveEnd and normal.verticalId=? "
+                + "and normal.date is null and normal.hoursType = 'N' and normal.description not in "
+                + "(SELECT description FROM " + specialHoursSql + " )"
+                + "UNION SELECT daySequence,startTime,endTime,description,date FROM " + specialHoursSql;
 
-            while (resultSet.next()) {
-                String startTime, endTime;
-                OpeningHours openingHours = new OpeningHours();
-                startTime = helper.getFormattedHours(resultSet.getString("startTime"));
-                endTime = helper.getFormattedHours(resultSet.getString("endTime"));
-                if (!Objects.equals(startTime, "") && !Objects.equals(endTime, "")) {
-                    openingHours.setStartTime(startTime);
-                    openingHours.setEndTime(endTime);
-                } else {
-                    openingHours.setStartTime(null);
-                    openingHours.setEndTime(null);
+        try (PreparedStatement statement = dbSource.getConnection().prepareStatement(sql)) {
+            statement.setDate(1, new java.sql.Date(effectiveDate.getTime()));
+            statement.setInt(2, verticalId);
+            statement.setDate(3, new java.sql.Date(effectiveDate.getTime()));
+            statement.setInt(4, verticalId);
+            statement.setDate(5, new java.sql.Date(effectiveDate.getTime()));
+            statement.setDate(6, new java.sql.Date(DateUtils.addDays(effectiveDate, 20).getTime()));
+            statement.setDate(7, new java.sql.Date(effectiveDate.getTime()));
+            statement.setInt(8, verticalId);
+            statement.setDate(9, new java.sql.Date(effectiveDate.getTime()));
+            statement.setDate(10, new java.sql.Date(DateUtils.addDays(effectiveDate, 20).getTime()));
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                final List<OpeningHours> openingHours = new ArrayList<>();
+
+                while (resultSet.next()) {
+                    String startTime = helper.getFormattedHours(resultSet.getString(START_TIME));
+                    String endTime = helper.getFormattedHours(resultSet.getString(END_TIME));
+                    OpeningHours openingHour = new OpeningHours();
+                    openingHour.setStartTime(startTime.isEmpty() ? null : startTime);
+                    openingHour.setEndTime(endTime.isEmpty() ? null : endTime);
+                    openingHour.setDescription(resultSet.getString(DESCRIPTION));
+                    java.sql.Date date = resultSet.getDate("date");
+                    openingHour.setDate(date != null ? dateFormat.format(date) : EMPTY);
+                    openingHours.add(openingHour);
                 }
-                openingHours.setDescription(resultSet.getString("description"));
-                openingHours.setDate(resultSet.getDate("date") != null ? new SimpleDateFormat("dd-MM-yyyy").format(resultSet
-                        .getDate("date")) : "");
-                mapOpeningHoursDetails.add(openingHours);
+                return openingHours;
             }
-            return mapOpeningHoursDetails;
         } catch (SQLException | NamingException e) {
-            LOGGER.error("Failed to get opening hours for display {}, {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), kv("isSpecial", isSpecial), e);
+            LOGGER.error("Failed to get opening hours for display {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), e);
             throw new DaoException(e);
         } finally {
-            if (dbSource != null) {
-                dbSource.closeConnection();
-            }
+            dbSource.closeConnection();
         }
     }
 
@@ -140,9 +141,9 @@ public class OpeningHoursDao {
                     startTimePrev = "", endTimePrev = "", dayDescPrev = "", description;
             boolean isFirstRec = true;
             while (resultSet.next()) {
-                startTime = helper.getFormattedHours(resultSet.getString("startTime"));
-                endTime = helper.getFormattedHours(resultSet.getString("endTime"));
-                dayDesc = resultSet.getString("description");
+                startTime = helper.getFormattedHours(resultSet.getString(START_TIME));
+                endTime = helper.getFormattedHours(resultSet.getString(END_TIME));
+                dayDesc = resultSet.getString(DESCRIPTION);
                 if (isFirstRec) {
                     firstDayDesc = dayDesc;
                     isFirstRec = false;
@@ -214,8 +215,8 @@ public class OpeningHoursDao {
 
             while (resultSet.next()) {
                 String startTime, endTime;
-                startTime = helper.getFormattedHours(resultSet.getString("startTime"));
-                endTime = helper.getFormattedHours(resultSet.getString("endTime"));
+                startTime = helper.getFormattedHours(resultSet.getString(START_TIME));
+                endTime = helper.getFormattedHours(resultSet.getString(END_TIME));
                 if (!Objects.equals(startTime, "") && !Objects.equals(endTime, "")) {
                     openingHours = helper.trimHours(startTime) + " - " + helper.trimHours(endTime);
                 } else {
@@ -235,8 +236,8 @@ public class OpeningHoursDao {
 
             if (resultSet.next()) {
                 LocalTime effectiveTime = effectiveDate.toLocalTime();
-                Optional<LocalTime> startTime = Optional.ofNullable(resultSet.getTime("startTime")).map(Time::toLocalTime);
-                Optional<LocalTime> endTime = Optional.ofNullable(resultSet.getTime("endTime")).map(Time::toLocalTime);
+                Optional<LocalTime> startTime = Optional.ofNullable(resultSet.getTime(START_TIME)).map(Time::toLocalTime);
+                Optional<LocalTime> endTime = Optional.ofNullable(resultSet.getTime(END_TIME)).map(Time::toLocalTime);
                 if (
                         (startTime.isPresent() && (effectiveTime.equals(startTime.get()) || effectiveTime.isAfter(startTime.get())))
                         && (!endTime.isPresent() || (endTime.isPresent() && effectiveTime.isBefore(endTime.get())))
