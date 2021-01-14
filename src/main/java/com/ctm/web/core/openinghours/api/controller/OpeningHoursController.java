@@ -3,11 +3,13 @@ package com.ctm.web.core.openinghours.api.controller;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.openinghours.api.model.request.OpeningHoursRequest;
+import com.ctm.web.core.openinghours.api.model.response.OpeningHoursDataResponse;
 import com.ctm.web.core.openinghours.api.model.response.OpeningHoursResponse;
 import com.ctm.web.core.openinghours.model.OpeningHours;
 import com.ctm.web.core.openinghours.services.OpeningHoursService;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +26,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
-import static com.ctm.web.core.services.ApplicationService.setVerticalCodeOnRequest;
 
 @RestController
 @RequestMapping("/openinghours")
@@ -39,18 +40,26 @@ public class OpeningHoursController extends CommonQuoteRouter<OpeningHoursReques
         super(sessionDataServiceBean, ipAddressHandler);
     }
 
-    @RequestMapping(value = "/get.json", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/get.json",
+            method= RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public OpeningHoursResponse getOpeningHours(@RequestParam("vertical") String vertical, HttpServletRequest request) throws DaoException,ConfigSettingException {
-        setVerticalCodeOnRequest(request, vertical.toUpperCase());
+        ApplicationService.setVerticalCodeOnRequest(request, vertical.toUpperCase());
         String openingHours = openingHoursService.getCurrentOpeningHoursForEmail(request);
-        return new OpeningHoursResponse(openingHours);
+        OpeningHoursResponse response = new OpeningHoursResponse(openingHours);
+        return response;
     }
 
-    @RequestMapping(value = "/data.json", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OpeningHours> getOpeningHoursData(@RequestParam("vertical") String vertical, HttpServletRequest request, HttpServletResponse response) throws DaoException,ConfigSettingException {
+    @RequestMapping(value = "/data.json",
+            method= RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public OpeningHoursDataResponse getOpeningHoursData(@RequestParam("vertical") String vertical, @RequestParam(value = "special", required = false) String special, HttpServletRequest request, HttpServletResponse response) throws DaoException,ConfigSettingException {
         addAllowOriginHeader(request, response);
-        setVerticalCodeOnRequest(request, vertical.toUpperCase());
-        return openingHoursService.getAllOpeningHoursForDisplay(request);
+
+        ApplicationService.setVerticalCodeOnRequest(request, vertical.toUpperCase());
+        List<OpeningHours> openingHours = openingHoursService.getAllOpeningHoursForDisplay(request, special != null);
+        OpeningHoursDataResponse openingHoursDataResponse = new OpeningHoursDataResponse(openingHours);
+        return openingHoursDataResponse;
     }
 
     private void addAllowOriginHeader(final HttpServletRequest request, final HttpServletResponse response) {

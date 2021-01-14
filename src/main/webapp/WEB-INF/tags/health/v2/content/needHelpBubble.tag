@@ -10,7 +10,7 @@
 		<p class="larger">
 			Call <span class="noWrap callCentreNumber">${callCentreNumber}</span>
 		</p>
-		<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest())}">
+		<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
 			<div class="opening-hours">
 				<a href="javascript:;" data-toggle="dialog"
 					data-content="#view_all_hours"

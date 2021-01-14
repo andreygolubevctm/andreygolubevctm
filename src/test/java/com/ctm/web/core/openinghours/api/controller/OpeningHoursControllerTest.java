@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -44,7 +45,7 @@ public class OpeningHoursControllerTest extends BaseControllerTest {
 
     @Test
     public void testGetOpeningHoursData() throws Exception {
-        when(openingHoursService.getAllOpeningHoursForDisplay(Matchers.any(HttpServletRequest.class))).thenReturn(new ArrayList<OpeningHours>());
+        when(openingHoursService.getAllOpeningHoursForDisplay(Matchers.any(HttpServletRequest.class), anyBoolean())).thenReturn(new ArrayList<OpeningHours>());
         mvc.perform(
                 MockMvcRequestBuilders
                         .get("/openinghours/data.json?vertical=health")

@@ -53,26 +53,38 @@ public class OpeningHoursDaoTest {
     }
 
     @Test
-    public void testOpeningHoursIncludingSpecialHoursForDisplay() throws Exception {
+    public void testGetAllOpeningHoursForDisplayWithoutSpecialHours() throws Exception {
         ResultSet mockResultSet1 = ResultSetMock.mockResultSet(COLUMN_NAMES,
                 "09:00:00", "20:00:00", "Monday", null
                 , "09:00:00", "20:00:00", "Tuesday", null
                 , "09:00:00", "20:00:00", "Wednesday", null
                 , "09:00:00", "20:00:00", "Thursday", null
-                , "10:00:00", "19:00:00", "Friday", new Date(new GregorianCalendar(2021, Calendar.JANUARY, 11).getTimeInMillis()));
+                , "10:00:00", "19:00:00", "Friday", null);
 
         when(statement.executeQuery()).thenReturn(mockResultSet1);
-        List<OpeningHours> openingHours = openingHoursDao.getAllOpeningHoursForDisplay(4, new GregorianCalendar(2021, Calendar.JANUARY, 11).getTime());
+        List<OpeningHours> openingHours = openingHoursDao.getAllOpeningHoursForDisplay(4, new GregorianCalendar(2021, Calendar.JANUARY, 11).getTime(), false);
         assertTrue(openingHours.size() == 5);
         Assert.assertEquals("10:00 am", openingHours.get(4).getStartTime());
         Assert.assertEquals("07:00 pm", openingHours.get(4).getEndTime());
     }
 
     @Test
+    public void testGetAllOpeningHoursForDisplayWithSpecialHours() throws Exception {
+        ResultSet mockResultSet1 = ResultSetMock.mockResultSet(COLUMN_NAMES,
+                "10:00:00", "19:00:00", "Friday", new Date(new GregorianCalendar(2021, Calendar.JANUARY, 11).getTimeInMillis()));
+
+        when(statement.executeQuery()).thenReturn(mockResultSet1);
+        List<OpeningHours> openingHours = openingHoursDao.getAllOpeningHoursForDisplay(4, new GregorianCalendar(2021, Calendar.JANUARY, 11).getTime(), true);
+        assertTrue(openingHours.size() == 1);
+        Assert.assertEquals("10:00 am", openingHours.get(0).getStartTime());
+        Assert.assertEquals("07:00 pm", openingHours.get(0).getEndTime());
+    }
+
+    @Test
     public void testOpeningHoursForDisplayForEmpty() throws Exception {
         when(mockResultSet.next()).thenReturn(false);
         java.util.Date effectiveDate = new GregorianCalendar(2021, Calendar.JANUARY, 11).getTime();
-        List<OpeningHours> openingHours = openingHoursDao.getAllOpeningHoursForDisplay(4, effectiveDate);
+        List<OpeningHours> openingHours = openingHoursDao.getAllOpeningHoursForDisplay(4, effectiveDate, false);
         assertTrue(openingHours.isEmpty());
         verify(mockConnection, atMost(1)).getConnection();
         verify(connection, atMost(1)).prepareStatement(anyString());

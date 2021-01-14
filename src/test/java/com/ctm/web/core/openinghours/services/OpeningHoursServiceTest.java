@@ -61,8 +61,8 @@ public class OpeningHoursServiceTest {
         openingHours.add(new OpeningHours());
         openingHours.add(new OpeningHours());
 
-        when(openingHoursDao.getAllOpeningHoursForDisplay(anyInt(), any(Date.class))).thenReturn(openingHours);
-        List<OpeningHours> resultOpeningHours = openingHoursService.getAllOpeningHoursForDisplay(request);
+        when(openingHoursDao.getAllOpeningHoursForDisplay(anyInt(), any(Date.class), anyBoolean())).thenReturn(openingHours);
+        List<OpeningHours> resultOpeningHours = openingHoursService.getAllOpeningHoursForDisplay(request, false);
         Assert.assertNotNull(resultOpeningHours);
         assertTrue(resultOpeningHours.size() == 2);
     }

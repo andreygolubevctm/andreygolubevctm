@@ -101,7 +101,7 @@
 				<ui:bubble variant="chatty" className="callCentreNumberSection">
 					<p>Please be aware that product availability may change from time to time, so buy today to ensure you lock in your first choice!</p>
 					<p><strong>Buy online or call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></strong></p>
-					<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest())}">
+					<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
 						<div class="opening-hours">
 							<a href="javascript:;" data-toggle="dialog"
 								data-content="#view_all_hours"

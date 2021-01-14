@@ -90,7 +90,7 @@
 				<ui:bubble variant="info" className="callCentreNumberSection">
 					<h1>Do you need a hand?</h1>
 					<h6>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h6>
-					<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest())}">
+					<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
 						<div class="opening-hours">
 							<a href="javascript:;" data-toggle="dialog"
 								data-content="#view_all_hours"
