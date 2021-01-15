@@ -76,16 +76,8 @@ ${newPage.init(pageContext.request, pageSettings)}
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
         <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-        <style>.async-hide { opacity: 0 !important} </style>
         <c:if test="${GTMEnabled eq true}">
             <c:set var="VAR06_CA_PROFILE" value="${pageSettings.getSetting('VAR06_CA_PROFILE')}"/>
-
-            <script data-cfasync="false">(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
-                h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
-                (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
-                })(window,document.documentElement,'async-hide','${pageSettings.getSetting('VAR01_DL')}',4000,
-                {'${pageSettings.getSetting('VAR02_ID_OPT')}':true});
-            </script>
 
             <script data-cfasync="false" src="https://www.googleoptimize.com/optimize.js?id=${pageSettings.getSetting('VAR02_ID_OPT')}"></script>
 
