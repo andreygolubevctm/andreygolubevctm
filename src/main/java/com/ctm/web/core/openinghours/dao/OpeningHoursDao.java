@@ -45,42 +45,40 @@ public class OpeningHoursDao {
      * @return Data to display on website
      */
     public List<OpeningHours> getAllOpeningHoursForDisplay(int verticalId, Date effectiveDate, boolean isSpecial) throws DaoException {
-        List<OpeningHours> mapOpeningHoursDetails = new ArrayList<>();
-        try {
-            PreparedStatement stmt;
-            String sql = "SELECT daySequence, startTime,endTime,description, date FROM ctm.opening_hours "
-                    + "where ? between effectiveStart and effectiveEnd and verticalId=? ";
-            if (isSpecial) {
-                sql += " and date is not null  and date between  ? and ?  and hoursType='S'  order by date";
-            } else {
-                sql += "  and date is null  and hoursType='N' order by daySequence";
-            }
-            stmt = dbSource.getConnection().prepareStatement(sql);
+        String sql = "SELECT daySequence, startTime,endTime,description, date FROM ctm.opening_hours "
+                + "where ? between effectiveStart and effectiveEnd and verticalId=? ";
+        if (isSpecial) {
+            sql += " and date is not null  and date between  ? and ?  and hoursType='S'  order by date";
+        } else {
+            sql += "  and date is null  and hoursType='N' order by daySequence";
+        }
+        try (PreparedStatement stmt = dbSource.getConnection().prepareStatement(sql)) {
             stmt.setDate(1, new java.sql.Date(effectiveDate.getTime()));
             stmt.setInt(2, verticalId);
             if (isSpecial) {
                 stmt.setDate(3, new java.sql.Date(effectiveDate.getTime()));
                 stmt.setDate(4, new java.sql.Date(DateUtils.addDays(effectiveDate, 20).getTime()));
             }
+            List<OpeningHours> mapOpeningHoursDetails = new ArrayList<>();
 
-            ResultSet resultSet = stmt.executeQuery();
-
-            while (resultSet.next()) {
-                String startTime, endTime;
-                OpeningHours openingHours = new OpeningHours();
-                startTime = helper.getFormattedHours(resultSet.getString("startTime"));
-                endTime = helper.getFormattedHours(resultSet.getString("endTime"));
-                if (!Objects.equals(startTime, "") && !Objects.equals(endTime, "")) {
-                    openingHours.setStartTime(startTime);
-                    openingHours.setEndTime(endTime);
-                } else {
-                    openingHours.setStartTime(null);
-                    openingHours.setEndTime(null);
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                while (resultSet.next()) {
+                    String startTime, endTime;
+                    OpeningHours openingHours = new OpeningHours();
+                    startTime = helper.getFormattedHours(resultSet.getString("startTime"));
+                    endTime = helper.getFormattedHours(resultSet.getString("endTime"));
+                    if (!Objects.equals(startTime, "") && !Objects.equals(endTime, "")) {
+                        openingHours.setStartTime(startTime);
+                        openingHours.setEndTime(endTime);
+                    } else {
+                        openingHours.setStartTime(null);
+                        openingHours.setEndTime(null);
+                    }
+                    openingHours.setDescription(resultSet.getString("description"));
+                    openingHours.setDate(resultSet.getDate("date") != null ? new SimpleDateFormat("dd-MM-yyyy").format(resultSet
+                            .getDate("date")) : "");
+                    mapOpeningHoursDetails.add(openingHours);
                 }
-                openingHours.setDescription(resultSet.getString("description"));
-                openingHours.setDate(resultSet.getDate("date") != null ? new SimpleDateFormat("dd-MM-yyyy").format(resultSet
-                        .getDate("date")) : "");
-                mapOpeningHoursDetails.add(openingHours);
             }
             return mapOpeningHoursDetails;
         } catch (SQLException | NamingException e) {

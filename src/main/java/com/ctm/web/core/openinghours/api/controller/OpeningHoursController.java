@@ -45,7 +45,6 @@ public class OpeningHoursController extends CommonQuoteRouter<OpeningHoursReques
             produces = MediaType.APPLICATION_JSON_VALUE)
     public OpeningHoursResponse getOpeningHours(@RequestParam("vertical") String vertical, HttpServletRequest request) throws DaoException,ConfigSettingException {
         ApplicationService.setVerticalCodeOnRequest(request, vertical.toUpperCase());
-        openingHoursService = new OpeningHoursService();
         String openingHours = openingHoursService.getCurrentOpeningHoursForEmail(request);
         OpeningHoursResponse response = new OpeningHoursResponse(openingHours);
         return response;
@@ -58,7 +57,6 @@ public class OpeningHoursController extends CommonQuoteRouter<OpeningHoursReques
         addAllowOriginHeader(request, response);
 
         ApplicationService.setVerticalCodeOnRequest(request, vertical.toUpperCase());
-        openingHoursService = new OpeningHoursService();
         List<OpeningHours> openingHours = openingHoursService.getAllOpeningHoursForDisplay(request, special != null);
         OpeningHoursDataResponse openingHoursDataResponse = new OpeningHoursDataResponse(openingHours);
         return openingHoursDataResponse;

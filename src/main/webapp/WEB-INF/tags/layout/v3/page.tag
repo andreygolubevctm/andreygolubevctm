@@ -95,7 +95,19 @@ ${newPage.init(pageContext.request, pageSettings)}
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+  <c:if test="${GTMEnabled eq true}">
+      <c:set var="VAR06_CA_PROFILE" value="${pageSettings.getSetting('VAR06_CA_PROFILE')}"/>
 
+      <script data-cfasync="false" src="https://www.googleoptimize.com/optimize.js?id=${pageSettings.getSetting('VAR02_ID_OPT')}"></script>
+
+      <script data-cfasync="false">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js',anonymousID:localStorage.getItem('ca_identity') || undefined,accounts:JSON.parse(localStorage.getItem('ca_accountsData')) || undefined});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl${pageSettings.getSetting('VAR04_ENV_GTM_S')};f.parentNode.insertBefore(j,f);
+          })(window,document,'script','${pageSettings.getSetting('VAR01_DL')}','${pageSettings.getSetting('VAR03_ID_GTM')}');
+      </script>
+  </c:if>
+	
 	<c:if test="${pageSettings.getSetting('appleTouchIconsEnabled') eq 'Y'}">
 		<link rel="apple-touch-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone.png">
 		<link rel="apple-touch-icon" sizes="76x76" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/tablet.png">
@@ -139,15 +151,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 </head>
 
 	<body class="jeinit ${bodyClass}">
-
-    <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
-        <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
-            <script data-cfasync="false">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','CtMDataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
-        </c:if>
+    <c:if test="${GTMEnabled eq true}">
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=${pageSettings.getSetting('VAR03_ID_GTM')}${pageSettings.getSetting('VAR05_ENV_GTM_NS')}"height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
     </c:if>
 
 	<div class="navMenu-row">
