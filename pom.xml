@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.242.1</version>
+    <version>1.243.0-RC5</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -264,7 +264,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.12</version>
+            <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
 

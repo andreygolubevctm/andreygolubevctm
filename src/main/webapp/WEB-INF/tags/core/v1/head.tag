@@ -67,7 +67,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	
+
 <%-- PAGE TITLE --%>
 	<title>
 		<c:choose>

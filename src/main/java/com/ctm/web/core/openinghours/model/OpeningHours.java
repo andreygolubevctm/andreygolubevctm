@@ -1,11 +1,15 @@
 package com.ctm.web.core.openinghours.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+@Getter
+@Setter
 public class OpeningHours {
 
 	public int openingHoursId;
@@ -32,70 +36,4 @@ public class OpeningHours {
 	public String effectiveEnd;
 	@Range(min=1, message="Vertical ID must be positive Integer")	
 	public int verticalId;
-	public OpeningHours(){
-
-	}
-	public int getOpeningHoursId() {
-		return openingHoursId;
-	}
-	public void setOpeningHoursId(int openingHoursId) {
-		this.openingHoursId = openingHoursId;
-	}
-	public String getStartTime() {
-		return startTime;
-	}
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
-	}
-	public String getEndTime() {
-		return endTime;
-	}
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
-	public String getDaySequence() {
-		return daySequence;
-	}
-	public void setDaySequence(String daySequence) {
-		this.daySequence = daySequence;
-	}
-	public String getHoursType() {
-		return hoursType;
-	}
-	public void setHoursType(String hoursType) {
-		this.hoursType = hoursType!=null?hoursType.toUpperCase():null;
-	}
-	public String getEffectiveStart() {
-		return effectiveStart;
-	}
-	public void setEffectiveStart(String effectiveStart) {
-		this.effectiveStart = effectiveStart;
-	}
-	public String getEffectiveEnd() {
-		return effectiveEnd;
-	}
-	public void setEffectiveEnd(String effectiveEnd) {
-		this.effectiveEnd = effectiveEnd;
-	}
-
-	public int getVerticalId() {
-		return verticalId;
-	}
-
-	public void setVerticalId(int verticalId) {
-		this.verticalId = verticalId;
-	}
-	
 }
