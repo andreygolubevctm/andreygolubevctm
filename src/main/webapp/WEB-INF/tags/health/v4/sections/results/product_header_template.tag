@@ -18,7 +18,7 @@
         {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
             <div class="premium-rising-tag">
                 <span class="text-bold">Premiums Rise</span>
-                from October 1st
+                from April 1st
                 <br/>
                 <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
             </div>

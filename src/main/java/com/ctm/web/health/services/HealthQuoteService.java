@@ -31,11 +31,7 @@ import com.ctm.web.health.model.form.ContactDetails;
 import com.ctm.web.health.model.form.ContactNumber;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
-import com.ctm.web.health.model.results.HealthQuoteResult;
-import com.ctm.web.health.model.results.PremiumRange;
-import com.ctm.web.health.quote.model.RequestAdapter;
 import com.ctm.web.health.quote.model.RequestAdapterV2;
-import com.ctm.web.health.quote.model.ResponseAdapter;
 import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.quote.model.ResponseAdapterV2;
 import com.ctm.web.health.quote.model.request.HealthQuoteRequest;
@@ -43,7 +39,6 @@ import com.ctm.web.health.quote.model.response.GiftCard;
 import com.ctm.web.health.quote.model.response.HealthResponse;
 import com.ctm.web.health.quote.model.response.HealthResponseV2;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -53,7 +48,6 @@ import org.springframework.stereotype.Component;
 import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
@@ -114,83 +108,52 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthQuoteServiceBER", brand, HEALTH.getCode(), ofNullable(data.getEnvironmentOverride()));
 
-        if (properties.getServiceUrl().matches(".*://.*/health-quote-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
-            LOGGER.info("Calling health-quote v2");
-            // Version 2
+        final boolean isGiftCardActive =
+                ofNullable(payYourRateRise).filter(c -> "Y".equals(c.getContentValue())).isPresent(); // payYourRateRise is Active
 
-            final boolean isGiftCardActive =
-                    ofNullable(payYourRateRise).filter(c -> "Y".equals(c.getContentValue())).isPresent(); // payYourRateRise is Active
-
-            final HealthQuoteRequest quoteRequest = RequestAdapterV2.adapt(data, alternatePricingContent, isSimples, isGiftCardActive);
+        final HealthQuoteRequest quoteRequest = RequestAdapterV2.adapt(data, alternatePricingContent, isSimples, isGiftCardActive);
 
 
-            final RatesheetOutgoingRequest<HealthQuoteRequest> request = RatesheetOutgoingRequest.<HealthQuoteRequest>newBuilder()
-                    .transactionId(data.getTransactionId())
-                    .brandCode(brand.getCode())
-                    .requestAt(data.getRequestAt())
-                    .payload(quoteRequest)
-                    .anonymousId(anonymousId)
-                    .userId(userId)
-                    .build();
+        final RatesheetOutgoingRequest<HealthQuoteRequest> request = RatesheetOutgoingRequest.<HealthQuoteRequest>newBuilder()
+                .transactionId(data.getTransactionId())
+                .brandCode(brand.getCode())
+                .requestAt(data.getRequestAt())
+                .payload(quoteRequest)
+                .anonymousId(anonymousId)
+                .userId(userId)
+                .build();
 
-            LOGGER.info("Attempting to call clientQuotesV2.post (HealthResponseV2)  {} {} {}", kv("url", properties.getServiceUrl()+"/quote"), kv("timeout", properties.getTimeout()), kv("request", request.getPayload().toString()));
+        LOGGER.info("Attempting to call clientQuotesV2.post (HealthResponseV2)  {} {} {}", kv("url", properties.getServiceUrl()+"/quote"), kv("timeout", properties.getTimeout()), kv("request", request.getPayload().toString()));
 
-            HealthResponseV2 healthResponse = null;
+        HealthResponseV2 healthResponse = null;
 
-            healthResponse = getHealthResponseV2("v3/quote", request, properties);
+        healthResponse = getHealthResponseV2("v3/quote", request, properties);
 
-            final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent, brand.getCode());
+        final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent, brand.getCode());
 
-            final boolean isShowAll = "Y".equals(data.getQuote().getShowAll()); //showAll = true means they're looking at quotes and the healthResponse.getPayload.getQuotes will contain all the quote entries
-            if (!isShowAll) { //showAll = false means they're paying and the healthResponse.getPayload.getQuotes will only contain one entry- the one they're paying for
-                final Optional<GiftCard> giftCard = healthResponse.getPayload()
-                        .getQuotes()
-                        .stream()
-                        .findFirst()
-                        .flatMap(com.ctm.web.health.quote.model.response.HealthQuote::getGiftCard);
-                writeTransactionDetail(
-                        data.getTransactionId(),
-                        HealthTransactionDao.HealthTransactionSequenceNoEnum.RATE_RISE_GIFT_CARD_AMOUNT,
-                        giftCard
-                                .map(GiftCard::getAmount)
-                                .map(a -> Integer.toString(a.intValue())) //converting to integer before getting string because BigDecimal.toString is weird (and we know that the number will always be whole numbers multiples of 5 anyway)
-                                .orElse("0"));
-                writeTransactionDetail(
-                        data.getTransactionId(),
-                        HealthTransactionDao.HealthTransactionSequenceNoEnum.RATE_RISE_GIFT_CARD_PRODUCT_ID,
-                        giftCard
-                                .map(GiftCard::getPreviousProductId)
-                                .orElse("0"));
-            }
-
-            return responseAdapterModel;
-        } else {
-            LOGGER.info("Calling health-quote v1");
-            // Version 1
-            final HealthQuote quote = data.getQuote();
-            boolean isShowAll = StringUtils.equals(quote.getShowAll(), "Y");
-            boolean isOnResultsPage = StringUtils.equals(quote.getOnResultsPage(), "Y");
-            Optional<PremiumRange> premiumRange = Optional.empty();
-            if (isShowAll && isOnResultsPage) {
-                premiumRange = ofNullable(healthQuoteSummaryService.getSummary(brand, data, isSimples));
-            }
-
-            final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data, alternatePricingContent, isSimples);
-
-            final Request<HealthQuoteRequest> request = new Request<>();
-            request.setPayload(quoteRequest);
-            request.setClientIp(data.getClientIpAddress());
-            request.setTransactionId(data.getTransactionId());
-            request.setBrandCode(brand.getCode());
-            request.setRequestAt(data.getRequestAt());
-
-            final HealthResponse healthResponse = getHealthResponse("v3/quote", request, properties);
-
-            final Pair<Boolean, List<HealthQuoteResult>> response = ResponseAdapter.adapt(data, healthResponse, alternatePricingContent);
-
-            return new ResponseAdapterModel(response.getLeft(), response.getRight(), premiumRange);
+        final boolean isShowAll = "Y".equals(data.getQuote().getShowAll()); //showAll = true means they're looking at quotes and the healthResponse.getPayload.getQuotes will contain all the quote entries
+        if (!isShowAll) { //showAll = false means they're paying and the healthResponse.getPayload.getQuotes will only contain one entry- the one they're paying for
+            final Optional<GiftCard> giftCard = healthResponse.getPayload()
+                    .getQuotes()
+                    .stream()
+                    .findFirst()
+                    .flatMap(com.ctm.web.health.quote.model.response.HealthQuote::getGiftCard);
+            writeTransactionDetail(
+                    data.getTransactionId(),
+                    HealthTransactionDao.HealthTransactionSequenceNoEnum.RATE_RISE_GIFT_CARD_AMOUNT,
+                    giftCard
+                            .map(GiftCard::getAmount)
+                            .map(a -> Integer.toString(a.intValue())) //converting to integer before getting string because BigDecimal.toString is weird (and we know that the number will always be whole numbers multiples of 5 anyway)
+                            .orElse("0"));
+            writeTransactionDetail(
+                    data.getTransactionId(),
+                    HealthTransactionDao.HealthTransactionSequenceNoEnum.RATE_RISE_GIFT_CARD_PRODUCT_ID,
+                    giftCard
+                            .map(GiftCard::getPreviousProductId)
+                            .orElse("0"));
         }
 
+        return responseAdapterModel;
     }
 
     public Data healthCompetitionEntry(HttpServletRequest request, HealthRequest healthRequest, HealthQuote quote, boolean competitionEnabled, Data data) throws ConfigSettingException, DaoException, EmailDetailsException {
@@ -244,19 +207,6 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
         .timeout(properties.getTimeout())
         .responseType(MediaType.APPLICATION_JSON)
         .response(HealthResponseV2.class)
-        .build())
-        .doOnError(this::logHttpClientError)
-        .observeOn(Schedulers.io()).toBlocking().single();
-    }
-
-    private HealthResponse getHealthResponse(String url, Request<HealthQuoteRequest> request, QuoteServiceProperties properties) {
-        return clientQuotes.post(RestSettings.<Request<HealthQuoteRequest>>builder()
-        .request(request)
-        .jsonHeaders()
-        .url(properties.getServiceUrl()+"/"+url)
-        .timeout(properties.getTimeout())
-        .responseType(MediaType.APPLICATION_JSON)
-        .response(HealthResponse.class)
         .build())
         .doOnError(this::logHttpClientError)
         .observeOn(Schedulers.io()).toBlocking().single();

@@ -1,0 +1,44 @@
+.form-horizontal {
+  @media (min-width: @screen-sm-min) {
+    .control-label {
+      display: block;
+    }
+  }
+}
+
+.fieldrow {
+  .help-icon-with-label {
+    font-size: @font-size-base;
+
+    a {
+      line-height: @line-height-computed;
+    }
+  }
+}
+
+@media (max-width: @screen-xs) {
+  .health {
+    &[data-step="contact"] {
+      #health-contact-fieldset {
+        margin-bottom: 10px;
+
+        & .form-group {
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+      }
+    }
+  }
+}
+
+.abd-support-text {
+  width: 65%;
+  margin-left: 35%;
+}
+
+#single_18_to_30, #single_has_abd_policy{
+  @media (max-width: @screen-xs) {
+    width: 100%;
+    margin-left: 0;
+  }
+}

@@ -57,6 +57,8 @@ public class RequestAdapterV2 {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
 
+        quoteRequest.setReturnCTMBenefits(isSimples);
+
         quoteRequest.setIsSimples(isSimples);
         quoteRequest.setCurrentJourney(request.getHealth().getCurrentJourney());
 
@@ -90,6 +92,8 @@ public class RequestAdapterV2 {
         boolean isShowAll = toBoolean(quote.getShowAll());
         boolean isDirectApplication = toBoolean(quote.getDirectApplication());
         addExcludeStatus(quoteRequest, isShowAll, isSimples);
+
+        addHospitalBenefitsSource(filters, quote);
 
         if (isShowAll) {
             // ShowAll returns a list of result
@@ -191,6 +195,12 @@ public class RequestAdapterV2 {
         return quoteRequest;
     }
 
+    protected static void addHospitalBenefitsSource(Filters filters, HealthQuote quote) {
+        filters.setHospitalBenefitsSource(
+            quote.getHospitalBenefitsSource().equals(HospitalBenefitsSource.CLINICAL_CATEGORIES.toString()) ?
+                HospitalBenefitsSource.CLINICAL_CATEGORIES : HospitalBenefitsSource.CTM
+        );
+    }
 
     protected static void addPrimaryAge(HealthQuoteRequest quoteRequest, HealthCover healthCover) {
         try {
@@ -515,7 +525,7 @@ public class RequestAdapterV2 {
                 case "Hospital":
                     break;
                 default:
-                    preferences.add(key);
+                    preferences.add(key.replace(".", "_"));
                     break;
             }
         }

@@ -1,0 +1,30 @@
+.quickSelectContainer {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	padding-left: 15px;
+	padding-right: 5px;
+
+	@media(@xs-only) {
+		padding-right: 20px;
+	}
+
+	.clearSelection {
+		margin-top: 5px;
+		a {
+			color: @theme-accent-3;
+		}
+	}
+
+	> div {
+		color: @gray;
+	}
+
+	div {
+		padding-right:0px;
+		padding-left: 0px;
+	}
+
+	&.deactivated {
+		display: none !important;
+	}
+}

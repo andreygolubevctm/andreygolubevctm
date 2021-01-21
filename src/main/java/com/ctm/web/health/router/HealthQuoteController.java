@@ -96,6 +96,10 @@ public class HealthQuoteController extends CommonQuoteRouter {
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultsWrapper getHealthQuote(@Valid final HealthRequest data, HttpServletRequest request) throws Exception {
+        return getHealthQuoteCommonn(data, request);
+    }
+
+    private ResultsWrapper getHealthQuoteCommonn(@Valid final HealthRequest data, HttpServletRequest request) throws Exception {
 
         // Initialise request
         Brand brand = initRouter(request);
@@ -125,7 +129,6 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
         final HealthQuote quote = data.getQuote();
 
-
         boolean isShowAll = StringUtils.equals(quote.getShowAll(), "Y");
 
         final Date serverDate = ApplicationService.getApplicationDate(request);
@@ -134,20 +137,19 @@ public class HealthQuoteController extends CommonQuoteRouter {
         final Content payYourRateRise;
         if (isCallCentre) {
             alternatePricingActive = contentService
-                    .getContent("simplesDPActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
+                .getContent("simplesDPActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
             payYourRateRise = contentService
-                    .getContent("simplesPyrrActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, false);
+                .getContent("simplesPyrrActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, false);
         } else {
             alternatePricingActive = contentService
-                    .getContent("onlineDPActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
+                .getContent("onlineDPActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
             payYourRateRise = contentService
-                    .getContent("onlinePyrrActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, false);
+                .getContent("onlinePyrrActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, false);
         }
 
         final boolean competitionEnabled = StringUtils.equalsIgnoreCase(contentService.getContentValueNonStatic(request, "competitionEnabled"), "Y");
 
-        final ResponseAdapterModel quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive,
-                isCallCentre, payYourRateRise);
+        final ResponseAdapterModel quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive, isCallCentre, payYourRateRise);
 
         if (quotes.getResults().isEmpty()) {
             return handleEmptyResults(request, data, healthQuoteTokenService, info);

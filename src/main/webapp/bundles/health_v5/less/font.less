@@ -1,0 +1,174 @@
+@font-face {
+	font-family: 'ctm-health';
+	src:url('../../../../assets/fonts/ctm-health.eot?20201106-9');
+	src:url('../../../../assets/fonts/ctm-health.eot?20201106-9#iefix') format('embedded-opentype'),
+	url('../../../../assets/fonts/ctm-health.ttf?20201106-9') format('truetype'),
+	url('../../../../assets/fonts/ctm-health.woff?20201106-9') format('woff'),
+	url('../../../../assets/fonts/ctm-health.svg?20201106-9#ctm-health') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="hltIcons-"], [class*="hltIcon-"] {
+	font-family: 'ctm-health';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.healthBenefits input + label:before ,
+.health-situation-healthCvrType label:before,
+.flexi-extras-icons input + label:before {
+	font-family: 'ctm-health';
+}
+
+.icon-hospital-extras:before {
+	content: "\e920";
+}
+
+.icon-hospital-only:before {
+	content: "\e906";
+}
+
+.icon-extras-only:before {
+	content: "\e904";
+}
+
+.benefitClass(@class, @labelClass, @content, @isLiElement) {
+
+	& when (@isLiElement = 'N') {
+		.@{class} label,
+		.@{class} {
+			.setContent(@labelClass, @content);
+		}
+	}
+	& when (@isLiElement = 'Y') {
+		.@{class} label,
+		li.@{class},
+		.@{class}.checkbox label {
+			.setContent(@labelClass, @content);
+		}
+	}
+}
+
+.setContent(@labelClass, @content) {
+	& when not (@labelClass = '') {
+		.@{labelClass}:before {
+			content: @content;
+		}
+	}
+	& when (@labelClass = '') {
+		&:before {
+			content: @content;
+		}
+	}
+}
+
+/* TODO Temporarily descoped
+.setTileContent(".health-situation-healthCvr", 1, "\e939");
+.setTileContent(".health-situation-healthCvr", 2, "\e938");
+.setTileContent(".health-situation-healthCvr", 3, "\e93a");
+.setTileContent(".health-situation-healthCvr", 4, "\e93b");
+.setTileContent(".health-situation-healthCvr", 5, "\e93d");
+*/
+.setTileContent(".health-situation-healthSitu", 1, "\e934");
+.setTileContent(".health-situation-healthSitu", 2, "\e935");
+.setTileContent(".health-situation-healthSitu", 3, "\e93c");
+.setTileContent(".health-situation-healthSitu", 4, "\e937");
+.setTileContent(".health-situation-healthSitu", 5, "\e936");
+.setTileContent(".health-situation-healthSitu", 6, "\e93b");
+
+.styleBenefits(@labelClass, @isLiElement) {
+	.benefitClass(HLTicon-hospital, @labelClass, "\e906", @isLiElement);
+	.benefitClass(HLTicon-heart-surgery, @labelClass, "\e910", @isLiElement);
+	.benefitClass(HLTicon-birth-related, @labelClass, "\e91b", @isLiElement);
+	.benefitClass(HLTicon-assisted-reproduction, @labelClass, "\e90e", @isLiElement);
+	.benefitClass(HLTicon-major-eye-surgery, @labelClass, "\e913", @isLiElement);
+	.benefitClass(HLTicon-joint-replacement, @labelClass, "\e911", @isLiElement);
+	.benefitClass(HLTicon-cosmetic-surgery, @labelClass, "\e919", @isLiElement);
+	.benefitClass(HLTicon-sterilisation, @labelClass, "\e91d", @isLiElement);
+	.benefitClass(HLTicon-gastric-banding, @labelClass, "\e91e", @isLiElement);
+	.benefitClass(HLTicon-dialysis, @labelClass, "\e90d", @isLiElement);
+	.benefitClass(HLTicon-palliative-care, @labelClass, "\e917", @isLiElement);
+	.benefitClass(HLTicon-in-hospital-rehabilitation, @labelClass, "\e91f", @isLiElement);
+	.benefitClass(HLTicon-general-dental, @labelClass, "\e90f", @isLiElement);
+	.benefitClass(HLTicon-major-dental, @labelClass, "\e912", @isLiElement);
+	.benefitClass(HLTicon-optical, @labelClass, "\e916", @isLiElement);
+	.benefitClass(HLTicon-physiotherapy, @labelClass, "\e918", @isLiElement);
+	.benefitClass(HLTicon-chiropractor, @labelClass, "\e91c", @isLiElement);
+	.benefitClass(HLTicon-podiatry, @labelClass, "\e91a", @isLiElement);
+	.benefitClass(HLTicon-acupuncture, @labelClass, "\e90b", @isLiElement);
+	.benefitClass(HLTicon-naturopathy, @labelClass, "\e915", @isLiElement);
+	.benefitClass(HLTicon-remedial-massage, @labelClass, "\e914", @isLiElement);
+	.benefitClass(HLTicon-in-hospital-psychiatry, @labelClass, "\e90c", @isLiElement);
+	.benefitClass(HLTicon-endodontic, @labelClass, "\e929", @isLiElement);
+	.benefitClass(HLTicon-orthodontic, @labelClass, "\e923", @isLiElement);
+	.benefitClass(HLTicon-psychology, @labelClass, "\e92c", @isLiElement);
+	.benefitClass(HLTicon-glucose-monitor, @labelClass, "\e927", @isLiElement);
+	.benefitClass(HLTicon-hearing-aids, @labelClass, "\e926", @isLiElement);
+	.benefitClass(HLTicon-non-pbs-pharm, @labelClass, "\e924", @isLiElement);
+	.benefitClass(HLTicon-orthotics, @labelClass, "\e922", @isLiElement);
+	.benefitClass(HLTicon-speech-therapy, @labelClass, "\e921", @isLiElement);
+	.benefitClass(HLTicon-occupational-therapy, @labelClass, "\e92b", @isLiElement);
+	.benefitClass(HLTicon-dietetics, @labelClass, "\e92a", @isLiElement);
+	.benefitClass(HLTicon-eye-therapy, @labelClass, "\e928", @isLiElement);
+	.benefitClass(HLTicon-lifestyle-products, @labelClass, "\e925", @isLiElement);
+	.benefitClass(HLTicon-osteopathy, @labelClass, "\e92d", @isLiElement);
+	.benefitClass(HLTicon-ambulance, @labelClass, "\e923", @isLiElement);
+	.benefitClass(HLTicon-exercise-physiology, @labelClass, "\e920", @isLiElement);
+	.benefitClass(HLTicon-appliances, @labelClass, "\e921", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-REHABILITATION, @labelClass, "\e978", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-HOSPITAL_PSYCHIATRIC_SERVICES, @labelClass, "\e968", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-PALLIATIVE_CARE, @labelClass, "\e974", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-BRAIN_AND_NERVOUS_SYSTEM, @labelClass, "\e959", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-EYE_NOT_CATARACTS, @labelClass, "\e962", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-EAR_NOSE_AND_THROAT, @labelClass, "\e961", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-TONSILS_ADENOIDS_AND_GROMMETS, @labelClass, "\e961", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-BONE_JOINT_AND_MUSCLE, @labelClass, "\e956", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-JOINT_RECONSTRUCTIONS, @labelClass, "\e96c", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-KIDNEY_AND_BLADDER, @labelClass, "\e970", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-MALE_REPRODUCTIVE_SYSTEM, @labelClass, "\e972", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-DIGESTIVE_SYSTEM, @labelClass, "\e960", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-HERNIA_AND_APPENDIX, @labelClass, "\e967", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-GASTROINTESTINAL_ENDOSCOPY, @labelClass, "\e963", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-GYNAECOLOGY, @labelClass, "\e964", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-MISCARRIAGE_AND_TERMINATION_OF_PREGNANCY, @labelClass, "\e958", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-CHEMOTHERAPY_RADIOTHERAPY_AND_IMMUNOTHERAPY_FOR_CANCER, @labelClass, "\e95c", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-PAIN_MANAGEMENT, @labelClass, "\e973", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-SKIN, @labelClass, "\e979", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-BREAST_SURGERY_MEDICALLY_NECESSARY, @labelClass, "\e95a", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-DIABETES_MANAGEMENT_EXCLUDING_INSULIN_PUMPS, @labelClass, "\e95e", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-HEART_AND_VASCULAR_SYSTEM, @labelClass, "\e966", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-LUNG_AND_CHEST, @labelClass, "\e971", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-BLOOD, @labelClass, "\e955", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-BACK_NECK_AND_SPINE, @labelClass, "\e954", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-PLASTIC_AND_RECONSTRUCTIVE_SURGERY_MEDICALLY_NECESSARY, @labelClass, "\e975", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-DENTAL_SURGERY, @labelClass, "\e95d", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-PODIATRIC_SURGERY_PROVIDED_BY_AN_ACCREDITED_PODIATRIC_SURGEON, @labelClass, "\e976", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-IMPLANTATION_OF_HEARING_DEVICES, @labelClass, "\e969", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-CATARACTS, @labelClass, "\e95b", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-JOINT_REPLACEMENTS, @labelClass, "\e957", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-DIALYSIS_FOR_CHRONIC_KIDNEY_FAILURE, @labelClass, "\e95f", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-PREGNANCY_AND_BIRTH, @labelClass, "\e977", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-ASSISTED_REPRODUCTIVE_SERVICES, @labelClass, "\e953", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-WEIGHT_LOSS_SURGERY, @labelClass, "\e97b", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-INSULIN_PUMPS, @labelClass, "\e96b", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-PAIN_MANAGEMENT_WITH_DEVICE, @labelClass, "\e98c", @isLiElement);
+	.benefitClass(ClinicalCategoryIcon-SLEEP_STUDIES, @labelClass, "\e97a", @isLiElement);
+}
+
+.healthBenefits,
+.flexi-extras-icons{
+	.styleBenefits('', 'Y');
+}
+
+.moreInfoDropdown .benefitsOverflow {
+	.styleBenefits('', 'N');
+}

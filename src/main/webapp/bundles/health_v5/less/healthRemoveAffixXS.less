@@ -1,0 +1,41 @@
+/********************************
+Override css from navMenu.less
+**********************************/
+@media screen and (@xs-only) {
+  /* navmenu.less override */
+  .navMenu-offcanvas {
+    .navMenu-row-fixed {
+
+      // overrides navMenu-row-fixed, position: fixed  that is roughly at line 118 in navMenu.less
+      position: relative;
+    }
+  }
+}
+
+
+/********************************
+Override css from headerBar.less
+**********************************/
+
+//On XS we should dock the headerbars.
+@media (@xs-only) {
+  //Push the page down to make some space
+  body[data-step="results"] {
+    &.health.dontAffixXsBanners {
+      // overrides  padding-top: @navbar-height; in headerBar.less approx line 104
+      padding-top: 0;
+    }
+  }
+}
+
+.header-top {
+  @media (@xs-only) {
+    body > div > header > &.dontAffixXsBanners {
+      // overrides position:fixed from the mix-in .fixedInPlace; that is roughly at line 227 in headerBar.less
+      position: relative;
+    }
+  }
+  .ad-main-top {
+    overflow: hidden;
+  }
+}

@@ -1,0 +1,83 @@
+#covid-banner {
+  color: #FFFFFF;
+  background: @theme-tertiary;
+
+  .container {
+    display: flex;
+    align-items: center;
+    padding-top: 27px;
+    padding-bottom: 27px;
+  }
+
+  span {
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  p {
+    margin-top: 4px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .text-container {
+    width: 90%;
+  }
+
+  #covid-banner-close-button {
+    border: 0;
+    position: relative;
+    left: -20px;
+    top: -100px;
+    float: right;
+    width: 20px;
+    height: 20px;
+    background: @theme-tertiary;
+  }
+
+  #covid-icon-mobile {
+    display: none;
+  }
+
+  #covid-icon-desktop {
+    display: inline;
+    width: 45px;
+    height: 45px;
+    margin-right: 44px;
+  }
+
+  @media (max-width:767px) {
+    span {
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 23px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 22px;
+      margin: 4px 0 0 0;
+    }
+
+    .container {
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    #covid-icon-mobile {
+      display: inline;
+      margin-right: 16px;
+    }
+
+    #covid-icon-desktop {
+      display: none;
+    }
+
+    #covid-banner-close-button {
+      top: -130px;
+    }
+  }
+}
+

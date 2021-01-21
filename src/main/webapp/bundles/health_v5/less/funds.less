@@ -1,0 +1,824 @@
+.health-credit_card_details,
+.health-bank_details {
+  position: relative;
+}
+.health-credit_card_details,
+.update-content,
+#confirm-step,
+.simples-dialogue-31,
+.health_declaration-group,
+.health_contact_authority,
+.health-payment-details_update,
+.health-payment_details-claims-group,
+.health_person-details_middlename,
+#health_medicareDetails_message {
+  display:none;
+}
+
+.health_payment_credit-details_paymentDay_group,
+.health_payment_credit-details_policyDay-group,
+.health_payment_credit-details_policyDay-message {
+  display:none;
+}
+
+.health_payment_bank-details_paymentDay_group,
+.health_payment_bank-details_policyDay-group,
+#health_payment_bank_claim-selection,
+.health_payment_bank-details_policyDay-message {
+  display:none;
+}
+
+.health_payment_credit-details_policyDay-message,
+.health_payment_bank-details_policyDay-message,
+.health_payment-day_message,
+#health_medicareDetails_message {
+  padding: 11px 0;
+}
+
+#health_payment_gateway-content,
+#health_payment_gateway-content .alert-success,
+#health_payment_gateway-content .alert-danger,
+#health_payment_gateway-dialog,
+.health_payment_gateway-launchers,
+.health_payment_gateway-fails,
+.health_payment_gateway-success,
+.health_payment_gateway-credit,
+.health_payment_gateway-bank {
+  display: none;
+}
+
+#health_application_contactPoint {
+  label {
+    &:nth-child(2) {
+      .border-right-radius(10px);
+    }
+
+    &:nth-child(3) {
+      display: none;
+    }
+  }
+}
+
+body.health_payment_gateway-active #health_payment_gateway-content {
+  display: block;
+}
+
+.ausgovtrebateform {
+  display:none;
+}
+
+#health_application_noEmailGroup{
+  display: none;
+}
+
+
+/* HEALTH FUND SPECIFIC CSS CODES */
+body{
+
+  /* AHM */
+  &.AHM{
+    .health_previous_fund_authority {
+      display:block !important;
+    }
+    .ausgovtrebateform {
+      display:none;
+    }
+    .ausgovtrebateform em {
+      display:none;
+    }
+    .ausgovtrebateform em.AHM {
+      display:inline;
+    }
+    .health-credit_card_details .fieldrow.health_payment_credit-details_day_group,
+    .health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_name,
+    .health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+    .health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+    .health-credit_card_details .fieldrow.nestedGroup,
+    .health-credit_card_details .payment_assurance_message,
+    .partnerMemberID,
+    .clientMemberID {
+      display:none !important;
+    }
+    .health_payment_bank-details_paymentDay_group,
+    .health_payment_credit-details_paymentDay_group {
+      display:block !important;
+    }
+
+    .health_payment_credit-details_day-group,
+    .health_payment_bank_policyDay,
+    .health_payment_bank-details_day-group,
+    .health_payment_bank-details_policyDay-group,
+    .health_bank-details_policyDay-group,
+    .health_payment_credit-details_policyDay-group  {
+      display:none !important;
+    }
+    .health_payment-day_message {
+      display:none !important;
+    }
+    .health-payment_details-claims-group {
+      display:block !important;
+    }
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+
+  /* MYO */
+  &.MYO {
+    #health_application_contactPoint {
+      label:nth-child(2) {
+        display: none;
+      }
+      label:nth-child(3) {
+        .border-right-radius(10);
+        border-left: 1px solid @input-border;
+        display: table-cell;
+      }
+    }
+
+    .health-credit_card_details {
+      .fieldrow.health_payment_credit-details_paymentDay_group,
+      .fieldrow.health_payment_credit-details_day_group,
+      .fieldrow.health_credit-card_details_type_group,
+      .fieldrow.health_credit-card-details_name,
+      .fieldrow.health_credit-card-details_expiry_group,
+      .fieldrow.health_credit-card-details_ccv,
+      .fieldrow.health_credit-card-details_number_group,
+      .fieldrow.nestedGroup,
+      .payment_assurance_message {
+        display: none !important;
+      }
+    }
+
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_credit-details_policyDay-message,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_bank-details_policyDay-message {
+      display: block !important;
+    }
+
+    .health_previous_fund_authority,
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group,
+    .health_declaration {
+      display: none !important;
+    }
+
+    .health_payment_credit-details_policyDay-group .select,
+    .health_payment_bank-details_policyDay-group .select,
+    .health_payment_credit-details_paymentDay_group .select,
+    .health_payment_bank-details_paymentDay_group .select {
+      position: absolute;
+      visibility: hidden;
+
+      select {
+        display:none;
+      }
+    }
+
+    .health_payment_credit-details_policyDay-group label,
+    .health_payment_bank-details_policyDay-group label {
+      visibility:hidden !important;
+    }
+  }
+
+  /* FRANK */
+  &.FRA{
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_credit-details_policyDay-message,
+    #clientMemberID .health_previous_fund_authority,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_bank-details_policyDay-message,
+    .health_bank-details_claims_group {
+      display:block !important;
+    }
+
+    .health_payment_credit-details_day_group,
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group,
+    .health_payment_credit-details_paymentDay_group,
+    #partnerMemberID .health_previous_fund_authority {
+      display:none !important;
+    }
+
+
+    .health_payment_credit-details_policyDay-group .select,
+    .health_payment_bank-details_policyDay-group .select,
+    .health_payment_credit-details_paymentDay_group .select,
+    .health_payment_bank-details_paymentDay_group .select {
+      position: absolute;
+      visibility: hidden;
+
+      select {
+        display: none;
+      }
+    }
+
+    .health_payment_credit-details_policyDay-group label,
+    .health_payment_bank-details_policyDay-group label {
+      visibility:hidden !important;
+    }
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+
+
+  /* GMHBA */
+  &.GMH{
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_bank-details_paymentDay_group,
+    #clientMemberID .health_previous_fund_authority,
+    .health_payment_credit-details_policyDay-message,
+    .health_payment_bank-details_policyDay-message,
+    .health_bank-details_claims_group {
+      display:block !important;
+    }
+
+    .health_payment_credit-details_day_group,
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group,
+    .health_payment_credit-details_paymentDay_group,
+    .health_payment_bank-details_paymentDay_group,
+    #partnerMemberID .health_previous_fund_authority {
+      display:none !important;
+    }
+
+    .health_payment_credit-details_policyDay-group .select,
+    .health_payment_bank-details_policyDay-group .select,
+    .health_payment_credit-details_paymentDay_group .select,
+    .health_payment_bank-details_paymentDay_group .select {
+      position: absolute;
+      visibility: hidden;
+
+      select {
+        display:none;
+      }
+    }
+
+
+    .health_payment_credit-details_policyDay-group label,
+    .health_payment_bank-details_policyDay-group label {
+      visibility:hidden !important;
+    }
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+
+  /* HEA */
+  &.HEA{
+    .ifExpectingMessage {
+      color: #0C4DA2;
+      font-weight: normal;
+      font-family: @font-family-theme-bold;
+    }
+    .ifExpectingMessage .fieldrow_label {
+      float: left;
+    }
+    .ifExpectingMessage .fieldrow_value {
+      max-width: 400px;
+    }
+
+    .health-payment_details-claims-group,
+    .health_previous_fund_authority {
+      display: block !important;
+    }
+
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_credit-details_policyDay-group{
+      display: block !important;
+    }
+
+    .health_payment_credit-details_day_group,
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group,
+    .health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_name,
+    .health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+    .health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+    .health-credit_card_details .fieldrow.nestedGroup,
+    .health-credit_card_details .payment_assurance_message {
+      display: none !important;
+    }
+
+    .hea-payment-legend {
+      padding-top: 0.5em;
+    }
+
+    .health-credit_card_details .fieldrow {
+      display:none;
+    }
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+
+
+  /* BUDGET DIRECT */
+  &.BUD{
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_credit-details_policyDay-message,
+    #clientMemberID .health_previous_fund_authority,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_bank-details_policyDay-message,
+    .health-medicare_details,
+    .health_bank-details_claims_group {
+      display:block !important;
+    }
+
+    .health_payment_credit-details_day-group,
+    .health_payment_credit-details_day_group,
+    .health_payment_bank-details_day-group,
+    .health_payment_credit-details_paymentDay_group,
+    #partnerMemberID .health_previous_fund_authority {
+      display:none !important;
+    }
+
+
+    .health_payment_credit-details_policyDay-group .select,
+    .health_payment_bank-details_policyDay-group .select,
+    .health_payment_credit-details_paymentDay_group .select,
+    .health_payment_bank-details_paymentDay_group .select {
+      position: absolute;
+      visibility: hidden;
+
+      select {
+        display:none;
+      }
+    }
+
+    .health_payment_credit-details_policyDay-group label,
+    .health_payment_bank-details_policyDay-group label {
+      visibility:hidden !important;
+    }
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+
+  /* GMF */
+  &.GMF{
+    .health-credit_card_details .fieldrow {
+      display:none;
+    }
+
+    .health_payment_credit-details_day_group,
+    .health_payment_bank-details_day-group,
+    .health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_name,
+    .health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+    .health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+    .health-credit_card_details .fieldrow.nestedGroup,
+    .health-credit_card_details .payment_assurance_message {
+      display: block !important;
+    }
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+
+
+  &.NHB{
+    .health-credit_card_details .fieldrow.health_payment_credit-details_paymentDay_group,
+    .health-credit_card_details .fieldrow.health_payment_credit-details_day_group,
+    .health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_name,
+    .health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+    .health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+    .health-credit_card_details .fieldrow.nestedGroup,
+    .health-credit_card_details .payment_assurance_message,
+    .health_bank-details_claims_group {
+      display: none !important;
+    }
+    #health_medicareDetails_message,
+
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group {
+      display: none !important;
+    }
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_medicare_cardPosition-group {
+      display: block !important;
+    }
+
+    .health_payment_bank-details_policyDay-message,
+    .health_payment_credit-details_policyDay-message{
+      display: none !important;
+    }
+    .health_contact_authority{
+      display: block;
+    }
+  }
+
+
+  /* NIB */
+  &.NIB{
+    .health_previous_fund_authority,
+    .health_person-details_authority_group,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_credit-details_policyDay-group,
+    .health-payment_details-claims-group,
+    #health_application_noEmailGroup {
+      display:block !important;
+    }
+
+    .health_payment_credit-details_day-group,
+    .health_payment_credit-details_day_group,
+    .health_payment_bank-details_day-group,
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+
+  /* AUF */
+  &.AUF{
+    .health_payment_credit-details_day-group,
+    .health_payment_credit-details_day_group,
+    .health_payment_bank-details_day-group,
+    .health_payment_credit-details_paymentDay_group,
+    .health_bank-details_claims_group,
+    .health-bank_claim_details,
+    .health_contact_authority {
+      display:none !important;
+    }
+
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_credit-details_policyDay-group {
+      display:block !important;
+    }
+  }
+
+  /* WFD */
+  &.WFD{
+    .health_payment_credit-details_policyDay-group .fieldrow_label,
+    .health_payment_bank-details_policyDay-group .fieldrow_label  {
+      visibility:hidden !important;
+    }
+
+    .health-payment_details-claims-group,
+    .health_person-details_authority_group,
+    .health_payment_credit-details_policyDay-message,
+    .health_payment_bank-details_policyDay-message {
+      display:block !important;
+    }
+
+    .health_payment_credit-details_day-group,
+    .health_payment_bank_policyDay,
+    .health_payment_bank-details_day-group,
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_bank-details_policyDay-group,
+    .health_contact_authority {
+      display:none !important;
+    }
+
+    .health_payment_credit-details_policyDay-group .select,
+    .health_payment_bank-details_policyDay-group .select {
+      position: absolute;
+      visibility: hidden;
+    }
+
+    .health_payment_credit-details_policyDay-group .select select,
+    .health_payment_bank-details_policyDay-group .select select{
+      visibility: hidden !important;
+    }
+
+	#health_payment_bank_claim-selection h3 {padding-top:1em;}
+  }
+
+
+  /* BUPA */
+  &.BUP{
+    .health_popup_payment_ipp,
+    .health_person-details_middlename,
+    .nameGroupMiddleNameRow,
+    .health_previous_fund_authority,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_bank-details_policyDay-message,
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_credit-details_policyDay-message{
+      display:block !important;
+    }
+    .health_credit-card-details_number,
+    .health_credit-card-details_ccv,
+    .health_payment_credit-details_day-group,
+    .health_payment_credit-details_day_group,
+    .health_payment_credit-details_paymentDay_group,
+    .health_payment_bank-details_day-group,
+    .health-bank_claim_details,
+    .health_bank-details_claims_group {
+      display:none !important;
+    }
+    .health_payment_credit-details_policyDay-group label,
+    .health_payment_bank-details_policyDay-group label {
+      visibility:hidden !important;
+    }
+    .health_payment_credit-details_policyDay-group .select,
+    .health_payment_bank-details_policyDay-group .select {
+      position: absolute;
+      visibility: hidden;
+    }
+    .health_payment_credit-details_policyDay-group .select select,
+    .health_payment_bank-details_policyDay-group .select select{
+      visibility:hidden !important;
+    }
+    .health_payment_bank-details_policyDay-group .control_label,
+    .health_payment_credit-details_policyDay-group .control_label{
+      visibility: hidden;
+    }
+    .health_contact_authority,
+    .health-credit_card_details .fieldrow.health_credit-card-details_number_group{
+      display:none !important;
+    }
+    #bup_flexi_extras {
+      .flexi-extras-icons {
+        li[data-value="UAM"] {
+          display:none !important;
+        }
+      }
+    }
+  }
+
+
+  /* CUA */
+  &.CUA{
+    .ifExpectingMessage {
+      color: #0C4DA2;
+      font-weight: normal;
+      font-family: @font-family-theme-bold;
+    }
+    .ifExpectingMessage .fieldrow_label {
+      float: left;
+    }
+    .ifExpectingMessage .fieldrow_value {
+      max-width: 400px;
+    }
+
+    .health-payment_details-claims-group,
+    .health_previous_fund_authority {
+      display: block !important;
+    }
+
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_credit-details_policyDay-group{
+      display: block !important;
+    }
+
+    .health_payment_credit-details_day_group,
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group,
+    .health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_name,
+    .health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+    .health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+    .health-credit_card_details .fieldrow.nestedGroup,
+    .health-credit_card_details .payment_assurance_message {
+      display: none !important;
+    }
+
+    .cua-payment-legend {
+      padding-top: 0.5em;
+    }
+
+    .health-credit_card_details .fieldrow {
+      display:none;
+    }
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+
+  /* HIF */
+  &.HIF {
+    .health-credit_card_details .fieldrow,
+    .health_dependant_details_relationshipGroup,
+    .health_payment_credit-details_day-group,
+    .health_payment_credit-details_day_group,
+    .health_payment_bank-details_day-group,
+    #emigrate-primary-yes-text span {
+      display: none;
+    }
+
+    .health_contact_authority {
+       display:none !important;
+    }
+
+    .health_payment_medicare_cardPosition-group {
+      display: block;
+    }
+
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_credit-details_policyDay-group {
+      display: block !important;
+    }
+
+    .payment-deduction-about {
+      font-weight: normal;
+      font-family: @font-family-theme-bold;
+      margin-top: 1em;
+    }
+  }
+
+  /* THF */
+  &.THF{
+    .health-payment_details-claims-group {
+      display:block !important;
+    }
+    .thf-payment-legend {
+      margin-left: 0.5em;
+      float: right;
+    }
+
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_credit-details_policyDay-group{
+      display:block !important;
+    }
+
+    .health_payment_credit-details_day_group,
+    .health_payment_bank-details_day-group {
+      display:none !important;
+    }
+
+    #areYouRelatedRow,
+    #familyRow,
+    #employmentRow,
+    #thf_ineligible {
+      display:none;
+    }
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+  &.QCH {
+    .health_payment_credit-details_policyDay-group .row-content .select,
+    .health_payment_credit-details_policyDay-group label,
+    .health-credit_card_details .fieldrow.health_payment_credit-details_paymentDay_group,
+    .health-credit_card_details .fieldrow.health_payment_credit-details_day_group,
+    .health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_name,
+    .health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+    .health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+    .health-credit_card_details .fieldrow.nestedGroup,
+    .health-credit_card_details .fieldrow.payment_assurance_message,
+    .health_bank-details_claims_group {
+
+      display: none !important;
+    }
+    #health_medicareDetails_message,
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group {
+      display: none !important;
+    }
+    .health_payment_bank-details_policyDay-group label {
+      visibility: hidden;
+    }
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_bank-details_policyDay-message,
+    .health_payment_credit-details_policyDay-message,
+    .health_payment_medicare_cardPosition-group {
+      display: block !important;
+    }
+    .health_payment_bank-details_policyDay-group .select {
+      display: none !important;
+    }
+    .health_contact_authority{
+      display: block;
+    }
+  }
+  &.HCF {
+    .health_payment_credit-details_paymentDay_group,
+    .health_payment_bank-details_paymentDay_group,
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group,
+    .health_bank-details_claims_group {
+      display:none !important;
+    }
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_bank-details_policyDay-group {
+      display:block !important;
+    }
+    .health_contact_authority{
+      display:none !important;
+    }
+  }
+  &.QTU {
+    .health-credit_card_details .fieldrow.health_payment_credit-details_paymentDay_group,
+    .health-credit_card_details .fieldrow.health_payment_credit-details_day_group,
+    .health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_name,
+    .health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+    .health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+    .health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+    .health-credit_card_details .fieldrow.nestedGroup,
+    .health-credit_card_details .payment_assurance_message {
+      display: none !important;
+    }
+
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group {
+      display: none !important;
+    }
+
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_medicare_cardPosition-group,
+    .health_bank-details_claims_group {
+      display: block !important;
+    }
+  }
+}
+
+.health_declaration {
+  a {
+    text-decoration: underline;
+  }
+  #joinDeclarationDialog_link {
+    font-size: @font-size-small;
+    margin: 0px;
+  }
+  margin-top: 30px;
+}
+
+.next-steps_v2 {
+  h3 {
+    padding-top: 3rem;
+    border-top: 1px solid @gray900;
+    margin-top: 4rem;
+  }
+
+  h2 {
+    color: @primary700;
+    margin-bottom: 18px;
+  }
+}
+
+.next-steps-content {
+  font-size: 14px;
+  padding: 1rem;
+}
+
+.health_declaration_v2, .next-steps_v2 {
+
+  .join_declaration_content {
+    font-size: 14px;
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+  }
+  
+  h2 {
+    color: @gray900;
+    margin-bottom: 18px;
+  }
+
+  h3 {
+    color: @primary700;
+    margin-bottom: 0;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  #joinDeclarationDialog_link {
+    font-size: @font-size-small;
+    margin: 0px;
+  }
+
+  .checkbox label {
+    font-size: 14px;
+  }
+
+  .checkbox input + label:before {
+    margin-right: 15px;
+    margin-top: 2px;
+  }
+
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.ifExpectingMessage {
+  &.female{
+    display: block;
+  }
+  &.male{
+    display: none;
+  }
+}
+
+#health_medicareDetails_yellowCardMessage {
+  color: @brand-warning;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}

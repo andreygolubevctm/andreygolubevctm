@@ -11,7 +11,7 @@
     {{ if(typeof obj.hasOwnProperty('showBeforeAfterText') && obj.showBeforeAfterText === true) { }}
     <div class="dual-pricing-before-after-text">
 		<span>
-		{{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { }}Price after October 1{{ } else { }}Now{{ } }}
+		{{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { }}Price after April 1{{ } else { }}Now{{ } }}
 		</span></div>
     {{ } }}
 

@@ -225,6 +225,11 @@
 				$healthSitCoverType.on('change', function() {
 					var coverTypeVal = $(this).find('input:checked').val();
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
+                    $('#clinicalCategoriesToggle').toggleClass("hidden", coverTypeVal === "E");
+                    if($('#clinicalCategoriesContent').is(':visible') && coverTypeVal === "E") {
+                        $('#clinicalCategoriesToggle').removeClass('active');
+                        $('#clinicalCategoriesContent').hide();
+                    }
 				});
 
 				if($("#health_privacyoptin").val() === 'Y'){
@@ -305,6 +310,10 @@
 				$extraBenefits.click(function() {
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
+
+				if($('#clinicalCategoriesContent').find(':input:checked').length) {
+					$('#benefitsForm').find('.usersClinicalCategorySelectionsModal').removeClass('hidden');
+				}
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.setDefaultCover();

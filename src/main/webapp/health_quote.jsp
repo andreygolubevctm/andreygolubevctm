@@ -226,6 +226,11 @@
                     <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
                     <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
                     <core_v2:authToken authToken="${param['authToken']}"/>
+
+                    <%-- CLINICAL CATGORY FIELDS --%>
+                    <field_v1:hidden xpath="health/hospitalBenefitsSource" constantValue="CLINICAL_CATEGORIES" />
+                    <field_v1:hidden xpath="health/benefits/categorySelectHospital" />
+                    <field_v1:hidden xpath="health/benefits/quickSelectHospital" />
                 </div>
 
                 <%-- Slides --%>

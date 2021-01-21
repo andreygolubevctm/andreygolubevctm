@@ -1,0 +1,569 @@
+// Mixins for icon sizes.
+.benefitsIconSize_v2(@icon-font-size, @label-font-size, @margin-offset) {
+  div.checkbox {
+    label {
+      font-size: @label-font-size;
+      padding: 5px 0 5px 15px;
+      &:before {
+        position: absolute;
+        display:  block;
+        font-size: @icon-font-size;
+        height: 25px;
+        margin: -13px 0 0 10px;
+        min-width: 25px;
+        width: 25px;
+        top: 50%;
+      }
+    }
+  }
+}
+
+body.health {
+
+  .health-your_details-opt-group a {
+    display: inline-block;
+    font-size: 14px;
+  }
+
+  &[data-step="benefits"] {
+    .tieredHospitalCover_v2 {
+      width: 100%;
+      display: block;
+      vertical-align: top;
+      position: relative;
+
+      .scrollable {
+        margin-left: 0;
+      }
+
+      @media (@xs-only) {
+        width: 100%;
+        display: block;
+        margin-bottom: 0;
+
+        .Hospital_container p {
+          margin-right: 20px;
+        }
+      }
+
+      .GeneralHealth_container {
+        border: none;
+      }
+
+      .hasIcons {
+        .categoriesCell_v2 {
+          border-top: 1px solid @gray-light;
+          padding: 0;
+          background-color: #FFFFFF;
+
+          min-height: 100px;
+
+          &:hover {
+            background-color: #F5F9FF;
+          }
+
+          &.active {
+            background-color: #e7f0fb;
+          }
+
+          &:last-of-type {
+            border-bottom: 1px solid @gray-light;
+          }
+
+          .limited-cover-text {
+            margin: 15px 0px;
+            padding: 10px;
+          }
+
+          .benefit-image,
+          .benefit-title,
+          .benefit-copy,
+          .benefit-toggle {
+            display: table-cell;
+            vertical-align: middle;
+            height: 100%;
+          }
+
+          .checkbox {
+            padding: 0;
+
+            input:not([disabled]) {
+              &:checked,
+              &.checked {
+                & + label {
+                  color: @health-benefits-icon-bg-checked-color;
+                  &:before {
+                    font-family: 'framework_font';
+                    background-color: @health-benefits-icon-bg-checked-color;
+                    border-color: @health-benefits-icon-bg-checked-color;
+                    color: @white;
+                    content: "\e931";
+                    font-size: 12px;
+                    float: none;
+                    border-radius: 5px;
+                    vertical-align: middle;
+                    padding: 0.48em;
+                  }
+                }
+              }
+            }
+
+            .benefit-icon {
+              display: block;
+              width: 36px;
+              height: 36px;
+              label {
+                &:before {
+                  position: static;
+                  font-family: 'ctm-health';
+                  font-size: 36px;
+                  line-height: 36px;
+                  float: none;
+                  color: @theme-tertiary;
+                  margin: 0;
+                  padding: 0;
+                }
+              }
+            }
+
+            label {
+              display: flex;
+              padding: 0;
+              margin: 0;
+
+              .benefit-label-container {
+                display: table;
+                min-height: 100px;
+                margin-left: 30px;
+                width: 100%;
+
+                .benefit-group-row {
+                  display: table-row;
+                }
+
+                label {
+                  padding: 0;
+                  pointer-events: none;
+                }
+              }
+
+              &:before {
+                display: table;
+                float: none;
+                margin: 0;
+                margin-bottom: 10px;
+                padding: 0.15em;
+                padding-top: 5px;
+                border-radius: 5px;
+              }
+            }
+
+            .benefit-image {
+              width: 40px;
+            }
+
+            .benefit-title,
+            .benefit-caption,
+            .benefit-description {
+              font-size: 16px;
+              line-height: 18px;
+            }
+
+            .benefit-title {
+              width:200px;
+              color: @gray900;
+              padding: 0 0 0 10px;
+
+              @media (@sm-only) {
+                width: 120px;
+                font-size: 14px;
+              }
+            }
+
+            .benefit-copy {
+              padding: 0 5px 0 20px;
+
+              .copy-innertube {
+                padding: 12px 0 16px 0;
+              }
+
+              .benefit-title {
+                font-size:14px;
+                padding-left: 0;
+                margin: 0 0 5px 0;
+              }
+
+              @media (@xs-only) {
+                padding-left: 10px;
+              }
+            }
+
+            .benefit-caption,
+            .benefit-description {
+              -ms-word-wrap: break-word;
+              word-wrap: break-word;
+              color: @gray800;
+              margin: 0;
+              a {
+                margin-left: 5px;
+                color: @theme-tertiary;
+              }
+
+              @media (@sm-only) {
+                font-size: 14px;
+              }
+
+              @media (@xs-only) {
+                font-size: 12px;
+              }
+            }
+            .benefit-caption {
+              &:first-letter {
+                text-transform: capitalize;
+              }
+              @media (@xs-only) {
+                margin-top: 0;
+              }
+            }
+
+            .benefit-description {
+              margin: 5px 0 0 0;
+              ul {
+                margin: 0;
+                padding-left: 20px;
+              }
+            }
+
+            .benefit-toggle {
+              width: 32px;
+
+              a {
+                cursor: pointer;
+                font-size: 32px;
+                display: inline-block;
+                width: 32px;
+                height: 32px;
+
+                &.toggled {
+                  transform: rotate(180deg);
+                }
+              }
+
+             :before {
+               position: absolute;
+               top: 50%;
+               margin-top: -5px;
+             }
+            }
+          }
+
+          @media (@xs) {
+            .benefitsIconSize_v2(12px, @font-size-base, 0);
+          }
+          @media (@sm-only) {
+            .benefitsIconSize_v2(12px, @font-size-small, 1);
+          }
+          @media (@md-only) {
+            .benefitsIconSize_v2(12px, @font-size-small, -1);
+          }
+        }
+
+        .benefit-categories {
+          margin: -5px 0 0 0;
+          .innertube {
+            padding: 0 12px 12px 85px;
+            .selected-category {
+              display: inline-block;
+              background: rgba(255, 255, 255, 0.6);
+              border-radius: 6px;
+              font-size: 12px;
+              line-height: 14px;
+              padding: 3px 8px;
+              margin-right: 10px;
+              color: #004A8E;
+            }
+          }
+        }
+      }
+    }
+
+    .mainBenefitHeading_v2 {
+      margin-bottom: 0px;
+
+      h2 {
+        font-size: 21px;
+        color: @gray-dark;
+      }
+
+      h4 {
+        font-size: 12px;
+        color: @gray;
+      }
+    }
+
+    .mobileViewStepText {
+      display: none !important;
+    }
+
+    .section-title {
+      .benefit-selections-count {
+        font-family: @font-family-theme-regular;
+        font-size: 18px;
+        color: @gray700;
+      }
+    }
+  }
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.lt-ie9,
+.lt-ie10 {
+  #benefitsForm .benefits-list {
+    .hasIcons {
+      .categoriesCell_v2 {
+        width: auto;
+
+        .checkbox {
+          label.checked:before {
+            background-color: @health-benefits-icon-bg-checked-color !important;
+            border-color: @health-benefits-icon-border-checked-color !important;
+            color: @white;
+          }
+        }
+
+        .benefitsIconSize_v2(12px, @font-size-base, 0);
+      }
+    }
+  }
+}
+
+//Benefits Switched Off
+.benefits-switched-off {
+  .cover-selected, #benefits_tab_extras_col_content {
+    .opacity(0.3);
+  }
+
+  &.Hospital_container {
+    .benefitsTab_v2 {
+      @media (@xs-only) {
+        display: none;
+      }
+
+      .opacity(0.3);
+
+      a {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+
+  &.GeneralHealth_container {
+    .title p,
+    .title .quickSelectContainer,
+    .Extras-wrapper {
+      @media (@xs-only) {
+        display: none;
+      }
+
+      .opacity(0.3);
+
+      a {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+}
+
+.GeneralHealth_container {
+  .has-switch {
+    @media (@xs-only) {
+      margin-left: 36px;
+    }
+  }
+}
+
+.benefits-switch-alert {
+  @media (@xs-only) {
+    margin-top: 15px;
+    margin-bottom: 0;
+  }
+}
+
+.HospitalBenefitsContainer {
+  .switch-container {
+    padding: 0 15px 0 0;
+  }
+}
+
+.ExtrasBenefitsContainer {
+  .switch-container {
+    @media (min-width: @screen-sm-min) {
+      padding: 0 0 0 15px;
+    }
+  }
+}
+
+#benefitsForm {
+  @media (min-width: @screen-md-min) {
+    div.radio-rounded.has-icons > label.btn.health-icon {
+      //width: 126px;
+    }
+  }
+
+  div.radio-rounded.has-icons > label.btn.health-icon:before {
+    font-size: 32px;
+  }
+
+  div.radio-rounded.has-icons > label > span {
+    display: block;
+    margin-top: 0.5em;
+    font-size: 16px;
+  }
+}
+
+#benefits-list-hospital,
+#benefits-list-extras {
+  position: relative;
+
+  .benefitsLoadingAnimation {
+    display: none;
+    background: #FFFFFF;
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    .spinner,
+    .spinner:after {
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      top: 50px;
+      left: 50%;
+      margin: 0 0 0 -35px;
+    }
+    .spinner {
+      position: absolute;
+      text-indent: -9999em;
+      border-top: 7px solid #004A8E;
+      border-right: 7px solid #004A8E;
+      border-bottom: 7px solid transparent;
+      border-left: 7px solid #004A8E;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+
+    &.active {
+      .spinner {
+        -webkit-animation: animateSpinner 1.1s infinite linear;
+        -moz-animation: animateSpinner 1.1s infinite linear;
+        -o-animation: animateSpinner 1.1s infinite linear;
+        animation: animateSpinner 1.1s infinite linear;
+      }
+    }
+  }
+}
+
+@-webkit-keyframes animateSpinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+  }
+}
+@-moz-keyframes animateSpinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes animateSpinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes animateSpinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+#benefitsForm {
+  h1 {
+    color: @gray800;
+
+    &.step-count {
+      font-family: 'SourceSansProBold';
+      font-size: 40px;
+      color: #063A6D;
+    }
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
+
+body.coverType-C {
+  .section-title-alt {
+    display:none;
+  }
+}
+
+body.coverType-E {
+  .section-title {
+    display:none;
+  }
+  &.SPECIFIC_COVER {
+    .section-title-alt {
+      display: block;
+    }
+  }
+  fieldset.HospitalBenefitsContainer {
+    display: none !important;
+  }
+}
+
+body.coverType-C,
+body.coverType-H{
+  fieldset.HospitalBenefitsContainer {
+    display: block;
+  }
+}
+
+body.limited {
+  #Extras-wrapper {
+    .section-title {
+      display: block;
+    }
+    .section-title-alt {
+      display: none;
+    }
+  }
+}

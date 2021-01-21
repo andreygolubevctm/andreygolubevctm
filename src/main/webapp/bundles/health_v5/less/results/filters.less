@@ -1,0 +1,117 @@
+.filter-heading {
+  font-size: 16px;
+  color: @theme-accent-4;
+}
+
+.filter-sub-heading {
+  display: inline-block;
+  color: @theme-accent-4;
+  margin: 20px 0 10px 0;
+}
+
+.filter {
+
+  .filter-by-container {
+    .clearfix();
+
+    .filter-toggle {
+      float: right;
+    }
+  }
+
+  .filter-select-all-none {
+    color: @gray;
+  }
+
+  .checkbox {
+    padding-top: 10px;
+    color: @theme-tertiary;
+  }
+
+  .filter-by-container {
+    position: relative;
+    .filter-toggle {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+  }
+  .health-filter-hospital-benefits {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  &.filter-frequency {
+    .btn-group .btn {
+      word-wrap: normal;
+    }
+  }
+
+}
+
+.filters-update-container {
+  margin-bottom: 0;
+}
+
+//Benefits Switched Off
+.benefits-switched-off {
+  &.filter-hospital-benefits {
+    .nav-tabs,
+    .tab-content {
+      &.health-filter-hospital-benefits {
+        .opacity(0.3);
+
+        a {
+          pointer-events: none;
+          cursor: default;
+        }
+      }
+    }
+  }
+
+  &.filter-extras-benefits {
+    .benefits-list {
+      .opacity(0.3);
+
+      a {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+}
+
+.results-filters-benefits {
+  .alert {
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+}
+
+.results-filters-discount {
+  padding-bottom: 0;
+  .checkbox {
+    input + label:before {
+      margin-top: 1px;
+    }
+  }
+}
+
+.results-filters-rebate {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.results-filters-abd {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.results-filters-awards-scheme {
+  padding-top: 0;
+  .checkbox {
+    input + label:before {
+      margin-top: 1px;
+    }
+  }
+}

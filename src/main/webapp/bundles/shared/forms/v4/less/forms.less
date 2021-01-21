@@ -51,6 +51,17 @@ fieldset {
     font-size: 12px;
     padding-bottom: 5px;
   }
+
+  &.label-rendered-above-content {
+    margin-left: 0px;
+    margin-right: 0px;
+    & > label {
+      display: block;
+      font-size: 16px;
+      line-height: 22px;
+      margin-bottom: 20px;
+    }
+  }
 }
 
 .form-group,
@@ -58,6 +69,10 @@ fieldset {
   padding-top: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #F0F0F0;
+
+  &.label-rendered-above-content {
+    padding-top: 0;
+  }
 }
 
 .form-group:last-child {
@@ -263,3 +278,4 @@ fieldset {
     }
   }
 }
+
