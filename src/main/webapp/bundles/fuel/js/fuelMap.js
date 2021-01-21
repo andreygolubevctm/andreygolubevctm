@@ -204,8 +204,8 @@
         }
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = 'https://maps.googleapis.com/maps/api/js?key=' + googleAPIKey + '&v=3.24' +
-            '&libraries=places&signed_in=false&callback=meerkat.modules.fuelMap.initCallback';
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=' + googleAPIKey + '&v=3.43' +
+            '&libraries=places&callback=meerkat.modules.fuelMap.initCallback';
         script.onerror = function (msg, url, linenumber) {
             _handleError(msg + ':' + linenumber, "fuelMap.js:initGoogleAPI");
         };

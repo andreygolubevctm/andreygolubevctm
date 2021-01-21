@@ -18,7 +18,7 @@
             'A': 'annual'
         },
         isActive = null,
-        _startMonthFirst = '10/01/' + new Date().getFullYear(),
+        _startMonthFirst = null,
         _trackModalClose = true;
 
     function initDualPricing() {
@@ -26,10 +26,21 @@
             return false;
         }
 
+        _startMonthFirst = getStartMonthFirst('01/04/');
+
         _setupElements();
         _applyEventListeners();
         _eventSubscriptions();
     }
+
+	function getStartMonthFirst(datePrefix) {
+		var now = new Date();
+		var rateRiseDate = meerkat.modules.dateUtils.parse(datePrefix + now.getFullYear(), 'DD/MM/YYYY');
+		var utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+		now = new Date(utc + (3600000*10));
+		rateRiseDate.setFullYear(now.getFullYear() + (now > rateRiseDate ? 1 : 0));
+		return rateRiseDate;
+	}
 
     function isDualPricingActive() {
         if(isActive === null) {
@@ -71,8 +82,8 @@
 
     function _applyEventListeners() {
         $elements.paymentDetailsFrequency.on('change.healthDualPricing', function updateWarningLabel() {
-            var coverStartDateTime = meerkat.modules.dateUtils.parse($("#health_payment_details_start").val(), 'DD/MM/YYYY').getTime(),
-                startMonthFirstTime = new Date(_startMonthFirst).getTime(),
+        	var coverStartDateTime = meerkat.modules.dateUtils.parse($("#health_payment_details_start").val(), 'DD/MM/YYYY').getTime(),
+                startMonthFirstTime = _startMonthFirst.getTime(),
                 frequency = $(this).val().toLowerCase(),
                 selectedProduct = meerkat.modules.healthResults.getSelectedProduct(),
                 selectedPayment = meerkat.modules.healthPaymentStep.getPaymentMethodNode(),

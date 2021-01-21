@@ -1,0 +1,51 @@
+.income_container {
+  padding-left: 30px;
+
+  .rebate-label {
+    color: @theme-secondary;
+  }
+
+  .selectedRebate {
+    color: @gray;
+  }
+
+  #health_healthCover_dependants {
+    margin-bottom: 15px;
+  }
+}
+
+@media(@sm) {
+  #healthAboutYou {
+    .income_container {
+      .select {
+        width: 300px;
+      }
+    }
+  }
+}
+
+.results-filters-rebate {
+  .checkbox {
+    input + label:before {
+      margin-top: 1px;
+    }
+  }
+
+  .income_container {
+    font-size: @font-size-small;
+    padding-left: 33px;
+  }
+}
+
+.label-sub-text{
+  line-height: 14px;
+  color: @theme-dark;
+  font-size: 14px;
+}
+
+.health_cover_details_income.radio-as-checkbox div.col-xs-12.col-sm-6{
+  padding-left: 0;
+  &:last-child {
+    padding-bottom: 10px;
+  }
+}

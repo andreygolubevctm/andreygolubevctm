@@ -14,6 +14,8 @@ import java.util.List;
 
 public class HealthQuoteRequest {
 
+    private boolean returnCTMBenefits;
+
     private boolean isSimples;
 
     private String state;
@@ -67,6 +69,14 @@ public class HealthQuoteRequest {
     private int rabdPercentage;
 
     private CombinedAbdSummary abdSummary;
+
+    public boolean getReturnCTMBenefits() {
+        return returnCTMBenefits;
+    }
+
+    public void setReturnCTMBenefits(boolean returnCTMBenefits) {
+        this.returnCTMBenefits = returnCTMBenefits;
+    }
 
     public boolean getIsSimples() {
         return isSimples;

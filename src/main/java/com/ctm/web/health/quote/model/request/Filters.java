@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Filters {
 
+    private HospitalBenefitsSource hospitalBenefitsSource;
+
     private CappingLimit cappingLimitFilter;
 
     private ExcessFilter excessFilter;
@@ -39,6 +41,14 @@ public class Filters {
     private ProductCappingLimitCategory productCappingLimitFilter;
 
     private Boolean limitToProvidersWithRewardsSchemeFilter;
+
+    public HospitalBenefitsSource getHospitalBenefitsSource() {
+        return hospitalBenefitsSource;
+    }
+
+    public void setHospitalBenefitsSource(HospitalBenefitsSource hospitalBenefitsSource) {
+        this.hospitalBenefitsSource = hospitalBenefitsSource;
+    }
 
     public CappingLimit getCappingLimitFilter() {
         return cappingLimitFilter;

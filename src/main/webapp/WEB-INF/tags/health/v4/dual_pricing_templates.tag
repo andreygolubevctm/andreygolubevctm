@@ -36,7 +36,7 @@
 	{{ } }}
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
 		<div class="raterisemonth-pricing">
-		  <div class="dual-pricing-before-after-text">From October 1</div>
+		  <div class="dual-pricing-before-after-text">From April 1</div>
 			<div class="altPriceContainer">
 				{{= renderedAltPriceTemplate }}
 			</div>
@@ -72,7 +72,7 @@
 			</div>
 			<div class="moreInfoPriceWrapper">
 				<div class="moreInfoPriceContainer future-price">
-					<div class="moreInfoPriceHeading">Premiums rise from October 1</div>
+					<div class="moreInfoPriceHeading">Premiums rise from April 1</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltPriceTemplate }}
 					</div>
@@ -112,7 +112,7 @@
 			</div>
 			<div class="col-xs-6 raterisemonth-container">
 				<div class="raterisemonth-pricing">
-					<div class="dual-pricing-before-after-text">Price after October 1</div>
+					<div class="dual-pricing-before-after-text">Price after April 1</div>
 					{{= renderedAltPriceTemplate }}
 				</div>
 			</div>

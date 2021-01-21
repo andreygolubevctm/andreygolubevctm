@@ -1,0 +1,84 @@
+#health_benefits_categorySelectExtras-container,
+#health_benefits_categorySelectHospital-container {
+  .categorySelect-copy-container {
+    display: none;
+    overflow: hidden;
+
+    @media(@md) {
+      overflow: visible;
+    }
+  }
+}
+
+.categorySelect-copy-container {
+  position: relative;
+
+  .categorySelect-copy-innertube {
+    position: relative;
+    padding: 1.5em 1em;
+    border: 1px solid #ccc;
+    bottom: 0;
+
+    .categorySelect-copy {
+      margin-right: 180px;
+
+      h4 {
+        margin: 0 0 0.5em 0;
+      }
+
+      p {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      @media(@xs-only) {
+        margin-right: 115px;
+      }
+    }
+  }
+
+  .categorySelect-artwork {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 209px;
+		height: 166px;
+		background-position: center;
+		background-size: 100%;
+		background-color: transparent;
+		.highResImg('../../../../assets/graphics/health/category-select-artwork/stethoscope@2x.png'; '../../../../assets/graphics/health/category-select-artwork/stethoscope@2x.png'; 209px; 166px);
+
+    @media(@xs-only) {
+		top: 0;
+		width: 209px;
+		height: 304px;
+      .highResImg('../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei@2x.png'; 209px; 304px);
+    }
+  }
+
+  &.ESTABLISHED_FAMILY {
+    .categorySelect-artwork {
+      .highResImg('../../../../assets/graphics/health/category-select-artwork/Established_family@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Established_family@2x.png'; 209px; 166px);
+
+      @media(@xs-only) {
+        .highResImg('../../../../assets/graphics/health/category-select-artwork/Mobile_Meerkat_Family@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Mobile_Meerkat_Family@2x.png'; 209px; 304px);
+      }
+    }
+  }
+
+  &.GROWING_FAMILY {
+    .categorySelect-artwork {
+      .highResImg('../../../../assets/graphics/health/category-select-artwork/Sergei_Oleg@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Sergei_Oleg@2x.png'; 209px; 166px);
+
+      @media(@xs-only) {
+        .highResImg('../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei_holding_Oleg@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei_holding_Oleg@2x.png'; 209px; 304px);
+      }
+    }
+  }
+}
+
+body.limited {
+  .hide_when_limited_cover {
+    display: none !important;
+  }
+}

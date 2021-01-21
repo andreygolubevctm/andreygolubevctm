@@ -1,0 +1,40 @@
+.toggleAndJumpMenu {
+
+  margin: 20px 0 8px 0;
+
+  .innertube {
+    padding: 0;
+
+    &.clearfix::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+  }
+
+  span {
+    font-size: 18px;
+    line-height: 23px;
+    color: #25130E;
+
+    &.option {
+      display: inline-block;
+    }
+
+    &.untickAll,
+    &.jumpTo > span {
+      color: #0B60B7;
+      font-weight: 600;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    &.untickAll {
+      float: left;
+    }
+
+    &.jumpTo {
+      float:right;
+    }
+  }
+}

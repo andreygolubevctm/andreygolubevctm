@@ -1,0 +1,217 @@
+/**********************************************
+	LESS PORTED FROM core/resultsHeaderBar.less
+**********************************************/
+
+.resultsContainer {
+  position: relative;
+  z-index: @results-zindex-resultItems;
+  margin-top: 20px;
+
+  .show-on-affix {
+    display: none;
+  }
+
+  .callCentreNumber, .callCentreNumber a {
+    text-align: center;
+    font-size: 26px;
+    padding-bottom: 20px;
+    color: #0B60B7;
+    @media(@xs-sm-only) {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+
+  .icon-results {
+    line-height: 1.3;
+  }
+
+  // always in effect when affixed
+  &.affixed-settings {
+
+    &.featuresMode {
+      .results-header-inner-container {
+        @media (@md-only) {
+          margin: 10px 5px 25px 5px;
+        }
+      }
+    }
+    .hide-on-affix {
+      display: none !important;
+    }
+    .show-on-affix {
+      display: block;
+    }
+
+    .result {
+      // if the top bar changes size, this will need to change...
+      top: 147px;
+      @media (@sm-only) {
+        top: 65px;
+      }
+      @media (@md) {
+        top: 59px;
+      }
+      width: inherit;
+      border: 1px solid @results-border-color;
+      border-bottom: 1px solid @gray-dark;
+    }
+
+    .pinned {
+      .result {
+        border-color: @theme-accent-4;
+        border-bottom-color: @gray-dark;
+      }
+    }
+
+    .resultInsert {
+      .result-header-utility-bar {
+        padding-bottom: 0;
+      }
+      .results-header-inner-container {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .productSummary {
+        height: 100px;
+        @media (@sm-only) {
+          height: 55px;
+        }
+        @media (@md) {
+          height: 55px;
+        }
+        @media(@xs-sm-only) {
+          .annually .frequencyAmount {
+            font-size: 36px;
+            line-height: 38px; // to match the other frequency font sizes
+          }
+        }
+        @media(@md-only) {
+          .annually .frequencyAmount {
+            font-size: 38px;
+            line-height: 38px; // to match the other frequency font sizes
+          }
+        }
+      }
+    }
+    @media(@sm) {
+      .affixed-logo {
+        float: left;
+        width: 45%;
+      }
+    }
+
+
+    .result-row {
+      border: 0;
+      // To make up for the space no longer consumed by the .result element.
+      padding-top: 220px;
+      @media (@sm) {
+        padding-top: 230px;
+      }
+      @media (@lg) {
+        padding-top: 180px;
+      }
+
+      .featuresList {
+        border: 2px solid @results-border-color;
+        margin: 0;
+        padding: 15px 10px 0 10px;
+        @media (@sm) {
+          padding: 15px 15px 0 15px;
+        }
+      }
+      &.pinned .featuresList {
+        border-color: @theme-accent-4;
+      }
+    }
+  }
+
+  // .affixed is not in effect while going between pages.
+  &.affixed {
+
+    .result {
+      display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
+      position: fixed;
+    }
+
+    .currentPage {
+      border: 0;
+      .result {
+        display: block;
+        border: 2px solid #ddd;
+        border-top: 0;
+        border-bottom: 0;
+      }
+      &.hovered {
+        border: 0;
+
+        .result {
+          border: 2px solid @theme-tertiary;
+          border-top: 0;
+          border-bottom: 0;
+
+          & + .featuresList{
+            border-color: @theme-tertiary;
+          }
+        }
+      }
+      .result,
+      &.hovered .result {
+        .results-header-inner-container{
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 15px;
+          margin-bottom: 5px;
+        }
+      }
+
+      &.pinned {
+        border: 0;
+
+        &.hovered {
+          border: 0;
+
+          .result {
+            & + .featuresList {
+              border-color: @theme-accent-4;
+            }
+          }
+        }
+
+        .result {
+          border: 2px solid #008284;
+          border-top: 0;
+          border-bottom: 0;
+        }
+      }
+    }
+  }
+
+  &.affixed-compact {
+    @media (@xs-only) {
+      .result {
+        .opacity(0);
+      }
+
+      .isScrolling .result {
+        .opacity(0);
+      }
+
+      .currentPage {
+        .result {
+          .opacity(1);
+        }
+      }
+
+    }
+
+  }
+
+  // only in effect during the pagination animation
+  &.affixed-absoluted {
+    .result {
+      position: absolute;
+    }
+  }
+}

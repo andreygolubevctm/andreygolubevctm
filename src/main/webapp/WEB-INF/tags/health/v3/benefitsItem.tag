@@ -24,6 +24,10 @@
 	</div>
 </c:set>
 
+<c:set var="includeBenefitWhenFormSubmittedAttribute" value=" data-attach='true' " />
+<c:set var="benefitTypeAttribute" value=" data-type='extras' " />
+<c:set var="benefitGroupAttribute" value="" />
+
 <c:if test="${item.isShortlistable()}">
 
 	<%-- Get the correct cell width for sections v. categories --%>
@@ -88,7 +92,7 @@
 					<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
-							<h2 class="ignore">Choose Your ${item.getName()}</h2>
+							<h2 class="ignore">Choose Your ${item.getName()} <a href="javascript:;" data-clearall-type="${fn:toLowerCase(category)}">Clear All</a></h2>
 							<c:if test="${category eq 'Hospital'}">
 								<div class="hospitalCoverToggles hidden-xs">${altJourneyCustomiseBtn}</div>
 							</c:if>
@@ -157,24 +161,30 @@
 
                         <c:if test="${item.hasShortlistableChildren()}">
                             <div class="children healthBenefits">
-								<c:if test="${category != 'Hospital'}">
-									<div class="grouping-header fourIconWidth hidden-xs">Dental Services</div>
-									<div class="grouping-header twoIconWidth hidden-xs">Eye Care</div>
-									<div class="grouping-header twoIconWidth hidden-xs">Foot Care</div>
-									<div class="grouping-border fourIconWidth hidden-xs"></div>
-									<div class="grouping-border twoIconWidth hidden-xs"></div>
-									<div class="grouping-border twoIconWidth hidden-xs"></div>
-									<core_v1:js_template id="extras-mid-row-groupings">
-									<div class="grouping-header fourIconWidth hidden-xs">Clinical Therapies</div>
-									<div class="grouping-header fourIconWidth hidden-xs">Natural Therapies</div>
-									<div class="grouping-border fourIconWidth hidden-xs"></div>
-									<div class="grouping-border fourIconWidth hidden-xs"></div>
-									</core_v1:js_template>
-									<core_v1:js_template id="extras-last-row-groupings">
-									<div class="grouping-header twoIconWidth lastRow hidden-xs">Health Aids</div>
-									<div class="grouping-border twoIconWidth lastRow hidden-xs"></div>
-									</core_v1:js_template>
-								</c:if>
+                                <c:choose>
+                                    <c:when test="${category eq 'Hospital'}">
+                                        <c:set var="includeBenefitWhenFormSubmittedAttribute" value=" data-ignore=\"true\" " />
+                                        <c:set var="benefitTypeAttribute" value=" data-type='hospital' " />
+                                    </c:when>
+                                    <c:when test="${category != 'Hospital'}">
+                                        <div class="grouping-header fourIconWidth hidden-xs">Dental Services</div>
+                                        <div class="grouping-header twoIconWidth hidden-xs">Eye Care</div>
+                                        <div class="grouping-header twoIconWidth hidden-xs">Foot Care</div>
+                                        <div class="grouping-border fourIconWidth hidden-xs"></div>
+                                        <div class="grouping-border twoIconWidth hidden-xs"></div>
+                                        <div class="grouping-border twoIconWidth hidden-xs"></div>
+                                        <core_v1:js_template id="extras-mid-row-groupings">
+                                        <div class="grouping-header fourIconWidth hidden-xs">Clinical Therapies</div>
+                                        <div class="grouping-header fourIconWidth hidden-xs">Natural Therapies</div>
+                                        <div class="grouping-border fourIconWidth hidden-xs"></div>
+                                        <div class="grouping-border fourIconWidth hidden-xs"></div>
+                                        </core_v1:js_template>
+                                        <core_v1:js_template id="extras-last-row-groupings">
+                                        <div class="grouping-header twoIconWidth lastRow hidden-xs">Health Aids</div>
+                                        <div class="grouping-border twoIconWidth lastRow hidden-xs"></div>
+                                        </core_v1:js_template>
+                                    </c:when>
+                                </c:choose>
 								<div class="hasIcons">
                                 <c:forEach items="${item.getChildren()}" var="selectedValue">
 									<c:if test="${selectedValue.isShortlistable()}">
@@ -190,9 +200,10 @@
 										</c:set>
 										<c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${benefitGroup}" quoteChar="\"" /></c:set>
 										<c:set var="analyticsHelpAttr"><field_v1:analytics_attr analVal="qtip ${selectedValue.getShortlistKey()}" quoteChar="\"" /></c:set>
+                                        <c:set var="benefitGroupAttribute" value=" data-group='${selectedValue.getShortlistKey()}' " />
 
 										<%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
-										<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" customAttribute=" data-attach='true' "  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
+										<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" customAttribute=" ${includeBenefitWhenFormSubmittedAttribute} ${benefitTypeAttribute} ${benefitGroupAttribute} "  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
 										</div>
 									</c:if>
 								</c:forEach>
@@ -204,11 +215,14 @@
 				</div>
 			</div>
 		</div>
+
 		<%-- TODO Enable in part 2 --%>
 		<%--<div class="situation-wrapper"></div>--%>
 	</form_v2:fieldset>
 
 	<c:if test="${coverType == 'Hospital'}">
+        <health_v3:clinicalCategories />
+
 		<simples:dialogue id="50" className="simples-dialogue-extras-cover simples-dialog-inbound" vertical="health" />
 		<simples:dialogue id="50" className="simples-dialogue-extras-cover simples-dialog-outbound" vertical="health" />
 		<simples:dialogue id="131" className="simples-dialogue-extras-cover simples-dialog-nextgenoutbound" vertical="health" />

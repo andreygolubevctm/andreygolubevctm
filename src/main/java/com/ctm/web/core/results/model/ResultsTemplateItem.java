@@ -23,6 +23,9 @@ public class ResultsTemplateItem implements Comparable<ResultsTemplateItem> {
 	private int helpId;
 	private String shortlistKey;
 	private int flag;
+	private String groups;
+	private String caption;
+	private String description;
 
 	ArrayList<ResultsTemplateItem> children;
 
@@ -160,6 +163,30 @@ public class ResultsTemplateItem implements Comparable<ResultsTemplateItem> {
 	}
 	public void setFlag(int flag) {
 		this.flag = flag;
+	}
+
+	public void setGroups(String groups) {
+		this.groups = groups;
+	}
+
+	public String getGroups() {
+		return groups;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public boolean hasShortlistableChildren(){

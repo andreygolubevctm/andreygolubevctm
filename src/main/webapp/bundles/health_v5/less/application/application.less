@@ -1,0 +1,95 @@
+.health_application_address_non_standard_container,
+.health_application_postal_nonStd_row {
+  display: none;
+}
+
+#health_application_address_autofilllessSearchRow,
+.health_application_address_nonStd_row + .form-group{
+  margin-bottom: 0;
+}
+
+@media(@xs-only) {
+  .addressHeading {
+    margin-top: 40px;
+    label {
+      font-family: @font-family-theme-bold;
+      font-size: 18px;
+    }
+  }
+}
+@media(@sm) {
+  #applicationDetailsForm {
+    .row-content {
+      [class*="col-sm-"] {
+        padding-right: 0;
+      }
+    }
+
+    .std_streetNum {
+      .error-field {
+        width: 200px;
+      }
+    }
+  }
+}
+
+#applicationDetailsForm {
+  .bufferBottom{
+    margin-bottom: 10px;
+  }
+}
+
+.fundHistoryFieldFooterText {
+  margin-top: 10px;
+}
+
+.fundHistoryFieldFooterText.noTopBuffer {
+  margin-top: 0;
+}
+
+.applyFullLHCAdditionalText {
+  margin-top: 10px;
+}
+
+.matchCheckboxLabelStyles{
+  font-size:0.86em;
+}
+
+@media(@xs-only) {
+  .productSummary-affix {
+    .lhcText {
+      display: inline-block;
+    }
+  }
+}
+
+#health_application_address_state-error {
+  margin-top: 15px;
+}
+
+.health_application_address_non_standard_container,
+.health_application_postal_non_standard_container {
+  .form-group:last-child {
+    border-bottom: 1px solid #F0F0F0;
+  }
+}
+
+#health_application_primary_title {
+  padding-left: 10px;
+  padding-right: 30px;
+}
+
+.abd-details-application, .abd-details-application-single, .abd-details-application-couple {
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.allow-for-exp-day {
+  margin-left: -15px;
+}
+
+@media(@lg) {
+  #health_previousfund, #primarypreviousfund {
+    fieldset{margin-top:1em;}
+  }
+}
