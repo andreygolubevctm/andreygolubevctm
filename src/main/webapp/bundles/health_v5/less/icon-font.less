@@ -1,0 +1,677 @@
+/**
+* An icon font should be able to be called simply by using e.g. health-icon health-icon-hospital.
+* Unfortunately, we have at least 4 different ways of applying the icons to elements, none of which allow for the icon to be displayed in results
+* without a background or some extra markup.
+*/
+.health-icon {
+  font-family: 'ctm-health';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: text-top;
+  display: inline-block;
+  overflow: visible;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  &.round-standalone {
+    vertical-align: middle;
+    color: @btn-benefit-category-active-color;
+    background-color: @health-benefits-icon-more-border-color;
+    border-radius: 18px;
+    font-size: 25px;
+    padding: 5px;
+  }
+
+  // When an icon is inside an anchor/link inherit the line height so it's positioned correctly.
+  a &,
+  button & {
+    line-height: inherit;
+  }
+
+  &.HLTicon-hospital {
+    &:before {
+      content: "\e906";
+    }
+  }
+
+  &.HLTicon-heart-surgery {
+    &:before {
+      content: "\e910";
+    }
+  }
+  &.HLTicon-extras {
+    &:before {
+      content: "\e904";
+    }
+  }
+
+  &.HLTicon-birth-related {
+    &:before {
+      content: "\e91b";
+    }
+  }
+
+  &.HLTicon-assisted-reproduction {
+    &:before {
+      content: "\e90e";
+    }
+  }
+
+  &.HLTicon-major-eye-surgery {
+    &:before {
+      content: "\e913";
+    }
+  }
+
+  &.HLTicon-joint-replacement {
+    &:before {
+      content: "\e911";
+    }
+  }
+
+  &.HLTicon-cosmetic-surgery {
+    &:before {
+      content: "\e919";
+    }
+  }
+
+  &.HLTicon-sterilisation {
+    &:before {
+      content: "\e91d";
+    }
+  }
+
+  &.HLTicon-gastric-banding {
+    &:before {
+      content: "\e91e";
+    }
+  }
+
+  &.HLTicon-dialysis {
+    &:before {
+      content: "\e90d";
+    }
+  }
+
+  &.HLTicon-palliative-care {
+    &:before {
+      content: "\e917";
+    }
+  }
+
+  &.HLTicon-in-hospital-rehabilitation {
+    &:before {
+      content: "\e91f";
+    }
+  }
+
+  &.HLTicon-general-dental {
+    &:before {
+      content: "\e90f";
+    }
+  }
+
+  &.HLTicon-major-dental {
+    &:before {
+      content: "\e912";
+    }
+  }
+
+  &.HLTicon-optical {
+    &:before {
+      content: "\e916";
+    }
+  }
+
+  &.HLTicon-physiotherapy {
+    &:before {
+      content: "\e918";
+    }
+  }
+
+  &.HLTicon-chiropractor {
+    &:before {
+      content: "\e91c";
+    }
+  }
+
+  &.HLTicon-podiatry {
+    &:before {
+      content: "\e91a";
+    }
+  }
+
+  &.HLTicon-acupuncture {
+    &:before {
+      content: "\e90b";
+    }
+  }
+
+  &.HLTicon-naturopathy {
+    &:before {
+      content: "\e915";
+    }
+  }
+
+  &.HLTicon-remedial-massage {
+    &:before {
+      content: "\e914";
+    }
+  }
+
+  &.HLTicon-in-hospital-psychiatry {
+    &:before {
+      content: "\e90c";
+    }
+  }
+
+  &.HLTicon-endodontic {
+    &:before {
+      content: "\e929";
+    }
+  }
+
+  &.HLTicon-orthodontic {
+    &:before {
+      content: "\e923";
+    }
+  }
+
+  &.HLTicon-psychology {
+    &:before {
+      content: "\e92c";
+    }
+  }
+
+  &.HLTicon-glucose-monitor {
+    &:before {
+      content: "\e927";
+    }
+  }
+
+  &.HLTicon-hearing-aids {
+    &:before {
+      content: "\e926";
+    }
+  }
+
+  &.HLTicon-non-pbs-pharm {
+    &:before {
+      content: "\e924";
+    }
+  }
+
+  &.HLTicon-orthotics {
+    &:before {
+      content: "\e922";
+    }
+  }
+
+  &.HLTicon-speech-therapy {
+    &:before {
+      content: "\e921";
+    }
+  }
+
+  &.HLTicon-occupational-therapy {
+    &:before {
+      content: "\e92b";
+    }
+  }
+
+  &.HLTicon-dietetics {
+    &:before {
+      content: "\e92a";
+    }
+  }
+
+  &.HLTicon-eye-therapy {
+    &:before {
+      content: "\e928";
+    }
+  }
+
+  &.HLTicon-lifestyle-products {
+    &:before {
+      content: "\e925";
+    }
+  }
+
+  &.HLTicon-ambulance {
+    &:before {
+      content: "\e923";
+    }
+  }
+
+  &.HLTicon-n-assisted-reproduction {
+    &:before {
+      content: "\e941"
+    }
+  }
+
+  &.HLTicon-n-back-surgery {
+    &:before {
+      content: "\e942"
+    }
+  }
+
+  &.HLTicon-n-bone-muscle-joint {
+    &:before {
+      content: "\e943";
+    }
+  }
+
+  &.HLTicon-n-cancer {
+    &:before {
+      content: "\e944"
+    }
+  }
+
+  &.HLTicon-n-dental-surgery {
+    &:before {
+      content: "\e945"
+    }
+  }
+
+  &.HLTicon-n-renal-dialysis {
+    &:before {
+      content: "\e946"
+    }
+  }
+
+  &.HLTicon-n-ent {
+    &:before {
+      content: "\e947"
+    }
+  }
+
+  &.HLTicon-n-cardiac {
+    &:before {
+      content: "\e948"
+    }
+  }
+
+
+  &.HLTicon-n-hernia-appendix {
+    &:before {
+      content: "\e949"
+    }
+  }
+
+  &.HLTicon-n-psychiatric {
+    &:before {
+      content: "\e950"
+    }
+  }
+
+  &.HLTicon-n-rehabilitation {
+    &:before {
+      content: "\e951"
+    }
+  }
+
+  &.HLTicon-n-joint-replacement {
+    &:before {
+      content: "\e94a"
+    }
+  }
+
+  &.HLTicon-n-cataract-eye-lens {
+    &:before {
+      content: "\e94b"
+    }
+  }
+
+  &.HLTicon-n-plastic-non-cosmetic {
+    &:before {
+      content: "\e94e"
+    }
+  }
+
+  &.HLTicon-n-pain-management-no-device {
+    &:before {
+      content: "\e94c"
+    }
+  }
+
+  &.HLTicon-n-pallative {
+    &:before {
+      content: "\e94d"
+    }
+  }
+
+  &.HLTicon-n-obstetric {
+    &:before {
+      content: "\e94f"
+    }
+  }
+
+  &.HLTicon-n-gastric-banding {
+    &:before {
+      content: "\e952"
+    }
+  }
+
+  &.HLTicon-vert-health {
+    &:before {
+      content: "\e93e";
+    }
+  }
+
+  &.HLTicon-aus {
+    &:before {
+      content: "\e93f";
+    }
+  }
+
+  &.HLTicon-callcentre {
+    &:before {
+      content: "\e940";
+    }
+  }
+
+  /** Icons for Clinical Categories */
+
+  &.ClinicalCategoryIcon-REHABILITATION {
+    &:before {
+      content: "\e978"
+    }
+  }
+  &.ClinicalCategoryIcon-HOSPITAL_PSYCHIATRIC_SERVICES {
+    &:before {
+      content: "\e968"
+    }
+  }
+  &.ClinicalCategoryIcon-PALLIATIVE_CARE {
+    &:before {
+      content: "\e974"
+    }
+  }
+  &.ClinicalCategoryIcon-BRAIN_AND_NERVOUS_SYSTEM {
+    &:before {
+      content: "\e959"
+    }
+  }
+  &.ClinicalCategoryIcon-EYE_NOT_CATARACTS {
+    &:before {
+      content: "\e962"
+    }
+  }
+  &.ClinicalCategoryIcon-EAR_NOSE_AND_THROAT {
+    &:before {
+      content: "\e961"
+    }
+  }
+  &.ClinicalCategoryIcon-TONSILS_ADENOIDS_AND_GROMMETS {
+    &:before {
+      content: "\e961"
+    }
+  }
+  &.ClinicalCategoryIcon-BONE_JOINT_AND_MUSCLE {
+    &:before {
+      content: "\e956"
+    }
+  }
+  &.ClinicalCategoryIcon-JOINT_RECONSTRUCTIONS {
+    &:before {
+      content: "\e96c"
+    }
+  }
+  &.ClinicalCategoryIcon-KIDNEY_AND_BLADDER {
+    &:before {
+      content: "\e970"
+    }
+  }
+  &.ClinicalCategoryIcon-MALE_REPRODUCTIVE_SYSTEM {
+    &:before {
+      content: "\e972"
+    }
+  }
+  &.ClinicalCategoryIcon-DIGESTIVE_SYSTEM {
+    &:before {
+      content: "\e960"
+    }
+  }
+  &.ClinicalCategoryIcon-HERNIA_AND_APPENDIX {
+    &:before {
+      content: "\e967"
+    }
+  }
+  &.ClinicalCategoryIcon-GASTROINTESTINAL_ENDOSCOPY {
+    &:before {
+      content: "\e963"
+    }
+  }
+  &.ClinicalCategoryIcon-GYNAECOLOGY {
+    &:before {
+      content: "\e964"
+    }
+  }
+  &.ClinicalCategoryIcon-MISCARRIAGE_AND_TERMINATION_OF_PREGNANCY {
+    &:before {
+      content: "\e958"
+    }
+  }
+  &.ClinicalCategoryIcon-CHEMOTHERAPY_RADIOTHERAPY_AND_IMMUNOTHERAPY_FOR_CANCER {
+    &:before {
+      content: "\e95c"
+    }
+  }
+  &.ClinicalCategoryIcon-PAIN_MANAGEMENT {
+    &:before {
+      content: "\e973"
+    }
+  }
+  &.ClinicalCategoryIcon-SKIN {
+    &:before {
+      content: "\e979"
+    }
+  }
+  &.ClinicalCategoryIcon-BREAST_SURGERY_MEDICALLY_NECESSARY {
+    &:before {
+      content: "\e95a"
+    }
+  }
+  &.ClinicalCategoryIcon-DIABETES_MANAGEMENT_EXCLUDING_INSULIN_PUMPS {
+    &:before {
+      content: "\e95e"
+    }
+  }
+  &.ClinicalCategoryIcon-HEART_AND_VASCULAR_SYSTEM {
+    &:before {
+      content: "\e966"
+    }
+  }
+  &.ClinicalCategoryIcon-LUNG_AND_CHEST {
+    &:before {
+      content: "\e971"
+    }
+  }
+  &.ClinicalCategoryIcon-BLOOD {
+    &:before {
+      content: "\e955"
+    }
+  }
+  &.ClinicalCategoryIcon-BACK_NECK_AND_SPINE {
+    &:before {
+      content: "\e954"
+    }
+  }
+  &.ClinicalCategoryIcon-PLASTIC_AND_RECONSTRUCTIVE_SURGERY_MEDICALLY_NECESSARY {
+    &:before {
+      content: "\e975"
+    }
+  }
+  &.ClinicalCategoryIcon-DENTAL_SURGERY {
+    &:before {
+      content: "\e95d"
+    }
+  }
+  &.ClinicalCategoryIcon-PODIATRIC_SURGERY_PROVIDED_BY_AN_ACCREDITED_PODIATRIC_SURGEON {
+    &:before {
+      content: "\e976"
+    }
+  }
+  &.ClinicalCategoryIcon-IMPLANTATION_OF_HEARING_DEVICES {
+    &:before {
+      content: "\e969"
+    }
+  }
+  &.ClinicalCategoryIcon-CATARACTS {
+    &:before {
+      content: "\e95b"
+    }
+  }
+  &.ClinicalCategoryIcon-JOINT_REPLACEMENTS {
+    &:before {
+      content: "\e957"
+    }
+  }
+  &.ClinicalCategoryIcon-DIALYSIS_FOR_CHRONIC_KIDNEY_FAILURE {
+    &:before {
+      content: "\e95f"
+    }
+  }
+  &.ClinicalCategoryIcon-PREGNANCY_AND_BIRTH {
+    &:before {
+      content: "\e977"
+    }
+  }
+  &.ClinicalCategoryIcon-ASSISTED_REPRODUCTIVE_SERVICES {
+    &:before {
+      content: "\e953"
+    }
+  }
+  &.ClinicalCategoryIcon-WEIGHT_LOSS_SURGERY {
+    &:before {
+      content: "\e97b"
+    }
+  }
+  &.ClinicalCategoryIcon-INSULIN_PUMPS {
+    &:before {
+      content: "\e96b"
+    }
+  }
+  &.ClinicalCategoryIcon-PAIN_MANAGEMENT_WITH_DEVICE {
+    &:before {
+      content: "\e98c"
+    }
+  }
+  &.ClinicalCategoryIcon-SLEEP_STUDIES {
+    &:before {
+      content: "\e97a"
+    }
+  }
+
+  /** v5 loading spinner icon */
+
+  &.icon-health-loading-spinner {
+    &:before {
+      content: "\e988"
+    }
+  }
+
+  /** v5 quick select icons */
+
+  &.icon-health-quickselect-check {
+    &:before {
+      content: "\e987"
+    }
+  }
+  &.icon-health-quickselect-plus {
+    &:before {
+      content: "\e986"
+    }
+  }
+
+  /** v5 cover type button icons */
+
+  &.icon-health-covertype-combined {
+    &:before {
+      content: "\e989"
+    }
+  }
+  &.icon-health-covertype-hospital {
+    &:before {
+      content: "\e98a"
+    }
+  }
+  &.icon-health-covertype-extras {
+    &:before {
+      content: "\e98b"
+    }
+  }
+
+  /** v5 quick select clinical category button icons */
+
+  &.icon-health-quickselect-clinicalcat-comprehensive-cover {
+    &:before {
+      content: "\e97c"
+    }
+  }
+  &.icon-health-quickselect-clinicalcat-established-family {
+    &:before {
+      content: "\e96d"
+    }
+  }
+  &.icon-health-quickselect-clinicalcat-growing-family {
+    &:before {
+      content: "\e97e"
+    }
+  }
+  &.icon-health-quickselect-clinicalcat-new-to-health-insurance {
+    &:before {
+      content: "\e97f"
+    }
+  }
+  &.icon-health-quickselect-clinicalcat-peace-of-mind {
+    &:before {
+      content: "\e980"
+    }
+  }
+  &.icon-health-quickselect-clinicalcat-reduce-tax {
+    &:before {
+      content: "\e981"
+    }
+  }
+  &.icon-health-quickselect-clinicalcat-specific-cover {
+    &:before {
+      content: "\e982"
+    }
+  }
+
+  /** v5 quick select extras button icons */
+
+  &.icon-health-quickselect-extras-specific-cover {
+    &:before {
+      content: "\e982"
+    }
+  }
+  &.icon-health-quickselect-extras-a-few-more {
+    &:before {
+      content: "\e983"
+    }
+  }
+  &.icon-health-quickselect-extras-complete-cover {
+    &:before {
+      content: "\e984"
+    }
+  }
+  &.icon-health-quickselect-extras-popular {
+    &:before {
+      content: "\e985"
+    }
+  }
+
+  &.icon-health-chevron {
+    &:before {
+      content: "\e98d"
+    }
+  }
+}

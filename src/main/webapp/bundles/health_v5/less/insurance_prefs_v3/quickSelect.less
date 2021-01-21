@@ -1,0 +1,79 @@
+#health_benefits_quickSelectHospital-container {
+  display: none;
+  background: #FAFAFA;
+  padding: 1em;
+
+  h3 {
+    color: @gray900
+  }
+
+  .selectable {
+    position: relative;
+    display: inline-block !important;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 12px 42px 12px 12px;
+    margin: 0 1em 1em 0;
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    box-sizing: border-box;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #25130E;
+    line-height: 18px;
+    cursor: pointer;
+
+    :before {
+      position: absolute;
+      display: block;
+      width: 25px;
+      height: 25px;
+      right: 9px;
+      top: 50%;
+      margin-top: -12px;
+      font-size: 25px;
+      color: #9E9E9E;
+    }
+
+    &:hover {
+      filter: brightness(97%);
+    }
+
+    &.active {
+      background: #E7F0FB;
+      border-color: #0B60B7;
+      color: #0B60B7;
+      text-decoration: none;
+
+      :before {
+        color: #0B60B7;
+        content: "\e987";
+      }
+    }
+
+    &.showhide {
+      color: #0B60B7;
+      font-size: 16px;
+      font-family: @font-family-theme-semibold;
+
+      :before {
+        color: #0B60B7;
+        font-size: 30px;
+        content: "\e98d";
+      }
+
+      &.less {
+        :before {
+          margin-top: -10px;
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    &.hidden,
+    &.hidden-xs{
+      display: none !important;
+    }
+  }
+}
+

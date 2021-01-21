@@ -1,0 +1,136 @@
+/** Hiding the Next button at the bottom of journey as its in top right bar.
+    XS is the only one that displays it at the bottom
+ */
+/*
+.slideAction .journeyNavButton {
+  @media (@sm) {
+    display: none;
+  }
+}*/
+
+.reform-messaging {
+  border-bottom: 2px solid #DDD;
+  margin-bottom: 30px;
+  padding: 20px 25px;
+  border: 1px solid #666666;
+  border-radius: 5px;
+}
+
+.reform-messaging-title {
+  color: #666666;
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+.btn-submit {
+  background: @green500;
+
+  &:hover {
+    background: @theme-secondary;
+  }
+}
+
+.btn-next {
+  border-radius: 4px;
+  min-height: 40px;
+  padding: 10px 0 0 0;
+  @media (@xs-only) {
+    width: 300px;
+    margin: 0 auto;
+    height: 60px;
+    font-size: 20px;
+    padding-top: 15px;
+  }
+  @media (@lg) {
+    font-size: @font-size-large;
+    min-height: 48px;
+    padding-top: 14px;
+  }
+}
+
+
+@media (@xs-only) {
+  body:not([data-step=results]) {
+    .header-wrap {
+      min-height: 67px;
+    }
+    &.couponShown {
+      .header-wrap {
+        min-height: 127px;
+      }
+    }
+  }
+}
+
+.slideAction,
+.confirm-step {
+  div:first-child {
+    float: right;
+    text-align: right;
+  }
+}
+
+body[data-step=contact],
+#agr-modal {
+  .required_input label.control-label:after {
+    content: "\002A";
+    color: @required-color;
+    padding-left: 2px;
+  }
+  .health-required-blurb  {
+    color: @gray-dark;
+    font-size: 16px;
+    span {
+      color: @required-color;
+    }
+  }
+}
+
+.centerRowContents {
+  float: none;
+  margin: 0 auto;
+}
+
+.productsDisplayedText,
+.pageRangeStart,
+.pageRangeEnd {
+  font-family: @font-family-theme-semibold;
+}
+
+.results-pagination {
+  margin-bottom: 10px;
+
+  @media (@sm) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .nav > li  {
+    .btn-pagination.btn-secondary {
+      border: 1px solid @btn-secondary-border-color;
+      color:@btn-secondary-color;
+      background-color: @btn-secondary-bg-color;
+
+      &:hover,
+      &:focus{
+        color:@btn-secondary-hover-color;
+        background-color: @btn-secondary-hover-bg-color;
+        border-color: @btn-secondary-hover-border-color;
+      }
+
+      &:active,
+      &.active{
+        color:@btn-secondary-active-color;
+        background-color: @btn-secondary-active-bg-color;
+        border-color: @btn-secondary-active-border-color;
+      }
+      &.inactive {
+        border-color: transparent;
+        cursor: default;
+        background-color: @white;
+        opacity: 1;
+        color: @gray-dark;
+      }
+    }
+  }
+}

@@ -99,6 +99,17 @@
             $hasIconsDiv.addClass('hasIcons');
         });
 
+		$(document).on('click', 'a[data-clearall-type]', function clearAllSelectedBenefits() {
+		    var $that = $(this);
+			var type = $that.attr("data-clearall-type");
+			$that.closest('.hasShortlistableChildren').find(':input:checked').filter('[data-type=' + (type === 'hospital' ? type : 'extras') + ']').prop('checked', false).change();
+			if(type === 'hospital') {
+			    _.defer(function(){
+					$('#clinicalCategoriesContent').find(':input:checked').prop('checked', false).change().closest('.short-list-item').removeClass('active');
+                });
+			}
+		});
+
     }
 
     function setDefaultCover() {
@@ -257,6 +268,8 @@
                 case 'limited':
                     $hospitalBenefitsSection.slideUp(function () {
                         $(this).prop('checked', false);
+                        meerkat.modules.healthClinicalCategories.setAccidentOnlyCover(true);
+                        $hospitalCover.find('a[data-clearall-type]').addClass('hidden');
                     });
 
                     $limitedCoverHidden.val('Y');
@@ -275,6 +288,10 @@
                     $coverButtons.each(function () {
                         $(this).prop('checked', true);
                     });
+
+                    meerkat.modules.healthClinicalCategories.setAccidentOnlyCover(false);
+					$hospitalCover.find('a[data-clearall-type]').removeClass('hidden');
+
                     break;
             }
 
@@ -343,7 +360,17 @@
      * */
 
     function resetBenefitsSelection(includeHidden) {
-        $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").prop('checked', false);
+        $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").each(function(){
+            var $that = $(this);
+            var isClinicalCategory = !_.isUndefined($that.attr("data-benefit-code"));
+            var manualSelection = !_.isUndefined($that.prop('manually-selected'));
+            if(!isClinicalCategory || (isClinicalCategory && !manualSelection)) {
+                $that.prop("checked", false);
+                if(isClinicalCategory) {
+                    $that.closest(".categoriesCell_v2").removeClass("active");
+                }
+            }
+        });
         if(includeHidden === true){
             $hiddenFields.find(".benefit-item").val('');
         }
@@ -354,12 +381,11 @@
 	}
 
     function populateBenefitsSelection(checkedBenefits) {
-
         resetBenefitsSelection(false);
 
         for (var i = 0; i < checkedBenefits.length; i++) {
             var path = checkedBenefits[i];
-            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true);
+            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true).change();
         }
     }
 

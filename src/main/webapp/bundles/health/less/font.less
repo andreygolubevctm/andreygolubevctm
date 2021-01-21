@@ -30,6 +30,10 @@
 	font-family: 'ctm-health';
 }
 
+#clinicalCategoriesContent .checkbox input + label:before {
+	font-family: 'framework_font';
+}
+
 .icon-hospital-extras:before {
 	content: "\e920";
 }
@@ -43,18 +47,48 @@
 }
 
 .benefitClass(@class, @labelClass, @content) {
-	.@{class} label,
-	li.@{class},
-	.@{class}.checkbox label {
-		& when not (@labelClass = '') {
-			.@{labelClass}:before {
-				content: @content;
-			}
+  .@{class} label,
+  li.@{class},
+  .@{class}.checkbox label {
+    & when not (@labelClass = '') {
+      .@{labelClass}:before {
+        content: @content;
+      }
+    }
+    & when (@labelClass = '') {
+      &:before {
+        content: @content;
+      }
+    }
+  }
+}
+
+.benefitClassV2(@class, @labelClass, @content, @isLiElement) {
+
+	& when (@isLiElement = 'N') {
+		.@{class} label,
+		.@{class} {
+			.setContent(@labelClass, @content);
 		}
-		& when (@labelClass = '') {
-			&:before {
-				content: @content;
-			}
+	}
+	& when (@isLiElement = 'Y') {
+		.@{class} label,
+		li.@{class},
+		.@{class}.checkbox label {
+			.setContent(@labelClass, @content);
+		}
+	}
+}
+
+.setContent(@labelClass, @content) {
+	& when not (@labelClass = '') {
+		.@{labelClass}:before {
+			content: @content;
+		}
+	}
+	& when (@labelClass = '') {
+		&:before {
+			content: @content;
 		}
 	}
 }
@@ -130,6 +164,44 @@
 	.benefitClass(HLTicon-n-pallative, @labelClass, "\e94d");
 	.benefitClass(HLTicon-n-obstetric, @labelClass, "\e94f");
 	.benefitClass(HLTicon-n-gastric-banding, @labelClass, "\e952");
+	.benefitClassV2(ClinicalCategoryIcon-REHABILITATION, @labelClass, "\e978", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-HOSPITAL_PSYCHIATRIC_SERVICES, @labelClass, "\e968", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-PALLIATIVE_CARE, @labelClass, "\e974", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-BRAIN_AND_NERVOUS_SYSTEM, @labelClass, "\e959", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-EYE_NOT_CATARACTS, @labelClass, "\e962", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-EAR_NOSE_AND_THROAT, @labelClass, "\e961", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-TONSILS_ADENOIDS_AND_GROMMETS, @labelClass, "\e961", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-BONE_JOINT_AND_MUSCLE, @labelClass, "\e956", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-JOINT_RECONSTRUCTIONS, @labelClass, "\e96c", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-KIDNEY_AND_BLADDER, @labelClass, "\e970", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-MALE_REPRODUCTIVE_SYSTEM, @labelClass, "\e972", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-DIGESTIVE_SYSTEM, @labelClass, "\e960", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-HERNIA_AND_APPENDIX, @labelClass, "\e967", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-GASTROINTESTINAL_ENDOSCOPY, @labelClass, "\e963", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-GYNAECOLOGY, @labelClass, "\e964", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-MISCARRIAGE_AND_TERMINATION_OF_PREGNANCY, @labelClass, "\e958", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-CHEMOTHERAPY_RADIOTHERAPY_AND_IMMUNOTHERAPY_FOR_CANCER, @labelClass, "\e95c", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-PAIN_MANAGEMENT, @labelClass, "\e973", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-SKIN, @labelClass, "\e979", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-BREAST_SURGERY_MEDICALLY_NECESSARY, @labelClass, "\e95a", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-DIABETES_MANAGEMENT_EXCLUDING_INSULIN_PUMPS, @labelClass, "\e95e", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-HEART_AND_VASCULAR_SYSTEM, @labelClass, "\e966", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-LUNG_AND_CHEST, @labelClass, "\e971", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-BLOOD, @labelClass, "\e955", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-BACK_NECK_AND_SPINE, @labelClass, "\e954", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-PLASTIC_AND_RECONSTRUCTIVE_SURGERY_MEDICALLY_NECESSARY, @labelClass, "\e975", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-DENTAL_SURGERY, @labelClass, "\e95d", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-PODIATRIC_SURGERY_PROVIDED_BY_AN_ACCREDITED_PODIATRIC_SURGEON, @labelClass, "\e976", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-IMPLANTATION_OF_HEARING_DEVICES, @labelClass, "\e969", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-CATARACTS, @labelClass, "\e95b", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-JOINT_REPLACEMENTS, @labelClass, "\e957", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-DIALYSIS_FOR_CHRONIC_KIDNEY_FAILURE, @labelClass, "\e95f", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-PREGNANCY_AND_BIRTH, @labelClass, "\e977", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-ASSISTED_REPRODUCTIVE_SERVICES, @labelClass, "\e953", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-WEIGHT_LOSS_SURGERY, @labelClass, "\e97b", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-INSULIN_PUMPS, @labelClass, "\e96b", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-PAIN_MANAGEMENT_WITH_DEVICE, @labelClass, "\e98c", "Y");
+	.benefitClassV2(ClinicalCategoryIcon-SLEEP_STUDIES, @labelClass, "\e97a", "Y");
 }
 
 .benefitsIcons,

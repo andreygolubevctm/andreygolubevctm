@@ -1,0 +1,322 @@
+#health-callback {
+	h4,h1 {
+		line-height: 40px;
+		display: inline-block;
+		color: @callback-dark-grey;
+		font-size: @font-size-h5;
+		font-family: @font-family-theme-regular;
+		.callCentreNumber,
+		.callCentreAppNumber {
+			color: contrast(@header-bg, @contact-headings-color, #fff);
+			font-size: 29px;
+		}
+	}
+	h1 {
+		@media (@xs-only) {
+			color: @theme-secondary;
+		}
+	}
+
+	h3, .currentCCDay {
+		font-family: @font-family-theme-regular;
+	}
+
+	.quote-ref {
+		color: #ffffff;
+		background-color: @callback-dark-grey;
+	    display: inline-block;
+	    font-size: 18px;
+	    margin-right: 152px;
+	    padding: 8px 20px;
+	    position: absolute;
+	    right: 0;
+	    top: -20px;
+  	}
+	label {
+		&.btn {
+		    border: 2px solid @theme-secondary;
+		    border-radius: 8px;
+		    display: inline-block;
+		    margin-top: 20px;
+		    padding-left: 0;
+		    padding-right: 0;
+		    text-align: center;
+		    width: 24%;
+		    margin-left: 1%;
+		    float: left;
+		}
+		&.btn.focus,
+		&.btn.active {
+		    border-color: @callback-dark-grey;
+		    background-color: @callback-dark-grey;
+		    outline: 0;
+		}
+		input[type="radio"]:focus {
+		    outline: 0;
+		}
+	}
+	.fieldrow {
+		> label {
+			text-align: right;
+			line-height: 2.4;
+
+			@media (@xs-only) {
+				text-align: left;
+			}
+		}
+	}
+	.main {
+		border-right: 2px solid @theme-light;
+	}
+
+	.confirmation-content-panel {
+		border-right: 2px solid #f1f1f1;
+		color: @callback-dark-grey;
+
+		span {
+			display:block;
+		}
+		h4 {
+			display:inherit;
+		}
+
+		.quote-ref {
+			top: inherit;
+			position: inherit;
+			margin-top: 20px;
+		}
+
+		.callDate,
+		.error{
+			margin-top: 20px;
+			padding-top: 50px;
+			background : #fbfbfb;
+
+			h2 {
+				color: @callback-dark-grey;
+				font-family: @font-family-theme-regular;
+			}
+
+			span {
+				display: block;
+			}
+
+			@media (@xs-only) {
+				padding:30px;
+			}
+		}
+
+		.error {
+			padding: 15px;
+		}
+
+		.callDate .quote-ref {
+			margin-right: inherit;
+		}
+	}
+
+	.day-description {
+    	padding-left: 0;
+	    padding-right: 0;
+	}
+	.switch {
+		display: block;
+		font-size: 12px;
+		line-height: 0;
+
+		&.call-type {
+			line-height: 3em;
+			font-size: 14px;
+			text-align: center;
+			width: 100%;
+		}
+	}
+
+	.selectedOpeningHoursLabel {
+		display: block;
+		white-space: nowrap;
+		line-height: 0;
+	}
+	small {
+		font-size: 11px;
+		color: @callback-dark-grey;
+		display: block;
+		text-align: center;
+	}
+	.alert {
+		margin-top: 18px;
+	}
+	.outline {
+	    margin-top: 18px;
+		background-color: #fbfbfb;
+		border: 1px solid #f7f7f7;
+	}
+	.view-all-times {
+		margin-top: 10px;
+		display: block;
+	}
+    @media (@xs-only) {
+		.outline {
+			border-top: 2px solid @callback-dark-grey;
+			clear:both;
+		}
+
+		.quote-ref {
+			display:none;
+		}
+
+		.quote-ref-xs {
+			color: @callback-dark-grey;
+			font-size: 22px;
+			margin: 0 0 25px 0;
+		}
+
+	    #health-callback-form {
+		    .form-group.fieldrow {
+			    padding:10px 0 0 0;
+		    }
+		    .contact-number-mobile,
+		    .contact-number-other {
+			    .control-sub-label {
+					float:right;
+				    padding:0;
+				    margin-top:4px;
+			    }
+		    }
+	    }
+
+	    #callBackNow,
+	    #callBackLater {
+		    margin-top:20px;
+	    }
+
+	    label.btn {
+		    margin-top:0;
+	    }
+
+	    .outline {
+		    .form-group:nth-child(1) {
+			    label.control-label {
+				    display:none;
+			    }
+		    }
+	    }
+
+		.switch {
+			display: inline-block;
+			float: right;
+			text-decoration: underline;
+		}
+
+		.cbContactNumber .switch {
+			right: 0;
+			position: absolute;
+			bottom: 0;
+			padding-bottom: 15px;
+			padding-right: 20px;
+		}
+
+		h4, h3 {
+			text-align: center;
+			display:inherit;
+		}
+
+		.today-hours-callback-modal,
+		.main h4 {
+			color: #909090;
+			line-height:1.1;
+		}
+
+		.today-hours-callback-modal {
+			font-size:20px;
+		}
+
+		.call-details {
+			&::before {
+				border-top: 2px solid #ccc;
+			    content: " ";
+			    display: block;
+			    margin: 10px auto 0px;
+			    width: 100%;
+			}
+
+			&.visible-xs {
+				&::before {
+					border: 0;
+				}
+			}
+
+			h1 a {
+				text-decoration: underline;
+			}
+
+			h4 {
+				color: @theme-secondary;
+				display: inline-block;
+				font-size: 25px;
+			}
+
+			.view-all-times {
+				margin: 20px 0;
+			}
+
+			.call-details-button {
+				display: inline-block;
+				font-size: 22px;
+				padding: 10px 40px;
+			}
+
+			.request-call-back {
+				margin: 15px 0;
+				display: block;
+			}
+
+			.view-all-times,
+			.request-call-back {
+				color: @theme-tertiary;
+				text-decoration: none;
+
+				&:focus {
+					color: @theme-tertiary;
+				}
+			}
+
+			.opening-hours-label {
+				color: @gray-darker;
+			}
+		}
+
+		.selectedOpeningHoursLabel {
+			display: inline-block;
+			padding-left: 5px;
+		}
+	}
+}
+.health-callback {
+	.modal {
+		.xs-results-pagination {
+			.navbar-nav {
+				background-color: #555;
+			}
+		}
+	}
+
+	@media (@xs-only) {
+		.modal-body {
+			background-color: #EDEDED;
+		}
+	}
+}
+
+.xs-results-pagination {
+	.navbar-nav {
+		color:@theme-tertiary !important;
+		background-color: white !important;
+		
+		.btn-back {
+			color: @theme-tertiary;
+			background-color: white;
+		}
+	}
+}
+

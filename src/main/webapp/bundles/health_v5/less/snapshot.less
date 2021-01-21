@@ -1,0 +1,138 @@
+.fieldset-column-side {
+  .quoteSnapshot {
+    border: 1px solid @gray-light;
+    padding: 10px;
+    position: relative;
+
+    &.sidebar-box {
+      .snapshot {
+        line-height: 1.4em;
+
+        &.row {
+          margin-bottom: 1em;
+        }
+
+        .snapshot-title {
+          color: @gray-dark;
+          display: block;
+          font-family: @font-family-theme-regular;
+          font-size: @font-size-small;
+          line-height: 1.4em;
+          text-align: right;
+        }
+
+        .born-labels {
+          color: @gray;
+          margin-bottom: .5em;
+
+          div {
+            &:before {
+              content: "";
+              border-bottom: 1px solid @gray-light;
+              position: absolute;
+              bottom: -.25em;
+            }
+            &:first-child {
+              &:before {
+                width: 100%;
+              }
+            }
+            &:last-child {
+              &:before {
+                width: 50%;
+              }
+            }
+          }
+        }
+
+        .snapshot-items {
+          color: @theme-secondary;
+
+          &.sub-text {
+            color: @gray;
+            display: block;
+          }
+        }
+
+        .snapshot-list {
+          display: none;
+          margin: 0;
+          padding: 0;
+          li {
+            list-style: none;
+          }
+        }
+
+        .toggle-snapshot-list {
+          display: block;
+        }
+      }
+
+      a {
+        font-size: @font-size-small;
+
+        &.btn-edit {
+          font-size: @font-size-base;
+          position: absolute;
+          top: 10px;
+          right: 10px;
+
+          &:hover,
+          &:focus {
+            outline: none;
+            text-decoration: none;
+          }
+        }
+      }
+    }
+
+    &.has-partner {
+      .row {
+        &.cover-for {
+          margin-bottom: 0;
+        }
+
+        > div {
+          .primary-dob,
+          .partner-dob {
+            .make-md-column(6);
+          }
+
+          .partner-dob {
+            display: block;
+          }
+        }
+      }
+    }
+
+    &:not(.has-partner) {
+      .row {
+        > div {
+          .primary-dob {
+            .make-md-column(12);
+          }
+
+          .partner-dob {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+body {
+  &[data-step=start] {
+    .quoteSnapshot {
+      .hospital,
+      .extras {
+        display: none;
+      }
+    }
+  }
+  &[data-step=contact] {
+    .hide-on-contact-page {
+      display: none;
+    }
+  }
+}

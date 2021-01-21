@@ -1,0 +1,125 @@
+.policySummary-sidebar {
+  border: 1px solid @gray-light;
+  margin-bottom: 15px;
+  padding: 10px;
+
+  h1 {
+    font-size: 23px;
+    margin-top: 0;
+  }
+
+  h1,
+  h5 {
+    color: @theme-accent-4;
+  }
+
+  .productSummaryDetails {
+    font-size: @font-size-small;
+    .footer {
+      text-align: right;
+    }
+  }
+
+  .abd-modal-trigger {
+    display: none;
+  }
+
+  .price-breakdown-lhc-copy {
+    font-size: @font-size-small;
+    @media (@xs-only) {
+      display: none;
+    }
+  }
+
+  .price-breakdown {
+    font-size: @font-size-small;
+    text-align: left;
+
+    @media (@xs-only) {
+      display: none;
+    }
+
+    p {
+      font-family: @font-family-theme-semibold;
+    }
+
+    hr {
+      margin-top: (@line-height-computed / 2);
+      margin-bottom: (@line-height-computed / 2);
+    }
+
+    .row {
+      margin-bottom: (@line-height-computed / 2);
+    }
+
+    .price-breakdown-copy-panel {
+      background-color: @theme-light;
+      border-top: 1px solid @gray-light;
+      border-bottom: 1px solid @gray-light;
+      font-size: @font-size-base;
+      margin: 0 -10px;
+      padding: 10px;
+      text-align: center;
+
+      @media (@md) {
+        font-size: @font-size-large;
+      }
+    }
+  }
+
+  .lhc-loading-help {
+    color: @icon-help-colour;
+    cursor: pointer;
+    padding-left: 2px;
+    padding-top: 2px;
+  }
+
+  .about-this-fund {
+    display: block;
+    font-size: 12px;
+    text-align: right;
+  }
+}
+
+body[data-step="apply"] {
+  .policySummary-sidebar {
+    .productSummaryDetails {
+      .startDate-wrapper {
+        display: none;
+      }
+    }
+  }
+}
+
+body[data-step="results"] {
+  .dual-pricing-container {
+    .about-this-fund {
+      display: none;
+    }
+  }
+}
+
+@media (@xs-only) {
+  .productSummary-parent.visible-xs {
+    margin-bottom: 20px;
+    margin-top: -20px;
+    min-height: 121px;
+    .policySummaryContainer {
+      padding-top: 5px;
+      .productSummary.horizontal {
+        .companyLogo {
+          float: left;
+        }
+        .frequency {
+          .frequencyAmount {
+            .frequencyTitle {
+              display: inline;
+              top: 11px;
+              left: -22px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

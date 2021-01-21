@@ -260,7 +260,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 								</c:otherwise>
 							</c:choose>
 
-							<c:if test="${bundleFileName eq 'health_v4'}">
+							<c:if test="${bundleFileName eq 'health_v4' or bundleFileName eq 'health_v5'}">
 								<a class="refine-results" href="javascript:;"><span class="icon icon-filter"></span> <span>Filter</span></a>
 							</c:if>
 

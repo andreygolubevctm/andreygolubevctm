@@ -1,0 +1,333 @@
+.nav-tabs {
+  > li {
+
+    @media (@xs-only) {
+      display: inline-block;
+      float: none;
+    }
+
+    h2, h3 {
+      color: @theme-tertiary;
+    }
+
+    h2 {
+      font-size: 14px;
+    }
+
+    &.active {
+      h2, h3 {
+        color: @theme-accent-4;
+      }
+
+      a,
+      a:focus,
+      a:hover {
+        border: none;
+        border-bottom: 5px solid @theme-accent-4;
+      }
+    }
+
+    a {
+      border: none;
+      padding: 5px 7px;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    @media (@sm-only) {
+      h3 {
+        font-size: @font-size-base;
+      }
+    }
+  }
+}
+
+.preAprilReformContent {
+  display: block;
+}
+
+.postAprilReformContent {
+  display: none;
+}
+
+.reformHospitalTabs {
+  position: relative;
+  @media (@sm) {
+    overflow: hidden;
+    top: -50px;
+  }
+
+  @media (@xs-only) {
+    top: -38px;
+  }
+
+  button {
+    background-color: #074C90;
+    color: @white;
+    float: left;
+    border-bottom: none;
+    border-right: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 17px;
+
+    @media (@sm) {
+      padding: 14px 16px;
+    }
+
+    @media (@xs-only) {
+      padding: 8px;
+    }
+
+    &.active {
+      background-color: @white;
+      color: @gray-base;
+    }
+  }
+}
+
+.benefitTable {
+  border: 1px solid @gray-light;
+}
+
+.HospitalBenefits {
+  .excessCoPayment {
+    margin-bottom: 40px;
+    padding: 10px 0;
+
+    .excessInfo {
+      @media (@sm) {
+        border-right: 1px solid @gray;
+      }
+    }
+
+    .hospitalCoverDetails {
+      @media (@xs-only) {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid @gray;
+      }
+    }
+
+    .dollarValue {
+      font-size: 31px;
+
+      &::before {
+        content: '$';
+        font-size: 15px;
+        position: relative;
+        top: -10px;
+      }
+    }
+
+    .valueUnit {
+      font-size: 12px;
+    }
+  }
+
+  h2 {
+    font-size: 28px;
+    color: @gray-base;
+  }
+
+  h3 {
+    color: @gray-base;
+  }
+}
+
+.ambulanceCoverSection {
+  margin-left: 0px;
+  margin-right: 0px;
+
+  @media (@md) {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
+  .featuresListAmbulance {
+    margin-left: 0px;
+    margin-right: 0px;
+
+    @media (@md) {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+  }
+}
+
+.ExtrasBenefits, .ambulanceCoverSection {
+  margin-top: 40px;
+
+  h2 {
+    font-size: 28px;
+    color: @gray-base;
+    margin-left: 10px;
+  }
+
+  .heading-brochure {
+    margin-left: 10px;
+  }
+}
+
+.heading-brochure {
+  @media (@sm) {
+    text-align: right;
+  }
+
+  @media (@xs-only) {
+    margin-bottom: 20px;
+  }
+}
+
+.benefitRow {
+  display: flex;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom: 1px solid @gray-lighter;
+
+  .benefitTitle,
+  .limitTitle {
+    padding-left: 0px;
+  }
+
+  &.benefitRowHeader {
+    background-color: @reform-blue;
+    color: @white;
+  }
+
+  .newBenefitRow {
+    display: grid;
+    align-items: center;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 70px;
+    text-align: left;
+
+    &.benefitHeaderTitle {
+      border-left: 1px solid @white;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.benefitRowTitle {
+      border-left: 1px solid @gray-lighter;
+
+      &:first-child {
+        border-left: none;
+      }
+    }
+
+    &.align-center {
+      justify-content: center;
+    }
+
+    .benefitRowTableCell {
+      .selectedExtrasIcon {
+        background: url(../images/icons/selected_extras_fav.svg) center center no-repeat;
+        height: 26px;
+        width: 26px;
+        float: left;
+        position: absolute;
+        top: 20px;
+        left: 5px;
+        background-color: white;
+        border-radius: 10px;
+      }
+
+      .benefitRowTableCellTitle {
+          padding-left: 28px;
+      }
+    }
+  }
+}
+
+.extrasCollapseContentLink {
+  width: 20%;
+  float: right;
+  text-decoration: none !important;
+  color: #1C3E94;
+  text-align: right;
+}
+
+.benefitCollapsedContent {
+  background-color: #E9EBF5;
+  padding: 21px 30px;
+
+  .extraBenefitSection {
+    @media (@sm) {
+      padding-right: 20px;
+    }
+
+    @media (@xs-only) {
+      margin-top: 30px;
+    }
+  }
+
+  .extraBenefitSubHeading {
+    height: 30px;
+    padding-left: 0;
+    border-bottom: 1px solid #999999;
+  }
+
+  .extraBenefitOption {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 0;
+    vertical-align: middle;
+    font-size: 12px;
+
+    b {
+      font-weight: bold !important;
+    }
+
+    &.align-center {
+      text-align: center;
+    }
+  }
+}
+
+.benefitCount {
+  color: #ffffff;
+  background: @theme-accent-4;
+  radius: 50%;
+  border-radius: 50%;
+  padding: 5px;
+  height: 30px;
+  width: 30px;
+  font-size: 16px;
+  display: inline-block;
+  text-align: center;
+}
+
+.newBenefitStatus {
+  display: block;
+
+  &.benefitStatusIcon_N {
+    background: url('../images/icons/exclude_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_Y {
+    background: url('../images/icons/included_icon.svg') center center no-repeat;
+    height: 17px;
+  }
+
+  &.benefitStatusIcon_R {
+    background: url('../images/icons/restricted_icon.svg') center center no-repeat;
+    height: 30px;
+  }
+}
+
+.pink {
+  background: @theme-accent-3;
+}
+
+.gray {
+  background: @gray;
+}

@@ -1,0 +1,77 @@
+body.health {
+	&[data-step="benefits"] {
+		.rotateEl(@degrees) {
+			-webkit-transform: rotate(@degrees);
+			-moz-transform: rotate(@degrees);
+			-o-transform: rotate(@degrees);
+			-ms-transform: rotate(@degrees);
+			transform: rotate(@degrees);
+		}
+
+		// Note: Not sure if this will be introduced back in a later date
+		/*
+		@media (@xs-only) {
+			.benefitsContainer > .content {
+				overflow-x: hidden;
+			}
+
+			.benefitsOverflow {
+				width: 200%;
+				overflow-x: hidden;
+				position: relative;
+			}
+		}
+		.toggleBar {
+			background: @theme-tertiary;
+			width: 20px;
+			height: 1600px;
+			position: absolute;
+			z-index: 100;
+			left: 5px;
+
+			&.extrasToggled {
+				left: -20px;
+			}
+
+			.selectionStatus {
+				background: @theme-tertiary;
+				color: @white;
+				position: fixed;
+				width: 220px;
+				border-top-left-radius: 10px;
+				border-top-right-radius: 10px;
+				margin-top: 110px;
+				padding: 1px;
+				padding-left: 10px;
+				cursor: pointer;
+				text-align: center;
+
+				&.hospital {
+					.rotateEl(90deg);
+					width: 230px;
+					left: -86px;
+					position:absolute;
+				}
+
+				&.extras {
+					.rotateEl(-90deg);
+					right: -80px;
+					position:absolute;
+				}
+
+				span {
+					margin-left: 2px;
+					border-radius: 50%;
+					background: @theme-secondary;
+					padding: 0px;
+					width: 18px;
+					display: inline-block;
+					text-align: center;
+					margin-top: 2px;
+					margin-right: 5px;
+				}
+			}
+		}
+		*/
+	}
+}

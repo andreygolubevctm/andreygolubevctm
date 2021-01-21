@@ -1,0 +1,355 @@
+#clinicalCategoriesToggle {
+  position: relative;
+  margin-bottom: 24px;
+  cursor: pointer;
+
+  h3 {
+    margin: 0;
+  }
+
+  h3, .health-icon {
+    color: #004A8E;
+  }
+
+  .health-icon {
+    font-size: 32px;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    margin-top: -16px;
+  }
+
+  &.active {
+    margin-bottom: 0px;
+
+    .health-icon {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+#clinicalCategoriesContent {
+  display: none;
+}
+
+
+// Mixins for icon sizes.
+.benefitsIconSize_v2(@icon-font-size, @label-font-size, @margin-offset) {
+  div.checkbox {
+    label {
+      font-size: @label-font-size;
+      padding: 5px 0 5px 15px;
+      &:before {
+        position: absolute;
+        display:  block;
+        font-size: @icon-font-size;
+        height: 25px;
+        margin: -13px 0 0 10px;
+        min-width: 25px;
+        width: 25px;
+        top: 50%;
+      }
+    }
+  }
+}
+
+body.health {
+
+  .health-your_details-opt-group a {
+    display: inline-block;
+    font-size: 14px;
+  }
+
+  &[data-step="benefits"] {
+    #clinicalCategoriesContent {
+      width: 100%;
+      display: none;
+      vertical-align: top;
+      position: relative;
+
+      .content {
+        padding: 0;
+      }
+
+      .scrollable {
+        margin-left: 0;
+      }
+
+      @media (@xs-only) {
+        width: 100%;
+        display: block;
+        margin-bottom: 0;
+
+        .Hospital_container p {
+          margin-right: 20px;
+        }
+      }
+
+      .GeneralHealth_container {
+        border: none;
+      }
+
+      .hasIcons {
+        .categoriesCell_v2 {
+          border-top: 1px solid #DDDDDD;
+          padding: 0;
+          background-color: #FFFFFF;
+
+          min-height: 100px;
+
+          &:hover {
+            background-color: #F5F9FF;
+          }
+
+          &.active {
+            background-color: #e7f0fb;
+          }
+
+          &:last-of-type {
+            border-bottom: 1px solid #DDDDDD;
+          }
+
+          .limited-cover-text {
+            margin: 15px 0px;
+            padding: 10px;
+          }
+
+          .benefit-image,
+          .benefit-title,
+          .benefit-copy,
+          .benefit-toggle {
+            display: table-cell;
+            vertical-align: middle;
+            height: 100%;
+          }
+
+          .checkbox {
+            padding: 0;
+
+            input:not([disabled]) {
+              &:checked,
+              &.checked {
+                & + label {
+                  color: @health-benefits-icon-bg-checked-color;
+                  &:before {
+                    font-family: 'framework_font';
+                    background-color: @health-benefits-icon-bg-checked-color;
+                    border-color: @health-benefits-icon-bg-checked-color;
+                    color: @white;
+                    content: "\e931";
+                    font-size: 12px;
+                    float: none;
+                    border-radius: 5px;
+                    vertical-align: middle;
+                    padding: 0.48em;
+                  }
+                }
+              }
+            }
+
+            .benefit-icon {
+              display: block;
+              width: 36px;
+              height: 36px;
+              label {
+                &:before {
+                  position: static;
+                  font-family: 'ctm-health';
+                  font-size: 36px;
+                  line-height: 36px;
+                  float: none;
+                  color: @theme-tertiary;
+                  margin: 0;
+                  padding: 0;
+                }
+              }
+            }
+
+            label {
+              display: flex;
+              padding: 0;
+              margin: 0;
+
+              .benefit-label-container {
+                display: table;
+                min-height: 100px;
+                margin-left: 30px;
+                width: 100%;
+
+                .benefit-group-row {
+                  display: table-row;
+                }
+
+                label {
+                  padding: 0;
+                  pointer-events: none;
+                }
+              }
+
+              &:before {
+                display: table;
+                float: none;
+                margin: 0;
+                margin-bottom: 10px;
+                padding: 0.15em;
+                padding-top: 5px;
+                border-radius: 5px;
+              }
+            }
+
+            .benefit-image {
+              width: 40px;
+            }
+
+            .benefit-title,
+            .benefit-caption,
+            .benefit-description {
+              font-size: 16px;
+              line-height: 18px;
+            }
+
+            .benefit-title {
+              width:200px;
+              color: @gray900;
+              padding: 0 0 0 10px;
+
+              @media (@sm-only) {
+                width: 120px;
+                font-size: 14px;
+              }
+            }
+
+            .benefit-copy {
+              padding: 0 5px 0 20px;
+
+              .copy-innertube {
+                padding: 12px 0 16px 0;
+              }
+
+              .benefit-title {
+                font-size:14px;
+                padding-left: 0;
+                margin: 0 0 5px 0;
+              }
+
+              @media (@xs-only) {
+                padding-left: 10px;
+              }
+            }
+
+            .benefit-caption,
+            .benefit-description {
+              -ms-word-wrap: break-word;
+              word-wrap: break-word;
+              color: @gray800;
+              margin: 0;
+              a {
+                margin-left: 5px;
+                color: @theme-tertiary;
+              }
+
+              @media (@sm-only) {
+                font-size: 14px;
+              }
+
+              @media (@xs-only) {
+                font-size: 12px;
+              }
+            }
+            .benefit-caption {
+              @media (@xs-only) {
+                margin-top: 0;
+              }
+            }
+
+            .benefit-description {
+              margin: 5px 0 0 0;
+              ul {
+                margin: 0;
+                padding-left: 20px;
+              }
+            }
+
+            .benefit-toggle {
+              width: 32px;
+
+              a {
+                cursor: pointer;
+                font-size: 32px;
+                display: inline-block;
+                width: 32px;
+                height: 32px;
+
+                &.toggled {
+                  transform: rotate(180deg);
+                }
+              }
+
+              :before {
+                position: absolute;
+                top: 50%;
+                margin-top: -5px;
+              }
+            }
+          }
+
+          @media (@xs) {
+            .benefitsIconSize_v2(12px, @font-size-base, 0);
+          }
+          @media (@sm-only) {
+            .benefitsIconSize_v2(12px, @font-size-small, 1);
+          }
+          @media (@md-only) {
+            .benefitsIconSize_v2(12px, @font-size-small, -1);
+          }
+        }
+
+        .benefit-categories {
+          margin: -5px 0 0 0;
+          .innertube {
+            padding: 0 12px 12px 85px;
+            .selected-category {
+              display: inline-block;
+              background: rgba(255, 255, 255, 0.6);
+              border-radius: 6px;
+              font-size: 12px;
+              line-height: 14px;
+              padding: 3px 8px;
+              margin-right: 10px;
+              color: #004A8E;
+            }
+          }
+        }
+      }
+
+      &:last-of-type {
+        border-bottom: 1px solid @gray-light;
+      }
+    }
+
+    .mainBenefitHeading_v2 {
+      margin-bottom: 0px;
+
+      h2 {
+        font-size: 21px;
+        color: @gray-dark;
+      }
+
+      h4 {
+        font-size: 12px;
+        color: @gray;
+      }
+    }
+  }
+}
+
+#usersClinicalCategorySelectionsModal {
+  .row {
+	  font-size: 16px;
+
+	  div.title {
+		  font-family: 'SourceSansProSemiBold';
+		  text-align: right;
+	  }
+  }
+}

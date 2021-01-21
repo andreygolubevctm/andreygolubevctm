@@ -1,0 +1,92 @@
+.health {
+
+  // Add your slide feature here to be hidden by default
+  .slide-control-about-you,
+  .slide-control-insurance-preferences,
+  .slide-control-get-prices,
+  .results-control-container,
+  .reforms-banner,
+  .slide-control-proceed-to-payment,
+  .slide-control-submit-application {
+    .slide-feature-hidden();
+  }
+
+  &[data-step="start"] {
+    .slide-control-about-you {
+      .slide-feature-is-visible();
+    }
+    .journeyProgressBar[data-phase="application"] {
+      .slide-feature-hidden();
+    }
+  }
+
+  &[data-step="benefits"] {
+    .slide-control-insurance-preferences {
+      .slide-feature-is-visible();
+    }
+    .journeyProgressBar[data-phase="application"] {
+      .slide-feature-hidden();
+    }
+  }
+
+  &[data-step="contact"] {
+    .slide-control-get-prices {
+      .slide-feature-is-visible();
+    }
+    .journeyProgressBar[data-phase="application"] {
+      .slide-feature-hidden();
+    }
+  }
+
+  &[data-step="results"] {
+    .progress-bar-row {
+      .slide-feature-hidden();
+      margin-bottom: 10px;
+    }
+
+    .results-control-container {
+      .slide-feature-is-visible();
+    }
+
+    .reforms-banner {
+      display: flex;
+      margin-top: 5px;
+    }
+
+    .progress-bar-row {
+      .slide-feature-is-visible();
+    }
+
+    .journeyProgressBar[data-phase="application"] {
+      .slide-feature-hidden();
+    }
+
+    .journeyProgressBar[data-phase="journey"] {
+      .slide-feature-is-visible();
+    }
+
+    &.moreInfoVisible {
+      .progress-bar-row {
+        .slide-feature-hidden();
+      }
+    }
+  }
+
+  &[data-step="apply"] {
+    .slide-control-proceed-to-payment {
+      .slide-feature-is-visible();
+    }
+    .journeyProgressBar[data-phase="journey"] {
+      .slide-feature-hidden();
+    }
+  }
+
+  &[data-step="payment"] {
+    .slide-control-submit-application {
+      .slide-feature-is-visible();
+    }
+    .journeyProgressBar[data-phase="journey"] {
+      .slide-feature-hidden();
+    }
+  }
+}
