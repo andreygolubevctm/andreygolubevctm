@@ -1,11 +1,11 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<form_v2:fieldset legend="" postLegend="" id="clinicalCategoriesToggle" className="${fieldsetClass}" >
+<form_v2:fieldset legend="" postLegend="" id="clinicalCategoriesToggle" className="${fieldsetClass} clinicalCategoriesForceHide" >
     <h3>Clinical Categories</h3>
     <span class="health-icon icon-health-chevron"></span>
 </form_v2:fieldset>
-<form_v2:fieldset legend="" postLegend="" id="clinicalCategoriesContent" className="${fieldsetClass}" >
+<form_v2:fieldset legend="" postLegend="" id="clinicalCategoriesContent" className="${fieldsetClass} clinicalCategoriesForceHide" >
     <div id="benefits-list-hospital" class="children healthBenefits hasIcons">
     
         <health_v3:clinicalCategoryRow
