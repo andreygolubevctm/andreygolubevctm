@@ -22,6 +22,7 @@ import com.ctm.web.health.quote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -204,13 +205,14 @@ public class ResponseAdapterV2 {
         return false;
     }
 
-    private static Promo createPromo(final Promotion quotePromotion, final String staticBranch, final boolean isSimplesUser, final String brandCode) {
+    @VisibleForTesting static Promo createPromo(final Promotion quotePromotion, final String staticBranch, final boolean isSimplesUser, final String brandCode) {
         final Promo promo = new Promo();
         String staticBranchQS = staticBranch != null ? "&staticBranch=" + staticBranch : "";
         String brandCodeQS = brandCode != null && brandCode.length() > 0 ? "&brandCode=" + brandCode.toLowerCase() : "";
 
         promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer(), isSimplesUser));
         promo.setProviderPhoneNumber(quotePromotion.getProviderPhoneNumber());
+        promo.setProviderDirectPhoneNumber(quotePromotion.getProviderDirectPhoneNumber());
         promo.setDiscountText(StringUtils.trimToEmpty(quotePromotion.getDiscountDescription()));
         promo.setExtrasPDF(createPDFLink(quotePromotion.getExtrasPDF(), staticBranchQS, brandCodeQS));
         promo.setHospitalPDF(createPDFLink(quotePromotion.getHospitalPDF(), staticBranchQS, brandCodeQS));

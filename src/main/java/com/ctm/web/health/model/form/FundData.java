@@ -8,6 +8,8 @@ public class FundData {
 
     private String providerPhoneNumber;
 
+    private String providerDirectPhoneNumber;
+
     public String getHospitalPDF() {
         return hospitalPDF;
     }
@@ -31,4 +33,12 @@ public class FundData {
     public void setProviderPhoneNumber(String providerPhoneNumber) {
         this.providerPhoneNumber = providerPhoneNumber;
     }
+
+	public String getProviderDirectPhoneNumber() {
+		return providerDirectPhoneNumber;
+	}
+
+	public void setProviderDirectPhoneNumber(String providerDirectPhoneNumber) {
+		this.providerDirectPhoneNumber = providerDirectPhoneNumber;
+	}
 }
