@@ -1,0 +1,1364 @@
+// NOTE: This file provides the design for the structure outlined in shared/results/v4.
+//       For a list of what a .section or .category is, see ../../../shared/results/v4/less/results_structure.less
+
+//On XS we should dock the headerbars.
+
+@media (@xs-only) {
+  body[data-step="results"] {
+    //Push the page down to make some space
+    padding-top: @navbar-height + 110;
+
+    &.dontAffixXsBanners {
+      padding-top:0;
+    }
+
+    // a reset
+    .results-control-container {
+      padding-top: 0;
+    }
+
+    .slide-feature-pagination {
+      line-height: 24px;
+    }
+
+    .results-control-container {
+      padding-bottom: 0;
+    }
+
+    .progress-bar-row,
+    .results-filters-frequency {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.results-control-container.affix {
+  padding-bottom: 0;
+  border-bottom: 1px solid @border-color;
+}
+
+.open-more-info {
+  cursor: pointer;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#resultsPage {
+  margin-bottom: 20px;
+
+  a.dialogPop {
+    text-decoration: underline;
+    font-family: @font-family-base;
+  }
+}
+
+.icon-r {
+  color: #f6b14b;
+  content: 'R';
+  font-family: @font-family-theme-semibold;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.icon-tba {
+  color: #313131;
+  content: 'TBA';
+  font-family: @font-family-theme-semibold;
+  font-size: 15px;
+  font-weight: bold;
+  vertical-align: initial;
+}
+
+#results-sidebar {
+  // need to remove this columns padding so we can apply left margin to all result-rows.
+  padding: 0;
+  padding-top: 6px;
+  @media (@sm) {
+    padding-top: 20px;
+  }
+
+  .smaller-text {
+    font-size: 12px;
+  }
+
+  .black-text {
+    color: #000000;
+  }
+
+  .large-bold {
+    font-weight: 900;
+    font-size: 25px;
+  }
+
+  .filter .checkbox label,
+  .dark-grey-text {
+    color: #666666;
+  }
+
+  .full-width {
+    position: static;
+    clear: both;
+    float: left;
+    margin-top: 25px;
+  }
+
+  .counter-header-margin {
+        margin-top: 15px;
+  }
+
+  .right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .float-left {
+    float: left;
+  }
+
+  .bottom-separator {
+    border-bottom: 1px solid #A1A1A1;
+  }
+
+  .separator-container {
+    margin-top: -10px;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+  }
+
+  .top-separator-widget-padding {
+    margin-top: -30px;
+  }
+
+  .bottom-separator-widget-padding {
+    margin-bottom: -20px;
+  }
+
+  @media (max-width: @screen-sm-max) {
+    .results-page-sidebar-header {
+      display: none;
+    }
+  }
+  @media (min-width: @screen-md) {
+    .results-page-sidebar-header {
+      display: block;
+      margin-bottom: -15px;
+      margin-left: -1px;
+      padding: 6.5px 6px 7px 15.5px;
+      background-color: #DDDDDD;
+      font-weight: 900;
+      position: relative;
+      z-index: -1;
+    }
+  }
+
+  .health_filterBar_excess > .vertical,
+  .health_filterBar_coverLevel > .vertical {
+    padding-left: 0;
+
+    .checkbox > input[name="health_filterBar_excess"],
+    .checkbox > input[name="health_filterBar_coverLevel"] {
+      float: right;
+    }
+  }
+
+  .results-sidebar-inner {
+    border: 1px solid @results-border-color;
+    border-left-color: @gray;
+    margin-bottom: 15px;
+
+    &.grey-border {
+      border-color: #A1A1A1;
+    }
+  }
+
+  .results-legend {
+    padding: 15px;
+
+    &.grey-border {
+      border-color: #A1A1A1;
+    }
+
+    @media (@xs-sm-only) {
+      border: none;
+      margin-bottom: 0;
+    }
+
+    @media (min-width: @screen-md) {
+      .results-page-sidebar-header {
+        margin: -15.5px -15.5px 10px -15.5px;
+      }
+    }
+
+    .results-legend-row {
+      margin-bottom: 5px;
+
+      .icon {
+        margin-top: 2px;
+        margin-right: 4px;
+        &.icon-tick {
+          &:before {
+            color: @theme-secondary;
+          }
+        }
+
+        &.icon-restricted {
+          margin-top: 0;
+          margin-right: 4px;
+          margin-left: 1px;
+          &:before {
+            .icon-r();
+          }
+        }
+
+        &.icon-tbaCover {
+          margin-top: 0;
+          margin-right: 4px;
+          margin-left: 1px;
+          &:before {
+            .icon-tba();
+          }
+        }
+
+        &.icon-cross {
+          &:before {
+            color: @theme-accent-3;
+          }
+        }
+      }
+    }
+
+    .results-legend-restricted-help {
+      padding-left: 18.25px;
+      margin-bottom: 5px;
+
+      p:last-child {
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
+
+.noResults {
+  margin-left: 20px;
+}
+
+// The product header
+.resultInsert {
+
+  .result-header-utility-bar {
+    @media (@lg) {
+      padding-bottom: 10px;
+    }
+  }
+
+  .product-pinned & {
+    .pin-result {
+      display: none;
+    }
+  }
+  .filter-component {
+    position: absolute;
+    top: 5px;
+    padding: 5px;
+    cursor: pointer;
+    .user-select(none);
+  }
+
+  .remove-result {
+    left: 0;
+  }
+
+  @pin-height: 25px;
+  @pin-width: 20px;
+  .pin-result-label {
+    right: @pin-width + 10px;
+    a {
+      color: @results-border-color;
+    }
+  }
+
+  .pin-result-icon {
+    top: 0;
+    color: #ffffff;
+    right: 10px;
+    width: @pin-width;
+    height: @pin-height;
+    background: @results-border-color;
+    .pinned & {
+      background: @results-border-color-pinned;
+    }
+    &:after {
+      left: 0;
+      top: @pin-height;
+      position: absolute;
+      content: "";
+      border-style: solid;
+      border-width: 5px @pin-width 0 0;
+      border-color: @results-border-color transparent transparent transparent;
+      .pinned & {
+        border-top-color: @results-border-color-pinned;
+      }
+    }
+  }
+
+  .btn {
+    white-space: normal !important;
+  }
+
+  .abd-modal-trigger {
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+  
+    a {
+      color: @primary500;
+      text-decoration: none !important;
+    }
+  
+    .help-icon {
+      line-height: 20px;
+      color: @primary500;
+    }
+  }
+
+  .abd-badge {
+    background-color: #FFFFFF;
+    color: #666666;
+    border-radius: 20px;
+    border: 1px solid #666666;
+    font-size: 11px;
+    display: inherit;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    padding: 2px;
+    min-height: 25px;
+    font-weight: bold;
+    width: 85%;
+    min-width: 130px;
+    margin-bottom: 2px;
+    margin-top: 5px;
+  }
+
+  .results-header-inner-container {
+    margin-bottom: 0px;
+    padding-bottom: 15px;
+
+    .results-header-classification {
+      margin: 0px 0px 15px;
+
+      @media (@lg) {
+        margin: 15px 0px;
+      }
+
+      .results-header-classification-title {
+        height: 20px;
+        text-align: center;
+        color: #555555;
+        margin: 0 auto;
+        margin-top: 25px;
+        margin-bottom: 5px;
+        font-size: 16px;
+
+        @media (@xs-only) {
+          margin-top: 15px;
+          margin-bottom: 25px;
+          font-size: 14px;
+        }
+      }
+
+      .results-header-classification-date {
+        height: 20px;
+        text-align: center;
+        color: #555555;
+        margin: 0 auto;
+        margin-top: 5px;
+      }
+
+      .results-header-classification-icon {
+        border-radius: 30px;
+        height: 35px;
+        color: white;
+        font-weight: 600;
+        font-size: 18px;
+        width: 33%;
+        min-width: 135px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+
+        &.small-height {
+          height: 2px;
+        }
+
+        &.gov-unclassified {
+          background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
+
+          &.force-large {
+            background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+          }
+
+          @media (@sm) {
+            background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+          }
+        }
+
+        &.gov-bronze-plus {
+          background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+          &::before {
+            content: "BRONZE+";
+          }
+        }
+
+        &.gov-bronze {
+          background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+          &::before {
+            content: "BRONZE";
+          }
+        }
+
+        &.gov-silver {
+          background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+          &::before {
+            content: "SILVER";
+            color: #333333;
+          }
+        }
+
+        &.gov-silver-plus {
+          background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+          &::before {
+            content: "SILVER+";
+            color: #333333;
+          }
+        }
+
+        &.gov-gold {
+          background-image: linear-gradient(to right, #f3d838, #fded8d 50%, #f3d838);
+          &::before {
+            content: "GOLD";
+          }
+        }
+
+        &.gov-basic {
+          background-color: #0d1644;
+          &::before {
+            content: "BASIC";
+          }
+        }
+
+        &.gov-basic-plus {
+          background-color: #0d1644;
+          &::before {
+            content: "BASIC+";
+          }
+        }
+      }
+    }
+
+    .lhcText {
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .btn-more-info {
+      @media (@lg) {
+        font-size: @font-size-large;
+        min-height: 48px;
+        padding-top: 15px;
+      }
+    }
+
+    .btn.getPrintableBrochures {
+      margin-top: 15px;
+    }
+  }
+  .productSummary {
+    margin-bottom: 10px;
+    height: 205px;
+    @media (@xs-only) {
+      height: 225px;
+    }
+
+    .frequencyAmount {
+      color: @gray-base;
+      font-weight: bolder;
+      font-size: 36px;
+      @media( max-width: @screen-xs) {
+        font-size: 24px;
+      }
+
+      .dollarSign, .cents{
+        @media (max-width: @screen-xs) {
+          font-size: 11px;
+        }
+      }
+
+      .frequencyTitle {
+        font-size: 14px;
+        font-weight : 100;
+
+        @media (max-width: @screen-xs) {
+          font-weight: 100;
+          font-size: 12px;
+        }
+      }
+
+      &.comingSoon {
+        font-size: 17px;
+        width: 100%;
+      }
+    }
+
+    .lhcText {
+      color: @gray-darker;
+      text-align: center;
+      .small;
+      padding-bottom: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    @media (@lg) {
+      .frequencyAmount {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .lhcText {
+        padding-bottom: 0;
+        text-align: center;
+        .small;
+      }
+    }
+
+    .companyLogo {
+      margin-top: 20px;
+    }
+  }
+
+}
+
+.featuresMode {
+  // The actual results container, to the right of the feature labels.
+  // Fix margins for rows on XS @todo may be unnecessary in v4
+  .result-row {
+    h2, h3 {
+      color: #333333;
+    }
+    margin-left: 5px;
+    @media (@sm) {
+      margin-left: 9px;
+    }
+  }
+
+  // Each product column is a result-row, floated left so they fit beside each other.
+  .result-row {
+    border: 2px solid @results-border-color;
+
+    .benefits-click-text {
+      background-color: #eee;
+      border-top: 1px solid @gray-light;
+      border-bottom: 1px solid @gray-light;
+      font-size: @font-size-small;
+      line-height: 30px;
+      margin: 0 -15px;
+      text-align: center;
+      .transition(~"background-color 1.5s ease-in-out, color 1.5s ease-in-out");
+
+      &.make-focus {
+        background-color: @theme-dark;
+        color: #fff;
+      }
+    }
+
+    /* Display Utilities only on hover of result insert */
+    .display-on-hover {
+      .opacity(0);
+      .transition(~"opacity ease-in-out .25s");
+    }
+
+    &.extra-margin-top {
+      margin-top: 34px;
+    }
+
+    &:hover .display-on-hover {
+      .opacity(1);
+    }
+
+    &.hovered {
+      border: 2px solid @theme-tertiary;
+
+      .pin-result-label {
+        a {
+          color: @link-color;
+        }
+      }
+
+      .pin-result-icon {
+        background: @theme-tertiary;
+        &:after {
+          border-color: @theme-tertiary transparent transparent transparent;
+        }
+      }
+    }
+
+    &.pinned {
+      border: 2px solid @results-border-color-pinned;
+      float: left;
+
+      &.hovered {
+        border: 2px solid @results-border-color-pinned;
+      }
+
+      .pin-result-label {
+        a {
+          color: @results-border-color-pinned;
+        }
+      }
+
+      .pin-result-icon {
+        background: @results-border-color-pinned;
+        &:after {
+          border-color: @results-border-color-pinned transparent transparent transparent;
+        }
+      }
+
+      .display-on-hover {
+        .opacity(1);
+      }
+      // force hide this when pinned
+      .remove-result {
+        display: none;
+      }
+    }
+
+    &.selected {
+      border-color: @results-border-color-pinned;
+    }
+
+    .result-product-tag {
+      display: block;
+      background-color: @results-border-color-pinned;
+      color: #fff;
+      font-size: @font-size-large;
+      line-height: 24px;
+      height: 24px;
+      position: absolute;
+      top: -24px;
+      left: -2px;
+      right: -2px;
+      text-align: center;
+    }
+
+    .featuresList {
+      .hospitalCoverSection,
+      .extrasCoverSection,
+      .ambulanceCoverSection  {
+        .coverTitle {
+          padding: 15px 15px 15px;
+          font-weight: bold;
+          font-size: 16px;
+          color: #333333;
+          border-bottom: 1px solid @gray-light;
+        }
+        h2 {
+          float: left;
+          padding: 0px 10px;
+        }
+        .results-download-brochure {
+          float: right;
+          font-size: @font-size-small;
+          margin-top: 23px;
+          text-decoration: underline;
+        }
+
+        .featuresListHospitalOtherList {
+          padding: 0px 10px;
+        }
+
+        .featuresListExtrasOtherList {
+          padding: 0px 10px;
+          border-bottom: 1px solid @results-border-color;
+        }
+      }
+
+      @media (@lg) {
+        .hospitalCoverSection,
+        .extrasCoverSection,
+        .ambulanceCoverSection  {
+          .coverTitle {
+            padding: 15px 15px 15px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #333333;
+            border-bottom: 1px solid @gray-light;
+          }
+          h2 {
+            float: left;
+            padding: 0px 15px;
+          }
+          .results-download-brochure {
+            float: right;
+            font-size: @font-size-small;
+            margin-top: 23px;
+            text-decoration: underline;
+          }
+
+          .featuresListHospitalOtherList {
+            padding: 0px 15px;
+          }
+
+          .featuresListExtrasOtherList {
+            padding: 0px 15px;
+            border-bottom: 1px solid @results-border-color;
+          }
+        }
+      }
+    }
+
+    // .cell is used as parent wrapper as .category is re-used on non-cell divs.
+    .cell {
+
+      // A top level category e.g. the Non Cosmetic Plastic Surgery cell
+      &.category { //.cell.category
+        .transition(~"color ease-in-out .25s");
+
+        // The label cell e.g. "Non Cosmetic Plastic Surgery"
+        // The "Limits" label displayed inside a category's children list.
+        > .labelInColumn,
+        .limits-label {
+          // default color is accent 1
+          color: @theme-accent-4;
+          padding: 0px 0px 0px 15px;
+          .user-select(none);
+          display: block;
+        }
+        .limits-label {
+          margin-top: 5px;
+        }
+        &.expandable {
+          border-top: 1px solid transparent;
+          border-bottom: 1px solid @gray-light;
+
+          &.row-hovered {
+            background-color: #f3f3f3;
+            border-top: 1px solid #fff;
+          }
+
+          &.ambulanceSection {
+            border-top: 1px solid @results-border-color;
+          }
+        }
+
+        .contentInner {
+          color: #333333;
+          .cover-title {
+            font-size: 14px;
+            font-weight: 600;
+          }
+        }
+
+          .labelInColumn {
+            border-bottom: 1px solid @results-border-color;
+
+            &.noCover {
+              .cover-title {
+                color: darkgray;
+              }
+
+              .benefit-container {
+                color: darkgray;
+              }
+            }
+          }
+
+        .featureValue, .featureLabel {
+          float: left;
+
+          &.excess-wavier {
+            float: none;
+          }
+        }
+        .featureLabel {
+          color: #333333;
+          font-weight: bold;
+          width: 100%;
+
+          @media (@lg) {
+            &.excess-wavier {
+              width: 100%;
+            }
+
+            width: 60%;
+          }
+        }
+        .featureValue {
+          text-align: left;
+          width: 100%;
+          margin-top: 5px;
+          font-weight: normal;
+          word-wrap: break-word;
+
+          b  {
+            font-weight: bold !important;
+          }
+
+          @media (@lg) {
+            &.excess-wavier {
+              width: 100%;
+              text-align: left;
+            }
+
+            text-align: right;
+            width: 40%;
+            margin-top: 0px;
+          }
+
+          @media (@xs-only) {
+            font-size: 12px;
+          }
+
+          .excess-value {
+            font-weight: bold;
+          }
+        }
+
+      }
+
+      &.expandable {
+
+        &.category {
+
+          .children { // sub-features
+            margin-bottom: 20px;
+            margin: 0px 15px;
+            .cell {
+              font-size: 12px;
+              &.featureGroupLimit {
+                color: @gray;
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+  .content {
+    padding: @results-column-side-padding-width 0;
+    // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
+    position: relative;
+    overflow: hidden;
+    min-height: 30px;
+  }
+
+  .content-empty {
+    padding: 0 !important;
+    min-height: 0 !important;
+    height: 0 !important;
+  }
+
+  .limited-cover-warning {
+    height: 51px;
+    font-size: 13px;
+  }
+
+  .extraText {
+    display: none;
+  }
+
+  // Override styles for the excess and hospital cover sections.
+
+  .featuresListHospitalOtherList {
+    padding: 10px 0;
+    border-bottom: 1px solid @results-border-color;
+  }
+
+  .featuresListMargin {
+    margin: 0px 15px;
+  }
+
+  .extrasCoverContainer {
+    background-color: #eae8e8;
+
+    .extrasCoverSectionBorder {
+      padding: 15px;
+    }
+  }
+
+  .hospitalSelectionsExcessContainer {
+    background-color: #eae8e8;
+
+    .hospitalExcessSectionBorder {
+      padding: 0px 15px;
+    }
+
+    .blank-excess {
+      height: 51px;
+    }
+
+    .selected-benefits-title {
+      color: @gray;
+      font-size: 16px;
+    }
+    .featuresListExcess {
+      .content {
+        padding-bottom: 0;
+      }
+      // Overrides for the excess section:
+      .excessDetailContainer {
+        .excess-label {
+          font-size: 10px;
+          color: @gray-dark;
+          text-transform: lowercase;
+          margin-bottom: 0;
+        }
+      }
+
+    }
+  }
+
+  .hospitalSelectionsExcessContainer {
+    .featuresListExcess {
+      .content {
+        padding-bottom: 5px;
+        padding-top: 15px;
+      }
+    }
+  }
+
+  &.resultsContainer {
+    .featuresList.featuresElements {
+      .featuresListExcess {
+        .cell {
+          min-height: 50px;
+          font-weight: 600;
+          border-bottom: 1px solid @gray-light;
+
+          small {
+            font-weight: normal;
+          }
+        }
+      }
+
+      .featuresViewAll {
+        color: @link-color;
+        margin-top: 10px;
+        cursor: pointer;
+
+        .viewLessDetails {
+          font-size: 14px;
+          font-weight: normal;
+        }
+
+        &.expanded {
+          .expander::before {
+            content: "\e911";
+          }
+        }
+      }
+
+      .featuresListHospitalOtherList {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+      }
+
+      .featuresListExtrasOtherList {
+        .hasShortlistableChildren {
+          padding-bottom: 10px;
+        }
+      }
+
+      .expander {
+        @media (@md) {
+          position: relative;
+          margin-top: 4px;
+          margin-right: 5px;
+        }
+      }
+
+      .labelInColumn.category {
+        .content {
+          .contentInner {
+            .benefit-container {
+              margin-top: 10px;
+              max-height: 43px;
+
+              @media (@lg) {
+                height: 21px;
+              }
+              .benefit-container-item {
+                display: inline;
+                margin: 5px 0px;
+
+                @media (@xs-only) {
+                 width: 100%;
+                 display: block;
+                 height: 19px;
+                }
+              }
+              .benefit-icon {
+                margin: 0px 5px 0px 5px;
+
+                @media (@sm) {
+                  margin: 0px 0px 0px 5px;
+                }
+
+                &::before {
+                  content: '\e600';
+                  color: #0DB14B;
+                  font-family: 'framework_font';
+                  margin-right: 5px;
+                  margin-top: -7px;
+                  vertical-align: middle;
+                }
+              }
+            }
+          }
+
+
+            .contentInner {
+              .benefit-container {
+                .noCover {
+                margin-top: 10px;
+                .benefit-icon {
+                  &::before {
+                    content: '\e601';
+                    color: @theme-accent-3;
+                    vertical-align: top;
+                  }
+                }
+              }
+            }
+          }
+
+            .contentInner {
+              .benefit-container {
+                .restrictedCover {
+                margin-top: 10px;
+                .benefit-icon {
+                  &::before {
+                    .icon-r();
+                    right: 2px;
+                    margin-top: -12px;
+                    vertical-align: top;
+                  }
+                }
+              }
+            }
+          }
+
+          .contentInner {
+            .benefit-container {
+              .tbaCover {
+              .benefit-icon {
+                margin-left: 0px;
+
+                &::before {
+                  .icon-tba();
+                  right: 2px;
+                  margin-top: -12px;
+                }
+              }
+            }
+          }
+        }
+        }
+      }
+
+      .cell {
+        &.category.expandable {
+          .children {
+            position: relative;
+            &.hideChildren {
+              .cell.feature {
+                visibility: hidden;
+              }
+            }
+            .cell.feature.noValue {
+              .content {
+                padding: 0;
+                .featureLabel {
+                  width: 100%;
+                }
+                .featureValue {
+                  display: none;
+                }
+              }
+            }
+          }
+
+          &.privateHospital {
+            .children {
+              padding: @results-column-side-padding-width 0px;
+              .restrictedLabel.invisible {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
+      .noCoverContainer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        .noCoverLabel {
+          position: relative;
+          top: 35%;
+          text-align: center;
+        }
+      }
+
+      .restrictedLabel {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
+
+      .contentSafeName {
+        display: inline-block;
+        max-width: 76%;
+        margin: 0 12%;
+        text-indent: 20px;
+
+        @media (@md) {
+          max-width: inherit;
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+.product-special-features, .product-additional-features {
+  font-size: @font-size-small;
+  color: @gray-dark;
+  margin-bottom: 10px;
+  width: 100%;
+
+  &.content {
+    padding: 0px 15px;
+    position: initial;
+    overflow: visible;
+    min-height: 30px;
+  }
+  &.content-empty {
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+  .feature-item-text {
+    width: 100%;
+    display: flex;
+    padding-top: 4px;
+
+    .offer-text {
+      margin-left: 6px;
+
+      p {
+        margin-bottom: 0;
+      }
+    }
+
+    .icon-star:before {
+      font-size: 10px;
+      color: @theme-secondary;
+    }
+  }
+
+  .feature-item-offer {
+    color: #000000;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .feature-item {
+    float: left;
+    &.item-popover {
+      &:hover {
+        color: @theme-accent-4;
+        cursor: help;
+      }
+    }
+    .icon {
+      float: left;
+      width: 16px;
+      @media(@sm) {
+        width: 20px;
+      }
+      font-size: @font-size-large;
+    }
+    padding-top: 10px;
+    @media(@sm) {
+      padding-top: 0;
+      &:first-child {
+        padding-left: 0;
+      }
+    }
+  }
+
+  &.features-3,
+  &.features-4 {
+    text-align: center;
+  }
+
+  &.features-1 .feature-item {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  &.features-2 .feature-item {
+    width: 50%;
+     .feature-item-text {
+      width: 80%;
+       @media (@sm) {
+         width: 77%;
+       }
+    }
+  }
+  &.features-3 .feature-item {
+    width: 33.333%;
+  }
+  &.features-4 .feature-item {
+    width: 25%;
+  }
+
+  &.features-2 {
+    @media(@xs-only) {
+      .feature-item {
+        width: 100%;
+        display: block;
+      }
+    }
+  }
+  .fundCallCentreNumber {
+    margin-left:-15px;
+    margin-right:-15px;
+    h1 {
+      font-size:18px;
+      @media(@sm) {
+        font-size: 26px;
+      }
+      margin-top:0;
+      text-align:center;
+      a {
+        color:#1C3F94;
+        span {
+          margin-top:-1px;
+          color: #555555;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  .fundCallCentreNumberTitle{
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+}
+
+.product-additional-features {
+  p {
+    margin-top: 5px;
+  }
+}
+
+// Outside the structure.
+.resultsOtherBenefitsTooltip {
+  color: @gray;
+  .qtip-content > div {
+    margin: 5px 0;
+    .small;
+  }
+}
+
+body {
+  &[data-step="results"] {
+    .journeyEngineLoader {
+      position: fixed;
+      left: 0;
+      right: 0;
+      width: 100%;
+    }
+
+    &:not(.moreInfoVisible) {
+      .price.premium {
+        margin-top: 10px;
+
+        .frequency {
+
+          @media (@sm) {
+            height: 108px;
+          }
+
+          @media (@lg) {
+            height: 90px;
+          }
+        }
+      }
+    }
+
+    .health-results-changed-modal {
+      .modal-footer.mustShow {
+        button.btn-next {
+          padding: 0 15px 0 15px;
+        }
+      }
+    }
+  }
+
+  &[data-is-single="true"] {
+    .featuresMode {
+      .cell.feature.per-person {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  body.health {
+    &[data-step="results"] {
+
+      #journeyEngineContainer.additionalWaitMsgActive {
+        p.message {
+          font-size: @font-size-large;
+        }
+
+        p.message_v2 {
+          margin-top: 2rem;
+          font-size: @font-size-larger;
+        }
+
+        & .results-loading-additional-text {
+          padding-top: 0px;
+          padding-left: 40px;
+          padding-right: 40px;
+        }
+      }
+
+      .health-results-changed-modal {
+        .modal-footer.mustShow {
+          button.btn-next {
+            display: block;
+            margin: 15px auto;
+          }
+        }
+      }
+
+    }
+  }
+}

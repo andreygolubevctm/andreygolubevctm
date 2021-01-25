@@ -8,9 +8,10 @@ import static org.mockito.Mockito.*;
 
 public class RequestAdapterTest {
 
+	final Filters filters = mock(Filters.class);
+
     @Test
     public void testAddExcludeProvidersFilterEmpty() throws Exception {
-        final Filters filters = mock(Filters.class);
         final Filter filter = mock(Filter.class);
         RequestAdapter.addExcludeProvidersFilter(filters, filter);
         verify(filters, never()).setProviderFilter(any());
@@ -18,7 +19,6 @@ public class RequestAdapterTest {
 
     @Test
     public void testAddExcludeProvidersFilterHealthFundNotFound() throws Exception {
-        final Filters filters = mock(Filters.class);
         final Filter filter = mock(Filter.class);
         when(filter.getProviderExclude()).thenReturn("XX");
         RequestAdapter.addExcludeProvidersFilter(filters, filter);
@@ -27,11 +27,9 @@ public class RequestAdapterTest {
 
     @Test
     public void testAddExcludeProvidersFilter() throws Exception {
-        final Filters filters = mock(Filters.class);
         final Filter filter = mock(Filter.class);
         when(filter.getProviderExclude()).thenReturn("AUF");
         RequestAdapter.addExcludeProvidersFilter(filters, filter);
         verify(filters, times(1)).setProviderFilter(any());
     }
-
 }

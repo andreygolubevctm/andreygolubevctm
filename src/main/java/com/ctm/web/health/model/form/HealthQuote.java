@@ -70,6 +70,8 @@ public class HealthQuote {
 
     private Tracking tracking;
 
+    private String hospitalBenefitsSource = "CTM";
+
     public Application getApplication() {
         return application;
     }
@@ -340,5 +342,13 @@ public class HealthQuote {
 
     public void setTracking(Tracking tracking) {
         this.tracking = tracking;
+    }
+
+    public String getHospitalBenefitsSource() {
+        return hospitalBenefitsSource;
+    }
+
+    public void setHospitalBenefitsSource(String hospitalBenefitsSource) {
+        this.hospitalBenefitsSource = hospitalBenefitsSource;
     }
 }

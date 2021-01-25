@@ -1,0 +1,1224 @@
+
+.health[data-step="results"] {
+
+  @media (@lg) {
+    .btn-cta {
+      min-height: 48px;
+      padding-top: 14px;
+      font-size: 16px;
+    }
+  }
+  .results-control-container {
+    .more-info-return-to-results,
+    .more-info-affixed-header {
+      display: none;
+    }
+
+    .results-filters-frequency,
+    .filter-results-hidden-products,
+    .results-pagination,
+    .callCentreNumberSection li:first-child,
+    .results-ref-sidebar {
+      display: block;
+    }
+
+    .reforms-banner {
+      display: flex;
+    }
+  }
+
+  .container {
+    .callCentreNumberSection {
+      li:first-child {
+        display: block;
+      }
+    }
+  }
+}
+
+.moreInfoVisible[data-step="results"] {
+  .more-info-left-header-col {
+    width: 75%;
+    float: left;
+
+    .btn-more-info-apply {
+      display: none;
+    }
+
+    .current-pricing .container {
+      width :100%;
+    }
+  }
+
+  .more-info-right-header-col {
+    width: 25%;
+    float: left;
+  }
+
+  .results-control-container {
+    .results-filters-frequency,
+    .filter-results-hidden-products,
+    .results-pagination,
+    .more-info-affixed-header {
+      display: none;
+    }
+
+    .more-info-return-to-results {
+      display: block;
+    }
+
+    &.affix {
+      .more-info-affixed-header {
+        display: block;
+
+        .price-breakdown {
+          display:none;
+        }
+      }
+
+      .more-info-return-to-results,
+      .results-ref-sidebar {
+        display: none;
+      }
+
+      .lhcText {
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+
+      .more-info-affixed-header .rateRiseDisclaimer {
+        display: none;
+      }
+    }
+  }
+
+  .reforms-banner {
+    display: none;
+  }
+
+  .container {
+    .callCentreNumberSection {
+      li:first-child {
+        display: none;
+      }
+    }
+  }
+}
+
+.moreInfoProductWidget_v2 {
+  border: 1px solid lightgrey;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+
+  .companyLogo {
+    margin-top: 15px;
+  }
+
+  .productWidgetSection {
+    margin: 0px 5px 12px 0px;
+
+    .btn {
+      border-radius: 4px;
+    }
+
+    .results-header-classification-icon {
+      vertical-align: inherit;
+
+      .results-header-classification-date {
+        position: absolute;
+        bottom: -5px;
+        left: ~"calc(50% - 65px)";
+        width: 130px;
+        text-align: center;
+        color: white;
+        border-radius: 10px;
+        background-color: #a0a0a0;
+      }
+    }
+  }
+
+  .results-header-classification-title {
+    height: 20px;
+    text-align: center;
+    color: #555555;
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+
+    @media (@xs-only) {
+      margin-bottom: 25px;
+    }
+  }
+
+  .results-header-classification-date {
+    height: 20px;
+    text-align: center;
+    color: #555555;
+    margin: 0 auto;
+    margin-top: 5px;
+  }
+
+  .more-info-classification-icon {
+    border-radius: 30px;
+    height: 35px;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    width: 33%;
+    min-width: 135px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+
+    &.small-height {
+      height: 2px;
+    }
+
+    &.gov-unclassified {
+      background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
+
+      &.force-large {
+        background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+      }
+
+      @media (@sm) {
+        background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+      }
+    }
+
+    &.gov-bronze-plus {
+      background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+      &::before {
+        content: "BRONZE+";
+      }
+    }
+
+    &.gov-bronze {
+      background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+      &::before {
+        content: "BRONZE";
+      }
+    }
+
+    &.gov-silver {
+      background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+      &::before {
+        content: "SILVER";
+        color: #333333;
+      }
+    }
+
+    &.gov-silver-plus {
+      background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+      &::before {
+        content: "SILVER+";
+        color: #333333;
+      }
+    }
+
+    &.gov-gold {
+      background-image: linear-gradient(to right, #f3d838, #fded8d 50%, #f3d838);
+      &::before {
+        content: "GOLD";
+      }
+    }
+
+    &.gov-basic {
+      background-color: #0d1644;
+      &::before {
+        content: "BASIC";
+      }
+    }
+
+    &.gov-basic-plus {
+      background-color: #0d1644;
+      &::before {
+        content: "BASIC+";
+      }
+    }
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .productWidgetHeader {
+    background-color: #1E4D8B;
+    height: 10px;
+  }
+
+  .productWidgetName {
+    color: black;
+    margin-top: 20px;
+  }
+
+  .productWidgetIconWrapper {
+    padding-left: 5px;
+  }
+
+  .productWidgetIcon_v2 {
+    color: @primary500;
+    font-size: 20px;
+    margin-right: 15px;
+    width: 15px;
+  }
+
+  .row {
+    margin-top: 10px;
+  }
+
+  .classification {
+    display: inline-block;
+    line-height: 1rem;
+    font-weight: bold;
+  }
+
+  .brochureLink {
+    align-items: center;
+    display: flex;
+    padding-bottom: 1rem;
+
+    a {
+      color: @primary500;
+    }
+  }
+}
+
+.topFix {
+  top: 171px;
+}
+
+.more-info-affixed-header {
+
+  div[class*="col-xs-"] {
+    vertical-align: middle;
+    margin-top: 10px;
+    padding-left: 0px;
+
+    img {
+      margin-top: -10px;
+    }
+  }
+
+  .vertical-align {
+    line-height: 30px;
+  }
+
+  .productNames {
+    color: @theme-accent-4;
+  }
+}
+
+.more-info-return-to-results {
+  line-height: 40px;
+
+  span.icon-angle-left {
+    line-height: 20px;
+    margin-right: 10px;
+  }
+
+  .btn-close-more-info {
+    margin-right: 20px;
+  }
+
+  .btn-save-quote-trigge {
+    margin-left: 20px;
+  }
+}
+
+.more-info-affixed-header {
+  .frequencyAmount {
+    font-size: 36px;
+
+    &.comingSoon {
+      font-size: 18px;
+      margin-top: 5px;
+    }
+  }
+
+  .dollarSign,
+  .cents,
+  .frequencyTitle {
+    font-size: 14px;
+    vertical-align: super;
+  }
+
+  .quote-reference-number {
+    line-height: inherit;
+    h3 {
+      color: @gray-darker;
+      font-size: @font-size-large;
+    }
+  }
+
+  .affixed-header-aleks {
+    background-image: url('../../../../assets/brand/ctm/images/aleks@2x.png');
+    height: 170px;
+    background-repeat: no-repeat;
+    background-size: 170px;
+    margin-right: -120px;
+    margin-bottom: -43px;
+  }
+}
+
+.emailBrochuresForm {
+  .moreInfoEmailBrochures .pbLabel {
+    color: @theme-accent-4;
+    font-size: 16px;
+    padding-top: 11px;
+  }
+
+  .optInMarketing {
+    margin-top: 15px;
+  }
+
+  .emailBrochureButtonRow {
+    margin-top: 15px;
+  }
+}
+
+.moreInfoPricingSingle {
+  display: flex;
+  justify-content: flex-start;
+  margin: -10px;
+}
+
+.moreInfoPricingDual {
+  display: flex;
+  justify-content: space-between;
+  margin: -10px;
+  width: 100%;
+
+  .current-price .frequencyAmount{
+    font-size: 56px;
+  }
+}
+
+.moreInfoPriceWrapper {
+  flex: 1 0 auto;
+  margin: 10px;
+  min-height: 150px;
+  width: 45px;
+  max-width: 400px;
+}
+
+.moreInfoPriceContainer {
+  border: 1px solid lightgrey;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .moreInfoPriceHeading {
+    line-height: 2;
+    background-color: #074C90;
+    color: white;
+    text-align: center;
+    width: 100%;
+  }
+
+  .moreInfoPrice {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+
+    .price-breakdown {
+      display:none;
+    }
+
+    .frequencyTitle {
+      line-height: 2rem;
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+.future-price {
+  .moreInfoPriceHeading {
+    background-color: #DD4C5D;
+  }
+
+  .moreInfoPrice {
+    .frequencyAmount {
+      font-size: 42px;
+      color: #DD4C5D;
+    }
+
+    .frequencyTitle {
+      color: @gray-dark;
+    }
+  }
+}
+.ambulanceCoverSection {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.moreInfoFrequencyTitle {
+  display: block;
+}
+
+.aboutThisFundLink {
+  padding: 0px;
+
+  @media (@sm) {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 15px;
+  font-size: 14px;
+  }
+
+  a {
+    color: @primary500;
+
+    .help-icon {
+      color: @primary500;
+    }
+  }
+}
+
+.aboutIcon {
+  height: 1em;
+  width: 1em;
+  margin-right: 4px;
+}
+
+// Bridging page
+.moreInfoDropdown {
+  margin-top: 0px !important;
+
+  .more-info-content {
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+  }
+
+  @media (@xs-only) {
+    .companyLogo {
+      margin-top: 15px;
+    }
+    background-color: @theme-light;
+  }
+  @media (@sm-only) {
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  .moreInfoTopLeftColumn_v2 {
+    .make-sm-column(8);
+    .make-md-column(9);
+  }
+
+  .moreInfoTopRightColumn {
+    .make-sm-column(4);
+    .make-md-column(3);
+
+    @media (min-width: @screen-sm-min) {
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  .modal-header {
+    @media (@sm) {
+      margin-top: 18px;
+    }
+    padding-top: 40px;
+    @media (@sm) {
+      padding-top: 20px;
+    }
+
+    padding-bottom: 20px;
+    border-bottom: 2px solid @gray;
+  }
+
+  .btn-cta.btn-more-info-call-now {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+
+  .fundDetails {
+    padding-bottom: 10px;
+  }
+
+  .containerTest {
+    overflow-x: hidden;
+  }
+
+  .moreInfoSummaryContainer_v2 {
+    background-color: @primary50;
+    width: 100vw; //99.6
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+
+    @media (@sm) {
+      padding-bottom: 50px;
+    }
+
+    @media (@xs-only) {
+      padding-bottom: 80px;
+    }
+  }
+
+
+  .moreInfoFrequencyTitle {
+    color: green;
+  }
+  .productSummary {
+
+    .frequency {
+      padding: 16px 0;
+      .lhcText {
+        color: @gray-darker;
+        span {
+          display: block;
+
+          &.discount-percentage {
+            display: inline-block;
+          }
+        }
+      }
+    }
+    .companyLogo {
+      margin: inherit;
+    }
+
+    .moreInfoProductWidget_v2 {
+      .companyLogo {
+        margin: 10px auto;
+      }
+    }
+
+    &.mobile {
+      margin-bottom: 20px;
+    }
+  }
+
+  h2,
+  h3 {
+    color: @theme-accent-4;
+
+  }
+
+  .productName {
+    font-size: 24px;
+    color: #333333;
+    margin-top: 40px;
+  }
+
+  .current-pricing-details {
+    width: 70%;
+    margin: 5px auto;
+    text-align: center;
+  }
+
+  .quote-ref-container {
+    width: 100%;
+  }
+
+  h3 {
+    margin-top: 0px;
+  }
+
+  .printableBrochuresLink {
+    @media (@xs) {
+      padding-top: 10px;
+      padding-bottom: 30px;
+    }
+  }
+
+  .moreInfoProductSummaryRow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 20px;
+  }
+
+  .moreInfoProductSummaryColumn_v2 {
+    margin: 3rem 0;
+
+    h2 {
+      color: @gray900;
+    }
+
+    img {
+      width: 60px;
+    }
+
+    .moreInfoProductSummaryColumnContainer {
+      display: flex;
+
+      .moreInfoProductSummaryColumnContainerContent {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 0 2rem;
+      }
+    }
+  }
+
+  .moreInfoSummaryContainer_v2 {
+  .productExtraInfoItem {
+    display: flex;
+    padding-top: 25px;
+    width: 90%;
+
+    @media(@md) {
+      width: 70%;
+    }
+
+    .moreInfoPriceLock {
+      padding: 10px;
+    }
+  }
+}
+
+  .productExtraInfoCol {
+    width: 46.5%;
+    float: left;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: 0 auto;
+    margin-right: 15px;
+  }
+
+  .moreInfoPricePromise {
+    object {
+      margin-top: -20px;
+    }
+  }
+
+  .extraInfoItemType {
+    border: 1px solid #1C3F94;
+    border-radius: 20px;
+    color: #1C3F94;
+    padding: 5px 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    min-width: 97px;
+    width: 97px;
+    text-align: center;
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .extraInfoItemText_v2 {
+    font-size: 15px;
+    padding-left: 5px;
+
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .mainContent {
+      margin: 0 0 4px;
+    }
+
+    .subContent {
+      color: @gray700;
+    }
+  }
+
+  .fundDescription {
+    display: block;
+    display: -webkit-box;
+    font-size: 18px;
+    height: 100%;
+    margin: 0 auto;
+    line-height: 2rem;
+    -webkit-box-orient: vertical;
+  }
+
+  .row-eq-height {
+    @media(@sm) {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .leftAlignedLink {
+    text-align: left;
+    padding-left: 0;
+  }
+
+  .centeredLink {
+    text-align: center;
+  }
+
+  .container {
+    position: relative;
+  }
+
+  .heading {
+    color: @theme-accent-4;
+  }
+
+  .download-hospital-brochure,
+  .download-extras-brochure {
+    &:hover {
+      color: @theme-tertiary;
+    }
+  }
+
+  .lhcText {
+    font-size: 10px;
+    line-height: 12px;
+    color: @gray-darker;
+    span {
+      display: block;
+    }
+  }
+
+  .frequencyAmount {
+    color: #333333;
+    font-size: 48px;
+    line-height: 40px;
+
+    .dollarSign,
+    .cents,
+    .frequencyTitle {
+      font-size: 15px;
+      vertical-align: super;
+    }
+    .frequencyTitle {
+      white-space: nowrap;
+      display: block;
+      top: 0;
+      left: 0;
+      padding: 5px 0px 5px 0px;
+    }
+  }
+
+  .benefitsOverflow {
+    margin-bottom: 15px;
+  }
+
+  .benefitRow {
+    &.privateHospital {
+      .benefitContent {
+        .limitTitle {
+          width: 100%;
+        }
+        .limitValue {
+          display: none;
+        }
+      }
+    }
+
+    &.HLTicon-special-features {
+      margin-left: 36px;
+      .limitTitle {
+        display: none;
+      }
+      .limitValue {
+        width: 100%;
+      }
+    }
+    &.restricted {
+      &:before {
+        color: @gray;
+      }
+    }
+  }
+
+  .restricted {
+    .benefitTitle {
+      color: @gray;
+    }
+  }
+
+  .limitValue,
+  .limitTitle,
+  .limitTitleLG {
+    color: @theme-accent-4;
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .limitValue,
+  .limitTitle {
+    padding: 0;
+  }
+  .addBottomMargin {
+    margin-bottom: 20px;
+  }
+
+  .addTopMargin {
+    margin-top: 20px;
+  }
+
+  .limitTitleLG {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .limitValue {
+    color: @gray-darker;
+  }
+
+  .benefitContent {
+    width: 85%;
+    padding-left: 10px;
+    display: inline-block;
+    margin-top: 10px;
+
+    @media (@sm-only) {
+      width: 83%;
+    }
+  }
+
+  .nav-tabs {
+    background: transparent;
+    li.active {
+      display: inline-block;
+    }
+  }
+
+  .hospitalTabContainer,
+  .restrictedContainer {
+    margin-top: 20px;
+  }
+
+  .printableBrochuresLink {
+    padding-bottom: 10px;
+  }
+
+  .shrinkHospital {
+    width: 43%;
+  }
+
+  .expandExtras {
+    padding-left: 4%;
+  }
+
+  h5 {
+    font-size: 14px;
+  }
+
+  .group-limit-disclaimer {
+    display: none;
+
+    @media(@lg) {
+      display: block;
+      margin: 0 0 10px 10px;
+    }
+
+    &.top-left {
+      position: absolute;
+      top: 6px;
+      right: 12px;
+    }
+  }
+
+  @media (@xs-only) {
+    .benefitsColumn {
+      width: 100%;
+      display: inline-block;
+      vertical-align: top;
+
+      .HospitalBenefits,
+      .ExtrasBenefits {
+        padding-left: @grid-gutter-width;
+        padding-right: @grid-gutter-width;
+
+        .bold {
+          font-weight: bold;
+        }
+      }
+
+      &:not(:first-of-type) {
+        margin-top:20px;
+      }
+    }
+
+    .rotateEl(@degrees) {
+      -webkit-transform: rotate(@degrees);
+      -moz-transform: rotate(@degrees);
+      -o-transform: rotate(@degrees);
+      -ms-transform: rotate(@degrees);
+      transform: rotate(@degrees);
+    }
+
+    .benefitsOverflow {
+      width: 100%;
+
+      @media (@sm) {
+        overflow-x: hidden;
+        position: relative;
+      }
+    }
+
+    .toggleBar {
+      background: @theme-tertiary;
+      width: 20px;
+      height: 100%;
+      position: fixed;
+      z-index: 100;
+      margin-top: 20px;
+      right: 0;
+
+      &.extrasToggled {
+        left: 0px;
+      }
+
+      .selectionStatus {
+        background: @theme-tertiary;
+        color: @white;
+        position: absolute;
+        width: 108px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        margin-top: 110px;
+        padding: 4px;
+        padding-left: 10px;
+        right: -20px;
+        cursor: pointer;
+
+        &.hospital {
+          .rotateEl(90deg);
+          left: -26px;
+          width: 120px;
+          position: absolute;
+        }
+
+        &.extras {
+          .rotateEl(-90deg);
+          position: absolute;
+        }
+
+        span {
+          margin-left: 2px;
+          border-radius: 50%;
+          background: @theme-secondary;
+          padding: 0px;
+          width: 18px;
+          display: inline-block;
+          text-align: center;
+          margin-top: 2px;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
+
+.moreInfoVisible[data-step="apply"],
+.moreInfoVisible[data-step="payment"]{
+  .moreInfoDropdown {
+    .modal-header {
+      display: none;
+    }
+
+    .moreInfoTopLeftColumn_v2 {
+      .make-sm-column(12);
+
+      h2 {
+        font-weight: bold;
+      }
+    }
+
+    .moreInfoTopRightColumn {
+      display: none;
+    }
+  }
+}
+
+body[data-is-single="true"] {
+  .moreInfoDropdown {
+    .benefitContent {
+      .per-person {
+        display: none;
+      }
+    }
+  }
+}
+
+.moreInfoDropdown{
+  .healthMoreInfoModel {
+    height: 100%;
+  }
+
+  @media (@xs-only) {
+
+    li.navbar-text.modal-title-label{
+      padding-right: 15px;
+      float: right;
+    }
+
+    .dockedHdr {
+      &.cloned-docked-header {
+        background: #fff;
+        padding-top: 0;
+        border-bottom: 1px solid lightgray;
+        width: 100%;
+        z-index: 1;
+        top: 40px;
+        left: 15px;
+
+        .price-breakdown {
+          display:none;
+        }
+      }
+    }
+
+    .dockedHeaderLarge {
+      border-bottom: 1px solid lightgray;
+
+      .header-fund-details {
+        display: flex;
+        width: 100%;
+      }
+
+      .hidden-large {
+        display: none;
+      }
+
+      .dockedHeaderBottom {
+        margin-bottom: 10px;
+      }
+
+      .btn-more-info-apply {
+        margin: 10px 0px;
+      }
+
+      h5.productName {
+        font-size: 18px;
+        color: #333333;
+        margin-top: 15px;
+      }
+
+      .quote-reference-number {
+        h3 {
+          color: #333333;
+        }
+      }
+
+      .frequencyAmount {
+        line-height: 40px;
+
+        .frequencyTitle {
+          line-height: 20px;
+        }
+      }
+    }
+
+    .dockedHeaderSlim {
+      .logo-header.hidden-slim,
+      .hidden-slim {
+        display: none;
+      }
+    }
+
+    .dockedHeaderBottom{
+      .btn-cta.btn-more-info-apply,
+      .btn-cta.btn-more-info-call-now {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .btn-cta.btn-more-info-apply + .col-xs-6,
+      .btn-cta.btn-more-info-apply + .col-xs-6 + .col-xs-6,
+      .btn-cta.btn-more-info-call-now + .col-xs-6,
+      .btn-cta.btn-more-info-call-now + .col-xs-6 + .col-xs-6{
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+
+      .quote-reference-number {
+        h3 {
+          font-size: 18px;
+          line-height: @line-height-base;
+          color: @gray-darker;
+          margin-bottom: 5px;
+          margin-top: 5px;
+          text-align: center;
+          span{
+            font-weight: @font-family-theme-regular;
+          }
+        }
+      }
+
+      &.callCentreOpen {
+        .getPrintableBrochures {
+          text-align:left;
+        }
+        .btn-more-info-apply,
+        .btn-more-info-call-now {
+          &:not(.btn-cta) {
+            float: right;
+          }
+        }
+      }
+    }
+  }
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.abd-modal-trigger {
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+
+  a {
+    color: @primary500;
+    text-decoration: none !important;
+  }
+
+  .help-icon {
+    line-height: 20px;
+    color: @primary500;
+  }
+}
+
+.abd-badge {
+  background-color: #FFFFFF;
+  color: #666666;
+  border-radius: 20px;
+  border: 1px solid #666666;
+  font-size: 14px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  min-height: 25px;
+  font-weight: bold;
+  width: 80%;
+  min-width: 130px;
+  max-width: 220px;
+  margin-bottom: 2px;
+  margin-top: 15px;
+}
+
+
+.more-info-price-promise-container {
+  margin-top: 20px;
+  position: absolute;
+  right: 0;
+
+  &.extra-margin {
+    margin-top: 165px;
+  }
+}

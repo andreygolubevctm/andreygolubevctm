@@ -45,7 +45,9 @@ div.radio-rounded {
     vertical-align: top;
     cursor: pointer;
     text-align: center;
-    width: @round-label-width-xs;
+    &:not(.no-width) {
+      width: @round-label-width-xs;
+    }
     word-wrap: break-word;
     white-space: normal;
 
@@ -60,15 +62,21 @@ div.radio-rounded {
     }
 
     @media (@sm) {
-      width: @round-label-width-sm;
+      &:not(.no-width) {
+        width: @round-label-width-sm;
+      }
     }
 
     @media (@md) {
-      width: @round-label-width-md;
+      &:not(.no-width) {
+        width: @round-label-width-md;
+      }
     }
 
     @media (@lg) {
-      width: @round-label-width-lg;
+      &:not(.no-width) {
+        width: @round-label-width-lg;
+      }
     }
   }
 
@@ -89,7 +97,7 @@ div.radio-rounded {
 
       &:active,
       &.active {
-        color: @theme-secondary;
+        color: @icon-bg-checked-color;
         &:before {
           background-color: @icon-bg-checked-color;
           color: #fff;

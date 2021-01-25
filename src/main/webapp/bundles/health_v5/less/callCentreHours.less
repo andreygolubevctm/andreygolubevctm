@@ -1,0 +1,130 @@
+.mobile-hours {
+  padding: 15px;
+}
+
+.all-opening-hours {
+  .day_row {
+    margin-top: 5px;
+  }
+  h1 {
+    font-size: 38px;
+    color: @theme-secondary;
+    a {
+      color: @theme-secondary;
+    }
+  }
+  h4, h3 {
+    color: @theme-tertiary;
+  }
+  h3 {
+    font-weight: normal;
+    font-family: @font-family-theme-regular;
+  }
+  .day-description {
+    text-align: right;
+  }
+  .call-details div .call-us {
+    text-align: left;
+    h1 {
+      line-height: 50px;
+      font-weight: normal;
+      span {
+        font-size: 38px;
+        font-weight: 500;
+        height: auto;
+        text-align: left;
+        white-space: now;
+        font-family: @font-family-theme-regular;
+        font-size: 38px;
+        font-weight: normal;
+        height: auto;
+        text-align: left;
+        white-space: now;
+      }
+    }
+    h4 {
+      line-height: 45px;
+      display: inline-block;
+      color: #333333;
+      float: left;
+      font-size: 18px;
+      color: #333333;
+      float: left;
+      font-size: 18px;
+      font-family: @font-family-theme-regular;
+    }
+  }
+  .special-hours {
+    margin-top: 30px;
+  }
+}
+
+.callCentreNumberSection {
+  padding-top: 23px;
+  font-size: 12px;
+
+  @media (@md) {
+    font-size: 20px;
+  }
+
+  .call-opening-text {
+    color: @theme-dark;
+    line-height: 31px;
+  }
+
+  .callCentreNumber-container {
+    color: @gray-base;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 600;
+
+    &:hover {
+      color: #164AD9;
+    }
+
+    a {
+      color: @gray-base;
+
+      &:hover {
+        color: #164AD9;
+        text-decoration: none;
+      }
+    }
+
+    .icon-phone {
+      margin-top: 4px;
+    }
+
+  }
+}
+.journeyEngineSlide {
+  .callCentreNumberSection {
+    padding-top: 0;
+    .callCentreNumber {
+      //This one picks white based on highest contrast
+      color: #ffffff;
+      font-size: 32px;
+      @media (@xs-only) {
+        &.callCentreNumber {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+body {
+  .callCentreAppNumber {
+    display: none;
+  }
+
+  &[data-step="apply"],
+  &[data-step="payment"] {
+    .callCentreNumber {
+      display: none;
+    }
+    .callCentreAppNumber {
+      display: inline-block !important;
+    }
+  }
+}

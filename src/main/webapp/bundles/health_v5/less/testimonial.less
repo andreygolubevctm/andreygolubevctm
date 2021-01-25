@@ -1,0 +1,55 @@
+body{
+	/* pages to display the contact testimonials */
+	&[data-step=contact] {
+		.contactQuoteTestimonial {
+			display: block;
+		}
+	}
+	/* pages to exclude the contact testimonials */
+	&:not([data-step=contact]) {
+		.contactQuoteTestimonial {
+			display: none;
+		}
+	}
+}
+
+blockquote.contactQuoteTestimonial{
+	padding:0;
+	margin:0;
+	border-left: none;
+}
+
+.contactQuoteTestimonial {
+	font-family: @font-family-theme-light;
+	font-size: @font-size-large;
+
+	.quoteContainer {
+		border: 0;
+		padding: 20px 20px;
+		border-radius: 10px;
+		margin-bottom: 28px;
+		background-color: #B2D9DA;
+
+		.quote:before, .quote:after {
+			color: @white;
+		}
+
+		.quote {
+			padding-top: 10px;
+			float: left;
+			width: 100%;
+			color: #028385;
+			text-align: center;
+			font-style: normal;
+		}
+
+		.quoteAuthor {
+			font-family: @font-family-theme-light;
+			width:100%;
+			padding-top: 15px;
+			color: @white;
+			text-align: center;
+		}
+	}
+}
+

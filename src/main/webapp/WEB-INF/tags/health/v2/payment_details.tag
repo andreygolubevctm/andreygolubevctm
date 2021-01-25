@@ -25,7 +25,7 @@
 
 		<c:if test="${isDualPriceActive eq true}">
 			<div class="alert alert-info">
-				Remember: Premiums will rise from October 1st. You <b>must</b> select a cover start date <b>before <span class="pricingDateText"></span></b> and a payment start date <b>before <span class="dropDeadDateText"></span></b> to be eligible for the lower rate
+				Remember: Premiums will rise from April 1st. You <b>must</b> select a cover start date <b>before <span class="pricingDateText"></span></b> and a payment start date <b>before <span class="dropDeadDateText"></span></b> to be eligible for the lower rate
 			</div>
 		</c:if>
 

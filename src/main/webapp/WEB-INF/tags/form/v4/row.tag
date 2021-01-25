@@ -19,6 +19,9 @@
 <%@ attribute name="helpId" required="false" rtexprvalue="true" description="Help tooltip ID" %>
 <%@ attribute name="addForAttr" required="false" rtexprvalue="true" description="Bool to add or not the for attribute" %>
 
+<%-- Added to allow option of rendering lable as simples dialogue --%>
+<%@ attribute name="renderLabelAboveContent"	required="false" rtexprvalue="true" description="Flag to render the label above the question content" %>
+
 <%-- SETUP --%>
 <c:if test="${empty addForAttr}"><c:set var="addForAttr" value="${true}" /></c:if>
 <c:set var="showHelpIcon" value="${true}" />
@@ -50,24 +53,41 @@
     <c:set var="inputClass" value="row " />
     <c:set var="labelClass" value="hidden-xs" />
 </c:if>
+
 <c:set var="inputOffsetSm" value="" />
-<c:if test="${showLabel eq false}"><c:set var="inputOffsetSm" value="col-sm-offset-4 " /></c:if>
+<c:set var="renderLabelAboveContentClass" value="" />
+<c:choose>
+    <c:when test="${not empty renderLabelAboveContent and renderLabelAboveContent eq true}">
+        <c:set var="showLabel" value="false" />
+        <c:set var="renderLabelAboveContentClass" value="label-rendered-above-content" />
+        <c:set var="inputWidthSm" value="12" />
+    </c:when>
+    <c:otherwise>
+        <c:if test="${showLabel eq false}"><c:set var="inputOffsetSm" value="col-sm-offset-4 " /></c:if>
+    </c:otherwise>
+</c:choose>
+
 <%-- / SETUP --%>
 
-<div class="${formGroupClasses} ${rowBorderClass} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
+<div class="${formGroupClasses} ${rowBorderClass} fieldrow ${className} ${renderLabelAboveContentClass}"<c:if test="${not empty id}"> id="${id}"</c:if>>
     <%-- Row Label --%>
-    <c:if test="${showLabel}">
-        <div class="col-xs-<c:out value="${labelWidthXs} " /> col-sm-4 <c:out value="${labelClass}" />">
-            <field_v2:label value="${label}" xpath="${fieldXpath}" addForAttr="${addForAttr}" helpId="${helpId}" showText="${showHelpText}" />
-            <c:if test="${not empty subLabel}"><div class="control-sub-label">${subLabel}</div></c:if>
-        </div>
-        <%-- XS Help Tip: Only show if there's a label too. --%>
-        <c:if test="${showHelpIcon eq true}">
-            <div class="col-xs-2 text-right hidden-sm hidden-md hidden-lg">
-                <field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
+    <c:choose>
+        <c:when test="${not empty renderLabelAboveContent and renderLabelAboveContent eq true}">
+            <label>${label}</label>
+        </c:when>
+        <c:when test="${showLabel}">
+            <div class="col-xs-<c:out value="${labelWidthXs} " /> col-sm-4 <c:out value="${labelClass}" />">
+                <field_v2:label value="${label}" xpath="${fieldXpath}" addForAttr="${addForAttr}" helpId="${helpId}" showText="${showHelpText}" />
+                <c:if test="${not empty subLabel}"><div class="control-sub-label">${subLabel}</div></c:if>
             </div>
-        </c:if>
-    </c:if>
+            <%-- XS Help Tip: Only show if there's a label too. --%>
+            <c:if test="${showHelpIcon eq true}">
+                <div class="col-xs-2 text-right hidden-sm hidden-md hidden-lg">
+                    <field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
+                </div>
+            </c:if>
+        </c:when>
+    </c:choose>
     <%-- Row Input --%>
     <div class="col-xs-12 col-sm-<c:out value="${inputWidthSm}" /> <c:out value="${inputWidthLg}"/> <c:out value="${inputClass}" /> <c:out value="${inputOffsetSm}" /> <c:out value="${rowContentClass}" /> row-content">
         <jsp:doBody />

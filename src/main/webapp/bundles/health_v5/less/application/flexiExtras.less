@@ -1,0 +1,96 @@
+#bup_flexi_extras,
+#hbf_flexi_extras {
+  &.has-error {
+    .content {
+      background-color: @state-danger-bg;
+      border-color: @state-danger-border;
+    }
+  }
+
+  .error-field {
+    display: none !important;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  .no-padding {
+    padding: 0;
+  }
+
+  .flexi-message,
+  .flexi-message-complete {
+    clear: both;
+    font-size: @font-size-large;
+    padding: 20px 0;
+  }
+
+  .flexi-extras-icons {
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    > .checkbox {
+      position: relative;
+      padding-left: unset;
+
+      &.disabled {
+        cursor: default;
+
+        input + label:before {
+          color: #8a8a8a;
+        }
+      }
+
+      input:checked + label {
+        color: @gray-dark;
+
+        &:before {
+          background-color: @icon-bg-checked-color;
+          border-color: @icon-border-checked-color;
+          color: #ffffff;
+        }
+      }
+    }
+
+    > .checkbox input + label {
+      text-align: center;
+      line-height: 1.1;
+      cursor: pointer;
+
+      &:before {
+        display: block;
+        margin: 0;
+        margin-bottom: 10px;
+        padding: 0;
+        border-radius: 50%;
+        background-color: @icon-bg-color;
+        border: 1px solid @icon-border-color;
+        color: @theme-tertiary;
+        font-family: ctm-health;
+        text-align: center;
+      }
+
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+
+    @checkbox: .checkbox;
+    @media (@xs) {
+      .flexiCheckbox(50px, @font-size-base, 0, 44, @checkbox);
+    }
+    @media (@sm) {
+      .flexiCheckbox(40px, @font-size-small, 1, 44, @checkbox);
+    }
+    @media (@md) {
+      .flexiCheckbox(55px, @font-size-base, 0, 44, @checkbox);
+    }
+    @media (@lg) {
+      .flexiCheckbox(60px, @font-size-base, 7, 44, @checkbox);
+    }
+  }
+}

@@ -65,6 +65,9 @@ public class ResultsDisplayService {
                 item.setHelpId(result.getInt("helpId"));
                 item.setShortlistKey(result.getString("shortlistKey"));
                 item.setFlag(result.getInt("flag"));
+                item.setGroups(result.getString("groups"));
+                item.setCaption(result.getString("caption"));
+                item.setDescription(result.getString("description"));
                 unorganisedList.add(item);
             }
 
