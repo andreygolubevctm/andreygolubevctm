@@ -3,6 +3,7 @@ package com.ctm.web.health.dao;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
+import com.google.common.annotations.VisibleForTesting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -42,7 +43,7 @@ public class ProviderInfoDao {
                                         final java.util.Date searchDate) {
         return ProviderInfo.newProviderInfo()
                 .email(getProviderEmail(provider, brand, searchDate))
-                .phoneNumber(getProviderPhoneNumber(provider, brand, searchDate))
+                .phoneNumber(getProviderDirectPhoneNumber(provider, brand, searchDate))
                 .website(getProviderWebsite(provider, brand, searchDate)).build();
     }
 
@@ -59,13 +60,13 @@ public class ProviderInfoDao {
                 .orElse("");
     }
 
-    private String getProviderPhoneNumber(final Provider providerId, final Brand brand,
+    private String getProviderDirectPhoneNumber(final Provider providerId, final Brand brand,
                                           final java.util.Date searchDate) {
-        return getProviderContent(providerId, brand, searchDate, "providerPhoneNumber")
+        return getProviderContent(providerId, brand, searchDate, "providerDirectPhoneNumber")
                 .orElse("");
     }
 
-    private Optional<String> getProviderContent(final Provider providerId, final Brand brand,
+    @VisibleForTesting Optional<String> getProviderContent(final Provider providerId, final Brand brand,
                                                 final java.util.Date searchDate,
                                                 final String key) {
         return jdbcTemplate.query(PROVIDER_CONTENT_QUERY,

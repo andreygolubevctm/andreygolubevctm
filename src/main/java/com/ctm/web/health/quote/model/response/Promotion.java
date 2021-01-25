@@ -8,6 +8,8 @@ public class Promotion {
 
     private String providerPhoneNumber;
 
+    private String providerDirectPhoneNumber;
+
     private String hospitalPDF;
 
     private String extrasPDF;
@@ -28,6 +30,14 @@ public class Promotion {
 
     public void setProviderPhoneNumber(String providerPhoneNumber) {
         this.providerPhoneNumber = providerPhoneNumber;
+    }
+
+    public String getProviderDirectPhoneNumber() {
+        return providerDirectPhoneNumber;
+    }
+
+    public void setProviderDirectPhoneNumber(String providerDirectPhoneNumber) {
+        this.providerDirectPhoneNumber = providerDirectPhoneNumber;
     }
 
     public String getHospitalPDF() {

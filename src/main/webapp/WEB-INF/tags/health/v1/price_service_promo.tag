@@ -73,6 +73,13 @@
 			<providerPhoneNumber><![CDATA[<c:out value="${providerPhoneNumber}"/>]]></providerPhoneNumber>
 		</c:if>
 	</c:forEach>
+	<c:set var="providerDirectPhoneNumberList" value='${contentService.getMultipleContentValuesForProvider("providerDirectPhoneNumber", providerId, styleCodeId, applicationDate, false)}' />
+	<c:forEach items="${providerDirectPhoneNumberList}" var="item" varStatus="status">
+		<c:set var="providerDirectPhoneNumber" value="${item.getContentValue()}" />
+		<c:if test="${not empty providerDirectPhoneNumber}">
+			<providerDirectPhoneNumber><![CDATA[<c:out value="${providerDirectPhoneNumber}"/>]]></providerDirectPhoneNumber>
+		</c:if>
+	</c:forEach>
 
 </promoData>
 <%-- XML END --%>
