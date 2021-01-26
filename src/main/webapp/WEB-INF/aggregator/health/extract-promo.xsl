@@ -31,6 +31,7 @@
 		<xsl:variable name="promoExtrasOnly" select="promo[@extras=$unescapedExtras and not(@hospital)]" />
 
 		<providerPhoneNumber><xsl:value-of select="providerPhoneNumber" /></providerPhoneNumber>
+		<providerDirectPhoneNumber><xsl:value-of select="providerDirectPhoneNumber" /></providerDirectPhoneNumber>
 
 		<xsl:choose>
 			<xsl:when  test="string-length($hospital) > 0 and string-length($extras) > 0">
