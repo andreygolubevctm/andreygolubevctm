@@ -8,11 +8,13 @@ public class Promo implements Serializable {
 
     private String hospitalPDF;
 
-    private String providerPhoneNumber;
-
     private String extrasPDF;
 
     private String discountText;
+
+    private String providerPhoneNumber;
+
+    private String providerDirectPhoneNumber;
 
     public String getPromoText() {
         return promoText;
@@ -30,14 +32,6 @@ public class Promo implements Serializable {
         this.hospitalPDF = hospitalPDF;
     }
 
-    public String getProviderPhoneNumber() {
-        return providerPhoneNumber;
-    }
-
-    public void setProviderPhoneNumber(String providerPhoneNumber) {
-        this.providerPhoneNumber = providerPhoneNumber;
-    }
-
     public String getExtrasPDF() {
         return extrasPDF;
     }
@@ -52,5 +46,21 @@ public class Promo implements Serializable {
 
     public void setDiscountText(String discountText) {
         this.discountText = discountText;
+    }
+
+    public String getProviderPhoneNumber() {
+        return providerPhoneNumber;
+    }
+
+    public void setProviderPhoneNumber(String providerPhoneNumber) {
+        this.providerPhoneNumber = providerPhoneNumber;
+    }
+
+    public String getProviderDirectPhoneNumber() {
+        return providerDirectPhoneNumber;
+    }
+
+    public void setProviderDirectPhoneNumber(String providerDirectPhoneNumber) {
+        this.providerDirectPhoneNumber = providerDirectPhoneNumber;
     }
 }

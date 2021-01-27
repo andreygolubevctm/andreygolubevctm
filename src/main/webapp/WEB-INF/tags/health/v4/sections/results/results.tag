@@ -128,27 +128,16 @@
                     <div class="clearfix">
                         <h2>Extras cover</h2>
                     </div>
-
-                    <c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
-                    <c:choose>
-                    <c:when test="${onlineHealthReformMessaging eq 'Y'}">
-                        <div class="extrasCoverContainer">
-                            <div class="extrasCoverSectionBorder">
-                                Health insurance reform does not affect extras cover.
-                            </div>
-                        </div>
-                    </c:when>
-                    </c:choose>
-                        <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
-                        {{ if(promo.extrasPDF.indexOf('http') === -1) { }}
-                            <a class="results-download-brochure" href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">extras </span>brochure</a>
-						{{ } else { }}
-                            <a class="results-download-brochure" href="{{= promo.extrasPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">extras </span>brochure</a>
-						{{ } }}
-                        </c:if>
-                        <div class="yourSelectionsHospital">
-                            <div class="coverTitle">Your selected cover benefits:</div>
-                        </div>
+                    <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
+                    {{ if(promo.extrasPDF.indexOf('http') === -1) { }}
+                        <a class="results-download-brochure" href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">extras </span>brochure</a>
+                    {{ } else { }}
+                        <a class="results-download-brochure" href="{{= promo.extrasPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">extras </span>brochure</a>
+                    {{ } }}
+                    </c:if>
+                    <div class="yourSelectionsHospital">
+                        <div class="coverTitle">Your selected cover benefits:</div>
+                    </div>
                     <div class="featuresListExtrasSelections" data-feature-index="3"></div>
                     <div class="otherExtrasBenefits">
                         <div class="coverTitle"><span>Other benefits: </span>
