@@ -9,6 +9,7 @@
 <%@ attribute name="caption" 		required="true"     rtexprvalue="true"	 description="field group's xpath" %>
 <%@ attribute name="description" 	required="false"    rtexprvalue="true"	 description="field group's xpath" %>
 <%@ attribute name="id" 		    required="true"     rtexprvalue="true"	 description="field group's xpath" %>
+<%@ attribute name="submitWithForm" required="true"     rtexprvalue="true"	 description="true or false" %>
 
 <c:set var="xpathval"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:set var="checked" value="" />
@@ -20,7 +21,7 @@
 
 <div class="categoriesCell_v2 short-list-item category collapsed ClinicalCategoryIcon-${code} ${code}_container ${activeClass}" data-groups="${groups}" data-sortable-key="${title}">
     <div class=" checkbox">
-        <input type="checkbox" name="health_benefits_benefitsExtras_${code}" id="health_benefits_benefitsExtras_${code}" class="checkbox-custom  checkbox" value="Y" data-attach="true" data-benefit-id="${id}" data-benefit-code="${code}" ${checked}>
+        <input type="checkbox" name="health_benefits_benefitsExtras_${code}" id="health_benefits_benefitsExtras_${code}" class="checkbox-custom  checkbox" value="Y" data-attach="${submitWithForm}" data-benefit-id="${id}" data-benefit-code="${code}" ${checked}>
 
         <label for="health_benefits_benefitsExtras_${code}" data-analytics="benefit hospital">
             <div class="benefit-label-container">
