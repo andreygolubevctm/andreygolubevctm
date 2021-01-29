@@ -22,6 +22,12 @@ public class HealthQuote {
 
     private Integer partnerCAE;
 
+    private Integer primaryLHC;
+
+    private Integer partnerLHC;
+
+    private Integer combinedLHC;
+
     private Situation situation;
 
     private HealthCover healthCover;
@@ -143,6 +149,18 @@ public class HealthQuote {
     public void setPartnerCAE(Integer partnerCAE) {
         this.partnerCAE = partnerCAE;
     }
+
+    public Integer getPrimaryLHC() { return primaryLHC; }
+
+    public void setPrimaryLHC(Integer primaryLHC) { this.primaryLHC = primaryLHC; }
+
+    public Integer getPartnerLHC() { return partnerLHC; }
+
+    public void setPartnerLHC(Integer partnerLHC) { this.partnerLHC = partnerLHC; }
+
+    public Integer getCombinedLHC() { return combinedLHC; }
+
+    public void setCombinedLHC(Integer combinedLHC) { this.combinedLHC = combinedLHC; }
 
     public Situation getSituation() {
         return situation;
