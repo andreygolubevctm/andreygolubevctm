@@ -163,7 +163,9 @@
                             <div class="children healthBenefits">
                                 <c:choose>
                                     <c:when test="${category eq 'Hospital'}">
-                                        <c:set var="includeBenefitWhenFormSubmittedAttribute" value=" data-ignore=\"true\" " />
+                                        <c:set var="includeBenefitWhenFormSubmittedAttribute">
+                                            <c:if test="${hospitalBenefitsSource eq 'CLINICAL_CATEGORIES'}">data-ignore="true"</c:if>
+                                        </c:set>
                                         <c:set var="benefitTypeAttribute" value=" data-type='hospital' " />
                                     </c:when>
                                     <c:when test="${category != 'Hospital'}">
