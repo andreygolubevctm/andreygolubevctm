@@ -135,6 +135,8 @@
 	<c:set var="extrasCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('extrasCompareSpecialB')}" />
 	<c:set var="hospitalCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('hospitalCompareSpecialB')}" />
 
+    <c:set var="hospitalBenefitsSource" value="${pageSettings.getSetting('simplesHospitalBenefitsSource')}" scope="request" />
+
 	<health_v1:dual_pricing_settings />
 	<health_v1:pyrr_campaign_settings />
 
@@ -309,5 +311,6 @@
 	africaComp: <c:out value="${africaComp}" />,
 	pauseRecordingOverride : {
 		enabled : <c:out value="${pageSettings.getSetting('pauseRecordingOverride') eq 'Y'}"/>
-	}
+	},
+    hospitalBenefitsSource: '${hospitalBenefitsSource}'
 }
