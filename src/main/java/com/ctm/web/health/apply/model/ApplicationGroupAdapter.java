@@ -42,7 +42,8 @@ public class ApplicationGroupAdapter {
                                 .map(Application::getHif)
                                 .map(Hif::getPrimaryemigrate)
                                 .map(Emigrate::valueOf)
-                                .orElse(null)),
+                                .orElse(null),
+                        quote.map(HealthQuote::getPrimaryLHC)),
                 quote.map(HealthQuote::getApplication)
                         .map(Application::getPartner)
                         .map(Person::getTitle).isPresent()
@@ -58,7 +59,7 @@ public class ApplicationGroupAdapter {
                                 .map(Application::getHif)
                                 .map(Hif::getPartneremigrate)
                                 .map(Emigrate::valueOf)
-                                .orElse(null)) : null,
+                                .orElse(null),quote.map(HealthQuote::getPartnerLHC)) : null,
                 createDependants(quote.map(HealthQuote::getApplication)
                         .map(Application::getDependants)),
                 createSituation(quote.map(HealthQuote::getSituation)),
@@ -112,7 +113,7 @@ public class ApplicationGroupAdapter {
         }
     }
 
-    protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund, Optional<Integer> certifiedAgeEntry, Optional<Insured> insured, Emigrate emigrate) {
+    protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund, Optional<Integer> certifiedAgeEntry, Optional<Insured> insured, Emigrate emigrate,Optional<Integer> lhcPercentage) {
         if (person.isPresent()) {
             return new Applicant(
                     person.map(Person::getTitle)
@@ -151,7 +152,7 @@ public class ApplicationGroupAdapter {
                     person.map(Person::getEmail)
                             .map(Email::new)
                             .orElse(null),
-                    emigrate);
+                    emigrate, lhcPercentage.orElse(0));
         }
         return null;
     }

@@ -33,6 +33,11 @@
 					}
 				});
 			}
+
+			window.addEventListener('ca_signout', (e) => {
+				disable();
+				location.reload();
+			}, false);
 		});
 
 

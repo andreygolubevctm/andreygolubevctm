@@ -104,6 +104,9 @@ public class HealthQuoteRouterTest {
         simples.setContactType(contactType);
         health.setSimples(simples);
         health.setShowAll("Y");
+        health.setPrimaryLHC(2);
+        health.setPartnerLHC(10);
+        health.setCombinedLHC(8);
         Benefits benefits = new Benefits();
         Map<String, String> benefitsExtras = new HashMap<>();
         benefits.setBenefitsExtras(benefitsExtras);
@@ -116,6 +119,17 @@ public class HealthQuoteRouterTest {
         when(httpServletRequest.getSession()).thenReturn(session);
         when(healthQuoteService.getQuotes(any(), any(), any(), anyBoolean(), any())).thenReturn(mock(ResponseAdapterModel.class));
         healthQuoteRouter = new HealthQuoteController(sessionDataServiceBean, ipAddressHandler, contentService, healthQuoteService, new HealthSelectedProductService());
+    }
+
+    @Test
+    public void testHealthQuoteLHCValues(){
+        Integer primaryLHC = data.getQuote().getPrimaryLHC();
+        Integer partnerLHC = data.getQuote().getPartnerLHC();
+        Integer combinedLHC = data.getQuote().getCombinedLHC();
+
+        assertEquals((Integer)2, primaryLHC);
+        assertEquals((Integer)10, partnerLHC);
+        assertEquals((Integer)8, combinedLHC);
     }
 
     @Test

@@ -169,7 +169,6 @@
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				meerkat.modules.travelCountrySelector.initTravelCountrySelector();
 				meerkat.modules.travelContactDetails.initContactDetails();
-				meerkat.modules.travelPopularDestinations.initTravelPopularDestinations();
 				meerkat.modules.travelAmtDurations.initAmtDurations();
 
 				var $travel_policyType_S = $('#travel_policyType_S');

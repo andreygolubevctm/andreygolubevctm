@@ -50,10 +50,12 @@ public class Applicant {
     @JsonSerialize(using = TypeSerializer.class)
     private final Email email;
 
+    private final Integer lhcPercentage;
+
     public Applicant(final Title title, final FirstName firstName, final LastName lastName, final Gender gender,
                      final LocalDate dateOfBirth, final HealthCover healthCover, final PreviousFund previousFund,
                      final CertifiedAgeEntry certifiedAgeEntry, final Authority authority,final Email email,
-                     final Emigrate emigrate) {
+                     final Emigrate emigrate,final Integer lhcPercentage) {
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -65,6 +67,7 @@ public class Applicant {
         this.authority = authority;
         this.email = email;
         this.emigrate = emigrate;
+        this.lhcPercentage = lhcPercentage;
     }
 
     public Title getTitle() {
@@ -111,4 +114,5 @@ public class Applicant {
         return emigrate;
     }
 
+    public Integer getLhcPercentage() { return lhcPercentage; }
 }
