@@ -34,7 +34,7 @@
 				});
 			}
 
-			window.addEventListener('ca_signout', (e) => {
+			window.addEventListener('ca_signout', function() {
 				disable();
 				location.reload();
 			}, false);
