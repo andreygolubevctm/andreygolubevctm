@@ -714,7 +714,7 @@
      * */
 
     function resetBenefitsSelection(includeHidden) {
-        $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").prop('checked', false);
+        $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").prop('checked', false).attr('data-visible', "false");
         if(includeHidden === true){
             $hiddenFields.find(".benefit-item").val('');
         }
@@ -724,7 +724,7 @@
         resetBenefitsSelection(false);
         for (var i = 0; i < checkedBenefits.length; i++) {
             var path = checkedBenefits[i];
-            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true).prop('disabled', false);
+            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true).prop('disabled', false).attr('data-visible', "true");
         }
     }
 

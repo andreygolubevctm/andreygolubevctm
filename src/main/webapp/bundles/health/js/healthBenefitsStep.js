@@ -366,6 +366,7 @@
             var manualSelection = !_.isUndefined($that.prop('manually-selected'));
             if(!isClinicalCategory || (isClinicalCategory && !manualSelection)) {
                 $that.prop("checked", false);
+                $that.attr('data-visible', "false");
                 if(isClinicalCategory) {
                     $that.closest(".categoriesCell_v2").removeClass("active");
                 }
@@ -385,7 +386,7 @@
 
         for (var i = 0; i < checkedBenefits.length; i++) {
             var path = checkedBenefits[i];
-            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true).change();
+            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true).attr('data-visible', "true").change();
         }
     }
 
