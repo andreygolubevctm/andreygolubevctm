@@ -228,12 +228,20 @@
             onSuccess: function(res) {
                 _newLhc = meerkat.modules.healthChoices.hasPartner() ? res.combined.lhcPercentage : res.primary.lhcPercentage;
                 _newLhcCompleteResult = res;
+                updateLHCFields();
             },
             onError: function onError(obj, txt, errorThrown) {
-                console.log({errorMessage: txt + ': ' + errorThrown});
+                meerkat.logging.error(txt + ': ' + errorThrown);
             }
         });
     }
+
+	function updateLHCFields() {
+		var hasPartner = meerkat.modules.healthChoices.hasPartner();
+		$('#health_primaryLHC').val(_newLhcCompleteResult.hasOwnProperty('primary') ? _newLhcCompleteResult.primary.lhcPercentage : 0);
+		$('#health_partnerLHC').val(hasPartner && _newLhcCompleteResult.hasOwnProperty('partner') ? _newLhcCompleteResult.partner.lhcPercentage : 0);
+		$('#health_combinedLHC').val(_newLhcCompleteResult.hasOwnProperty('combined') ? _newLhcCompleteResult.combined.lhcPercentage : 0);
+	}
 
     function getPrimary() {
         return _calculateRequestData.primary;

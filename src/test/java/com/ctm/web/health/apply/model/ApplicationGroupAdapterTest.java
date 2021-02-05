@@ -6,7 +6,6 @@ import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.EverHadCover;
 import com.ctm.web.health.apply.model.request.application.situation.Situation;
 import com.ctm.web.health.model.form.*;
-import lombok.SneakyThrows;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,11 +28,16 @@ public class ApplicationGroupAdapterTest {
     public void testCreateApplicationGroup() throws Exception {
         final HealthQuote healthQuote = mock(HealthQuote.class);
         final Application application = mock(Application.class);
+        final Person partner = mock(Person.class);
+
         final Hif hif = mock(Hif.class);
         final Qch qch = mock(Qch.class);
         final GovtRebateDeclaration govtRebateDeclaration = mock(GovtRebateDeclaration.class);
         final com.ctm.web.health.model.form.PreviousFund previousFund = mock(com.ctm.web.health.model.form.PreviousFund.class);
         when(healthQuote.getApplication()).thenReturn(application);
+        when(application.getPartner()).thenReturn(partner);
+        when(partner.getTitle()).thenReturn("Mrs");
+
         when(healthQuote.getPreviousfund()).thenReturn(previousFund);
         when(application.getHif()).thenReturn(hif);
         when(application.getQch()).thenReturn(qch);
@@ -44,9 +48,13 @@ public class ApplicationGroupAdapterTest {
         assertNull(applicationGroup.getDependants());
         verify(application, times(1)).getPrimary();
         verify(previousFund, times(1)).getPrimary();
-        verify(application, times(1)).getPartner();
+        verify(application, times(2)).getPartner();
         verify(application, times(1)).getDependants();
         verify(healthQuote, times(1)).getSituation();
+
+        verify(healthQuote, times(1)).getPrimaryLHC();
+        verify(healthQuote, times(1)).getPartnerLHC();
+
         //verify(hif, times(1)).getEmigrate();
         verify(qch, times(1)).getEmigrate();
         verify(govtRebateDeclaration, times(1)).getApplicantCovered();
@@ -60,7 +68,7 @@ public class ApplicationGroupAdapterTest {
 
     @Test
     public void testCreateApplicantEmpty() throws Exception {
-        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Emigrate.Y);
+        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty());
         assertNull(applicant);
     }
 
@@ -84,17 +92,20 @@ public class ApplicationGroupAdapterTest {
         final Fund previousFund = mock(Fund.class);
         final Integer certifiedAge = 1;
         final Insured insured = mock(Insured.class);
+        final Integer lhcPercentage = 8;
 
         when(insured.getEverHadCover()).thenReturn("Y");
 
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
-                Optional.of(certifiedAge), Optional.of(insured),Emigrate.Y);
+                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage));
         assertNotNull(applicant);
         assertEquals(applicant.getHealthCover().getEverHadCover(), EverHadCover.Y);
         assertNotNull(applicant.getHealthCover());
         assertNull(applicant.getPreviousFund());
 
         assertNotNull(applicant.getCertifiedAgeEntry());
+        assertEquals(applicant.getLhcPercentage(), (Integer) 8);
+
         verify(person, times(1)).getTitle();
         verify(person, times(1)).getFirstname();
         verify(person, times(1)).getSurname();
@@ -104,17 +115,20 @@ public class ApplicationGroupAdapterTest {
         verify(insured, times(1)).getHealthCoverLoading();
         verify(insured, times(1)).getEverHadCover();
         verify(person, times(1)).getAuthority();
+
     }
 
     @Test
     public void testCreateApplicantEmptyExceptPerson() throws Exception {
         final Person person = mock(Person.class);
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.empty(),
-                Optional.empty(), Optional.empty(), Emigrate.Y);
+                Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty());
         assertNotNull(applicant);
         assertNull(applicant.getHealthCover());
         assertNull(applicant.getPreviousFund());
         assertNull(applicant.getCertifiedAgeEntry());
+        assertEquals(applicant.getLhcPercentage(), (Integer) 0);
+
         verify(person, times(1)).getTitle();
         verify(person, times(1)).getFirstname();
         verify(person, times(1)).getSurname();
