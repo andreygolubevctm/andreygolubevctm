@@ -319,6 +319,7 @@ public class CouponDao {
         coupon.setContentTile(results.getString("contentTile"));
 		coupon.setContentBanner(results.getString("contentBanner"));
 		coupon.setContentSuccess(results.getString("contentSuccess"));
+		coupon.setTermsAndConditions(results.getString("termsAndConditions"));
 		coupon.setContentCheckbox(results.getString("contentCheckbox"));
 		coupon.setContentConfirmation(results.getString("contentConfirmation"));
 		coupon.setContentWordpress(results.getString("contentWordpress"));

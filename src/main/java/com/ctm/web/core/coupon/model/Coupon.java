@@ -28,6 +28,7 @@ public class Coupon extends AbstractJsonModel {
     private String contentTile;
 	private String contentBanner;
 	private String contentSuccess;
+	private String termsAndConditions;
 	private String contentCheckbox;
 	private String contentConfirmation;
 	@JsonView(Views.ForWordpressSite.class)
@@ -118,6 +119,8 @@ public class Coupon extends AbstractJsonModel {
 	public void setContentSuccess(String contentSuccess) {
 		this.contentSuccess = contentSuccess;
 	}
+	public String getTermsAndConditions() { return termsAndConditions; }
+	public void setTermsAndConditions(String termsAndConditions) { this.termsAndConditions = termsAndConditions; }
 	public String getContentCheckbox() {
 		return contentCheckbox;
 	}
@@ -196,6 +199,7 @@ public class Coupon extends AbstractJsonModel {
         json.put("contentTile", getContentTile());
 		json.put("contentBanner", getContentBanner());
 		json.put("contentSuccess", getContentSuccess());
+		json.put("termsAndConditions", getTermsAndConditions());
 		json.put("contentCheckbox", getContentCheckbox());
 		json.put("contentConfirmation", getContentConfirmation());
 		json.put("showPopup", isShowPopup());
@@ -221,6 +225,7 @@ public class Coupon extends AbstractJsonModel {
 				", contentTile='" + contentTile + '\'' +
 				", contentBanner='" + contentBanner + '\'' +
 				", contentSuccess='" + contentSuccess + '\'' +
+				", termsAndConditions='" + termsAndConditions + '\'' +
 				", contentCheckbox='" + contentCheckbox + '\'' +
 				", contentConfirmation='" + contentConfirmation + '\'' +
 				", contentWordpress='" + contentWordpress + '\'' +
