@@ -47,12 +47,12 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jms.Session;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class HealthEmailService extends EmailServiceHandler implements BestPriceEmailHandler, ProductBrochuresEmailHandler, ApplicationEmailHandler {
 
@@ -272,10 +272,12 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 	private EmailEventRequest buildApplicationEmailModel(EmailMaster emailDetails, long transactionId, String productId, HttpServletRequest request) throws SendEmailException {
-
 		Optional<HealthRequest> data = Optional.ofNullable((HealthRequest) request.getAttribute("requestData"));
 		final Data dataBucket;
 		final JSONObject productJSON;
+		EmailEventRequest emailEventRequest = new EmailEventRequest();
+		setPromoAndCoupon(request, emailEventRequest);
+
 		try {
 			dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(transactionId), true);
 			final String productSelected = new HealthSelectedProductService().getProductXML(transactionId, productId);
@@ -283,10 +285,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		} catch (DaoException | JSONException | SessionException | SessionExpiredException e) {
 			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
 		}
-
 		final String confirmationId = (String)request.getAttribute("confirmationId");
 
-		EmailEventRequest emailEventRequest = new EmailEventRequest();
 		emailEventRequest.setVerticalCode(VERTICAL);
 
 		final String premiumFrequency = data.map(HealthRequest::getQuote)
@@ -397,6 +397,28 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		emailEventRequest.setGaClientId(gaClientId);
 
 		return emailEventRequest;
+	}
+
+	protected void setPromoAndCoupon(HttpServletRequest request, EmailEventRequest emailEventRequest) {
+		String healthVoucherAvailable = request.getParameter("health_voucher_available");
+
+		// Health Voucher Available is set in Simples journey
+		if (isNotBlank(healthVoucherAvailable) && healthVoucherAvailable.equalsIgnoreCase("Y")) {
+			String healthVoucherReason = request.getParameter("health_voucher_reason");
+			String healthCouponCode = request.getParameter("health_coupon_code");
+			if (isNotBlank(healthVoucherReason)) {
+				emailEventRequest.setCouponCode(healthVoucherReason);
+				emailEventRequest.setCouponValue(request.getParameter("health_voucher_value"));
+			} else if (isNotBlank(healthCouponCode)) {
+				emailEventRequest.setCouponCode(healthCouponCode);
+			}
+		} else {
+			emailEventRequest.setCouponValue(request.getParameter("couponValue"));
+		}
+
+		emailEventRequest.setCouponTerms(request.getParameter("couponTerms"));
+		emailEventRequest.setPromoTerms(request.getParameter("promoTerms"));
+		emailEventRequest.setPromoDescription(request.getParameter("promoDescription"));
 	}
 
 	private String getParamSafely(Data data, String param) {
@@ -602,7 +624,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	private String getOperatorFromRequest(HttpServletRequest request){
 		if (request != null && request.getSession() != null) {
 			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
-			if(authenticatedData != null && StringUtils.isNotBlank(authenticatedData.getUid())) {
+			if(authenticatedData != null && isNotBlank(authenticatedData.getUid())) {
 				return authenticatedData.getUid();
 			} else {
 				return "ONLINE";

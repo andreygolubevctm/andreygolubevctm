@@ -211,6 +211,12 @@ public class ResponseAdapterV2 {
         String brandCodeQS = brandCode != null && brandCode.length() > 0 ? "&brandCode=" + brandCode.toLowerCase() : "";
 
         promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer(), isSimplesUser));
+
+        if(quotePromotion.getSpecialOffer() != null){
+            promo.setPromoTerms(quotePromotion.getSpecialOffer().getTerms());
+            promo.setPromoDescription(quotePromotion.getSpecialOffer().getSummary());
+        }
+
         promo.setProviderPhoneNumber(quotePromotion.getProviderPhoneNumber());
         promo.setProviderDirectPhoneNumber(quotePromotion.getProviderDirectPhoneNumber());
         promo.setDiscountText(StringUtils.trimToEmpty(quotePromotion.getDiscountDescription()));

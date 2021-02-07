@@ -81,9 +81,9 @@
         <div class="result-row result_{{= productId }} not-pinned" data-productId="{{= productId }}">
             {{= headerHtml }}
             <div class="featuresList featuresElements">
-                {{ if(coverType == 'H' || coverType == 'C') { }}
                 {{= specialFeaturesHtml }}
                 {{= additionalFeaturesHtml }}
+                {{ if(coverType == 'H' || coverType == 'C') { }}
                 <div class="hospitalCoverSection">
                     <div class="clearfix">
                         <h2>Hospital cover</h2>

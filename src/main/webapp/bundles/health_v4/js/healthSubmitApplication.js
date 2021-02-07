@@ -60,7 +60,6 @@
     }
 
     function _submitApplication() {
-
         if (stateSubmitInProgress === true) {
             alert('Your application is still being submitted. Please wait.');
             return;
@@ -73,18 +72,36 @@
         meerkat.modules.healthPopularProducts.updatePurchased();
 
         try {
-
             Results.updateApplicationEnvironment();
-
             var postData = meerkat.modules.journeyEngine.getFormData();
+            var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+            var promoData = selectedProduct.promo;
+            var couponData = meerkat.modules.coupon.getCurrentCoupon();
+
+            if (promoData) {
+                if (promoData.promoDescription) {
+                    postData.push({'name': 'promoDescription', 'value': promoData.promoDescription});
+                }
+                if (promoData.promoTerms) {
+                    postData.push({'name': 'promoTerms', 'value': promoData.promoTerms});
+                }
+            }
+
+            if (couponData) {
+                if (couponData.couponValue) {
+                    postData.push({'name': 'couponValue', 'value': couponData.couponValue});
+                }
+                if (couponData.termsAndConditions) {
+                    postData.push({'name': 'couponTerms', 'value': couponData.termsAndConditions});
+                }
+            }
 
             // Disable fields must happen after the post data has been collected.
             meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields: true });
 
-
             var healthApplicationUrl = "ajax/json/health_application.jsp";
             if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
-                healthApplicationUrl = "ajax/json/health_application_ws.jsp?lastKnownTransactionId=" + meerkat.modules.transactionId.get() + "&productId=" + meerkat.modules.healthResults.getSelectedProduct().productId;
+                healthApplicationUrl = "ajax/json/health_application_ws.jsp?lastKnownTransactionId=" + meerkat.modules.transactionId.get() + "&productId=" + selectedProduct.productId;
             }
 
             meerkat.modules.comms.post({
