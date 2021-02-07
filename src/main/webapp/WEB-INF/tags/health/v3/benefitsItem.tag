@@ -28,6 +28,11 @@
 <c:set var="benefitTypeAttribute" value=" data-type='extras' " />
 <c:set var="benefitGroupAttribute" value="" />
 
+<c:set var="overrideClassForClinicalCategories" scope="request" value="" />
+<c:if test="${hospitalBenefitsSource eq 'CTM'}">
+	<c:set var="overrideClassForClinicalCategories" scope="request" value="clinicalCategoriesForceHide" />
+</c:if>
+
 <c:if test="${item.isShortlistable()}">
 
 	<%-- Get the correct cell width for sections v. categories --%>
@@ -92,7 +97,7 @@
 					<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
-							<h2 class="ignore">Choose Your ${item.getName()} <a href="javascript:;" data-clearall-type="${fn:toLowerCase(category)}" class="clinicalCategoriesForceHide">Clear All</a></h2>
+							<h2 class="ignore">Choose Your ${item.getName()} <a href="javascript:;" data-clearall-type="${fn:toLowerCase(category)}" class="${overrideClassForClinicalCategories}">Clear All</a></h2>
 							<c:if test="${category eq 'Hospital'}">
 								<div class="hospitalCoverToggles hidden-xs">${altJourneyCustomiseBtn}</div>
 							</c:if>
