@@ -12,6 +12,9 @@
 <health_v1:redirect_rules />
 <c:set var="simplesCategoryVersion" value="health2018" />
 
+<%-- Flag for usage of clinical categories --%>
+<c:set var="hospitalBenefitsSource" value="${pageSettings.getSetting('simplesHospitalBenefitsSource')}" scope="request" />
+
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />
 <c:choose>
