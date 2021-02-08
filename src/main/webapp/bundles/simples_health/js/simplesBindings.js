@@ -60,14 +60,15 @@
         // List of affiliates who must be ommited from auto optin functionality
         affiliatesOptinBlacklist = [
             "trialcampaignFacebook",
-	          "trialcampaignHealthEngine",
-	          "trialcampaignHealthEngineLP",
-	          "trialcampaignJackMedia",
-	          "trialcampaignMicrosite",
-	          "trialcampaignOmnilead",
-	          "trialcampaignOptimise",
-	          "nextgenOutbound",
-	          "nextgenCLI"
+            "trialcampaignHealthEngine",
+            "trialcampaignHealthEngineLP",
+            "trialcampaignJackMedia",
+            "trialcampaignMicrosite",
+            "trialcampaignOmnilead",
+            "trialcampaignOptimise",
+            "nextgenOutbound",
+            "nextgenCLI",
+            "trialCampaignRedlands"
         ],
         $medicare_isaustralian,
         $medicare_nzcitizen,
@@ -280,6 +281,7 @@
             toggleAfricaCompDialog();
 	        toggleBenefitsDialogue();
 	        toggleEnergyCrossSell();
+			toggleRedlandsTrailCampaign();
             cleanupOptins();
         });
         // Handle callback checkbox 68
@@ -493,6 +495,7 @@
 	            .removeClass('nextgencli')
                 .removeClass('energycross')
                 .removeClass('energytransfer')
+			.removeClass('trialCampaignRedlands')
                 .addClass('inbound');
         }
         else if(healthContactTypeSelection === 'nextgen') {
@@ -505,13 +508,14 @@
                 .removeClass('inbound')
                 .removeClass('energycross')
                 .removeClass('energytransfer')
+				.removeClass('trialCampaignRedlands')
                 .addClass('nextgen');
         }
         // Outbound
         else {
 	        var healthContactTypeSelectionStr = healthContactTypeSelection.toLowerCase();
             $body
-                .removeClass('inbound cli trial nextgen nextgenoutbound nextgencli energycross energytransfer')
+                .removeClass('inbound cli trial nextgen nextgenoutbound nextgencli energycross energytransfer trialCampaignRedlands')
 	            .toggleClass(healthContactTypeSelectionStr, isOutboundNextGenContactType(healthContactTypeSelection))
                 .addClass('outbound');
 
@@ -593,6 +597,10 @@
                 .toggleClass('energytransfer');
         }
     }
+
+    function toggleRedlandsTrailCampaign() {
+		$('body').toggleClass('trialCampaignRedlands', $healthContactTypeField.val() === 'trialCampaignRedlands');
+	}
 
     function getRawCallType() {
         var healthContactTypeSelection = $healthContactTypeField.val();

@@ -47,7 +47,11 @@
                 'mobile-app-offer': {
                     min: 200,
                     max: 200
-                }
+                },
+                'Referral_REDLANDS': {
+                	min: 100,
+					max: 100
+				}
             }
     };
 
