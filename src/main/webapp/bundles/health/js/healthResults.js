@@ -989,6 +989,11 @@
                     {"providerBlurb" :"NIB are one of Australia&apos;s largest health funds, providing health insurance to over 1 million Australian and New Zealand residents. Their hospital and extras benefits are really easy to understand and for what you need they are giving really great value."}
                 );
                 break;
+            case 'QTS':
+                extraPopOverData.push(
+                    {"providerBlurb" :"<p>Looking for more rewarding health insurance?</p><p>Qantas Health Insurance offers a range of covers, so if you&rsquo;re young and single, newly married, busy raising a family or enjoying a well-earned retirement, we have you covered.</p><p>Plus as the only health insurance that comes with Qantas Points you could be turning your health premiums into your next holiday.</p>"}
+                );
+                break;
             case 'QCH':
                 extraPopOverData.push(
                     {"providerBlurb" :"Queensland Country Health are a non for profit fund based here in Queensland, giving you the peace of mind you are dealing with a local fund, and for what you need they are giving really great value."}
@@ -1122,6 +1127,15 @@
                 );
                 break;
             case 'NIB':
+                usefulLinks.push(
+                    {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/nib"},
+                    {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/nib-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/nib-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/nib-dental-agreements"},
+                    {"name": "Optical Benefits", "url": "https://ctm.livepro.com.au/goto/nib-optical-benefits"}
+                );
+                break;
+            case 'QTS':
                 usefulLinks.push(
                     {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/nib"},
                     {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/nib-agreement-hospitals-amp-gap-scheme"},
