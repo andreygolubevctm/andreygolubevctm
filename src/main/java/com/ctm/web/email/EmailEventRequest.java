@@ -1,7 +1,10 @@
 package com.ctm.web.email;
 
 import io.swagger.annotations.ApiModel;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -52,6 +55,11 @@ public class EmailEventRequest {
     private String paymentDateCreditCard;
     private String governmentRebate;
     private String governmentRebatePct;
+    private String promoDescription;
+    private String promoTerms;
+    private String couponCode;
+    private String couponValue;
+    private String couponTerms;
 
     //Primary specific properties
     private String primaryFirstName;

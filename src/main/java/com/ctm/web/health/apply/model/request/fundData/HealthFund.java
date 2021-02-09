@@ -4,6 +4,7 @@ public  enum HealthFund {
 
     ACA ("ACA Health Benefits Fund"),
     AHM ("ahm - Aust Health Management Ins"),
+    AIA ("AIA Health Insurance"),
     ALIANZ("Allianz Global Assistance"),
     AMA ("AMA Health Fund Limited"),
     API ("API Health Linx"),
