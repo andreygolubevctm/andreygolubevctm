@@ -20,6 +20,7 @@ public enum HealthFundTimeZone {
     NHB("Australia/Victoria"),
     NIB("Australia/NSW"),
     QCH("Australia/Queensland"),
+    QTS("Australia/NSW"),
     QTU("Australia/Queensland"),
     WFD("Australia/NSW"),
     HEA("Australia/Queensland"),

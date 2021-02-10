@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	
+
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
 	<xsl:param name="sourceId" />
@@ -27,16 +27,17 @@
 		<xsl:when test="$name = 'QCH'">16</xsl:when>
 		<xsl:when test="$name = 'NHB'">17</xsl:when>
 		<xsl:when test="$name = 'HEA'">456</xsl:when>
+		<xsl:when test="$name = 'QTS'">462</xsl:when>
 		<xsl:otherwise>0</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
 
 
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	
+
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/health">
-	
+
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <xsl:variable name="benefits">
 	<xsl:for-each select="//benefitsExtras/*">
@@ -51,7 +52,7 @@
 	</xsl:for-each>
 </xsl:variable>
 
-		<request>		
+		<request>
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 			<header>
 				<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
@@ -87,6 +88,7 @@
 								<xsl:when test="situation/providerKey = 'nhb_42694269'">17</xsl:when>
                                 <xsl:when test="situation/providerKey = 'hbf_89564575'">18</xsl:when>
 								<xsl:when test="situation/providerKey = 'hea_8281277'">456</xsl:when>
+								<xsl:when test="situation/providerKey = 'qts_42055178'">462</xsl:when>
 								<xsl:otherwise>-1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
@@ -143,7 +145,7 @@
 				</retrieve>
 				<priceType>gross</priceType>
 			</header>
-		
+
 <!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 			<details>
 				<state>
@@ -161,7 +163,7 @@
 				<searchResults><xsl:value-of select="searchResults" /></searchResults>
 				<cover><xsl:value-of select="situation/healthCvr" /></cover>
 				<situation><xsl:value-of select="situation/healthSitu" /></situation>
-				<rebate><xsl:value-of select="rebate" /></rebate>				
+				<rebate><xsl:value-of select="rebate" /></rebate>
 				<rebateChangeover><xsl:value-of select="rebateChangeover" /></rebateChangeover>
 				<loading><xsl:value-of select="loading" /></loading>
 				<income><xsl:value-of select="healthCover/income" /></income>
@@ -178,9 +180,9 @@
 						<xsl:when test="//benefitsExtras/PuHospital = 'Y'">Y</xsl:when>
 						<xsl:otherwise>N</xsl:otherwise>
 					</xsl:choose>
-				</puHospital>				
+				</puHospital>
 				<excess><xsl:value-of select="excess" /></excess>
-				
+
 				<xsl:variable name="hBenefitsList">Hospital,PrHospital PuHospital Cardiac Obstetric AssistedReproductive CataractEyeLens JointReplacementAll PlasticNonCosmetic Podiatric Sterilisation GastricBanding RenalDialysis Palliative Psychiatric Rehabilitation Ambulance</xsl:variable>
 				<xsl:variable name="hBenefits">
 					<xsl:for-each select="benefits/benefitsExtras/*">
@@ -188,7 +190,7 @@
 					</xsl:for-each>
 				</xsl:variable>
 				<hBenefits><xsl:value-of select="$hBenefits" /></hBenefits>
-				
+
 				<xsl:variable name="eBenefitsList">GeneralHealth,DentalGeneral DentalMajor Endodontic Orthodontic Optical Physiotherapy Chiropractic Podiatry Acupuncture Naturopath Massage Psychology GlucoseMonitor HearingAid NonPBS Orthotics SpeechTherapy OccupationalTherapy Dietetics EyeTherapy LifestyleProducts</xsl:variable>
 				<xsl:variable name="eBenefits">
 					<xsl:for-each select="benefits/benefitsExtras/*">
@@ -196,7 +198,7 @@
 					</xsl:for-each>
 				</xsl:variable>
 				<eBenefits><xsl:value-of select="$eBenefits" /></eBenefits>
-				
+
 				<productType>
 					<xsl:choose>
 						<!-- Hospital and extras benefits selected -->
@@ -219,9 +221,9 @@
 
 				<accountType><xsl:value-of select="payment/details/type" /></accountType>
 			</details>
-			
+
 		</request>
-				
+
 	</xsl:template>
 
 

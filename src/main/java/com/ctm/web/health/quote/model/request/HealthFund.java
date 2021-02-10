@@ -19,6 +19,7 @@ public enum HealthFund {
     NHB(17),
     HBF(18),
     QTU(19),
+    QTS(462),
     MYO(20),
     HEA(456),
     CBA(30);
