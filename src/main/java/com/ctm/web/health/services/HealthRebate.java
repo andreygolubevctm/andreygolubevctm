@@ -178,6 +178,9 @@ public class HealthRebate {
 				.put("24.809", "24.808") // Base Tier - Under 65 && Tier 1 - Over 70
 				.put("8.269", "8.268") // Tier 2 - Under 65
 				.put("33.078", "33.079") // Base Tier - Over 70
+                // Post April 2021
+                .put("12.304", "12.303") // Tier 2 - 65-69
+                .put("32.811", "32.812") // Tier 0 - 70+
 				.build();
 	}
 }

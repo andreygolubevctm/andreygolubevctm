@@ -317,6 +317,9 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
                 case "hea_8281277":
                     providerFilter.setSingleProvider("456");
                     break;
+                case "qts_42055178":
+                    providerFilter.setSingleProvider("462");
+                    break;
                 default:
                     throw new RouterException("Invalid providerKey");
             }
