@@ -2,9 +2,14 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+{{ var restrictedClass = obj.info.restrictedFund === "Y" ? "restricted" : ""; }}
+
 <div class="result">
     <div class="resultInsert">
-        <div class="result-header-utility-bar">
+        <div class="result-header-utility-bar {{= restrictedClass }}">
+            {{ if(obj.info.restrictedFund === "Y") { }}
+            <health_v4_content:restricted_fund />
+            {{ } }}
             <div class="hide-on-affix filter-component display-on-hover small remove-result hidden-xs hidden-sm hidden-md" data-productId="{{= obj.productId }}">
                 <a href="javascript:;" title="Hide this product" <field_v1:analytics_attr analVal="remove {{= obj.info.provider }}" quoteChar="\"" />>Hide product</a>
             </div>
