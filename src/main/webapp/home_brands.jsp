@@ -4,6 +4,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:redirect url="https://www.comparethemarket.com.au/home-contents-insurance"/>
+
 <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}home_contents_quote.jsp" />
 <c:redirect url="${redirectURL}" />
 
