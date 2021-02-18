@@ -443,3 +443,26 @@ body.simples {
 		}
 	}
 }
+
+body.simples {
+	&.trialCampaignAMA,
+	&.trialCampaignNJL,
+	&.trialCampaignRedlands {
+		.simples-dialogue-19,
+		.simples-dialogue-36,
+		.simples-dialogue-48,
+		.simples-dialogue-63 {
+			display: block !important;
+		}
+		.simples-dialogue-20,
+		.simples-dialogue-133{
+			display: none !important;
+		}
+		&[data-step=results].moreInfoVisible,
+		&[data-step=payment] {
+			#pageContent {
+				background-color: #0db14b !important;
+			}
+		}
+	}
+}
