@@ -68,7 +68,9 @@
             "trialcampaignOptimise",
             "nextgenOutbound",
             "nextgenCLI",
-            "trialCampaignRedlands"
+            "trialCampaignRedlands",
+			"trialCampaignAMA",
+			"trialCampaignNJL"
         ],
         $medicare_isaustralian,
         $medicare_nzcitizen,
@@ -281,6 +283,8 @@
             toggleAfricaCompDialog();
 	        toggleBenefitsDialogue();
 	        toggleEnergyCrossSell();
+			toggleAMATrailCampaign();
+			toggleNJLTrailCampaign();
 			toggleRedlandsTrailCampaign();
             cleanupOptins();
         });
@@ -600,6 +604,14 @@
 
     function toggleRedlandsTrailCampaign() {
 		$('body').toggleClass('trialCampaignRedlands', $healthContactTypeField.val() === 'trialCampaignRedlands');
+	}
+
+	function toggleAMATrailCampaign() {
+		$('body').toggleClass('trialCampaignAMA', $healthContactTypeField.val() === 'trialCampaignAMA');
+	}
+
+	function toggleNJLTrailCampaign() {
+		$('body').toggleClass('trialCampaignNJL', $healthContactTypeField.val() === 'trialCampaignNJL');
 	}
 
     function getRawCallType() {
