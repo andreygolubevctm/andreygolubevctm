@@ -41,7 +41,7 @@
     </c:when>
 
     <c:when test="${isRememberMe and hasUserVisitedInLast30Minutes and empty param.reviewedit}">
-        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v4.jsp?" />
+        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v5.jsp?" />
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>

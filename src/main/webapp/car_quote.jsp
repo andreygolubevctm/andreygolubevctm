@@ -4,6 +4,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:redirect url="https://www.comparethemarket.com.au/car-insurance/journey/start"/>
+
 <session:new verticalCode="CAR" authenticated="true" />
 
 <core_v2:quote_check quoteType="car" />
