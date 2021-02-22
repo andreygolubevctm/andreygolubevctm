@@ -515,14 +515,6 @@
         var specialOffer = getSpecialOffer(product);
         return [
             {
-                id: 'restrictedFund',
-                title: "This is a Restricted Fund",
-                className: "icon-no-symbol",
-                text: "Restricted Fund",
-                active: product.info.restrictedFund === 'Y',
-                productId: product.productId
-            },
-            {
                 id: 'marketingOffer',
                 title: "Rewards",
                 className: "icon-" + meerkat.modules.rewardCampaign.getCampaignContentHtml().find('.reward-icon-code').html(),
