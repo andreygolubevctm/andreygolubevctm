@@ -1,0 +1,214 @@
+// Loaded after the framework core, and full framework build. Before the health specific modules build.
+// See: framework.build.health.ctm.less
+
+//
+// Variables: See the Whitelabel style guide for the agreed mapping and
+// inheritance of any components.
+// ---------------------------------------------------------------------------
+//
+
+// This width allows there to be gaps between the products that is subtracted from the result-row width.
+// Yes, it is a hack.
+@results-column-outer-width: 15px;
+@results-overflow-width-xs: 550px;
+@results-overflow-width-sm: 483px;
+@results-overflow-width-md: 710px;
+@results-overflow-width-lg: 863px;
+@results-row-dropshadow-width: 3px;
+
+@results-border-color: #D4D4D4;
+@header-min-height-sm: 128px;
+//== QTIP based TOOLTIPS and POPOVERS
+//
+//## /health/Tooltips.less
+//** Tooltip override max width for benefits on health
+@qtip-health-benefits-max-width: 350px;
+
+//** Tooltip override restricted header text colour
+@qtip-health-restricted-titlebar-color: @theme-tertiary;
+
+//** Tooltip override for price
+@qtip-health-price-border: 1px solid #ccc;
+@qtip-health-price-bg-color: #fff;
+
+@qtip-health-price-title-text-color: @text-color;
+@qtip-health-price-content-text-color: @text-color;
+@qtip-health-price-highlight-color: #485f94; //highlighted text colour
+
+//** Tooltip override on compare items in health/simples.
+@qtip-health-compare-color: @theme-tertiary; //border and bg
+@qtip-health-compare-title-text-color: #fff;
+@qtip-health-compare-content-text-color: #fff;
+
+//** Tooltip override on health/simples/help items.
+@qtip-health-help-color: @theme-dark; //border and bg
+@qtip-health-help-title-text-color: #fff;
+@qtip-health-help-content-text-color: #fff;
+
+/** Popover specific styling **/
+@qtip-health-popover-background-color: #fff;
+@qtip-health-popover-text-color: #555;
+@qtip-health-popover-border: 1px solid #d4d4d4;
+
+//== BENEFITS Dropdown Interactive - HEALTH
+//
+@health-benefits-color-disabled: #B4B6AB;
+@health-benefits-checkbox-bg: #C9C9BF;
+@health-benefits-checkbox-bg-disbled: #D6D7CB;
+
+//== BENEFITS Icon interactive - HEALTH
+//
+//##
+@health-benefits-icon-bg-color: #EDEDED;
+@health-benefits-icon-bg-checked-color: @theme-secondary;
+@health-benefits-icon-border-color: darken(@health-benefits-icon-bg-color, 12%);
+@health-benefits-icon-border-checked-color: darken(@health-benefits-icon-border-color, 12%);
+@health-benefits-icon-more-border-color: #162F8A;
+
+//== BENEFITS HEALTH redesign v2349234789
+//
+//##
+@btn-benefit-category-bg-color: #FFF;
+@btn-benefit-category-color: #1c3e93;
+// active
+@btn-benefit-category-active-bg-color: #1c3e93;
+@btn-benefit-category-active-color: #FFF;
+// borders
+@btn-benefit-category-border-color: @btn-benefit-category-color;
+// disabled icon color
+@health-benefits-icon-disabled-color: #8A8A8A;
+@benefits-grouping-border-color: #cecece;
+@benefits-grouping-font-color: #8a8a8a;
+@benefits-xs-icon-color: #545454;
+
+
+// Health conventions colour style overrides
+
+@hospital-color: @theme-tertiary;
+@hospital-hover-color: #d2d8e9;
+@hospital-expanded-color: #d2d8e9;
+
+@extras-color: @hospital-color;
+@extras-color-light: #d2d8e9;
+@extras-hover-color: #d2d8e9;
+@extras-expanded-color: #d2d8e9;
+@category-expanded-color: @hospital-color;
+@category-expanded-bg-color: #d2d8e9;
+
+@ambulance-color: @theme-light;
+@ambulance-text-color: @theme-dark;
+
+@excess-color: #FFFFFF;
+@excess-odd-color: #F1F1F1;
+@excess-xs-section-color: @theme-tertiary;
+
+@results-features-promos-color: @theme-tertiary;
+@promos-xs-section-color: @theme-secondary;
+
+@sidebar-gray-bg-color: #EDEEF2;
+@sidebar-gray-bg-border-color: #B9B9B9;
+@sidebar-gray-icon-color: #BBBCBF;
+@sidebar-gray-text-color: #8A8A8A;
+
+// Features mode of results - health overrides:
+
+@category-hospital-text-color: #000;
+@category-hospital-color: #fff;
+@category-hospital-odd-color: #fff;
+
+@category-extras-text-color: #000;
+@category-extras-color: #fff;
+@category-extras-odd-color: #fff;
+
+@section-color: #fff;
+@section-odd-color: #fff;
+@section-text-color: #545454;
+
+//@feature-xs-label-color: @feature-odd-color;
+@category-xs-color: white;
+//@category-xs-text-color: white;
+@section-xs-text-color: white;
+@section-xs-hospital-color: @theme-tertiary;
+@section-xs-extras-color: @theme-secondary;
+
+@feature-color: #fff; //the specific override is here
+@feature-odd-color: #f9f9f9; //the specific override is here
+
+//More info bridging page updates
+
+@more-info-product-color: @theme-tertiary;
+@more-info-promotion-color: @theme-tertiary;
+@more-info-about-color: @theme-tertiary;
+@more-info-nextsteps-color: @theme-tertiary;
+@more-info-bubble-bg-color: @theme-tertiary;
+@more-info-bubble-text-color: @well-text-info;
+
+// Other General Health Item
+
+@button-hospital-bg: @btn-default-color;
+@button-extras-bg: @btn-default-color;
+@button-hospital-bg-light: @category-hospital-color;
+@button-extras-bg-light: @category-extras-color;
+
+//@tick-color: @extras-color;
+@cross-color: #FF5F5F;
+
+@more-info-health-product-color: @hospital-color;
+
+//== Checkbox used on health results - can be made generic when needed.
+//
+//##
+@checkbox-health-compare-circle-unchecked: #B4B5AC;
+@checkbox-health-compare-tick-unchecked: #D5D6CB;
+@checkbox-health-compare-tick-checked: @theme-secondary;
+@checkbox-health-compare-circle-checked: @theme-tertiary;
+
+@checkbox-health-marketing-tick-checked: @theme-secondary;
+@checkbox-health-marketing-circle-checked: @theme-tertiary;
+
+@compare-checkbox-height: 16px;
+
+// duel pricing
+@duel-pricing-frequencyAmount-colour: @theme-secondary;
+
+@main-bg-colour: #F3F3F5;
+@border-color: #d4d4d4;
+@header-color: #162F8A;
+@required-color: #A90000;
+
+@benefits-checkbox-border: #D1D1D1;
+@benefits-selected-checkbox-border: #0A8C3C;
+
+// Logos
+@standard-logo-height: 80px;
+@logo-price-spacer: 5px;
+@logo-compressed-scale: 0.5;
+@providerLogoNames: ~"AHM", ~"AUF", ~"BUD", ~"BUP", ~"CTM", ~"CUA", ~"FRA", ~"GMH", ~"HCF", ~"HEA", ~"HIF", ~"MYO", ~"NHB", ~"NIB", ~"QTS", ~"QCH", ~"QTU", ~"WFD";
+@providerMoreInfoLogoNames: ~"AHM-mi", ~"AUF-mi", ~"BUD-mi", ~"BUP-mi", ~"CTM-mi", ~"CUA-mi", ~"FRA-mi", ~"GMH-mi", ~"HCF-mi", ~"HEA-mi", ~"HIF-mi", ~"MYO-mi", ~"NHB-mi", ~"NIB-mi", ~"QTS-mi", ~"QCH-mi", ~"QTU-mi", ~"WFD-mi";
+
+@journeyProgressBar-border-color: @theme-default;
+
+
+//== Rounded Icons
+//
+//##
+@extras-color-light: #0db14b;
+@icon-bg-color: #EDEDED;
+@icon-bg-checked-color: @theme-secondary;
+@icon-border-color: darken(@icon-bg-color, 12%);
+@icon-border-checked-color: darken(@icon-border-color, 12%);
+@icon-more-border-color:#162F8A;
+
+@journeyProgressBar-border-size: 2px;
+
+@footer-bg-color: #333333;
+@footer-text-color: #FFFFFF;
+
+@discount-triangle-color: #0B7632;
+@discount-text-color: #FFF;
+
+
+//== Callback Popup
+//
+//##
+@callback-dark-grey: #555;
