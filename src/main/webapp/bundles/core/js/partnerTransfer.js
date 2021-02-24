@@ -52,7 +52,7 @@
 		try {
 
 			// build the initial url
-			url = transferringPage + "?transactionId="+meerkat.modules.transactionId.get()+"&trackCode="+product.trackCode+"&brand="+brand+"&msg="+msg+"&vertical="+meerkat.site.vertical+"&productId="+product.productId+"&tracking=" + tracking;
+			url = transferringPage + "?transactionId="+meerkat.modules.transactionId.get()+"&trackCode="+product.trackCode+"&brand="+brand+"&msg="+msg+"&vertical="+meerkat.site.vertical+"&productId="+product.productId;
 
 			if (handoverType.toLowerCase() === "post")
 			{
