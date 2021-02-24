@@ -103,7 +103,11 @@
 						for (var j = 0; j < keys.length; j++) {
 							var productBenefit = productBenefits[keys[j]];
 							if (productBenefit && ['Y', 'YY'].indexOf(productBenefit.covered) > -1) {
-								list.push('<li>' + _getBenefitLabel(keys[j], benefits) + '</li>');
+								var item = _getBenefitLabel(keys[j], selectedBenefits);
+
+								if(item != null){
+									list.push('<li>' + item + '</li>');
+								}
 							}
 						}
 					}
