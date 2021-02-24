@@ -13,19 +13,42 @@
 			{
 				text: '%DYNAMIC_HOSPITALBENEFITS%',
 				get: function (product) {
+					var productBenefits = {};
 					var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
-					var productBenefits = product ? product.custom.reform.tab1.benefits : [];
-					var listTextBenefits = ['Brain and Nervous system', 'Kidney and bladder', 'Digestive system'];
-					var listTextCopy = 'A number of clinical categories like Brain and Nervous System, Kidney and Bladder and Digestive System, just to name a few';
-					var listTextBenefitsCovered = _allCopyBenefitsAreCovered(product.custom.reform.tab1.benefits, listTextBenefits);
-					if(!listTextBenefitsCovered) {
-						listTextCopy = 'A number of clinical categories like:';
+					var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
+					var selectedBenefits = benefits.filter(function (benefitItem) {
+						return selectedBenefitsList.indexOf(benefitItem.value) > -1;
+					});
+					var list = [];
+					var keys, productBenefit;
+					if (selectedBenefits && selectedBenefits.length) {
+						productBenefits = product ? product.hospital.benefits : [];
+						var prefix = "So, starting with the hospital this policy's a great fit because it covers ";
+						list = [];
+						for(var j=0; j<selectedBenefits.length; j++) {
+							var benefit = selectedBenefits[j];
+							if(benefit && productBenefits.hasOwnProperty(benefit.value) && ['Y', 'YY'].indexOf(productBenefits[benefit.value].covered) > -1) {
+								list.push('<li>' + benefit.label + "</li>");
+							}
+						}
+						return prefix + list.join("\n");
+					} else {
+						var listTextBenefits = ['Brain and Nervous system', 'Kidney and bladder', 'Digestive system'];
+						var listTextBenefitsCovered = _allCopyBenefitsAreCovered(product.custom.reform.tab1.benefits, listTextBenefits);
+						if(listTextBenefitsCovered) {
+							return "A number of clinical categories like Brain and Nervous System, Kidney and Bladder and Digestive System, just to name a few";
+						} else {
+							list = [];
+							productBenefits = product.custom.reform.tab1.benefits;
+							for (var k = 0; k < productBenefits.length; k++) {
+								productBenefit = productBenefits[k];
+								if (productBenefit && ['Y', 'YY'].indexOf(productBenefit.covered) > -1) {
+									list.push('<li>'+ productBenefit.category + '</li>');
+								}
+							}
+							return "So, starting with the hospital this policy's a great fit because it covers " + list.join("\n");
+						}
 					}
-					var listText = {
-						copy: listTextCopy,
-						covered: listTextBenefitsCovered
-					};
-					return getBenefitsList(benefits, productBenefits, listText, false);
 				}
 			},
 			{
@@ -46,38 +69,68 @@
 				}
 			},
 			{
-				text: '%DYNAMIC_HOSPITALBENEFITS_NO_BLURB%',
+				text: '%DYNAMIC_HOSPITALBENEFITS_LIST%',
 				get: function (product) {
 					meerkat.modules.healthAboutYou.restoreHospitalComplianceCopyDialogs();
 					var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
-					var productBenefits = product ? product.hospital.benefits : [];
-					var listText = {
-						copy: '<li>NO HOSPITAL BENEFITS SELECTED</li>'
-					};
-					return getBenefitsList(benefits, productBenefits, listText, false);
+					var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
+					var selectedBenefits = benefits.filter(function (benefitItem) {
+						return selectedBenefitsList.indexOf(benefitItem.value) > -1;
+					});
+					var list = ['<li>NO HOSPITAL BENEFITS SELECTED</li>'];
+					if (selectedBenefits && selectedBenefits.length) {
+						list = [];
+						for (var i = 0; i < selectedBenefits.length; i++) {
+							list.push('<li>' + selectedBenefits[i].label + '</li>');
+						}
+					}
+					return list.join("\n");
 				}
 			},
 			{
 				text: '%DYNAMIC_EXTRASBENEFITS%',
 				get: function (product) {
 					var benefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel();
+					var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
+					var selectedBenefits = benefits.filter(function (benefitItem) {
+						return selectedBenefitsList.indexOf(benefitItem.value) > -1;
+					});
 					var productBenefits = product ? product.extras : [];
-					var listText = {
-						copy: 'A number of extras benefits like '
-					};
-					return getBenefitsList(benefits, productBenefits, listText, true);
+					var list = ['<li>general dental</li>'];
+					if (selectedBenefits && selectedBenefits.length) {
+						list = [];
+						var keys = Object.keys(productBenefits || []);
+						for (var j = 0; j < keys.length; j++) {
+							var productBenefit = productBenefits[keys[j]];
+							if (productBenefit && ['Y', 'YY'].indexOf(productBenefit.covered) > -1) {
+								var item = _getBenefitLabel(keys[j], selectedBenefits);
+
+								if(item != null){
+									list.push('<li>' + item + '</li>');
+								}
+							}
+						}
+					}
+					return list.join("\n");
 				}
 			},
 			{
-				text: '%DYNAMIC_EXTRASBENEFITS_NO_BLURB%',
+				text: '%DYNAMIC_EXTRASBENEFITS_LIST%',
 				get: function (product) {
 					meerkat.modules.healthAboutYou.restoreExtrasComplianceCopyDialogs();
 					var benefits = meerkat.modules.healthBenefitsStep.getExtraBenefitsModel();
-					var productBenefits = product ? product.extras : [];
-					var listText = {
-						copy: '<li>NO EXTRAS SELECTED</li>'
-					};
-					return getBenefitsList(benefits, productBenefits, listText, false);
+					var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
+					var selectedBenefits = benefits.filter(function (benefitItem) {
+						return selectedBenefitsList.indexOf(benefitItem.value) > -1;
+					});
+					var list = ['<li>NO EXTRAS SELECTED</li>'];
+					if (selectedBenefits && selectedBenefits.length) {
+						list = [];
+						for (var i = 0; i < selectedBenefits.length; i++) {
+							list.push('<li>' + selectedBenefits[i].label + '</li>');
+						}
+					}
+					return list.join("\n");
 				}
 			},
 			{
@@ -229,22 +282,13 @@
 				}
 			}];
 
-	function getBenefitsList(benefits, productBenefits, listText, renderList) {
-		var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
-		var selectedBenefits = benefits.filter(function (benefitItem) {
-			return selectedBenefitsList.indexOf(benefitItem.value) > -1;
-		});
-
-		var html = '';
-		if (selectedBenefits.length > 0 && !listText.hasOwnProperty('covered')) {
-			for (var i = 0; i < selectedBenefits.length; i++) {
-				html += '<li>' + selectedBenefits[i].label + '</li>';
+	function _getBenefitLabel(code, benefits) {
+		for(var i=0; i < benefits.length; i++) {
+			if(benefits[i].value === code) {
+				return benefits[i].label;
 			}
-		} else {
-			html += getProductBenefitList(benefits, productBenefits, renderList, listText, ['Y', 'YY'], true);
 		}
-
-		return html;
+		return null;
 	}
 
 	function _allCopyBenefitsAreCovered(productBenefits, requiredBenefits) {
@@ -257,44 +301,6 @@
 			}
 		}
 		return expected !== 0 && found === expected;
-	}
-
-	function _isBenefitMatch(benefit, value) {
-		return benefit && benefit.value === value;
-	}
-
-	function _getMatchingBenefit(benefits, key) {
-		return benefits.find(function (item) {
-			_isBenefitMatch(item, key);
-		});
-	}
-
-	function getProductBenefitList(benefits, productBenefits, renderList, listText, coveredCheck, isOrderedList) {
-		var keys = Object.keys(productBenefits || []);
-		var html = listText.copy;
-		var found = 0;
-		if (renderList === true || (listText.hasOwnProperty('covered') && listText.covered === false)) {
-			for (var j = 0; j < keys.length; j++) {
-				var productBenefit = productBenefits[keys[j]];
-				if (coveredCheck.indexOf(productBenefit.covered) > -1) {
-					if (!isOrderedList) {
-						if (found > 0 && found < 2) {
-							html += ', ';
-						}
-
-						if (found === 2) {
-							html += ' and ';
-						}
-
-						html += productBenefit.category;
-					} else {
-						html += '<li>&nbsp;&nbsp;*&nbsp;&nbsp;' + productBenefit.category + '</li>';
-					}
-					found++;
-				}
-			}
-		}
-		return html;
 	}
 
 	function parse(id, onParse) {
