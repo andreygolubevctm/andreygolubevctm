@@ -99,7 +99,7 @@
                             <li>
                                 <div class="hidden-xs" data-livechat="target">
                                     <div class="callCentreNumber-container">
-                                        <span class="icon icon-phone"></span> <a href="javascript:;" data-toggle="dialog"
+                                        <span class="icon icon-phone-hollow"></span> <a href="javascript:;" data-toggle="dialog"
                                                    data-content="#view_all_hours_cb"
                                                    data-dialog-hash-id="view_all_hours"
                                                    data-title="Call Centre Hours" data-cache="true">
@@ -113,6 +113,60 @@
                         </ul>
                     </div>
                 </c:if>
+            </jsp:attribute>
+
+            <jsp:attribute name="header_nav_section">
+                <c:if test="${not empty customerAccountsAuthHeaderSplitTest and customerAccountsAuthHeaderSplitTest eq true}">
+                    <c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+                        <div class="authHeaderContainer smallAuth">
+                            <div data-microui-component="AuthHeader" class="authHeaderSmall authHeaderElement"></div>
+                            <script type="application/javascript">
+								// @param n = UMD library name ie soarExampleMicroUI
+								// @param c = component name ie Foo
+								// @param p = props to be passed to mounted component
+								(function(n, c, p) {
+									var w = window, m = function(e){
+										if (e.detail.name === n) {
+											var env = w['__MicroUIcustomerAccountsMicroUIEnvironment__'];
+											w[n].Render(document.querySelector('div.authHeaderSmall[data-microui-component="' +c +'"]'),c, { env: env });
+										}
+									};
+									if (w[n]) {
+										m();
+									} else {
+										w.addEventListener('microUILoaded', m);
+									}
+								})('customerAccountsMicroUI', 'AuthHeader', {});
+                            </script>
+                        </div>
+                        <c:if test="${not empty callCentreNumber}">
+                            <ul class="nav navbar-nav navbar-right callCentreNumberSection hidden-sm hidden-md hidden-lg">
+                                <li>
+                                    <div class="auth-mobile-callCentreNo" data-livechat="target">
+                                        <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours_cb" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">
+                                            <div class="auth-callCentreNumber-container">
+                                                <span class="icon icon-phone-hollow"></span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </c:if>
+                    </c:if>
+                </c:if>
+
+                <c:if test="${customerAccountsAuthHeaderSplitTest eq false}">
+                    <c:if test="${not empty callCentreNumber}">
+                        <div class="callCentreNumber-container mobile-callCentreNo ${authClass}">
+                            <span class="icon icon-phone-hollow"></span>
+                            <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours_cb" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">
+                                <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
+                            </a>
+                        </div>
+                    </c:if>
+                </c:if>
+
             </jsp:attribute>
 
             <jsp:attribute name="progress_bar">
