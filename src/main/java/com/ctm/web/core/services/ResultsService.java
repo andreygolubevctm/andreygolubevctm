@@ -15,7 +15,7 @@ import java.util.StringJoiner;
 
 public class ResultsService {
 
-    public static final List<String> VERTICAL_LIST = Arrays.asList("CAR", "HOME");
+    public static final List<String> VERTICAL_LIST = Arrays.asList("HOME");
     public static final List<String> PROVIDER_LIST = Arrays.asList("REIN","WOOL");
     public static final String MONTHLY_PAYMENT_FREQUENCY = "monthly";
     public static final String RANKED_BY_PRICE = "price";

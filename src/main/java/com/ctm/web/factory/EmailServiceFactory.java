@@ -73,9 +73,6 @@ public class EmailServiceFactory {
 			case HOME:
 				// TODO: refactor this
 				break;
-			case CAR:
-				// TODO: refactor this
-				break;
 			case GENERIC:
 				// TODO: refactor this
 				break;

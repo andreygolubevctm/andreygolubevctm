@@ -28,7 +28,6 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
         urlPatterns = { "/ajax/json/travel_quote_results.jsp",
                         "/ajax/json/health_quote_results_ws.jsp",
                         "/ajax/json/health_application_ws.jsp",
-                        "/ajax/json/car_quote_results.jsp",
                         "/ajax/json/home_results_ws.jsp"},
         asyncSupported = true
 )

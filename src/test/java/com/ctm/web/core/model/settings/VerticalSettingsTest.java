@@ -13,10 +13,4 @@ public class VerticalSettingsTest {
         assertEquals("home_contents_quote.jsp" , VerticalSettings.getHomePageJsp("HOME"));
 
     }
-
-    @Test
-    public void getHomePageForVerticalCar() throws Exception {
-        assertEquals("car_quote.jsp" ,VerticalSettings.getHomePageJsp("CAR"));
-    }
-
 }

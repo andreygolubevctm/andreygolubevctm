@@ -69,7 +69,7 @@ public class WebServiceUtilsTest {
 
         PageSettings pageSettings = new PageSettings();
         Vertical vertical = new Vertical();
-        vertical.setType(Vertical.VerticalType.CAR);
+        vertical.setType(Vertical.VerticalType.HEALTH);
         pageSettings.setVertical(vertical);
         WebServiceUtils.setLogging(client, pageSettings, 1L, "SERVICE_NAME");
         int inLogInterceptors = 0;
