@@ -7,5 +7,5 @@
 
 <c:set var="fieldXpath" value="${xpath}/name" />
 <form_v4:row label="Your first name" fieldXpath="${fieldXpath}" className="clear required_input">
-	<field_v1:person_name xpath="${fieldXpath}" title="name" required="true" maxlength="24" />
+	<field_v1:person_name xpath="${fieldXpath}" title="name" required="true" maxlength="24" className="data-hj-suppress" />
 </form_v4:row>

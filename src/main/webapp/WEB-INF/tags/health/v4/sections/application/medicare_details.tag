@@ -23,12 +23,12 @@
         <p id="health_medicareDetails_message"></p>
         <c:set var="fieldXpath" value="${xpath}/number" />
         <form_v4:row fieldXpath="${fieldXpath}" label="Your Medicare Card Number" smRowOverride="4" isNestedField="${true}">
-            <field_v2:medicare_number xpath="${fieldXpath}" required="true" className="health-medicare_details-number sessioncamexclude" title="Medicare card number" disableErrorContainer="${true}" />
+            <field_v2:medicare_number xpath="${fieldXpath}" required="true" className="health-medicare_details-number sessioncamexclude data-hj-suppress" title="Medicare card number" disableErrorContainer="${true}" />
         </form_v4:row>
 
         <c:set var="fieldXpath" value="${xpath}/expiry" />
         <form_v4:row fieldXpath="${fieldXpath}" label="Medicare Expiry Date" isNestedField="${true}" smRowOverride="7">
-            <field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="Medicare card expiry date" required="true" className="health-medicare_details-expiry" maxYears="10" disableErrorContainer="${true}" medicareCardValidationField="${xpath}/colour" />
+            <field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="Medicare card expiry date" required="true" className="health-medicare_details-expiry data-hj-suppress" maxYears="10" disableErrorContainer="${true}" medicareCardValidationField="${xpath}/colour" />
         </form_v4:row>
     </form_v4:row>
 

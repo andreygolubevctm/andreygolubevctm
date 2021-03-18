@@ -40,7 +40,7 @@
 <%-- POSTCODE --%>
 <c:set var="fieldXpath" value="${xpath}/postCode" />
 <form_v4:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" smRowOverride="5">
-    <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' data-validation-position='append' autocomplete='no'" disableErrorContainer="${false}" />
+    <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' data-validation-position='append' autocomplete='no'" className="data-hj-suppress" disableErrorContainer="${false}" />
 </form_v4:row>
 <core_v1:clear />
 
@@ -48,20 +48,20 @@
     <%-- UNIT TYPE --%>
     <c:set var="fieldXpath" value="${xpath}/unitType" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow" smRowOverride="5">
-        <field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" placeHolder="Unit Type" extraDataAttributes="data-validation-position='append'" />
+        <field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" placeHolder="Unit Type" extraDataAttributes="data-validation-position='append'" className="data-hj-suppress" />
     </form_v4:row>
 
     <%-- UNIT/SHOP (BOTH STD & NON STD) --%>
     <c:set var="fieldXpath" value="${xpath}/unitShop" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level Number" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5">
-        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="Enter unit number if applicable e.g. 3" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
+        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude data-hj-suppress" title="the unit/shop" includeInForm="true" required="false" placeHolder="Enter unit number if applicable e.g. 3" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
     </form_v4:row>
 
     <%-- STREET NUM --%>
     <c:set var="fieldXpath" value="${xpath}/streetNum" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Street Number" id="${name}_streetNumRow" className="std_streetNum" smRowOverride="5">
         <div class="${name}_streetNum_container">
-            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street number" includeInForm="true" required="true" placeHolder="Enter street number e.g. 66" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
+            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude data-hj-suppress" title="the street number" includeInForm="true" required="true" placeHolder="Enter street number e.g. 66" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
         </div>
     </form_v4:row>
 
@@ -80,7 +80,7 @@
     </c:choose>
     <c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Street Name" className="${name}_nonStd_street" smRowOverride="5">
-        <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" placeHolder="Enter street name e.g. Smith Street" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} data-rule-regex='[a-zA-Z0-9 ]+' data-msg-regex='Street Name may only contain letters and numbers' data-validation-position='append' " disableErrorContainer="${false}" maxlength="32" />
+        <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude data-hj-suppress" placeHolder="Enter street name e.g. Smith Street" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} data-rule-regex='[a-zA-Z0-9 ]+' data-msg-regex='Street Name may only contain letters and numbers' data-validation-position='append' " disableErrorContainer="${false}" maxlength="32" />
     </form_v4:row>
 </div>
 
@@ -95,7 +95,7 @@
 <%-- STREET-SEARCH --%>
 <c:set var="fieldXpath" value="${xpath}/streetSearch" />
 <form_v4:row fieldXpath="${fieldXpath}" label="${addressLabel}" id="${name}_std_street" className="std_street">
-    <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude" title="${addressTitle}" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;' autocomplete='no' "  disableErrorContainer="${disableErrorContainer}"/>
+    <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude data-hj-suppress" title="${addressTitle}" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;' autocomplete='no' "  disableErrorContainer="${disableErrorContainer}"/>
 </form_v4:row>
 
 <div class="${name}_non_standard_container">
@@ -115,7 +115,7 @@
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-                    <select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" <c:if test="${disableErrorContainer eq true}"> data-disable-error-container='true'</c:if> data-validation-position='append'>
+                    <select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control data-hj-suppress" data-attach="true" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" <c:if test="${disableErrorContainer eq true}"> data-disable-error-container='true'</c:if> data-validation-position='append'>
                             <%-- Write the initial "Please select" option --%>
                         <option value="">Select suburb</option>
                             <%-- Write the options for each row --%>
@@ -137,7 +137,7 @@
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-                    <select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-msg-required="Please select a suburb" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" data-validation-position="append">
+                    <select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control data-hj-suppress" data-msg-required="Please select a suburb" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" data-validation-position="append">
                         <option value=''>Enter Postcode</option>
                     </select>
                 </div>

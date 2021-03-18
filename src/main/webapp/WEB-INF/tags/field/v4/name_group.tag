@@ -17,21 +17,21 @@
 <form_v4:row label="Name as it appears on your Medicare Card" className="row" isNestedStyleGroup="${true}">
     <c:set var="fieldXpath" value="${xpath}/title" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Title" smRowOverride="${smRowOverride}" isNestedField="${true}" className="selectContainerTitle" id="${go:nameFromXpath(fieldXpath)}Row">
-        <field_v3:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " placeHolder="Title" disableErrorContainer="${true}" />
+        <field_v3:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title data-hj-suppress" additionalAttributes=" data-rule-genderTitle='true' " placeHolder="Title" disableErrorContainer="${true}" />
     </form_v4:row>
 
     <c:set var="fieldXpath" value="${xpath}/firstname" />
     <form_v4:row fieldXpath="${fieldXpath}" label="First Name" smRowOverride="3" lgRowColSize="col-lg-4" isNestedField="${true}">
-        <field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" placeholder="First name" disableErrorContainer="${true}" maxlength="${firstNameMaxlength}" />
+        <field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField data-hj-suppress" placeholder="First name" disableErrorContainer="${true}" maxlength="${firstNameMaxlength}" />
     </form_v4:row>
     <c:if test="${showInitial eq true}">
         <c:set var="fieldXpath" value="${xpath}/middleName" />
         <form_v4:row fieldXpath="${fieldXpath}" label="Middle Name" smRowOverride="2" isNestedField="${true}" className="nameGroupMiddleNameRow">
-            <field_v1:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" className="contactField" placeholder="M" disableErrorContainer="${true}" />
+            <field_v1:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" className="contactField data-hj-suppress" placeholder="M" disableErrorContainer="${true}" />
         </form_v4:row>
     </c:if>
     <c:set var="fieldXpath" value="${xpath}/surname" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Last Name" smRowOverride="3" lgRowColSize="col-lg-4" isNestedField="${true}">
-        <field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" placeholder="Last name" disableErrorContainer="${true}" maxlength="${lastNameMaxlength}" />
+        <field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField data-hj-suppress" placeholder="Last name" disableErrorContainer="${true}" maxlength="${lastNameMaxlength}" />
     </form_v4:row>
 </form_v4:row>

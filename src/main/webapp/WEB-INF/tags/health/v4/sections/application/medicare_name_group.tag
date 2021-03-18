@@ -10,7 +10,7 @@
 
     <c:set var="fieldXpath" value="${xpath}/cardPosition" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Position you appear on your medicare card"  className="health_payment_medicare_cardPosition-group"  isNestedField="${true}" smRowOverride="2">
-        <field_v2:count_select xpath="${fieldXpath}" min="1" max="9" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition" placeHolder="#" disableErrorContainer="${true}"/>
+        <field_v2:count_select xpath="${fieldXpath}" min="1" max="9" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition data-hj-suppress" placeHolder="#" disableErrorContainer="${true}"/>
     </form_v4:row>
 
     <c:set var="fieldXpath" value="${xpath}/firstName" />

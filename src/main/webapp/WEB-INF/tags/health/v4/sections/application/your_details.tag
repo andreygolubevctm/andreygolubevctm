@@ -27,14 +27,14 @@
 
                 <c:set var="fieldXpath" value="${xpath}/primary/fundName" />
                 <form_v4:row fieldXpath="${fieldXpath}" label="Who is your current health fund?" id="clientFund" className="changes-premium">
-                    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+                    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" className="data-hj-suppress"/>
                 </form_v4:row>
 
                     <%-- Optional Membership ID's --%>
                 <div id="clientMemberID" class="membership">
                     <c:set var="fieldXpath" value="${xpath}/primary/memberID" />
                     <form_v4:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3">
-                        <field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." maxlength="10" />
+                        <field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude data-hj-suppress" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." maxlength="10" />
                     </form_v4:row>
 
                     <c:set var="fieldXpath" value="${xpath}/primary/abd" />
@@ -68,7 +68,7 @@
                 <div id="extrasClientMemberID" class="membership">
                     <c:set var="fieldXpath" value="${xpath}/primary/extras/memberID" />
                     <form_v4:row fieldXpath="${fieldXpath}" label="Membership Number" className="extrasClientMemberID" smRowOverride="3">
-                        <field_v2:input xpath="${fieldXpath}" title="your extras member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." maxlength="10" />
+                        <field_v2:input xpath="${fieldXpath}" title="your extras member ID" required="true" className="sessioncamexclude data-hj-suppress" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." maxlength="10" />
                     </form_v4:row>
 
                     <c:set var="fieldXpath" value="${xpath}/primary/extras/authority" />

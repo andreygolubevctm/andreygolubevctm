@@ -71,7 +71,7 @@
 
     <c:set var="fieldXpath" value="${xpath}/email" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Email Address" id="${name}_emailGroup">
-        <field_v2:email xpath="${fieldXpath}" title="your email address" required="true" size="40" />
+        <field_v2:email xpath="${fieldXpath}" title="your email address" required="true" size="40"  className="data-hj-suppress" />
         <span class="fieldrow_legend" id="${name}_emailMessage">(we'll send your confirmation here)</span>
         <field_v1:hidden xpath="${xpath}/emailsecondary" />
         <field_v1:hidden xpath="${xpath}/emailhistory" />

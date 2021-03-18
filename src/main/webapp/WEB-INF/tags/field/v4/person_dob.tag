@@ -95,7 +95,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 											required=""
 											omitPleaseChoose="Y"
 											url="/WEB-INF/option_data/day.html"
-											className="sessioncamexclude dateinput-day dontSubmit ${className}" />
+											className="sessioncamexclude dateinput-day dontSubmit data-hj-suppress ${className}" />
 				</div>
 				<div class="col-md-4 col-xs-4 monthContainer">
 					<field_v2:import_select xpath="${xpath}InputM"
@@ -103,7 +103,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 											required=""
 											omitPleaseChoose="Y"
 											url="/WEB-INF/option_data/month_full_v2.html"
-											className="sessioncamexclude dateinput-month dontSubmit ${className}" />
+											className="sessioncamexclude dateinput-month dontSubmit data-hj-suppress ${className}" />
 				</div>
 				<div class="col-md-3 col-xs-4">
 					<jsp:useBean id="date" class="java.util.Date" />
@@ -120,20 +120,20 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 										   required=""
 										   title="the year"
 										   items="=Year,${years}"
-										   className="sessioncamexclude dateinput-year dontSubmit ${className}" />
+										   className="sessioncamexclude dateinput-year dontSubmit data-hj-suppress ${className}" />
 				</div>
 			</div>
 		</c:when>
 		<c:otherwise>
 			<div class="row dateinput-tripleField">
 				<div class="col-sm-3 col-xs-4 dayContainer">
-					<field_v2:input type="number" className="sessioncamexclude dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" />
+					<field_v2:input type="number" className="sessioncamexclude dateinput-day dontSubmit data-hj-suppress ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" />
 				</div>
 				<div class="col-sm-3 col-xs-4 monthContainer">
-					<field_v2:input type="number" className="sessioncamexclude dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" />
+					<field_v2:input type="number" className="sessioncamexclude dateinput-month dontSubmit data-hj-suppress ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" />
 				</div>
 				<div class="col-md-4 col-sm-5 col-xs-4">
-					<field_v2:input type="number" className="sessioncamexclude dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" />
+					<field_v2:input type="number" className="sessioncamexclude dateinput-year dontSubmit data-hj-suppress ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" />
 				</div>
 			</div>
 		</c:otherwise>
