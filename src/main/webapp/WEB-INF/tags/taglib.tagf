@@ -18,8 +18,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/form/v2"				prefix="form_v2" %>
 <%@ taglib tagdir="/WEB-INF/tags/form/v3"				prefix="form_v3" %>
 <%@ taglib tagdir="/WEB-INF/tags/form/v4"				prefix="form_v4" %>
-<%@ taglib tagdir="/WEB-INF/tags/car"					prefix="car" %>
-<%@ taglib tagdir="/WEB-INF/tags/car/layout"			prefix="car_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/core/v1"				prefix="core_v1" %>
 <%@ taglib tagdir="/WEB-INF/tags/core/v2"				prefix="core_v2" %>
 <%@ taglib tagdir="/WEB-INF/tags/creditcard"			prefix="creditcard" %>
@@ -78,13 +76,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
 <%@ taglib tagdir="/WEB-INF/tags/css"					prefix="css" %>
 <%@ taglib tagdir="/WEB-INF/tags/security"				prefix="security" %>
-<%@ taglib tagdir="/WEB-INF/tags/utilities/v2"			prefix="utilities_v2" %>
-<%@ taglib tagdir="/WEB-INF/tags/utilities/v2/layout"	prefix="utilities_v2_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/utilities/v2/fieldset" prefix="utilities_v2_fieldset" %>
-<%@ taglib tagdir="/WEB-INF/tags/utilities/v3"			prefix="utilities_v3" %>
-<%@ taglib tagdir="/WEB-INF/tags/utilities/v3/layout"	prefix="utilities_v3_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/utilities/v3/fieldset" prefix="utilities_v3_fieldset" %>
-<%@ taglib tagdir="/WEB-INF/tags/utilities/v3/content" prefix="utilities_v3_content" %>
 <%@ taglib tagdir="/WEB-INF/tags/social"				prefix="social" %>
 <%@ taglib tagdir="/WEB-INF/tags/read"					prefix="read" %>
 <%@ taglib tagdir="/WEB-INF/tags/features"				prefix="features" %>
@@ -102,8 +93,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/retrievequotes/template" prefix="retrievequotes_template" %>
 <%@ taglib tagdir="/WEB-INF/tags/resetpassword"		    prefix="resetpassword" %>
 <%@ taglib tagdir="/WEB-INF/tags/resetpassword/layout"	prefix="resetpassword_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/lmi" 	                prefix="lmi" %>
-<%@ taglib tagdir="/WEB-INF/tags/lmi/layout" 	        prefix="lmi_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/reward"			    prefix="reward" %>
 <%@ taglib tagdir="/WEB-INF/tags/redemption"			prefix="redemption" %>
 <%@ taglib tagdir="/WEB-INF/tags/zeus"			    	prefix="zeus" %>

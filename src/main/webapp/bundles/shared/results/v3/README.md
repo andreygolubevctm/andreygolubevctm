@@ -1,3 +1,3 @@
-Results V3 was developed by Jacob Van De Velde for use on Car, Home and Contents and LMI pages.
+Results V3 was developed by Jacob Van De Velde for use on Car and Home and Contents pages.
 
 It overrides Results V2.
