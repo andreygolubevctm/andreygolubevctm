@@ -64,7 +64,7 @@ public class ApplicationServiceTest {
     @Test
     public void testGetBrand() throws Exception {
         when(httpServletRequest.getParameter("brandCode")).thenReturn(brandCode);
-        Brand result = service.getBrand(httpServletRequest, Vertical.VerticalType.LIFE);
+        Brand result = service.getBrand(httpServletRequest, Vertical.VerticalType.HEALTH);
         assertEquals(brand, result);
     }
 }
