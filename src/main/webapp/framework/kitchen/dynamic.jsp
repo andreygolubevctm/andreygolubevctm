@@ -212,7 +212,6 @@
 			<span class="icon-dollar" title="icon-dollar"></span>
 			<span class="icon-plus" title="icon-plus"></span>
 			<span class="icon-minus" title="icon-minus"></span>
-			<span class="icon-vert-hnc" title="icon-vert-hnc"></span>
 			<span class="icon-vert-ctp" title="icon-vert-ctp"></span>
 			<span class="icon-vert-energy" title="icon-vert-energy"></span>
 			<span class="icon-vert-fuel" title="icon-vert-fuel"></span>

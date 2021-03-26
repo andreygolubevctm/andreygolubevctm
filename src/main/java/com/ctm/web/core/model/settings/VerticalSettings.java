@@ -4,12 +4,7 @@ package com.ctm.web.core.model.settings;
 public class VerticalSettings {
 
     private static String getHomePage(Vertical.VerticalType vertical) {
-        switch (vertical) {
-            case HOME:
-                return  "home_contents_quote.jsp";
-            default:
-                return vertical.getCode().toLowerCase() + "_quote.jsp";
-        }
+        return vertical.getCode().toLowerCase() + "_quote.jsp";
     }
 
     public static String getHomePageJsp(String vertical) {

@@ -15,7 +15,6 @@ public class Vertical {
 		ENERGY("UTILITIES"),
 		UTILITIES("UTILITIES"),
 		LIFE ("LIFE"),
-		HOME ("HOME"),
 		IP ("IP"),
 		FUEL ("FUEL"),
 		SIMPLES ("SIMPLES"),
