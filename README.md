@@ -12,9 +12,6 @@ The Insurance verticals currently using WebCTM include:
 * [Travel](https://secure.comparethemarket.com.au/ctm/travel_quote.jsp)
 * [Fuel](https://secure.comparethemarket.com.au/ctm/fuel_quote.jsp)
 * [Roadside](https://secure.comparethemarket.com.au/ctm/roadside_quote.jsp)
-* [Life](https://secure.comparethemarket.com.au/ctm/life_quote.jsp)
-* [Income](https://secure.comparethemarket.com.au/ctm/ip_quote.jsp)
-* [Homeloan](https://secure.comparethemarket.com.au/ctm/homeloan_quote.jsp)
 
 ## Getting Started
 
@@ -41,9 +38,6 @@ Local endpoints:
 * [Travel](http://localhost:8080/ctm/travel_quote.jsp)
 * [Fuel](http://localhost:8080/ctm/fuel_quote.jsp)
 * [Roadside](http://localhost:8080/ctm/roadside_quote.jsp)
-* [Life](http://localhost:8080/ctm/life_quote.jsp)
-* [Income](http://localhost:8080/ctm/ip_quote.jsp)
-* [Homeloan](http://localhost:8080/ctm/homeloan_quote.jsp)
 
 ### Frontend Only
 

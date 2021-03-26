@@ -38,7 +38,7 @@ public class TransactionAccessServiceTest {
 	EmailMode type = EmailMode.BEST_PRICE;
 	private TransactionAccessService transactionAccessService;
 	private EmailMode emailMode = EmailMode.APP;
-	private VerticalType verticalType = VerticalType.ENERGY;
+	private VerticalType verticalType = VerticalType.HEALTH;
 	private Transaction transaction;
 	private IncomingEmail emailData;
 	

@@ -38,7 +38,7 @@ public class LeadFeedTest {
     private int brandId = 1;
     private int verticalId = 1;
     private Date eventDate = new Date();
-    private Vertical.VerticalType verticalType = Vertical.VerticalType.LIFE;
+    private Vertical.VerticalType verticalType = Vertical.VerticalType.HEALTH;
 
     @Before
     public void setUp() throws Exception {

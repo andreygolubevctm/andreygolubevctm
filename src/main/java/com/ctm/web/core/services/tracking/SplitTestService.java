@@ -39,16 +39,7 @@ public class SplitTestService {
 
 			final SessionDataService sessionDataService = new SessionDataService();
 			final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), true);
-			String xpathRoot = null;
-
-			switch (vertical) {
-				case CAR:
-					xpathRoot = "quote";
-					break;
-				default:
-					xpathRoot = vertical.toString().toLowerCase();
-					break;
-			}
+			final String xpathRoot = vertical.toString().toLowerCase();
 
 			data.put(xpathRoot + "/" + FIELD_LABEL, splitTests == null ? "" : splitTests);
 
@@ -80,17 +71,7 @@ public class SplitTestService {
 
 			final SessionDataService sessionDataService = new SessionDataService();
 			final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), true);
-
-			String xpathRoot = null;
-
-			switch (vertical) {
-				case CAR:
-					xpathRoot = "quote";
-					break;
-				default:
-					xpathRoot = vertical.toString().toLowerCase();
-					break;
-			}
+			final String xpathRoot = vertical.toString().toLowerCase();
 
 			if(xpathRoot != null) {
 

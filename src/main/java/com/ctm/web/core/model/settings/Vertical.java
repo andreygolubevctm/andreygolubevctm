@@ -10,19 +10,10 @@ public class Vertical {
 		GENERIC ("GENERIC"),
 		ROADSIDE ("ROADSIDE"),
 		TRAVEL ("TRAVEL"),
-		CAR ("CAR"),
 		HEALTH ("HEALTH"),
-		ENERGY("UTILITIES"),
-		UTILITIES("UTILITIES"),
-		LIFE ("LIFE"),
-		IP ("IP"),
 		FUEL ("FUEL"),
 		SIMPLES ("SIMPLES"),
-		COMPETITION ("COMPETITION"),
-		HOMELOAN ("HOMELOAN"),
-		DISTIL("DISTIL"),
-		PET("PET");
-
+		COMPETITION ("COMPETITION");
 
 		private final String code;
 
