@@ -1,6 +1,5 @@
 package com.ctm.web.core.services;
 
-import com.ctm.web.core.web.Dreammail;
 import com.ctm.web.core.web.Utils;
 import org.junit.Assert;
 import org.junit.Test;
