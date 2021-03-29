@@ -70,12 +70,6 @@ public class EmailServiceFactory {
 			case TRAVEL:
 				emailService = getTravelEmailService(pageSettings, mode, data , vertical);
 				break;
-			case HOME:
-				// TODO: refactor this
-				break;
-			case CAR:
-				// TODO: refactor this
-				break;
 			case GENERIC:
 				// TODO: refactor this
 				break;

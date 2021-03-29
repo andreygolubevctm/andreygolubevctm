@@ -8,7 +8,7 @@
 
     {{ obj.primary.forEach(function(field) { }}
         <form_v4:row label="{{= field.label }}">
-            {{= field.value }}
+            <span className="data-hj-suppress">{{= field.value }}</span>
         </form_v4:row>
     {{ }); }}
 
@@ -29,7 +29,7 @@
             {{ subLabel = '(as it appears on your medicare card)'; }}
         {{ } }}
         <form_v4:row label="{{= field.label }}" subLabel="{{= subLabel }}">
-            {{= field.value }}
+            <span className="data-hj-suppress">{{= field.value }}</span>
         </form_v4:row>
     {{ }); }}
 
@@ -37,7 +37,7 @@
 
     {{ obj.fund.forEach(function(field) { }}
         <form_v4:row label="{{= field.label }}">
-            {{= field.value }}
+            <span className="data-hj-suppress">{{= field.value }}</span>
         </form_v4:row>
     {{ }); }}
 

@@ -10,5 +10,5 @@
 
 <c:set var="fieldXpath" value="${xpath}/primary/dob" />
 <form_v4:row label="What is your date of birth?" fieldXpath="${fieldXpath}" className="health-your_details-dob-group lhcRebateCalcTrigger">
-    <field_v4:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
+    <field_v4:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" className="data-hj-suppress" />
 </form_v4:row>

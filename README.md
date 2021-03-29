@@ -10,12 +10,8 @@ The Insurance verticals currently using WebCTM include:
 * [Health](https://secure.comparethemarket.com.au/ctm/health_quote_v4.jsp)
 * [Simples (Health Internal Call Centre Application)](https://secure.comparethemarket.com.au/ctm/simples.jsp) (Currently been migrated to Everest Project)
 * [Travel](https://secure.comparethemarket.com.au/ctm/travel_quote.jsp)
-* [Car](https://secure.comparethemarket.com.au/ctm/car_quote.jsp) (Currently been migrated to Everest Project)
 * [Fuel](https://secure.comparethemarket.com.au/ctm/fuel_quote.jsp)
 * [Roadside](https://secure.comparethemarket.com.au/ctm/roadside_quote.jsp)
-* [Life](https://secure.comparethemarket.com.au/ctm/life_quote.jsp)
-* [Income](https://secure.comparethemarket.com.au/ctm/ip_quote.jsp)
-* [Homeloan](https://secure.comparethemarket.com.au/ctm/homeloan_quote.jsp)
 
 ## Getting Started
 
@@ -40,12 +36,8 @@ Local endpoints:
 * [Health](http://localhost:8080/ctm/health_quote_v4.jsp)
 * [Simples (Health Internal Call Centre Application)](http://localhost:8080/ctm/simples.jsp)
 * [Travel](http://localhost:8080/ctm/travel_quote.jsp)
-* [Car](http://localhost:8080/ctm/car_quote.jsp)
 * [Fuel](http://localhost:8080/ctm/fuel_quote.jsp)
 * [Roadside](http://localhost:8080/ctm/roadside_quote.jsp)
-* [Life](http://localhost:8080/ctm/life_quote.jsp)
-* [Income](http://localhost:8080/ctm/ip_quote.jsp)
-* [Homeloan](http://localhost:8080/ctm/homeloan_quote.jsp)
 
 ### Frontend Only
 

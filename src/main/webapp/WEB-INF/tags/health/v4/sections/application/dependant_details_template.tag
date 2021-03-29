@@ -29,20 +29,20 @@
             <form_v4:row label="Name" className="row" isNestedStyleGroup="${true}">
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/title"/>
                 <form_v2:row fieldXpath="${fieldXpath}" label="Title" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}" className="selectContainerTitle">
-                    <field_v2:import_select xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html" placeHolder="Title" disableErrorContainer="${true}" />
+                    <field_v2:import_select xpath="${fieldXpath}" className="data-hj-suppress" title="dependant {{= obj.dependantId }}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html" placeHolder="Title" disableErrorContainer="${true}" />
                 </form_v2:row>
 
 
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/firstName"/>
                 <form_v4:row fieldXpath="${fieldXpath}" label="First Name" smRowOverride="3" isNestedField="${true}">
-                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s first name" required="true" className="sessioncamexclude"
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s first name" required="true" className="sessioncamexclude data-hj-suppress"
                                     additionalAttributes=" data-rule-personName='true' " defaultValue="{{= obj.firstName }}" placeHolder="First name" disableErrorContainer="${true}" maxlength="24" />
                 </form_v4:row>
 
                 {{ if(providerConfig.showMiddleName === true) { }}
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/middleName"/>
                 <form_v4:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_dependant_details_middleName" smRowOverride="3" isNestedField="${true}">
-                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s middle name" required="false" className="sessioncamexclude"
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s middle name" required="false" className="sessioncamexclude data-hj-suppress"
                                     additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.middleName }}" disableErrorContainer="${true}" />
                 </form_v4:row>
                 {{ } }}
@@ -50,7 +50,7 @@
 
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/lastname"/>
                 <form_v4:row fieldXpath="${fieldXpath}" label="Last Name" smRowOverride="3" isNestedField="${true}">
-                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s last name" required="true" className="sessioncamexclude"
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s last name" required="true" className="sessioncamexclude data-hj-suppress"
                                     additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.lastname }}" placeHolder="Last name" disableErrorContainer="${true}" maxlength="20" />
                 </form_v4:row>
 
@@ -59,7 +59,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/dob"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="Date of Birth">
                 <field_v4:person_dob xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s date of birth" required="true" ageMin="0"
-                                     additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}" disableErrorContainer="${true}" />
+                                     additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}" disableErrorContainer="${true}"/>
             </form_v4:row>
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/gender" />
@@ -83,12 +83,12 @@
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">
                     <span class="input-group-addon"><i class="icon-sort"></i></span>
-                    <select name="${storeGroupName}" id="${storeGroupName}" class="form-control" required title="dependant {{= obj.dependantId }}'s educational institute">
+                    <select name="${storeGroupName}" id="${storeGroupName}" class="form-control data-hj-suppress" required title="dependant {{= obj.dependantId }}'s educational institute">
                         {{= meerkat.modules.healthDependants.getEducationalInstitutionsOptions() }}
                     </select>
                 </div>
                 {{ } else { }}
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude" defaultValue="{{= obj.school }}" disableErrorContainer="${true}" placeHolder="School"/>
+                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude data-hj-suppress" defaultValue="{{= obj.school }}" disableErrorContainer="${true}" placeHolder="School"/>
                 {{ } }}
             </form_v4:row>
 
@@ -96,7 +96,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
                          className="health_dependant_details_schoolIDGroup hidden">
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="false" className="sessioncamexclude" maxlength="{{= providerConfig.schoolIdMaxLength }}" defaultValue="{{= obj.schoolID }}"  disableErrorContainer="${true}"/>
+                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="false" className="sessioncamexclude data-hj-suppress" maxlength="{{= providerConfig.schoolIdMaxLength }}" defaultValue="{{= obj.schoolID }}"  disableErrorContainer="${true}"/>
             </form_v4:row>
             {{ } }}
 

@@ -20,7 +20,7 @@
         <div class="bsb-validator-messages"><!-- empty --></div>
         <div class="col-xs-12 col-sm-6 ${wrapperClass}">
     </c:if>
-    <field_v2:bsb_number xpath="${fieldXpath}" title="bsb number" required="true" className="health-bank_details-bsb sessioncamexclude" placeHolder="BSB #" disableErrorContainer="${true}" />
+    <field_v2:bsb_number xpath="${fieldXpath}" title="bsb number" required="true" className="health-bank_details-bsb sessioncamexclude data-hj-suppress" placeHolder="BSB #" disableErrorContainer="${true}" />
     <c:if test="${useValidator}">
         </div>
     </c:if>
@@ -33,5 +33,5 @@
 
 <c:set var="fieldXpath" value="${xpath}/number" />
 <form_v4:row fieldXpath="${fieldXpath}" label="Account Number" isNestedField="${not useValidator}" smRowOverride="6" className="${className}">
-    <field_v2:account_number xpath="${fieldXpath}" title="account number" minLength="5" maxLength="9" required="true" className="health-bank_details-account_number sessioncamexclude" placeHolder="Account #" disableErrorContainer="${true}" />
+    <field_v2:account_number xpath="${fieldXpath}" title="account number" minLength="5" maxLength="9" required="true" className="health-bank_details-account_number sessioncamexclude data-hj-suppress" placeHolder="Account #" disableErrorContainer="${true}" />
 </form_v4:row>

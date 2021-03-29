@@ -24,13 +24,13 @@
         <div id="partnerpreviousfund" legend="Previous Fund Details" class="health-previous_fund">
             <c:set var="fieldXpath" value="${xpath}/partner/fundName" />
             <form_v4:row fieldXpath="${fieldXpath}" label="Partner&apos;s Current Health Fund" id="partnerFund" className="changes-premium">
-                <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="partner&apos;s health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+                <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="partner&apos;s health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" className="data-hj-suppress" />
             </form_v4:row>
 
             <div id="partnerMemberID" class="membership">
                 <c:set var="fieldXpath" value="${xpath}/partner/memberID" />
                 <form_v4:row fieldXpath="${fieldXpath}" label="Membership Number" className="partnerMemberID" smRowOverride="3">
-                    <field_v2:input xpath="${fieldXpath}" title="partner&apos;s member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." maxlength="10" />
+                    <field_v2:input xpath="${fieldXpath}" title="partner&apos;s member ID" required="true" className="sessioncamexclude data-hj-suppress" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." maxlength="10" />
                 </form_v4:row>
 
                 <c:set var="fieldXpath" value="${xpath}/partner/abd" />

@@ -16,7 +16,6 @@ import com.ctm.web.core.logging.XMLOutputWriter;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope;
-import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.ProviderService;
@@ -230,12 +229,7 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 			LOGGER.debug("[Lead feed] Sending message to AGIS");
 
 			// Log copy of XML Request/Response in Debug folders
-			String path = "";
-			if(settings.getVertical().getType() == Vertical.VerticalType.CAR){
-				path = "get_prices/app-logs-debug";
-			}else{
-				path = settings.getVerticalCode()+"/app-logs-debug";
-			}
+			String path = settings.getVerticalCode()+"/app-logs-debug";
 
 			String fileName = "_AGIS_LEADFEED";
 			if(transactionId != null) {

@@ -14,7 +14,7 @@
         <field_v1:flexi_contact_number xpath="${fieldXPath}"
                                        maxLength="20"
                                        required="true"
-                                       className="contact-number-field sessioncamexclude"
+                                       className="contact-number-field sessioncamexclude data-hj-suppress"
                                        labelName="mobile number"
                                        phoneType="Mobile"
                                        requireOnePlusNumber="true"
@@ -26,7 +26,7 @@
         <field_v1:flexi_contact_number xpath="${fieldXPath}"
                                        maxLength="20"
                                        required="true"
-                                       className="contact-number-field sessioncamexclude"
+                                       className="contact-number-field sessioncamexclude data-hj-suppress"
                                        labelName="other number"
                                        phoneType="LandLine"
                                        requireOnePlusNumber="true"/>

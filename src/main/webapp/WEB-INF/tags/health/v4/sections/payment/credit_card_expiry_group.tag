@@ -8,7 +8,7 @@
 <form_v4:row label="Credit Card Expiry" isNestedStyleGroup="${true}">
     <c:set var="fieldXpath" value="${xpath}/expiry" />
     <form_v4:row fieldXpath="${fieldXpath}_cardExpiryMonth" label="Credit Card Expiry" id="${name}_expiry" className="clearfix health_credit-card-details_expiry_group" smRowOverride="12" isNestedField="${true}">
-        <field_v1:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry sessioncamexclude" maxYears="7" disableErrorContainer="${true}" />
+        <field_v1:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry sessioncamexclude data-hj-suppress" maxYears="7" disableErrorContainer="${true}" />
     </form_v4:row>
 
     <c:set var="fieldXpath" value="${xpath}/ccv" />
