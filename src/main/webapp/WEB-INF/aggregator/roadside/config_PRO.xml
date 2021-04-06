@@ -27,14 +27,14 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="24-7" type="url-encoded">
+	<!--<service name="24-7" type="url-encoded">
 		<soap-url>http://127.0.0.1:8080/ctm/rating/roadside_price_result.jsp?providerId=289</soap-url>
 		<outbound-xsl>24-7_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000010,sourceId=TEST000010</outbound-xsl-parms>
 		<inbound-xsl>24-7_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=24-7</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>
+	</service>-->
 
 	<!--<service name="365R" type="url-encoded">
 		<soap-url>http://127.0.0.1:8080/ctm/rating/roadside_price_result.jsp?providerId=302</soap-url>
