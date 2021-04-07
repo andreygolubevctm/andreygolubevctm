@@ -592,15 +592,11 @@
 	}
 
 	function resultRowClick(event) {
-		var $resultrow = $(event.target);
-
-		// Don't trigger if the apply button is clicked.
-		if ($(event.target).hasClass('btn-apply') || $(event.target).parent().hasClass('btn-apply')) return;
-
 		// Ensure only in XS price mode
 		if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false) return;
 		if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
 
+		var $resultrow = $(event.target);
 		if ($resultrow.hasClass('result-row') === false) {
 			$resultrow = $resultrow.parents('.result-row');
 		}
