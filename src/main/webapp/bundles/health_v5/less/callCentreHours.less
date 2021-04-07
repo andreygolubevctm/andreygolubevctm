@@ -1,3 +1,59 @@
+.mobile-callCentreNo {
+  display: none;
+  .icon-phone-hollow {
+    margin-top: 2px;
+    color: @header-primary-color;
+  }
+  a{
+    color: @header-primary-color;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: @font-family-theme-semibold;
+    text-decoration: none;
+
+    span {
+      padding-top: 13px;
+      padding-left: 12px;
+      padding-bottom: 15px;
+      @media (min-width: 767px) and (max-width: 767px) {
+        padding-left: 0;
+        padding-top: 17px;
+        padding-bottom: 22.5px;
+      }
+    }
+  }
+  a:active,
+  a:visited{
+    color: @header-primary-color;
+  }
+
+  a:focus,
+  a:hover {
+    color: @header-primary-hover-color;
+  }
+
+  @media only screen and (max-width:767px) {
+    display:block;
+    float:right;
+    position: absolute;
+    padding-top: 13px;
+    padding-left: 12px;
+    padding-bottom: 15px;
+    top: 0 !important;
+  }
+  @media (min-width: 767px) and (max-width: 767px) {
+    padding-top: 17.5px;
+    padding-bottom: 22.5px;
+    left: 296px;
+  }
+}
+
+.isAuthHeader {
+  .mobile-callCentreNo {
+    display: none;
+  }
+}
+
 .mobile-hours {
   padding: 15px;
 }
@@ -60,8 +116,11 @@
 }
 
 .callCentreNumberSection {
-  padding-top: 23px;
   font-size: 12px;
+
+  @media (@sm) {
+    margin-right: 0;
+  }
 
   @media (@md) {
     font-size: 20px;
@@ -72,29 +131,71 @@
     line-height: 31px;
   }
 
-  .callCentreNumber-container {
-    color: @gray-base;
+  .callCentreNumber-container, .auth-callCentreNumber-container {
+    display: block;
+    color: @header-primary-color;
     display: inline-block;
     font-size: 20px;
     font-weight: 600;
+    padding-top: 15px;
+    padding-left: 12px;
+    padding-bottom: 19.5px;
 
+    @media (min-width: 767px) and (max-width: 767px) {
+      padding-top: 18px;
+      padding-bottom: 21.5px;
+    }
+
+    &:focus,
     &:hover {
-      color: #164AD9;
+      color: @header-primary-hover-color;
     }
 
     a {
-      color: @gray-base;
+      color: @header-primary-color;
+      text-decoration: none;
+
+      .callCentreNumber {
+        padding-top: 15px;
+        padding-bottom: 19.5px;
+        padding-right: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: @font-family-theme-semibold;
+      }
 
       &:hover {
-        color: #164AD9;
+        color: @header-primary-hover-color;
         text-decoration: none;
       }
     }
 
-    .icon-phone {
+    .icon-phone-hollow {
+      font-size: 16px;
       margin-top: 4px;
     }
+  }
 
+  .auth-mobile-callCentreNo {
+    .auth-callCentreNumber-container {
+      border-left: 1px solid #c6c6c6;
+      float: right;
+      padding: 0px 1.2rem;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      transition: background .2s;
+
+      &:hover {
+        cursor: pointer;
+        background: rgb(231, 240, 251);
+      }
+
+      .icon-phone-hollow {
+        margin-top: 0;
+        font-size: 2.2rem;
+      }
+    }
   }
 }
 .journeyEngineSlide {
@@ -103,12 +204,8 @@
     .callCentreNumber {
       //This one picks white based on highest contrast
       color: #ffffff;
-      font-size: 32px;
-      @media (@xs-only) {
-        &.callCentreNumber {
-          color: #ffffff;
-        }
-      }
+      font-size: 16px;
+      font-weight: bold;
     }
   }
 }

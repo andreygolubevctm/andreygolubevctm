@@ -26,7 +26,7 @@ import java.util.Hashtable;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class LDAPDetails {
-	private static final Logger LOGGER = LoggerFactory.getLogger(Dreammail.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(LDAPDetails.class.getName());
 
 	protected Hashtable<String, String> userDetails = null;
 	protected String PROVIDER_URL            = "ldap://argon.budgetdirect.com.au:389";

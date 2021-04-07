@@ -164,10 +164,6 @@
 		<filter-name>pathProtectionFilter</filter-name>
 		<url-pattern>/ajax/*</url-pattern>
 	</filter-mapping>
-	<filter-mapping>
-		<filter-name>pathProtectionFilter</filter-name>
-		<url-pattern>/dreammail/*</url-pattern>
-	</filter-mapping>
 	-->
 
 	<filter>

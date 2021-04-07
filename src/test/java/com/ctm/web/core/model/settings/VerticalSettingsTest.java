@@ -9,14 +9,8 @@ import static org.junit.Assert.*;
 public class VerticalSettingsTest {
 
     @Test
-    public void getHomePageForVerticalHomeAndContents() throws Exception {
-        assertEquals("home_contents_quote.jsp" , VerticalSettings.getHomePageJsp("HOME"));
+    public void getHomePageForVerticalHealth() throws Exception {
+        assertEquals("health_quote.jsp" , VerticalSettings.getHomePageJsp("HEALTH"));
 
     }
-
-    @Test
-    public void getHomePageForVerticalCar() throws Exception {
-        assertEquals("car_quote.jsp" ,VerticalSettings.getHomePageJsp("CAR"));
-    }
-
 }

@@ -1,6 +1,5 @@
 package com.ctm.web.email;
 
-import com.ctm.web.email.car.CarEmailModel;
 import com.ctm.web.email.health.HealthEmailModel;
 import com.ctm.web.email.travel.TravelEmailModel;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -62,6 +61,5 @@ public class EmailRequest {
     private List<BigDecimal> premiumDiscountPercentage;
 
     private HealthEmailModel healthEmailModel;
-    private CarEmailModel carEmailModel;
     private TravelEmailModel travelEmailModel;
 }

@@ -44,16 +44,7 @@ public class TrackingKeyService {
 				final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), true);
 
 				List<String> trackingKeyXpaths = Arrays.asList(strXpaths.split("\\s*,\\s*"));;
-				String xpathRoot = null;
-
-				switch (vertical) {
-					case CAR:
-						xpathRoot = "quote";
-						break;
-					default:
-						xpathRoot = vertical.toString().toLowerCase();
-						break;
-				}
+				final String xpathRoot = vertical.toString().toLowerCase();
 
 				for (String xpath : trackingKeyXpaths) {
 					keyBuilder.append(data.get(xpath));

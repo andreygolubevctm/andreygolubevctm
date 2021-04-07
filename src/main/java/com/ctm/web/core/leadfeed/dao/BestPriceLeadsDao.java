@@ -1,39 +1,27 @@
 package com.ctm.web.core.leadfeed.dao;
 
-import com.ctm.web.car.leadfeed.services.CTM.CTMCarLeadFeedService;
-import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.model.ContentSupplement;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.dao.VerticalsDao;
 import com.ctm.web.core.exceptions.DaoException;
-
-import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.leadService.model.LeadType;
-import com.ctm.web.core.leadfeed.model.CTMCarLeadFeedRequestMetadata;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
-import com.ctm.web.core.leadfeed.model.Person;
-import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.leadfeed.LeadFeedRootTransaction;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.model.settings.ServiceConfiguration;
-import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.ServiceConfigurationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.naming.NamingException;
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
@@ -47,7 +35,10 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class BestPriceLeadsDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BestPriceLeadsDao.class);
-	private static final CharSequence BUDD = "BUDD";
+	private static final String SERVER_DATE = "serverDate";
+	private static final String BRAND_CODE_ID = "brandCodeId";
+	private static final String VERTICAL_CODE = "verticalCode";
+	private static final String MINUTES = "minutes";
 
 	private ArrayList<LeadFeedRootTransaction> transactions = null;
 	private ArrayList<LeadFeedData> leads = null;
@@ -61,6 +52,19 @@ public class BestPriceLeadsDao {
 	private final Integer BESTPRICEDELAY = 10;
 	private final Integer MOREINFODELAY = 10;
 
+
+	protected SimpleDatabaseConnection getSimpleDatabaseConnection(){
+		return  new SimpleDatabaseConnection();
+	}
+
+	protected VerticalsDao getVerticalsDao(){
+		return new VerticalsDao();
+	}
+
+	protected ContentService getContentService(){
+		return new ContentService();
+	}
+
 	/**
 	 * Query the database for leads
 	 *
@@ -72,30 +76,22 @@ public class BestPriceLeadsDao {
 	 * @throws DaoException
 	 */
 	public ArrayList<LeadFeedData> getLeads(int brandCodeId, String verticalCode, Integer minutes, Date serverDate) throws DaoException {
-
 		SimpleDatabaseConnection dbSource = null;
-
 		transactions = new ArrayList<>();
 		leads = new ArrayList<>();
-
-
-		Integer minutes_max = (minutes * 2) + 5; // Add 5 minutes to allow for timing issues with running of cron job
+		PreparedStatement stmt = null;
 
 		try{
-
-			VerticalsDao verticalDao = new VerticalsDao();
-			Vertical vertical = verticalDao.getVerticalByCode(verticalCode);
+			dbSource = getSimpleDatabaseConnection();
+			Vertical vertical = getVerticalsDao().getVerticalByCode(verticalCode);
 
 			if(verticalCode != null) {
 
 				String activeBestPriceLeadProviders = getActiveProviders(vertical.getId(), serverDate);
-				if(activeBestPriceLeadProviders != null) {
-
-					dbSource = new SimpleDatabaseConnection();
-					PreparedStatement stmt;
-
+				if(StringUtils.isNotBlank(activeBestPriceLeadProviders)) {
 					/* Source transactions that have progressed through to results page or had any of the "lead request" types in the last x minutes depending on the lead request type.
 					 * and/or those with existing leads triggered (which imply results have been seen) */
+
 					stmt = dbSource.getConnection().prepareStatement(
 						"SELECT h.rootId AS rootId, h.TransactionId AS transactionId, t.type AS type, h.styleCode, h.ipAddress " +
 						"FROM aggregator.transaction_header AS h " +
@@ -174,9 +170,9 @@ public class BestPriceLeadsDao {
 									String[] leadConcat = resultSet.getString("leadInfo").split("\\|\\|", -1);
 
 									// old leadfeedinfo will have 4 elements, and new once will have 6.
-									if(leadConcat.length >= CarQuote.LEAD_FEED_INFO_SIZE_V1) {
+									if(leadConcat.length >= 4) {
 										String curLeadNumber = resultSet.getString("leadNo");
-										String propensityScore = resultSet.getString("propensityScore");
+
 										String curIdentifier = leadConcat[2];
 										String phoneNumber = leadConcat[1];
 										// Only proceed if a phone number has been provided otherwise the
@@ -212,171 +208,49 @@ public class BestPriceLeadsDao {
 												leadData.setBrandCode(brand.getCode());
 												leadData.setVerticalCode(verticalCode);
 												leadData.setVerticalId(brand.getVerticalByCode(verticalCode).getId());
-
-												/**
-												 * CAR-1524: Send all CAR BestPrice leads for Budget Direct to `ctm-leads` instead of A&G.
-												 * To be able to process leads, `ctm-leads` require more info (person, metadata) as part of lead feed data.
-												 */
-												if (isCarBestPriceLeadFeedForBUDD(leadData)) {
-													final ServiceConfiguration serviceConfig;
-													try {
-														serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", CTMCarLeadFeedService.CAR_VERTICAL_ID);
-													} catch (ServiceConfigurationException e) {
-														LOGGER.error("[lead feed] Exception while reading service config. Message: {}", e.getMessage(), e);
-														throw new DaoException(e.getMessage(), e);
-													}
-
-													final Boolean carCtmLeadsEnabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", brandCodeId, 0, ServiceConfigurationProperty.Scope.SERVICE));
-
-													if (carCtmLeadsEnabled) {
-														if (leadConcat.length >= CarQuote.LEAD_FEED_INFO_SIZE_V2) {
-															leadData.setRootId(tran.getMinTransactionId());
-															updateLeadFeedDataWithPersonInfo(leadData, leadConcat[4]);
-															updateLeadFeedDataWithMetadata(leadData, leadConcat[5], propensityScore);
-														} else {
-															//log and skip this lead as its un-processable.
-															LOGGER.info("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}, {}", kv("leadData", leadConcat.toString()), kv("transactionId", transactionId), kv("leadConcatLength", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate), leadData);
-															leadData = null;
-														}
-													}
-												}
-
 											// Escape current loop as the identifier has changed and we already have our lead data
 											} else {
 												searching = false;
 											}
 										} else {
-											LOGGER.debug("[Lead info] lead skipped as no optin for call {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
+											LOGGER.debug("[Lead info] lead skipped as no optin for call {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv(BRAND_CODE_ID, brandCodeId), kv(VERTICAL_CODE, verticalCode), kv(MINUTES, minutes), kv(SERVER_DATE, serverDate));
 										}
 									} else {
-										LOGGER.info("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}, {}", kv("leadData", leadConcat.toString()), kv("transactionId", transactionId), kv("leadConcatLength", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
+										LOGGER.info("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}, {}", kv("leadData", Arrays.toString(leadConcat)), kv("transactionId", transactionId), kv("leadConcatLength", leadConcat.length), kv(BRAND_CODE_ID, brandCodeId), kv(VERTICAL_CODE, verticalCode), kv(MINUTES, minutes), kv(SERVER_DATE, serverDate));
 									}
 								}
 
 								// Add lead object to the list
 								if(leadData != null) {
-
-									// CAR-1357 - When BUDD is best price AND product is "Budget Direct Gold Comprehensive" AND followupIntended=N AND NOT More Info Best Price
-									if (Vertical.VerticalType.CAR.getCode().equals(vertical.getCode())
-											&& StringUtils.equals("BUDD", leadData.getPartnerBrand())
-											&& StringUtils.equals("BUDD-05-04", leadData.getProductId()) //  Budget Direct Gold Comprehensive
-											&& StringUtils.equals("N", leadData.getFollowupIntended())
-											&& StringUtils.isBlank(leadData.getMoreInfoProductCode())) {
-										// Alter brandCode, productId and partnerReference to EXDD
-
-										stmt = dbSource.getConnection().prepareStatement(
-												"SELECT p1.Value AS brandCode, p2.Value AS leadNumber, p3.Value AS productId " +
-												"FROM aggregator.results_properties p1 " +
-												"	LEFT JOIN aggregator.results_properties p2 " +
-												"		ON p2.transactionId = p1.transactionId AND p2.productId = p1.productId AND p2.property = 'leadNo' " +
-												"	LEFT JOIN aggregator.results_properties p3 " +
-												"		ON p3.transactionId = p1.transactionId AND p3.productId = p1.productId AND p3.property = 'productId' " +
-												"WHERE p1.transactionId = ? AND p1.productId = ? AND p1.property = 'brandCode'");
-
-										stmt.setLong(1, leadData.getTransactionId());
-										stmt.setString(2, "EXDD-05-04");
-
-										resultSet = stmt.executeQuery();
-										while(resultSet.next()) {
-											// NOTE: leadData brandId should not change as we are sending the lead using BUDD credentials.
-											leadData.setNewPartnerBrand(resultSet.getString("brandCode"));
-											leadData.setNewPartnerReference(resultSet.getString("leadNumber"));
-											leadData.setNewProductId(resultSet.getString("productId"));
-											leadData.setPartnerReferenceChange(true);
-										}
-
-									}
-
 									leads.add(leadData);
 								}
 							}
 						}
 					}
 				} else {
-					LOGGER.error("Failed to retrieve any active best price lead feed providers {}, {}, {}, {}", kv("verticalCode", verticalCode), kv("brandCodeId", brandCodeId), kv("minutes", minutes), kv("serverDate", serverDate));
+					LOGGER.error("Failed to retrieve any active best price lead feed providers {}, {}, {}, {}", kv(VERTICAL_CODE, verticalCode), kv(BRAND_CODE_ID, brandCodeId), kv(MINUTES, minutes), kv(SERVER_DATE, serverDate));
 					throw new DaoException("Failed to retrieve any active best price lead feed providers verticalCode=" + verticalCode);
 				}
 			} else {
-				LOGGER.error("Failed to retrieve lead feed {}, {}, {}, {}", kv("verticalCode", verticalCode), kv("brandCodeId", brandCodeId), kv("minutes", minutes), kv("serverDate", serverDate));
+				LOGGER.error("Failed to retrieve lead feed {}, {}, {}, {}", kv(VERTICAL_CODE, verticalCode), kv(BRAND_CODE_ID, brandCodeId), kv(MINUTES, minutes), kv(SERVER_DATE, serverDate));
 				throw new DaoException("Failed to retrieve vertical data for id (" + verticalCode + ")");
 			}
 		} catch (SQLException | NamingException e) {
-			LOGGER.error("Failed to get lead feed transactions {}, {}", kv("verticalCode", verticalCode), kv("minutes", minutes));
+			LOGGER.error("Failed to get lead feed transactions {}, {}", kv(VERTICAL_CODE, verticalCode), kv(MINUTES, minutes));
 			throw new DaoException(e);
 		} finally {
+			try {
+				if(stmt != null){
+					stmt.close();
+				}
+			} catch (SQLException sqlException) {
+				LOGGER.error("Exception when closing the statement", sqlException);
+			}
 			dbSource.closeConnection();
 		}
 
 		return leads;
 	}
-
-	/**
-	 * Update lead feed data with meta data as required by `ctm-leads`
-	 *
-	 * Note: do not throw any exception here.
-	 * @param leadData
-	 * @param metadataJsonString
-	 * @param propensityScore
-	 */
-	private void updateLeadFeedDataWithMetadata(LeadFeedData leadData, String metadataJsonString, final String propensityScore) {
-        if(StringUtils.isBlank(metadataJsonString)){
-            return;
-        }
-        LOGGER.info("BANANA: "+ metadataJsonString);
-        CTMCarLeadFeedRequestMetadata metadata = new CTMCarLeadFeedRequestMetadata();
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            metadata = mapper.readValue(metadataJsonString, CTMCarLeadFeedRequestMetadata.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        metadata.setProviderQuoteRef(leadData.getPartnerReference());
-        metadata.setProviderCode(leadData.getPartnerBrand());
-        //propensity score could be null, DUPLICATE, double, string. `ctm-leads` is responsible for it to convert it to usable form.
-        metadata.setPropensityScore(propensityScore);
-        leadData.setMetadata(metadata);
-    }
-
-	/**
-	 * Updates lead feed data with person as required by `ctm-leads`
-	 *
-	 * Note: do not throw any exception here.
-	 * @param leadData
-	 * @param personJsonString
-	 */
-	private void updateLeadFeedDataWithPersonInfo(LeadFeedData leadData, String personJsonString) {
-
-        if (StringUtils.isBlank(personJsonString)) {
-            return;
-        }
-
-        Person person = null;
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            person = mapper.readValue(personJsonString, Person.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        leadData.setPerson(person);
-    }
-
-	/**
-	 * returns true if lead feed data is for Car, best price, for Budget Direct, else false.
-	 *
-	 * Note: do not throw any exception here.
-	 * @param leadFeedData
-	 * @return
-	 */
-	private boolean isCarBestPriceLeadFeedForBUDD(LeadFeedData leadFeedData) {
-        if (StringUtils.equalsIgnoreCase(leadFeedData.getVerticalCode(), Vertical.VerticalType.CAR.toString())
-                && StringUtils.equals(leadFeedData.getPartnerBrand(), BUDD)) {
-            return true;
-        }
-        return false;
-    }
-
 
 	private void addTransaction(ResultSet set) {
 		try {
@@ -426,8 +300,7 @@ public class BestPriceLeadsDao {
 	private String getActiveProviders(Integer verticalId, Date serverDate) throws DaoException {
 		StringBuilder providers = new StringBuilder();
 		try {
-			ContentService contentService = new ContentService();
-			Content content = contentService.getContent("bestPriceProviders", 0, verticalId, serverDate, true);
+			Content content = getContentService().getContent("bestPriceProviders", 0, verticalId, serverDate, true);
 			ArrayList<ContentSupplement> providersContent = content.getSupplementary();
 			for (ContentSupplement provider : providersContent) {
 				if(provider.getSupplementaryValue().equalsIgnoreCase("Y")) {

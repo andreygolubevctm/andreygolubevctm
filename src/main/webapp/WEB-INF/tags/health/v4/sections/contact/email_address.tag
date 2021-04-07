@@ -12,7 +12,7 @@
 
 <c:set var="fieldXpath" value="${xpath}/email" />
 <form_v4:row label="Your email address" fieldXpath="${fieldXpath}" className="clear required_input">
-	<field_v2:email xpath="${fieldXpath}" title="your email address" required="${required}"  />
+	<field_v2:email xpath="${fieldXpath}" title="your email address" required="${required}" className="data-hj-suppress"  />
 	<field_v1:hidden xpath="${xpath}/emailsecondary" />
 	<field_v1:hidden xpath="${xpath}/emailhistory" />
 </form_v4:row>

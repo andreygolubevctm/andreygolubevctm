@@ -12,7 +12,6 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.email.car.CarModelTranslator;
 import com.ctm.web.email.health.HealthModelTranslator;
 import com.ctm.web.email.travel.TravelModelTranslator;
 import org.apache.commons.lang3.StringUtils;
@@ -43,8 +42,6 @@ public class MarketingAutomationEmailService {
     private HealthModelTranslator healthModelTranslator;
     @Autowired
     private EmailClient emailClient;
-    @Autowired
-    private CarModelTranslator carModelTranslator;
     @Autowired
     private TravelModelTranslator travelModelTranslator;
 
@@ -153,8 +150,6 @@ public class MarketingAutomationEmailService {
         final VerticalType verticalType = getVerticalType(verticalCode);
         if (VerticalType.HEALTH == verticalType) {
             return healthModelTranslator;
-        } else if (VerticalType.CAR == verticalType) {
-            return carModelTranslator;
         } else if (VerticalType.TRAVEL == verticalType) {
             return travelModelTranslator;
         }

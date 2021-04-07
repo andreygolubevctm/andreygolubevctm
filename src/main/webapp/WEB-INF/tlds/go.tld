@@ -904,19 +904,6 @@
 		</example>
 	</function>
 	<function>
-		<description>Send a request to Dreammail</description>
-		<name>Dreammail</name>
-		<function-class>com.ctm.web.core.web.Dreammail</function-class>
-		<function-signature>
-			java.lang.String send(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,java.lang.String,java.lang.String)
-		</function-signature>
-		<example>
-			<![CDATA[
-				${go:Dreammail(username, password, servername, rtm_url, xml_content, debug[Y/N], is_exact_target, 12345, car_bestprice)};
-			]]>
-		</example>
-	</function>
-	<function>
 		<description>Set date</description>
 		<name>setDate</name>
 		<function-class>java.util.GregorianCalendar</function-class>

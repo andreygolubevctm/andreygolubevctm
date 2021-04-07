@@ -3,7 +3,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- Include the Vertical Specific Templates --%>
-<retrievequotes_template:car/>
 <retrievequotes_template:life/>
 <retrievequotes_template:ip/>
 <retrievequotes_template:health/>

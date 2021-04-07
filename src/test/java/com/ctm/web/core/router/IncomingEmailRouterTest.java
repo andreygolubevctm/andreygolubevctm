@@ -156,40 +156,4 @@ public class IncomingEmailRouterTest {
         verify(emailTokenService, atLeastOnce()).decryptToken("myToken");
         verify(response).sendRedirect("www.awesomeness.com.au/start_quote.jsp");
     }
-
-    @Test
-    public void givenHncToken_whenLoadingTransaction_thenRedirectToEvtJourney() throws Exception {
-
-        // inject mock
-        when(applicationContext.getBean(EmailServiceClient.class)).thenReturn(emailServiceClient);
-        whenNew(EmailMasterDao.class).withAnyArguments().thenReturn(emailMasterDao);
-
-        // a random token
-        final String aHncToken = "aHncToken";
-        when(request.getParameter("token")).thenReturn(aHncToken);
-
-        // params decrypted from token
-        Map<String, String> params = new HashMap<>();
-        params.put("styleCodeId", "1");
-        params.put("vertical", "home");
-        params.put("action", "load");
-        params.put("emailId", "0");
-        params.put("transactionId", "0");
-        when(emailTokenService.decryptToken(aHncToken)).thenReturn(params);
-
-        // mock response of emailMasterDao.getEmailMasterById
-        final EmailMaster emailMaster = new EmailMaster();
-        emailMaster.setEmailAddress("my-test@test.com");
-        when(emailMasterDao.getEmailMasterById(anyInt())).thenReturn(emailMaster);
-
-        // mock response of emailServiceClient.createEmailToken
-        final TokenResponse tokenResponse = TokenResponse.newBuilder().url("www.test.com").build();
-        when(emailServiceClient.createEmailToken(anyInt(), any(), anyLong(), any(), any())).thenReturn(Optional.of(tokenResponse));
-
-        router.doGet(request, response);
-
-        // verifications
-        verify(emailTokenService, atLeastOnce()).decryptToken(aHncToken);
-        verify(response).sendRedirect(tokenResponse.getUrl());
-    }
 }

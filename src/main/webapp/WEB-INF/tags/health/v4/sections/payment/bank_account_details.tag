@@ -24,12 +24,12 @@
 
     <c:set var="fieldXpath" value="${xpath}/name" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Bank Name" className="${rowClass}">
-        <field_v2:input xpath="${fieldXpath}" title="bank's name" required="true" className="health-bank_details-bank_name sessioncamexclude" additionalAttributes=" data-rule-regex='[a-zA-Z ]{1,30}' data-msg-regex='For bank name, please use only alphabetic characters (A-Z) and space, up to 30 characters in length.' " placeHolder="Bank Name"/>
+        <field_v2:input xpath="${fieldXpath}" title="bank's name" required="true" className="health-bank_details-bank_name sessioncamexclude data-hj-suppress" additionalAttributes=" data-rule-regex='[a-zA-Z ]{1,30}' data-msg-regex='For bank name, please use only alphabetic characters (A-Z) and space, up to 30 characters in length.' " placeHolder="Bank Name"/>
     </form_v4:row>
 
     <c:set var="fieldXpath" value="${xpath}/account" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Account Name" className="${rowClass}">
-        <field_v2:input xpath="${fieldXpath}" title="account name" required="true" className="health-bank_details-account_name sessioncamexclude" maxlength="50" additionalAttributes=" data-rule-regex='[a-zA-Z ]{1,30}' data-msg-regex='For account name, please use only alphabetic characters (A-Z) and space, up to 30 characters in length.' " placeHolder="Account Name"/>
+        <field_v2:input xpath="${fieldXpath}" title="account name" required="true" className="health-bank_details-account_name sessioncamexclude data-hj-suppress" maxlength="50" additionalAttributes=" data-rule-regex='[a-zA-Z ]{1,30}' data-msg-regex='For account name, please use only alphabetic characters (A-Z) and space, up to 30 characters in length.' " placeHolder="Account Name"/>
     </form_v4:row>
 
     <c:if test="${empty callCentre or isClaimAccount}">

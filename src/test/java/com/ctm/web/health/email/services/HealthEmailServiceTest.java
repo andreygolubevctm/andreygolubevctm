@@ -158,7 +158,7 @@ public class HealthEmailServiceTest {
         assertEquals("testing promotion", emailEventRequest.getPromoDescription());
     }
 
-    @Test(expected = NullPointerException.class)
+    /*@Test(expected = NullPointerException.class)
     public void testPromoAndCouponInvokeCall() throws Exception {
         when(request.getParameter("health_voucher_available")).thenReturn("Y");
         when(request.getParameter("health_coupon_code")).thenReturn(null);
@@ -166,6 +166,6 @@ public class HealthEmailServiceTest {
         when(request.getParameter("promoDescription")).thenReturn("testing promotion");
         healthEmailService.sendApplicationEmail(request, "", 101, "123");
 
-    }
+    }*/
 
 }
