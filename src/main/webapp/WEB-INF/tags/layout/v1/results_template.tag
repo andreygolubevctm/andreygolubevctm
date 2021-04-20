@@ -100,16 +100,37 @@
                     </c:choose>
                 </div>
 
-                <div class="noResults displayNone alert alert-warning">
-                    <c:choose>
-                        <c:when test="${not empty zeroResultsFoundMessage}">
-                            ${zeroResultsFoundMessage}
-                        </c:when>
-                        <c:otherwise>
-                            No results found, please alter your filters and selections to find a match.
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+                <c:choose>
+                    <c:when test="${callCentre}">
+                        <div class="noResults displayNone alert alert-warning">
+                            <c:choose>
+                                <c:when test="${not empty zeroResultsFoundMessage}">
+                                    ${zeroResultsFoundMessage}
+                                </c:when>
+                                <c:otherwise>
+                                    No results found, please alter your filters and selections to find a match.
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="noResults col-xs-12 col-sm-10">
+                            <div class="noResultsImg">
+                                <img src="assets/brand/ctm/images/results/search.svg" />
+                            </div>
+                            <div class="noResultsTxt">
+                                <h3>Please refine your search</h3>
+                                <p>Sorry, we didn't find any products that matched your preferences.</p>
+                                <p id="noResultsTxtDynamic">Try adjusting your filters <span class="hidden-xs">on the right</span> to view more options or have one of our experts call you to help.</p>
+                            </div>
+                            <div class="noResultsBtn">
+                                <a href="javascript:;" class="btn btn-secondary btn-preferences filter-toggle" data-filter="hospital-benefits" data-analytics="hospital benefits filter">Update Preferences</a>
+                                <a href="javascript:;" class="btn btn-secondary btn-block" data-toggle="dialog" data-content="#view_all_hours_cb" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">Call Me</a>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
 
             </div>
         </div>

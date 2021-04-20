@@ -439,10 +439,15 @@
         });
 
         $(document).on('click', '.filter-toggle', function () {
-            var filter = $(this).attr('data-filter');
+            var isMobile = $(".refine-results").is(":visible");
 
-            toggleFilterByContainer($('.filter-' + filter));
-            toggleFilter($('.health-filter-' + filter), true);
+            if (isMobile) {
+                $(".refine-results").click();
+            } else {
+                var filter = $(this).attr('data-filter');
+                toggleFilterByContainer($('.filter-' + filter), true);
+                toggleFilter($('.health-filter-' + filter), true);
+            }
         });
 
         $(document).on('shown.bs.tab', '.health-filter-hospital-benefits a[data-toggle="tab"]', function (e) {
