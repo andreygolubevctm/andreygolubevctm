@@ -723,6 +723,10 @@
             }
         }
 
+        if(brandCodeIsCtm && dblChkCallType && !isInbound && dblChkCallType !== "outbound" && dblChkCallType !== "cli"){
+            $referralCallCheckbox.prop("checked", true);
+        }
+
         if (brandCodeIsCtm && callType === "trial") {
             $referralCallCheckbox.prop("checked", true);
 
@@ -736,10 +740,14 @@
         if(isOutboundNextGenContactType()) {
 	        $dialogue36.show();
         } else {
-	        if (!isInbound && isReferral) {
+	        if (!isInbound) {
 	            $dialogue36.toggle(isReferral);
+                $dialogue38.toggle(isReferral);
+                $dialogue40.toggle(isReferral);
 	        } else {
 	            $dialogue36.toggle(isInbound);
+                $dialogue38.toggle(isInbound);
+                $dialogue40.toggle(isInbound);
 	        }
         }
 	}
