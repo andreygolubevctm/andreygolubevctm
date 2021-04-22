@@ -114,7 +114,7 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="noResults displayNone col-xs-12 col-sm-10">
+                        <div class="noResults col-xs-12 col-sm-10">
                             <div class="noResultsImg">
                                 <img src="assets/brand/ctm/images/results/search.svg" />
                             </div>
@@ -130,6 +130,8 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
+
+
             </div>
         </div>
     </div>
