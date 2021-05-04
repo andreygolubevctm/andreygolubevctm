@@ -12,7 +12,8 @@
             "navy health",
             "tuh",
             "myown",
-            "nib"
+            "nib",
+            "qantas"
         ];
 
     function initHealthMedicare() {
