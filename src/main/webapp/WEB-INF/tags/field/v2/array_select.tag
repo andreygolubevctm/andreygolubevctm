@@ -33,7 +33,7 @@
 
 <div class="select <c:if test="${hideElement eq true}">hidden</c:if>">
 	<span class=" input-group-addon">
-		<i class="icon-sort"></i>
+		<i class="icon-angle-down"></i>
 	</span>
 	<field_v1:array_select xpath="${xpath}" extraDataAttributes="${extraDataAttributes}" required="${required}" className="${className}" title="${title}" items="${items}" delims="${delims}" includeInForm="${includeInForm}" placeHolder="${placeHolder}" />
 </div>

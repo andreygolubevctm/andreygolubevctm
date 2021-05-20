@@ -68,6 +68,6 @@
 		${fn:replace(optionData,findVal,replaceVal)}
 	</select>
 	<span class=" input-group-addon">
-		<i class="icon-sort"></i>
+		<i class="icon-angle-down"></i>
 	</span>
 </div>

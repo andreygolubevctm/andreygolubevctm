@@ -47,7 +47,7 @@
 
 <div class="select"<c:if test="${hideElement eq true}"> style="height: 0; visibility: hidden;"</c:if>>
 	<span class=" input-group-addon">
-		<i class="icon-sort"></i>
+		<i class="icon-angle-down"></i>
 	</span>
 	<select name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" id="${name}" class="form-control ${className}" ${additionalAttributes}>
 		<%-- Write the initial "please choose" option --%>

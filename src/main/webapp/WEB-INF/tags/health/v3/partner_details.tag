@@ -49,7 +49,7 @@
 
 				<c:set var="fieldXpath" value="${xpath}/partner/extras/fundName" />
 				<form_v2:row fieldXpath="${fieldXpath}" label="Partner's Current Extras Fund" id="partnerExtrasFund" className="changes-premium hidden" renderLabelAsSimplesDialog="true">
-					<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your extras fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+					<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your extras fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
 				</form_v2:row>
 
 			<div id="partnerExtrasMemberID" class="membership">
