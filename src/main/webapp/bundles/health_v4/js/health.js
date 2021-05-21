@@ -67,6 +67,8 @@
 	        $("#covid-banner-close-button").click(function () {
 	            $("#covid-banner").remove();
             });
+
+            $(".combobox").combobox({bsVersion: '3'});
         });
     }
 

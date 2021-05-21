@@ -17,7 +17,7 @@
 
 <div class="select">
 	<span class="input-group-addon">
-		<i class="icon-sort"></i>
+		<i class="icon-angle-down"></i>
 	</span>
 	<select name="${name}_mobile" id="${name}_mobile" class="form-control ${mobileClassName}" data-rule-commencementDateMobileDropdownCheck="${required}" data-msg-commencementDateMobileDropdownCheck="""Please select a commencement date.">
 		<%-- Write the initial "please choose" option --%>

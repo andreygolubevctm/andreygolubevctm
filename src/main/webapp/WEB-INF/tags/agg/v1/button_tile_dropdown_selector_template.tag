@@ -41,7 +41,7 @@
 
     <div class="select">
         <span class=" input-group-addon">
-            <i class="icon-sort"></i>
+            <i class="icon-angle-down"></i>
         </span>
         <select class="form-control array_select drop-down-selector" name="{{= obj.id }}_drop-down-selector" data-ignore="true">
             <option>Please select</option>

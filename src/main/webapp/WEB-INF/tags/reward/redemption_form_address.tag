@@ -34,7 +34,7 @@
         <div class="col-sm-6 col-xs-12   row-content">
             <div class="select">
 					<span class=" input-group-addon" data-target="order_address">
-						<i class="icon-sort"></i>
+						<i class="icon-angle-down"></i>
 					</span>
                 <select name="order_address_suburb" id="order_address_suburb" class="form-control" data-attach="true" disabled="disabled" data-rule-validSuburb="order_address"  autocomplete='false'>
                     <option value=''>Enter Postcode</option>
@@ -80,7 +80,7 @@
         <div class="col-sm-6 col-xs-12   row-content">
             <div class="select ">
 								<span class=" input-group-addon">
-									<i class="icon-sort"></i>
+									<i class="icon-angle-down"></i>
 								</span>
                 <select class="form-control array_select " id="order_address_nonStdUnitType" name="order_address_nonStdUnitType"  data-msg-required="Please choose the unit type"  data-attach="true" >
                     <option id="order_address_nonStdUnitType_" value="">Please choose...</option>

@@ -73,7 +73,7 @@
                 {{ if(usesSchoolDropdown === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">
-                    <span class="input-group-addon"><i class="icon-sort"></i></span>
+                    <span class="input-group-addon"><i class="icon-angle-down"></i></span>
                     <select name="${storeGroupName}" id="${storeGroupName}" class="form-control" required title="dependant {{= obj.dependantId }}'s educational institute">
                         {{= meerkat.modules.healthDependants.getEducationalInstitutionsOptions() }}
                     </select>

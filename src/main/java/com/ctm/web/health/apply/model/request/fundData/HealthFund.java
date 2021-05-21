@@ -76,7 +76,9 @@ public  enum HealthFund {
     UAOD ("Druids Health Benefits Fund"),
     QTUHS ("TUH - Teachers Union Health (QLD)"),
     WDHF ("Westfund Limited"),
-    YMHS("Federation Health");
+    YMHS("Federation Health"),
+    AAMI("AAMI Health Insurance"),
+    SUN("Suncorp Health Insurance");
 
     private final String description;
 

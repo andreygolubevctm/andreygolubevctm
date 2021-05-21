@@ -42,3 +42,37 @@
     margin-left: 0;
   }
 }
+
+.select .input-group-addon {
+  font-size: 1.8rem;
+}
+
+.form-control:focus ~.input-group-addon {
+  border-color: #1c3f94;
+}
+
+.has-success .form-control:focus ~.input-group-addon{
+  border-color: #4d4d4d;
+}
+
+
+fieldset {
+  margin-top: 2rem;
+}
+
+fieldset #primaryHospitalCover{
+  margin:0px;
+}
+
+fieldset #partnerHospitalCover{
+  margin-top: -21px;
+  margin-bottom: 0px;
+}
+
+.noResultsMsg {
+  font-size: 1.25rem;
+  white-space:pre-wrap;
+  @media (min-width: @screen-md) {
+    font-size: 1.4rem;
+  }
+}
