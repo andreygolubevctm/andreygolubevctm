@@ -53,6 +53,7 @@
     "shared/fields",
     "shared/competition",
     "shared/healthFundTimeOffset",
-    "shared/healthPriceBreakdown"
+    "shared/healthPriceBreakdown",
+    "shared/bootstrapCombobox"
   ]
 }
