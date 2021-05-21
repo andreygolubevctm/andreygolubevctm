@@ -13,5 +13,5 @@
 <c:set var="primaryCurrentHealthFund"><content:get key="primaryCurrentHealthFund" /></c:set>
 
 <form_v4:row hideRowBorder="true" fieldXpath="${fieldXpath}" label="Who is your current health fund?" id="${name}_primary_fundName">
-    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your current health fund" required="false" additionalAttributes=" data-attach='true' ${analyticsAttr} " disableErrorContainer="${true}" />
+    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your current health fund" required="true" additionalAttributes=" data-attach='true' ${analyticsAttr} " className="combobox" requiredErrorMessage="No provider selected." placeHolder="Start typing to search or select from list" disableErrorContainer="${true}" />
 </form_v4:row>

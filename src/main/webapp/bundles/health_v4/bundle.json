@@ -55,6 +55,7 @@
     "shared/healthFundTimeOffset",
     "shared/healthPriceBreakdown",
     "shared/marketingContent",
-    "shared/bannerPlacement"
+    "shared/bannerPlacement",
+    "shared/bootstrapCombobox"
   ]
 }

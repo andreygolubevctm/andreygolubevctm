@@ -1480,6 +1480,7 @@
 	        } catch(e) {
 		        meerkat.logging.error("Exception thrown launching logrocket: " + e.message);
 	        }
+            $(".combobox").combobox({bsVersion: '3'});
         });
 
 
