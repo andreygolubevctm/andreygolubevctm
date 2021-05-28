@@ -61,6 +61,21 @@
         });
     }
 
+    function _prefillPreviousFund(applicant) {
+        var selectedFieldCurrentVal = applicant == 'primary'? meerkat.modules.healthPreviousFund.getPrimaryPreviousFund() : meerkat.modules.healthPreviousFund.getPartnerPreviousFund() ;
+
+        if(selectedFieldCurrentVal !== ''){
+            $('input[name=health_previousfund_' + applicant + '_fundName_hidden]').attr('value',selectedFieldCurrentVal);
+            if( applicant == 'primary'){
+                $('input[name=health_previousfund_' + applicant + '_fundName_input]').val($('#health_healthCover_primary_previousFundName :selected').text());
+            }else{
+                $('input[name=health_previousfund_' + applicant + '_fundName_input]').val($('#health_healthCover_partner_previousFundName :selected').text());
+            }
+            $('input[name=health_previousfund_' + applicant + '_fundName_input]').trigger('keyup');
+            $('input[name=health_previousfund_' + applicant + '_fundName_input]').parent().find('ul').trigger('click');
+        }
+    }
+
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
     function onBeforeEnter(){
         // validate at least 1 contact number is entered
@@ -81,6 +96,8 @@
 
         meerkat.modules.healthCancellationType.init();
 
+        _prefillPreviousFund('primary');
+
         if(meerkat.modules.healthAboutYou.getPrimaryCurrentCover() === 'N') {
             $primaryMemberNumber.removeAttr('required');
         }else {
@@ -88,6 +105,7 @@
         }
 
         if(meerkat.modules.health.hasPartner()) {
+            _prefillPreviousFund('partner');
             if(meerkat.modules.healthAboutYou.getPartnerCurrentCover() === 'N') {
                 $partnerMemberNumber.removeAttr('required');
             }else {
