@@ -92,20 +92,18 @@
                 this.$element.attr('id', this.$source.attr('id') + this.options.appendId);
             }
             this.$element.attr('placeholder', this.options.placeholder);
-            this.$target.prop('name', this.$source.prop('name'));
+            this.$target.prop('name', this.$source.prop('name') + '_hidden');
             this.$target.val(this.$source.val());
             this.$element.attr('required', this.$source.attr('required'));
             this.$element.attr('data-msg-required', this.$source.attr('data-msg-required'));
 
             this.$source.removeAttr('required'); //Remove required from hidden source element
-            this.$source.removeAttr('name');// Remove from source otherwise form will pass parameter twice.
-            this.$source.attr('name', Math.floor(Math.random() * 99));
-
             this.$element.attr('rel', this.$source.attr('rel'));
             this.$element.attr('title', this.$source.attr('title'));
             this.$element.attr('class', this.$source.attr('class'));
             this.$element.attr('tabindex', this.$source.attr('tabindex'));
-            this.$element.attr('name', Math.floor(Math.random() * 999));
+            this.$element.attr('name', this.$source.prop('name') + '_input');
+
             this.$source.removeAttr('tabindex');
             if (this.$source.attr('disabled') !== undefined)
                 this.disable();
@@ -157,11 +155,11 @@
             return this.render(items.slice(0, this.options.items)).show();
         }, template: function () {
             if (this.options.bsVersion == '2') {
-                return '<div class="combobox-container"> <input type="hidden"/>  <input type="text" autocomplete="off" /> <span class="add-on dropdown-toggle" data-dropdown="dropdown"> <i class="icon-angle-down"/> </span></div>';
+                return '<div class="combobox-container_'+this.$source.attr('name')+'"> <input type="hidden"/>  <input type="text" autocomplete="off" /> <span class="add-on dropdown-toggle" data-dropdown="dropdown"> <i class="icon-angle-down"/> </span></div>';
             } else if (this.options.bsVersion == '3') {
-                return '<div class="combobox-container"> <input type="hidden"/>  <input type="text" autocomplete="off" /> <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <i class="icon-angle-down"/> </span></div>';
+                return '<div class="combobox-container_'+this.$source.attr('name')+'"> <input type="hidden"/>  <input type="text" autocomplete="off" /> <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <i class="icon-angle-down"/> </span></div>';
             } else {
-                return '<div class="combobox-container"> <input type="hidden"/> <input type="text" autocomplete="off" />'
+                return '<div class="combobox-container_'+this.$source.attr('name')+'"> <input type="hidden"/> <input type="text" autocomplete="off" />'
                     + '<span class="input-group-append"' + (hasPopper ? ' data-toggle="dropdown" data-reference="parent"' : '') + '>'
                     + '<span class="input-group-text dropdown-toggle' + (this.options.iconCaret ? ' custom-icon' : '') + '">'
                     + (this.options.iconCaret ? '<span class="' + this.options.iconCaret + ' pulldown" />' : '')

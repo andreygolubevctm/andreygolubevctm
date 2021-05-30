@@ -64,7 +64,7 @@ public  enum HealthFund {
     PWAL ("Phoenix Welfare Assoc Ltd"),
     SAPOL ("Police Health"),
     QCH ("Queensland Country Health Fund Ltd"),
-    QTS ("Qantas"),
+    QTS ("Qantas Insurance"),
     RTEHF ("Railway & Transport Health Fund"),
     RBHS ("Reserve Bank Health Soc Ltd"),
     SGIC ("SGIC Health"),
