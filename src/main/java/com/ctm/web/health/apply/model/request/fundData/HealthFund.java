@@ -64,7 +64,7 @@ public  enum HealthFund {
     PWAL ("Phoenix Welfare Assoc Ltd"),
     SAPOL ("Police Health"),
     QCH ("Queensland Country Health Fund Ltd"),
-    QTS ("Qantas"),
+    QTS ("Qantas Insurance"),
     RTEHF ("Railway & Transport Health Fund"),
     RBHS ("Reserve Bank Health Soc Ltd"),
     SGIC ("SGIC Health"),
@@ -76,7 +76,9 @@ public  enum HealthFund {
     UAOD ("Druids Health Benefits Fund"),
     QTUHS ("TUH - Teachers Union Health (QLD)"),
     WDHF ("Westfund Limited"),
-    YMHS("Federation Health");
+    YMHS("Federation Health"),
+    AAMI("AAMI Health Insurance"),
+    SUN("Suncorp Health Insurance");
 
     private final String description;
 

@@ -253,7 +253,7 @@
 
             <c:set var="fieldXpath" value="${xpath}/primary/previousFundName" />
 			<form_v3:row fieldXpath="${fieldXpath}" label="Your Previous Hospital Fund" id="clientPreviousFund" className="hidden" renderLabelAsSimplesDialog="true">
-				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your previous health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your previous health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected."/>
 			</form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/fundHistory" />
@@ -321,7 +321,7 @@
 
             <c:set var="fieldXpath" value="${xpath}/partner/previousFundName" />
 			<form_v3:row fieldXpath="${fieldXpath}" label="Partner's Previous Hospital Fund" id="partnerPreviousFund" className="hidden" renderLabelAsSimplesDialog="true">
-				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your partner's health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
+				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your partner's health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected."/>
 			</form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/fundHistory" />

@@ -456,7 +456,7 @@
                 });
 
                 // Show/hide membership number and authorisation checkbox questions for previous funds.
-				$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName, #health_previousfund_primary_extras_fundName, #health_previousfund_partner_extras_fundName').on('change', function(){
+				$('#health_previousfund_primary_extras_fundName, #health_previousfund_partner_extras_fundName').on('change', function(){
                     meerkat.modules.healthCoverDetails.displayHealthFunds();
                 });
 
@@ -1480,6 +1480,7 @@
 	        } catch(e) {
 		        meerkat.logging.error("Exception thrown launching logrocket: " + e.message);
 	        }
+            $(".combobox").combobox({bsVersion: '3'});
         });
 
 

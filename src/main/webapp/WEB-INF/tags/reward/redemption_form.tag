@@ -164,7 +164,7 @@
                     <label for="order_reasonCode" class="col-sm-4 col-xs-10 control-label">Reason Code</label>
                     <div class="col-sm-6 col-xs-12 row-content">
                         <div class="select">
-                            <span class="input-group-addon"><i class="icon-sort"></i></span>
+                            <span class="input-group-addon"><i class="icon-angle-down"></i></span>
                             <select name="order_reasonCode" class="form-control" required data-msg-required="AdHoc order requires a reason code">
                                 <option value="">Please choose…</option>
                                 <option value="ForgotToRedeem">Forgot to redeem</option>
@@ -184,7 +184,7 @@
                     <label for="order_orderStatus" class="col-sm-4 col-xs-10 control-label">Order Status</label>
                     <div class="col-sm-6 col-xs-12 row-content">
                         <div class="select">
-                            <span class="input-group-addon"><i class="icon-sort"></i></span>
+                            <span class="input-group-addon"><i class="icon-angle-down"></i></span>
                             <select name="order_orderStatus" class="form-control">
                                 <option value="">Default value…</option>
                                 <option value="Scheduled" {{= orderLine.orderStatus === 'Scheduled' ? 'selected' : '' }}>Scheduled</option>

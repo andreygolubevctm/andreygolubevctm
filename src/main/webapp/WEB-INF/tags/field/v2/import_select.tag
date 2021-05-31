@@ -9,11 +9,12 @@
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="subject of the select box" %>
 <%@ attribute name="url" 		required="true"	 rtexprvalue="true"	 description="url of import file containing options" %>
-<%@ attribute name="omitPleaseChoose" required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
-<%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
-<%@ attribute name="placeHolder" required="false"	rtexprvalue="true"	 description="dropdown placeholder" %>
-<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
-<%@ attribute name="hideElement" 	required="false" 	rtexprvalue="true"    	 description="If true hides the entire element" %>
+<%@ attribute name="omitPleaseChoose" 		required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
+<%@ attribute name="additionalAttributes" 	required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
+<%@ attribute name="placeHolder" 			required="false"	rtexprvalue="true"	 description="dropdown placeholder" %>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"   description="Show or hide the error message container" %>
+<%@ attribute name="hideElement" 			required="false" 	rtexprvalue="true"   description="If true hides the entire element" %>
+<%@ attribute name="requiredErrorMessage" 	required="false" 	rtexprvalue="true"   description="If required is true and this attribute is set, shows the text as error message when required validation fires" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -31,6 +32,8 @@
 <c:set var="findVal" 	value="value=\"${value}\"" />
 <c:set var="replaceVal" value="value='${value}' selected='selected'" />
 
+<c:set var="errorMessage" value="Please choose ${title}"/>
+
 <c:if test="${required}">
 	<c:set var="titleText">
 		<c:choose>
@@ -39,6 +42,11 @@
 		</c:choose>
 	</c:set>
 	<c:set var="requiredAttribute" value=' required="required" '/>
+
+	<c:if test="${not empty requiredErrorMessage}">
+		<c:set var="errorMessage" value="${requiredErrorMessage} ${placeHolder}"/>
+	</c:if>
+
 </c:if>
 
 <c:if test="${disableErrorContainer eq true}">
@@ -47,9 +55,9 @@
 
 <div class="select"<c:if test="${hideElement eq true}"> style="height: 0; visibility: hidden;"</c:if>>
 	<span class=" input-group-addon">
-		<i class="icon-sort"></i>
+		<i class="icon-angle-down"></i>
 	</span>
-	<select name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" id="${name}" class="form-control ${className}" ${additionalAttributes}>
+	<select name="${name}" ${requiredAttribute} data-msg-required="${errorMessage}" id="${name}" class="form-control ${className}" ${additionalAttributes}>
 		<%-- Write the initial "please choose" option --%>
 		<c:choose>
 			<c:when test="${omitPleaseChoose == 'Y'}"></c:when>

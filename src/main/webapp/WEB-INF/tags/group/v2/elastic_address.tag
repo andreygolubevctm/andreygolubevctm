@@ -92,7 +92,7 @@
             <c:when test="${not empty address.postCode or not empty address.nonStdPostCode}">
                 <div class="select">
 					<span class=" input-group-addon" data-target="${name}">
-						<i class="icon-sort"></i>
+						<i class="icon-angle-down"></i>
 					</span>
                     <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes} <field_v1:analytics_attr analVal="Suburb" quoteChar="\"" />>
                             <%-- Write the initial "Please select" option --%>
@@ -119,7 +119,7 @@
             <c:otherwise>
                 <div class="select">
 					<span class=" input-group-addon" data-target="${name}">
-						<i class="icon-sort"></i>
+						<i class="icon-angle-down"></i>
 					</span>
                     <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes} <field_v1:analytics_attr analVal="Suburb" quoteChar="\"" />>
                         <option value=''>Enter Postcode</option>

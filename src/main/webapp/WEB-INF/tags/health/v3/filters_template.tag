@@ -54,7 +54,7 @@
             </div>
             <div class="filter-cover-level select">
                 <span class=" input-group-addon">
-                    <i class="icon-sort"></i>
+                    <i class="icon-angle-down"></i>
                 </span>
                 <select class="form-control array_select " id="health_filterBar_extendedFamily" name="health_filterBar_extendedFamily" data-msg-required="Please choose " <field_v1:analytics_attr analVal="filter familytype" quoteChar="\"" />>
                     {{ _.each(model.extendedFamily.values, function(object) { }}
@@ -82,7 +82,7 @@
             </div>
             <div class="filter-cover-level select">
                 <span class=" input-group-addon">
-                    <i class="icon-sort"></i>
+                    <i class="icon-angle-down"></i>
                 </span>
                 <select class="form-control array_select " id="health_filterBar_coverLevel" name="health_filterBar_coverLevel" data-msg-required="Please choose " <field_v1:analytics_attr analVal="filter benefit category" quoteChar="\"" />>
                     {{ _.each(model.coverLevel.values, function(object) { }}

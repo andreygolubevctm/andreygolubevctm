@@ -113,7 +113,7 @@
                 </sql:query>
                 <div class="select">
 					<span class=" input-group-addon" data-target="${name}">
-						<i class="icon-sort"></i>
+						<i class="icon-angle-down"></i>
 					</span>
                     <select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control data-hj-suppress" data-attach="true" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" <c:if test="${disableErrorContainer eq true}"> data-disable-error-container='true'</c:if> data-validation-position='append'>
                             <%-- Write the initial "Please select" option --%>
@@ -135,7 +135,7 @@
             <c:otherwise>
                 <div class="select">
 					<span class=" input-group-addon" data-target="${name}">
-						<i class="icon-sort"></i>
+						<i class="icon-angle-down"></i>
 					</span>
                     <select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control data-hj-suppress" data-msg-required="Please select a suburb" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" data-validation-position="append">
                         <option value=''>Enter Postcode</option>

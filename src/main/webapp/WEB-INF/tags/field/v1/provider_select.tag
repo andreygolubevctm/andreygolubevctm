@@ -86,7 +86,7 @@
 <%-- HTML --%>
 <div class="select">
 	<span class=" input-group-addon" >
-		<i class="icon-sort"></i>
+		<i class="icon-angle-down"></i>
 	</span>
 	<select name="${name}" id="${name}" class="form-control ${className}" <c:if test="${required}"> required data-msg-required="Please enter the ${title}"</c:if>>
 	<%-- Write the initial "please choose" option --%>
