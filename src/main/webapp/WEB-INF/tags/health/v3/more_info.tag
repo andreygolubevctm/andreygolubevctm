@@ -110,7 +110,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row priceRow productSummary hidden-xs">
+                <div class="row priceRow productSummary">
                     <div class="col-xs-12">
                         <c:choose>
                             <c:when test="${isDualPriceActive eq true}">

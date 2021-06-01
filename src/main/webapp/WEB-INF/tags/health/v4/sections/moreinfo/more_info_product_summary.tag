@@ -4,7 +4,7 @@
 <health_v1:dual_pricing_settings />
 
 <!-- Product Summary. Logo, price, LHC etc... -->
-<div class="row priceRow productSummary hidden-xs">
+<div class="row priceRow productSummary">
     <div class="col-xs-12">
         {{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
             {{= renderedPyrrCampaign }}
@@ -26,7 +26,7 @@
 	            {{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
 	            {{ var textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
 
-            <div class="row hidden-xs moreInfoPricingSingle">
+            <div class="row moreInfoPricingSingle">
                 <div class="moreInfoPriceWrapper">
                     <div class="moreInfoPriceContainer">
                         <div class="moreInfoPriceHeading">NOW</div>
