@@ -17,6 +17,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 @JsonInclude(NON_EMPTY)
@@ -50,6 +51,7 @@ public class Applicant {
     @JsonSerialize(using = TypeSerializer.class)
     private final Email email;
 
+    @JsonInclude(ALWAYS)
     private final Integer lhcPercentage;
 
     public Applicant(final Title title, final FirstName firstName, final LastName lastName, final Gender gender,
