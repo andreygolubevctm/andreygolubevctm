@@ -20,7 +20,7 @@
 </form_v2:row>
 
 <c:set var="fieldXpath" value="travel/email" />
-<form_v2:row label="Email Address" fieldXpath="${fieldXpath}" className="clear" id="travel_email_note" legend="For confirming your email quote.">
+<form_v2:row label="Email Address" fieldXpath="${fieldXpath}" className="clear" id="travel_email_note">
 	<field_v2:email xpath="${fieldXpath}" title="your email address" required="true" />
 	<field_v1:hidden xpath="travel/emailsecondary" />
 	<field_v1:hidden xpath="travel/emailhistory" />
