@@ -498,8 +498,8 @@
 				});
 
 				// Show/hide membership number and authorisation checkbox questions for previous funds.
-				$('#health_previousfund_primary_extras_fundName, #health_previousfund_partner_extras_fundName, #health_healthCover_primary_previousFundName, #health_healthCover_partner_previousFundName').on('change', function(){
-					meerkat.modules.healthCoverDetails.displayHealthFunds();
+				$('#health_previousfund_primary_extras_fundName, #health_previousfund_partner_extras_fundName, #health_healthCover_primary_previousFundName, #health_healthCover_partner_previousFundName, #yourpreviousfund input[name=health_previousfund_primary_fundName_input], #partnerpreviousfund input[name=health_previousfund_partner_fundName_input]').on('change', function(){
+					_.defer(meerkat.modules.healthCoverDetails.displayHealthFunds);
 				});
 
 				// Check state selection
