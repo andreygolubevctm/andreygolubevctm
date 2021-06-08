@@ -9,6 +9,6 @@
 <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="partner current health fund" quoteChar="\"" /></c:set>
 
 <form_v4:row hideRowBorder="true" fieldXpath="${fieldXpath}" label="Your partner's current health fund" id="${name}_partner_fundName" className="">
-    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your partner's current health fund" required="true" additionalAttributes=" data-attach='true' ${analyticsAttr} " className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected." disableErrorContainer="${true}" />
+    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your partner's current health fund" required="true" additionalAttributes=" data-attach='true' data-visible='true' ${analyticsAttr} " className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected." disableErrorContainer="${true}" />
 
 </form_v4:row>
