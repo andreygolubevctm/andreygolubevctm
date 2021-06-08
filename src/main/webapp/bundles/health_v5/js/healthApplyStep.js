@@ -743,10 +743,10 @@
                                 $('select[name=health_previousfund_' + applicant + '_fundName]').find('option').attr("selected", false);
                                 //populate field
                                 $('select[name=health_previousfund_' + applicant + '_fundName]').find('option[value="' + selectedFieldCurrentVal + '"]').attr("selected", true);
-                                $('input[name=health_previousfund_' + applicant + '_fundNameHidden]').attr('value',selectedFieldCurrentVal);
-                                $('input[name=health_previousfund_' + applicant + '_fundNameInput]').val($('select[name=health_previousfund_' + applicant + '_fundName] :selected').text());
-                                $('input[name=health_previousfund_' + applicant + '_fundNameInput]').trigger('keyup');
-                                $('input[name=health_previousfund_' + applicant + '_fundNameInput]').parent().find('ul').trigger('click');
+                                $('input[name=health_previousfund_' + applicant + '_fundName_hidden]').attr('value',selectedFieldCurrentVal);
+                                $('input[name=health_previousfund_' + applicant + '_fundName_input]').val($('select[name=health_previousfund_' + applicant + '_fundName] :selected').text());
+                                $('input[name=health_previousfund_' + applicant + '_fundName_input]').trigger('keyup');
+                                $('input[name=health_previousfund_' + applicant + '_fundName_input]').parent().find('ul').trigger('click');
                             }
                         }
                     }
