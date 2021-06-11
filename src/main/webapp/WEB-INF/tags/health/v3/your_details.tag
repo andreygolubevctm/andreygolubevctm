@@ -35,7 +35,7 @@
 
 			<c:set var="fieldXpath" value="${xpath}/primary/fundName" />
 			<form_v2:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium" renderLabelAsSimplesDialog="true">
-				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' data-visible='true' " className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected." disableErrorContainer="${true}" />
+				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected." disableErrorContainer="${true}" />
 			</form_v2:row>
 
 			<%-- Optional Membership ID's --%>
@@ -53,7 +53,7 @@
 
 			<c:set var="fieldXpath" value="${xpath}/primary/extras/fundName" />
 			<form_v2:row fieldXpath="${fieldXpath}" label="Your Current Extras Fund" id="clientExtrasFund" className="changes-premium hidden" renderLabelAsSimplesDialog="true">
-				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your extras fund" required="true" additionalAttributes=" data-attach='true' data-visible='true' " disableErrorContainer="${true}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected."/>
+				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your extras fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected."/>
 			</form_v2:row>
 
 			<div id="clientExtrasMemberID" class="membership">

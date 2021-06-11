@@ -65,14 +65,14 @@
         var selectedFieldCurrentVal = applicant == 'primary'? meerkat.modules.healthPreviousFund.getPrimaryPreviousFund() : meerkat.modules.healthPreviousFund.getPartnerPreviousFund() ;
 
         if(selectedFieldCurrentVal !== ''){
-            $('input[name=health_previousfund_' + applicant + '_fundNameHidden]').attr('value',selectedFieldCurrentVal);
+            $('input[name=health_previousfund_' + applicant + '_fundName_hidden]').attr('value',selectedFieldCurrentVal);
             if( applicant == 'primary'){
-                $('input[name=health_previousfund_' + applicant + '_fundNameInput]').val($('#health_healthCover_primary_previousFundName :selected').text());
+                $('input[name=health_previousfund_' + applicant + '_fundName_input]').val($('#health_healthCover_primary_previousFundName :selected').text());
             }else{
-                $('input[name=health_previousfund_' + applicant + '_fundNameInput]').val($('#health_healthCover_partner_previousFundName :selected').text());
+                $('input[name=health_previousfund_' + applicant + '_fundName_input]').val($('#health_healthCover_partner_previousFundName :selected').text());
             }
-            $('input[name=health_previousfund_' + applicant + '_fundNameInput]').trigger('keyup');
-            $('input[name=health_previousfund_' + applicant + '_fundNameInput]').parent().find('ul').trigger('click');
+            $('input[name=health_previousfund_' + applicant + '_fundName_input]').trigger('keyup');
+            $('input[name=health_previousfund_' + applicant + '_fundName_input]').parent().find('ul').trigger('click');
         }
     }
 

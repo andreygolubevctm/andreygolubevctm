@@ -92,7 +92,7 @@
                 this.$element.attr('id', this.$source.attr('id') + this.options.appendId);
             }
             this.$element.attr('placeholder', this.options.placeholder);
-            this.$target.prop('name', this.$source.prop('name') + 'Hidden');
+            this.$target.prop('name', this.$source.prop('name') + '_hidden');
             this.$target.val(this.$source.val());
             this.$element.attr('required', this.$source.attr('required'));
             this.$element.attr('data-msg-required', this.$source.attr('data-msg-required'));
@@ -103,7 +103,7 @@
             this.$element.attr('title', this.$source.attr('title'));
             this.$element.attr('class', this.$source.attr('class'));
             this.$element.attr('tabindex', this.$source.attr('tabindex'));
-            this.$element.attr('name', this.$source.prop('name') + 'Input');
+            this.$element.attr('name', this.$source.prop('name') + '_input');
             this.$source.removeAttr('tabindex');
             if (this.$source.attr('disabled') !== undefined)
                 this.disable();

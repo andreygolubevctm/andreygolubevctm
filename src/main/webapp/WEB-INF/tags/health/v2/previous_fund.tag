@@ -21,7 +21,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/primary/fundName" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium">
-			<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" additionalAttributes="data-visible='true'" />
+			<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" />
 		</form_v3:row>
 
 		<%-- Optional Membership ID's --%>
@@ -39,7 +39,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/partner/fundName" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Partner's Current Health Fund" id="partnerFund" className="changes-premium">
-			<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="partner's health fund" required="true" additionalAttributes="data-visible='true'" />
+			<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="partner's health fund" required="true" />
 		</form_v3:row>
 
 		<div id="partnerMemberID" class="membership">

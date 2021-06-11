@@ -19,14 +19,14 @@
         var selectedFieldCurrentVal = applicant == 'primary'? meerkat.modules.healthPreviousFund.getPrimaryPreviousFund() : meerkat.modules.healthPreviousFund.getPartnerPreviousFund() ;
 
         if(selectedFieldCurrentVal !== ''){
-            $('input[name=health_previousfund_' + applicant + '_fundNameHidden]').attr('value',selectedFieldCurrentVal);
+            $('input[name=health_previousfund_' + applicant + '_fundName_hidden]').attr('value',selectedFieldCurrentVal);
             if( applicant == 'primary'){
-                $('input[name=health_previousfund_' + applicant + '_fundNameInput]').val($('#health_healthCover_primary_previousFundName :selected').text());
+                $('input[name=health_previousfund_' + applicant + '_fundName_input]').val($('#health_healthCover_primary_previousFundName :selected').text());
             }else{
-                $('input[name=health_previousfund_' + applicant + '_fundNameInput]').val($('#health_healthCover_partner_previousFundName :selected').text());
+                $('input[name=health_previousfund_' + applicant + '_fundName_input]').val($('#health_healthCover_partner_previousFundName :selected').text());
             }
-            $('input[name=health_previousfund_' + applicant + '_fundNameInput]').trigger('keyup');
-            $('input[name=health_previousfund_' + applicant + '_fundNameInput]').parent().find('ul').trigger('click');
+            $('input[name=health_previousfund_' + applicant + '_fundName_input]').trigger('keyup');
+            $('input[name=health_previousfund_' + applicant + '_fundName_input]').parent().find('ul').trigger('click');
         }
     }
 
@@ -35,11 +35,6 @@
     function displayHealthFunds() {
         var $_previousFund = $('#mainform').find('.health-previous_fund');
 
-        var hasSpouse = meerkat.modules.healthChoices.hasSpouse();
-        var primaryHasCover = hasPrimaryCover();
-        var primaryHasHadCover = hasPrimaryPreviousCover();
-        var partnerHasCover = hasPartnerCover();
-        var partnerHasHadCover = hasPartnerPreviousCover();
         var primaryFund = meerkat.modules.healthPreviousFund.getPrimaryFund();
         var partnerFund = meerkat.modules.healthPreviousFund.getPartnerFund();
         var primaryExtrasFund = meerkat.modules.healthPreviousFund.getPrimaryExtrasFund();
@@ -49,67 +44,64 @@
         var primaryPreviousFund = meerkat.modules.healthPreviousFund.getPrimaryPreviousFund();
         var partnerPreviousFund = meerkat.modules.healthPreviousFund.getPartnerPreviousFund();
 
-		if(primaryHasCover || primaryHasHadCover) {
-			$_previousFund.find('#clientFund').slideDown();
-			if ((primaryFund !== 'NONE' && primaryFund !== '') || (primaryPreviousFund !== 'NONE' && primaryPreviousFund !== '')) {
-				$_previousFund.find('#clientMemberID').slideDown();
-				$_previousFund.find('.membership').addClass('onA');
-			} else {
-				$_previousFund.find('#clientMemberID').slideUp();
-				$_previousFund.find('.membership').removeClass('onA');
-			}
-			if (!primarySameFund) {
-				$_previousFund.find('#clientExtrasFund').slideDown();
-				if(primaryExtrasFund !== 'NONE' && primaryExtrasFund !== '') {
-					$_previousFund.find('#clientExtrasMemberID').slideDown();
-					$_previousFund.find('.membership').addClass('onA');
-				} else {
-					$_previousFund.find('#clientExtrasMemberID').slideUp();
-					$_previousFund.find('.membership').removeClass('onA');
-				}
-			} else {
-				$_previousFund.find('#clientExtrasFund').slideUp();
-				$_previousFund.find('#clientExtrasMemberID').slideUp();
-				$_previousFund.find('.membership').removeClass('onA');
-			}
-		} else {
-			$_previousFund.find('#clientFund').slideUp();
-			$_previousFund.find('#clientMemberID').slideUp();
-			$_previousFund.find('#clientExtrasFund').slideUp();
-			$_previousFund.find('#clientExtrasMemberID').slideUp();
-			$_previousFund.find('.membership').removeClass('onA');
-		}
 
-		if(hasSpouse && (partnerHasCover || partnerHasHadCover)) {
-			$_previousFund.find('#partnerFund').slideDown();
-			if ((partnerFund !== 'NONE' && partnerFund !== '') || (partnerPreviousFund !== 'NONE' && partnerPreviousFund !== '')) {
-				$_previousFund.find('#partnerMemberID').slideDown();
-				$_previousFund.find('.membership').removeClass('onB');
-			} else {
-				$_previousFund.find('#partnerMemberID').slideUp();
-				$_previousFund.find('.membership').addClass('onB');
-			}
-			if (!partnerSameFund) {
-				$_previousFund.find('#partnerExtrasFund').slideDown();
-				if(partnerExtrasFund !== 'NONE' && partnerExtrasFund !== '') {
-					$_previousFund.find('#partnerExtrasMemberID').slideDown();
-					$_previousFund.find('.membership').addClass('onB');
-				} else {
-					$_previousFund.find('#partnerExtrasMemberID').slideUp();
-					$_previousFund.find('.membership').removeClass('onB');
-				}
-			} else {
-				$_previousFund.find('#partnerExtrasFund').slideUp();
-				$_previousFund.find('#partnerExtrasMemberID').slideUp();
-				$_previousFund.find('.membership').removeClass('onB');
-			}
-		} else {
-			$_previousFund.find('#partnerFund').slideUp();
-			$_previousFund.find('#partnerMemberID').slideUp();
-			$_previousFund.find('#partnerExtrasFund').slideUp();
-			$_previousFund.find('#partnerExtrasMemberID').slideUp();
-			$_previousFund.find('.membership').removeClass('onB');
-		}
+
+
+        if (primaryFund !== 'NONE' && primaryFund !== '' && hasPrimaryCover()) {
+            $_previousFund.find('#clientMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onA');
+        } else {
+            if(!hasPrimaryCover())
+                $_previousFund.find('#clientFund').slideUp();
+            $_previousFund.find('#clientMemberID').slideUp();
+            $_previousFund.find('.membership').removeClass('onA');
+        }
+
+        if (!primarySameFund && primaryExtrasFund !== 'NONE' && primaryExtrasFund !== '' && hasPrimaryCover()) {
+            $_previousFund.find('#clientExtrasFund').slideDown();
+            $_previousFund.find('#clientExtrasMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onA');
+        } else {
+           if(!hasPrimaryCover())
+                $_previousFund.find('#clientExtrasFund').slideUp();
+            $_previousFund.find('#clientExtrasMemberID').slideUp();
+            $_previousFund.find('.membership').removeClass('onA');
+        }
+
+        if (meerkat.modules.healthChoices.hasSpouse() && partnerFund !== 'NONE' && partnerFund !== '' && hasPartnerCover()) {
+            $_previousFund.find('#partnerMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onB');
+        } else {
+            if(!hasPartnerCover())
+                $_previousFund.find('#partnerFund').slideUp();
+            $_previousFund.find('#partnerMemberID').slideUp();
+            $_previousFund.find('.membership').removeClass('onB');
+        }
+
+        if (!partnerSameFund && meerkat.modules.healthChoices.hasSpouse() && partnerExtrasFund !== 'NONE' && partnerExtrasFund !== '' && hasPartnerCover()) {
+            $_previousFund.find('#partnerExtrasFund').slideDown();
+            $_previousFund.find('#partnerExtrasMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onB');
+        } else {
+            if(!hasPartnerCover())
+                $_previousFund.find('#partnerExtrasFund').slideUp();
+            $_previousFund.find('#partnerExtrasMemberID').slideUp();
+            $_previousFund.find('.membership').removeClass('onB');
+        }
+
+        if(!hasPrimaryCover() && hasPrimaryPreviousCover() && primaryPreviousFund !== 'NONE' && primaryPreviousFund !== '') {
+            $_previousFund.find('#clientFund').slideDown();
+            $_previousFund.find('#clientMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onA');
+            _prefillPreviousFund('primary');
+        }
+
+        if(!hasPartnerCover() && hasPartnerPreviousCover() && partnerPreviousFund !== 'NONE' && partnerPreviousFund !== '') {
+            $_previousFund.find('#partnerFund').slideDown();
+            $_previousFund.find('#partnerMemberID').slideDown();
+            $_previousFund.find('.membership').addClass('onB');
+            _prefillPreviousFund('partner');
+        }
     }
 
     function setHealthFunds(initMode) {
