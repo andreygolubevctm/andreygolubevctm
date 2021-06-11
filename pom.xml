@@ -10,11 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-<<<<<<< HEAD
-    <version>1.258.1-RC2</version>
-=======
-    <version>1.258.0-RC1</version>
->>>>>>> parent of 01d534993d... CTM-3869 restructured displayHealthFunds to fix edge cases (#404)
+    <version>1.258.2-RC1</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
