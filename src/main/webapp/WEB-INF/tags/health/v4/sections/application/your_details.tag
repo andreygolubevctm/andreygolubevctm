@@ -27,7 +27,7 @@
 
                 <c:set var="fieldXpath" value="${xpath}/primary/fundName" />
                 <form_v4:row fieldXpath="${fieldXpath}" label="Who is your current health fund?" id="clientFund" className="changes-premium">
-                    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" className="data-hj-suppress combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected."/>
+                    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' data-visible='true' " disableErrorContainer="${true}" className="data-hj-suppress combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected."/>
                 </form_v4:row>
 
                     <%-- Optional Membership ID's --%>
@@ -61,7 +61,7 @@
 
                 <c:set var="fieldXpath" value="${xpath}/primary/extras/fundName" />
                 <form_v4:row fieldXpath="${fieldXpath}" label="Who is your current extras cover provider?" id="extrasClientFund" className="changes-premium">
-                    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your extra cover provider" required="true" additionalAttributes=" data-attach='true' " className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected." disableErrorContainer="${true}" />
+                    <field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds_condensed.html" title="your extra cover provider" required="true" additionalAttributes=" data-attach='true' data-visible='true' " className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No provider selected." disableErrorContainer="${true}" />
                 </form_v4:row>
 
                 <%-- Optional Membership ID's --%>

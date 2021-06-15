@@ -717,43 +717,28 @@
         return $elements.primaryFirstname.val();
     }
 
-    // this only pre fills the field if it has not already been populated.
-    // the fields on the about you/insurance preferences page only contains current funds as it is geared towards the user's CURRENT fund
-    // the fields on the Application page are geared to capture the users previous fund or current fund for the purposes of clearance certificates or for getting information concerning pre served waiting periods
-    // it will only forward populate the field if the selected item does not have a duplicate value (eg CBHS) and it must exist in the second list
-    function _prefillPreviousFund(applicant) {
-
-        if (!_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) {
-
-            // get value if not undefined, '', NONE
-            var appPageSelectedVal = (((_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
-
-            if (appPageSelectedVal === ''){
-                if (!_.isUndefined($elements[applicant].aboutYouPreviousFund.filter(':selected').val())) {
-
-                    // get value if not undefined, '', NONE
-                    var selectedFieldCurrentVal = (((_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? (((_.isUndefined($elements[applicant].aboutYouPreviousFund.filter(':selected').val())) || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === '') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].aboutYouPreviousFund.filter(':selected').val() ) : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
-                    if (selectedFieldCurrentVal !== ''){
-
-                        // if there is matching non duplicate value in drop down on the Application page
-                        if  ($('select[name=health_previousfund_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length === 1) {
-                            // if there are no duplicate entries on the about you(primary)/insurance preferences(partner) page
-                            if ($('select[name=health_healthCover_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length == 1)  {
-                                // ensure no other fields are selected
-                                $('select[name=health_previousfund_' + applicant + '_fundName]').find('option').attr("selected", false);
-                                //populate field
-                                $('select[name=health_previousfund_' + applicant + '_fundName]').find('option[value="' + selectedFieldCurrentVal + '"]').attr("selected", true);
-                                $('input[name=health_previousfund_' + applicant + '_fundName_hidden]').attr('value',selectedFieldCurrentVal);
-                                $('input[name=health_previousfund_' + applicant + '_fundName_input]').val($('select[name=health_previousfund_' + applicant + '_fundName] :selected').text());
-                                $('input[name=health_previousfund_' + applicant + '_fundName_input]').trigger('keyup');
-                                $('input[name=health_previousfund_' + applicant + '_fundName_input]').parent().find('ul').trigger('click');
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+	function _prefillPreviousFund(applicant) {
+		if (!_.isUndefined($elements[applicant].aboutYouPreviousFund.filter(':selected').val())) {
+			// get value if not undefined, '', NONE
+			var selectedFieldCurrentVal = (((_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? (((_.isUndefined($elements[applicant].aboutYouPreviousFund.filter(':selected').val())) || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === '') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].aboutYouPreviousFund.filter(':selected').val() ) : $elements[applicant].aboutYouPreviousFund.filter(':selected').val() );
+			if (selectedFieldCurrentVal !== ''){
+				// if there is matching non duplicate value in drop down on the Application page
+				if  ($('select[name=health_previousfund_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length === 1) {
+					// if there are no duplicate entries on the about you(primary)/insurance preferences(partner) page
+					if ($('select[name=health_healthCover_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length == 1)  {
+						// ensure no other fields are selected
+						$('select[name=health_previousfund_' + applicant + '_fundName]').find('option').attr("selected", false);
+						//populate field
+						$('select[name=health_previousfund_' + applicant + '_fundName]').find('option[value="' + selectedFieldCurrentVal + '"]').attr("selected", true);
+						$('input[name=health_previousfund_' + applicant + '_fundNameHidden]').attr('value',selectedFieldCurrentVal);
+						$('input[name=health_previousfund_' + applicant + '_fundNameInput]').val($('select[name=health_previousfund_' + applicant + '_fundName] :selected').text());
+						$('input[name=health_previousfund_' + applicant + '_fundNameInput]').trigger('keyup');
+						$('input[name=health_previousfund_' + applicant + '_fundNameInput]').parent().find('ul').trigger('click');
+					}
+				}
+			}
+		}
+	}
 
     function _prefill_currentlyHaveAnyKindOfCover(applicant) {
         if ((!_.isUndefined($elements[applicant].currentlyHaveAnyKindOfCoverPreResults)) && (!_.isUndefined($elements[applicant].currentlyHaveAnyKindOfCoverApplyPage))) {
