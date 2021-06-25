@@ -22,6 +22,8 @@ public class Situation implements ProviderFilter {
 
     private String providerKey;
 
+    private String coverType;
+
     public String getHealthCvr() {
         return healthCvr;
     }
@@ -94,5 +96,13 @@ public class Situation implements ProviderFilter {
 
     public void setProviderKey(String providerKey) {
         this.providerKey = providerKey;
+    }
+
+    public String getCoverType() {
+        return coverType;
+    }
+
+    public void setCoverType(String coverType) {
+        this.coverType = coverType;
     }
 }

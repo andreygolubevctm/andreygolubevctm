@@ -272,12 +272,12 @@
                 </div>
 
                 <%-- Slides --%>
-                <health_v4_layout:slide_about_you />
+                <health_v5_layout:slide_about_you />
                 <health_v5_layout:slide_insurance_preferences />
-                <health_v4_layout:slide_contact />
+                <health_v5_layout:slide_contact />
                 <health_v5_layout:slide_results />
-                <health_v4_layout:slide_application />
-                <health_v4_layout:slide_payment />
+                <health_v5_layout:slide_application />
+                <health_v5_layout:slide_payment />
 
                 <div class="visible-xs">
                     <health_v5:price_promise step="start" dismissible="true" />

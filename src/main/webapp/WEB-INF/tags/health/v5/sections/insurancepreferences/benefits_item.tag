@@ -47,11 +47,11 @@
                             <h1 class="step-count">4.</h1>
                             <h3 class="ignore">Extras cover <span class="benefit-selections-count extras"></span></h3>
                         </div>
-                        <health_v5_insuranceprefs:category_select_extras xpath="health/benefits" />
                         <div class="section-title-alt">
-                            <h1 class="step-count">3.</h1>
+                            <h1 class="step-count">2.</h1>
                             <h3 class="ignore">Extras cover <span class="benefit-selections-count extras"></span></h3>
                         </div>
+                        <health_v5_insuranceprefs:category_select_extras xpath="health/benefits" />
                         <health_v5_insuranceprefs:toggle_and_jump xpath="health/benefits" type="${category}" />
                     </c:if>
 

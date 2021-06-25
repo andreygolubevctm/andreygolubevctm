@@ -52,8 +52,9 @@
             }
             _.defer(function(){
                 var checked = $row.find(":input").is(":checked");
+                $row.toggleClass('active', checked);
                 if(!checked) {
-                    var $categoryLabelContainer = $row.find('.benefit-categories .innertube');
+					var $categoryLabelContainer = $row.find('.benefit-categories .innertube');
                     if($categoryLabelContainer) {
                         $categoryLabelContainer.remove();
                     }

@@ -367,9 +367,26 @@
 		}
 	}
 
+	function toggleDataVisibiltyOfSelectedBenefits(groups) {
+    	$elements.hospital.find(":input[type=checkbox]").each(function(){
+    		var $that = $(this);
+    		var ccgroups = $that.closest(".short-list-item").attr("data-groups");
+    		ccgroups = ccgroups ? ccgroups.split(",") : [];
+    		$that.attr("data-attach", _.intersection(groups, ccgroups).length > 0);
+		});
+	}
+
+	function reverseUpdateLabels() {
+    	$elements.benefitRows.not(".active").find(".benefit-categories .innertube").each(function () {
+    		$(this).remove();
+		});
+	}
+
     meerkat.modules.register('healthClinicalCategories', {
         init: init,
-        setAccidentOnlyCover: setAccidentOnlyCover
+        setAccidentOnlyCover: setAccidentOnlyCover,
+		toggleDataVisibiltyOfSelectedBenefits: toggleDataVisibiltyOfSelectedBenefits,
+		reverseUpdateLabels: reverseUpdateLabels
     });
 
 })(jQuery);

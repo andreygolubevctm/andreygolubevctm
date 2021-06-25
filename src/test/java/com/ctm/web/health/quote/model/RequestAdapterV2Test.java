@@ -18,6 +18,43 @@ public class RequestAdapterV2Test {
 
 	final Filters filters = mock(Filters.class);
 
+	@Test
+    public void testSituation() {
+	    Situation situation  = new Situation();
+	    String healthCvr = "HealthCVR";
+	    String location = "location";
+	    String state = "QLD";
+	    String suburb = "Eatons Hill";
+	    String postcode = "4037";
+	    String healthSitu = "LC";
+	    String singleProvider = "AHM";
+	    String accidentOnlyCover = "N";
+	    String providerKey = "abcdefghijklmnop";
+		String coverType = "C";
+
+		situation.setHealthCvr(healthCvr);
+		situation.setLocation(location);
+		situation.setState(state);
+		situation.setSuburb(suburb);
+		situation.setPostcode(postcode);
+		situation.setHealthSitu(healthSitu);
+		situation.setSingleProvider(singleProvider);
+		situation.setAccidentOnlyCover(accidentOnlyCover);
+		situation.setProviderKey(providerKey);
+		situation.setCoverType(coverType);
+
+		assertEquals(Boolean.TRUE, situation.getHealthCvr().equals(healthCvr));
+		assertEquals(Boolean.TRUE, situation.getState().equals(state));
+		assertEquals(Boolean.TRUE, situation.getSuburb().equals(suburb));
+		assertEquals(Boolean.TRUE, situation.getPostcode().equals(postcode));
+		assertEquals(Boolean.TRUE, situation.getHealthSitu().equals(healthSitu));
+		assertEquals(Boolean.TRUE, situation.getSingleProvider().equals(singleProvider));
+		assertEquals(Boolean.TRUE, situation.getAccidentOnlyCover().equals(accidentOnlyCover));
+		assertEquals(Boolean.TRUE, situation.getProviderKey().equals(providerKey));
+		assertEquals(Boolean.TRUE, situation.getCoverType().equals(coverType));
+
+    }
+
     @Test
     public void testAddExcludeProvidersFilterEmpty() throws Exception {
         final Filter filter = mock(Filter.class);

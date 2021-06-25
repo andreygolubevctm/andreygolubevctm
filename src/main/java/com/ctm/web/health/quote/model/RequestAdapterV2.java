@@ -84,7 +84,7 @@ public class RequestAdapterV2 {
                 .map(HealthQuote::getBenefits)
                 .map(Benefits::getBenefitsExtras)
                 .orElse(emptyMap());
-        addProductType(quoteRequest, benefitsExtras);
+        addProductType(quoteRequest, situation);
         addSituationFilter(filters, situation, quoteRequest);
         addHospitalSelection(quoteRequest, filters, benefitsExtras, situation);
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
@@ -416,6 +416,17 @@ public class RequestAdapterV2 {
             quoteRequest.setProductType(ProductType.COMBINED);
         }
     }
+
+	protected static void addProductType(HealthQuoteRequest quoteRequest, Situation situation) {
+		quoteRequest.setProductType(ProductType.COMBINED);
+		if(situation != null) {
+			if (situation.getCoverType().equals("H")) {
+				quoteRequest.setProductType(ProductType.HOSPITAL);
+			} else if (situation.getCoverType().equals("E")) {
+				quoteRequest.setProductType(ProductType.GENERALHEALTH);
+			}
+		}
+	}
 
     protected static Situation addMembership(HealthQuoteRequest quoteRequest, Situation situation) {
         if (situation != null) {
