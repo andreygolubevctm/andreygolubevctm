@@ -17,8 +17,13 @@
     }
 
     function eventSubscriptions() {
-        meerkat.messaging.subscribe(moduleEvents.sortBenefits, function(){
-            _.defer(sort);
+        meerkat.messaging.subscribe(moduleEvents.sortBenefits, function(callback){
+            _.defer(function() {
+            	sort();
+            	if(callback && _.isFunction(callback)) {
+            		_.defer(callback);
+		}
+	    });
         });
     }
 

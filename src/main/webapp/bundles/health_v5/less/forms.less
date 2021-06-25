@@ -43,8 +43,58 @@
   }
 }
 
+.row-content.has-success select,
+.row-content.has-success select:active,
+.row-content.has-success select:focus
+{
+	color: @text-color !important;
+	border-color: @input-border !important;
+}
+.row-content.has-success .select .input-group-addon {
+	color: @text-color !important;
+	border-color: @input-border !important;
+}
+
+input.has-success,
+input.has-success:active,
+input.has-success:before,
+input.has-success:after,
+input.has-success:focus,
+.row-content.has-success select.has-success,
+.row-content.has-success select.has-success:active,
+.row-content.has-success select.has-success:focus,
+.row-content.has-success input,
+.row-content.has-success input:active,
+.row-content.has-success input:focus,
+.row-content.has-success .btn-group label.btn:not(.active)
+{
+	color: #000A8E !important;
+	border-color: #000A8E !important;
+}
+.has-success .btn-group label.btn.active,
+.has-success label.active.btn-form-inverse:before {
+	color: #FFFFFF !important;
+}
+
+.checkbox input + label {
+	color: @text-color !important;
+}
+.checkbox input:checked + label {
+	color: #000A8E !important;
+}
+.checkbox input:checked + label:before {
+	color: #FFFFFF;
+	background-color: #000A8E;
+	border-color: #000A8E;
+}
+
 .select .input-group-addon {
   font-size: 1.8rem;
+}
+
+.row-content.has-success .select .input-group-addon.dropdown-toggle {
+	color: #000A8E !important;
+	border-color: #000A8E !important;
 }
 
 .form-control:focus ~.input-group-addon {
@@ -52,9 +102,21 @@
 }
 
 .has-success .form-control:focus ~.input-group-addon{
-  border-color: #4d4d4d;
+  border-color: #000A8E;
 }
 
+.select .dropdown-menu > li:not([data-value='']).active > a,
+.select .dropdown-menu > li:not([data-value='']) > a:focus,
+.select .dropdown-menu > li:not([data-value='']) > a:hover {
+	background-color: #000A8E;
+}
+
+.select .dropdown-menu > li[data-value=''].active > a,
+.select .dropdown-menu > li[data-value=''] > a:focus,
+.select .dropdown-menu > li[data-value=''] > a:hover {
+	background-color: #FFFFFF;
+	cursor: default;
+}
 
 fieldset {
   margin-top: 2rem;

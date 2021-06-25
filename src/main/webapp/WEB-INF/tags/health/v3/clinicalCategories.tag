@@ -362,7 +362,7 @@
                 groups="Cancer,PlasticNonCosmetic"
                 title="Skin"
                 caption="Hospital treatment for the investigation and treatment of skin, skin-related conditions and nails. The removal of foreign bodies is also included. Plastic surgery that is medically necessary and relating to the treatment of a skin-related condition is also included."
-                description="<ul><li>For example: melanoma, minor wound repair and abscesses.</li><li>emoval of excess skin due to weight loss is listed separately under Weight loss surgery.</li><li>Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer.</li></ul>"
+                description="<ul><li>For example: melanoma, minor wound repair and abscesses.</li><li>Removal of excess skin due to weight loss is listed separately under Weight loss surgery.</li><li>Chemotherapy and radiotherapy for cancer is listed separately under Chemotherapy, radiotherapy and immunotherapy for cancer.</li></ul>"
                 id="32981"
                 submitWithForm="${submitClinicalCategoryWithForm} " />
 

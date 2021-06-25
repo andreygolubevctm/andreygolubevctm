@@ -11,7 +11,7 @@
                 <competition:snapshot vertical="health" />
                 <simples:snapshot />
                 <health_v4_content:snapshot/>
-                <health_v4:price_promise step="benefits" dismissible="true" />
+                <health_v5:price_promise step="benefits" dismissible="true" />
             </jsp:attribute>
             <jsp:body>
 

@@ -50,6 +50,13 @@
             _onBenefitsSwitch($(data.el).attr('data-benefit'), data.value);
         });
 
+        meerkat.messaging.subscribe("COVERTYPE_CHANGED", function(coverTypeObj) {
+        	var hospitalShouldBeOn = _.indexOf(["C", "H"], coverTypeObj.coverType) !== -1;
+        	var extrasShouldBeOn = _.indexOf(["C", "E"], coverTypeObj.coverType) !== -1;
+			_onBenefitsSwitch("hospital", hospitalShouldBeOn, false);
+			_onBenefitsSwitch("extras", extrasShouldBeOn, false);
+		});
+
         // benefit selected
         meerkat.messaging.subscribe(meerkatEvents.benefits.BENEFIT_SELECTED, function onBenefitSelected(options) {
             meerkat.modules.healthResults.unpinProductFromFilterUpdate();
@@ -57,7 +64,7 @@
     }
 
     function _onBenefitsSwitch(benefit, isSwitched, updateCoverType) {
-        updateCoverType = _.isUndefined(updateCoverType) ? true : false;
+    	updateCoverType = _.isUndefined(updateCoverType) ? true : false;
         _isSwitchedOn[benefit] = isSwitched;
         meerkat.messaging.publish(moduleEvents.benefitsSwitch.SWITCH_CHANGED, {
             benefit: benefit,

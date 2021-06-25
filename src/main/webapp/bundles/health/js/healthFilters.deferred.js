@@ -318,15 +318,18 @@
         coverType;
 
     function populateSelectedBenefits() {
-        var selectedBenefits = $('.results-filters-benefits input[type="checkbox"][name^="health_filterBar_benefits"]:checked').map(function() {
+    	var selectedBenefits = _.flatten($('.results-filters-benefits input[type="checkbox"][name^="health_filterBar_benefits"]:checked').map(function() {
             return this.value;
-        });
-	    meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
+        }));
+        meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
         meerkat.modules.healthBenefitsStep.populateBenefitsSelection(selectedBenefits);
+        meerkat.modules.healthClinicalCategories.toggleDataVisibiltyOfSelectedBenefits(selectedBenefits);
 
         // when hospital is set to off in [Customise Cover] hide the excess section
         var $excessSection = $("#resultsPage").find('.cell.excessSection');
         _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
+
+		_.delay(meerkat.modules.healthClinicalCategories.reverseUpdateLabels, 1500);
     }
 
 	function populateAmbulanceAccidentCover() {

@@ -3,32 +3,34 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         moduleEvents = {
-            coverTypeChanged:       "COVERTYPE_CHANGED",
-            categoryGroupChanged:   "EXTRAS_CATEGORY_GROUP_CHANGED",
-            manualBenefitSelection: "BENEFIT_MANUALLY_SELECTED"
+            coverTypeChanged:             "COVERTYPE_CHANGED",
+            categoryGroupChangedExtras:   "EXTRAS_CATEGORY_GROUP_CHANGED",
+			categoryGroupChangedHospital: "HOSPITAL_CATEGORY_GROUP_CHANGED",
+            manualBenefitSelection:       "BENEFIT_MANUALLY_SELECTED",
+			hardResetBenefits:            "HARD_RESET_BENEFITS"
         },
         coverType = null,
         selectedCategory = null,
         defaultSelectedCategory = "SPECIFIC_COVER",
         $elements = null,
-        copyMappings = {
-            SPECIFIC_COVER:             {
-                title:  "Specific cover",
-                body:   "Looking for a product that is very specific to your needs and lifestyle. If you know exactly what you are looking for pick and choose your preferred cover options from the list below."
-            },
-            POPULAR:        {
-                title:  "Most popular",
-                body:   "Our most commonly selected extras, covering trips to the dentist, physio and optical services."
-            },
-            A_LITTLE_BIT_MORE:     {
-                title:  "A few more",
-                body:   "Next level up of extras. Cover that includes major dental, remedial messages, chiro as well as a wide range of benefits for you to claim back on."
-            },
-            COMPLETE_COVER: {
-                title:  "Complete cover",
-                body:   "Be prepared for any moment and get cover for everything."
-            }
-        };
+		copyMappings = {
+			SPECIFIC_COVER:             {
+				title:  "Specific cover",
+				body:   "Looking for a product that is very specific to your needs and lifestyle. If you know exactly what you are looking for pick and choose your preferred cover options from the list below."
+			},
+			POPULAR:        {
+				title:  "Most popular",
+				body:   "Our most commonly selected extras, covering trips to the dentist, physio and optical services."
+			},
+			A_LITTLE_BIT_MORE:     {
+				title:  "A few more",
+				body:   "Next level up of extras. Cover that includes major dental, remedial messages, chiro as well as a wide range of benefits for you to claim back on."
+			},
+			COMPLETE_COVER: {
+				title:  "Complete cover",
+				body:   "Be prepared for any moment and get cover for everything."
+			}
+		};
 
     function init() {
         _.defer(function(){
@@ -65,7 +67,7 @@
                 $elements.inputs.filter('[value=' +  defaultSelectedCategory + ']').prop('checked', true).change();
             }
 
-            if(coverType !== null) {
+            if(coverType) {
                 coverTypeToggled();
             }
         });
@@ -76,11 +78,8 @@
             coverType = payload.coverType;
             coverTypeToggled();
         });
-        meerkat.messaging.subscribe(moduleEvents.manualBenefitSelection, function(){
-            if(coverType === "E" && selectedCategory !== defaultSelectedCategory) {
-                setSelectedCategory(defaultSelectedCategory, true);
-            }
-        });
+		meerkat.messaging.subscribe(moduleEvents.hardResetBenefits, unsetCategory);
+		meerkat.messaging.subscribe(moduleEvents.categoryGroupChangedHospital, coverTypeToggled);
     }
 
     function eventListeners() {
@@ -92,47 +91,38 @@
     }
 
     function coverTypeToggled() {
-        if(coverType === "E") {
-            $elements.container.hide();
-            $elements.wrapper.fadeIn('fast', function(){
-                setSelectedCategory(defaultSelectedCategory);
-            });
+        var selectedCategory = meerkat.modules.healthBenefitsCategorySelectHospital.getSelectedCategory();
+        selectedCategory = selectedCategory || "SPECIFIC_COVER";
+		if(coverType === "E" || (_.indexOf(["C", "E"], coverType) !== -1 && selectedCategory === "SPECIFIC_COVER")) {
+            $elements.wrapper.fadeIn('fast');
         } else {
-            unsetCategory();
-            $elements.container.fadeOut('fast', function() {
-                $elements.wrapper.fadeOut('fast');
-            });
+			unsetCategory();
+            $elements.wrapper.fadeOut('fast');
         }
     }
 
-    function updateCategoryCopy() {
-        if(_.has(copyMappings, selectedCategory)) {
-            $elements.copy.find('h4').html(copyMappings[selectedCategory].title);
-            $elements.copy.find('p').html(copyMappings[selectedCategory].body);
-            if(!$elements.container.is(":visible")) {
-                $elements.container.fadeIn('fast');
-            }
-        } else {
-            $elements.container.fadeOut('fast');
-        }
-    }
-
-    function unsetCategory() {
+    function unsetCategory(silent) {
+    	silent = silent || false;
         if(_.indexOf([null, defaultSelectedCategory], selectedCategory) === -1) {
             selectedCategory = defaultSelectedCategory;
-            $elements.inputs.filter('[value=' + defaultSelectedCategory + ']').prop('checked', false).change();
+            if(silent) {
+                $elements.inputs.filter('[value=' + selectedCategory + ']').prop('checked', false).closest('label').removeClass('active');
+				$elements.inputs.filter('[value=' + defaultSelectedCategory + ']').prop('checked', true).closest('label').addClass('active');
+			} else {
+				$elements.inputs.filter('[value=' + defaultSelectedCategory + ']').prop('checked', false).change();
+            }
         }
     }
 
     function setSelectedCategory(category, silent) {
-        silent = silent || false;
+    	silent = silent || false;
         selectedCategory = category;
-        updateCategoryCopy();
+		updateCategoryCopy();
         if(silent) {
             $elements.inputs.parent().removeClass('active');
             $elements.inputs.filter('[value=' + selectedCategory + ']').prop('checked', true).parent().addClass('active');
         } else {
-            meerkat.messaging.publish(moduleEvents.categoryGroupChanged, {selectedCategory:selectedCategory});
+            meerkat.messaging.publish(moduleEvents.categoryGroupChangedExtras, {selectedCategory:selectedCategory});
         }
     }
 
@@ -140,10 +130,23 @@
         return selectedCategory;
     }
 
+	function updateCategoryCopy() {
+		if(_.has(copyMappings, selectedCategory)) {
+			$elements.copy.find('h4').html(copyMappings[selectedCategory].title);
+			$elements.copy.find('p').html(copyMappings[selectedCategory].body);
+			if(!$elements.container.is(":visible")) {
+				$elements.container.fadeIn('fast');
+			}
+		} else {
+			$elements.container.fadeOut('fast');
+		}
+	}
+
     meerkat.modules.register('healthBenefitsCategorySelectExtras', {
         init: init,
         events: moduleEvents,
-        getSelectedCategory: getSelectedCategory
+        getSelectedCategory: getSelectedCategory,
+		unsetCategory: unsetCategory
     });
 
 })(jQuery);

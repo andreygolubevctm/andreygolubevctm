@@ -45,6 +45,9 @@ Handling of the rebate tiers based off situation
 		$incomeBase = $('#health_healthCover_incomeBase');
         $income = $(':input[name="health_healthCover_income"]');
 		$healthCoverIncomeLabel = $('#health_healthCover_incomelabel');
+		$income.on("change.hardResetBenefits", function(){
+			meerkat.messaging.publish('HARD_RESET_BENEFITS');
+		});
 	}
 
 	function shouldShowDependants() {

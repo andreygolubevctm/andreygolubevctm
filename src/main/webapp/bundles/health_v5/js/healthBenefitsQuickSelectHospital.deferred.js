@@ -7,7 +7,9 @@
             manualBenefitSelection:     "BENEFIT_MANUALLY_SELECTED",
             triggerBenefitsLoading:     "BENEFITS_LOADING",
             sortBenefits:               "SORT_BENEFITS",
-            updateBenefitCounters:      "UPDATE_BENEFIT_COUNTERS"
+            updateBenefitCounters:      "UPDATE_BENEFIT_COUNTERS",
+			hardResetBenefits: 			"HARD_RESET_BENEFITS",
+			benefitsModel:				"BENEFITS_MODEL_UPDATE_COMPLETED"
         },
         $elements,
         options = {
@@ -53,8 +55,10 @@
             }
         });
         meerkat.messaging.subscribe(moduleEvents.manualBenefitSelection, function(payload) {
-            reverseToggleSelectors(payload);
+            reverseToggleSelectorsAfterManualBenefitToggle(payload);
         });
+        meerkat.messaging.subscribe(moduleEvents.hardResetBenefits, resetQuickSelects);
+        meerkat.messaging.subscribe(moduleEvents.benefitsModel.BENEFITS_MODEL_UPDATE_COMPLETED, reverseToggleSelectorsAfterResultsFilterApplied);
     }
 
     function eventListeners() {
@@ -162,11 +166,11 @@
     }
 
     /**
-     * reverseToggleSelectors updates the selectors when a user manually toggles benefits.
+     * reverseToggleSelectorsAfterManualBenefitToggle updates the selectors when a user manually toggles benefits.
      *
      * @param obj
      */
-    function reverseToggleSelectors(payload) {
+    function reverseToggleSelectorsAfterManualBenefitToggle(payload) {
         // Only proceed if benefit is in a group
         if(!_.isEmpty(payload.groups)) {
             if (!payload.checked) {
@@ -222,6 +226,37 @@
                     });
                 }*/
             }
+			// Update hidden field with current quick select options
+			$elements.input.val(activeOptions.join(","));
+
+			_.defer(toggleGroupLabels);
+        }
+    }
+
+	/**
+	 * reverseToggleSelectorsAfterResultsFilterApplied updates the selectors when beneifts are toggled when results filters are applied.
+	 */
+	function reverseToggleSelectorsAfterResultsFilterApplied() {
+    	var activeOptionsPositions = [];
+        if(activeOptions.length) {
+        	_.each(activeOptions, function(group, index){
+            	var $benefitRows = getNonSelectedBenefitRows();
+            	_.each($benefitRows, function($row){
+					var $rowGroups = $row.attr("data-groups").split(",");
+					if(_.indexOf($rowGroups, group) !== -1) {
+						$elements.options.find("[data-group=" + group + "]").removeClass("active").find(".groupCount").html("");
+						activeOptionsPositions.push(index);
+					}
+				});
+			});
+
+            _.each(activeOptionsPositions, function(position){
+				if(position < activeOptions.length) {
+					activeOptions[position] = null;
+					activeOptions = _.compact(activeOptions);
+				}
+			});
+
 			// Update hidden field with current quick select options
 			$elements.input.val(activeOptions.join(","));
 
@@ -348,9 +383,34 @@
         );
     }
 
+    function resetQuickSelects() {
+		activeOptions = [];
+        $elements.options.children().each(function(){
+            var $that = $(this);
+            $that.removeClass('active');
+            $that.find('.groupCount').empty();
+        });
+    }
+
+    function getNonSelectedBenefitRows() {
+    	var $nonSelectedRows = [];
+    	_.each($elements.benefitRows, function(row){
+    		var rowGroupsStr = $(row).attr("data-groups");
+    		var isSelected = $(row).hasClass("active");
+    		if(!_.isEmpty(rowGroupsStr)) {
+    			var rowGroups = rowGroupsStr.split(",");
+    			if(rowGroups.length && !isSelected) {
+					$nonSelectedRows.push($(row));
+				}
+			}
+		});
+    	return $nonSelectedRows;
+	}
+
     meerkat.modules.register('healthBenefitsQuickSelectHospital', {
         init: init,
-        events: moduleEvents
+        events: moduleEvents,
+        resetQuickSelects: resetQuickSelects
     });
 
 })(jQuery);
