@@ -19,10 +19,13 @@
         selectedExtrasLabel,
         snapshotSelectedHospitalLabel,
         snapshotSelectedExtrasLabel,
+        allBenefitRows,
         events = {
             benefitsModel: {
                 UPDATE_SELECTED_BENEFITS_CHECKBOX: 'UPDATE_SELECTED_BENEFITS_CHECKBOX',
-                BENEFITS_MODEL_UPDATE_COMPLETED: 'BENEFITS_MODEL_UPDATE_COMPLETED'
+                BENEFITS_MODEL_UPDATE_COMPLETED: 'BENEFITS_MODEL_UPDATE_COMPLETED',
+				SORT_BENEFITS: "SORT_BENEFITS",
+				UPDATE_BENEFIT_COUNTERS: "UPDATE_BENEFIT_COUNTERS"
             }
         },
         moduleEvents = events.benefitsModel;
@@ -36,6 +39,7 @@
 
         snapshotSelectedHospitalLabel = $('.snapshot-benefits-selected');
         snapshotSelectedExtrasLabel = $('.snapshot-extras-selected');
+		allBenefitRows = $('#benefitsForm .Hospital-wrapper').find('.short-list-item').add($('#benefitsForm .Extras-wrapper').find('.short-list-item'));
     }
 
     // do an ajax request to retrieve the supplementary data for the health pre-select data
@@ -104,7 +108,7 @@
     }
 
     function updateUIElements() {
-        var selectedHospitalCount = selectedBenefits.hospital.length;
+    	var selectedHospitalCount = selectedBenefits.hospital.length;
         var selectedExtrasCount = selectedBenefits.extras.length;
 
         selectedHospitalLabel.text(selectedHospitalCount + ' selected');
@@ -112,16 +116,27 @@
 
         snapshotSelectedHospitalLabel.text(selectedHospitalCount + ' Hospital benefit' + (selectedHospitalCount !== 1 ? 's' : '') + ' selected');
         snapshotSelectedExtrasLabel.text(selectedExtrasCount + ' Extra' + (selectedExtrasCount !== 1 ? 's' : '') + ' selected');
-
-        $('.categoriesCell_v2').each(function() {
-            $(this).removeClass('active');
-
-            var input = $(this).children()[0].firstElementChild;
-            if(selectedBenefits.hospital.indexOf(input.dataset.benefitId) > -1 || 
-                selectedBenefits.extras.indexOf(input.dataset.benefitId) > -1) {
-                    $(this).addClass('active');
-            }
-        });
+      
+        if(!_.isUndefined(allBenefitRows)) {
+            allBenefitRows.each(function () {
+                var checked = $(this).find(":input").is(":checked");
+                $(this).toggleClass("active", checked);
+            });
+        }
+      
+        // This deferred function should be the last action of this method
+		var currentStep =  meerkat.modules.journeyEngine.getCurrentStep();
+        if(currentStep && _.has(currentStep, "navigationId") && currentStep.navigationId === 'benefits') {
+			_.defer(function(){
+				meerkat.messaging.publish(moduleEvents.UPDATE_BENEFIT_COUNTERS);
+			});
+		} else {
+			_.defer(function(){
+				meerkat.messaging.publish(moduleEvents.SORT_BENEFITS, function(){
+					meerkat.messaging.publish(moduleEvents.UPDATE_BENEFIT_COUNTERS);
+				});
+			});
+		}
     }
 
     // return a string of hospital or events depending on value of _isHospital
@@ -165,7 +180,10 @@
     // run once to initialise labels store.
     function initBenefitLabelStore(benefits) {
         benefitsLabels = benefits;
-        flattenedBenefits = benefits.hospital.concat(benefits.extras);
+		_.each(benefitsLabels, function(value, key, obj) {
+			benefitsLabels[key] = _.sortBy(obj[key], "label");
+		});
+		flattenedBenefits = benefits.hospital.concat(benefits.extras);
     }
 
     // get all the selected benefits
@@ -219,6 +237,14 @@
         return _.contains(benefits, id);
     }
 
+    function flushHospital() {
+    	selectedBenefits.hospital = [];
+	}
+
+	function flushExtras() {
+		selectedBenefits.extras = [];
+	}
+
     meerkat.modules.register("benefitsModel", {
         init: init,
         events: events,
@@ -235,7 +261,9 @@
         getExtrasBenefitsForFilters: getExtrasBenefitsForFilters,
         getHospitalBenefitsForFilters: getHospitalBenefitsForFilters,
         isSelected: isSelected,
-        getCodesForSelectedBenefits: getCodesForSelectedBenefits
+        getCodesForSelectedBenefits: getCodesForSelectedBenefits,
+		flushHospital: flushHospital,
+		flushExtras: flushExtras
     });
 
 })(jQuery);

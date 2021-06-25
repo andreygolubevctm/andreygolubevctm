@@ -66,15 +66,13 @@
                     var $that = $(this);
                     var isLimited = $that.attr('href').search(/Limited/) !== -1;
                     $that.closest('li').toggleClass('active', isLimited);
-                    $('#refineResultsHospitalBenefits').toggleClass('active in', !isLimited);
-                    $('#refineResultsLimitedHospital').toggleClass('active in', isLimited);
                 });
             }
         });
 
         meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.FILTERS_SWITCH_CHANGED, function (e) {
             if (e.isMobile) {
-                _isSwitchedOn[e.benefit] = e.isSwitchedOn;
+            	_isSwitchedOn[e.benefit] = e.isSwitchedOn;
 
                 meerkat.messaging.publish(meerkatEvents.refineResults.REFINE_RESULTS_UPDATABLE, {
                     updatable: meerkat.modules.benefitsSwitch.isFiltersHospitalOn(true) || meerkat.modules.benefitsSwitch.isFiltersExtrasOn(true)
@@ -83,27 +81,63 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.refineResults.REFINE_RESULTS_FOOTER_BUTTON_UPDATE_CALLBACK, function() {
-            // update hospital benefits cover type tab
+        	// update hospital benefits cover type tab
             var $hospitalType = $('.health-refineResults-hospital-benefits li.active').find('a'),
                 benefitCoverType = $hospitalType.length && $hospitalType.attr('href').search(/Limited/) !== -1 ? 'limited' : 'customise';
 
             $('#health_benefits_covertype').val(benefitCoverType);
             Benefits.setHospitalType(benefitCoverType);
-            Benefits.toggleHospitalTypeTabs();
 
             meerkat.modules.healthFilters.populateSelectedBenefits(
                 $('.health-refine-results-hospital-benefits'),
                 $('.health-refine-results-extras-benefits')
             );
+			// SML-1614 this where the journey cover level is updated
+			var journeyCoverType = meerkat.modules.healthBenefitsCoverType.getCoverType();
+			var refineHospitalSwitch = isSwitchedOn('hospital');
+			var refineExtrasSwitch = isSwitchedOn('extras');
 
-            if (!_.isNull(isSwitchedOn('hospital'))) {
-                $elements.hospitalSwitchDefaultSelector.bootstrapSwitch('setState', isSwitchedOn('hospital'));
-                _isSwitchedOn.hospital = null;
+			if(!_.isNull(refineHospitalSwitch) || !_.isNull(refineExtrasSwitch)) {
+				var tempCoverType = "C";
+				/**
+				 * Important note: if a toggle hasn't been launched then its default value is null and you
+				 * can derive the value from the original coverType (C, H or E). Eg if the hospital switch
+				 * is off and the extras switch is null then if the original cover type is C then you can
+				 * assume the new cover type is Extras Only.
+				 */
+				if((!_.isNull(refineHospitalSwitch) && refineHospitalSwitch) && (!_.isNull(refineExtrasSwitch) && !refineExtrasSwitch)) {
+					tempCoverType = "H";
+				} else if((!_.isNull(refineHospitalSwitch) && !refineHospitalSwitch) && (!_.isNull(refineExtrasSwitch) && refineExtrasSwitch)) {
+					tempCoverType = 'E';
+				} else if((!_.isNull(refineHospitalSwitch) && refineHospitalSwitch) && _.isNull(refineExtrasSwitch) && journeyCoverType === 'H') {
+					tempCoverType = "H";
+				} else if((!_.isNull(refineHospitalSwitch) && !refineHospitalSwitch) && _.isNull(refineExtrasSwitch) && journeyCoverType === 'C') {
+					tempCoverType = 'E';
+				} else if(_.isNull(refineHospitalSwitch) && (!_.isNull(refineExtrasSwitch) && refineExtrasSwitch) && journeyCoverType === 'E') {
+					tempCoverType = "E";
+				} else if(_.isNull(refineHospitalSwitch) && (!_.isNull(refineExtrasSwitch) && !refineExtrasSwitch) && journeyCoverType === 'C') {
+					tempCoverType = 'H';
+				}
+
+				if(journeyCoverType !== tempCoverType) {
+					meerkat.modules.healthBenefitsCoverType.setCoverType(tempCoverType);
+					meerkat.messaging.publish("COVERTYPE_CHANGED", {coverType: tempCoverType});
+					if(tempCoverType === 'E') {
+						meerkat.modules.healthBenefitsToggleAndJumpMenu.unselectHospitalBenefits();
+					} else if(tempCoverType === 'H') {
+						meerkat.modules.healthBenefitsToggleAndJumpMenu.unselectExtrasBenefits();
+					}
+				}
+			} else {
+				// Must be no change to switches so no need to update the cover type
+			}
+
+			if (!_.isNull(refineHospitalSwitch)) {
+            	_isSwitchedOn.hospital = null;
             }
 
-            if (!_.isNull(isSwitchedOn('extras'))) {
-                $elements.extrasSwitchDefaultSelector.bootstrapSwitch('setState', isSwitchedOn('extras'));
-                _isSwitchedOn.extras = null;
+            if (!_.isNull(refineExtrasSwitch)) {
+				_isSwitchedOn.extras = null;
             }
         });
 

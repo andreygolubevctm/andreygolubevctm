@@ -4,7 +4,8 @@
         meerkatEvents = meerkat.modules.events,
         moduleEvents = {
             healthSituation: {
-                SITUATION_CHANGED: 'SITUATION_CHANGED'
+                SITUATION_CHANGED: 'SITUATION_CHANGED',
+				hardResetBenefits: 	'HARD_RESET_BENEFITS'
             }
         },
         $healthSituation;
@@ -31,6 +32,7 @@
 
             meerkat.messaging.publish(moduleEvents.healthSituation.SITUATION_CHANGED, { situation: situation });
             meerkat.modules.healthChoices.setCover(situation);
+            meerkat.messaging.publish(moduleEvents.healthSituation.hardResetBenefits);
         });
     }
 

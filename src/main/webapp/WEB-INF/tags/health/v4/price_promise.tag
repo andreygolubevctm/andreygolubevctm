@@ -6,7 +6,6 @@
 <%@ attribute name="dismissible" required="false" rtexprvalue="true" description="Is the price promise dismissible" %>
 
 <c:set var="iframeUrl"><content:get key="pricePromiseURL"/></c:set>
-<c:set var="iframeUrlNew"><content:get key="pricePromiseURLNew"/></c:set>
 
 <c:if test="${pageSettings.getSetting('pricePromiseEnabled') eq 'Y' and iframeUrl ne ''}">
     <div class="price-promise-container" data-dismissible="${dismissible}">
@@ -15,6 +14,6 @@
                 <span class="icon icon-cross"></span>
             </div>
         </c:if>
-        <iframe frameborder="0" scrolling="no" data-src="${iframeUrlNew}" data-step="${step}"></iframe>
+        <iframe frameborder="0" scrolling="no" data-src="${iframeUrl}" data-step="${step}"></iframe>
     </div>
 </c:if>

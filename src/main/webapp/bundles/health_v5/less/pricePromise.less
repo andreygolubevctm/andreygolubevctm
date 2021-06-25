@@ -8,12 +8,8 @@
     color: @gray700;
     cursor: pointer;
     position: absolute;
-    right: 20px;
-    top: 60px;
-
-    @media (min-width: @screen-sm-min) {
-      top: 20px;
-    }
+    right: 10px;
+    top: 10px;
 
     &:hover {
       color: @primary500;
@@ -31,6 +27,73 @@
   iframe {
     width: 100%;
     height: 100%;
+  }
+
+  .price-promise-banner {
+
+	  background: #E7F0FB;
+	  border-radius: .5rem;
+	  padding: 1rem;
+
+	  .content {
+		  padding: 5px;
+
+		  table {
+			  width: 100%;
+			  margin: 0;
+			  border: none;
+			  td {
+				  text-align: left;
+				  vertical-align: top;
+				  background-color: transparent;
+				  border: none;
+				  padding: 0;
+
+				  &.img {
+					  width: 0px;
+
+					  .landscape, .portrait {
+						  display: block;
+						  background-size: 100%;
+						  background-repeat: no-repeat;
+						  background-color: transparent;
+						  &.landscape {
+							  width: 109px;
+							  height: 60px;
+							  background-image: url('../../../../assets/graphics/health/price-promise/landscape.png?v=4');
+						  }
+						  &.portrait {
+							  width: 70px;
+							  height: 124px;
+							  background-image: url('../../../../assets/graphics/health/price-promise/portrait.png?v=4');
+						  }
+					  }
+				  }
+				  &.copy {
+					  padding: 0 5px 0 0;
+					  width: auto;
+				  }
+			  }
+
+			  h3, p {
+				  color: #333333;
+				  line-height: normal;
+			  }
+
+			  h3 {
+				  margin: 0.75rem 0 1rem 0;
+				  font-size: 20px;
+			  }
+
+			  p {
+				  font-size: 16px;
+			  }
+
+			  a {
+				  margin-left: 5px;
+			  }
+		  }
+	  }
   }
 }
 

@@ -1,84 +1,114 @@
 #health_benefits_categorySelectExtras-container,
 #health_benefits_categorySelectHospital-container {
-  .categorySelect-copy-container {
-    display: none;
-    overflow: hidden;
+	.categorySelect-copy-container {
+		display: none;
+		overflow: hidden;
 
-    @media(@md) {
-      overflow: visible;
-    }
-  }
+		@media(@md) {
+			overflow: visible;
+		}
+	}
 }
 
 .categorySelect-copy-container {
-  position: relative;
+	position: relative;
 
-  .categorySelect-copy-innertube {
-    position: relative;
-    padding: 1.5em 1em;
-    border: 1px solid #ccc;
-    bottom: 0;
+	.categorySelect-copy-innertube {
+		position: relative;
+		padding: 1.5em 1em;
+		border: 1px solid #ccc;
+		bottom: 0;
 
-    .categorySelect-copy {
-      margin-right: 180px;
+		.categorySelect-copy {
+			margin-right: 180px;
 
-      h4 {
-        margin: 0 0 0.5em 0;
-      }
+			h4 {
+				margin: 0 0 0.5em 0;
+			}
 
-      p {
-        margin: 0;
-        font-size: 16px;
-      }
+			p {
+				margin: 0;
+				font-size: 16px;
+			}
 
-      @media(@xs-only) {
-        margin-right: 115px;
-      }
-    }
-  }
+			@media(@xs-only) {
+				margin-right: 115px;
+			}
+		}
+	}
 
-  .categorySelect-artwork {
+	.categorySelect-artwork {
 		position: absolute;
 		right: 0;
-		bottom: 0;
 		width: 209px;
 		height: 166px;
 		background-position: center;
 		background-size: 100%;
 		background-color: transparent;
-		.highResImg('../../../../assets/graphics/health/category-select-artwork/stethoscope@2x.png'; '../../../../assets/graphics/health/category-select-artwork/stethoscope@2x.png'; 209px; 166px);
+		background-repeat: no-repeat;
+		.highResImg('../../../../assets/graphics/health/category-select-artwork/stethoscope.png'; '../../../../assets/graphics/health/category-select-artwork/stethoscope@2x.png'; 209px; 166px);
 
-    @media(@xs-only) {
-		top: 0;
-		width: 209px;
-		height: 304px;
-      .highResImg('../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei@2x.png'; 209px; 304px);
-    }
-  }
+		@media(@sm) {
+			bottom: 0;
+		}
+		@media(@xs-only) {
+			top: 0;
+			width: 150px;
+			height: 365px;
+			.highResImg('../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei.png'; '../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei@2x.png'; 150px; 365px);
+			background-size: 150px 365px;
+		}
+	}
 
-  &.ESTABLISHED_FAMILY {
-    .categorySelect-artwork {
-      .highResImg('../../../../assets/graphics/health/category-select-artwork/Established_family@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Established_family@2x.png'; 209px; 166px);
+	&.ESTABLISHED_FAMILY {
 
-      @media(@xs-only) {
-        .highResImg('../../../../assets/graphics/health/category-select-artwork/Mobile_Meerkat_Family@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Mobile_Meerkat_Family@2x.png'; 209px; 304px);
-      }
-    }
-  }
+		.categorySelect-copy-innertube {
+			.categorySelect-copy {
+				@media(@xs-only) {
+					margin-right: 145px;
+				}
+			}
+		}
 
-  &.GROWING_FAMILY {
-    .categorySelect-artwork {
-      .highResImg('../../../../assets/graphics/health/category-select-artwork/Sergei_Oleg@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Sergei_Oleg@2x.png'; 209px; 166px);
+		.categorySelect-artwork {
+			.highResImg('../../../../assets/graphics/health/category-select-artwork/Established_family.png'; '../../../../assets/graphics/health/category-select-artwork/Established_family@2x.png'; 209px; 166px);
 
-      @media(@xs-only) {
-        .highResImg('../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei_holding_Oleg@2x.png'; '../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei_holding_Oleg@2x.png'; 209px; 304px);
-      }
-    }
-  }
+			@media(@xs-only) {
+				top: 0;
+				width: 249px;
+				height: 364px;
+				.highResImg('../../../../assets/graphics/health/category-select-artwork/Mobile_Meerkat_Family.png?v=2'; '../../../../assets/graphics/health/category-select-artwork/Mobile_Meerkat_Family@2x.png?v=2'; 249px; 364px);
+				background-size: 249px 364px;
+			}
+		}
+	}
+
+	&.GROWING_FAMILY {
+		.categorySelect-artwork {
+			.highResImg('../../../../assets/graphics/health/category-select-artwork/Sergei_Oleg.png'; '../../../../assets/graphics/health/category-select-artwork/Sergei_Oleg@2x.png'; 209px; 166px);
+
+			@media(@xs-only) {
+				width: 142px;
+				height: 363px;
+				.highResImg('../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei_holding_Oleg.png?v=2'; '../../../../assets/graphics/health/category-select-artwork/Mobile_Sergei_holding_Oleg@2x.png?v=2'; 142px; 363px);
+				background-size: 142px 363px;
+			}
+		}
+	}
 }
 
 body.limited {
-  .hide_when_limited_cover {
-    display: none !important;
-  }
+	.hide_when_limited_cover {
+		display: none !important;
+	}
+}
+
+#health_benefits_categorySelectExtras-container {
+	& > .form-group {
+		padding-bottom: 0;
+	}
+}
+
+#health_benefits_toggleAndJumpMenuExtras-container {
+	margin-top: 8px;
 }
