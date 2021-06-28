@@ -10,7 +10,7 @@
 <c:set var="subdomain">
     <c:choose>
         <c:when test="${env eq 'localhost' or env eq 'NXI' or env eq 'NXS'}">dev</c:when>
-        <c:when test="${env eq 'nxq'}">uat</c:when>
+        <c:when test="${env eq 'NXQ'}">uat</c:when>
         <c:otherwise>www</c:otherwise>
     </c:choose>
 </c:set>
