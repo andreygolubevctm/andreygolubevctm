@@ -5,7 +5,15 @@
 <%@ attribute name="step" required="true" rtexprvalue="true" description="Journey Step" %>
 <%@ attribute name="dismissible" required="false" rtexprvalue="true" description="Is the price promise dismissible" %>
 
-<c:set var="iframeUrl"><content:get key="pricePromiseURL"/></c:set>
+<jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="page" />
+<c:set var="env" value="${environmentService.getEnvironmentAsString()}" />
+<c:set var="subdomain">
+    <c:choose>
+        <c:when test="${env eq 'localhost' or env eq 'NXI' or env eq 'NXS'}">dev</c:when>
+        <c:when test="${env eq 'nxq'}">uat</c:when>
+        <c:otherwise>www</c:otherwise>
+    </c:choose>
+</c:set>
 
 <c:if test="${pageSettings.getSetting('pricePromiseEnabled') eq 'Y'}">
     <div class="price-promise-container" data-dismissible="${dismissible}">
@@ -24,7 +32,7 @@
                         <td class="img hidden-xs hidden-sm"><div class="portrait" /></td>
                         <td class="copy">
                             <h3>We don’t markup prices. Ever.</h3>
-                            <p>If you find the same policy for a cheaper price, and buy that same policy through us, we’ll give you 110% of the difference for the first year.&nbsp;&nbsp;<a href="/wp-content/uploads/2018/04/Best-Price-Promise-terms-and-conditions.pdf" target="_blank">T&amp;C's apply</a></p>
+                            <p>If you find the same policy for a cheaper price, and buy that same policy through us, we’ll give you 110% of the difference for the first year.&nbsp;&nbsp;<a href="https://${subdomain}.comparethemarket.com.au/wp-content/uploads/2018/04/Best-Price-Promise-terms-and-conditions.pdf" target="_blank">T&amp;C's apply</a></p>
                         </td>
                     </tr>
                 </table>
