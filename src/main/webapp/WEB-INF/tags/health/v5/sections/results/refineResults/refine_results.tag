@@ -47,7 +47,7 @@
             </div>
         </section>
 
-        <health_v4_refine_results:hospital_preferences />
+        <health_v5_refine_results:hospital_preferences />
         <health_v4_refine_results:extras_preferences />
         <health_v4_refine_results:excess />
         <health_v4_refine_results:funds />

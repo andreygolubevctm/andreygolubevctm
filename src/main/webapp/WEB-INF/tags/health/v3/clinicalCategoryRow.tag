@@ -19,7 +19,7 @@
     <c:set var="activeClass" value=" active" />
 </c:if>
 
-<div class="categoriesCell_v2 short-list-item category collapsed ClinicalCategoryIcon-${code} ${code}_container ${activeClass}" data-groups="${groups}" data-sortable-key="${title}">
+<div class="categoriesCell_v2 short-list-item category collapsed ClinicalCategoryIcon-${code}${' '}${code}_container ${activeClass}" data-groups="${groups}" data-sortable-key="${title}">
     <div class=" checkbox">
         <input type="checkbox" name="health_benefits_benefitsExtras_${code}" id="health_benefits_benefitsExtras_${code}" class="checkbox-custom  checkbox" value="Y" data-attach="${submitWithForm}" data-benefit-id="${id}" data-benefit-code="${code}" ${checked}>
 

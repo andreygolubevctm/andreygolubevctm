@@ -179,6 +179,20 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 
 					<c:if test="${!param.fromDisc}">
 
+                            <%-- Set flag to identify Simples user loading an online quote --%>
+                            <c:set var="isSimplesLoadingOnlineQuote" value="${false}" />
+                            <c:if test="${param.vertical eq 'health' and not empty isOperator}">
+                                <c:set var="quoteIsSimples" value="${false}" />
+                                <c:forEach var="row" items="${details.rows}" varStatus="status">
+                                    <c:if test="${row.xpath eq 'health/operatorid'}">
+                                        <c:set var="quoteIsSimples" value="${true}" />
+                                    </c:if>
+                                </c:forEach>
+                                <c:if test="${quoteIsSimples eq false}">
+                                    <c:set var="isSimplesLoadingOnlineQuote" value="${true}" />
+                                </c:if>
+                            </c:if>
+
 							<c:forEach var="row" items="${details.rows}" varStatus="status">
 								<c:set var="proceed">
 									<c:choose>
@@ -206,8 +220,18 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 											</c:otherwise>
 										</c:choose>
 									</c:when>
+                                    <%-- Add the xpath to the data object --%>
 									<c:otherwise>
-									<go:setData dataVar="data" xpath="${row.xpath}" value="${textVal}" />
+		                                <c:choose>
+                                            <c:when test="${isSimplesLoadingOnlineQuote eq true and fn:contains(row.xpath,'health/benefits/benefitsExtras')}">
+                                                <%-- Ignore row and don't update the data bucket. --%>
+                                                <%-- This is a Simples user loading an online quote so we don't want to load --%>
+                                                <%-- any of the benefits selected by the customer --%>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <go:setData dataVar="data" xpath="${row.xpath}" value="${textVal}" />
+                                            </c:otherwise>
+                                        </c:choose>
 									</c:otherwise>
 								</c:choose>
 								</c:if>

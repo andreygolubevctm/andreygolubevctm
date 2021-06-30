@@ -6,7 +6,8 @@
             coverTypeChanged:       "COVERTYPE_CHANGED",
             categoryGroupChanged:   "HOSPITAL_CATEGORY_GROUP_CHANGED",
             situationChanged:       "SITUATION_CHANGED",
-            manualBenefitSelection: "BENEFIT_MANUALLY_SELECTED"
+            manualBenefitSelection: "BENEFIT_MANUALLY_SELECTED",
+			hardResetBenefits: 		"HARD_RESET_BENEFITS"
         },
         coverType = null,
         situation = null,
@@ -113,11 +114,7 @@
             situation = payload.situation;
             updateOptions();
         });
-        meerkat.messaging.subscribe(moduleEvents.manualBenefitSelection, function(){
-            if(_.indexOf(['C', 'H'], coverType) !== -1 && selectedCategory !== defaultSelectedCategory) {
-                //setSelectedCategory(defaultSelectedCategory, true);
-            }
-        });
+        meerkat.messaging.subscribe(moduleEvents.hardResetBenefits, unsetCategory);
     }
 
     function eventListeners() {
@@ -159,9 +156,15 @@
         });
     }
 
-    function unsetCategory() {
+    function unsetCategory(silent) {
+    	silent = silent || false;
         if(_.indexOf([null, defaultSelectedCategory], selectedCategory) === -1) {
-            $elements.inputs.filter('[value=' + defaultSelectedCategory + ']').prop('checked', true).change();
+        	if(silent) {
+				$elements.inputs.filter('[value=' + selectedCategory + ']').prop('checked', false).closest('label').removeClass('active');
+				$elements.inputs.filter('[value=' + defaultSelectedCategory + ']').prop('checked', true).closest('label').addClass('active');
+			} else {
+				$elements.inputs.filter('[value=' + defaultSelectedCategory + ']').prop('checked', true).change();
+			}
             selectedCategory = defaultSelectedCategory;
         }
     }
@@ -190,7 +193,8 @@
     meerkat.modules.register('healthBenefitsCategorySelectHospital', {
         init: init,
         events: moduleEvents,
-        getSelectedCategory: getSelectedCategory
+        getSelectedCategory: getSelectedCategory,
+		unsetCategory: unsetCategory
     });
 
 })(jQuery);

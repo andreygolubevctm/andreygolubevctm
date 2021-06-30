@@ -310,14 +310,21 @@
                 // meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
             },
             onAfterLeave: function leaveBenefitsStep(event) {
+                /* Selected benefits are intentionally staying selected when switching cover level
+                   so we need to do some cleanup when exiting this slide to ensure that any benefits
+                   not applicable to the cover type are unselected.
+                 */
+                var coverType = meerkat.modules.healthBenefitsCoverType.getCoverType();
+                if(coverType === 'E') {
+                    meerkat.modules.healthBenefitsToggleAndJumpMenu.unselectHospitalBenefits(true);
+                } else if(coverType === 'H') {
+					meerkat.modules.healthBenefitsToggleAndJumpMenu.unselectExtrasBenefits(true);
+                }
+
                 var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();
                 meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
                 // Note: Not sure if this will be introduced back in a later date
                 // meerkat.modules.benefitsToggleBar.deRegisterScroll();
-                if(meerkat.modules.benefits.getHospitalType() == 'limited') {
-                    meerkat.modules.benefitsModel.setIsHospital(true);
-                    meerkat.modules.benefitsModel.setBenefits([]);
-                }
             }
         };
 

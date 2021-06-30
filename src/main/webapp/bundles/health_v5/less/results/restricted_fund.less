@@ -1,0 +1,99 @@
+.result-header-utility-bar {
+	.restrictedFundPanel {
+		display: none;
+	}
+}
+.result-header-utility-bar.restricted {
+	.restrictedFundPanel {
+		display: block;
+		position: absolute;
+		margin-top: 0px;
+		margin-left: 0px;
+		width: 0; height: 0;
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		@media(@xs) {
+			margin-top: -20px;
+			font-size:8px;
+			border-top: 60px solid @restricted-fund-panel-bkg;
+			border-right: 60px solid transparent;
+		}
+
+		@media(@sm) {
+			margin-top: -20px;
+			border-top: 55px solid @restricted-fund-panel-bkg;
+			border-right: 55px solid transparent;
+		}
+
+		@media(@md) {
+			margin-top: -20px;
+			font-size: 11px;
+			border-top: 85px solid @restricted-fund-panel-bkg;
+			border-right: 85px solid transparent;
+		}
+
+		@media(@lg) {
+			margin-top: 0px;
+		}
+
+		font-family: @font-family-theme-bold;
+		text-align: center;
+		text-transform: uppercase;
+
+		&:after  {
+			display: block;
+
+			-moz-border-radius: 50%; /* or 50% */
+			border-radius: 50%; /* or 50% */
+
+			color: @restricted-fund-panel-bkg;
+			border: 1px solid @restricted-fund-panel-bkg;
+			content:'?';
+
+			margin-left: 5px;
+			background: @restricted-fund-panel-text;
+
+			@media(@xs) {
+				height: 13px;
+				width: 13px;
+				line-height: 11px;
+				margin-top: -35px;
+				margin-left: 2px;
+			}
+
+			@media(@md) {
+				height: 17px;
+				width: 17px;
+				line-height: 15px;
+				margin-top: -50px;
+			}
+		}
+
+		span.text {
+			position: absolute;
+			color: @restricted-fund-panel-text;
+			text-align: left;
+
+			@media(@xs) {
+				left:0px;
+				margin-top: -52px;
+				margin-left: 3px;
+				line-height: 7px;
+			}
+
+			@media(@md) {
+				left: 5px;
+				top: -80px;
+				margin: 0px;
+				line-height: 14px;
+			}
+		}
+	}
+
+	.remove-result {
+		left: 75px;
+	}
+}
