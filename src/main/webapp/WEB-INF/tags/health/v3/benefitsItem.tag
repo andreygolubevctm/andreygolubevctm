@@ -121,7 +121,7 @@
 	                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="basic" <field_v1:analytics_attr analVal="benefit category" quoteChar="\"" />>basic</a>
 	                                    </c:if>
 	                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise" <field_v1:analytics_attr analVal="custom cover" quoteChar="\"" />>customise</a>
-	                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited" <field_v1:analytics_attr analVal="benefit category" quoteChar="\"" />>limited</a>
+	                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited" <field_v1:analytics_attr analVal="benefit category" quoteChar="\"" />>basic/basic+</a>
 										${altJourneyLimitedBtn}
 	                                </div>
 
