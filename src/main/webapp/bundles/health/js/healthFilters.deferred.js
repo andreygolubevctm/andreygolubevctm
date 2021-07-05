@@ -133,7 +133,7 @@
                     },
                     {
                         value: 'limited',
-                        label: 'Limited'
+                        label: 'Basic/Basic+'
                     }
 
                 ],

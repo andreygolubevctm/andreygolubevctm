@@ -275,7 +275,12 @@
 
             {{ if (custom.reform.scripting === 'D') { }}
                 {{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited  !== null) { }}
-                    <simples:dialogue id="216" vertical="health" />
+                    {{ if(classification.icon === 'gov-basic') { }}
+                        <simples:dialogue id="216" vertical="health" />
+                    {{ } }}
+                    {{ if(classification.icon === 'gov-basic-plus') { }}
+                        <simples:dialogue id="227" vertical="health" />
+                    {{ } }}
                 {{ } }}
             {{ } }}
 
@@ -433,7 +438,12 @@
 
                     {{ if (custom.reform.scripting === 'D') { }}
                     {{ if (meerkat.modules.healthBenefitsStep.getLimitedCover() === 'Y' && custom.reform.tab1.limited === null && custom.reform.tab2.limited  !== null) { }}
-                    <simples:dialogue id="216" vertical="health" />
+                    {{ if(classification.icon === 'gov-basic') { }}
+                        <simples:dialogue id="216" vertical="health" />
+                    {{ } }}
+                    {{ if(classification.icon === 'gov-basic-plus') { }}
+                        <simples:dialogue id="227" vertical="health" />
+                    {{ } }}
                     {{ } }}
                     {{ } }}
 
