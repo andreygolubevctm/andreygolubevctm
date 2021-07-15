@@ -40,7 +40,7 @@ public class JwksStore {
 
     private JwkProvider jwkProvider;
 
-    private AtomicBoolean isEnabled = new AtomicBoolean(true);
+    private AtomicBoolean isEnabled;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwksStore.class);
 
