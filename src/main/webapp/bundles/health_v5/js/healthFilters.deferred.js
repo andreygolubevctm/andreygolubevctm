@@ -600,6 +600,7 @@
 		} else if(coverType === 'H') {
 			meerkat.modules.healthBenefitsToggleAndJumpMenu.unselectExtrasBenefits(true);
 		}
+        meerkat.messaging.publish("COVERTYPE_CHANGED", {coverType: coverType});
     }
 
     function journeyIncludesHospital() {
