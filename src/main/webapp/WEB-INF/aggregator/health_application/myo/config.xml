@@ -4,9 +4,15 @@
             xmlns="http://com.disc_au.soap.aggregator">
 
     <nabGateway>
-        <gatewayURL>https://membersuat.healthuat.aia.com.au/NAB/AIAHealth_CTM_IFrame.aspx</gatewayURL>
-        <domain>https://membersuat.healthuat.aia.com.au</domain>
+        <gatewayURL>external/hambs/mockPaymentGateway.html</gatewayURL>
+        <domain>http://localhost:8080</domain>
     </nabGateway>
+
+<!-- The Test site provided by NAB no longer works correctly, because the POST returns a blank originHost, which breaks the parent.PostMessage -->
+<!--    <nabGateway>-->
+<!--        <gatewayURL>https://membersuat.healthuat.aia.com.au/NAB/AIAHealth_CTM_IFrame.aspx</gatewayURL>-->
+<!--        <domain>https://membersuat.healthuat.aia.com.au</domain>-->
+<!--    </nabGateway>-->
 
     <config-dir>aggregator/health_application</config-dir>
     <debug-dir>health_application/debug</debug-dir>
