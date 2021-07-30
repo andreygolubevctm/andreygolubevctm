@@ -211,7 +211,7 @@
     }
 
     function _getData() {
-        var hospitalType = Benefits.getHospitalType() === 'customise' ? 'Comprehensive' : 'Limited',
+        var hospitalType = Benefits.getHospitalType() === 'customise' ? '' : 'Limited ',
             hospitalCount = BenefitsModel.getHospitalCount(),
             hospitalPlural = hospitalCount > 1 ? 's' : '',
             comprehensiveText = hospitalCount > 0 ? hospitalCount + ' benefit' + hospitalPlural + ' selected' : 'No Hospital',
@@ -219,7 +219,7 @@
             extrasCount = BenefitsModel.getExtrasCount(),
             extrasPlural = extrasCount > 1 ? 's' : '',
             data = {
-                hospitalText: meerkat.modules.benefitsSwitch.isHospitalOn() ? hospitalType + ' Hospital' + hospitalCountText : 'No Hospital',
+                hospitalText: meerkat.modules.benefitsSwitch.isHospitalOn() ? hospitalType + 'Hospital' + hospitalCountText : 'No Hospital',
                 extrasCountText: meerkat.modules.benefitsSwitch.isExtrasOn() && extrasCount > 0 ? extrasCount + ' extra' + extrasPlural + ' selected' : 'No Extras',
                 benefitsHospital: BenefitsModel.getHospitalBenefitsForFilters(),
                 benefitsExtras: BenefitsModel.getExtrasBenefitsForFilters(),
