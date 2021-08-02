@@ -55,6 +55,19 @@
   border-color: #0a8137;
 }
 
+.select .dropdown-menu > li:not([data-value='']).active > a,
+.select .dropdown-menu > li:not([data-value='']) > a:focus,
+.select .dropdown-menu > li:not([data-value='']) > a:hover {
+  background-color: #000A8E;
+}
+
+.select .dropdown-menu > li[data-value=''].active > a,
+.select .dropdown-menu > li[data-value=''] > a:focus,
+.select .dropdown-menu > li[data-value=''] > a:hover {
+  background-color: #FFFFFF;
+  cursor: default;
+}
+
 fieldset {
   margin-top: 2rem;
 }
@@ -74,5 +87,8 @@ fieldset #partnerHospitalCover{
   white-space:pre-wrap;
   @media (min-width: @screen-md) {
     font-size: 1.4rem;
+  }
+  u:hover {
+    cursor: pointer;
   }
 }
