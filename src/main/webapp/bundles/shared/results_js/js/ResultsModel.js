@@ -791,7 +791,7 @@ var ResultsModel = {
 
     travelResultFilter: function (renderView, doNotGoToStart, matchAllFilters) {
         var initialProducts = _.isArray(Results.model.sortedProducts) && !_.isEmpty(Results.model.sortedProducts) ? Results.model.sortedProducts.slice() : [];
-        var destination = $('#travel_destination').val();
+		var isDomesticTravel = meerkat.modules.travelResults.getIsOnlyDomesticTerritoriesSelected();
 
         var finalProducts = [];
         var _filters = {
@@ -848,8 +848,8 @@ var ResultsModel = {
                     	(_filters.EXCESS <= _modelFilters.EXCESS) &&
                        ((_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
                         (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
-                        ((destination !== 'AUS' && _filters.MEDICAL >= _modelFilters.MEDICAL) || 
-                         (destination === 'AUS' && _filters.RENTALVEHICLE >= _modelFilters.RENTALVEHICLE)) &&
+                        ((!isDomesticTravel && _filters.MEDICAL >= _modelFilters.MEDICAL) ||
+                         (isDomesticTravel && _filters.RENTALVEHICLE >= _modelFilters.RENTALVEHICLE)) &&
                         (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
                         finalProducts.push(product);
                     }
@@ -870,7 +870,7 @@ var ResultsModel = {
 
         Results.model.filteredProducts = finalProducts;
         Results.model.travelFilteredProductsCount = finalProducts.length;
-        meerkat.modules.travelResults.setColVisibilityAndStylesByTravelType(destination === 'AUS');
+        meerkat.modules.travelResults.setColVisibilityAndStylesByTravelType(isDomesticTravel);
 
         if (typeof Compare !== "undefined") Compare.applyFilters();
 

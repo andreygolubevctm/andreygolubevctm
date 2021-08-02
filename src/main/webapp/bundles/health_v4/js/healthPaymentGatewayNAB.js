@@ -131,10 +131,13 @@ Process:
 	function onOpen(id) {
 
 		clearTimeout(timeout);
-		timeout = _.delay(function onOpenTimout() {
-			meerkat.logging.debug("healthPaymentGatewayNAB: NAB IFrame timed out\nhealthPaymentGatewayNAB: Publish meerkat.modules.events.paymentGateway.FAIL");
-			meerkat.messaging.publish(meerkatEvents.paymentGateway.FAIL);
-		}, 45000);
+		// The Dev version of Myo/AIA is Mocked, so we do not require an onOpenTimeout
+		if (meerkat.site.environmentCode === 'pro' || settings.providerCode !== 'myo') {
+			timeout = _.delay(function onOpenTimout() {
+				meerkat.logging.debug("healthPaymentGatewayNAB: NAB IFrame timed out\nhealthPaymentGatewayNAB: Publish meerkat.modules.events.paymentGateway.FAIL");
+				meerkat.messaging.publish(meerkatEvents.paymentGateway.FAIL);
+			}, 45000);
+		}
 
 		// local alternative to bypass HAMBS' iframe for testing purposes
 		//settings.hambsIframe.src = 'http://localhost:8080/ctm/external/hambs/mockPaymentGateway.html'; settings.hambsIframe.remote = 'http://localhost:8080';

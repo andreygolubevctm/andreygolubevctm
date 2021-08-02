@@ -1,6 +1,7 @@
 package com.ctm.web.core.model.settings;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 
@@ -47,7 +48,7 @@ public class Brand {
 		ArrayList<Vertical> sortedVerticalList = verticals
 				.stream()
 				.filter(v -> v.getSequence() > 0)
-				.sorted((v1, v2) -> Integer.compare(v1.getSequence(), v2.getSequence()))
+				.sorted(Comparator.comparingInt(Vertical::getSequence))
 				.limit(maxVerticals)
 				.collect(Collectors.toCollection(ArrayList::new));
 
