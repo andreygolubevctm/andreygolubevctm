@@ -274,14 +274,14 @@
      * @private
      */
     function _updateTravelResultsByCoverType(cover) {
-        var destination = $('#travel_destination').val();
+        var isDomesticTravel = meerkat.modules.travelResults.getIsOnlyDomesticTerritoriesSelected();
         // when we're on AMT (which didn't have filters before) - the cover string passed in has an extra char, removing so the obj matches up
         cover.length > 1 ? cover = cover.slice(0, cover.length-1) : cover;
 
         var _coverTypeValues = {
             C: {
                 LUGGAGE: 5000,
-                CXDFEE: destination === 'AUS' ? 10000 : 20000,
+                CXDFEE: isDomesticTravel ? 10000 : 20000,
                 MEDICAL: 20000000,
                 RENTALVEHICLE: 0
             },
@@ -402,9 +402,9 @@
         var $overseasMedicalFilter = $('[name="minimum_overseas_medical_filter"]');
         var $rentalVehicleFilter = $('[name="minimum_rental_vehicle_filter"]');
 
-        var destination = $('#travel_destination').val();
+        var isDomesticTravel = meerkat.modules.travelResults.getIsOnlyDomesticTerritoriesSelected();
 
-        if(destination === 'AUS') {
+        if(isDomesticTravel) {
             $cancellationSlider.each(function() {
                 $(this).prop('min', 0);
                 $(this).prop('max', 10000);
@@ -445,13 +445,13 @@
      * Reset all the custom filter functionality
      */
     function resetCustomFilters() {
-        var destination = $('#travel_destination').val();
+        var isDomesticTravel = meerkat.modules.travelResults.getIsOnlyDomesticTerritoriesSelected();
 
         Results.model.travelFilters = {
             CONDITIONS: false,
             EXCESS: 200,
             LUGGAGE: 5000,
-            CXDFEE: destination === 'AUS' ? 10000 : 20000,
+            CXDFEE: isDomesticTravel ? 10000 : 20000,
             MEDICAL: 20000000,
             RENTALVEHICLE: 0,
             PROVIDERS: []
