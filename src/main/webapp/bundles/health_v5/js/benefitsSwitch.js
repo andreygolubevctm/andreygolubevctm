@@ -102,6 +102,8 @@
                 isSwitchedOn: data.value,
                 isMobile: isMobile
             });
+
+            _onBenefitsSwitch('hospital', data.value, false);
         });
 
         if (isMobile) return;
@@ -122,6 +124,8 @@
                 isSwitchedOn: data.value,
                 isMobile: isMobile
             });
+
+            _onBenefitsSwitch('extras', data.value, false);
         });
 
         if (isMobile) return;

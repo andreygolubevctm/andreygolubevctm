@@ -135,18 +135,16 @@ NOTE: This file hasn't been updated with the latest plugins and latest frontend 
 
 	$( document ).ready(function() {
 		$('#btnSubmit').click(function (e) {
-			console.log("btnsubmit");
-			window.parent.postMessage("message", '*');
 			var data = {
 				"pan" : "5105********5100",
 				"CRN" : "12345678",
-				"rescode" : "success",
+				"rescode" : "00",
 				"restext" : "",
 				"expMonth" : $("#EPS_EXPIRYMONTH").val(),
 				"expYear" : $("#EPS_EXPIRYYEAR").val(),
 				"cardType" : $("#CCType").val()
 			}
-			window.parent.postMessage(JSON.stringify(data), "*");
+			window.parent.parent.postMessage(JSON.stringify(data), "*");
 			e.preventDefault();
 		});
 	});

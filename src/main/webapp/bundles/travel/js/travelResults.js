@@ -205,6 +205,12 @@
 		 return 10000000;
 	 }
 
+	//  Note that as per CTM-3983 australian territories include:
+	//   Australia ('AUS')
+	//   Norfolk Island ('NFK')
+	//   Cocos Island  ('CCK')
+	//   Christmas Island ('CXR')
+	//   Heard and McDonald Islands ('HMD')
 	 function getCoverLevel(tripInfo, isAus) {
 		 var excessValue = tripInfo.excessValue <= Results.model.travelFilters.EXCESS;
 		 var medicalValue = tripInfo.medicalValue;
@@ -244,7 +250,20 @@
 			 return level;
 		 }
 
-     if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
+		 //  Note that as per CTM-3983 australian territories include:
+		 //   Australia ('AUS')
+		 //   Norfolk Island ('NFK')
+		 //   Cocos Island  ('CCK')
+		 //   Christmas Island ('CXR')
+		 //   Heard and McDonald Islands ('HMD')
+		 var noDomesticTerritoryDestinationDescriptionsFound = false;
+		 if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Christmas Island') == -1
+			 && result.des.indexOf('Norfolk Island') == -1 && result.des.indexOf('Cocos (Keeling) Islands') == -1
+			 && result.des.indexOf('Heard Island and McDonald Islands') == -1) {
+			 noDomesticTerritoryDestinationDescriptionsFound = true;
+		 }
+
+     if (noDomesticTerritoryDestinationDescriptionsFound && result.des.indexOf('Domestic') == -1) {
 			 	 level = getCoverLevel(tripInfo, false) + 'I';
          meerkat.modules.coverLevelTabs.incrementCount(level);
          return level;
@@ -260,11 +279,14 @@
 	*/
 	function massageResultsObject(products) {
 		var policyType = meerkat.modules.travel.getVerticalFilter();
-		var isAus = $('#travel_destination').val() === 'AUS';
+
+		var isOnlyDomesticTerritories = getIsOnlyDomesticTerritoriesSelected();
+
 		var isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
 		var isCruise = meerkat.modules.tripType.get().cruise.active;
 
 		_.each(products, function massageJson(result, index) {
+
 			if (result.available == 'Y') {
 
 				if (typeof result.info !== 'object') {
@@ -279,19 +301,19 @@
 				if (typeof obj.luggage !== 'undefined' && obj.luggageValue <= 0) {
 					obj.luggage = "$0";
 				}
-				// TRV-769 Set value and text to $0 for quotes for JUST Australia.
+				// TRV-769 Set value and text to $0 for quotes for JUST Domestic.
 				// added the policyType check because it was causing a bug
-				// the bus is caused by the user selecting Aus for single trip then selecting AMT
+				// the bug is caused by the user selecting Domestic for single trip then selecting AMT
 				// BTW not a huge fan of this, the backend should of probably handled setting the medicalValue to 0
 				//CTM-204 added the test for non cruise trip Types
 				// ie do not override medicalValues when cruise trip type is selected
-				 if (isAus && policyType == 'Single Trip' && !isCruise) {
+				 if (isOnlyDomesticTerritories && policyType == 'Single Trip' && !isCruise) {
 				 	obj.medicalValue = 0;
 				 	obj.medical = "N/A";
 				 }
 				if (isCoverLevelTabsEnabled === true) {
 					if (policyType == 'Single Trip') {
-						obj.coverLevel = getCoverLevel(obj, isAus);
+						obj.coverLevel = getCoverLevel(obj, isOnlyDomesticTerritories);
 					} else {
 						obj.coverLevel = getCoverLevelForMultiTrip(obj, result);
 					}
@@ -460,13 +482,41 @@
 		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
 	}
 
+	//The default return logic is used for annual multi trip journeys
 	function isDomestic() {
 
 		if (meerkat.modules.travel.getVerticalFilter() === 'Single Trip') {
-			return $('#travel_destination').val() === 'AUS';
+			return getIsOnlyDomesticTerritoriesSelected();
 		}
 
 		return $('#travel_filter_domestic:checked').val() === "D";
+	}
+
+    // This checks if all the destinations supplied are Australian territories see CTM-3983.
+	// treated as domestic if no destinations supplied - which should never happen
+	// there are more efficient ways to do this but web-ctm needs to support ie11
+	// Note in most situations you should use use the isDomestic function above rather than this function
+	//       in most situations as it has the correct checks for Annual multi trip functionality
+	function getIsOnlyDomesticTerritoriesSelected() {
+		var isDomesticTravel = true;
+
+		var theDestinationsStr = $('#travel_destination').val();
+
+		if (theDestinationsStr.length > 0) {
+			var destinationsArray = theDestinationsStr.split(',');
+
+			for (var i = 0; i < destinationsArray.length; i++) {
+				if (isDomesticTravel) {
+					var destination = destinationsArray[i];
+					isDomesticTravel = (
+						destination === 'AUS' || destination === 'CCK' || destination === 'CXR'
+						|| destination === 'HMD' || destination === 'NFK'
+					);
+				}
+			}
+
+		}
+		return isDomesticTravel;
 	}
 
 	function denoteDisclaimer(isDomestic) {
@@ -495,15 +545,15 @@
 	}
 
 	function setColVisibilityAndStylesByTravelType(isDomestic) {
-		var destination = $('#travel_destination').val();
+		var isActuallyDomestic = getIsOnlyDomesticTerritoriesSelected();
 
 		//set visibility of os medical and rental vehicle columns
-		$(".medicalTitle").toggle(!isDomestic && destination !== 'AUS');
-		$(".medicalAmount").toggle(!isDomestic && destination !== 'AUS');
-		$(".os-medical-col").toggle(!isDomestic && destination !== 'AUS');
-		$(".rentalVehicleTitle").toggle(isDomestic || destination === 'AUS');
-		$(".rentalVehicle").toggle(isDomestic || destination === 'AUS');
-		$(".rental-vehicle-col").toggle(isDomestic || destination === 'AUS');
+		$(".medicalTitle").toggle(!isDomestic && !isActuallyDomestic);
+		$(".medicalAmount").toggle(!isDomestic && !isActuallyDomestic);
+		$(".os-medical-col").toggle(!isDomestic && !isActuallyDomestic);
+		$(".rentalVehicleTitle").toggle(isDomestic || isActuallyDomestic);
+		$(".rentalVehicle").toggle(isDomestic || isActuallyDomestic);
+		$(".rental-vehicle-col").toggle(isDomestic || isActuallyDomestic);
 
 		// alter background colour for every second column
 		var evenRowIndex = 1;
@@ -675,7 +725,8 @@
 		rankingCallback: rankingCallback,
 		publishExtraTrackingEvents: publishExtraTrackingEvents,
 		invalidQuoteDueToDate: invalidQuoteDueToDate,
-		setColVisibilityAndStylesByTravelType: setColVisibilityAndStylesByTravelType
+		setColVisibilityAndStylesByTravelType: setColVisibilityAndStylesByTravelType,
+		getIsOnlyDomesticTerritoriesSelected: getIsOnlyDomesticTerritoriesSelected
 	});
 
 })(jQuery);

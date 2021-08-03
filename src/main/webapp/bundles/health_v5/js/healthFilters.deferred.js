@@ -462,19 +462,6 @@
             var plural = hospitalCount > 1 ? 's' : '';
             benefitString = hospitalCount + ' Benefit' + plural + ' selected';
         }
-        if (coverType !== 'E') { // Only when its H/C
-            // Update the active tab for hospital filter to limited if applicable
-            if (hospitalType === 'limited') {
-                benefitString = '';
-                $('.results-filters-benefits .health-filter-hospital-benefits li').find('a').each(function () {
-                    var $that = $(this);
-                    var isLimited = $that.attr('href').search(/limited/) !== -1;
-                    $that.closest('li').toggleClass('active', isLimited);
-                    $('#hospitalBenefits').toggleClass('active in', !isLimited);
-                    $('#limitedHospital').toggleClass('active in', isLimited);
-                });
-            }
-        }
         $('.filter-by-hospital-benefits').parent().find('.filter-toggle').html('<span class="extras-filter-toggle-text small">' + benefitString + '</span> '+ filterToggleText);
     }
 
@@ -600,6 +587,7 @@
 		} else if(coverType === 'H') {
 			meerkat.modules.healthBenefitsToggleAndJumpMenu.unselectExtrasBenefits(true);
 		}
+        meerkat.messaging.publish("COVERTYPE_CHANGED", {coverType: coverType});
     }
 
     function journeyIncludesHospital() {
