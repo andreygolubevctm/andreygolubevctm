@@ -256,7 +256,7 @@
         });
 
         $('.price-promise-container').find('iframe').each(function() {
-            this.contentWindow.postMessage('refresh');
+            this.contentWindow.postMessage('refresh', '/');
         });
 
         _setupDualPricing(product);
