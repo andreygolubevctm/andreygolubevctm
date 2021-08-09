@@ -55,10 +55,16 @@
                         <p>All Australian based call centre hours are ${openingHoursTimeZone}</p>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row callCentreNumber">
                     <a href="tel:${fn:replace(callCentreNumber, ' ', '')}" class="btn btn-primary btn-lg call-details-button">
                         <span class="call-details-button-label"><span class="icon icon-phone"></span> Call </span>
                         ${callCentreNumber}
+                    </a>
+                </div>
+                <div class="row callCentreAppNumber">
+                    <a href="tel:${fn:replace(callCentreAppNumber, ' ', '')}" class="btn btn-primary btn-lg call-details-button">
+                        <span class="call-details-button-label"><span class="icon icon-phone"></span> Call </span>
+                            ${callCentreAppNumber}
                     </a>
                 </div>
 
