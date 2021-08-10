@@ -65,7 +65,7 @@ public class CouponRouter extends HttpServlet {
 
 		String couponId = request.getParameter("couponId");
 		if(couponId == null || couponId.isEmpty() || !StringUtils.isNumeric(couponId)) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			LOGGER.info("couponId was not received for the uri {}. Going to return.", uri);
 			return;
 		}
 
