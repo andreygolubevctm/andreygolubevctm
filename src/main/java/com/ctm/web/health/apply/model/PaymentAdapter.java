@@ -15,10 +15,8 @@ import com.ctm.web.health.apply.model.request.payment.common.ExpiryYear;
 import com.ctm.web.health.apply.model.request.payment.credit.*;
 import com.ctm.web.health.apply.model.request.payment.credit.Number;
 import com.ctm.web.health.apply.model.request.payment.details.*;
+import com.ctm.web.health.apply.model.request.payment.medicare.*;
 import com.ctm.web.health.apply.model.request.payment.medicare.Medicare;
-import com.ctm.web.health.apply.model.request.payment.medicare.MedicareNumber;
-import com.ctm.web.health.apply.model.request.payment.medicare.MiddleInitial;
-import com.ctm.web.health.apply.model.request.payment.medicare.Position;
 import com.ctm.web.health.model.form.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -110,7 +108,10 @@ public class PaymentAdapter {
                                 return new Expiry(
                                         cardExpiryDay.orElse(null), cardExpiryMonth.orElse(null), cardExpiryYear.orElse(null)
                                 );
-                            }).orElse(null));
+                            }).orElse(null),
+                    medicare.map(com.ctm.web.health.model.form.Medicare::getColour)
+                            .map(CardColour::new)
+                            .orElse(null));
         } else {
             return null;
         }
