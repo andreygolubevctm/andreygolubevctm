@@ -52,13 +52,12 @@
   }
 
   .results-header-classification-icon {
-    border-radius: 30px;
-    height: 35px;
-    color: white;
+    border-radius: 4px;
+    height: 40px;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 11pt;
     width: 33%;
-    min-width: 135px;
+    min-width: 100px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -70,61 +69,57 @@
     }
 
     &.gov-unclassified {
-      background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
-
-      &.force-large {
-        background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
-      }
-
-      @media (@sm) {
-        background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+      background-image: linear-gradient(to right, #CCC9C9, #E0E0E0, #CCC9C9);
+      &::before {
+        content: "UNCLASSIFIED";
+        color: #757575;
       }
     }
 
     &.gov-bronze-plus {
-      background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+      background-image: linear-gradient(to right, #cf853d, #e3a669, #f5b87c, #e3a669, #CF853D);
       &::before {
         content: "BRONZE+";
       }
     }
 
     &.gov-bronze {
-      background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+      background-image: linear-gradient(to right, #cf853d, #e3a669, #f5b87c, #e3a669, #CF853D);
       &::before {
         content: "BRONZE";
       }
     }
 
     &.gov-silver {
-      background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+      background-image: linear-gradient(to right, #DEDDD9, #EDE8E1, #F1F1EE, #EDE8E1, #DEDDD9);
       &::before {
         content: "SILVER";
       }
     }
 
     &.gov-silver-plus {
-      background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+      background-image: linear-gradient(to right, #DEDDD9, #EDE8E1, #F1F1EE, #EDE8E1, #DEDDD9);
       &::before {
         content: "SILVER+";
       }
     }
 
     &.gov-gold {
-      background-image: linear-gradient(to right, #f3d838, #fded8d 50%, #f3d838);
+      background-image: linear-gradient(to right, #D0AC2B, #E8D160, #F5DD64, #E8D160, #D0AC2B);
       &::before {
         content: "GOLD";
       }
     }
 
     &.gov-basic {
-      background-color: #0d1644;
+      background-image: linear-gradient(to right, #90BDEA, #C2D9F0 50%, #90BDEA);
       &::before {
         content: "BASIC";
       }
     }
 
     &.gov-basic-plus {
-      background-color: #0d1644;
+      background-image: linear-gradient(to right, #90BDEA, #C2D9F0 50%, #90BDEA);
       &::before {
         content: "BASIC+";
       }

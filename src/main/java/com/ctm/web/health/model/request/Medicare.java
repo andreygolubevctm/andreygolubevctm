@@ -19,5 +19,6 @@ public class Medicare {
 	public String cardExpiryMonth;
 	public String firstName;
 	public String surname;
+	public String cardColour;
 
 }

@@ -32,9 +32,12 @@ public class Medicare {
 
     private final Expiry expiry;
 
+    @JsonSerialize(using = TypeSerializer.class)
+    private CardColour colour;
+
 
     public Medicare(final Cover cover, final MedicareNumber number, final FirstName firstName, final MiddleInitial middleInitial,
-                    final LastName lastName, final Position position, final Expiry expiry) {
+                    final LastName lastName, final Position position, final Expiry expiry, CardColour colour) {
         this.cover = cover;
         this.number = number;
         this.firstName = firstName;
@@ -42,6 +45,7 @@ public class Medicare {
         this.lastName = lastName;
         this.position = position;
         this.expiry = expiry;
+        this.colour = colour;
     }
 
     public Cover getCover() {
@@ -71,4 +75,6 @@ public class Medicare {
     public Expiry getExpiry() {
         return expiry;
     }
+
+    public CardColour getColour() { return colour; }
 }

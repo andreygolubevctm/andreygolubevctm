@@ -14,7 +14,6 @@ var healthFunds_QTS = {
     $paymentType : $('#health_payment_details_type input'),
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
-    $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
     $medicareFirstname: $('#health_payment_medicare_firstName'),
     $medicareLastname: $('#health_payment_medicare_surname'),
     set: function(){
@@ -121,12 +120,6 @@ var healthFunds_QTS = {
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
-
-        if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-            healthFunds_QTS.$paymentTypeContainer.slideUp();
-        } else {
-            healthFunds_QTS.$paymentTypeContainer.text('*QTS offers a 4% discount for bank account payments').slideDown();
-        }
     },
     unset: function(){
         healthFunds_QTS.$paymentType.off('change.QTS');
@@ -139,8 +132,6 @@ var healthFunds_QTS = {
         $('#health_application_no_email').off('click.QTS');
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
-
-        healthFunds_QTS.$paymentTypeContainer.text('').slideUp();
 
         <%--Contact Point question--%>
         meerkat.modules.healthFunds.hideHowToSendInfo();
