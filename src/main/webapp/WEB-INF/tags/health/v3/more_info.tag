@@ -191,9 +191,7 @@
                 <c:if test="${simplesHealthReformMessaging eq 'Y'}">
                     {{ if(!isExtrasOnly) { }}
                 <div class="results-header-classification">
-                    <div class="results-header-classification-title">Government classification</div>
                     <div class="simplesMoreInfoTierLogo {{= icon}}"></div>
-                    <div class="results-header-classification-date">{{= classificationDate}}</div>
                 </div>
                     {{ } }}
                 </c:if>
@@ -208,9 +206,7 @@
                         <c:if test="${simplesHealthReformMessaging eq 'Y'}">
                             {{ if(!isExtrasOnly) { }}
                             <div class="results-header-classification">
-                                <div class="results-header-classification-title">Government classification</div>
                                 <div class="simplesMoreInfoTierLogo {{= icon}}"></div>
-                                <div class="results-header-classification-date">{{= classificationDate}}</div>
                             </div>
                             {{ } }}
                         </c:if>

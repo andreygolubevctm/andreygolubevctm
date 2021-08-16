@@ -22,9 +22,7 @@
 
             {{ if(!isExtrasOnly) { }}
             <div class="results-header-classification">
-                <div class="results-header-classification-title">Government classification</div>
                 <div class="more-info-classification-icon {{= icon}}"></div>
-                <div class="results-header-classification-date">{{= classificationDate}}</div>
             </div>
             {{ } }}
         </div>

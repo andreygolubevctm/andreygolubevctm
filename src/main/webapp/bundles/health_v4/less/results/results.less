@@ -361,27 +361,39 @@
     .help-icon {
       line-height: 20px;
       color: @primary500;
+      padding-left: 5px;
     }
   }
 
   .abd-badge {
     background-color: #FFFFFF;
-    color: #666666;
     border-radius: 20px;
-    border: 1px solid #666666;
-    font-size: 11px;
+    border: 1px solid #ddd;
+    font-size: 13px;
     display: inherit;
     justify-content: center;
     align-items: center;
     text-align: center;
     margin: 0 auto;
-    padding: 2px;
+    padding: 3px 2px 3px 2px;
     min-height: 25px;
     font-weight: bold;
-    width: 85%;
-    min-width: 130px;
-    margin-bottom: 2px;
-    margin-top: 5px;
+    width: 100%;
+    min-width: 150px;
+    margin-bottom: 12px;
+    margin-top: 3px;
+    &:hover, &:focus, &:active{
+      background-color: fade(@primary500, 20%);
+      border-color: @primary500;
+    }
+    &:active > .help-icon  {
+      background-color: @primary500;
+      border: fade(@primary500, 30%);
+    }
+    @media (@xs-only) {
+      font-size: 14px;
+      padding: 3px 4px 3px 4px;
+    }
   }
 
   .results-header-inner-container {
@@ -389,10 +401,10 @@
     padding-bottom: 15px;
 
     .results-header-classification {
-      margin: 0px 0px 15px;
+      margin: 0 0 24px 0;
 
       @media (@lg) {
-        margin: 15px 0px;
+        margin: 15px 0px 19px 0;
       }
 
       .results-header-classification-title {
@@ -410,22 +422,13 @@
         }
       }
 
-      .results-header-classification-date {
-        height: 20px;
-        text-align: center;
-        color: #555555;
-        margin: 0 auto;
-        margin-top: 5px;
-      }
-
       .results-header-classification-icon {
-        border-radius: 30px;
-        height: 35px;
-        color: white;
+        border-radius: 4px;
+        height: 40px;
         font-weight: 600;
-        font-size: 18px;
+        font-size: 11pt;
         width: 33%;
-        min-width: 135px;
+        min-width: 100px;
         text-align: center;
         display: flex;
         justify-content: center;
@@ -437,33 +440,29 @@
         }
 
         &.gov-unclassified {
-          background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass_mobile.svg');
-
-          &.force-large {
-            background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
-          }
-
-          @media (@sm) {
-            background-image: url('../../../../assets/graphics/health_classification/unclassified_govclass.svg');
+          background-image: linear-gradient(to right, #CCC9C9, #E0E0E0, #CCC9C9);
+          &::before {
+            content: "UNCLASSIFIED";
+            color: #757575;
           }
         }
 
         &.gov-bronze-plus {
-          background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+          background-image: linear-gradient(to right, #cf853d, #e3a669, #f5b87c, #e3a669, #CF853D);
           &::before {
             content: "BRONZE+";
           }
         }
 
         &.gov-bronze {
-          background-image: linear-gradient(to right, #b1570f, #e5a06b 50%, #b1570f);
+          background-image: linear-gradient(to right, #cf853d, #e3a669, #f5b87c, #e3a669, #CF853D);
           &::before {
             content: "BRONZE";
           }
         }
 
         &.gov-silver {
-          background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+          background-image: linear-gradient(to right, #DEDDD9, #EDE8E1, #F1F1EE, #EDE8E1, #DEDDD9);
           &::before {
             content: "SILVER";
             color: #333333;
@@ -471,7 +470,7 @@
         }
 
         &.gov-silver-plus {
-          background-image: linear-gradient(to right, #d1d1d1, #e3e0e0 50%, #d1d1d1);
+          background-image: linear-gradient(to right, #DEDDD9, #EDE8E1, #F1F1EE, #EDE8E1, #DEDDD9);
           &::before {
             content: "SILVER+";
             color: #333333;
@@ -479,21 +478,21 @@
         }
 
         &.gov-gold {
-          background-image: linear-gradient(to right, #f3d838, #fded8d 50%, #f3d838);
+          background-image: linear-gradient(to right, #D0AC2B, #E8D160, #F5DD64, #E8D160, #D0AC2B);
           &::before {
             content: "GOLD";
           }
         }
 
         &.gov-basic {
-          background-color: #0d1644;
+          background-image: linear-gradient(to right, #90BDEA, #C2D9F0 50%, #90BDEA);
           &::before {
             content: "BASIC";
           }
         }
 
         &.gov-basic-plus {
-          background-color: #0d1644;
+          background-image: linear-gradient(to right, #90BDEA, #C2D9F0 50%, #90BDEA);
           &::before {
             content: "BASIC+";
           }
@@ -518,34 +517,29 @@
       margin-top: 15px;
     }
   }
-  .productSummary {
-    margin-bottom: 10px;
-    height: 205px;
+  .results-classification-abd {
+    height: 100px;
     @media (@xs-only) {
-      height: 225px;
+      height: 125px;
     }
-
+  }
+  .productSummary {
+    margin-bottom: 6px;
+    height: 172px;
+    @media (@xs-only) {
+      height: 192px;
+    }
     .frequencyAmount {
       color: @gray-base;
       font-weight: bolder;
-      font-size: 36px;
+      font-size: 45px;
       @media( max-width: @screen-xs) {
-        font-size: 24px;
+        font-size: 40px;
       }
 
       .dollarSign, .cents{
         @media (max-width: @screen-xs) {
           font-size: 11px;
-        }
-      }
-
-      .frequencyTitle {
-        font-size: 14px;
-        font-weight : 100;
-
-        @media (max-width: @screen-xs) {
-          font-weight: 100;
-          font-size: 12px;
         }
       }
 
@@ -555,15 +549,36 @@
       }
     }
 
+    .frequencyTitle {
+      font-size: 16px;
+      font-weight : bolder;
+      text-transform: capitalize;
+
+      @media (max-width: @screen-xs) {
+        font-weight: 100;
+        font-size: 12px;
+      }
+    }
+
     .lhcText {
       color: @gray-darker;
       text-align: center;
       .small;
       padding-bottom: 5px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+      display: inline-flex;
+      @media (@xs-only) {
+        display: flex;
+        justify-content: center;
+      }
     }
+
+    .lhcStaticText {
+      color: @gray-dark;
+      text-align: center;
+      .small;
+      margin-top: 3px;
+    }
+
     @media (@lg) {
       .frequencyAmount {
         width: 100%;
@@ -578,7 +593,7 @@
     }
 
     .companyLogo {
-      margin-top: 20px;
+      margin-top: 24px;
     }
   }
 
@@ -1333,16 +1348,16 @@ body {
 
     &:not(.moreInfoVisible) {
       .price.premium {
-        margin-top: 10px;
+        margin-top: 20px;
 
         .frequency {
 
           @media (@sm) {
-            height: 108px;
+            height: 70px;
           }
 
           @media (@lg) {
-            height: 90px;
+            height: 63px;
           }
         }
       }

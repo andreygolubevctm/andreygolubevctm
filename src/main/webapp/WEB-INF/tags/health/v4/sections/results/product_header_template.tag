@@ -38,6 +38,10 @@
                 {{ var lhtText = frequencyPremium.lhcfreepricing.split("<br>")[0]; }}
                 {{ var abdRequestFlag = obj.info.abdRequestFlag; }}
                 {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
+                {{ var isConfirmation = false; }}
+                {{ try{ }}
+                {{ isConfirmation = _.isNumber(meerkat.modules.healthConfirmation.getPremium()); }}
+                {{ } catch(e){} }}
 
                 <div class="hide-on-affix logo-full-width">{{= logoHtml }}</div>
 
@@ -60,15 +64,6 @@
                         </span>
                     {{ } }}
                 </div>
-                {{ if(obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 && isDualPricingActive ) { }}
-                    {{ if(abdRequestFlag === 'A') { }}
-                        <health_v4:abd_badge abd="true" />
-                    {{ } else { }}
-                        <health_v4:abd_badge abd="false" />
-                    {{ } }}
-                    <health_v4:abd_whats_this shortTitle="false" />
-                {{ } }}
-
             </div>
 
             {{ if (obj.hasOwnProperty('premium')) { }}
@@ -85,28 +80,37 @@
 
 
             <c:set var="onlineHealthReformMessaging" scope="request"><content:get key="onlineHealthReformMessaging" /></c:set>
+            <div class="results-classification-abd">
+                <c:choose>
+                <c:when test="${onlineHealthReformMessaging eq 'Y'}">
+                    {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
+                    {{ var isExtrasOnly = obj.info.ProductType === 'Ancillary' || obj.info.ProductType === 'GeneralHealth'; }}
+                    {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
 
-            <c:choose>
-            <c:when test="${onlineHealthReformMessaging eq 'Y'}">
-                {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
-                {{ var isExtrasOnly = obj.info.ProductType === 'Ancillary' || obj.info.ProductType === 'GeneralHealth'; }}
-                {{ var icon = isExtrasOnly ? 'small-height' : classification.icon; }}
-                {{ var classificationDate = ''; }}
+                    {{ if(!isExtrasOnly) { }}
+                    <div class="results-header-classification">
+                        <div class="results-header-classification-icon {{= icon}}"></div>
+                    </div>
+                    {{ } }}
+                </c:when>
+                </c:choose>
 
-                {{ if(classification.date && classification.icon !== 'gov-unclassified') { }}
-                    {{ classificationDate = 'As of ' + classification.date; }}
+                {{ if(obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 && isDualPricingActive ) { }}
+                {{ if(abdRequestFlag === 'A') { }}
+                <health_v4:abd_badge_with_link abd="true" />
+                {{ } else { }}
+                <health_v4:abd_badge_with_link abd="false" />
+                {{ } }}
                 {{ } }}
 
-                {{ if(!isExtrasOnly) { }}
-                <div class="results-header-classification">
-                    <div class="results-header-classification-title">Government classification</div>
-                    <div class="results-header-classification-icon {{= icon}}"></div>
-                    <div class="results-header-classification-date">{{= classificationDate}}</div>
-                </div>
+                {{ if(obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 > 0 && !obj.isForResultPage && !isDualPricingActive ) { }}
+                {{ if(obj.custom.reform.yad === "A" || (obj.custom.reform.yad === "R" && (isConfirmation || !meerkat.modules.healthRABD.isRABD()))) { }}
+                <health_v4:abd_badge_with_link abd="true" />
+                {{ } else { }}
+                <health_v4:abd_badge_with_link abd="false" />
                 {{ } }}
-            </c:when>
-            </c:choose>
-
+                {{ } }}
+            </div>
             {{ if(obj.promo.providerPhoneNumber) { }}
             <div class="callCentreNumber">
                 <span class="icon icon-phone icon-results"></span><a href="tel:{{= obj.promo.providerPhoneNumber }}">{{= obj.promo.providerPhoneNumber }}</a>
