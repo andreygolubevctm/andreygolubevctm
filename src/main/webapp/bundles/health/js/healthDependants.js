@@ -51,6 +51,7 @@
             useSchoolDropdownMenu: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
+            isAUF: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,
@@ -202,6 +203,8 @@
      * the configuration that it wants to show full time, or school id, etc in the healthFund JSP
      */
     function toggleDependantFields($wrapper) {
+
+        meerkat.modules.healthDependants.updateAgeWarningForAUFDependants();
 
         var dependantId = $wrapper.attr('data-id'),
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
@@ -447,6 +450,25 @@
     }
 
     /**
+     * If any of the, AUF Only, dependants are between the ages of 23-25, display a Mandatory script
+     */
+    function updateAgeWarningForAUFDependants() {
+        if (providerConfig.isAUF) {
+            for (var dependantId = 1; dependantId <= getNumberOfDependants(); dependantId++) {
+                var selectorPrefix = '#health_application_dependants_dependant' + dependantId;
+                var dobAsString = $(selectorPrefix + '_dob').val() || '0';
+                var ageAsNumber = meerkat.modules.age.returnAge(dobAsString, true) || 0;
+
+                if (ageAsNumber >= 23 && ageAsNumber <= 25) {
+                    $('.simples-dialogue-228').show();
+                    return;
+                }
+            }
+        }
+        $('.simples-dialogue-228').hide();
+    }
+
+    /**
      * Dependants are currently dumped into settings.tag. Ideally, this would be pulled in via an XHR
      * request when the application step loads.
      * @returns {*}
@@ -611,7 +633,8 @@
         setMaxAge: setMaxAge,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
-        getNumberOfDependants: getNumberOfDependants
+        getNumberOfDependants: getNumberOfDependants,
+        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants
     });
 
 })(jQuery);

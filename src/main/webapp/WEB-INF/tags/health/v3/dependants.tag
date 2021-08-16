@@ -39,6 +39,7 @@
 		</div>
 
 		<health_v3:dependant_details_template xpath="${xpath}/dependant" />
+		<simples:dialogue id="228" className="red" vertical="health" mandatory="true" />
 
 		<form_v2:row id="dependents_list_options">
 			<a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependant">Add New Dependant</a>
