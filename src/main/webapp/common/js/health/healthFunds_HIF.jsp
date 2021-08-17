@@ -17,7 +17,6 @@
     HIF
     =======================
     --%>
-
     var healthFunds_HIF = {
         $firstnames: $('#health_application_primary_firstname, #health_application_partner_firstname'),
         $surnames: $('#health_application_primary_surname, #health_application_partner_firstname, .health_dependant_details .nestedGroup .fieldrow:not(.selectContainerTitle):nth(1) input[type=text]'),
@@ -163,6 +162,7 @@
             meerkat.messaging.subscribe(meerkat.modules.healthDependants.events.DEPENDANTS_RENDERED, function() {
                 $('.health_dependant_details input[name*="_firstName"]').attr('maxlength', 16);
                 $('.health_dependant_details input[name*="_lastname"]').attr('maxlength', 25);
+                $('.health_dependant_details input[name*="_school"]').attr('maxlength', 30);
             });
 
             $(document).on('change.HIF', '.health_dependant_details .selectContainerTitle select', function() {
@@ -244,12 +244,17 @@
             healthFunds_HIF.$paymentTypeContainer.text('HIF offers a 4% discount for annual payments or 2% discount for half-yearly payments');
         },
         renderPaymentDays: function() {
-            meerkat.modules.healthFunds.setPayments({ 'min':5, 'max':12, 'weekends':true });<%-- 7 payment option days --%>
             healthFunds_HIF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+            var paymentFrequency = healthFunds_HIF.$paymentFrequency.val();
+            if (['monthly', 'quarterly', 'halfyearly'].indexOf(paymentFrequency) > -1) {
+                meerkat.modules.healthFunds.setPayments({'min': 3, 'max': 20, 'weekends': false, 'maxDay': 28});<%-- do not allow selection of 29,30,31 --%>
+            } else {
+                meerkat.modules.healthFunds.setPayments({'min': 3, 'max': 20, 'weekends': false});
+            }
 
-            var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
+            var _html = meerkat.modules.healthPaymentDay.paymentDays($('#health_payment_details_start').val());
+            meerkat.modules.healthPaymentDay.paymentDaysRender($('.health_payment_bank_details-policyDay'), _html);
+            meerkat.modules.healthPaymentDay.paymentDaysRender($('.health_payment_credit_details-policyDay'), _html);
         },
         unset: function() {
             meerkat.modules.healthFunds._reset();
@@ -290,6 +295,7 @@
             meerkat.messaging.unsubscribe(meerkat.modules.healthDependants.events.DEPENDANTS_RENDERED, function() {
                 $('.health_dependant_details input[name*="_firstName"]').attr('maxlength', 24);
                 $('.health_dependant_details input[name*="_lastname"]').attr('maxlength', 20);
+                $('.health_dependant_details input[name*="_school"]').attr('maxlength', 30);
             });
 
             meerkat.modules.paymentGateway.reset();
