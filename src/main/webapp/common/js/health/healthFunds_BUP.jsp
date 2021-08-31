@@ -176,7 +176,7 @@ var healthFunds_BUP = {
 
 		<%-- Payment Options --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
-		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
+		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
 		healthFunds_BUP.$paymentType.on('change.BUP', function updatePaymentMsgPaymentType(){
 			healthFunds_BUP.updateMessage();
@@ -215,7 +215,9 @@ var healthFunds_BUP = {
 	},
 	updateMessage: function() {
 		var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-		if (freq == 'fortnightly') {
+		var payMethodSetting = (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') ? 'credit' : 'bank';
+		var paymentMethodHasFreq = (payMethodSetting != null && meerkat.modules.healthPaymentStep.getSetting(payMethodSetting)[freq] == true) ? true : false;
+		if (freq == 'fortnightly' && paymentMethodHasFreq) {
 			var deductionText = "Your initial payment will be one month's premium and a fortnightly amount thereafter. If your policy start date is within the next 14 days from today, your 1st payment will be deducted on your start date. If your start day is outside 14 days, your initial payment will be taken within the next 24 hours.";
 		} else {
 			var deductionText = 'If your policy start date is within the next 14 days from today, your 1st payment will be deducted on your start date. If your start day is outside 14 days, your initial payment will be taken within the next 24 hours.';
