@@ -286,6 +286,7 @@
 			toggleAMATrailCampaign();
 			toggleNJLTrailCampaign();
 			toggleRedlandsTrailCampaign();
+            toggleQSmsQSmsMaxContactType();
             cleanupOptins();
         });
         // Handle callback checkbox 68
@@ -602,6 +603,11 @@
         }
     }
 
+    function toggleQSmsQSmsMaxContactType() {
+        $('body').toggleClass('qmsContact', $healthContactTypeField.val() === 'qSms' ||
+                                            $healthContactTypeField.val() === 'qSmsMax');
+    }
+
     function toggleRedlandsTrailCampaign() {
 		$('body').toggleClass('trialCampaignRedlands', $healthContactTypeField.val() === 'trialCampaignRedlands');
 	}
@@ -649,7 +655,7 @@
         // Set the calltype variables
         callType = getCallType();
         if (!_.isEmpty(callType)) {
-            isValidCallType = _.indexOf(['outbound','inbound','cli','nextgen','nextgenoutbound','nextgencli','energyCrossSell','energyTransfer'], callType) >= 0;
+            isValidCallType = _.indexOf(['outbound','inbound','cli','nextgen','nextgenoutbound','nextgencli','energyCrossSell','energyTransfer', 'qSms', 'qSmsMax'], callType) >= 0;
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
@@ -723,7 +729,11 @@
             }
         }
 
-        if(brandCodeIsCtm && dblChkCallType && !isInbound && dblChkCallType !== "outbound" && dblChkCallType !== "cli"){
+        if(brandCodeIsCtm && dblChkCallType && !isInbound &&
+            dblChkCallType !== "outbound" &&
+            dblChkCallType !== "cli" &&
+            dblChkCallType !== "qSms" &&
+            dblChkCallType !== "qSmsMax") {
             $referralCallCheckbox.prop("checked", true);
         }
 
