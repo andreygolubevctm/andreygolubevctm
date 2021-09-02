@@ -165,6 +165,10 @@
 
 	function getDeclaration() {
 		var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+		selectedProduct.paymentNode = getPaymentMethodNode();
+		selectedProduct.premium = selectedProduct.paymentTypePremiums[selectedProduct.paymentNode];
+		selectedProduct._selectedFrequency = getSelectedFrequency();
+
 		var data = {};
 		data.providerId = selectedProduct.info.providerId;
 		data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
@@ -245,7 +249,37 @@
 	}
 
 	function getSelectedFrequency(){
-		return (!_.isEmpty($frequencySelect.val()) ? $frequencySelect.val() : Results.getFrequency());
+		var freq = (!_.isEmpty($frequencySelect.val()) ? $frequencySelect.val() : Results.getFrequency());
+		var product = meerkat.modules.healthResults.getSelectedProduct();
+		if (!_.isEmpty(product) && !_.isEmpty(product.paymentTypePremiums)) {
+			product.paymentNode = getPaymentMethodNode();
+			var paymentMethodHasFreq = checkPaymentMethodHasFreq(product);
+			if (!paymentMethodHasFreq) {
+				var defaultFrequency = getDefaultFrequencyForPaymentMethod(product);
+				if (defaultFrequency != null) {
+					freq = defaultFrequency;
+				}
+			}
+		}
+		return freq;
+	}
+
+	function checkPaymentMethodHasFreq(product) {
+		return product.paymentTypePremiums && product.paymentTypePremiums[product.paymentNode]
+			&& product.paymentTypePremiums[product.paymentNode][product._selectedFrequency]
+			&& product.paymentTypePremiums[product.paymentNode][product._selectedFrequency].value > 0;
+	}
+
+	function getDefaultFrequencyForPaymentMethod(product) {
+		var defaultFrequency = null;
+		$.each(product.paymentTypePremiums[product.paymentNode], function(key, item) {
+			if (item.value > 0) {
+				defaultFrequency = key;
+				return false;
+			}
+		});
+
+		return defaultFrequency;
 	}
 
 	// Show approved listings only, this can potentially change per fund
@@ -260,6 +294,7 @@
 
 			$frequencySelect.empty().append(options);
 			updateLHCText(product);
+			getDeclaration();
 
 			if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 				$frequencySelect.trigger('change.healthDualPricing');
@@ -393,6 +428,7 @@
 		var product = meerkat.modules.healthResults.getSelectedProduct();
 		updateProductObject(product);
 		updateLHCText(product);
+		getDeclaration();
 	}
 
 	function updateProductObject(product) {
@@ -413,7 +449,7 @@
 
 		switch (getSelectedPaymentMethod()) {
 			case 'cc':
-				var label = $paymentRadioGroup.find('label.active').text().trim();
+				var label = $paymentRadioGroup.find('input:checked').closest('label').text().trim();
 
 				if (label == 'Credit Card') {
 					nodeName = 'CreditCard';
