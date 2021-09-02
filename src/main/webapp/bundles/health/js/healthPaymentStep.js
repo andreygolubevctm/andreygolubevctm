@@ -215,7 +215,37 @@
 	}
 
 	function getSelectedFrequency(){
-		return (!_.isEmpty($frequencySelect.val()) ? $frequencySelect.val() : Results.getFrequency());
+		var freq = (!_.isEmpty($frequencySelect.val()) ? $frequencySelect.val() : Results.getFrequency());
+		var product = meerkat.modules.healthResults.getSelectedProduct();
+		if (!_.isEmpty(product) && !_.isEmpty(product.paymentTypePremiums)) {
+			product.paymentNode = getPaymentMethodNode();
+			var paymentMethodHasFreq = checkPaymentMethodHasFreq(product);
+			if (!paymentMethodHasFreq) {
+				var defaultFrequency = getDefaultFrequencyForPaymentMethod(product);
+				if (defaultFrequency != null) {
+					freq = defaultFrequency;
+				}
+			}
+		}
+		return freq;
+	}
+
+	function checkPaymentMethodHasFreq(product) {
+		return product.paymentTypePremiums && product.paymentTypePremiums[product.paymentNode]
+			&& product.paymentTypePremiums[product.paymentNode][product._selectedFrequency]
+			&& product.paymentTypePremiums[product.paymentNode][product._selectedFrequency].value > 0;
+	}
+
+	function getDefaultFrequencyForPaymentMethod(product) {
+		var defaultFrequency = null;
+		$.each(product.paymentTypePremiums[product.paymentNode], function(key, item) {
+			if (item.value > 0) {
+				defaultFrequency = key;
+				return false;
+			}
+		});
+
+		return defaultFrequency;
 	}
 
 	function setCoverStartRange(min, max){
