@@ -80,7 +80,9 @@ public class RememberMeServiceTest {
     @Test
     public void testDeleteCookie() throws GeneralSecurityException {
         final ArgumentCaptor<Cookie> cookieCaptor = ArgumentCaptor.forClass(Cookie.class);
-        service.deleteCookie("health", response);
+        final String cookieName = getCookieName();
+        when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie(cookieName, "b"), new Cookie("c", "c")});
+        service.deleteCookie("health", request, response);
         verify(response, only()).addCookie(cookieCaptor.capture());
         final Cookie cookie = cookieCaptor.getValue();
         assertEquals("/", cookie.getPath());
@@ -94,7 +96,7 @@ public class RememberMeServiceTest {
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie("b", "b")});
         PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
         when(pageSettings.getSettingAsBoolean("rememberMeEnabled")).thenReturn(true);
-         assertFalse(service.hasRememberMe(request, "health"));
+        assertFalse(service.hasRememberMe(request, "health"));
     }
 
     @Test

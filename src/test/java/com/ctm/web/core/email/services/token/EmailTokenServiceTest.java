@@ -52,11 +52,19 @@ public class EmailTokenServiceTest {
         doNothing().when(emailTokenDao).addEmailToken(12345678L, 1L, "type", "subscribe");
 
         String token = emailTokenService.generateToken(params);
+        Assert.assertNotNull(token);
 
         verify(emailMasterDao).getEmailMasterFromHashedEmail("aaaaaaaa", 1);
         verify(emailTokenDao).addEmailToken(12345678L, 1L, "type", "subscribe");
 
-        Assert.assertEquals(token, "LxdLS6JbFjoGed60PhMBb1G3-LDbW7eH_b6UzsxF32x1vflt-b2Kg6lqkrma9fondcOBAusakomj5AT_3cgTTdeJqIxtnPeWlRODczy4fjaDoPV35IudpjTkY_4SqSn2daHWp25ImHWZ2OMxwI0mCw");
+        String token2 = emailTokenService.generateToken(params);
+        Assert.assertNotNull(token2);
+        //encrypting the same params again should give different token
+        Assert.assertNotEquals(token, token2);
+
+        Map<String, String> decryptedMap = emailTokenService.decryptToken(token);
+        Map<String, String> decryptedMap2 = emailTokenService.decryptToken(token2);
+        Assert.assertEquals(decryptedMap, decryptedMap2);
     }
 
 
@@ -87,7 +95,7 @@ public class EmailTokenServiceTest {
         verify(emailMasterDao, times(1)).getEmailMasterFromHashedEmail("aaaaaaaa", 1);
         verifyZeroInteractions(emailTokenDao);
 
-        Assert.assertEquals(token, "LxdLS6JbFjoGed60PhMBb1G3-LDbW7eH_b6UzsxF32x1vflt-b2Kg6lqkrma9fondcOBAusakomj5AT_3cgTTdeJqIxtnPeWlRODczy4fjaDoPV35IudpjTkY_4SqSn2daHWp25ImHWZ2OMxwI0mCw");
+        Assert.assertNotNull(token);
     }
 
     @Test
@@ -132,6 +140,21 @@ public class EmailTokenServiceTest {
         expectedDecrypted.put(EmailUrlService.EMAIL_TOKEN_ACTION, "subscribe");
         expectedDecrypted.put(EmailUrlService.EMAIL_ID, "1");
 
+        Map<String, String> params = emailTokenService.decryptToken("nPW3GtW3yoy7Rj1q89phinxwXrp2n1NAayDJTVLFoYxMPle44-9Zum--dTpmVhL2z6GTo8rPq--pREg-0DO0kqNr2pbj5LzH1qcgR59zFiT81uilG5lTtTqXOmjnf-uOpIbNWEO33ItwEhMHShMDgygRakaAWn_jfGXWKPBuG329ATkM");
+
+        Assert.assertEquals(expectedDecrypted, params);
+    }
+
+    @Test
+    public void testDecryptECB_whenTokenIsECBEncrypted_tokenIsDecrypted() {
+        Map<String, String> expectedDecrypted = new HashMap<>();
+        expectedDecrypted.put(EmailUrlService.TRANSACTION_ID, "12345678");
+        expectedDecrypted.put(EmailUrlService.HASHED_EMAIL, "aaaaaaaa");
+        expectedDecrypted.put(EmailUrlService.STYLE_CODE_ID, "1");
+        expectedDecrypted.put(EmailUrlService.EMAIL_TOKEN_TYPE, "type");
+        expectedDecrypted.put(EmailUrlService.EMAIL_TOKEN_ACTION, "subscribe");
+        expectedDecrypted.put(EmailUrlService.EMAIL_ID, "1");
+
         Map<String, String> params = emailTokenService.decryptToken("LxdLS6JbFjoGed60PhMBb1G3-LDbW7eH_b6UzsxF32x1vflt-b2Kg6lqkrma9fondcOBAusakomj5AT_3cgTTdeJqIxtnPeWlRODczy4fjaDoPV35IudpjTkY_4SqSn2daHWp25ImHWZ2OMxwI0mCw");
 
         Assert.assertEquals(expectedDecrypted, params);
@@ -149,7 +172,6 @@ public class EmailTokenServiceTest {
 
         Assert.assertEquals(expectedDecrypted, params);
     }
-
 
     @Test
     public void testGetIncomingEmailDetails() throws DaoException, GeneralSecurityException {
