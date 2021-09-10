@@ -25,7 +25,7 @@
 	{{ var textLhcFreeDualPricing= 'inc ' + formatCurrency(prem.rebateValue) + ' Govt Rebate';}}
     {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
 
-    <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
+    <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }} {{= (!isDualPricingActive && textLhcFreePricing !== '') ? 'hasLhcFreePricingText' : '' }}">
         {{ if (!result.hasValidPrice) { }}
         {{ var comingSoonLabel = frequency; }}
         {{ if (comingSoonLabel == 'annually') { }}
