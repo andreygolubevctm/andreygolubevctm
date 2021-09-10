@@ -54,7 +54,7 @@ public class RememberMeController {
                 isReviewEdit = reviewedit.equalsIgnoreCase("Y");
                 rememberMeService.updateAttemptsCounter(request, response, vertical);
                 if(isValidAnswer) {
-                    rememberMeService.deleteCookie(vertical, response);
+                    rememberMeService.deleteCookie(vertical, request, response);
                     rememberMeService.removeAttemptsSessionAttribute(request, vertical);
                 }
                 return new RememberMeModel(isValidAnswer, transactionId.orElse(null), isReviewEdit);
@@ -73,7 +73,7 @@ public class RememberMeController {
                                 final HttpServletRequest request,
                                 final HttpServletResponse response) throws IOException, GeneralSecurityException {
         LOGGER.info("RememberMe request deleteCookie");
-        Boolean cookieDeleted = rememberMeService.deleteCookie(vertical, response);
+        Boolean cookieDeleted = rememberMeService.deleteCookie(vertical, request, response);
         LOGGER.info("RememberMe cookie deleted? {}", cookieDeleted);
         Boolean removeAttemptsSessionAttributeDeleted = cookieDeleted ? rememberMeService.removeAttemptsSessionAttribute(request, vertical) : false;
         LOGGER.info("removeAttemptsSessionAttribute? {}", removeAttemptsSessionAttributeDeleted);

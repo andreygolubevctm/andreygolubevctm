@@ -366,7 +366,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         LOGGER.info("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
 
-        rememberMeService.deleteCookie(Vertical.VerticalType.HEALTH.name(), httpServletResponse);
+        rememberMeService.deleteCookie(Vertical.VerticalType.HEALTH.name(), request, httpServletResponse);
 
         final HealthResultWrapper resultWrapper = new HealthResultWrapper();
         resultWrapper.setResult(result);

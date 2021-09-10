@@ -513,7 +513,7 @@
             for (var i = openedDialogs.length - 1; i >= 0; i--) {
                 var dialog = openedDialogs[i];
                 if (dialog.closeOnHashChange === true) {
-                    if (_.indexOf(event.hashArray, dialog.hashId) == -1) {
+                    if (_.indexOf(event.hashArray, dialog.hashId ) == -1 && dialog.hashId !== 'view_all_hours') {
                         self.close(dialog.id);
                     }
                 }

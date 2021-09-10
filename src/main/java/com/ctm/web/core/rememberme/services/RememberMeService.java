@@ -70,13 +70,14 @@ public class RememberMeService {
                                  final Long transactionId,
                                  final HttpServletResponse response) throws GeneralSecurityException, DaoException, ConfigSettingException {
         if (vertical != null && transactionId != null) {
-            final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
+            final String cookieName = getNewCookieName(vertical);
             addCookie(response, transactionId, cookieName);
         }
     }
 
-    private static String getCookieName(final String content) throws GeneralSecurityException {
-        return StringEncryption.encrypt(SECRET_KEY, content);
+    private static String getNewCookieName(String vertical) throws GeneralSecurityException {
+        //Note: Encryption can return different tokens for a vertical every time its called
+        return StringEncryption.encrypt(SECRET_KEY, vertical.toLowerCase() + COOKIE_SUFFIX);
     }
 
     private static void addCookie(HttpServletResponse response, final Long transactionId, final String cookieName) throws GeneralSecurityException {
@@ -197,15 +198,23 @@ public class RememberMeService {
 
     private Cookie getRememberMeCookie(final HttpServletRequest request,
                                        final String vertical) throws GeneralSecurityException {
-        final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
-        if(request.getCookies() != null ){
+        if(request.getCookies() != null ) {
             return Arrays.stream(request.getCookies())
                     .filter(Objects::nonNull)
-                    .filter(cookie -> cookie.getName().equals(cookieName))
+                    .filter(cookie -> cookieIsForVertical(vertical, cookie))
                     .findFirst()
                     .orElse(null);
-        }else
+        } else {
             return null;
+        }
+    }
+
+    private boolean cookieIsForVertical(String vertical, Cookie cookie) {
+        try {
+            return StringEncryption.decrypt(SECRET_KEY, cookie.getName()).equals(vertical.toLowerCase() + COOKIE_SUFFIX);
+        } catch (GeneralSecurityException e) {
+            return false;
+        }
     }
 
     public Optional<String> getTransactionIdFromCookie(final String vertical, final HttpServletRequest request) throws GeneralSecurityException {
@@ -235,7 +244,7 @@ public class RememberMeService {
                             if (!hasPersonalInfo) {
                                 loadSessionData(request, vertical, rememberMeCookieValue.orElse(null), presentTransactionDetails);
                                 try {
-                                    deleteCookie(vertical, response);
+                                    deleteCookie(vertical, request, response);
                                 } catch (GeneralSecurityException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -329,7 +338,7 @@ public class RememberMeService {
             }
             if (attemptsCounter >= maxAttempts && session != null) {
                 removeAttemptsSessionAttribute(request, vertical);
-                deleteCookie(vertical, response);
+                deleteCookie(vertical, request, response);
             }
         }
     }
@@ -412,11 +421,12 @@ public class RememberMeService {
         }
     }
 
-    public Boolean deleteCookie(final String vertical, final HttpServletResponse response) throws GeneralSecurityException {
-        final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
-        LOGGER.info("RememberMe Service deleteCookie: {}", kv("cookieName", cookieName));
-        if (cookieName != null) {
-            final Cookie cookie = new Cookie(cookieName, "");
+    public Boolean deleteCookie(final String vertical, final HttpServletRequest request, final HttpServletResponse response) throws GeneralSecurityException {
+        final Cookie cookie = getRememberMeCookie(request, vertical);
+
+        if (cookie != null) {
+            LOGGER.info("RememberMe Service deleteCookie: {}", kv("cookieName", cookie.getName()));
+            cookie.setValue("");
             cookie.setMaxAge(0);
             cookie.setPath("/");
 			setCookieDomain(cookie);
