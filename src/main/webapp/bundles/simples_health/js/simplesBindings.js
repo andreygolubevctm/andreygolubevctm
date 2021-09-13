@@ -706,7 +706,7 @@
 	// Toggle visibility on referral call dialogs based on if NOT inbound call
 	function toggleReferralCallDialog() {
     	var callType = getRawCallType();
-    	var validCallType = !_.isEmpty(callType) && _.indexOf(['inbound','nextgen','nextgenoutbound','nextgencli'], callType) < 0;
+    	var validCallType = !_.isEmpty(callType) && _.indexOf(['nextgen','nextgenoutbound','nextgencli'], callType) < 0;
 		$referralCallCheckboxDialogue.toggle(validCallType);
 		if(!validCallType && $referralCallCheckbox.is(':checked')) {
 			$referralCallCheckbox.prop("checked", null).trigger("change");
@@ -715,6 +715,12 @@
 	}
 	// Toggle visibility of referral related dialogs when referral selected
 	function toggleReferralCallCheckbox(callType) {
+        if (getRawCallType() === "inbound") {
+            $dialogue36.show();
+            $dialogue38.show();
+            $dialogue40.show();
+            return;
+        }
         callType = callType || false;
         var isInbound = callType === "inbound";
         var suppressTrialToggle = false;
@@ -730,6 +736,7 @@
         }
 
         if(brandCodeIsCtm && dblChkCallType && !isInbound &&
+            dblChkCallType !== "inbound" &&
             dblChkCallType !== "outbound" &&
             dblChkCallType !== "cli" &&
             dblChkCallType !== "qSms" &&

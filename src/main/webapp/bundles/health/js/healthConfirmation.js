@@ -177,7 +177,7 @@
 			v :		1,
 			t :		'event',
 			ec :	'health journey conversions',
-			ea :	'health completed application',
+			ea :	'health simples completed application',
 			el :	'health cc sale',
 			ds :	'call center',
 			dp :	'/ctm/health_confirmation_v2.jsp',

@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.net.SocketTimeoutException;
 import java.util.Collections;
@@ -24,12 +25,13 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@PowerMockIgnore({"javax.crypto.*"})
 public class ExactTargetEmailSenderTest {
 
     private ExactTargetEmailSender emailSender;
@@ -58,8 +60,17 @@ public class ExactTargetEmailSenderTest {
     @Before
     public void setup() throws Exception {
         initMocks(this);
+
         when(serviceConfigurationServiceBean.getServiceConfiguration("exactTargetService", vertical)).thenReturn(serviceConfiguration);
-        when(serviceConfiguration.getPropertyValueByKey(anyString(), anyInt(), anyInt(), anyObject())).thenReturn("");
+
+        //encrypted using the old method that uses ECB; unecrypted value = testPassword
+        //the test value is so because the 'servicePassword' from the database was encrypted using the old encrypt method
+        String testEncryptedServicePasswordOld = "389HrYdNEbR-vfqCxqpXoA";
+
+        when(serviceConfiguration.getPropertyValueByKey(eq("serviceUrl"), anyInt(), anyInt(), anyObject())).thenReturn("testurl");
+        when(serviceConfiguration.getPropertyValueByKey(eq("serviceUser"), anyInt(), anyInt(), anyObject())).thenReturn("testUser");
+        when(serviceConfiguration.getPropertyValueByKey(eq("servicePassword"), anyInt(), anyInt(), anyObject())).thenReturn(testEncryptedServicePasswordOld);
+
         when(pageSettings.getSetting("sendClientId")).thenReturn("1");
         when(exactTargetFormatter.convertToExactTarget(emailModel)).thenReturn(exactTargetEmailModel);
         emailSender = new ExactTargetEmailSender(pageSettings, 100L, vertical, 0, 0, serviceConfigurationServiceBean);
