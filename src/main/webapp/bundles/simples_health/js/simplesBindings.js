@@ -715,6 +715,12 @@
 	}
 	// Toggle visibility of referral related dialogs when referral selected
 	function toggleReferralCallCheckbox(callType) {
+        if (getRawCallType() === "inbound") {
+            $dialogue36.show();
+            $dialogue38.show();
+            $dialogue40.show();
+            return;
+        }
         callType = callType || false;
         var isInbound = callType === "inbound";
         var suppressTrialToggle = false;
