@@ -18,7 +18,7 @@
      * @source https://console.developers.google.com/project/ctm-fuel-map/apiui/apiview/maps_backend/usage
      * @type {string}
      */
-    var googleAPIKey = 'AIzaSyC8ygWPujOpSI1O-7jsiyG3_YIDlPoIP6U';
+    var googleAPIKey = 'AIzaSyBZVPuL7f9bsBm9EwV5Dqvcu0EFiQiRGcA';
     /**
      * The google Map object
      * @type {Map}
