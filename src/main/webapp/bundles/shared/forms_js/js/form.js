@@ -17,9 +17,9 @@
 	}
 
 	// This function can be used to get data out of any $element really, not just forms even if the module is named like that!
-	function getData( $element ){
+	function getData( $element, optionalSearchCriteria ){
 
-		return filterData( $element ).serializeArray();
+		return filterData( $element, optionalSearchCriteria ).serializeArray();
 
 	}
 
@@ -27,8 +27,9 @@
 		return filterData( $element ).serialize();
 	}
 
-	function filterData( $element ){
-		return $element.find(":input:visible, input[type=hidden], :input[data-visible=true], :input[data-initValue=true], :input[data-attach=true]").filter(function(){
+	function filterData( $element, optionalSearchCriteria ){
+		return $element.find(":input:visible, input[type=hidden], :input[data-visible=true], :input[data-initValue=true]," +
+			" :input[data-attach=true]" + (!optionalSearchCriteria ? "" : ", " + optionalSearchCriteria)).filter(function(){
 			return $(this).val() !== "" && $(this).val() !== "Please choose..." && !$(this).attr('data-ignore');
 		});
 	}

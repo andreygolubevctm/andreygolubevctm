@@ -13,6 +13,7 @@
         $hasIconsDiv,
         $limitedCoverHidden,
         hospitalBenefits = [],
+        clinicalBenefits = [],
         extrasBenefits = [],
         ambulanceAccidentCoverItems = [],
         $boneMusicleJointCheckbox,
@@ -43,11 +44,10 @@
             $backSurgeryCheckbox = $('#health_benefits_benefitsExtras_BackSurgery');
 
             $hospitalCover = $('.Hospital_container');
-            $hospitalCoverToggles = $('.hospitalCoverToggles a'),
-                $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]'),
-                // done this way since it's an a/b test and
-                $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
-
+            $hospitalCoverToggles = $('.hospitalCoverToggles a');
+            $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]');
+            // done this way since it's an a/b test and
+            $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
             // setup groupings
             // extras middle row
             var htmlTemplate = _.template($('#extras-mid-row-groupings').html()),
@@ -106,10 +106,10 @@
 			if(type === 'hospital') {
 			    _.defer(function(){
 					$('#clinicalCategoriesContent').find(':input:checked').prop('checked', false).change().closest('.short-list-item').removeClass('active');
+                    meerkat.modules.healthClinicalCategories.toggleCTMBenefitLabels(true);
                 });
 			}
 		});
-
     }
 
     function setDefaultCover() {
@@ -192,6 +192,7 @@
 
             // Set benefits model
             hospitalBenefits = getBenefitsModelFromPage($benefitsForm.find('.hospitalCover'));
+            clinicalBenefits = getClinicalBenefitsModelFromPage();
             extrasBenefits = getBenefitsModelFromPage($benefitsForm.find('.extrasCover'));
             ambulanceAccidentCoverItems = getAmbulanceAccidentCoverModelFromPage($benefitsForm.find('.ambulanceAccidentCover_container'));
         });
@@ -207,8 +208,23 @@
             benefit.value = $this.find('input[type="checkbox"]').attr('id').replace('health_benefits_benefitsExtras_', '');
             benefit.label = $this.find('.iconLabel').text() || $.trim($this.find('label')[0].firstChild.nodeValue);
             benefit.helpId = $this.find('.help-icon').data('content').replace('helpid:', '');
+            benefit.dataGroup =  $this.find('input[type="checkbox"]').attr('data-group');
             // apparently IE8 doesn't support obj.class as a new property
             benefit['class'] = ($this.hasClass('medium') ? 'medium ' : '') + ($this.hasClass('basic') ? 'basic ' : '') + ($this.hasClass('customise') ? 'customise ' : '');
+            benefits.push(benefit);
+        });
+        return benefits;
+    }
+
+    function getClinicalBenefitsModelFromPage() {
+        var benefits = [];
+        $('#clinicalCategoriesContent').find('.short-list-item').each(function () {
+            var benefit = {},
+                $this = $(this);
+            benefit.value = $this.find('input[type="checkbox"]').attr('id').replace('health_benefits_benefitsExtras_', '');
+            benefit.label = $this.find('.benefit-title.hidden-xs').text();
+            benefit.helpId = $this.find('.benefit-caption').attr('data-help-id');
+            benefit.dataGroups =  $this.attr('data-groups');
             benefits.push(benefit);
         });
         return benefits;
@@ -230,6 +246,10 @@
 
     function getHospitalBenefitsModel(){
         return hospitalBenefits;
+    }
+
+    function getClinicalBenefitsModel(){
+        return clinicalBenefits;
     }
 
     function getExtraBenefitsModel(){
@@ -305,7 +325,6 @@
         });
     }
 
-
     function benefitClarificationToggleEvents() {
         $boneMusicleJointCheckbox.on('click', function toggleJointMuscleScript() {
             var $item = $(this);
@@ -363,9 +382,9 @@
         $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").each(function(){
             var $that = $(this);
             var isClinicalCategory = !_.isUndefined($that.attr("data-benefit-code"));
-            var manualSelection = !_.isUndefined($that.prop('manually-selected'));
+            var manualSelection = !_.isUndefined($that.prop('manually-selected')) && $that.prop('manually-selected');
             if(!isClinicalCategory || (isClinicalCategory && !manualSelection)) {
-                $that.prop("checked", false);
+                $that.prop("checked", false).change();
                 $that.attr('data-visible', "false");
                 if(isClinicalCategory) {
                     $that.closest(".categoriesCell_v2").removeClass("active");
@@ -438,6 +457,35 @@
 
         return benefits;
 
+    }
+
+    function getSelectedClinicalBenefits() {
+        var clinicalBenefits = [];
+
+        $('#benefitsForm .clinical-category').find("input[type='checkbox'][name^='health_benefits']").each(function (index, element) {
+            var $element = $(element);
+            if ($element.is(':checked')) {
+                var key = $element.attr('name').replace('health_benefits_benefitsExtras_', '');
+                clinicalBenefits.push(key);
+            }
+        });
+
+        return clinicalBenefits;
+
+    }
+
+    function getFilteredClinicalBenefits() {
+        var clinicalFilteredBenefits = [];
+
+        $('.benefits-list.benefitsClinical').find("input[type='checkbox'][name='health_filterBar_benefitsClinical']").each(function (index, element) {
+            var $element = $(element);
+            if ($element.is(':checked')) {
+                var key = $element.attr('id').replace('health_filterBar_benefits_', '');
+                clinicalFilteredBenefits.push(key);
+            }
+        });
+
+        return clinicalFilteredBenefits;
     }
 
 	// Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
@@ -546,10 +594,13 @@
 	    resetAmbulanceAccidentCoverSelection: resetAmbulanceAccidentCoverSelection,
         resetBenefitsForProductTitleSearch: resetBenefitsForProductTitleSearch,
         getSelectedBenefits: getSelectedBenefits,
+        getSelectedClinicalBenefits: getSelectedClinicalBenefits,
+        getFilteredClinicalBenefits: getFilteredClinicalBenefits,
 	    getAmbulanceAccidentCover: getAmbulanceAccidentCover,
         populateBenefitsSelection: populateBenefitsSelection,
 	    populateAmbulanceAccidentCoverSelection: populateAmbulanceAccidentCoverSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
+        getClinicalBenefitsModel: getClinicalBenefitsModel,
         getExtraBenefitsModel: getExtraBenefitsModel,
 	    getAmbulanceAccidentCoverModel: getAmbulanceAccidentCoverModel,
 	    isAmbulanceSelected: isAmbulanceSelected,

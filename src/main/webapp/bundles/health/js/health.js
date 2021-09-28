@@ -324,6 +324,8 @@
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
 				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
+				var selectedClinicalBenefits = meerkat.modules.healthBenefitsStep.getSelectedClinicalBenefits();
+				meerkat.modules.healthResults.setSelectedClinicalBenefitsList(selectedClinicalBenefits);
 				var ambulanceAccidentCover = meerkat.modules.healthBenefitsStep.getAmbulanceAccidentCover();
 
 				if(ambulanceAccidentCover) {
@@ -352,6 +354,8 @@
 			},
 			onInitialise: function onContactInit(event){
 				meerkat.modules.healthYourDetailsDynamicScripting.onInitialise();
+				var selectedClinicalBenefits = meerkat.modules.healthBenefitsStep.getSelectedClinicalBenefits();
+				meerkat.modules.healthResults.setSelectedClinicalBenefitsList(selectedClinicalBenefits);
 				meerkat.modules.resultsFeatures.fetchStructure(simplesCategoryVersion);
 
                 $('#contactForm').find(':input').on('change',

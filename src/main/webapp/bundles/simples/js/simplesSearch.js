@@ -87,7 +87,7 @@
 		var $button = $(this),
 			action = $button.attr('data-action'),
 			$resultRow = $button.parents('.search-quotes-result-row'),
-			transactionId;
+			transactionId = $resultRow.attr('data-id');
 
 		if ('amend' === action) {
 
@@ -108,6 +108,8 @@
 				$button.text($button.attr('data-originaltext'));
 
 				$resultRow.find('div.moreinfo-container').slideUp(200);
+				$('.clinical-benefits-info-' + transactionId).addClass('hidden');
+				$('.selected-benefits-info-' + transactionId).removeClass('hidden');
 			}
 			// Open more info panel
 			else {
@@ -131,6 +133,8 @@
 				var resultData = searchResults[resultIndex] || false;
 
 				fetchMoreInfo(transactionId, $container, resultData);
+				$('.clinical-benefits-info-' + transactionId).removeClass('hidden');
+				$('.selected-benefits-info-' + transactionId).addClass('hidden');
 			}
 
 		}

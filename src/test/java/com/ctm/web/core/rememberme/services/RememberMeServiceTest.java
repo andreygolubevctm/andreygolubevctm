@@ -7,6 +7,7 @@ import com.ctm.web.core.exceptions.SessionExpiredException;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.rememberme.model.RememberMeCookie;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.EnvironmentService;
@@ -42,7 +43,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"javax.crypto.*"})
-@PrepareForTest({SettingsService.class})
+@PrepareForTest({ApplicationService.class, SettingsService.class})
 public class RememberMeServiceTest {
     @Mock
     private HttpServletRequest request;
@@ -67,6 +68,9 @@ public class RememberMeServiceTest {
     @Mock
     private PageSettings pageSettings;
 
+    static private String DEFAULT_JOURNEY = "v4";
+
+
     @Before
     public void setUp() throws Exception {
         EnvironmentService.setEnvironment("NXI");
@@ -82,7 +86,7 @@ public class RememberMeServiceTest {
         final ArgumentCaptor<Cookie> cookieCaptor = ArgumentCaptor.forClass(Cookie.class);
         final String cookieName = getCookieName();
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie(cookieName, "b"), new Cookie("c", "c")});
-        service.deleteCookie("health", request, response);
+        service.deleteCookie("health", request,  response);
         verify(response, only()).addCookie(cookieCaptor.capture());
         final Cookie cookie = cookieCaptor.getValue();
         assertEquals("/", cookie.getPath());
@@ -91,7 +95,42 @@ public class RememberMeServiceTest {
     }
 
     @Test
-    public void testRememberMeCookieNotPresent() throws DaoException, ConfigSettingException, GeneralSecurityException {
+    public void testGetJourneyTypeFromCookie() throws GeneralSecurityException, DaoException, ConfigSettingException {
+        final String verticalCode = "health";
+        final String cookieName = getCookieName();
+        when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie(cookieName, "ht0I1Tx4rh1XoHOH9g2lF0QvaiO4XDRnirOlNvltvUyyU9LKq3Fqfh3F_aqnS00W"), new Cookie("c", "c")});
+        PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
+        when(pageSettings.getSettingAsBoolean("rememberMeEnabled")).thenReturn(true);
+        assertEquals(DEFAULT_JOURNEY,  service.getJourneyTypeFromCookie("health", request).get());
+    }
+
+    @Test
+    public void testHasUserVisitedInLast30MinutesWithin() throws GeneralSecurityException, DaoException, ConfigSettingException, SessionExpiredException, SessionException {
+        final String verticalCode = "health";
+        final Data data = new Data();
+        final Long cookieTransactionId = 12345678L;
+        when(request.getSession()).thenReturn(session);
+        when(request.getSession().getAttribute("sessionData")).thenReturn(new SessionData());
+        when(transactionDetailsDao.getTransactionDetails(cookieTransactionId)).thenReturn(createTransactionDetails());
+        when(sessionDataServiceBean.getDataForTransactionId(request, "12345678", true)).thenReturn(data);
+        when(request.getCookies()).thenReturn(new Cookie[]{getCurrentCookie()});
+        PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
+        when(pageSettings.getSettingAsBoolean("rememberMeEnabled")).thenReturn(true);
+        assertTrue("User has visited within 30 minutes ago", service.hasUserVisitedInLast30Minutes(request, verticalCode));
+    }
+
+    @Test
+    public void testHasUserVisitedInLast30MinutesOutside() throws GeneralSecurityException, DaoException, ConfigSettingException {
+        final String verticalCode = "health";
+        final String cookieName = getCookieName();
+        when(request.getCookies()).thenReturn(new Cookie[]{new Cookie(cookieName, "ht0I1Tx4rh1XoHOH9g2lF0QvaiO4XDRnirOlNvltvUyyU9LKq3Fqfh3F_aqnS00W")});
+        PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
+        when(pageSettings.getSettingAsBoolean("rememberMeEnabled")).thenReturn(true);
+        assertFalse("User has visited over 30 minutes ago", service.hasUserVisitedInLast30Minutes(request, verticalCode));
+    }
+
+    @Test
+    public void testRememberMeCookieNotPresent() throws DaoException, ConfigSettingException {
         final String verticalCode = "health";
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie("b", "b")});
         PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
@@ -103,17 +142,26 @@ public class RememberMeServiceTest {
     public void testRememberMeCookieExists() throws GeneralSecurityException, DaoException, ConfigSettingException {
         final String verticalCode = "health";
         final String cookieName = getCookieName();
-        when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie(cookieName, "b"), new Cookie("c", "c")});
+        when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie(cookieName, "ht0I1Tx4rh1XoHOH9g2lF0QvaiO4XDRnirOlNvltvUyyU9LKq3Fqfh3F_aqnS00W"), new Cookie("c", "c")});
         PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
         when(pageSettings.getSettingAsBoolean("rememberMeEnabled")).thenReturn(true);
         assertTrue(service.hasRememberMe(request, "health"));
     }
 
     @Test
+    public void testRetrieveTransactionId() throws GeneralSecurityException, ConfigSettingException, DaoException {
+        final String verticalCode = "health";
+        when(request.getCookies()).thenReturn(new Cookie[]{getCurrentCookie()});
+        when(pageSettings.getSettingAsBoolean("rememberMeEnabled")).thenReturn(true);
+        PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
+        assertEquals("12345678" , service.retrieveTransactionId(request, verticalCode));
+    }
+
+    @Test
     public void testSetCookieLocalhost() throws Exception {
         final ArgumentCaptor<Cookie> argumentCaptor = ArgumentCaptor.forClass(Cookie.class);
         EnvironmentService.setEnvironment(EnvironmentService.Environment.LOCALHOST.name());
-        service.setCookie("health", 12345678L, response);
+        service.setCookie("health", 12345678L, DEFAULT_JOURNEY, response);
         verify(response, only()).addCookie(argumentCaptor.capture());
         final Cookie cookie = argumentCaptor.getValue();
         assertEquals("/", cookie.getPath());
@@ -125,7 +173,7 @@ public class RememberMeServiceTest {
         final ArgumentCaptor<Cookie> argumentCaptor = ArgumentCaptor.forClass(Cookie.class);
         EnvironmentService.setEnvironment(EnvironmentService.Environment.PRO.name());
 
-        service.setCookie("health", 12345678L, response);
+        service.setCookie("health", 12345678L, DEFAULT_JOURNEY, response);
 
         verify(response, only()).addCookie(argumentCaptor.capture());
 
@@ -145,14 +193,15 @@ public class RememberMeServiceTest {
         existingCookie.setMaxAge(600);
 
         when(request.getCookies()).thenReturn(new Cookie[]{existingCookie});
-        service.setCookie("health", 12345678L, response);
+        service.setCookie("health", 12345678L, DEFAULT_JOURNEY, response);
 
         verify(response, only()).addCookie(argumentCaptor.capture());
 
         final Cookie cookie = argumentCaptor.getValue();
         assertEquals(2592000, cookie.getMaxAge()); // 30 days
         String decryptValue = StringEncryption.decrypt(RememberMeService.getSecretKey(), cookie.getValue());
-        assertEquals("12345678", decryptValue.substring(0,decryptValue.indexOf(":")));
+        RememberMeCookie cookieData = service.getCookieData(decryptValue);
+        assertEquals("12345678", cookieData.getTransactionId());
     }
 
     @Test
@@ -188,7 +237,14 @@ public class RememberMeServiceTest {
     }
 
     private String getTransactionId() throws GeneralSecurityException {
-       // return StringEncryption.encrypt(RememberMeService.getSecretKey(), "12345678");
+        // return StringEncryption.encrypt(RememberMeService.getSecretKey(), "12345678");
         return StringEncryption.encrypt(RememberMeService.getSecretKey(), "12345678"+":"+ LocalDateTime.now().toString());
+    }
+
+
+    private Cookie getCurrentCookie() throws GeneralSecurityException{
+        final String cookieValue = "12345678:" + LocalDateTime.now().toString() + ",journeyType:" + DEFAULT_JOURNEY;
+        final Cookie cookie = new Cookie(getCookieName(), StringEncryption.encrypt(RememberMeService.getSecretKey(), cookieValue));
+        return cookie;
     }
 }

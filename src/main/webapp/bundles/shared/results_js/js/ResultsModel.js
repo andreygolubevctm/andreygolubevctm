@@ -61,7 +61,7 @@ var ResultsModel = {
 			}
 
 			if( typeof data == "undefined" ){
-				data = meerkat.modules.form.getData( $(Results.settings.formSelector) );
+				data = meerkat.modules.form.getData( $(Results.settings.formSelector),  ":input[name^=health_benefits_benefitsExtras_]");
 				data.push({
 					name: 'transactionId',
 					value: meerkat.modules.transactionId.get()

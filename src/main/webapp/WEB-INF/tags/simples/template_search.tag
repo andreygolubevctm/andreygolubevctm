@@ -95,8 +95,21 @@
 									<li><strong>Situation:</strong> {{= result.resultData.situation }}</li>
 									{{ if (result.resultData.income !== '') { }}<li><strong>Income:</strong> {{= result.resultData.income }}</li>{{ } }}
 									<li><strong>Dependants:</strong> {{= result.resultData.dependants }}</li>
-									<li><strong>Benefits:</strong> ({{= result.resultData.benefitCount }}) {{= result.resultData.benefits }}</li>
+									<li class="{{= meerkat.modules.benefitsNameConverter.checkIfClinicalCategories(result.resultData.hospitalBenefitsSource) ? 'selected-benefits-info-'+result.id : '' }}">
+										<strong>Selected benefits:</strong> ({{= result.resultData.benefitCount }}) {{= meerkat.modules.benefitsNameConverter.sortNames(result.resultData.benefits, result.resultData.benefitTypes) }}</li>
 								</ul>
+								{{ if( meerkat.modules.benefitsNameConverter.checkIfClinicalCategories(result.resultData.hospitalBenefitsSource)) { }}
+								<div class="clinical-benefits-info-{{= result.id }} hidden">
+									<div class="line-separator"></div>
+									<ul class="core-properties list-unstyled-clinical small">
+										<li class="li-bottom-space"><strong>Product type:</strong> {{= meerkat.modules.benefitsNameConverter.covertProductType(result.resultData.coverType) }}</li>
+										<li class="li-bottom-space"><strong>Reason:</strong> {{= meerkat.modules.benefitsNameConverter.convertReason(result.resultData.benefitsReason) }}</li>
+										<li class="li-bottom-space"><strong>Hospital quick selects:</strong> {{= meerkat.modules.benefitsNameConverter.convertHospital(result.resultData.benefitsQuickSelectHospital) }}</li>
+										<li class="li-bottom-space"><strong>Extras quick selects:</strong> {{= meerkat.modules.benefitsNameConverter.convertExtras(result.resultData.benefitsQuickSelectExtras) }}</li>
+										<li class="li-bottom-space"><strong>Selected benefits:</strong> ({{= result.resultData.benefitCount }}) {{= meerkat.modules.benefitsNameConverter.sortNames(result.resultData.benefits, result.resultData.benefitTypes) }}</li>
+									</ul>
+								</div>
+								{{ } }}
 							{{ } }}
 
 						</div>

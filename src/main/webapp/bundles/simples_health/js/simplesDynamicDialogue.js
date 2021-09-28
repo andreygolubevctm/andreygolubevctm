@@ -14,24 +14,28 @@
 				text: '%DYNAMIC_HOSPITALBENEFITS%',
 				get: function (product) {
 					var productBenefits = {};
-					var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
-					var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
-					var selectedBenefits = benefits.filter(function (benefitItem) {
-						return selectedBenefitsList.indexOf(benefitItem.value) > -1;
-					});
+					var selectedBenefits = _getSelectedHospitalBenefits();
+					var selectedClinicalBenefits = _getSelectedClinicalBenefits();
 					var list = [];
-					var keys, productBenefit;
-					if (selectedBenefits && selectedBenefits.length) {
-						productBenefits = product ? product.hospital.benefits : [];
+					var productBenefit;
+					if (selectedBenefits && selectedBenefits.length || selectedClinicalBenefits && selectedClinicalBenefits.length) {
 						var prefix = "So, starting with the hospital this policy's a great fit because it covers ";
 						list = [];
-						for(var j=0; j<selectedBenefits.length; j++) {
-							var benefit = selectedBenefits[j];
+						productBenefits = product ? product.hospital.benefits : [];
+						for(var i = 0; i < selectedBenefits.length; i++) {
+							var benefit = selectedBenefits[i];
 							if(benefit && productBenefits.hasOwnProperty(benefit.value) && ['Y', 'YY'].indexOf(productBenefits[benefit.value].covered) > -1) {
 								list.push('<li>' + benefit.label + "</li>");
 							}
 						}
-						return prefix + list.join("\n");
+						var productClinicalBenefits = product ? product.hospital.clinicalBenefits : [];
+						for(var j = 0; j < selectedClinicalBenefits.length; j++) {
+							var clinicalBenefit = selectedClinicalBenefits[j];
+							if(clinicalBenefit && _isProductCoverThisClinicalBenefit(clinicalBenefit, productClinicalBenefits)) {
+								list.push('<li>' + clinicalBenefit.label + "</li>");
+							}
+						}
+						return prefix + list.sort().join("\n");
 					} else {
 						var listTextBenefits = ['Brain and Nervous system', 'Kidney and bladder', 'Digestive system'];
 						var listTextBenefitsCovered = _allCopyBenefitsAreCovered(product.custom.reform.tab1.benefits, listTextBenefits);
@@ -72,19 +76,23 @@
 				text: '%DYNAMIC_HOSPITALBENEFITS_LIST%',
 				get: function (product) {
 					meerkat.modules.healthAboutYou.restoreHospitalComplianceCopyDialogs();
-					var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
-					var selectedBenefitsList = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
-					var selectedBenefits = benefits.filter(function (benefitItem) {
-						return selectedBenefitsList.indexOf(benefitItem.value) > -1;
-					});
+					var selectedBenefits = _getSelectedHospitalBenefits();
+					var selectedClinicalBenefits = _getSelectedClinicalBenefits();
 					var list = ['<li>NO HOSPITAL BENEFITS SELECTED</li>'];
-					if (selectedBenefits && selectedBenefits.length) {
+					if (selectedBenefits && selectedBenefits.length || selectedClinicalBenefits && selectedClinicalBenefits.length) {
 						list = [];
-						for (var i = 0; i < selectedBenefits.length; i++) {
-							list.push('<li>' + selectedBenefits[i].label + '</li>');
+						if (selectedBenefits && selectedBenefits.length) {
+							for (var i = 0; i < selectedBenefits.length; i++) {
+								list.push('<li>' + selectedBenefits[i].label + '</li>');
+							}
+						}
+						if (selectedClinicalBenefits && selectedClinicalBenefits.length) {
+							for (var j = 0; j < selectedClinicalBenefits.length; j++) {
+								list.push('<li>' + selectedClinicalBenefits[j].label + '</li>');
+							}
 						}
 					}
-					return list.join("\n");
+					return list.sort().join("\n");
 				}
 			},
 			{
@@ -130,7 +138,7 @@
 							list.push('<li>' + selectedBenefits[i].label + '</li>');
 						}
 					}
-					return list.join("\n");
+					return list.sort().join("\n");
 				}
 			},
 			{
@@ -291,6 +299,25 @@
 		return null;
 	}
 
+	function _getSelectedHospitalBenefits() {
+		var benefits = meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel();
+		var selectedBenefitsList = meerkat.modules.healthClinicalCategories.getManuallySelectedHospitalBenefit();
+		var selectedBenefits = benefits.filter(function (benefitItem) {
+			return selectedBenefitsList.indexOf(benefitItem.value) > -1;
+		});
+		return selectedBenefits;
+	}
+
+	function _getSelectedClinicalBenefits() {
+		var clinicalBenefits = meerkat.modules.healthBenefitsStep.getClinicalBenefitsModel();
+		var manuallySelectedClinicalCategories = meerkat.modules.healthClinicalCategories.getManuallySelectedClinicalCategories();
+		var selectedClinicalBenefits = clinicalBenefits.filter(function (benefitItem) {
+			return manuallySelectedClinicalCategories.indexOf(benefitItem.value) > -1;
+		});
+		return selectedClinicalBenefits;
+	}
+
+
 	function _allCopyBenefitsAreCovered(productBenefits, requiredBenefits) {
 		var expected = requiredBenefits.length;
 		var found = 0;
@@ -301,6 +328,15 @@
 			}
 		}
 		return expected !== 0 && found === expected;
+	}
+
+	function _isProductCoverThisClinicalBenefit(benefit, productClinicalBenefits) {
+		for (var i = 0; i < productClinicalBenefits.length; i++) {
+			if (productClinicalBenefits[i] && benefit.value === productClinicalBenefits[i].clinicalCategory && "COVERED" === productClinicalBenefits[i].inclusion) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	function parse(id, onParse) {

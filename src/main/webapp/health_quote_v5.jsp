@@ -48,6 +48,15 @@
         <c:redirect url="${redirectURL}transactionId=${rememberMeTransactionId}&reviewedit=true" />
     </c:when>
 
+    <%-- Redirect to V4 journey if CTM (not CLINICAL_CATEGORIES) --%>
+    <c:when test="${not empty data['health/hospitalBenefitsSource'] and data['health/hospitalBenefitsSource'] eq 'CTM'}">
+        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v4.jsp?" />
+        <c:forEach items="${param}" var="currentParam">
+            <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+        </c:forEach>
+        <c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+    </c:when>
+
     <c:when test="${not callCentre}">
 
         <%-- ####### PRE JOURNEY SETUP ####### --%>

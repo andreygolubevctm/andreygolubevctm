@@ -110,6 +110,7 @@
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.beforeInit)) {
                 filterObject.events.beforeInit.apply(window, [filterObject]);
             }
+
             // Set default values onto the model.
             if (!filterObject.hasOwnProperty('defaultValueSourceSelector')) {
                 return;
@@ -147,8 +148,10 @@
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.init)) {
                 filterObject.events.init.apply(window, [filterObject]);
             }
+            if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.initAfterDefaultValue)) {
+                filterObject.events.initAfterDefaultValue.apply(window);
+            }
         });
-
         // Render the update template too.
         buildHtml('updates');
 
@@ -202,6 +205,9 @@
             if (meerkat.modules.deviceMediaState.get() === 'xs') {
                 meerkat.modules.navMenu.close();
             }
+
+            var filteredClinicalBenefits = meerkat.modules.healthBenefitsStep.getFilteredClinicalBenefits();
+            meerkat.modules.healthResults.setSelectedClinicalBenefitsList(filteredClinicalBenefits);
 
             _.defer(function () {
                 if (needToFetchFromServer) {

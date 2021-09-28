@@ -8,6 +8,7 @@
         best_price_count = 5,
         isLhcApplicable = 'N',
         selectedBenefitsList,
+        selectedClinicalBenefitsList,
 	    ambulanceAccidentCoverList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
@@ -16,7 +17,24 @@
         providersReturned = [],
         extendedFamilyResultsRulesData = {},
         extendedFamilyResultsRules = '',
-        exception = meerkat.logging.exception;
+        exception = meerkat.logging.exception,
+        toggleCell = {
+            "id": 0,
+            "name": "Toggle",
+            "type": "category",
+            "resultPath": "hospital.benefits.TOGGLE",
+            "vertical": "health_cc",
+            "shortlistKey": "TOGGLE",
+            "children": [],
+            "safeName": "Toggle",
+            "shortlistable": true,
+            "classStringForInlineLabel": "category collapsed ",
+            "contentClassString": "",
+            "classString": "category collapsed view-clinical-categories-toggle ",
+            "classStringForInlineLabelCover": "",
+            "toggle": true,
+            "benefitsQuantityClass": "clinical-category-quantity"
+        };
 
         templates = {
             premiumsPopOver:
@@ -440,6 +458,25 @@
 
             Results.setPerformanceMode(score);
 
+            $(".view-clinical-categories-toggle").on("click", function() {
+                $('.clinical-benefits-text').addClass('clinical-toggle-link-not-underlined');
+                if($('.clinical-categories-result-card').hasClass('hidden')) {
+                    $('.clinical-categories-result-card').removeClass('hidden');
+                    $('.clinical-benefits-text').text('Hide details');
+                    $('.contentInner .clinical-benefits-icon').removeClass('icon-angle-down').addClass('icon-angle-up');
+                } else {
+                    $('.clinical-categories-result-card').addClass('hidden');
+                    $('.clinical-benefits-text').text('View details');
+                    $('.contentInner .clinical-benefits-icon').removeClass('icon-angle-up').addClass('icon-angle-down');
+                }
+            });
+
+            $('.clinical-benefits-text').on('mouseenter', function () {
+                $(this).removeClass('clinical-toggle-link-not-underlined').addClass('clinical-toggle-link-underlined');
+            }).on('mouseleave', function () {
+                $(this).removeClass('clinical-toggle-link-underlined').addClass('clinical-toggle-link-not-underlined');
+            });
+
         });
 
 
@@ -575,6 +612,18 @@
      * @private
      */
     function _setupSelectedBenefits(injectIntoParent, injectFromParent) {
+        var selectedBenefits = [],
+            isFirstClinical = true,
+            isHospital = injectIntoParent === 'Hospital Selections';
+
+        selectedBenefitsList.forEach(function(benefit) {
+            var isClinical = selectedClinicalBenefitsList.includes(benefit);
+            if(isClinical && isFirstClinical) {
+                isFirstClinical = false;
+                selectedBenefits.push('TOGGLE');
+            }
+            selectedBenefits.push(benefit);
+        });
 
         // Fetch the relevant objects so we can update the features structure
         var structure = Features.getPageStructure();
@@ -587,10 +636,24 @@
         // this is where we are going to pull the children benefits from.
         var featuresStructureCover = _findByKey(structure, injectFromParent, 'name');
 
+        if (isHospital) {
+            if(featuresStructureCover && featuresStructureCover.children && featuresStructureCover.children.length !== 0) {
+                var indexOfToggle;
+                featuresStructureCover.children.forEach(function(c) {
+                    c.isHospital = undefined;
+                    indexOfToggle = c.id === toggleCell.id;
+                });
+                if(!indexOfToggle || indexOfToggle === -1) {
+                    featuresStructureCover.children.push(toggleCell);
+                }
+            }
+        }
+
         // For each of the selected benefits
-        for (var i = 0; i < selectedBenefitsList.length; i++) {
-            var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefitsList[i], 'shortlistKey');
+        for (var i = 0; i < selectedBenefits.length; i++) {
+            var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefits[i], 'shortlistKey');
             if (putInShortList) {
+                putInShortList.isHospital = isHospital;
                 selectedBenefitsStructureObject.children.push($.extend({}, putInShortList));
                 putInShortList.doNotRender = true;
             }
@@ -1304,8 +1367,11 @@
         selectedBenefitsList = selectedBenefits;
     }
 
+    function setSelectedClinicalBenefitsList(selectedBenefits) {
+        selectedClinicalBenefitsList = selectedBenefits;
+    }
 
-	function setAmbulanceAccidentCoverList(ambulanceAccidentCover) {
+    function setAmbulanceAccidentCoverList(ambulanceAccidentCover) {
 		ambulanceAccidentCoverList = ambulanceAccidentCover;
 	}
 
@@ -1347,10 +1413,12 @@
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
+        setSelectedClinicalBenefitsList: setSelectedClinicalBenefitsList,
 	    setAmbulanceAccidentCoverList: setAmbulanceAccidentCoverList,
         hideNavigationLink: hideNavigationLink,
         getProvidersReturned : getProvidersReturned,
-        getProviderSpecificPopoverData: getProviderSpecificPopoverData
+        getProviderSpecificPopoverData: getProviderSpecificPopoverData,
+        findByKey: _findByKey
     });
 
 })(jQuery);

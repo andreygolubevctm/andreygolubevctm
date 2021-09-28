@@ -47,7 +47,13 @@
                 param.health_journey_stage eq 'results' and
                 empty authenticatedData.login.user.uid}">
 <jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
-<c:set var="rememberMe" value="${rememberMeService.setCookie(pageSettings.getVerticalCode(), data.current.transactionId, pageContext.response)}" scope="request"  />
+<c:set var="journeyType">
+	<c:choose>
+		<c:when test="${not empty data['health/hospitalBenefitsSource'] and data['health/hospitalBenefitsSource'] eq 'CLINICAL_CATEGORIES'}"><c:out value="v5" /></c:when>
+		<c:otherwise><c:out value="v4" /></c:otherwise>
+	</c:choose>
+</c:set>
+<c:set var="rememberMe" value="${rememberMeService.setCookie(pageSettings.getVerticalCode(), data.current.transactionId, journeyType, pageContext.response)}" scope="request"  />
 </c:when>
 </c:choose>
 
