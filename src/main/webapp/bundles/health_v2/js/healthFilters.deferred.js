@@ -301,14 +301,14 @@
                 $benefitsList = $this.parents('.benefits-list');
 
             if ($benefitsList.hasClass('expanded')) {
-                $this.find('.text').text('add more selections');
+                $this.find('.text').text('Show more');
                 $benefitsList.find('.checkbox').filter(function () {
                     return !$(this).find('input').is(':checked');
                 }).slideUp('fast', function () {
                     $(this).addClass('hidden');
                 });
             } else {
-                $this.find('.text').text('show less');
+                $this.find('.text').text('Show less');
                 $benefitsList.find('.checkbox').removeClass('hidden').slideDown('fast');
             }
 

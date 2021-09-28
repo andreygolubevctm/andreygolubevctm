@@ -46,8 +46,9 @@
     function getValue(product, benefitsResultsPaths) {
         var toSumValues = null,
             values = benefitsResultsPaths.map(function(benefit) {
-                var val = _getBenefitValue(benefit, product),
-                    valLen = val.length;
+                var val = _getBenefitValue(benefit, product);
+                if(!val) return;
+                var valLen = val.length;
 
                 toSumValues = (val.slice(0, 1) === '$');
                 return toSumValues ? parseFloat(val.slice(1, valLen)) : val.slice(0, valLen - 1);

@@ -687,6 +687,29 @@
         return discountPercentage;
     }
 
+    function getSelectedClinicalCategoriesCells(productId) {
+        var result = [],
+            productClinicalBenefits = meerkat.modules.healthResults.findByKey(Results.model.sortedProducts, productId, 'productId').hospital.clinicalBenefits;
+        meerkat.modules.healthBenefitsStep.getSelectedClinicalBenefits().forEach(function (benefit) {
+            var cover = meerkat.modules.healthResults.findByKey(productClinicalBenefits, benefit, 'clinicalCategory');
+            var name = meerkat.modules.healthResults.findByKey(meerkat.modules.healthBenefitsStep.getClinicalBenefitsModel(), benefit, "value");
+            if(name) {
+                result.push({
+                    'name': name.label,
+                    'cover': !cover ? 'noCover' : getCover(cover.inclusion),
+                    'class': benefit
+                });
+            }
+        });
+        return _.sortBy(result, function(category) {
+            return category.name.trim();
+        });
+    }
+
+    function getCover(productClinicalBenefit) {
+        return productClinicalBenefit === 'RESTRICTED' ? 'restrictedCover' : productClinicalBenefit === 'COVERED' ? 'covered' : 'noCover';
+    }
+
     meerkat.modules.register('healthResultsTemplate', {
         init: init,
         getAvailableExtrasAsList: getAvailableExtrasAsList,
@@ -706,7 +729,8 @@
         getDiscountPercentage: getDiscountPercentage,
         fundDiscountExists: fundDiscountExists,
         getCoverDate: getCoverDate,
-        parseChangeDate: parseChangeDate
+        parseChangeDate: parseChangeDate,
+        getSelectedClinicalCategoriesCells: getSelectedClinicalCategoriesCells
     });
 
 })(jQuery);

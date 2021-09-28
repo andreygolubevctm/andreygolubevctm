@@ -70,10 +70,10 @@
             dataType: 'json',
             cache: true,
             errorLevel: "silent",
-            onSuccess: function onSuccess() {
-                _track(eventAction);
+            onSuccess: function onSuccess(response) {
+            	_track(eventAction);
                 meerkat.modules.leavePageWarning.disable();
-                window.location.replace("health_quote_v4.jsp" + _getQueryString());
+                window.location.replace("health_quote_" + (response.journeyType ? response.journeyType : "v4") + ".jsp" + _getQueryString());
             },
             onError: function onError(obj, txt, errorThrown) {
                 // @TODO Should have better error handling here
@@ -145,7 +145,7 @@
                             if(result.reviewEdit === true) {
                             	newQSParams["reviewedit"] = "true";
                             }
-                            window.location.replace("health_quote_v4.jsp" + _getQueryString(newQSParams));
+                            window.location.replace("health_quote_" + (result.journeyType ? result.journeyType : "v4") + ".jsp" + _getQueryString(newQSParams));
                         } else {
                             _track('validation failed');
                             showError(errorTypes.NOMATCH);

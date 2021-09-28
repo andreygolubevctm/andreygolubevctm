@@ -64,14 +64,55 @@
 					</td>
 				</tr>
 				{{ if (obj.hasOwnProperty('verticalProperties')) { }}
-				{{ _.each(obj.verticalProperties, function(value, key) { }}
-					<tr>
-						<th>{{= key }}</th><td>{{= value }}</td>
-					</tr>
-				{{ }) }}
+				<tr>
+					<th>Primary DOB</th><td>{{= obj.verticalProperties['Primary DOB'] }}</td>
+				</tr>
+				<tr>
+					<th>Email</th><td>{{= obj.verticalProperties['Email'] }}</td>
+				</tr>
+				{{ } }}
+
+				{{ if (!meerkat.modules.benefitsNameConverter.checkIfClinicalCategories(obj.verticalProperties['Benefits source'])) { }}
+				{{ var nonClinicalInfo = ['Address', 'Benefits', 'Situation']; nonClinicalInfo.forEach(function(item) { }}
+				{{ if (!obj.verticalProperties[item]) { return; } }}
+				<tr>
+					<th>{{= item }}</th><td>{{= obj.verticalProperties[item] }}</td>
+				</tr>
+				{{ });} }}
+				{{ if (obj.verticalProperties['Income level'] !== null && obj.verticalProperties['Income level'] !== undefined && obj.verticalProperties['Income level'] !== '') { }}
+				<tr>
+					<th>Income level</th><td>{{= meerkat.modules.benefitsNameConverter.getRebateTiers(obj.verticalProperties['Family Type'], obj.verticalProperties['Income level']) }}</td>
+				</tr>
 				{{ } }}
 			</tbody>
 		</table>
+		{{ if (meerkat.modules.benefitsNameConverter.checkIfClinicalCategories(obj.verticalProperties['Benefits source'])) { }}
+		<div class="line-separator"></div>
+		<table class="table table-condensed table-hover">
+			<tbody>
+				{{ if (obj.hasOwnProperty('verticalProperties')) { }}
+				<tr>
+					<th width="26%">Product type</th><td>{{= meerkat.modules.benefitsNameConverter.covertProductType(obj.verticalProperties['Product type']) }}</td>
+				</tr>
+				<tr>
+					<th>Reason</th><td>{{= meerkat.modules.benefitsNameConverter.convertReason(obj.verticalProperties['Reason']) }}</td>
+				</tr>
+				<tr>
+					<th>Hospital quick selects</th><td>{{= meerkat.modules.benefitsNameConverter.convertHospital(obj.verticalProperties['Hospital quick selects']) }}</td>
+				</tr>
+				<tr>
+					<th>Extras quick selects</th><td>{{= meerkat.modules.benefitsNameConverter.convertExtras(obj.verticalProperties['Extras quick selects']) }}</td>
+				</tr>
+				<tr>
+					<th>Selected benefits</th><td>{{= obj.verticalProperties['Benefits'] }}</td>
+				</tr>
+				<tr>
+					<th>Situation</th><td>{{= obj.verticalProperties['Situation'] }}</td>
+				</tr>
+				{{ } }}
+			</tbody>
+		</table>
+		{{ } }}
 
 		{{ var commentTemplate = _.template($("#simples-template-comments").html()); }}
 		{{= commentTemplate(obj) }}

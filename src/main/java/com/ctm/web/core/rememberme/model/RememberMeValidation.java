@@ -1,6 +1,6 @@
 package com.ctm.web.core.rememberme.model;
 
-public class RememberMeModel
+public class RememberMeValidation
 {
     private Boolean isValidAnswer;
 
@@ -8,10 +8,13 @@ public class RememberMeModel
 
     private Boolean isReviewEdit;
 
-    public RememberMeModel(final Boolean isValidAnswer, final String transactionId, final Boolean isReviewEdit){
+    private String journeyType;
+
+    public RememberMeValidation(final Boolean isValidAnswer, final String transactionId, final Boolean isReviewEdit, final String journeyType){
         this.isValidAnswer =  isValidAnswer;
         this.transactionId = transactionId;
         this.isReviewEdit = isReviewEdit;
+        this.journeyType = journeyType;
     }
     public Boolean isValidAnswer() {
         return isValidAnswer;
@@ -23,6 +26,10 @@ public class RememberMeModel
 
     public Boolean isReviewEdit() {
         return isReviewEdit;
+    }
+
+    public String getJourneyType() {
+        return journeyType;
     }
 
 }
