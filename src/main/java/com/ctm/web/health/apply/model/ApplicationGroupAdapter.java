@@ -11,7 +11,9 @@ import com.ctm.web.health.apply.model.request.application.applicant.CertifiedAge
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.Cover;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.EverHadCover;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.HealthCoverLoading;
+import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CancelOption;
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.ConfirmCover;
+import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CoverType;
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.MemberId;
 import com.ctm.web.health.apply.model.request.application.common.*;
 import com.ctm.web.health.apply.model.request.application.dependant.FullTimeStudent;
@@ -30,6 +32,7 @@ public class ApplicationGroupAdapter {
 
     public static ApplicationGroup createApplicationGroup(Optional<HealthQuote> quote) {
         return new ApplicationGroup(
+                // Applicant
                 createApplicant(
                         quote.map(HealthQuote::getApplication)
                                 .map(Application::getPrimary),
@@ -43,10 +46,12 @@ public class ApplicationGroupAdapter {
                                 .map(Hif::getPrimaryemigrate)
                                 .map(Emigrate::valueOf)
                                 .orElse(null),
-                        quote.map(HealthQuote::getPrimaryLHC)),
+                        quote.map(HealthQuote::getPrimaryLHC),
+                        quote.map(HealthQuote::getSituation)
+                ),
+
                 quote.map(HealthQuote::getApplication)
-                        .map(Application::getPartner)
-                        .map(Person::getTitle).isPresent()
+                        .map(Application::getPartner).map(Person::getTitle).isPresent()
                         ? createApplicant(
                         quote.map(HealthQuote::getApplication)
                                 .map(Application::getPartner),
@@ -59,15 +64,21 @@ public class ApplicationGroupAdapter {
                                 .map(Application::getHif)
                                 .map(Hif::getPartneremigrate)
                                 .map(Emigrate::valueOf)
-                                .orElse(null),quote.map(HealthQuote::getPartnerLHC)) : null,
+                                .orElse(null),quote.map(HealthQuote::getPartnerLHC),
+                        quote.map(HealthQuote::getSituation)
+                ) : null,
+
                 createDependants(quote.map(HealthQuote::getApplication)
                         .map(Application::getDependants)),
+
                 createSituation(quote.map(HealthQuote::getSituation)),
+
                 quote.map(HealthQuote::getApplication)
                         .map(Application::getQch)
                         .map(Qch::getEmigrate)
                         .map(Emigrate::valueOf)
                         .orElse(null),
+
                 createGovernmentRebateAck(quote.map(HealthQuote::getApplication)
                         .map(Application::getGovtRebateDeclaration))
         );
@@ -113,7 +124,7 @@ public class ApplicationGroupAdapter {
         }
     }
 
-    protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund, Optional<Integer> certifiedAgeEntry, Optional<Insured> insured, Emigrate emigrate,Optional<Integer> lhcPercentage) {
+    protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund, Optional<Integer> certifiedAgeEntry, Optional<Insured> insured, Emigrate emigrate,Optional<Integer> lhcPercentage, Optional<Situation> situation) {
         if (person.isPresent()) {
             return new Applicant(
                     person.map(Person::getTitle)
@@ -142,7 +153,11 @@ public class ApplicationGroupAdapter {
                                     .map(EverHadCover::valueOf)
                                     .orElse(null)))
                             .orElse(null),
-                    createPreviousFund(previousFund),
+                    createPreviousFund(
+                            previousFund,
+                            person.map(Person::getCover),
+                            situation.map(Situation::getCoverType)
+                    ),
                     certifiedAgeEntry
                             .map(CertifiedAgeEntry::new)
                             .orElse(null),
@@ -210,20 +225,41 @@ public class ApplicationGroupAdapter {
         }
     }
 
-    protected static com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund createPreviousFund(Optional<Fund> previousFund) {
+    protected static com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund createPreviousFund(Optional<Fund> previousFund, Optional<com.ctm.web.health.model.form.Cover> cover, Optional<String> purchaseType) {
         final HealthFund healthFund = previousFund.map(Fund::getFundName)
                 .map(HealthFund::findByCode)
                 .orElse(HealthFund.NONE);
+
         if (previousFund.isPresent() && !HealthFund.NONE.equals(healthFund)) {
             return new com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund(
+                    // The fund name, i.e "AAPI"
                     healthFund,
+
+                    // The member Id, i.e "123654"
                     previousFund.map(Fund::getMemberID)
-                            .map(MemberId::new)
-                            .orElse(null),
+                        .map(MemberId::new)
+                        .orElse(null),
+
+                    // I don't actually know what this is to be honest
                     ConfirmCover.Y,
                     previousFund.map(Fund::getAuthority)
-                            .map(Authority::valueOf)
-                            .orElse(null));
+                        .map(Authority::valueOf)
+                        .orElse(null),
+
+                    // The type of cover, one of "H", "E" or "C". Optional
+                    // This attribute comes from the xpath "/health/application/{person}/cover/type" so that has to be passed
+                    cover.map(com.ctm.web.health.model.form.Cover::getType)
+                        .map(CoverType::fromCode) // Map the string to enum
+                        .orElse(null),
+
+                    // What is being cancelled on the previous fund, one of "C", "H", "E" or "N"
+                    previousFund.map(Fund::getFundCancellationType) // Try getting the attribute from xpath "health/previousFund/{applicant}/fundCancellationType"
+                        .map(CancelOption::fromCancellationType)    // If we get it, convert it to it's appropriate CancelOption enum
+                        .orElse(                                        // If we did not get it
+                            purchaseType.map(CancelOption::fromPurchaseType)    // Try deriving the CancelOption from the purchase type
+                                .orElse(null)                     // If all else fails, we use a null (NOTE: this will be rejected from `health-apply` and this server will throw an error before reaching this), but it makes Java happy
+                        )
+            );
         } else {
             return null;
         }

@@ -4,6 +4,8 @@ import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
 import com.ctm.web.health.apply.model.request.application.Emigrate;
 import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.EverHadCover;
+import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CancelOption;
+import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CoverType;
 import com.ctm.web.health.apply.model.request.application.situation.Situation;
 import com.ctm.web.health.model.form.*;
 import org.junit.Test;
@@ -50,7 +52,7 @@ public class ApplicationGroupAdapterTest {
         verify(previousFund, times(1)).getPrimary();
         verify(application, times(2)).getPartner();
         verify(application, times(1)).getDependants();
-        verify(healthQuote, times(1)).getSituation();
+        verify(healthQuote, times(3)).getSituation();
 
         verify(healthQuote, times(1)).getPrimaryLHC();
         verify(healthQuote, times(1)).getPartnerLHC();
@@ -68,7 +70,7 @@ public class ApplicationGroupAdapterTest {
 
     @Test
     public void testCreateApplicantEmpty() throws Exception {
-        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty());
+        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty(), Optional.empty());
         assertNull(applicant);
     }
 
@@ -93,11 +95,12 @@ public class ApplicationGroupAdapterTest {
         final Integer certifiedAge = 1;
         final Insured insured = mock(Insured.class);
         final Integer lhcPercentage = 8;
+        final com.ctm.web.health.model.form.Situation situation = mock(com.ctm.web.health.model.form.Situation.class);
 
         when(insured.getEverHadCover()).thenReturn("Y");
 
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
-                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage));
+                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation));
         assertNotNull(applicant);
         assertEquals(applicant.getHealthCover().getEverHadCover(), EverHadCover.Y);
         assertNotNull(applicant.getHealthCover());
@@ -111,6 +114,7 @@ public class ApplicationGroupAdapterTest {
         verify(person, times(1)).getSurname();
         verify(person, times(1)).getGender();
         verify(person, times(1)).getDob();
+        verify(person, times(1)).getCover();
         verify(insured, times(1)).getCover();
         verify(insured, times(1)).getHealthCoverLoading();
         verify(insured, times(1)).getEverHadCover();
@@ -122,7 +126,7 @@ public class ApplicationGroupAdapterTest {
     public void testCreateApplicantEmptyExceptPerson() throws Exception {
         final Person person = mock(Person.class);
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.empty(),
-                Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty());
+                Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty(), Optional.empty());
         assertNotNull(applicant);
         assertNull(applicant.getHealthCover());
         assertNull(applicant.getPreviousFund());
@@ -138,7 +142,7 @@ public class ApplicationGroupAdapterTest {
 
     @Test
     public void testPreviousFundEmpty() throws Exception {
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.empty());
+        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.empty(), Optional.empty(), Optional.empty());
         assertNull(previousFund);
     }
 
@@ -146,10 +150,50 @@ public class ApplicationGroupAdapterTest {
     public void testPreviousFund() throws Exception {
         final Fund fund = mock(Fund.class);
         when(fund.getFundName()).thenReturn("BUPA");
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund));
+        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty());
         assertNotNull(previousFund);
         verify(fund, times(1)).getFundName();
         verify(fund, times(1)).getMemberID();
+    }
+
+    @Test
+    public void testPreviousFundExtraInfo() throws Exception {
+        // Instantiate the fund form, making sure it has a fund name of "BUPA" and a cancellation option of "E"
+        final Fund fund = new Fund();
+        fund.setFundName("BUPA");
+        fund.setFundCancellationType("E");
+
+        // Instantiate the cover form, again making sure it has a cover type of "C"
+        final Cover cover = new Cover();
+        cover.setType("C");
+
+        // Try creating the previousFund object
+        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.ofNullable(cover), Optional.ofNullable("C"));
+        assertNotNull(previousFund);    // Fail if it's null
+
+        // Check the previous fund's cancellation option and cover type properties
+        assertNotNull(previousFund.getFundName());
+        assertNotNull(previousFund.getConfirmCover());
+        assertEquals(CancelOption.EXTRAS, previousFund.getCancel().get());
+        assertEquals(CoverType.COMBINED, previousFund.getCoverType().get());
+    }
+
+    @Test
+    public void testCancelOption() throws Exception {
+        // Asserting equals for when the user is prompted to select a cancel option
+        assertEquals(CancelOption.COMBINED, CancelOption.fromCancellationType("C"));
+        assertEquals(CancelOption.HOSPITAL, CancelOption.fromCancellationType("H"));
+        assertEquals(CancelOption.EXTRAS, CancelOption.fromCancellationType("E"));
+        assertEquals(CancelOption.NOTHING, CancelOption.fromCancellationType("KH"));
+        assertEquals(CancelOption.NOTHING, CancelOption.fromCancellationType("KE"));
+
+        // When the user is not prompted to select a cancellation option, the CancelOption is derived from the xpath `health/situation/coverType`
+        assertEquals(CancelOption.COMBINED, CancelOption.fromPurchaseType("C"));
+        assertEquals(CancelOption.HOSPITAL, CancelOption.fromPurchaseType("H"));
+        assertEquals(CancelOption.EXTRAS, CancelOption.fromPurchaseType("E"));
+
+        // Finally, make sure we'll get a null if we try to use an invalid code
+        assertNull(CancelOption.fromCancellationType("A"));
     }
 
     @Test
