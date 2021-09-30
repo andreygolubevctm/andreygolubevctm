@@ -12,6 +12,9 @@ public class Fund {
 
     private String abd;
 
+    // Xpath = "/health/previousFund/{person}/fundCancellationType"
+    private String fundCancellationType;
+
     public String getFundName() {
         return fundName;
     }
@@ -51,4 +54,8 @@ public class Fund {
     public void setAbd(String abd) {
         this.abd = abd;
     }
+
+    public String getFundCancellationType() { return fundCancellationType; }
+
+    public void setFundCancellationType(String fundCancellationType) { this.fundCancellationType = fundCancellationType; }
 }

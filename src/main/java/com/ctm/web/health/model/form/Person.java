@@ -16,6 +16,8 @@ public class Person {
 
     private String email;
 
+    private Cover cover;
+
     public String getTitle() {
         return title;
     }
@@ -71,4 +73,8 @@ public class Person {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Cover getCover() { return this.cover; }
+
+    public void setCover(Cover cover) { this.cover = cover; }
 }

@@ -2,13 +2,11 @@ package com.ctm.web.health.quote.model.abd;
 
 import com.ctm.healthcommon.abd.ABD;
 import com.ctm.web.health.model.form.Application;
-import com.ctm.web.health.model.form.Fund;
 import com.ctm.web.health.model.form.HealthCover;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Insured;
 import com.ctm.web.health.model.form.Person;
-import com.ctm.web.health.model.form.PreviousFund;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.BooleanUtils;
 
