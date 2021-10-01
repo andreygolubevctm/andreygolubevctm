@@ -172,6 +172,7 @@
 			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		    <core_v2:excluded_providers_list/>
 		</div>
+
 	</jsp:body>
 
 </layout_v1:journey_engine_page>
