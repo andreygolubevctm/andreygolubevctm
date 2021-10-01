@@ -165,7 +165,7 @@
 							<div class="col-sm-3 col-sm-push-3 col-lg-push-0 col-lg-12 targetMarketSuitability">
 								<a href="javascript:;" class="btn-product-suitability productSuitability " data-available="{{= obj.available }}" data-productId="{{=obj.productId}}">Is this product suitable for me?</a>
 
-								<div class="productSuitability-title hidden">
+								<div class="productSuitability-title hidden" >
 									{{= obj.productSuitability.title }}
 								</div>
 

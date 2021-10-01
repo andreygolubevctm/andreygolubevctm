@@ -610,7 +610,7 @@
 		event.preventDefault();
 
 		var $element = $(event.target);
-		var $productSuitabilityContent = $element.closest('.resultInsert, .more-info-content').find('.targetMarketSuitability .productSuitability-content:first');
+		var $productSuitabilityContent = $element.closest('.resultInsert, .more-info-content').find('.productSuitability-content');
 		var $logo =				$element.closest('.resultInsert, .more-info-content').find('.travelCompanyLogo');
 		var $productName = $element.closest('.resultInsert, .more-info-content').find('.productSuitability-title');
 
