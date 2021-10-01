@@ -21,9 +21,16 @@
 			</div>
 			<div class="col-sm-4  pull-right-lg clearfix">
 				<a href="javascript:;" class="moreInfoBtn productSuitability" data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">Is this product suitable for me?</a>
+				<div class="productSuitability-title hidden" >
+					{{= obj.productSuitability.title }}
+				</div>
+
+				<div class="productSuitability-content hidden">
+					{{= obj.productSuitability.productSuitabilityStatement }}
+				</div>
 			</div>
 		</div>
-		<%-- Benefits --%>
+				<%-- Benefits --%>
 		<div class="row">
 			<div class="col-xs-12">
 				<table class="benefitsContainer">
