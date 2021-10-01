@@ -36,8 +36,18 @@
 	}
 }
 
+@media (min-width: 1200px) {
+	.pull-right-lg {
+		float: right;
+	}
+	.moreInfoBtn {
+		font-size: 13px;
+		padding-left: 50px;
+	}
+}
+
 .benefitsContainer {
-	border: 1px solid @results-border-color;	
+	border: 1px solid @results-border-color;
 	padding: 0px;
 
 	tr td:first-child {
@@ -71,6 +81,12 @@
 	}
 }
 
+.title-suitability {
+	font-weight: 700;
+	margin-top: 0;
+	padding-left: 20px;
+}
+
 @media(@sm) {
 	.bridgingContainer {
 		max-width: 800px;
@@ -98,7 +114,7 @@
 
 		a {
 			width:159px;
-			
+
 			@media(@md){
 				width:172px;
 			}
@@ -125,7 +141,7 @@
 			margin-top:10px;
 		}
 		> .verticalCenterContainer {
-			padding: 0;			
+			padding: 0;
 			height: @verticalCenteringHeight;
 			&:before {
 				.beforeVerticalCentering();
@@ -135,5 +151,11 @@
 				.contentVerticalCentering();
 			}
 		}
+	}
+
+	.moreInfoBtn {
+		display: block;
+		margin: auto;
+		text-align: center;
 	}
 }

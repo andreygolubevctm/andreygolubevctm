@@ -2,10 +2,7 @@ package com.ctm.web.travel.quote.model;
 
 import com.ctm.web.core.providers.model.IncomingQuotesResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.travel.model.results.ExemptedBenefit;
-import com.ctm.web.travel.model.results.Info;
-import com.ctm.web.travel.model.results.Offer;
-import com.ctm.web.travel.model.results.TravelResult;
+import com.ctm.web.travel.model.results.*;
 import com.ctm.web.travel.quote.model.request.PolicyType;
 import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
 import com.ctm.web.travel.quote.model.response.Benefit;
@@ -217,6 +214,10 @@ public class ResponseAdapterV2 {
                 com.ctm.web.travel.quote.model.response.Offer travelQuoteOffer = travelQuote.getOffer();
                 if (travelQuoteOffer != null) {
                     result.setOffer(new Offer(travelQuoteOffer.getDescription(), travelQuoteOffer.getTerms()));
+                }
+                
+                if (travelQuote.getProductSuitability() !=null) {
+                    result.setProductSuitability(new ProductSuitability(travelQuote.getProductSuitability().getTitle(), travelQuote.getProductSuitability().getProductSuitabilityStatement()));
                 }
 
                 // Handle handover url quirks

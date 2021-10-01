@@ -149,7 +149,7 @@
 				transform-origin: center center;
 				border-radius: 100%;
 
-				&:hover { 
+				&:hover {
 					transform: scale(1.1);
 					cursor: pointer;
 				}
@@ -304,9 +304,14 @@
 	.priceContainer	{
 		text-align: left;
 		padding: 5px 0px 0px;
+		margin-top: 8px;
 		.priceAmount {
 			font-size: @priceSize;
 			line-height: @priceSize;
+		}
+		.priceAmountMobile {
+			font-size: @priceSize;
+			line-height: 50px;
 		}
 	}
 
@@ -324,6 +329,9 @@
 			font-size: 12px;
 			line-height: 1.5;
 		}
+		.btn-margin {
+			margin-top: 10px;
+		}
 	}
 
 	.topContainer {
@@ -337,6 +345,13 @@
 	.infoContainer {
 			font-size: 12px;
 			line-height: 1.4;
+	}
+
+	.infoSmallFont {
+		font-size: 12px;
+		margin-bottom: 10px;
+
+		@media (max-width: 280px) { font-size: 9px; }
 	}
 
 
@@ -411,6 +426,7 @@
 	}
 
 	.PDS,
+	.targetMarketSuitability,
 	.moreInfo {
 		margin-bottom: 16px;
 		//text-align:center; //??
@@ -865,6 +881,7 @@ body[data-step="results"] #dynamic_dom {
 	}
 }
 
+.product-suitability-modal,
 .offer-terms-modal {
 	.modal-header, .modal-body {
 		.heading {
@@ -883,5 +900,9 @@ body[data-step="results"] #dynamic_dom {
 				margin-top:2em;
 			}
 		}
+	}
+
+	.modal-body {
+		padding-top: 0;
 	}
 }
