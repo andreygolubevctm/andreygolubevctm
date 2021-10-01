@@ -68,7 +68,7 @@ public class LeadServiceUtil {
     }
 
     public static ListenableFuture<ResponseEntity<LeadOutcome>> sendCliReturnRequest(final CliReturnRequest request, final String url) {
-        LOGGER.info("Sending request to LeadService {}", request);
+        LOGGER.info("Sending request to LeadService {}", request.toString());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

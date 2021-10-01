@@ -58,7 +58,7 @@
 <div class="simples-splashpage-item hidden">
 	<div class="simples-dialogue">
 		<simples:dialogue id="77" vertical="health" className="simples-dialog-inbound" />
-		<simples:clifilter_add filterStyleCodeId="1"/>
+		<simples:clifilter_add filterStyleCodeId="1" filterVertical="HEALTH"/>
 	</div>
 </div>
 <div class="simples-message-details-container">

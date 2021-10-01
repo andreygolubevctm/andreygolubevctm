@@ -1,21 +1,20 @@
 package com.ctm.web.core.leadService.model;
 
+import com.ctm.web.core.model.settings.Vertical;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@ToString
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CliReturnRequest {
 
-    private final String phone;
+    private String phone;
 
-    private final Integer styleCodeId;
+    private Integer styleCodeId;
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public Integer getStyleCodeId() {
-        return styleCodeId;
-    }
-
-    public CliReturnRequest(final String phone , final Integer styleCodeId) {
-        this.phone = phone;
-        this.styleCodeId = styleCodeId;
-    }
+    private Vertical.VerticalType vertical;
 }
