@@ -64,9 +64,8 @@ public class HealthSimplesLeadService {
 
         final Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
         final String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE) + "cliReturn";
-
         if (enabled) {
-            final ListenableFuture<ResponseEntity<LeadOutcome>> sendRequestListenable = LeadServiceUtil.sendCliReturnRequest(new CliReturnRequest(data.getValue(), data.getStyleCodeId()), url);
+            final ListenableFuture<ResponseEntity<LeadOutcome>> sendRequestListenable = LeadServiceUtil.sendCliReturnRequest(new CliReturnRequest(data.getValue(), data.getStyleCodeId(), data.getVertical()), url);
 
             final ResponseEntity<LeadOutcome> responseEntity = sendRequestListenable.get(LEAD_SERVICE_TIMEOUT, TimeUnit.SECONDS);
             final CliReturnResponse response = createCLIResponse(responseEntity);
