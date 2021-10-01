@@ -1,5 +1,6 @@
 package com.ctm.web.travel.quote.model.response;
 
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class TravelQuote {
     private Map<String, String> quoteData;
     private boolean encodeQuoteUrl;
     private Offer offer;
+    private ProductSuitability productSuitability;
     private Product product;
     private String providerName;
     private List<Benefit> benefits;
@@ -155,6 +157,14 @@ public class TravelQuote {
             }
         }
         return "$0";
+    }
+
+    public ProductSuitability getProductSuitability() {
+        return productSuitability;
+    }
+
+    public void setProductSuitability(ProductSuitability productSuitability) {
+        this.productSuitability = productSuitability;
     }
 
     public String getBenefitByLabelArray(String[] labels) {

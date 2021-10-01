@@ -64,6 +64,7 @@
 	{{ var productTitle = (typeof obj.des !== 'undefined') ? obj.des : 'Unknown product name'; }}
   {{ var providerName = obj.providerName; }}
 
+	{{ var productId = obj.productId; }}
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var logo = _.template(template); }}
 	{{ logo = logo(obj); }}
@@ -161,13 +162,24 @@
 							{{ if (obj.medicalCondsAssessed) { }}
 								<span class="medicalCondsAssessed">Allows medical assessment</span>
 							{{ } }}
-							<div class="col-sm-4 col-sm-push-4 col-lg-push-0 col-lg-6 moreInfo">
+							<div class="col-sm-3 col-sm-push-3 col-lg-push-0 col-lg-12 targetMarketSuitability">
+								<a href="javascript:;" class="btn-product-suitability productSuitability " data-available="{{= obj.available }}" data-productId="{{=obj.productId}}">Is this product suitable for me?</a>
+
+								<div class="productSuitability-title hidden">
+									{{= obj.productSuitability.title }}
+								</div>
+
+								<div class="productSuitability-content hidden">
+									{{= obj.productSuitability.productSuitabilityStatement }}
+								</div>
+							</div>
+							<div class="col-sm-3 col-sm-push-2 col-lg-push-0 col-lg-6 moreInfo">
 								<a href="javascript:;" class="btn-more-info" data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">More Info</a>
 							</div>
-							<div class="col-sm-4 col-sm-push-2 col-md-push-3 col-lg-push-0 col-lg-4 PDS">
+							<div class="col-sm-2 col-sm-push-1 col-md-push-2 col-lg-push-0 col-lg-4 PDS">
 								<a href="{{=obj.subTitle}}" target="_blank" class="showDoc">PDS</a>
 							</div>
-							<div class="col-sm-4 col-sm-pull-8 col-lg-pull-0 col-lg-12 buyNow">
+							<div class="col-sm-3 col-sm-pull-8 col-lg-pull-0 col-lg-12 buyNow">
 								<a class="btn btn-primary btn-block btn-apply btn-long-text" href="javascript:;" data-productId="{{= obj.productId }}">
 									<span>Go to {{= providerName }}</span>
 									<span class="icon icon-arrow-right" />
@@ -193,11 +205,14 @@
 								</div>
 								<div class="clearfix topContainer">
 									<div class="col-xs-6 priceContainer">
-										<span class="priceAmount">
+										<span class="priceAmountMobile">
 											{{= obj.priceText }}
 
 										</span>
 										<span class="priceTitle">Price</span>
+									</div>
+									<div class="col-xs-6 text-center infoSmallFont">
+										<a href="javascript:;" class="productSuitability">Is this product suitable for me? <span class="icon icon-angle-right" /></a>
 									</div>
 									<div class="col-xs-6 text-center infoContainer">
 										<a href="javascript:;">More Info <span class="icon icon-angle-right" /></a>
@@ -207,9 +222,12 @@
 									<div class="col-xs-6 excessContainer">
 										<span class="excessAmount">{{= obj.info.excess }}</span>
 										<span class="excessTitle">Excess</span>
+										<div class="col-xs-8 excessContainer">
+											<a href="{{=obj.subTitle}}" target="_blank" class="showDoc">PDS <span class="icon icon-angle-right" /></a>
+										</div>
 									</div>
 									<div class="col-xs-6 gotoContainer">
-										<a class="btn btn-primary btn-block btn-apply btn-long-text" href="javascript:;" data-productId="{{= obj.productId }}">
+										<a class="btn btn-primary btn-block btn-apply btn-long-text btn-margin" href="javascript:;" data-productId="{{= obj.productId }}">
 											<span>Go to {{= providerName }}</span>
 											<span class="icon icon-arrow-right" />
 										</a>

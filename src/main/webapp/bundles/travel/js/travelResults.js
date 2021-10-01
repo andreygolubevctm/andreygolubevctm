@@ -324,8 +324,8 @@
 	}
 
 	function eventSubscriptions() { // might not need all/any
-
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
+		$(document.body).on('click', 'a.productSuitability', launchProductSuitability);
 
 		// Model updated, make changes before rendering
 		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
@@ -606,6 +606,27 @@
 		});
 	}
 
+	function launchProductSuitability(event) {
+		event.preventDefault();
+
+		var $element = $(event.target);
+		var $productSuitabilityContent = $element.closest('.resultInsert, .more-info-content').find('.targetMarketSuitability .productSuitability-content:first');
+		var $logo =				$element.closest('.resultInsert, .more-info-content').find('.travelCompanyLogo');
+		var $productName = $element.closest('.resultInsert, .more-info-content').find('.productSuitability-title');
+
+		meerkat.modules.dialogs.show({
+			title: $logo.clone().wrap('<div >').addClass('hidden-xs').parent().html() +
+				"<div class='verticalCenterContainer '>" +
+					"<h2 class='hidden-xs title-suitability'>" + $productName.html() + "</h2>"
+				+ "</div> ",
+			hashId: 'Product-suitability',
+			className: 'product-suitability-modal',
+			openOnHashChange: false,
+			closeOnHashChange: true,
+			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2><div class='termsWrapper suitabilityContentWrapper'>" +  $productSuitabilityContent.html() + "</div>"
+		});
+	}
+
 	function rankingCallback(product, position) {
 		var data = {};
 
@@ -646,7 +667,8 @@
 
 		// Don't trigger if the apply button is clicked.
 		if ($(event.target).hasClass('btn-apply') || $(event.target).parent().hasClass('btn-apply')) return;
-
+		// Don't trigger if the PDS or product suitability link be clicked
+		if ($(event.target).hasClass('productSuitability') || $(event.target).hasClass('showDoc')) return;
 		// Ensure only in XS price mode
 		if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false) return;
 		if (meerkat.modules.deviceMediaState.get() !== 'xs') return;

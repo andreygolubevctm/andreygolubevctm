@@ -31,6 +31,8 @@ public class TravelResult extends Result {
     private Info info;
     private Boolean isDomestic;
     private Offer offer;
+
+    private ProductSuitability productSuitability;
     private Boolean medicalCondsAssessed;
     private String providerName;
 
@@ -188,6 +190,13 @@ public class TravelResult extends Result {
 
     public void setExemptedBenefits(ArrayList<ExemptedBenefit> exemptedBenefits) {
         this.exemptedBenefits = exemptedBenefits;
+    }
+    public ProductSuitability getProductSuitability() {
+        return productSuitability;
+    }
+
+    public void setProductSuitability(ProductSuitability productSuitability) {
+        this.productSuitability = productSuitability;
     }
 
     public Boolean getIsDomestic() { return isDomestic; }

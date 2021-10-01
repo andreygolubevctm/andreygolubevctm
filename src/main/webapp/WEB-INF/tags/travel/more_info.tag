@@ -19,6 +19,9 @@
 				<a href="javascript:;" class="btn btn-cta btn-block btn-apply" data-productid="{{= obj.productId }}">
 							Continue to Insurer</a>
 			</div>
+			<div class="col-sm-4  pull-right-lg clearfix">
+				<a href="javascript:;" class="moreInfoBtn productSuitability" data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">Is this product suitable for me?</a>
+			</div>
 		</div>
 		<%-- Benefits --%>
 		<div class="row">
