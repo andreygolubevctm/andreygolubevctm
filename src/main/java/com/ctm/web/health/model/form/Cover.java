@@ -1,5 +1,10 @@
 package com.ctm.web.health.model.form;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cover {
 
 //    private String sameProviders;
