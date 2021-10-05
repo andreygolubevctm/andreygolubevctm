@@ -206,8 +206,10 @@
                 meerkat.modules.navMenu.close();
             }
 
-            var filteredClinicalBenefits = meerkat.modules.healthBenefitsStep.getFilteredClinicalBenefits();
-            meerkat.modules.healthResults.setSelectedClinicalBenefitsList(filteredClinicalBenefits);
+            if(!_.isUndefined(meerkat.modules.healthBenefitsStep) && !_.isNull(meerkat.modules.healthBenefitsStep)) {
+                var filteredClinicalBenefits = meerkat.modules.healthBenefitsStep.getFilteredClinicalBenefits();
+                meerkat.modules.healthResults.setSelectedClinicalBenefitsList(filteredClinicalBenefits);
+            }
 
             _.defer(function () {
                 if (needToFetchFromServer) {
