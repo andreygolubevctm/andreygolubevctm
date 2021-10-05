@@ -16,11 +16,11 @@
 				<div class="col-xs-9 col-sm-10 verticalCenterContainer"><h2 class="productTitle">{{= obj.des }}</h2></div>
 			</div>
 			<div class="col-xs-12 col-sm-3 verticalCenterContainer">
-				<a href="javascript:;" class="btn btn-cta btn-block btn-apply" data-productid="{{= obj.productId }}">
+				<a href="javascript:;" class="btn btn-cta btn-block btn-apply mobile-btn-margin" data-productid="{{= obj.productId }}">
 							Continue to Insurer</a>
 			</div>
-			<div class="col-sm-4  pull-right-lg clearfix">
-				<a href="javascript:;" class="moreInfoBtn productSuitability" data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">Is this product suitable for me?</a>
+			<div>
+				<a href="javascript:;" class="productSuitabilityBtn productSuitability pull-right-lg data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">Is this product suitable for me?</a>
 				<div class="productSuitability-title hidden" >
 					{{= obj.productSuitability.title }}
 				</div>
