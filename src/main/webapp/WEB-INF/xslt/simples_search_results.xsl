@@ -80,13 +80,18 @@
 						<income><xsl:value-of select="healthCover/incomelabel" /></income>
 						<state><xsl:value-of select="situation/state" /></state>
 						<location><xsl:value-of select="situation/state" /><xsl:text> </xsl:text><xsl:value-of select="situation/postcode" /></location>
+						<coverType><xsl:value-of select="situation/coverType" /></coverType>
 						<dependants>
 							<xsl:choose>
 								<xsl:when test="string-length(healthCover/dependants) &gt; 0"><xsl:value-of select="healthCover/dependants" /></xsl:when>
 								<xsl:otherwise>0</xsl:otherwise>
 							</xsl:choose>
 						</dependants>
+						<hospitalBenefitsSource><xsl:value-of select="hospitalBenefitsSource" /></hospitalBenefitsSource>
 						<benefitCount><xsl:value-of select="count(benefits/benefitsExtras/*)" /></benefitCount>
+						<benefitsReason><xsl:value-of select="benefits/categorySelectHospital" /></benefitsReason>
+						<benefitsQuickSelectHospital><xsl:value-of select="benefits/quickSelectHospital" /></benefitsQuickSelectHospital>
+						<benefitsQuickSelectExtras><xsl:value-of select="benefits/categorySelectExtras" /></benefitsQuickSelectExtras>
 						<benefits>
 							<xsl:for-each select="benefits/benefitsExtras/*">
 								<xsl:choose>
@@ -98,6 +103,14 @@
 								<xsl:if test="position() &lt; last()">, </xsl:if>
 							</xsl:for-each>
 						</benefits>
+						<benefitTypes>
+							<xsl:for-each select="benefitTypes/*">
+								<benefitType>
+									<benefit><xsl:value-of select=".//name" /></benefit>
+									<type><xsl:value-of select=".//type" /></type>
+								</benefitType>
+							</xsl:for-each>
+						</benefitTypes>
 						<address>
 							<xsl:variable name="street">
 								<xsl:call-template name="get_street_name">

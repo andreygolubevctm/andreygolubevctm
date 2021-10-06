@@ -356,7 +356,7 @@ var ResultsView = {
 	 * @returns {*}
      */
 	parseTemplate:function(templateSelector, data){
-		if(!$(templateSelector).length || $(templateSelector).html() === "") {
+		if(!$(templateSelector) || !$(templateSelector).length || $(templateSelector).html() === "") {
 			console.log("Results.view.parseTemplate: templateSelector does not exist or is empty: ", templateSelector);
 			return "";
 		}

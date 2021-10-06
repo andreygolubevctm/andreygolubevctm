@@ -48,6 +48,7 @@ Features = {
 			return _.isObject(Features.pageStructure[featuresStructureIndexToUse]) ? [Features.pageStructure[featuresStructureIndexToUse]] : [];
 		}
 	},
+
 	buildHtml: function( results){
 		// Which set of results to use
 		if (typeof results === "undefined") {

@@ -293,7 +293,8 @@
                     <p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= custom.reform.tab1.coPayment }}</p>
                 {{ } }}
 
-                <p><strong>Accident Override:</strong>
+                <p class="{{= !_.isEmpty(obj.accident) && obj.accident.covered === 'Y' && ['gov-basic-plus', 'gov-basic'].includes(classification.icon) ? 'red' : '' }}">
+                    <strong>Accident Override:</strong>
                     {{ if(accidentSelected) { }}
                     <span class="checkbox ambulanceAccidentCoverCheckbox">
 						<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">
@@ -472,7 +473,8 @@
                             {{ } }}
                         </p>
 
-                        <p><strong>Accident Override:</strong>
+                        <p class="{{= !_.isEmpty(obj.accident) && obj.accident.covered === 'Y' && ['gov-basic-plus', 'gov-basic'].includes(classification.icon) ? 'red' : '' }}">
+                            <strong>Accident Override:</strong>
                             {{ if(accidentSelected) { }}
                             <span class="checkbox ambulanceAccidentCoverCheckbox">
 							<input type="checkbox" name="health_simples_dialogue-radio-accidentcover" id="health_simples_dialogue-radio-accidentcover" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please confirm you have read the Accident Override copy" required="required">

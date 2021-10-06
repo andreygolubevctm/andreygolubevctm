@@ -163,7 +163,7 @@
   }
 
   function hideResultsFilter() {
-    var rabdResult = Results.getReturnedResults().find(function(result) { return result.custom.reform.yad === "R" && result.premium.monthly.abd > 0; });
+    var rabdResult = !Results.getReturnedResults() ? undefined : Results.getReturnedResults().find(function(result) { return result.custom.reform.yad === "R" && result.premium.monthly.abd > 0; });
     $('.results-filters-abd').toggleClass('hidden', rabdResult === undefined);
 
     var simplesShowRABD = filterAbdProducts() && meerkat.modules.healthBenefitsStep.getCoverType() !== 'e';

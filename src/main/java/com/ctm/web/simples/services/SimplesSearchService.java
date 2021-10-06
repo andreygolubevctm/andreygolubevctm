@@ -21,9 +21,7 @@ import javax.servlet.jsp.PageContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -527,12 +525,12 @@ public class SimplesSearchService {
      * Search all details of found transaction IDs and save them into data bucket
      * @throws DaoException
      */
-    private void searchTransactionDetailsAndSave() throws DaoException {
+    public void searchTransactionDetailsAndSave() throws DaoException {
         String sql = "";
         SqlDao<Object> sqlDao = new SqlDao<>();
         DatabaseQueryMapping<Object> mapping;
         if (!hotTransactionIdsCsv.trim().equalsIgnoreCase("")) {
-            sql = "SELECT details.transactionId, details.xpath,  details.productType,\n" +
+            sql = "SELECT details.transactionId, details.xpath,  details.productType, fd.resultPath, fd.name,\n" +
                     "\t\tCASE\n" +
                     "\t\tWHEN details.xpath in ('health/situation/healthSitu','health/benefits/healthSitu','health/benefits/benefits/healthSitu')  \n" +
                     "\t\tTHEN hs.description\n" +
@@ -543,14 +541,22 @@ public class SimplesSearchService {
                     "FROM aggregator.health_transaction_details  AS details\n" +
                     "LEFT JOIN aggregator.general hs on details.textValue = hs.code AND hs.type = 'healthSitu' \n" +
                     "LEFT JOIN    aggregator.general hc ON details.textValue = hc.code  AND hc.type = 'healthCvr'\n" +
+                    "LEFT JOIN aggregator.features_details fd ON fd.shortlistKey = " +
+                    "CASE WHEN LOCATE('health/benefits/benefitsExtras/', xpath) > 0 then REPLACE(SUBSTRING(xpath, LENGTH('health/benefits/benefitsExtras/')+1), '/', '_') ELSE NULL END AND \n" +
+                    "fd.vertical = (\n" +
+                    "SELECT CASE WHEN NOT EXISTS(SELECT 1 FROM aggregator.transaction_details ad2 WHERE ad2.transactionId = details.transactionId\n" +
+                    "AND ad2.xpath = 'health/hospitalBenefitsSource' AND ad2.textValue = 'CLINICAL_CATEGORIES') THEN 'health2018'\n" +
+                    "WHEN EXISTS(SELECT 1 FROM aggregator.transaction_details ad2 WHERE ad2.transactionId = details.transactionId\n" +
+                    "AND ad2.xpath = 'health/hospitalBenefitsSource' AND ad2.textValue = 'CLINICAL_CATEGORIES') THEN 'health_cc' END AS healthVer\n" +
+                    ") AND fd.status = '1'" +
                     "WHERE \tdetails.transactionId IN (" + hotTransactionIdsCsv + ") \n" +
-                    "\t\tAND details.productType='HEALTH'   ";
+                    "\t\tAND details.productType='HEALTH'";
         }
         if (!hotTransactionIdsCsv.trim().equalsIgnoreCase("") && !coldTransactionIdsCsv.trim().equalsIgnoreCase("")) {
             sql += " UNION ALL ";
         }
         if (!coldTransactionIdsCsv.trim().equalsIgnoreCase("")) {
-            sql += "SELECT details.transactionId, tf.fieldCode AS xpath,  'HEALTH' AS productType,\n" +
+            sql += "SELECT details.transactionId, tf.fieldCode AS xpath,  'HEALTH' AS productType, fd.resultPath, fd.name,\n" +
                     "\t\tCASE\n" +
                     "\t\tWHEN  tf.fieldCode in ('health/situation/healthSitu','health/benefits/healthSitu','health/benefits/benefits/healthSitu')  THEN \n" +
                     "\t\t hs.description\n" +
@@ -561,6 +567,14 @@ public class SimplesSearchService {
                     "JOIN aggregator.transaction_fields tf USING(fieldId)\n" +
                     "LEFT JOIN  aggregator.general hs on details.textValue = hs.code AND hs.type = 'healthSitu'\n" +
                     "LEFT JOIN  aggregator.general hc ON details.textValue = hc.code  AND hc.type = 'healthCvr'\n" +
+                    "LEFT JOIN aggregator.features_details fd ON fd.shortlistKey = " +
+                    "CASE WHEN LOCATE('health/benefits/benefitsExtras/', xpath) > 0 then REPLACE(SUBSTRING(xpath, LENGTH('health/benefits/benefitsExtras/')+1), '/', '_') ELSE NULL END AND \n" +
+                    "fd.vertical = (\n" +
+                    "SELECT CASE WHEN NOT EXISTS(SELECT 1 FROM aggregator.transaction_details ad2 WHERE ad2.transactionId = details.transactionId\n" +
+                    "AND ad2.xpath = 'health/hospitalBenefitsSource' AND ad2.textValue = 'CLINICAL_CATEGORIES') THEN 'health2018'\n" +
+                    "WHEN EXISTS(SELECT 1 FROM aggregator.transaction_details ad2 WHERE ad2.transactionId = details.transactionId\n" +
+                    "AND ad2.xpath = 'health/hospitalBenefitsSource' AND ad2.textValue = 'CLINICAL_CATEGORIES') THEN 'health_cc' END AS healthVer\n" +
+                    ") AND fd.status = '1'" +
                     "WHERE details.transactionId IN (" + coldTransactionIdsCsv + ")" +
                     "AND details.verticalId='4'";
         }
@@ -575,8 +589,19 @@ public class SimplesSearchService {
             public Object handleResult(ResultSet rs) throws SQLException {
                 try {
                     while (rs.next()) {
+                        String resultPath = rs.getString("resultPath");
+                        String xpath = rs.getString("xpath");
+                        String name = rs.getString("name");
+                        if(resultPath != null && resultPath.contains(".") && resultPath.split("\\.").length > 0 && StringUtils.isNotBlank(name)) {
+                            writeDataIntoDataBucket(false, null, resultPath.split("\\.")[0],
+                                    "search_results/quote[@id=" + rs.getString("transactionId") + "]/" +
+                                            xpath.replace("benefits/benefitsExtras", "benefitTypes") + "/type");
+                            writeDataIntoDataBucket(false, null, name,
+                                    "search_results/quote[@id=" + rs.getString("transactionId") + "]/" +
+                                            xpath.replace("benefits/benefitsExtras", "benefitTypes") + "/name");
+                        }
                         writeDataIntoDataBucket(false, null, rs.getString("textValue"),
-                                "search_results/quote[@id=" + rs.getString("transactionId") + "]/" + rs.getString("xpath"));
+                                "search_results/quote[@id=" + rs.getString("transactionId") + "]/" + xpath);
                     }
                     return null;
                 } catch (Exception e) {

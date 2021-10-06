@@ -21,6 +21,7 @@ public class RequestAdapterV2 {
     static final String BANK_ACCOUNT = "BankAccount";
     static final String CREDIT_CARD = "CreditCard";
 
+    // Beware all who enter here, for only the strong of mind shall return
     public static HealthApplicationRequest adapt(HealthRequest healthRequest, HealthQuoteResult healthSelectedProduct,
                                                  String operator, String cid, String trialCampaign) throws DaoException {
         final Optional<HealthQuote> quote = Optional.ofNullable(healthRequest).map(HealthRequest::getQuote);
