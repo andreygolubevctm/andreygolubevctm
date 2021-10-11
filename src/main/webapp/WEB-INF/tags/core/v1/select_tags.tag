@@ -42,6 +42,9 @@
 		</c:otherwise>
 	</c:choose>
 
+	<div class="hidden" id="DestinationReminder">
+		We have assumed you have included “Australia” or an Australian location as you need cover while travelling from your home to your international departure point. If you need cover for a domestic trip/holiday prior to your international departure, you will need to purchase a separate policy for your travel within Australia.
+	</div>
 
 	<field_v2:validatedHiddenField xpath="${xpathhidden}" className="" title="${title}" validationErrorPlacementSelector=".content ${validationErrorPlacementSelector}" additionalAttributes=" required " />
 </form_v2:row>
