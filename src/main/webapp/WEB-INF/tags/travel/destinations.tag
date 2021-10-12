@@ -7,8 +7,7 @@
             <h6 class="region-title">Pacific</h6>
             <ul>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"AUS","countryName":"Australia"}'>Australia (domestic travel)</a></li>
-	            <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"PC","countryName":"Pacific"}'>Pacific</a></li>
-                <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"NZL","countryName":"New Zealand"}'>New Zealand</a></li>
+	            <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"NZL","countryName":"New Zealand"}'>New Zealand</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"FJI","countryName":"Fiji"}'>Fiji</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"COK","countryName":"Cook Islands"}'>Cook Islands</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"VUT","countryName":"Vanuatu"}'>Vanuatu</a></li>
@@ -18,7 +17,6 @@
         <div class="col-sm-3">
             <h6 class="region-title">Asia</h6>
             <ul>
-                <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"AS","countryName":"Asia"}'>Asia</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"BAL","countryName":"Bali"}'>Bali</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"THA","countryName":"Thailand"}'>Thailand</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"CHN","countryName":"China"}'>China</a></li>
@@ -34,7 +32,6 @@
         <div class="col-sm-3">
             <h6 class="region-title">Europe</h6>
             <ul>
-                <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"EU","countryName":"Europe"}'>Europe</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"GBR","countryName":"United Kingdom"}'>United Kingdom</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"FRA","countryName":"France"}'>France</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"ESP","countryName":"Spain"}'>Spain</a></li>
@@ -46,7 +43,6 @@
         <div class="col-sm-3">
             <h6 class="region-title">Worldwide & Americas</h6>
             <ul>
-                <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"WW","countryName":"Worldwide"}'>Worldwide</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"USA","countryName":"United States of America"}'>United States of America</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"CAN","countryName":"Canada"}'>Canada</a></li>
                 <li><a class="destination-item" href="javascript:;" data-country='{"isoCode":"MEX","countryName":"Mexico"}'>Mexico</a></li>
