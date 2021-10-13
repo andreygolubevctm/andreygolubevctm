@@ -383,7 +383,7 @@
             var $that = $(this);
             var isClinicalCategory = !_.isUndefined($that.attr("data-benefit-code"));
             var manualSelection = !_.isUndefined($that.prop('manually-selected')) && $that.prop('manually-selected');
-            if(!isClinicalCategory || (isClinicalCategory && !manualSelection)) {
+            if(!manualSelection) {
                 $that.prop("checked", false).change();
                 $that.attr('data-visible', "false");
                 if(isClinicalCategory) {

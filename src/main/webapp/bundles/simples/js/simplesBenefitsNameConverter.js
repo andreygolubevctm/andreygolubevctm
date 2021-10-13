@@ -149,7 +149,10 @@
                 return v.benefit.toUpperCase();
             });
         } else if(benefitTypes && !Array.isArray(benefitTypes.benefitType)) {
-            hospitals = [benefitTypes.benefitType.hospital];
+            hospitals = [
+                benefitTypes.benefitType.type === 'hospital' && !
+                    _.isNull(benefitTypes.benefitType.benefit) && !_.isUndefined(benefitTypes.benefitType.benefit)
+                    ? benefitTypes.benefitType.benefit.toUpperCase() : undefined];
         }
 
         if(benefitTypes && Array.isArray(benefitTypes.benefitType)) {
@@ -159,7 +162,9 @@
                 return v.benefit;
             });
         } else if (benefitTypes && !Array.isArray(benefitTypes.benefitType)) {
-            extras = [benefitTypes.benefitType.extras];
+            extras = [benefitTypes.benefitType.type === 'extras' &&
+                !_.isNull(benefitTypes.benefitType.benefit) && !_.isUndefined(benefitTypes.benefitType.benefit)
+                ? benefitTypes.benefitType.benefit.toUpperCase() : undefined];
         }
 
         if(benefits && benefits.indexOf('Hospital') !== -1) {

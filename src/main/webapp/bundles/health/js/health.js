@@ -326,8 +326,8 @@
 				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
 				var selectedClinicalBenefits = meerkat.modules.healthBenefitsStep.getSelectedClinicalBenefits();
 				meerkat.modules.healthResults.setSelectedClinicalBenefitsList(selectedClinicalBenefits);
+				meerkat.modules.healthClinicalCategories.updateManualSelectionsFields();
 				var ambulanceAccidentCover = meerkat.modules.healthBenefitsStep.getAmbulanceAccidentCover();
-
 				if(ambulanceAccidentCover) {
 					selectedBenefits.push(ambulanceAccidentCover);
 				}
