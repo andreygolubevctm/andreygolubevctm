@@ -12,7 +12,9 @@
 			travelDestinations : null,
 			destinationsPopover : null,
 			destinationsList : null,
-			fromTravelDates : null
+			fromTravelDates : null,
+			existDomesticTravel: 0,
+			existInternationalTravel: 0,
 	};
 
 	function initTravelPopularDestinations() {
@@ -58,10 +60,22 @@
 	function eventSubscriptions() {
 		meerkat.messaging.subscribe(meerkatEvents.selectTags.SELECTED_TAG_REMOVED, function onSelectedTagRemove(isoCode) {
 			toggleSelectedIcon(isoCode, false);
+			if (isoCode === 'AUS' || isoCode === 'CCK' || isoCode ===  'CXR' || isoCode === 'HMD' || isoCode === 'NFK') {
+				$elements.existDomesticTravel = $elements.existDomesticTravel - 1;
+			} else {
+				$elements.existInternationalTravel = $elements.existInternationalTravel - 1;
+			}
+			$('#DestinationReminder').toggleClass('hidden', !($elements.existDomesticTravel > 0 && $elements.existInternationalTravel > 0))
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.selectTags.SELECTED_TAG_ADDED, function onSelectedTagAdd(isoCode) {
 			toggleSelectedIcon(isoCode, true);
+			if (isoCode === 'AUS' || isoCode === 'CCK' || isoCode ===  'CXR' || isoCode === 'HMD' || isoCode === 'NFK') {
+				$elements.existDomesticTravel = $elements.existDomesticTravel + 1;
+			} else {
+				$elements.existInternationalTravel = $elements.existInternationalTravel + 1;
+			}
+			$('#DestinationReminder').toggleClass('hidden', !($elements.existDomesticTravel > 0 && $elements.existInternationalTravel > 0))
 		});
 	}
 

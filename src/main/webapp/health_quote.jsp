@@ -237,6 +237,8 @@
                     <field_v1:hidden xpath="health/hospitalBenefitsSource" constantValue="${pageSettings.getSetting('simplesHospitalBenefitsSource')}" />
                     <field_v1:hidden xpath="health/benefits/categorySelectHospital" />
                     <field_v1:hidden xpath="health/benefits/quickSelectHospital" />
+                    <field_v1:hidden xpath="health/benefits/manualSelections/hospital" />
+                    <field_v1:hidden xpath="health/benefits/manualSelections/clinical" />
                 </div>
 
                 <%-- Slides --%>
