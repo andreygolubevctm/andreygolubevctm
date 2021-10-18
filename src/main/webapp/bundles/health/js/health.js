@@ -226,7 +226,7 @@
 					var coverTypeVal = $(this).find('input:checked').val();
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
                     $('#clinicalCategoriesToggle').toggleClass("hidden", coverTypeVal === "E");
-                    if($('#clinicalCategoriesContent').is(':visible') && coverTypeVal === "E") {
+                    if( coverTypeVal === "E") {
                         $('#clinicalCategoriesToggle').removeClass('active');
                         $('#clinicalCategoriesContent').hide();
                     }
@@ -326,8 +326,8 @@
 				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
 				var selectedClinicalBenefits = meerkat.modules.healthBenefitsStep.getSelectedClinicalBenefits();
 				meerkat.modules.healthResults.setSelectedClinicalBenefitsList(selectedClinicalBenefits);
+				meerkat.modules.healthClinicalCategories.updateManualSelectionsFields();
 				var ambulanceAccidentCover = meerkat.modules.healthBenefitsStep.getAmbulanceAccidentCover();
-
 				if(ambulanceAccidentCover) {
 					selectedBenefits.push(ambulanceAccidentCover);
 				}

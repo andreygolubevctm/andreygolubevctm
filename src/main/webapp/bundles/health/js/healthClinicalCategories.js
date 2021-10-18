@@ -38,7 +38,7 @@
 
             setupActiveGroups();
             setupBenefitGroups();
-
+            initManualSelectionsFromFields();
             eventListeners();
 
             $elements.inputs.each(function(){
@@ -78,20 +78,16 @@
             var $that = $(this);
             $that.on("change", function(){
                 var $that = $(this);
-                _.defer(function(){
-                    toggleSelector($that);
-                    var isChecked = $that.is(":checked");
-                    if(!isChecked) {
-                        $that.prop('manually-selected', false);
-                    }
-                });
+                var isChecked = $that.is(":checked");
+                if(!isChecked) {
+                    $that.prop('manually-selected', false);
+                }
+                toggleSelector($that);
             });
             $that.on('click.manualHospitalBenefitSelection', function(){
                 var $that = $(this);
-                _.defer(function(){
-                    var checked = $that.is(":checked");
-                    $that.prop('manually-selected', checked);
-                });
+                var checked = $that.is(":checked");
+                $that.prop('manually-selected', checked);
             });
         });
         $elements.benefitRows.each(function(){
@@ -100,27 +96,23 @@
                 var groupsStr = $row.attr("data-groups");
                 if(!_.isUndefined(groupsStr)) {
                     var groups = groupsStr.split(",");
-                    _.defer(function () {
-                        var $input = $row.find(":input");
-                        var checked = $input.is(":checked");
-                        $row.toggleClass("active", checked);
-                        $input.prop('manually-selected', checked);
-                        if(!_.isEmpty(groupsStr) && !_.isEmpty(groups)) {
-                            reverseToggleSelectors({row: $row, groups: groups, checked: checked});
-                            _.defer(toggleCTMBenefitLabels);
-                        }
-                    });
-                }
-            });
-            $row.on("change", function(){
-                _.defer(function () {
                     var $input = $row.find(":input");
                     var checked = $input.is(":checked");
                     $row.toggleClass("active", checked);
-                    if(!checked) {
-                        $row.prop('manually-selected', false);
+                    $input.prop('manually-selected', checked);
+                    if(!_.isEmpty(groupsStr) && !_.isEmpty(groups)) {
+                        reverseToggleSelectors({row: $row, groups: groups, checked: checked});
+                        _.defer(toggleCTMBenefitLabels);
                     }
-                });
+                }
+            });
+            $row.on("change", function(){
+                var $input = $row.find(":input");
+                var checked = $input.is(":checked");
+                $row.toggleClass("active", checked);
+                if(!checked) {
+                    $input.prop('manually-selected', false);
+                }
             });
         });
     }
@@ -181,7 +173,7 @@
 
     function getManuallySelectedClinicalCategories() {
         var benefits = [];
-        $elements.benefitRows.filter(".active").each(function () {
+        $elements.benefitRows.each(function () {
             var $row = $(this);
             var $input = $row.find(":input");
             var manuallySelectedProp = $input.prop("manually-selected");
@@ -277,6 +269,7 @@
                             var $option = $elements.inputs.filter("[data-group=" + group + "]");
                             if ($option.length) {
                                 $option.prop("checked", false).trigger("change.randomChangeEvent");
+                                $option.prop('manually-selected', false);
                             }
                         }
                     });
@@ -368,17 +361,49 @@
     function synManuallySelectedBenefits(manuallySelectedHealthBenefits, manuallySelectedClinicalBenefits) {
         $elements.inputs.each(function(){
             var $that = $(this);
-                var benefit = $that.attr('id').replace('health_benefits_benefitsExtras_', '');
-                var manuallySelected = !_.isUndefined(manuallySelectedHealthBenefits[benefit]) && manuallySelectedHealthBenefits[benefit];
-                $that.prop('manually-selected', manuallySelected);
+            var benefit = $that.attr('id').replace('health_benefits_benefitsExtras_', '');
+            var manuallySelected = !_.isUndefined(manuallySelectedHealthBenefits[benefit]) && manuallySelectedHealthBenefits[benefit];
+            $that.prop('manually-selected', manuallySelected);
         });
         $elements.benefitRows.each(function(){
             var $row = $(this);
             var $input = $row.find(":input");
-                var benefit = $input.attr('id').replace('health_benefits_benefitsExtras_', '');
-                var manuallySelected = !_.isUndefined(manuallySelectedClinicalBenefits[benefit]) && manuallySelectedClinicalBenefits[benefit];
-                $input.prop('manually-selected', manuallySelected);
+            var benefit = $input.attr('id').replace('health_benefits_benefitsExtras_', '');
+            var manuallySelected = !_.isUndefined(manuallySelectedClinicalBenefits[benefit]) && manuallySelectedClinicalBenefits[benefit];
+            $input.prop('manually-selected', manuallySelected);
         });
+    }
+
+    function updateManualSelectionsFields() {
+        var hospitalArray = getManuallySelectedHospitalBenefit();
+        var clinicalArray = getManuallySelectedClinicalCategories();
+        var newValueForHospital = hospitalArray.length > 0 ? hospitalArray.join(';') + ';' : '';
+        var newValueForClinical = clinicalArray.length > 0 ? clinicalArray.join(';') + ';' : '';
+        $('#health_benefits_manualSelections_hospital').val(newValueForHospital);
+        $('#health_benefits_manualSelections_clinical').val(newValueForClinical);
+    }
+
+    function initManualSelectionsFromFields() {
+        var hospitalField = $('#health_benefits_manualSelections_hospital').val();
+        if (hospitalField !== '') {
+            $elements.inputs.each(function(){
+                var $that = $(this);
+                var benefit = $that.attr('id').replace('health_benefits_benefitsExtras_', '') + ';';
+                var manuallySelected = (hospitalField.indexOf(benefit) !== -1);
+                $that.prop('manually-selected', manuallySelected);
+            });
+
+        }
+        var clinicalField = $('#health_benefits_manualSelections_clinical').val();
+        if (clinicalField !== '') {
+            $elements.benefitRows.each(function () {
+                var $row = $(this);
+                var $input = $row.find(":input");
+                var benefit = $input.attr('id').replace('health_benefits_benefitsExtras_', '') + ';';
+                var manuallySelected = (clinicalField.indexOf(benefit) !== -1);
+                $input.prop('manually-selected', manuallySelected);
+            });
+        }
     }
 
 	function toggleCTMBenefitLabels(removeAll) {
@@ -466,7 +491,8 @@
         getBenefitGroups: getBenefitGroups,
         getManuallySelectedClinicalCategories: getManuallySelectedClinicalCategories,
         getManuallySelectedHospitalBenefit: getManuallySelectedHospitalBenefit,
-        synManuallySelectedBenefits: synManuallySelectedBenefits
+        synManuallySelectedBenefits: synManuallySelectedBenefits,
+        updateManualSelectionsFields: updateManualSelectionsFields
     });
 
 })(jQuery);

@@ -24,7 +24,6 @@
 	</div>
 </c:set>
 
-<c:set var="includeBenefitWhenFormSubmittedAttribute" value=" data-attach='true' " />
 <c:set var="benefitTypeAttribute" value=" data-type='extras' " />
 <c:set var="benefitGroupAttribute" value="" />
 
@@ -168,9 +167,6 @@
                             <div class="children healthBenefits">
                                 <c:choose>
                                     <c:when test="${category eq 'Hospital'}">
-                                        <c:set var="includeBenefitWhenFormSubmittedAttribute">
-                                            <c:if test="${hospitalBenefitsSource eq 'CLINICAL_CATEGORIES'}">data-ignore="true"</c:if>
-                                        </c:set>
                                         <c:set var="benefitTypeAttribute" value=" data-type='hospital' " />
                                     </c:when>
                                     <c:when test="${category != 'Hospital'}">
@@ -210,7 +206,7 @@
                                         <c:set var="benefitGroupAttribute" value=" data-group='${selectedValue.getShortlistKey()}' " />
 
 										<%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
-										<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" customAttribute=" ${includeBenefitWhenFormSubmittedAttribute} ${benefitTypeAttribute} ${benefitGroupAttribute} "  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
+										<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" customAttribute=" data-attach='true' ${benefitTypeAttribute} ${benefitGroupAttribute} "  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
 										</div>
 									</c:if>
 								</c:forEach>

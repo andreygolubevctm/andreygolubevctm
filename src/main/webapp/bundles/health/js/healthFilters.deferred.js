@@ -346,8 +346,10 @@
         meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
         meerkat.modules.healthClinicalCategories.synManuallySelectedBenefits(manuallySelectedHealthBenefits, manuallySelectedClinicalBenefits);
         meerkat.modules.healthBenefitsStep.populateBenefitsSelection(selectedBenefits);
+        //To ensure manual selections still correct, not changed by events triggered by populateBenefitsSelection
+        meerkat.modules.healthClinicalCategories.synManuallySelectedBenefits(manuallySelectedHealthBenefits, manuallySelectedClinicalBenefits);
         meerkat.modules.healthClinicalCategories.toggleDataVisibiltyOfSelectedBenefits(selectedBenefits);
-
+        meerkat.modules.healthClinicalCategories.updateManualSelectionsFields();
 
         // when hospital is set to off in [Customise Cover] hide the excess section
         var $excessSection = $("#resultsPage").find('.cell.excessSection');
@@ -622,6 +624,7 @@
                             var $option = $('.sidebar-widget').find('.benefitsHospital').find('input[type="checkbox"]').filter("[data-group=" + group + "]");
                             if ($option.length) {
                                 $option.prop("checked", false).trigger("change.randomChangeEvent");
+                                manuallySelectedHealthBenefits[$option.attr("value")] =  false;
                             }
                         }
                     });
