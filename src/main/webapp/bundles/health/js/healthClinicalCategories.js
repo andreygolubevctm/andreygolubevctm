@@ -78,20 +78,16 @@
             var $that = $(this);
             $that.on("change", function(){
                 var $that = $(this);
-                _.defer(function(){
-                    toggleSelector($that);
-                    var isChecked = $that.is(":checked");
-                    if(!isChecked) {
-                        $that.prop('manually-selected', false);
-                    }
-                });
+                var isChecked = $that.is(":checked");
+                if(!isChecked) {
+                    $that.prop('manually-selected', false);
+                }
+                toggleSelector($that);
             });
             $that.on('click.manualHospitalBenefitSelection', function(){
                 var $that = $(this);
-                _.defer(function(){
-                    var checked = $that.is(":checked");
-                    $that.prop('manually-selected', checked);
-                });
+                var checked = $that.is(":checked");
+                $that.prop('manually-selected', checked);
             });
         });
         $elements.benefitRows.each(function(){
@@ -100,27 +96,23 @@
                 var groupsStr = $row.attr("data-groups");
                 if(!_.isUndefined(groupsStr)) {
                     var groups = groupsStr.split(",");
-                    _.defer(function () {
-                        var $input = $row.find(":input");
-                        var checked = $input.is(":checked");
-                        $row.toggleClass("active", checked);
-                        $input.prop('manually-selected', checked);
-                        if(!_.isEmpty(groupsStr) && !_.isEmpty(groups)) {
-                            reverseToggleSelectors({row: $row, groups: groups, checked: checked});
-                            _.defer(toggleCTMBenefitLabels);
-                        }
-                    });
-                }
-            });
-            $row.on("change", function(){
-                _.defer(function () {
                     var $input = $row.find(":input");
                     var checked = $input.is(":checked");
                     $row.toggleClass("active", checked);
-                    if(!checked) {
-                        $input.prop('manually-selected', false);
+                    $input.prop('manually-selected', checked);
+                    if(!_.isEmpty(groupsStr) && !_.isEmpty(groups)) {
+                        reverseToggleSelectors({row: $row, groups: groups, checked: checked});
+                        _.defer(toggleCTMBenefitLabels);
                     }
-                });
+                }
+            });
+            $row.on("change", function(){
+                var $input = $row.find(":input");
+                var checked = $input.is(":checked");
+                $row.toggleClass("active", checked);
+                if(!checked) {
+                    $input.prop('manually-selected', false);
+                }
             });
         });
     }
@@ -277,6 +269,7 @@
                             var $option = $elements.inputs.filter("[data-group=" + group + "]");
                             if ($option.length) {
                                 $option.prop("checked", false).trigger("change.randomChangeEvent");
+                                $option.prop('manually-selected', false);
                             }
                         }
                     });
