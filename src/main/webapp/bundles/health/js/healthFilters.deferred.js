@@ -624,6 +624,7 @@
                             var $option = $('.sidebar-widget').find('.benefitsHospital').find('input[type="checkbox"]').filter("[data-group=" + group + "]");
                             if ($option.length) {
                                 $option.prop("checked", false).trigger("change.randomChangeEvent");
+                                manuallySelectedHealthBenefits[$option.attr("value")] =  false;
                             }
                         }
                     });
