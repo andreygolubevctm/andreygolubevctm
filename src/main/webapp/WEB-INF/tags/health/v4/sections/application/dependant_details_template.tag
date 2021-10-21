@@ -14,7 +14,7 @@
     {{ var usesSchoolDropdown = providerConfig.useSchoolDropdownMenu === true; }}
     {{ var isNibOrQts = providerConfig.isNibOrQts === true; }}
     <%-- HTML --%>
-    <div id="${name}" class="health_dependant_details dependant{{= obj.dependantId }} dependant-data-container" data-id="{{= obj.dependantId }}">
+    <div id="${name}" class="health_dependant_details dependant{{= obj.dependantId }}" data-id="{{= obj.dependantId }}">
 
         <form_v4:row>
             <div class="inlineHeadingWithButton">
@@ -83,7 +83,11 @@
                 {{ if(isNibOrQts === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">
-                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'" />
+                    <span class="input-group-addon"><i class="icon-angle-down"></i></span>
+                    <select name="${storeGroupName}" id="${storeGroupName}" class="form-control data-hj-suppress" required title="dependant {{= obj.dependantId }}'s educational institute">
+                        <c:import var="schoolList" url="/spring/rest/school/get.json"/>
+                        <c:out value="${schoolList}" escapeXml="false"/>
+                    </select>
                 </div>
                 {{ } else if(usesSchoolDropdown === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
@@ -100,7 +104,7 @@
             {{ if(providerConfig.isNibOrQts === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/gradDate"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="Graduation Date" id="${name}_schoolGraduationDate" className="health_dependant_details_schoolGraduationDate hidden" helpId="654">
-                <field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="dependant graduation date " required="true" className="sessioncamexclude data-hj-suppress dependant-graduation-day" maxYears="10" medicareCardValidationField="schoolGraduationDate" />
+                <field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s graduation date " required="true" className="sessioncamexclude data-hj-suppress" maxYears="10" medicareCardValidationField="${xpath}/colour" />
             </form_v4:row>
             {{ } }}
             {{ if(providerConfig.showSchoolIdField === true) { }}
@@ -155,6 +159,7 @@
                 <field_v2:general_select type="healthNavQuestion_relationship" xpath="${fieldXpath}" title="Relationship to you" required="true" initialText="Please select" disableErrorContainer="${true}" additionalAttributes=" data-attach='true'" />
             </form_v4:row>
             {{ } }}
+
 
         </div>
     </div>
