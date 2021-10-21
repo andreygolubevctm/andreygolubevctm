@@ -30,6 +30,9 @@ public class Dependant {
     @JsonSerialize(using = TypeSerializer.class)
     private School school;
 
+    @JsonSerialize(using = TypeSerializer.class)
+    private GraduationDate graduationDate;
+
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate schoolDate;
@@ -44,14 +47,15 @@ public class Dependant {
     private Relationship relationship;
 
     public Dependant(final Title title, final FirstName firstName, final LastName lastName,
-                     final LocalDate dateOfBirth, final School school, final LocalDate schoolDate,
-                     final SchoolId schoolID, final Gender gender, final FullTimeStudent fullTimeStudent,
-                     final Relationship relationship) {
+                     final LocalDate dateOfBirth, final School school, final GraduationDate graduationDate,
+                     final LocalDate schoolDate, final SchoolId schoolID, final Gender gender,
+                     final FullTimeStudent fullTimeStudent, final Relationship relationship) {
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.school = school;
+        this.graduationDate = graduationDate;
         this.schoolDate = schoolDate;
         this.schoolID = schoolID;
         this.gender = gender;
@@ -77,6 +81,10 @@ public class Dependant {
 
     public School getSchool() {
         return school;
+    }
+
+    public GraduationDate getGraduationDate() {
+        return graduationDate;
     }
 
     public LocalDate getSchoolDate() {

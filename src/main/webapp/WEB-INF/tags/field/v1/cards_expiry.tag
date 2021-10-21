@@ -44,6 +44,10 @@
 	<c:when test="${empty medicareCardValidationField}">
 		<c:set var="validationAttributes"> data-rule-cardExpiry='{"prefix":"${go:nameFromXpath(xpath)}"}' data-msg-cardExpiry='Please choose a valid ${title}' </c:set>
 	</c:when>
+<%--	We use this tag to input schoolGraduationDate also, so need new validation rule--%>
+	<c:when test="${medicareCardValidationField eq 'schoolGraduationDate'}">
+		<c:set var="validationAttributes"> data-rule-schoolGraduationDate='{"prefix":"${go:nameFromXpath(xpath)}"}' data-msg-cardExpiry='Please choose a valid date' </c:set>
+	</c:when>
 	<c:otherwise>
 		<c:set var="validationAttributes"> data-rule-medicareCardExpiry='{"prefix":"${go:nameFromXpath(xpath)}", "medicareCardSelector":"${go:nameFromXpath(medicareCardValidationField)}"}' data-msg-cardExpiry='Please choose a valid ${title}' </c:set>
 	</c:otherwise>

@@ -23,6 +23,8 @@
             lastname: "",
             fulltime: "",
             school: "",
+            gradDate_cardExpiryMonth: "",
+            gradDate_cardExpiryYear: "",
             schoolDate: "",
             schoolID: "",
             dob: "",
@@ -49,6 +51,7 @@
              */
             showSchoolFields: true,
             useSchoolDropdownMenu: false,
+            isNibOrQts: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
             isAUF: false,
@@ -134,8 +137,9 @@
             toggleDependantFields($wrapper);
         }).on('change', ':input', function changeInput() {
             var $el = $(this),
-                dependantId = $el.closest('.health_dependant_details').attr('data-id'),
-                objIndex = $el.attr('id').replace(/health_application_dependants_dependant[0-9]{1}_/, '');
+                dependantId = !$el || !$el.closest('.health_dependant_details') ? undefined : $el.closest('.health_dependant_details').attr('data-id'),
+                objIndex = !$el || !$el.attr('id') ? undefined : $el.attr('id').replace(/health_application_dependants_dependant[0-9]{1}_/, '');
+            if(!dependantId || !objIndex) return;
             dependantsArr[dependantId - 1][objIndex] = $(this).val();
         });
 
@@ -226,10 +230,11 @@
                 $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
                 $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
                 $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+                $(selectorPrefix + '_schoolGraduationDate').toggleClass('hidden', !providerConfig.isNibOrQts);
                 $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',false);
             } else {
                 // Hide them all if they aren't in the age range.
-                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             }
 
         } else {
@@ -243,10 +248,11 @@
                 $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
                 $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
                 $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+                $(selectorPrefix + '_schoolGraduationDate').toggleClass('hidden', !providerConfig.isNibOrQts);
                 $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
             } else {
                 // Hide them all if they aren't in the date range.
-                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             }
         }
     }
@@ -319,7 +325,57 @@
                 $(prefix + '_dob').val(dependantsArr[i].dob);
             }
 
-            if (providerConfig.useSchoolDropdownMenu) {
+            if (providerConfig.isNibOrQts) {
+                var month, year, yearFull;
+                if (typeof dependantsArr[i].gradDate !== 'undefined' && dependantsArr[i].gradDate != null) {
+                    month = "" + dependantsArr[i].gradDate.cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate.cardExpiryYear;
+                } else {
+                    month = "" + dependantsArr[i].gradDate_cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate_cardExpiryYear;
+                }
+                if (month !== "") {
+                    $(prefix + '_gradDate_cardExpiryMonth').val(month.length === 1 ? "0" + month : month);
+                    $(prefix + '_gradDate_cardExpiryYear').val(year);
+                }
+                yearFull = dependantsArr[i].gradDate_cardExpiryFullYear;
+                if((_.isNull(yearFull) || _.isUndefined(yearFull)) &&
+                    !_.isNull(dependantsArr[i].gradDate) && !_.isUndefined(dependantsArr[i].gradDate)) {
+                    yearFull = dependantsArr[i].gradDate.cardExpiryFullYear;
+                }
+                var useJustYear = false;
+                if((_.isNull(yearFull) || _.isUndefined(yearFull) || yearFull.trim().length < 10) &&
+                    !_.isNull(dependantsArr[i].gradDate) && !_.isUndefined(dependantsArr[i].gradDate) &&
+                    !_.isNull(dependantsArr[i].gradDate.cardExpiryYear) && !_.isUndefined(dependantsArr[i].gradDate.cardExpiryYear)) {
+                    yearFull = new Date().getFullYear().toString().substr(0, 2) + dependantsArr[i].gradDate.cardExpiryYear;
+                    useJustYear = true;
+                }
+                if(!_.isUndefined(yearFull) && !_.isNull(yearFull) && yearFull !== '') {
+                    if(!useJustYear) {
+                        var yearFullSplit = yearFull.split('/');
+                        yearFull = yearFullSplit.length === 3 ? yearFullSplit[2] : undefined;
+                        $('.show-yyyy-as-yy').val(yearFull);
+                    } else {
+                        $('.show-yyyy-as-yy').val(yearFull);
+                    }
+                }
+
+                var gradDateIn = $('[id$="schoolGraduationDate"]').find('.dateinput_container');
+                if(!_.isUndefined(gradDateIn) && !_.isNull(gradDateIn)) {
+                    var cardExpiryFullYear = gradDateIn.find('[id$="gradDate_cardExpiryFullYear"]');
+                    if(!_.isUndefined(cardExpiryFullYear) && !_.isNull(cardExpiryFullYear) && cardExpiryFullYear.val() === '') {
+                        cardExpiryFullYear.val(gradDateIn.find('.dateinput-day').val() + "/" + gradDateIn.find('.dateinput-month').val() + "/" + gradDateIn.find('.show-yyyy-as-yy').val());
+                    }
+                    var yearYYHidden = gradDateIn.find('.dateinput-year-hidden-yy');
+                    if(!_.isUndefined(yearYYHidden) && !_.isNull(yearYYHidden)) {
+                        var $yyyy = $('.show-yyyy-as-yy');
+                        yearYYHidden.val(!$yyyy || !$yyyy.val() || $yyyy.val().length < 4 ? '' : $yyyy.val().substring(2, 4));
+                    }
+                }
+
+            }
+
+            if (providerConfig.useSchoolDropdownMenu || providerConfig.isNibOrQts) {
                 $(prefix + '_school').val(dependantsArr[i].school);
             }
             if (providerConfig.showMaritalStatusField) {

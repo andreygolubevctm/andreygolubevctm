@@ -132,7 +132,6 @@
     });
 
     $.validator.addMethod("medicareCardExpiry", function (value, elem, param) {
-
         if (typeof param !== 'undefined' && param.medicareCardSelector && param.prefix) {
 
             var check = false;
@@ -185,6 +184,10 @@
             //this validation rule requires both the prefix and  medicareCardSelector parameters to to be supplied against the param object
             return false;
         }
+    });
+
+    $.validator.addMethod("schoolGraduationDate", function (value, elem, param) {
+        return true;
     });
 
     // Was never working in __health_legacy.js as it used ${name} instead of javascript. Would always pass I believe.
