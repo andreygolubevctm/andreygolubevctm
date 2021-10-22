@@ -17,6 +17,7 @@ import com.ctm.web.health.apply.model.request.application.applicant.previousFund
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.MemberId;
 import com.ctm.web.health.apply.model.request.application.common.*;
 import com.ctm.web.health.apply.model.request.application.dependant.FullTimeStudent;
+import com.ctm.web.health.apply.model.request.application.dependant.GraduationDate;
 import com.ctm.web.health.apply.model.request.application.dependant.School;
 import com.ctm.web.health.apply.model.request.application.dependant.SchoolId;
 import com.ctm.web.health.apply.model.request.application.situation.HealthCoverCategory;
@@ -202,6 +203,9 @@ public class ApplicationGroupAdapter {
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getSchool)
                             .map(School::new)
+                            .orElse(null),
+                    dependant.map(com.ctm.web.health.model.form.Dependant::getGraduationDate)
+                            .map(GraduationDate::new)
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getSchoolDate)
                             .map(LocalDateUtils::parseAUSLocalDate)

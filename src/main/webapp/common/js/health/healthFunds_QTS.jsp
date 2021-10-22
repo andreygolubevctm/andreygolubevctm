@@ -31,7 +31,7 @@ var healthFunds_QTS = {
         meerkat.modules.healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
         <%--schoolgroups and defacto--%>
-        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
+        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, isNibOrQts:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
 
         meerkat.modules.healthFunds._previousfund_authority(true);
 

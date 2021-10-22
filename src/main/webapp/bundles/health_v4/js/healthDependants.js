@@ -23,6 +23,8 @@
             lastname: "",
             fulltime: "",
             school: "",
+            gradDate_cardExpiryMonth: "",
+            gradDate_cardExpiryYear: "",
             schoolDate: "",
             schoolID: "",
             dob: "",
@@ -48,6 +50,7 @@
              */
             showSchoolFields: true,
             useSchoolDropdownMenu: false,
+            isNibOrQts: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
             showSchoolIdField: false,
@@ -252,10 +255,11 @@
             $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
             $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
             $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+            $(selectorPrefix + '_schoolGraduationDate').toggleClass('hidden', !providerConfig.isNibOrQts);
             $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
         } else {
             // Hide them all if they aren't in the date range.
-            $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+            $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
         }
     }
 
@@ -327,7 +331,12 @@
                 $(prefix + '_dob').val(dependantsArr[i].dob);
             }
 
-            if (providerConfig.useSchoolDropdownMenu) {
+            if (providerConfig.isNibOrQts) {
+                $(prefix + '_gradDate_cardExpiryMonth').val(dependantsArr[i].gradDate_cardExpiryMonth);
+                $(prefix + '_gradDate_cardExpiryYear').val(dependantsArr[i].gradDate_cardExpiryYear);
+            }
+
+            if (providerConfig.useSchoolDropdownMenu || providerConfig.isNibOrQts) {
                 $(prefix + '_school').val(dependantsArr[i].school);
             }
             if (providerConfig.showMaritalStatusField) {

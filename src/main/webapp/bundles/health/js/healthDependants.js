@@ -23,6 +23,8 @@
             lastname: "",
             fulltime: "",
             school: "",
+            gradDate_cardExpiryMonth: "",
+            gradDate_cardExpiryYear: "",
             schoolDate: "",
             schoolID: "",
             dob: "",
@@ -49,9 +51,9 @@
              */
             showSchoolFields: true,
             useSchoolDropdownMenu: false,
+            isNibOrQts: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
-            isAUF: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,
@@ -204,8 +206,6 @@
      */
     function toggleDependantFields($wrapper) {
 
-        meerkat.modules.healthDependants.updateAgeWarningForAUFDependants();
-
         var dependantId = $wrapper.attr('data-id'),
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
             $dob = $(selectorPrefix + '_dob');
@@ -226,10 +226,11 @@
                 $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
                 $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
                 $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+                $(selectorPrefix + '_schoolGraduationDate').toggleClass('hidden', !providerConfig.isNibOrQts);
                 $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',false);
             } else {
                 // Hide them all if they aren't in the age range.
-                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             }
 
         } else {
@@ -243,10 +244,11 @@
                 $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
                 $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
                 $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+                $(selectorPrefix + '_schoolGraduationDate').toggleClass('hidden', !providerConfig.isNibOrQts);
                 $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
             } else {
                 // Hide them all if they aren't in the date range.
-                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             }
         }
     }
@@ -319,7 +321,12 @@
                 $(prefix + '_dob').val(dependantsArr[i].dob);
             }
 
-            if (providerConfig.useSchoolDropdownMenu) {
+            if (providerConfig.isNibOrQts) {
+                $(prefix + '_gradDate_cardExpiryMonth').val(dependantsArr[i].gradDate_cardExpiryMonth);
+                $(prefix + '_gradDate_cardExpiryYear').val(dependantsArr[i].gradDate_cardExpiryYear);
+            }
+
+            if (providerConfig.useSchoolDropdownMenu || providerConfig.isNibOrQts) {
                 $(prefix + '_school').val(dependantsArr[i].school);
             }
             if (providerConfig.showMaritalStatusField) {
@@ -447,25 +454,6 @@
      */
     function getNumberOfDependants() {
         return dependantsArr.length || 0;
-    }
-
-    /**
-     * If any of the, AUF Only, dependants are between the ages of 23-25, display a Mandatory script
-     */
-    function updateAgeWarningForAUFDependants() {
-        if (providerConfig.isAUF) {
-            for (var dependantId = 1; dependantId <= getNumberOfDependants(); dependantId++) {
-                var selectorPrefix = '#health_application_dependants_dependant' + dependantId;
-                var dobAsString = $(selectorPrefix + '_dob').val() || '0';
-                var ageAsNumber = meerkat.modules.age.returnAge(dobAsString, true) || 0;
-
-                if (ageAsNumber >= 23 && ageAsNumber <= 25) {
-                    $('.simples-dialogue-228').show();
-                    return;
-                }
-            }
-        }
-        $('.simples-dialogue-228').hide();
     }
 
     /**
@@ -633,8 +621,7 @@
         setMaxAge: setMaxAge,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
-        getNumberOfDependants: getNumberOfDependants,
-        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants
+        getNumberOfDependants: getNumberOfDependants
     });
 
 })(jQuery);

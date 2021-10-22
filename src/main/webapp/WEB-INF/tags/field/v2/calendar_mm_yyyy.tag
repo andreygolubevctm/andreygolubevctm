@@ -119,21 +119,21 @@
 		<%-- This was the old usage in the platform --%>
 		<%-- Exposed some attributes here so the tag define a few JS settings --%>
 		<c:set var="disableErrorContainer">
-			<c:if test="${disableErrorContainer eq true}">
-				data-disable-error-container='true'
-			</c:if>
+		<c:if test="${disableErrorContainer eq true}">
+			data-disable-error-container='true'
+		</c:if>
 		</c:set>
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix} Date" quoteChar="\"" /></c:set>
 		<div class="input-group date ${mobileClassName}" data-provide="datepicker" data-date-mode="${mode}"
 			${maxDateAttribute}
 			${minDateAttribute} data-date-start-view="${startView}">
 			<input type="text"
-				   placeHolder="DD/MM/YYYY"
-				   name="${name}"
-				   id="${name}"
-				   class="form-control dateinput-date ${className}"
-				   value="${value}"
-				   title="${title}" ${requiredAttribute} ${dateEurRule} ${disableErrorContainer} ${analyticsAttr}>
+				placeHolder="DD/MM/YYYY"
+				name="${name}"
+				id="${name}"
+				class="form-control dateinput-date ${className}"
+				value="${value}"
+				title="${title}" ${requiredAttribute} ${dateEurRule} ${disableErrorContainer} ${analyticsAttr}>
 			<span class="input-group-addon">
 				<i class="icon-calendar"></i>
 			</span>
@@ -159,30 +159,30 @@
 
 		<div class="dateinput_container" data-provide="dateinput">
 			<div class="row dateinput-tripleField withDatePicker">
-				<div class="${xsCols} col-sm-3 ">
+				<div class="hidden-calendar-mm-yy-input">
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Day" quoteChar="\"" /></c:set>
-					<field_v2:input type="text" size="2" className="dateinput-day dontSubmit ${className}"  xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="${required}" requiredMessage="Please enter the day" additionalAttributes=" data-rule-range='1,31' data-msg-range='Day must be between 1 and 31.' ${analyticsAttr}" />
+					<field_v2:input defaultValue="31" type="text" size="2" className="dateinput-day dontSubmit ${className}"  xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" required="false" requiredMessage="Please enter the day" additionalAttributes=" data-rule-range='1,31' data-msg-range='Day must be between 1 and 31.' ${analyticsAttr}" />
 				</div>
-				<div class="${xsCols} col-sm-3 <c:if test="${not disableRowHack eq true}"> row-hack</c:if>"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
+				<div class="${xsCols} col-sm-3"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Month" quoteChar="\"" /></c:set>
-					<field_v2:input size="2" type="text" className="dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="${required}" requiredMessage="Please enter the month" additionalAttributes=" data-rule-range='1,12' data-msg-range='Month must be between 1 and 12.' ${analyticsAttr}" />
+					<field_v2:input size="2" type="text" className="dateinput-month dontSubmit ${className}" xpath="${xpath}/cardExpiryMonth" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="${required}" requiredMessage="Please enter the month" additionalAttributes=" data-rule-range='1,12' data-msg-range='Month must be between 1 and 12.' ${analyticsAttr}" />
+				</div>
+
+<%--			logic here: we need to attach year date as yy to transaction, but the input is in yyyy. So we use the next <input type="text" name="year-yyyy-input" ... /> as an actual input (not a form field) --%>
+<%--			and then update hidden form field <field_v2:input ... className="dateinput-year dateinput-year-hidden-yy ..." ... /> with yy during serialisation: forDateInput: function serialise() (:108)--%>
+				<div class="hidden-calendar-mm-yy-input">
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Year" quoteChar="\"" /></c:set>
+					<field_v2:input size="2" type="text" className="dateinput-year dateinput-year-hidden-yy dontSubmit ${className}" xpath="${xpath}/cardExpiryYear" pattern="[0-9]*" placeHolder="YY" required="false" additionalAttributes=" ${analyticsAttr}" />
 				</div>
 				<div class="${xsCols} ${yearCols}">
-					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Year" quoteChar="\"" /></c:set>
-					<field_v2:input size="4" type="text" className="dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="${required}" requiredMessage="Please enter the year" additionalAttributes=" data-rule-range='1000,9999' data-msg-range='Year must be four numbers e.g. 2014.' ${analyticsAttr}" />
-				</div>
-				<div class="${calXSCols} col-sm-3 <c:if test="${not disableRowHack eq true}"> row-hack</c:if>"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
-					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Calendar" quoteChar="\"" /></c:set>
-					<button tabindex="-1" id="${name}_button" type="button" class="input-group-addon-button date form-control" ${analyticsAttr}>
-						<i class="icon-calendar" ${analyticsAttr}></i>
-					</button>
+					<input type="text" name="year-yyyy-input" class="dateinput-year form-control show-yyyy-as-yy" minlength="4" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" data-is-year-input-for-hidden=true>
 				</div>
 			</div>
 			<div class="hidden select dateinput-nativePicker">
 				<span class="input-group-addon"><i class="icon-calendar"></i></span>
 				<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" <c:if test="${not empty minDate}"> min="${minDate}"</c:if> <c:if test="${not empty maxDate}"> max="${maxDate}"</c:if> placeHolder="YYYY-MM-DD">
 			</div>
-			<field_v2:validatedHiddenField xpath="${xpath}" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" required ${calAdditionalAttributes} ${dateEurRule} ${minDateEurRule} ${maxDateEurRule} data-provide='datepicker' data-date-mode='${mode}' ${minDateAttribute} ${maxDateAttribute} " disableErrorContainer="${disableErrorContainer}" />
+			<field_v2:validatedHiddenField xpath="${xpath}/cardExpiryFullYear" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" ${minDateEurRule} " disableErrorContainer="${disableErrorContainer}" />
 		</div>
 	</c:when>
 	<%-- A fallback warning if someone typo'd the mode name --%>

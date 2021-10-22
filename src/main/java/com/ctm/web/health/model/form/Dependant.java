@@ -1,6 +1,8 @@
 package com.ctm.web.health.model.form;
 
 public class Dependant {
+    /* As NIB & Qantas do not care as to the day of graduation it is set to 15 */
+    private static final String DATE_TEMPLATE = "20%s-%s-15";
 
     private String title;
 
@@ -13,6 +15,9 @@ public class Dependant {
     private String gender;
 
     private String school;
+
+    /* Form field only */
+    private GradDate gradDate;
 
     private String schoolDate;
 
@@ -28,6 +33,23 @@ public class Dependant {
 
     public void setSchool(String school) {
         this.school = school;
+    }
+
+    public GradDate getGradDate() {
+        return gradDate;
+    }
+
+    public void setGradDate(GradDate gradDate) {
+        this.gradDate = gradDate;
+    }
+
+    /* Derived field is passed to health-apply */
+    public String getGraduationDate() {
+        if (gradDate == null) {
+            return null;
+        } else {
+            return String.format(DATE_TEMPLATE, gradDate.getCardExpiryYear(), gradDate.getCardExpiryMonth());
+        }
     }
 
     public String getSchoolDate() {

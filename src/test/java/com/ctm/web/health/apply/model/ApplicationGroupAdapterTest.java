@@ -7,15 +7,33 @@ import com.ctm.web.health.apply.model.request.application.applicant.healthCover.
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CancelOption;
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CoverType;
 import com.ctm.web.health.apply.model.request.application.situation.Situation;
-import com.ctm.web.health.model.form.*;
+import com.ctm.web.health.model.form.Application;
+import com.ctm.web.health.model.form.Dependant;
+import com.ctm.web.health.model.form.Dependants;
+import com.ctm.web.health.model.form.Fund;
+import com.ctm.web.health.model.form.Cover;
+import com.ctm.web.health.model.form.GovtRebateDeclaration;
+import com.ctm.web.health.model.form.GradDate;
+import com.ctm.web.health.model.form.HealthQuote;
+import com.ctm.web.health.model.form.Hif;
+import com.ctm.web.health.model.form.Insured;
+import com.ctm.web.health.model.form.Person;
+import com.ctm.web.health.model.form.Qch;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class ApplicationGroupAdapterTest {
@@ -266,4 +284,38 @@ public class ApplicationGroupAdapterTest {
         verify(dependant, times(1)).getFulltime();
     }
 
+    @Test
+    public void testNonMockedCreateDependant() throws Exception {
+        // Given
+        Dependant dependant = new Dependant();
+        dependant.setDob("01/01/1999");
+        dependant.setFirstName("Abe");
+        dependant.setGender("M");
+        GradDate gradDate = new GradDate();
+        gradDate.setCardExpiryMonth("08");
+        gradDate.setCardExpiryYear("04");
+        dependant.setGradDate(gradDate);
+        dependant.setLastname("Simpson");
+        dependant.setRelationship("NONE");
+        dependant.setSchoolDate("01/01/2000");
+        dependant.setSchool("Queensland University of Technology");
+        dependant.setSchoolID("QUT");
+        dependant.setTitle("MR");
+        // When
+        com.ctm.web.health.apply.model.request.application.dependant.Dependant appDependant =
+                ApplicationGroupAdapter.createDependant(Optional.of(dependant));
+        // Then
+        assertNotNull(appDependant);
+        assertEquals(appDependant.getDateOfBirth(), LocalDate.of(1999, 1, 1));
+        assertEquals(appDependant.getFirstName().get(), "Abe");
+        assertEquals(appDependant.getGender().name(), "M");
+        assertEquals(appDependant.getLastName().get(), "Simpson");
+        assertEquals(appDependant.getSchool().get(), "Queensland University of Technology");
+        assertEquals(appDependant.getSchoolDate(), LocalDate.of(2000, 1, 1));
+        assertEquals(appDependant.getRelationship().name(), "NONE");
+        assertEquals(appDependant.getGraduationDate().get(), "2004-08-15");
+        assertEquals(appDependant.getSchoolID().get(), "QUT");
+        assertEquals(appDependant.getFullTimeStudent(), null);
+        assertEquals(appDependant.getTitle().getName(), "MR");
+    }
 }
