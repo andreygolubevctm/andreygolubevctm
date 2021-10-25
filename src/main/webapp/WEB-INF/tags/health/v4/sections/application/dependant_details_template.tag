@@ -12,8 +12,9 @@
 
     {{ var providerConfig = meerkat.modules.healthDependants.getConfig(); }}
     {{ var usesSchoolDropdown = providerConfig.useSchoolDropdownMenu === true; }}
+    {{ var isNibOrQts = providerConfig.isNibOrQts === true; }}
     <%-- HTML --%>
-    <div id="${name}" class="health_dependant_details dependant{{= obj.dependantId }}" data-id="{{= obj.dependantId }}">
+    <div id="${name}" class="health_dependant_details dependant{{= obj.dependantId }} dependant-data-container" data-id="{{= obj.dependantId }}">
 
         <form_v4:row>
             <div class="inlineHeadingWithButton">
@@ -78,8 +79,13 @@
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
-                         className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="290">
-                {{ if(usesSchoolDropdown === true) { }}
+                         className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="{{= isNibOrQts ? '653' : '290' }}">
+                {{ if(isNibOrQts === true) { }}
+                <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
+                <div class="select">
+                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'" />
+                </div>
+                {{ } else if(usesSchoolDropdown === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">
                     <span class="input-group-addon"><i class="icon-angle-down"></i></span>
@@ -91,7 +97,12 @@
                 <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude data-hj-suppress" defaultValue="{{= obj.school }}" disableErrorContainer="${true}" placeHolder="School"/>
                 {{ } }}
             </form_v4:row>
-
+            {{ if(providerConfig.isNibOrQts === true) { }}
+            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/gradDate"/>
+            <form_v4:row fieldXpath="${fieldXpath}" label="Graduation Date" id="${name}_schoolGraduationDate" className="health_dependant_details_schoolGraduationDate hidden" helpId="654">
+                <field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="dependant graduation date " required="true" className="sessioncamexclude data-hj-suppress dependant-graduation-day" maxYears="10" medicareCardValidationField="schoolGraduationDate" />
+            </form_v4:row>
+            {{ } }}
             {{ if(providerConfig.showSchoolIdField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
@@ -144,7 +155,6 @@
                 <field_v2:general_select type="healthNavQuestion_relationship" xpath="${fieldXpath}" title="Relationship to you" required="true" initialText="Please select" disableErrorContainer="${true}" additionalAttributes=" data-attach='true'" />
             </form_v4:row>
             {{ } }}
-
 
         </div>
     </div>

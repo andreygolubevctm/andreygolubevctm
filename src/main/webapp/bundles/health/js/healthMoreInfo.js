@@ -486,7 +486,7 @@
         // Get the "about fund", "what happens next" and warningAlert info
         return $.when(
             getProviderContentByType( product, 'ABT'),
-            getProviderContentByType( product, 'NXT'),
+            getProviderContentByType( product, 'NXC'),
             getProviderContentByType( product, 'FWM'),
             getProviderContentByType( product, 'DDD')
         );
@@ -525,7 +525,7 @@
                             case 'ABT':
                                 product.aboutFund = result.providerContentText;
                                 break;
-                            case 'NXT':
+                            case 'NXC':
                                 product.whatHappensNext = result.providerContentText;
                                 break;
                             case 'FWM':

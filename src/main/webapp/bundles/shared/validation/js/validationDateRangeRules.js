@@ -24,6 +24,8 @@
 
     function getDate(v) {
         var adata = v.split('/');
+        // in case if YY add current century
+        if(adata[2] && adata[2].length === 2) { adata[2] = new Date().getFullYear().toString().substr(0, 2) + adata[2]; }
         return new Date(parseInt(adata[2], 10), parseInt(adata[1], 10) - 1,
             parseInt(adata[0], 10));
     }

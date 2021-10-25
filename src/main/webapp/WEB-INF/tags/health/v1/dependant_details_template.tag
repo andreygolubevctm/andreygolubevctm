@@ -12,6 +12,7 @@
 
     {{ var providerConfig = meerkat.modules.healthDependants.getConfig(); }}
     {{ var usesSchoolDropdown = providerConfig.useSchoolDropdownMenu === true; }}
+    {{ var isNibOrQts = providerConfig.isNibOrQts === true; }}
     <%-- HTML --%>
     <div id="${name}" class="health_dependant_details dependant{{= obj.dependantId }}" data-id="{{= obj.dependantId }}">
 
@@ -69,8 +70,15 @@
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
             <form_v2:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
-                         className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="290">
-                {{ if(usesSchoolDropdown === true) { }}
+                         className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="{{= isNibOrQts ? '653' : '290' }}">
+                {{ if(isNibOrQts === true) { }}
+                <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
+                <div class="select">
+                    <span class="input-group-addon"><i class="icon-angle-down"></i></span>
+                    <field_v2:import_select xpath="${storeGroupName}" className="form-control" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="false" />
+                    </select>
+                </div>
+                {{ } else if(usesSchoolDropdown === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">
                     <span class="input-group-addon"><i class="icon-angle-down"></i></span>

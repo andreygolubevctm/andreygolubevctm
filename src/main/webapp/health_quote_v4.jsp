@@ -47,8 +47,9 @@
         <c:redirect url="${redirectURL}transactionId=${rememberMeTransactionId}&reviewedit=true" />
     </c:when>
 
-    <%-- Redirect to V5 journey if CLINICAL_CATEGORIES --%>
-    <c:when test="${not empty data['health/hospitalBenefitsSource'] and data['health/hospitalBenefitsSource'] eq 'CLINICAL_CATEGORIES'}">
+    <%-- Redirect to V5 journey if CLINICAL_CATEGORIES for call centre ONLY--%>
+    <%-- FIXME: This will need to be updated when online wishes to use v5 --%>
+    <c:when test="${callCentre and not empty data['health/hospitalBenefitsSource'] and data['health/hospitalBenefitsSource'] eq 'CLINICAL_CATEGORIES'}">
         <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v5.jsp?" />
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>

@@ -55,6 +55,7 @@
 	}
 
 	function populate($component, value) {
+		if(!value) return;
 		var parts = value.split('/'),
 			nativeValue = '';
 
@@ -126,6 +127,15 @@
 			day = $component.find(':input.dateinput-day').val();
 			month = $component.find(':input.dateinput-month').val();
 			year = $component.find(':input.dateinput-year').val();
+		}
+
+		if($(this).data('is-year-input-for-hidden')) {
+			year = $(this).val();
+			if(year && year.length === 4) {
+				var yearShort = year.substring(2, 4);
+				$component.find(':input.dateinput-year-hidden-yy').val(yearShort);
+			}
+			$('[data-provide=dateinput]').find('input[id$="cardExpiryYear"]').trigger('change');
 		}
 
 		if (day.length === 1) day = '0' + day;
