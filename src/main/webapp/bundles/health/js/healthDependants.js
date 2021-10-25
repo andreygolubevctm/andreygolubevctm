@@ -2,7 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-		exception = meerkat.logging.exception,
+        exception = meerkat.logging.exception,
         moduleEvents = {
             healthDependants: {
                 DEPENDANTS_RENDERED: 'DEPENDANTS_RENDERED'
@@ -54,6 +54,7 @@
             isNibOrQts: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
+            isAUF: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,
@@ -71,7 +72,7 @@
         providerConfig,
         maxDependantAge = 25;
 
-        /* Why is there a defacto min/max age? and why is the max age 24? */
+    /* Why is there a defacto min/max age? and why is the max age 24? */
 
     function initHealthDependants() {
         $dependantsTemplateWrapper = $("#health-dependants-wrapper");
@@ -122,9 +123,9 @@
                 }).promise().then(function() {
                     renderDependants();
                 })
-                .catch(function onError(obj, txt, errorThrown) {
-                    exception(txt + ': ' + errorThrown);
-                });
+                    .catch(function onError(obj, txt, errorThrown) {
+                        exception(txt + ': ' + errorThrown);
+                    });
             }
         });
 
@@ -136,8 +137,9 @@
             toggleDependantFields($wrapper);
         }).on('change', ':input', function changeInput() {
             var $el = $(this),
-                dependantId = $el.closest('.health_dependant_details').attr('data-id'),
-                objIndex = $el.attr('id').replace(/health_application_dependants_dependant[0-9]{1}_/, '');
+                dependantId = !$el || !$el.closest('.health_dependant_details') ? undefined : $el.closest('.health_dependant_details').attr('data-id'),
+                objIndex = !$el || !$el.attr('id') ? undefined : $el.attr('id').replace(/health_application_dependants_dependant[0-9]{1}_/, '');
+            if(!dependantId || !objIndex) return;
             dependantsArr[dependantId - 1][objIndex] = $(this).val();
         });
 
@@ -205,6 +207,8 @@
      * the configuration that it wants to show full time, or school id, etc in the healthFund JSP
      */
     function toggleDependantFields($wrapper) {
+
+        meerkat.modules.healthDependants.updateAgeWarningForAUFDependants();
 
         var dependantId = $wrapper.attr('data-id'),
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
@@ -322,8 +326,53 @@
             }
 
             if (providerConfig.isNibOrQts) {
-                $(prefix + '_gradDate_cardExpiryMonth').val(dependantsArr[i].gradDate_cardExpiryMonth);
-                $(prefix + '_gradDate_cardExpiryYear').val(dependantsArr[i].gradDate_cardExpiryYear);
+                var month, year, yearFull;
+                if (typeof dependantsArr[i].gradDate !== 'undefined' && dependantsArr[i].gradDate != null) {
+                    month = "" + dependantsArr[i].gradDate.cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate.cardExpiryYear;
+                } else {
+                    month = "" + dependantsArr[i].gradDate_cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate_cardExpiryYear;
+                }
+                if (month !== "") {
+                    $(prefix + '_gradDate_cardExpiryMonth').val(month.length === 1 ? "0" + month : month);
+                    $(prefix + '_gradDate_cardExpiryYear').val(year);
+                }
+                yearFull = dependantsArr[i].gradDate_cardExpiryFullYear;
+                if((_.isNull(yearFull) || _.isUndefined(yearFull)) &&
+                    !_.isNull(dependantsArr[i].gradDate) && !_.isUndefined(dependantsArr[i].gradDate)) {
+                    yearFull = dependantsArr[i].gradDate.cardExpiryFullYear;
+                }
+                var useJustYear = false;
+                if((_.isNull(yearFull) || _.isUndefined(yearFull) || yearFull.trim().length < 10) &&
+                    !_.isNull(dependantsArr[i].gradDate) && !_.isUndefined(dependantsArr[i].gradDate) &&
+                    !_.isNull(dependantsArr[i].gradDate.cardExpiryYear) && !_.isUndefined(dependantsArr[i].gradDate.cardExpiryYear)) {
+                    yearFull = new Date().getFullYear().toString().substr(0, 2) + dependantsArr[i].gradDate.cardExpiryYear;
+                    useJustYear = true;
+                }
+                if(!_.isUndefined(yearFull) && !_.isNull(yearFull) && yearFull !== '') {
+                    if(!useJustYear) {
+                        var yearFullSplit = yearFull.split('/');
+                        yearFull = yearFullSplit.length === 3 ? yearFullSplit[2] : undefined;
+                        $('.show-yyyy-as-yy').val(yearFull);
+                    } else {
+                        $('.show-yyyy-as-yy').val(yearFull);
+                    }
+                }
+
+                var gradDateIn = $('[id$="schoolGraduationDate"]').find('.dateinput_container');
+                if(!_.isUndefined(gradDateIn) && !_.isNull(gradDateIn)) {
+                    var cardExpiryFullYear = gradDateIn.find('[id$="gradDate_cardExpiryFullYear"]');
+                    if(!_.isUndefined(cardExpiryFullYear) && !_.isNull(cardExpiryFullYear) && cardExpiryFullYear.val() === '') {
+                        cardExpiryFullYear.val(gradDateIn.find('.dateinput-day').val() + "/" + gradDateIn.find('.dateinput-month').val() + "/" + gradDateIn.find('.show-yyyy-as-yy').val());
+                    }
+                    var yearYYHidden = gradDateIn.find('.dateinput-year-hidden-yy');
+                    if(!_.isUndefined(yearYYHidden) && !_.isNull(yearYYHidden)) {
+                        var $yyyy = $('.show-yyyy-as-yy');
+                        yearYYHidden.val(!$yyyy || !$yyyy.val() || $yyyy.val().length < 4 ? '' : $yyyy.val().substring(2, 4));
+                    }
+                }
+
             }
 
             if (providerConfig.useSchoolDropdownMenu || providerConfig.isNibOrQts) {
@@ -457,6 +506,25 @@
     }
 
     /**
+     * If any of the, AUF Only, dependants are between the ages of 23-25, display a Mandatory script
+     */
+    function updateAgeWarningForAUFDependants() {
+        if (providerConfig.isAUF) {
+            for (var dependantId = 1; dependantId <= getNumberOfDependants(); dependantId++) {
+                var selectorPrefix = '#health_application_dependants_dependant' + dependantId;
+                var dobAsString = $(selectorPrefix + '_dob').val() || '0';
+                var ageAsNumber = meerkat.modules.age.returnAge(dobAsString, true) || 0;
+
+                if (ageAsNumber >= 23 && ageAsNumber <= 25) {
+                    $('.simples-dialogue-228').show();
+                    return;
+                }
+            }
+        }
+        $('.simples-dialogue-228').hide();
+    }
+
+    /**
      * Dependants are currently dumped into settings.tag. Ideally, this would be pulled in via an XHR
      * request when the application step loads.
      * @returns {*}
@@ -520,86 +588,86 @@
     }
 
     var educationalInstitutions = {
-            "ACP": "Australian College of Phys. Ed",
-            "ACT": "Australian College of Theology",
-            "ACTH": "ACT High Schools",
-            "ACU": "Australian Catholic University",
-            "ADA": "Australian Defence Force Academy",
-            "AFTR": "Australian Film, TV &amp; Radio School",
-            "AIR": "Air Academy, Brit Aerospace Flight Trng",
-            "AMC": "Austalian Maritime College",
-            "ANU": "Australian National University",
-            "AVO": "Avondale College",
-            "BC": "Batchelor College",
-            "BU": "Bond University",
-            "CQU": "Central Queensland Universty",
-            "CSU": "Charles Sturt University",
-            "CUT": "Curtin University of Technology",
-            "DU": "Deakin University",
-            "ECU": "Edith Cowan University",
-            "EDUC": "Education Institute Default",
-            "FU": "Flinders University of SA",
-            "GC": "Gatton College",
-            "GU": "Griffith University",
-            "JCUNQ": "James Cook University of Northern QLD",
-            "KVBVC": "KvB College of Visual Communication",
-            "LTU": "La Trobe University",
-            "MAQ": "Maquarie University",
-            "MMCM": "Melba Memorial Conservatorium of Music",
-            "MTC": "Moore Theological College",
-            "MU": "Monash University",
-            "MURUN": "Murdoch University",
-            "NAISD": "Natn&apos;l Aborign&apos;l &amp; Islander Skills Dev Ass.",
-            "NDUA": "Notre Dame University Australia",
-            "NIDA": "National Institute of Dramatic Art",
-            "NSWH": "NSW High Schools",
-            "NSWT": "NSW TAFE",
-            "NT": "Northern Territory High Schools",
-            "NTT": "NT TAFE",
-            "NTU": "Northern Territory University",
-            "OLA": "Open Learnng Australia",
-            "OTHER": "Other Registered Tertiary Institutions",
-            "PSC": "Photography Studies College",
-            "QCM": "Queensland Conservatorium of Music",
-            "QCU": "Queensland College of Art",
-            "QLDH": "QLD High Schools",
-            "QLDT": "QLD TAFE",
-            "QUT": "Queensland University of Technology",
-            "RMIT": "Royal Melbourne Institute of Techn.",
-            "SA": "South Australian High Schools",
-            "SAT": "SA TAFE",
-            "SCD": "Sydney College of Divinity",
-            "SCM": "Sydney Conservatorium of Music",
-            "SCU": "Southern Cross University",
-            "SCUC": "Sunshine Coast University College",
-            "SIT": "Swinburn Institute of Technology",
-            "SJC": "St Johns College",
-            "SYD": "University of Sydney",
-            "TAS": "TAS High Schools",
-            "TT": "TAS TAFE",
-            "UA": "University of Adelaide",
-            "UB": "University of Ballarat",
-            "UC": "University of Canberra",
-            "UM": "University of Melbourne",
-            "UN": "University of Newcastle",
-            "UNC": "University of Capricornia Rockhampton",
-            "UNE": "University of New England",
-            "UNSW": "University Of New South Wales",
-            "UQ": "University of Queensland",
-            "USA": "University of South Australia",
-            "USQ": "University of Southern Queensland",
-            "UT": "University of Tasmania",
-            "UTS": "University of Technlogy Sydney",
-            "UW": "University of Wollongong",
-            "UWA": "University of Western Australia",
-            "UWS": "University of Western Sydney",
-            "VCAH": "VIC College of Agriculture &amp; Horticulture",
-            "VIC": "Victorian High Schools",
-            "VICT": "VIC TAFE",
-            "VU": "Victoria University",
-            "WA": "Western Australia-High Schools",
-            "WAT": "WA TAFE"
-        };
+        "ACP": "Australian College of Phys. Ed",
+        "ACT": "Australian College of Theology",
+        "ACTH": "ACT High Schools",
+        "ACU": "Australian Catholic University",
+        "ADA": "Australian Defence Force Academy",
+        "AFTR": "Australian Film, TV &amp; Radio School",
+        "AIR": "Air Academy, Brit Aerospace Flight Trng",
+        "AMC": "Austalian Maritime College",
+        "ANU": "Australian National University",
+        "AVO": "Avondale College",
+        "BC": "Batchelor College",
+        "BU": "Bond University",
+        "CQU": "Central Queensland Universty",
+        "CSU": "Charles Sturt University",
+        "CUT": "Curtin University of Technology",
+        "DU": "Deakin University",
+        "ECU": "Edith Cowan University",
+        "EDUC": "Education Institute Default",
+        "FU": "Flinders University of SA",
+        "GC": "Gatton College",
+        "GU": "Griffith University",
+        "JCUNQ": "James Cook University of Northern QLD",
+        "KVBVC": "KvB College of Visual Communication",
+        "LTU": "La Trobe University",
+        "MAQ": "Maquarie University",
+        "MMCM": "Melba Memorial Conservatorium of Music",
+        "MTC": "Moore Theological College",
+        "MU": "Monash University",
+        "MURUN": "Murdoch University",
+        "NAISD": "Natn&apos;l Aborign&apos;l &amp; Islander Skills Dev Ass.",
+        "NDUA": "Notre Dame University Australia",
+        "NIDA": "National Institute of Dramatic Art",
+        "NSWH": "NSW High Schools",
+        "NSWT": "NSW TAFE",
+        "NT": "Northern Territory High Schools",
+        "NTT": "NT TAFE",
+        "NTU": "Northern Territory University",
+        "OLA": "Open Learnng Australia",
+        "OTHER": "Other Registered Tertiary Institutions",
+        "PSC": "Photography Studies College",
+        "QCM": "Queensland Conservatorium of Music",
+        "QCU": "Queensland College of Art",
+        "QLDH": "QLD High Schools",
+        "QLDT": "QLD TAFE",
+        "QUT": "Queensland University of Technology",
+        "RMIT": "Royal Melbourne Institute of Techn.",
+        "SA": "South Australian High Schools",
+        "SAT": "SA TAFE",
+        "SCD": "Sydney College of Divinity",
+        "SCM": "Sydney Conservatorium of Music",
+        "SCU": "Southern Cross University",
+        "SCUC": "Sunshine Coast University College",
+        "SIT": "Swinburn Institute of Technology",
+        "SJC": "St Johns College",
+        "SYD": "University of Sydney",
+        "TAS": "TAS High Schools",
+        "TT": "TAS TAFE",
+        "UA": "University of Adelaide",
+        "UB": "University of Ballarat",
+        "UC": "University of Canberra",
+        "UM": "University of Melbourne",
+        "UN": "University of Newcastle",
+        "UNC": "University of Capricornia Rockhampton",
+        "UNE": "University of New England",
+        "UNSW": "University Of New South Wales",
+        "UQ": "University of Queensland",
+        "USA": "University of South Australia",
+        "USQ": "University of Southern Queensland",
+        "UT": "University of Tasmania",
+        "UTS": "University of Technlogy Sydney",
+        "UW": "University of Wollongong",
+        "UWA": "University of Western Australia",
+        "UWS": "University of Western Sydney",
+        "VCAH": "VIC College of Agriculture &amp; Horticulture",
+        "VIC": "Victorian High Schools",
+        "VICT": "VIC TAFE",
+        "VU": "Victoria University",
+        "WA": "Western Australia-High Schools",
+        "WAT": "WA TAFE"
+    };
 
     function getEducationalInstitutionsOptions() {
         var options = '';
@@ -621,7 +689,8 @@
         setMaxAge: setMaxAge,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
-        getNumberOfDependants: getNumberOfDependants
+        getNumberOfDependants: getNumberOfDependants,
+        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants
     });
 
 })(jQuery);

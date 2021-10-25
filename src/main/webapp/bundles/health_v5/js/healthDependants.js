@@ -133,7 +133,7 @@
     function toggleDependants() {
         var showDependants = situationEnablesDependants();
         if(moduleInitialised) {
-                $elements.dependantsRow.toggleClass('hidden', !showDependants);
+            $elements.dependantsRow.toggleClass('hidden', !showDependants);
         } else {
             _.defer(function(){
                 $elements.dependantsRow.toggleClass('hidden', !showDependants);
@@ -153,9 +153,9 @@
                 }).promise().then(function() {
                     renderDependants();
                 })
-                .catch(function onError(obj, txt, errorThrown) {
-                    exception(txt + ': ' + errorThrown);
-                });
+                    .catch(function onError(obj, txt, errorThrown) {
+                        exception(txt + ': ' + errorThrown);
+                    });
             }
         });
 
@@ -244,7 +244,7 @@
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
             $dob = $(selectorPrefix + '_dob');
         var age = meerkat.modules.age.returnAge($dob.val(), true) || 0;
-        
+
         // see   \health\js\healthDependants.js if extendedFamily integration is required in the future
         // If the dependant is between the school age
         if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
@@ -310,6 +310,11 @@
         updateNonTextFieldsValues();
         meerkat.modules.datepicker.initModule();
 
+        $('div[class~="dependant-data-container"]').each(function() {
+            var $dependantGroup = $(this);
+            applyGraduationDateFilter($dependantGroup);
+        });
+
         meerkat.messaging.publish(moduleEvents.healthDependants.DEPENDANTS_RENDERED);
     }
 
@@ -332,8 +337,18 @@
             }
 
             if (providerConfig.isNibOrQts) {
-                $(prefix + '_gradDate_cardExpiryMonth').val(dependantsArr[i].gradDate_cardExpiryMonth);
-                $(prefix + '_gradDate_cardExpiryYear').val(dependantsArr[i].gradDate_cardExpiryYear);
+                var month, year;
+                if (typeof dependantsArr[i].gradDate !== 'undefined' && dependantsArr[i].gradDate != null) {
+                    month = "" + dependantsArr[i].gradDate.cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate.cardExpiryYear;
+                } else {
+                    month = "" + dependantsArr[i].gradDate_cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate_cardExpiryYear;
+                }
+                if (month !== "") {
+                    $(prefix + '_gradDate_cardExpiryMonth').val(month.length === 1 ? "0" + month : month);
+                    $(prefix + '_gradDate_cardExpiryYear').val(year);
+                }
             }
 
             if (providerConfig.useSchoolDropdownMenu || providerConfig.isNibOrQts) {
@@ -382,8 +397,35 @@
                 animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants()));
             }
 
+            var $dependantGroup = $('div[id="health_application_dependants_dependant'+ dependantId +'"]');
+            applyGraduationDateFilter($dependantGroup);
+
             meerkat.messaging.publish(moduleEvents.healthDependants.DEPENDANTS_RENDERED);
         }
+    }
+
+    function applyGraduationDateFilter($dependantGroup) {
+        $dependantGroup.find('.cardExpiryYearFieldWrapper').find('.dependant-graduation-day').on('change', function() {
+            var currentDate = new Date();
+            var currentMonth = (currentDate.getMonth() + 1).toString();
+            var currentYear = currentDate.getFullYear().toString().substr(2, 3);
+            currentMonth = currentMonth.length === 1 ? '0' + currentMonth : currentMonth;
+
+            var $optionsMonth = $dependantGroup.find('.cardExpiryMonthFieldWrapper').find('.dependant-graduation-day option');
+            var $selectedOptionMonth = $dependantGroup.find('.cardExpiryMonthFieldWrapper').find('.dependant-graduation-day option:selected');
+            var $selectedOptionYear = $dependantGroup.find('.cardExpiryYearFieldWrapper').find('.dependant-graduation-day option:selected');
+
+            var selectedOptionYearVal = $selectedOptionYear.val();
+            var isCurrentYear = selectedOptionYearVal === currentYear;
+
+            if(isCurrentYear && $selectedOptionMonth.val() < currentMonth) {
+                $selectedOptionMonth.prop('selected', false);
+            }
+
+            $optionsMonth.each(function () {
+                isCurrentYear && $(this).val() < currentMonth ?  $(this).hide() : $(this).show();
+            });
+        });
     }
 
     /**
@@ -512,86 +554,86 @@
     }
 
     var educationalInstitutions = {
-            "ACP": "Australian College of Phys. Ed",
-            "ACT": "Australian College of Theology",
-            "ACTH": "ACT High Schools",
-            "ACU": "Australian Catholic University",
-            "ADA": "Australian Defence Force Academy",
-            "AFTR": "Australian Film, TV &amp; Radio School",
-            "AIR": "Air Academy, Brit Aerospace Flight Trng",
-            "AMC": "Austalian Maritime College",
-            "ANU": "Australian National University",
-            "AVO": "Avondale College",
-            "BC": "Batchelor College",
-            "BU": "Bond University",
-            "CQU": "Central Queensland Universty",
-            "CSU": "Charles Sturt University",
-            "CUT": "Curtin University of Technology",
-            "DU": "Deakin University",
-            "ECU": "Edith Cowan University",
-            "EDUC": "Education Institute Default",
-            "FU": "Flinders University of SA",
-            "GC": "Gatton College",
-            "GU": "Griffith University",
-            "JCUNQ": "James Cook University of Northern QLD",
-            "KVBVC": "KvB College of Visual Communication",
-            "LTU": "La Trobe University",
-            "MAQ": "Maquarie University",
-            "MMCM": "Melba Memorial Conservatorium of Music",
-            "MTC": "Moore Theological College",
-            "MU": "Monash University",
-            "MURUN": "Murdoch University",
-            "NAISD": "Natn&apos;l Aborign&apos;l &amp; Islander Skills Dev Ass.",
-            "NDUA": "Notre Dame University Australia",
-            "NIDA": "National Institute of Dramatic Art",
-            "NSWH": "NSW High Schools",
-            "NSWT": "NSW TAFE",
-            "NT": "Northern Territory High Schools",
-            "NTT": "NT TAFE",
-            "NTU": "Northern Territory University",
-            "OLA": "Open Learnng Australia",
-            "OTHER": "Other Registered Tertiary Institutions",
-            "PSC": "Photography Studies College",
-            "QCM": "Queensland Conservatorium of Music",
-            "QCU": "Queensland College of Art",
-            "QLDH": "QLD High Schools",
-            "QLDT": "QLD TAFE",
-            "QUT": "Queensland University of Technology",
-            "RMIT": "Royal Melbourne Institute of Techn.",
-            "SA": "South Australian High Schools",
-            "SAT": "SA TAFE",
-            "SCD": "Sydney College of Divinity",
-            "SCM": "Sydney Conservatorium of Music",
-            "SCU": "Southern Cross University",
-            "SCUC": "Sunshine Coast University College",
-            "SIT": "Swinburn Institute of Technology",
-            "SJC": "St Johns College",
-            "SYD": "University of Sydney",
-            "TAS": "TAS High Schools",
-            "TT": "TAS TAFE",
-            "UA": "University of Adelaide",
-            "UB": "University of Ballarat",
-            "UC": "University of Canberra",
-            "UM": "University of Melbourne",
-            "UN": "University of Newcastle",
-            "UNC": "University of Capricornia Rockhampton",
-            "UNE": "University of New England",
-            "UNSW": "University Of New South Wales",
-            "UQ": "University of Queensland",
-            "USA": "University of South Australia",
-            "USQ": "University of Southern Queensland",
-            "UT": "University of Tasmania",
-            "UTS": "University of Technlogy Sydney",
-            "UW": "University of Wollongong",
-            "UWA": "University of Western Australia",
-            "UWS": "University of Western Sydney",
-            "VCAH": "VIC College of Agriculture &amp; Horticulture",
-            "VIC": "Victorian High Schools",
-            "VICT": "VIC TAFE",
-            "VU": "Victoria University",
-            "WA": "Western Australia-High Schools",
-            "WAT": "WA TAFE"
-        };
+        "ACP": "Australian College of Phys. Ed",
+        "ACT": "Australian College of Theology",
+        "ACTH": "ACT High Schools",
+        "ACU": "Australian Catholic University",
+        "ADA": "Australian Defence Force Academy",
+        "AFTR": "Australian Film, TV &amp; Radio School",
+        "AIR": "Air Academy, Brit Aerospace Flight Trng",
+        "AMC": "Austalian Maritime College",
+        "ANU": "Australian National University",
+        "AVO": "Avondale College",
+        "BC": "Batchelor College",
+        "BU": "Bond University",
+        "CQU": "Central Queensland Universty",
+        "CSU": "Charles Sturt University",
+        "CUT": "Curtin University of Technology",
+        "DU": "Deakin University",
+        "ECU": "Edith Cowan University",
+        "EDUC": "Education Institute Default",
+        "FU": "Flinders University of SA",
+        "GC": "Gatton College",
+        "GU": "Griffith University",
+        "JCUNQ": "James Cook University of Northern QLD",
+        "KVBVC": "KvB College of Visual Communication",
+        "LTU": "La Trobe University",
+        "MAQ": "Maquarie University",
+        "MMCM": "Melba Memorial Conservatorium of Music",
+        "MTC": "Moore Theological College",
+        "MU": "Monash University",
+        "MURUN": "Murdoch University",
+        "NAISD": "Natn&apos;l Aborign&apos;l &amp; Islander Skills Dev Ass.",
+        "NDUA": "Notre Dame University Australia",
+        "NIDA": "National Institute of Dramatic Art",
+        "NSWH": "NSW High Schools",
+        "NSWT": "NSW TAFE",
+        "NT": "Northern Territory High Schools",
+        "NTT": "NT TAFE",
+        "NTU": "Northern Territory University",
+        "OLA": "Open Learnng Australia",
+        "OTHER": "Other Registered Tertiary Institutions",
+        "PSC": "Photography Studies College",
+        "QCM": "Queensland Conservatorium of Music",
+        "QCU": "Queensland College of Art",
+        "QLDH": "QLD High Schools",
+        "QLDT": "QLD TAFE",
+        "QUT": "Queensland University of Technology",
+        "RMIT": "Royal Melbourne Institute of Techn.",
+        "SA": "South Australian High Schools",
+        "SAT": "SA TAFE",
+        "SCD": "Sydney College of Divinity",
+        "SCM": "Sydney Conservatorium of Music",
+        "SCU": "Southern Cross University",
+        "SCUC": "Sunshine Coast University College",
+        "SIT": "Swinburn Institute of Technology",
+        "SJC": "St Johns College",
+        "SYD": "University of Sydney",
+        "TAS": "TAS High Schools",
+        "TT": "TAS TAFE",
+        "UA": "University of Adelaide",
+        "UB": "University of Ballarat",
+        "UC": "University of Canberra",
+        "UM": "University of Melbourne",
+        "UN": "University of Newcastle",
+        "UNC": "University of Capricornia Rockhampton",
+        "UNE": "University of New England",
+        "UNSW": "University Of New South Wales",
+        "UQ": "University of Queensland",
+        "USA": "University of South Australia",
+        "USQ": "University of Southern Queensland",
+        "UT": "University of Tasmania",
+        "UTS": "University of Technlogy Sydney",
+        "UW": "University of Wollongong",
+        "UWA": "University of Western Australia",
+        "UWS": "University of Western Sydney",
+        "VCAH": "VIC College of Agriculture &amp; Horticulture",
+        "VIC": "Victorian High Schools",
+        "VICT": "VIC TAFE",
+        "VU": "Victoria University",
+        "WA": "Western Australia-High Schools",
+        "WAT": "WA TAFE"
+    };
 
     function getEducationalInstitutionsOptions() {
         var options = '';
