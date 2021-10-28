@@ -310,6 +310,11 @@
         updateNonTextFieldsValues();
         meerkat.modules.datepicker.initModule();
 
+        $('div[class~="dependant-data-container"]').each(function() {
+            var $dependantGroup = $(this);
+            applyGraduationDateFilter($dependantGroup);
+        });
+
         meerkat.messaging.publish(moduleEvents.healthDependants.DEPENDANTS_RENDERED);
     }
 
@@ -332,8 +337,18 @@
             }
 
             if (providerConfig.isNibOrQts) {
-                $(prefix + '_gradDate_cardExpiryMonth').val(dependantsArr[i].gradDate_cardExpiryMonth);
-                $(prefix + '_gradDate_cardExpiryYear').val(dependantsArr[i].gradDate_cardExpiryYear);
+                var month, year;
+                if (typeof dependantsArr[i].gradDate !== 'undefined' && dependantsArr[i].gradDate != null) {
+                    month = "" + dependantsArr[i].gradDate.cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate.cardExpiryYear;
+                } else {
+                    month = "" + dependantsArr[i].gradDate_cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate_cardExpiryYear;
+                }
+                if (month !== "") {
+                    $(prefix + '_gradDate_cardExpiryMonth').val(month.length === 1 ? "0" + month : month);
+                    $(prefix + '_gradDate_cardExpiryYear').val(year);
+                }
             }
 
             if (providerConfig.useSchoolDropdownMenu || providerConfig.isNibOrQts) {
@@ -382,8 +397,35 @@
                 animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants()));
             }
 
+            var $dependantGroup = $('div[id="health_application_dependants_dependant'+ dependantId +'"]');
+            applyGraduationDateFilter($dependantGroup);
+
             meerkat.messaging.publish(moduleEvents.healthDependants.DEPENDANTS_RENDERED);
         }
+    }
+
+    function applyGraduationDateFilter($dependantGroup) {
+        $dependantGroup.find('.cardExpiryYearFieldWrapper').find('.dependant-graduation-day').on('change', function() {
+            var currentDate = new Date();
+            var currentMonth = (currentDate.getMonth() + 1).toString();
+            var currentYear = currentDate.getFullYear().toString().substr(2, 3);
+            currentMonth = currentMonth.length === 1 ? '0' + currentMonth : currentMonth;
+
+            var $optionsMonth = $dependantGroup.find('.cardExpiryMonthFieldWrapper').find('.dependant-graduation-day option');
+            var $selectedOptionMonth = $dependantGroup.find('.cardExpiryMonthFieldWrapper').find('.dependant-graduation-day option:selected');
+            var $selectedOptionYear = $dependantGroup.find('.cardExpiryYearFieldWrapper').find('.dependant-graduation-day option:selected');
+
+            var selectedOptionYearVal = $selectedOptionYear.val();
+            var isCurrentYear = selectedOptionYearVal === currentYear;
+
+            if(isCurrentYear && $selectedOptionMonth.val() < currentMonth) {
+                $selectedOptionMonth.prop('selected', false);
+            }
+
+            $optionsMonth.each(function () {
+                isCurrentYear && $(this).val() < currentMonth ?  $(this).hide() : $(this).show();
+            });
+        });
     }
 
     /**

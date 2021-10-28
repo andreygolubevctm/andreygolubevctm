@@ -54,6 +54,7 @@
             isNibOrQts: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
+            isAUF: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,
@@ -136,8 +137,9 @@
             toggleDependantFields($wrapper);
         }).on('change', ':input', function changeInput() {
             var $el = $(this),
-                dependantId = $el.closest('.health_dependant_details').attr('data-id'),
-                objIndex = $el.attr('id').replace(/health_application_dependants_dependant[0-9]{1}_/, '');
+                dependantId = !$el || !$el.closest('.health_dependant_details') ? undefined : $el.closest('.health_dependant_details').attr('data-id'),
+                objIndex = !$el || !$el.attr('id') ? undefined : $el.attr('id').replace(/health_application_dependants_dependant[0-9]{1}_/, '');
+            if(!dependantId || !objIndex) return;
             dependantsArr[dependantId - 1][objIndex] = $(this).val();
         });
 
@@ -205,6 +207,8 @@
      * the configuration that it wants to show full time, or school id, etc in the healthFund JSP
      */
     function toggleDependantFields($wrapper) {
+
+        meerkat.modules.healthDependants.updateAgeWarningForAUFDependants();
 
         var dependantId = $wrapper.attr('data-id'),
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
@@ -322,8 +326,53 @@
             }
 
             if (providerConfig.isNibOrQts) {
-                $(prefix + '_gradDate_cardExpiryMonth').val(dependantsArr[i].gradDate_cardExpiryMonth);
-                $(prefix + '_gradDate_cardExpiryYear').val(dependantsArr[i].gradDate_cardExpiryYear);
+                var month, year, yearFull;
+                if (typeof dependantsArr[i].gradDate !== 'undefined' && dependantsArr[i].gradDate != null) {
+                    month = "" + dependantsArr[i].gradDate.cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate.cardExpiryYear;
+                } else {
+                    month = "" + dependantsArr[i].gradDate_cardExpiryMonth;
+                    year = "" + dependantsArr[i].gradDate_cardExpiryYear;
+                }
+                if (month !== "") {
+                    $(prefix + '_gradDate_cardExpiryMonth').val(month.length === 1 ? "0" + month : month);
+                    $(prefix + '_gradDate_cardExpiryYear').val(year);
+                }
+                yearFull = dependantsArr[i].gradDate_cardExpiryFullYear;
+                if((_.isNull(yearFull) || _.isUndefined(yearFull)) &&
+                    !_.isNull(dependantsArr[i].gradDate) && !_.isUndefined(dependantsArr[i].gradDate)) {
+                    yearFull = dependantsArr[i].gradDate.cardExpiryFullYear;
+                }
+                var useJustYear = false;
+                if((_.isNull(yearFull) || _.isUndefined(yearFull) || yearFull.trim().length < 10) &&
+                    !_.isNull(dependantsArr[i].gradDate) && !_.isUndefined(dependantsArr[i].gradDate) &&
+                    !_.isNull(dependantsArr[i].gradDate.cardExpiryYear) && !_.isUndefined(dependantsArr[i].gradDate.cardExpiryYear)) {
+                    yearFull = new Date().getFullYear().toString().substr(0, 2) + dependantsArr[i].gradDate.cardExpiryYear;
+                    useJustYear = true;
+                }
+                if(!_.isUndefined(yearFull) && !_.isNull(yearFull) && yearFull !== '') {
+                    if(!useJustYear) {
+                        var yearFullSplit = yearFull.split('/');
+                        yearFull = yearFullSplit.length === 3 ? yearFullSplit[2] : undefined;
+                        $('.show-yyyy-as-yy').val(yearFull);
+                    } else {
+                        $('.show-yyyy-as-yy').val(yearFull);
+                    }
+                }
+
+                var gradDateIn = $('[id$="schoolGraduationDate"]').find('.dateinput_container');
+                if(!_.isUndefined(gradDateIn) && !_.isNull(gradDateIn)) {
+                    var cardExpiryFullYear = gradDateIn.find('[id$="gradDate_cardExpiryFullYear"]');
+                    if(!_.isUndefined(cardExpiryFullYear) && !_.isNull(cardExpiryFullYear) && cardExpiryFullYear.val() === '') {
+                        cardExpiryFullYear.val(gradDateIn.find('.dateinput-day').val() + "/" + gradDateIn.find('.dateinput-month').val() + "/" + gradDateIn.find('.show-yyyy-as-yy').val());
+                    }
+                    var yearYYHidden = gradDateIn.find('.dateinput-year-hidden-yy');
+                    if(!_.isUndefined(yearYYHidden) && !_.isNull(yearYYHidden)) {
+                        var $yyyy = $('.show-yyyy-as-yy');
+                        yearYYHidden.val(!$yyyy || !$yyyy.val() || $yyyy.val().length < 4 ? '' : $yyyy.val().substring(2, 4));
+                    }
+                }
+
             }
 
             if (providerConfig.useSchoolDropdownMenu || providerConfig.isNibOrQts) {
@@ -454,6 +503,25 @@
      */
     function getNumberOfDependants() {
         return dependantsArr.length || 0;
+    }
+
+    /**
+     * If any of the, AUF Only, dependants are between the ages of 23-25, display a Mandatory script
+     */
+    function updateAgeWarningForAUFDependants() {
+        if (providerConfig.isAUF) {
+            for (var dependantId = 1; dependantId <= getNumberOfDependants(); dependantId++) {
+                var selectorPrefix = '#health_application_dependants_dependant' + dependantId;
+                var dobAsString = $(selectorPrefix + '_dob').val() || '0';
+                var ageAsNumber = meerkat.modules.age.returnAge(dobAsString, true) || 0;
+
+                if (ageAsNumber >= 23 && ageAsNumber <= 25) {
+                    $('.simples-dialogue-228').show();
+                    return;
+                }
+            }
+        }
+        $('.simples-dialogue-228').hide();
     }
 
     /**
@@ -621,7 +689,8 @@
         setMaxAge: setMaxAge,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
-        getNumberOfDependants: getNumberOfDependants
+        getNumberOfDependants: getNumberOfDependants,
+        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants
     });
 
 })(jQuery);

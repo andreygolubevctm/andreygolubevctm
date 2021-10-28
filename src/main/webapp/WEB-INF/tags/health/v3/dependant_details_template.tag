@@ -2,11 +2,13 @@
 <%@ tag description="dependant details" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="now" class="java.util.Date" />
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}{{= obj.dependantId }}"/>
+<fmt:formatDate var="todayDate" value="${now}" pattern="yyyy-MM-dd" />
 <div id="health-dependants-wrapper"></div>
 <core_v1:js_template id="health-dependants-template">
 
@@ -80,34 +82,18 @@
             {{ if(providerConfig.showSchoolFields === true) { }}
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
+            <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
             <form_v2:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
-                          className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="{{= isNibOrQts ? '653' : '290' }}">
-                {{ if(isNibOrQts === true) { }}
-                <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
-                <div class="select">
-                    <span class="input-group-addon"><i class="icon-angle-down"></i></span>
-                    <select name="${storeGroupName}" id="${storeGroupName}" class="form-control" required title="dependant {{= obj.dependantId }}'s educational institute">
-                        <c:import var="schoolList" url="/spring/rest/school/get.json"/>
-                        <c:out value="${schoolList}" escapeXml="false"/>
-                    </select>
-                </div>
-                {{ } else if(usesSchoolDropdown === true) { }}
-                <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
-                <div class="select">
-                    <span class="input-group-addon"><i class="icon-angle-down"></i></span>
-                    <select name="${storeGroupName}" id="${storeGroupName}" class="form-control" required title="dependant {{= obj.dependantId }}'s educational institute">
-                        {{= meerkat.modules.healthDependants.getEducationalInstitutionsOptions() }}
-                    </select>
-                </div>
-                {{ } else { }}
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude" defaultValue="{{= obj.school }}" disableErrorContainer="${true}" placeHolder="School"/>
-                {{ } }}
+                         className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="290">
+                <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes=" data-attach='true' data-visible='true'"
+                                        disableErrorContainer="${false}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No Educational institute selected."/>
             </form_v2:row>
+
             {{ if(providerConfig.isNibOrQts === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/gradDate"/>
-            <form_v4:row fieldXpath="${fieldXpath}" label="Graduation Date" id="${name}_schoolGraduationDate" className="health_dependant_details_schoolGraduationDate hidden" helpId="654">
-                <field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s graduation date " required="true" className="sessioncamexclude data-hj-suppress" maxYears="10" medicareCardValidationField="${xpath}/colour" />
-            </form_v4:row>
+            <form_v2:row fieldXpath="${fieldXpath}" label="Expected Graduation Date" id="${name}_schoolGraduationDate" className="health_dependant_details_schoolGraduationDate hidden" helpId="654">
+                <field_v2:basic_date_mm_yyyy xpath="${fieldXpath}" minDate="${todayDate}" title="dependant {{= obj.dependantId }}'s graduation date " required="true" className="sessioncamexclude data-hj-suppress" mode="separated"/>
+            </form_v2:row>
             {{ } }}
             {{ if(providerConfig.showSchoolIdField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>

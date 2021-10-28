@@ -75,9 +75,7 @@
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">
                     <span class="input-group-addon"><i class="icon-angle-down"></i></span>
-                    <select name="${storeGroupName}" id="${storeGroupName}" class="form-control" required title="dependant {{= obj.dependantId }}'s educational institute">
-                        <c:import var="schoolList" url="/spring/rest/school/get.json"/>
-                        <c:out value="${schoolList}" escapeXml="false"/>
+                    <field_v2:import_select xpath="${storeGroupName}" className="form-control" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="false" />
                     </select>
                 </div>
                 {{ } else if(usesSchoolDropdown === true) { }}
