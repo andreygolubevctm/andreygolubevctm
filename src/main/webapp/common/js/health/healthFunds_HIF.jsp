@@ -174,15 +174,14 @@
                 }
             });
 
-            <%-- Calendar for start cover--%>
-            if(_.has(meerkat.modules,'healthCoverStartDate')) {
-                meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
-            } else {
-                meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
-            }
-
-            <%--allow weekend selection from the datepicker--%>
-            healthFunds_HIF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+            meerkat.modules.healthFundTimeOffset.onInitialise({
+                weekends: true,
+                coverStartRange: {
+                    min: 0,
+                    max: 90
+                },
+                renderPaymentDaysCb: healthFunds_HIF.renderPaymentDays
+            });
 
             <%-- Previous fund --%>
             $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID')
