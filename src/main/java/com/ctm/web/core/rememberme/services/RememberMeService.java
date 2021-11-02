@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -69,11 +70,13 @@ public class RememberMeService {
         this.transactionDao = transactionDao;
     }
 
-    public static void setCookie(final String vertical,
-                                 final Long transactionId,
-                                 final String journeyType,
-                                 final HttpServletResponse response) throws GeneralSecurityException, DaoException, ConfigSettingException {
+    public void setCookie(final String vertical,
+                          final Long transactionId,
+                          final String journeyType,
+                          final HttpServletRequest request,
+                          final HttpServletResponse response) throws GeneralSecurityException {
         if (vertical != null && transactionId != null) {
+            deleteCookie(vertical, request, response);
             final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
             addCookie(response, transactionId, journeyType, cookieName);
         }
@@ -83,7 +86,7 @@ public class RememberMeService {
         return StringEncryption.encrypt(SECRET_KEY, content);
     }
 
-    private static void addCookie(HttpServletResponse response, final Long transactionId, final String journeyType, final String cookieName) throws GeneralSecurityException {
+    private void addCookie(HttpServletResponse response, final Long transactionId, final String journeyType, final String cookieName) throws GeneralSecurityException {
         final String cookieValue = transactionId.toString() + ":" + LocalDateTime.now().toString() + ",journeyType:" + journeyType;
         final Cookie cookie = new Cookie(cookieName, StringEncryption.encrypt(SECRET_KEY, cookieValue));
         cookie.setMaxAge(MAX_AGE); // 30 days
@@ -215,7 +218,19 @@ public class RememberMeService {
         return cookie;
     }
 
-    private boolean cookieIsForVertical(String vertical, Cookie cookie) {
+    private List<Cookie> getRememberMeCookieFromRequestForDeletion(final HttpServletRequest request,
+                                                                   final String vertical) {
+        List<Cookie> cookie = null;
+        if(request.getCookies() != null ) {
+            cookie = Arrays.stream(request.getCookies())
+                    .filter(Objects::nonNull)
+                    .filter(cki -> cookieIsForVertical(vertical, cki))
+                    .collect(Collectors.toList());
+        }
+        return cookie;
+    }
+
+    private static boolean cookieIsForVertical(String vertical, Cookie cookie) {
         try {
             return StringEncryption.decrypt(SECRET_KEY, cookie.getName()).equals(vertical.toLowerCase() + COOKIE_SUFFIX);
         } catch (GeneralSecurityException e) {
@@ -464,14 +479,19 @@ public class RememberMeService {
     }
 
     public Boolean deleteCookie(final String vertical, final HttpServletRequest request, final HttpServletResponse response) throws GeneralSecurityException {
-        final Cookie cookie = getRememberMeCookieFromRequest(request, vertical);
-        if (cookie != null) {
-            LOGGER.info("RememberMe Service deleteCookie: {}", kv("cookieName", cookie.getName()));
-            cookie.setValue("");
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
-			setCookieDomain(cookie);
-            response.addCookie(cookie);
+        final List<Cookie> cookies = getRememberMeCookieFromRequestForDeletion(request, vertical);
+        if (cookies != null && cookies.size() > 0) {
+            for(Cookie cookie: cookies) {
+                if (cookie != null) {
+                    LOGGER.info("RememberMe Service deleteCookie: {}", kv("cookieName", cookie.getName()));
+                    cookie.setValue("");
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    setCookieDomain(cookie);
+                    response.addCookie(cookie);
+                }
+            }
+
             return true;
         }
         return false;

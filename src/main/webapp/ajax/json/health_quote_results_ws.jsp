@@ -53,7 +53,7 @@
 		<c:otherwise><c:out value="v4" /></c:otherwise>
 	</c:choose>
 </c:set>
-<c:set var="rememberMe" value="${rememberMeService.setCookie(pageSettings.getVerticalCode(), data.current.transactionId, journeyType, pageContext.response)}" scope="request"  />
+<c:set var="rememberMe" value="${rememberMeService.setCookie(pageSettings.getVerticalCode(), data.current.transactionId, journeyType, pageContext.request, pageContext.response)}" scope="request"  />
 </c:when>
 </c:choose>
 
