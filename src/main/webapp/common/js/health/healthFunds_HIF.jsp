@@ -243,17 +243,31 @@
             healthFunds_HIF.$paymentTypeContainer.text('HIF offers a 4% discount for annual payments or 2% discount for half-yearly payments');
         },
         renderPaymentDays: function() {
-            healthFunds_HIF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
-            var paymentFrequency = healthFunds_HIF.$paymentFrequency.val();
-            if (['monthly', 'quarterly', 'halfyearly'].indexOf(paymentFrequency) > -1) {
-                meerkat.modules.healthFunds.setPayments({'min': 3, 'max': 20, 'weekends': false, 'maxDay': 28});<%-- do not allow selection of 29,30,31 --%>
-            } else {
-                meerkat.modules.healthFunds.setPayments({'min': 3, 'max': 20, 'weekends': false});
-            }
+        	var policyStartDate = $('#health_payment_details_start').val();
+        	if( meerkat.modules.dateUtils.isDate( policyStartDate ) ) {
+				var offsetDays = 3;
+				var offsetTime = (60 * 60 * 24 * offsetDays) * 1000;
+				var startDate = meerkat.modules.dateUtils.returnDate(policyStartDate).getTime();
+				var todayDate = new Date(new Date(meerkat.modules.utils.getUTCToday()).setHours(0, 0, 0, 0)).getTime();
+				var paymentModel = {
+					min: offsetDays,
+					max: 20,
+					weekends: false,
+					businessDaysOnly: true,
+					noMinAfterOffsetPassed: true
+				};
 
-            var _html = meerkat.modules.healthPaymentDay.paymentDays($('#health_payment_details_start').val());
-            meerkat.modules.healthPaymentDay.paymentDaysRender($('.health_payment_bank_details-policyDay'), _html);
-            meerkat.modules.healthPaymentDay.paymentDaysRender($('.health_payment_credit_details-policyDay'), _html);
+				if (['monthly', 'quarterly', 'halfyearly'].indexOf(healthFunds_HIF.$paymentFrequency.val()) > -1) {
+                    paymentModel.maxDay = 28; <%-- do not allow selection of 29,30,31 --%>
+				}
+
+				healthFunds_HIF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+				meerkat.modules.healthFunds.setPayments(paymentModel);
+
+				var _html = meerkat.modules.healthPaymentDay.paymentDays($('#health_payment_details_start').val());
+				meerkat.modules.healthPaymentDay.paymentDaysRender($('.health_payment_bank_details-policyDay'), _html);
+				meerkat.modules.healthPaymentDay.paymentDaysRender($('.health_payment_credit_details-policyDay'), _html);
+			}
         },
         unset: function() {
             meerkat.modules.healthFunds._reset();
