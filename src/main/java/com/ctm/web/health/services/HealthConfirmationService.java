@@ -55,7 +55,7 @@ public class HealthConfirmationService {
                         data.getQuote().getApplication().getProductId()
             );
             String frequency = Frequency.findByDescription(data.getQuote().getPayment().getDetails().getFrequency()).getCode();
-            String next = getContent(request, providerName, dataBucket.getString("current/brandCode"),"NXT");
+            String next = getContent(request, providerName, dataBucket.getString("current/brandCode"),"NXO");
             String about = getContent(request, providerName, dataBucket.getString("current/brandCode"),"ABT");
             String firstName = data.getQuote().getApplication().getPrimary().getFirstname();
             String surname = data.getQuote().getApplication().getPrimary().getSurname();
