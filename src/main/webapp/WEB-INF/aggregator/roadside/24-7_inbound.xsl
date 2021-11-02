@@ -87,7 +87,7 @@
 					</additionalBenefits>
 					<acn>000 000 000</acn>
 					<afsLicenceNo>000000</afsLicenceNo>
-					<quoteUrl>https://www.roadsideassistance-1.com.au/?ap_id=affiliate2</quoteUrl>
+					<quoteUrl>https://247roadservices.com.au/ctm/</quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
 
