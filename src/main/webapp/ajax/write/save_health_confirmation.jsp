@@ -25,7 +25,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		<startDate>${param.startDate}</startDate>
 		<frequency>${param.frequency}</frequency>
 		<about><![CDATA[ ${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, data.current.brandCode, "ABT")} ]]></about>
-		<whatsNext><![CDATA[ ${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, data.current.brandCode, "NXT")} ]]></whatsNext>
+		<whatsNext><![CDATA[ ${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, data.current.brandCode, "NXO")} ]]></whatsNext>
 		<product>${data.confirmation.health}</product>
 		<policyNo>${param.policyNo}</policyNo>
 	</data>

@@ -4,10 +4,13 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber" /></c:set>
 
 <c:set var="openingHoursTimeZone"><content:get key="openingHoursTimeZone" /></c:set>
+
+<jsp:useBean id="providerContentService" class="com.ctm.web.health.services.ProviderContentService" scope="page" />
+<c:set var="whatsNextCallCentre" value="${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, data.current.brandCode, 'NXC')}" />
+<c:set var="whatsNextOnline" value="${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, data.current.brandCode, 'NXO')}" />
 
 <%-- This xpath does not seem to be wired in yet... --%>
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}/callback" />
@@ -308,12 +311,18 @@
 								</div>
 							{{ } }}
 
-							{{ if( whatsNext ) { }}
-							<div class="col-xs-12 nextSteps hidden-xs">
-								<health_v1_layout:next_steps_template />
-								{{= whatsNext }}
-							</div>
-							{{ } }}
+							<c:if test="${callCentre}">
+								<div class="col-xs-12 nextSteps hidden-xs">
+									<health_v1_layout:next_steps_template />
+										${whatsNextCallCentre}
+								</div>
+							</c:if>
+							<c:if test="${not callCentre}">
+								<div class="col-xs-12 nextSteps hidden-xs">
+									<health_v1_layout:next_steps_template />
+										${whatsNextOnline}
+								</div>
+							</c:if>
 						</div>
 
 					</form_v3:fieldset>

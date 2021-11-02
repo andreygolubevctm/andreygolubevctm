@@ -199,7 +199,7 @@
      */
 	function getPremium(freq) {
 		freq = freq || 'annually';
-		if(_.has(confirmationProduct.premium,freq)) {
+		if(confirmationProduct && _.isObject(confirmationProduct) && _.has(confirmationProduct, "premium") && confirmationProduct.premium && _.isObject(confirmationProduct.premium) && _.has(confirmationProduct.premium,freq)) {
 			return confirmationProduct.premium[freq].lhcfreevalue;
 		} else {
 			return null;
