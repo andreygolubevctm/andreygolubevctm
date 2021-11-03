@@ -31,6 +31,11 @@
         return html;
     }
 
+    // Confirms the date provided is a weekend day
+    function isWeekendDay(now) {
+        return _.indexOf([0,6], now.getDay()) !== -1;
+    }
+
     // Create payment day options on the fly - min and max are in + days from the selected date;
     //NOTE: max - min cannot be a negative number
     function paymentDays( effectiveDateInput){
@@ -58,7 +63,28 @@
             }
         } else {
             _days = meerkat.modules.healthFunds.getPayments().min;
-            _limit -= meerkat.modules.healthFunds.getPayments().min;
+        }
+
+        // Extend initial offset period if business days only and the initial offset period includes weekend days
+        var businessDaysOnly = typeof(meerkat.modules.healthFunds.getPayments().businessDaysOnly) !== 'undefined' && meerkat.modules.healthFunds.getPayments().businessDaysOnly;
+        if(businessDaysOnly) {
+            var limit = _days;
+            for(var i=0; i<limit; i++) {
+                var now = new Date( _baseDate.getTime() + (i * 24 * 60 * 60 * 1000));
+                if( isWeekendDay(now) ) {
+                    _days++;
+                }
+            }
+        }
+
+        // Remove the default offset if flagged to do so and start date is after the default offset.
+        // Flag is noMinAfterOffsetPassed
+        var noMinAfterOffsetPassed = typeof(meerkat.modules.healthFunds.getPayments().noMinAfterOffsetPassed) !== 'undefined' && meerkat.modules.healthFunds.getPayments().noMinAfterOffsetPassed;
+        if(noMinAfterOffsetPassed) {
+            var offsetDate = new Date(new Date(meerkat.modules.utils.getUTCToday()).setHours(0,0,0,0) + (_days * 24 * 60 * 60 * 1000));
+            if(effectiveDate.getTime() > offsetDate.getTime()) {
+                _days = 0;
+            }
         }
 
         var _html = '<option value="">Please choose...</option>';
@@ -66,12 +92,12 @@
         // The loop to create the payment days
         while (_count < _limit) {
             var _date = new Date( _baseDate.getTime() + (_days * 24 * 60 * 60 * 1000));
-            var _day = _date.getDay();
-            // up to certain payment day
-            if( typeof(meerkat.modules.healthFunds.getPayments().maxDay) != 'undefined' && meerkat.modules.healthFunds.getPayments().maxDay < _date.getDate() ){
+            var _isWeekend = isWeekendDay(_date);
+            // Skips days after fix day limit
+            if (typeof (meerkat.modules.healthFunds.getPayments().maxDay) !== 'undefined' && meerkat.modules.healthFunds.getPayments().maxDay < _date.getDate()) {
                 _days++;
-                // Parse out the weekends
-            } else if( !meerkat.modules.healthFunds.getPayments().weekends && ( _day === 0 || _day === 6 ) ){
+            // Parse out the weekends if not applicable
+            } else if ( _isWeekend && ( businessDaysOnly || !meerkat.modules.healthFunds.getPayments().weekend ) ) {
                 _days++;
             } else {
                 _html += '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'">'+

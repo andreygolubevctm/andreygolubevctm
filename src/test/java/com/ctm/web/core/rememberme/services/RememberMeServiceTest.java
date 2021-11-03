@@ -36,8 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -161,7 +160,7 @@ public class RememberMeServiceTest {
     public void testSetCookieLocalhost() throws Exception {
         final ArgumentCaptor<Cookie> argumentCaptor = ArgumentCaptor.forClass(Cookie.class);
         EnvironmentService.setEnvironment(EnvironmentService.Environment.LOCALHOST.name());
-        service.setCookie("health", 12345678L, DEFAULT_JOURNEY, response);
+        service.setCookie("health", 12345678L, DEFAULT_JOURNEY, request, response);
         verify(response, only()).addCookie(argumentCaptor.capture());
         final Cookie cookie = argumentCaptor.getValue();
         assertEquals("/", cookie.getPath());
@@ -173,7 +172,7 @@ public class RememberMeServiceTest {
         final ArgumentCaptor<Cookie> argumentCaptor = ArgumentCaptor.forClass(Cookie.class);
         EnvironmentService.setEnvironment(EnvironmentService.Environment.PRO.name());
 
-        service.setCookie("health", 12345678L, DEFAULT_JOURNEY, response);
+        service.setCookie("health", 12345678L, DEFAULT_JOURNEY, request, response);
 
         verify(response, only()).addCookie(argumentCaptor.capture());
 
@@ -193,9 +192,10 @@ public class RememberMeServiceTest {
         existingCookie.setMaxAge(600);
 
         when(request.getCookies()).thenReturn(new Cookie[]{existingCookie});
-        service.setCookie("health", 12345678L, DEFAULT_JOURNEY, response);
+        service.setCookie("health", 12345678L, DEFAULT_JOURNEY, request, response);
 
-        verify(response, only()).addCookie(argumentCaptor.capture());
+        //delete previous cookie and add current cookie, they are twice callings of `addCookies`
+        verify(response, times(2)).addCookie(argumentCaptor.capture());
 
         final Cookie cookie = argumentCaptor.getValue();
         assertEquals(2592000, cookie.getMaxAge()); // 30 days

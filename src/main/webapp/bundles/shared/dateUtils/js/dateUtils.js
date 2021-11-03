@@ -181,6 +181,15 @@
         return format(dateObj, masks.dateTime);
     }
 
+    // Confirms the input provided is a date
+    function isDate(dateInput) {
+        try {
+            return returnDate(dateInput) instanceof Date;
+        } catch(err) {
+            return false;
+        }
+    }
+
     meerkat.modules.register('dateUtils', {
         format  : format,
         parse : parse,
@@ -188,7 +197,8 @@
         dateValueLongFormat : dateValueLongFormat,
         dateValueServerFormat : dateValueServerFormat,
         dateValueFormFormat : dateValueFormFormat,
-        returnDateTimeString: returnDateTimeString
+        returnDateTimeString: returnDateTimeString,
+        isDate: isDate
     });
 
 })(jQuery);

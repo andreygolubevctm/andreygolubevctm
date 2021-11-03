@@ -215,9 +215,6 @@
 
 		meerkat.modules.healthCreditCard.resetConfig();
 
-		// Clear start date
-		meerkat.modules.healthCoverStartDate.flush();
-
 		// Clear payment method selection
 		$paymentRadioGroup.find('input').prop('checked', false).change();
 		$paymentRadioGroup.find('label').removeClass('active');
