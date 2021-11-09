@@ -8,9 +8,13 @@
 
 <c:set var="openingHoursTimeZone"><content:get key="openingHoursTimeZone" /></c:set>
 
+<c:set var="confirmData"><health_v1:load_confirmation /></c:set>
+<x:parse var="confirmDataXML" xml="${confirmData}" />
+<c:set var="product"><x:out select="$confirmDataXML/data/product" /></c:set>
+
 <jsp:useBean id="providerContentService" class="com.ctm.web.health.services.ProviderContentService" scope="page" />
-<c:set var="whatsNextCallCentre" value="${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, data.current.brandCode, 'NXC')}" />
-<c:set var="whatsNextOnline" value="${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, data.current.brandCode, 'NXO')}" />
+<c:set var="whatsNextCallCentre" value="${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, product, data.current.brandCode, 'NXC')}" />
+<c:set var="whatsNextOnline" value="${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, product, data.current.brandCode, 'NXO')}" />
 
 <%-- This xpath does not seem to be wired in yet... --%>
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}/callback" />
