@@ -12,6 +12,10 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.dao.ProviderContentDao;
 import com.ctm.web.health.dao.ProviderInfoDao;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +36,21 @@ public class ProviderContentService {
     private final ProviderContentDao providerContentDao;
     private final ProviderDao providerDao;
     private final ProviderInfoDao providerInfoDao;
+    private final ObjectMapper mapper;
 
     public ProviderContentService() {
         providerDao = new ProviderDao();
         providerInfoDao = new ProviderInfoDao(new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm()));
         providerContentDao = new ProviderContentDao();
+        mapper = new ObjectMapper();
     }
 
     @Autowired
-    public ProviderContentService(ProviderInfoDao providerInfoDao, ProviderDao providerDao, ProviderContentDao providerContentDao) {
+    public ProviderContentService(ProviderInfoDao providerInfoDao, ProviderDao providerDao, ProviderContentDao providerContentDao, ObjectMapper mapper) {
         this.providerInfoDao = providerInfoDao;
         this.providerDao = providerDao;
         this.providerContentDao = providerContentDao;
+        this.mapper = mapper;
     }
 
     /**
@@ -54,9 +61,25 @@ public class ProviderContentService {
      * @throws DaoException
      * @throws ConfigSettingException
      */
+    public String getProviderContentText(HttpServletRequest request, String providerName, String product, String styleCode,
+                                         String providerContentTypeCode) throws DaoException, ConfigSettingException {
+        if (StringUtils.isNotEmpty(providerName)) {
+            return getProviderContentText(request, providerName, styleCode, providerContentTypeCode);
+        } else {
+            try {
+                String jsonString = StringEscapeUtils.unescapeHtml4(product);
+                String providerNameFromProduct = mapper.readValue(jsonString, ObjectNode.class)
+                                                                    .findValue("providerName").textValue();
+                return getProviderContentText(request, providerNameFromProduct, styleCode, providerContentTypeCode);
+            } catch (Exception ex) {
+                LOGGER.error("Provider Name could not be determined!", ex);
+                return null;
+            }
+        }
+    }
+
     public String getProviderContentText(HttpServletRequest request, String providerName, String styleCode,
                                          String providerContentTypeCode) throws DaoException, ConfigSettingException {
-        ProviderDao providerDao = new ProviderDao();
         Date currDate = ApplicationService.getApplicationDate(request);
         int providerId = providerDao.getByName(providerName, currDate).getId();
         return providerContentDao.getProviderContentText(providerId, providerContentTypeCode, "HEALTH", currDate, styleCode);

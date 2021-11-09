@@ -38,6 +38,7 @@
         </div>
 
         <health_v4_application:dependant_details_template xpath="${xpath}/dependant" />
+        <p id="health_auf_student_dependant" style="display: none;">Australian Unity requires you to notify them immediately if the Student Dependant ceases or defers fulltime study, gets married or enters a de-facto relationship. You also need to re-register each student, each year, until the Student Dependant’s 25th birthday or until they no longer qualify. Once the Student Dependant turns 25, they will automatically be removed from the membership.</p>
 
         <form_v4:row id="dependents_list_options">
             <a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependant">Add New Dependant</a>
