@@ -176,4 +176,49 @@ public class FundDataAdapterTest {
         verify(wfd, times(1)).getPartnerrel();
     }
 
+    @Test
+    public void testMembershipCurrentQtu() throws Exception {
+        final Qtu qtu = mock(Qtu.class);
+        when(qtu.getEligibility()).thenReturn("CURR");
+        when(qtu.getUnion()).thenReturn("TOGTH");
+        final Membership membership = FundDataAdapter.createMembership(qtu);
+        final Eligibility eligibility = membership.getEligibility();
+        assertEquals("CURR", eligibility.getEligibilityReasonID().get());
+        assertEquals("TOGTH", eligibility.getEligibilitySubReasonID().get());
+    }
+
+    @Test
+    public void testMembershipCurrentUhf() throws Exception {
+        final Uhf uhf = mock(Uhf.class);
+        when(uhf.getEligibility()).thenReturn("CURR");
+        when(uhf.getUnion()).thenReturn("TOGTH");
+        final Membership membership = FundDataAdapter.createMembership(uhf);
+        final Eligibility eligibility = membership.getEligibility();
+        assertEquals("CURR", eligibility.getEligibilityReasonID().get());
+        assertEquals("TOGTH", eligibility.getEligibilitySubReasonID().get());
+    }
+
+    @Test
+    public void testMembershipFormerUhf() throws Exception {
+        final Uhf uhf = mock(Uhf.class);
+        when(uhf.getEligibility()).thenReturn("FORM");
+        final Membership membership = FundDataAdapter.createMembership(uhf);
+        final Eligibility eligibility = membership.getEligibility();
+        assertEquals("FORM", eligibility.getEligibilityReasonID().get());
+        assertNull(eligibility.getEligibilitySubReasonID());
+    }
+
+    @Test
+    public void testMembershipCallsGetUhf() throws Exception {
+        final Uhf uhf = mock(Uhf.class);
+        final HealthQuote healthQuote = mock(HealthQuote.class);
+        final Application application = mock(Application.class);
+        when(healthQuote.getApplication()).thenReturn(application);
+        when(application.getCbh()).thenReturn(null);
+        when(application.getNhb()).thenReturn(null);
+        when(application.getUhf()).thenReturn(uhf);
+        Membership membership = FundDataAdapter.createMembership(Optional.ofNullable(healthQuote));
+        verify(application, times(1)).getUhf();
+        verify(uhf, times(1)).getEligibility();
+    }
 }

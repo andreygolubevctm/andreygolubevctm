@@ -7,6 +7,7 @@ import com.ctm.web.health.apply.model.request.application.applicant.healthCover.
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CancelOption;
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CoverType;
 import com.ctm.web.health.apply.model.request.application.situation.Situation;
+import com.ctm.web.health.apply.model.request.fundData.HealthFund;
 import com.ctm.web.health.model.form.Application;
 import com.ctm.web.health.model.form.Dependant;
 import com.ctm.web.health.model.form.Dependants;
@@ -172,6 +173,18 @@ public class ApplicationGroupAdapterTest {
         assertNotNull(previousFund);
         verify(fund, times(1)).getFundName();
         verify(fund, times(1)).getMemberID();
+    }
+
+    @Test
+    public void testPreviousFundUHF() throws Exception {
+        final Fund fund = mock(Fund.class);
+        when(fund.getFundName()).thenReturn("UHF");
+        final HealthFund healthFund = HealthFund.UHF;
+        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty());
+        assertNotNull(previousFund);
+        verify(fund, times(1)).getFundName();
+        verify(fund, times(1)).getMemberID();
+        assertEquals(healthFund.getDescription(), previousFund.getFundName().getDescription());
     }
 
     @Test

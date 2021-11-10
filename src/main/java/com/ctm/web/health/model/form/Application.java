@@ -52,6 +52,8 @@ public class Application {
 
     private Qtu qtu;
 
+    private Uhf uhf;
+
     private Wfd wfd;
 
     private Bup bup;
@@ -257,6 +259,14 @@ public class Application {
 
     public void setQtu(Qtu qtu) {
         this.qtu = qtu;
+    }
+
+    public Uhf getUhf() {
+        return uhf;
+    }
+
+    public void setUhf(Uhf uhf) {
+        this.uhf = uhf;
     }
 
     public Wfd getWfd() {
