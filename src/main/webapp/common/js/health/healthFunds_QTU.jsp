@@ -177,7 +177,17 @@ var healthFunds_QTU = {
         if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
             healthFunds_QTU.$paymentTypeContainer.slideUp();
         } else {
-            healthFunds_QTU.$paymentTypeContainer.text('*' + Results.getSelectedProduct().promo.discountText).slideDown();
+            var discountText = Results.getSelectedProduct().promo.discountText != '' ? Results.getSelectedProduct().promo.discountText : '';
+            var discountHtml = $.parseHTML(discountText);
+            if (discountText != '') {
+                <%-- Note: discountText may have the html tag p i.e. Trumbowyg text editor automatically appending <p> --%>
+                if ($(discountHtml).first().is("p")) {
+                    $(discountHtml).first().text("*" + $(discountHtml).first().text());
+                } else {
+                    discountHtml = $.parseHTML("*" + discountText);
+                }
+            }
+            healthFunds_QTU.$paymentTypeContainer.html(discountHtml).slideDown();
         }
     },
     unset: function() {

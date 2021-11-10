@@ -91,7 +91,7 @@
         <form_v3:save_results_button />
     </c:if>
 
-    {{ if(product.info.providerName === 'TUH') { }}
+    {{ if((product.info.providerName === 'TUH') || (product.info.providerName === 'Union Health')) { }}
         <simples:dialogue id="224" vertical="health" />
     {{ } }}
 

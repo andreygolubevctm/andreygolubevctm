@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
+            xmlns="http://com.disc_au.soap.aggregator">
+
+    <nabGateway>
+        <gatewayURL>https://testservices.unionhealth.com.au/NAB/UnionHealth_CTM_IFrame.aspx</gatewayURL>
+        <domain>https://testservices.unionhealth.com.au</domain>
+    </nabGateway>
+
+    <config-dir>aggregator/health_application</config-dir>
+    <debug-dir>health_application/debug</debug-dir>
+
+</aggregator>
