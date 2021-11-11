@@ -1057,6 +1057,11 @@
                     {"providerBlurb" :"<p>Looking for more rewarding health insurance?</p><p>Qantas Health Insurance offers a range of covers, so if you&rsquo;re young and single, newly married, busy raising a family or enjoying a well-earned retirement, we have you covered.</p><p>Plus as the only health insurance that comes with Qantas Points you could be turning your health premiums into your next holiday.</p>"}
                 );
                 break;
+            case 'UHF':
+                extraPopOverData.push(
+                    {"providerBlurb" :"Union Health is a not for profit health fund that is 100% member owned. Their profits go straight back into providing affordable, cost effective options to suit members needs and for what you need they are giving you really great value."}
+                );
+                break;
             case 'QCH':
                 extraPopOverData.push(
                     {"providerBlurb" :"Queensland Country Health are a non for profit fund based here in Queensland, giving you the peace of mind you are dealing with a local fund, and for what you need they are giving really great value."}
@@ -1205,6 +1210,15 @@
                     {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/nib-agreement-hospitals-amp-gap-scheme"},
                     {"name": "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/nib-dental-agreements"},
                     {"name": "Optical Benefits", "url": "https://ctm.livepro.com.au/goto/nib-optical-benefits"}
+                );
+                break;
+            case 'UHF':
+                usefulLinks.push(
+                    {"name": "Fund Page", "url": "https://ctm.livepro.com.au/goto/union-health"},
+                    {"name": "Hospital Network", "url": "https://ctm.livepro.com.au/goto/union-health-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Gap Scheme Doctors", "url": "https://ctm.livepro.com.au/goto/union-health-agreement-hospitals-amp-gap-scheme"},
+                    {"name": "Dental Agreements", "url": "https://ctm.livepro.com.au/goto/union-health-dental-agreements"},
+                    {"name": "Optical Benefits", "url": "https://ctm.livepro.com.au/goto/union-health-optical-benefits"}
                 );
                 break;
             case 'QCH':

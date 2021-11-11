@@ -28,7 +28,7 @@ import static java.util.Arrays.asList;
 
 public class PaymentAdapter {
 
-    private static final List<String> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK = asList("BUD", "CUA", "FRA", "GMH", "AHM", "QTU", "NIB", "QTS", "MYO", "HIF", "WFD", "HEA");
+    private static final List<String> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK = asList("BUD", "CUA", "FRA", "GMH", "AHM", "QTU", "NIB", "QTS", "MYO", "HIF", "WFD", "HEA", "UHF");
 
 
     public static Payment createPayment(Optional<HealthQuote> quote) {
