@@ -78,6 +78,7 @@ public  enum HealthFund {
     WDHF ("Westfund Limited"),
     YMHS("Federation Health"),
     AAMI("AAMI Health Insurance"),
+    UHF("Union Health Fund"),
     SUN("Suncorp Health Insurance");
 
     private final String description;

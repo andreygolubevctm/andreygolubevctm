@@ -62,6 +62,12 @@ public class FundDataAdapter {
                     .map(Application::getNhb)
                     .map(FundDataAdapter::createMembership);
         }
+        // Check for Uhf
+        if (!membership.isPresent()) {
+            membership = quote.map(HealthQuote::getApplication)
+                    .map(Application::getUhf)
+                    .map(FundDataAdapter::createMembership);
+        }
         // Check for Qtu
         if (!membership.isPresent()) {
             membership = quote.map(HealthQuote::getApplication)

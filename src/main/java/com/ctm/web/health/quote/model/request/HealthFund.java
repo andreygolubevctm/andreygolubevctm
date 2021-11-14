@@ -22,7 +22,8 @@ public enum HealthFund {
     QTS(462),
     MYO(20),
     HEA(456),
-    CBA(30);
+    CBA(30),
+    UHF(463);
 
     private final int id;
 
