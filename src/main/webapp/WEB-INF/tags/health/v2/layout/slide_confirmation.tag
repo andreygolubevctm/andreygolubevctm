@@ -315,13 +315,13 @@
 								</div>
 							{{ } }}
 
-							<c:if test="${callCentre}">
+							<c:if test="${callCentre && not empty whatsNextCallCentre}">
 								<div class="col-xs-12 nextSteps hidden-xs">
 									<health_v1_layout:next_steps_template />
 										${whatsNextCallCentre}
 								</div>
 							</c:if>
-							<c:if test="${not callCentre}">
+							<c:if test="${not callCentre && not empty whatsNextOnline}">
 								<div class="col-xs-12 nextSteps hidden-xs">
 									<health_v1_layout:next_steps_template />
 										${whatsNextOnline}
