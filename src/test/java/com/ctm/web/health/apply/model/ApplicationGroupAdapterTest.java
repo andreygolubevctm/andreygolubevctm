@@ -180,7 +180,7 @@ public class ApplicationGroupAdapterTest {
         final Fund fund = mock(Fund.class);
         when(fund.getFundName()).thenReturn("UHF");
         final HealthFund healthFund = HealthFund.UHF;
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty());
+        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.empty());
         assertNotNull(previousFund);
         verify(fund, times(1)).getFundName();
         verify(fund, times(1)).getMemberID();
