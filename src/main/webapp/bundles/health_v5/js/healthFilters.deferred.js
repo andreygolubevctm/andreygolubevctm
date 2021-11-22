@@ -378,6 +378,7 @@
     function applyEventListeners() {
         $(document).on('change', 'input[name=health_filterBar_frequency]', function (e) {
             var frequency = $(this).val();
+            meerkat.messaging.publish(meerkatEvents.filters.FILTERS_UPDATED);
             _.defer(function () {
                 $('#health_filter_frequency').val(frequency);
                 Results.setFrequency(meerkat.modules.healthResults.getFrequencyInWords(frequency), false);
