@@ -36,7 +36,8 @@
 		minStartDateOffset: 0,
 		maxStartDateOffset: 90,
 		minStartDate: '',
-		maxStartDate: ''
+		maxStartDate: '',
+		isAUF: false
 	};
 
 	var currentCoupon = false,
@@ -94,6 +95,7 @@
 						updatePaymentPremium();
 						updatePaymentDayOptions();
 					});
+					toggleSimplesCreditCardScript();
 				});
 			});
 
@@ -102,6 +104,7 @@
 			$frequencySelect.on('change', function updateSidebarQuote(){
 				updateProductFrequency();
 				updatePaymentDayOptions();
+				toggleSimplesCreditCardScript();
 			});
 
 			meerkat.modules.healthCreditCard.setCreditCardRules();
@@ -215,6 +218,7 @@
 		settings.frequency = { 'weekly':27, 'fortnightly':31, 'monthly':27, 'quarterly':27, 'halfyearly':27, 'annually':27 };
 		settings.creditBankSupply = false;
 		settings.creditBankQuestions = false;
+		settings.isAUF = false;
 
 		meerkat.modules.healthCreditCard.resetConfig();
 
@@ -463,6 +467,14 @@
 				setDefaultFields();
 			});
 		});
+	}
+
+	function toggleSimplesCreditCardScript() {
+		if(meerkat.site.isCallCentreUser && settings.isAUF && getSelectedPaymentMethod() === 'cc') {
+			$('.simples-dialogue-29').hide();
+		} else {
+			$('.simples-dialogue-29').show();
+		}
 	}
 
 	function togglePaymentGroups() {
@@ -736,7 +748,8 @@
 		setCoverStartDaysOfWeekDisabled: setCoverStartDaysOfWeekDisabled,
         getCoverStartVal: getCoverStartVal,
 		setCoverStartValues: setCoverStartValues,
-        toggleCouponSeenText: toggleCouponSeenText
+        toggleCouponSeenText: toggleCouponSeenText,
+		resetSettings: resetSettings
 	});
 
 })(jQuery);
