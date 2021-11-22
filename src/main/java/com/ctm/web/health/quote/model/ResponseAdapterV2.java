@@ -295,7 +295,7 @@ public class ResponseAdapterV2 {
         price.setText(formatCurrency(payableAmount, true, true) + (hasDiscount && isSimplesUser ? "*" : ""));
         price.setValue(payableAmount);
 
-        String lhcFreePricingText = String.format("%1$s inc %2$s Govt Rebate.", getLhcFreePricing(healthQuote, lhcAmount, lookingForPrivateHospitalCover), rebateValue).trim();
+        String lhcFreePricingText = String.format("incl. %1$s Govt Rebate.<br>%2$s", rebateValue, getLhcFreePricing(healthQuote, lhcAmount, lookingForPrivateHospitalCover)).trim();
         price.setLhcfreepricing(lhcFreePricingText);
 
         price.setRebateValue(rebateValue);
@@ -321,7 +321,7 @@ public class ResponseAdapterV2 {
 
         String lhcFreePricing = "";
         if (isInsuredAffectedByLHC(primary, lookingForPrivateHospitalCover) || partner.map(optionalPartner -> ResponseAdapterV2.isInsuredAffectedByLHC(optionalPartner, lookingForPrivateHospitalCover)).orElse(false)) {
-            lhcFreePricing = "The premium may be affected by LHC";
+            lhcFreePricing = "LHC loading may increase the premium.";
         }
 
         return lhcFreePricing;

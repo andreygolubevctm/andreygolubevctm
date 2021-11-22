@@ -1,20 +1,37 @@
 package com.ctm.web.health.quote.model;
 
+import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.providers.model.IncomingQuotesResponse;
+import com.ctm.web.core.resultsData.model.AvailableType;
+import com.ctm.web.health.model.PaymentType;
+import com.ctm.web.health.model.form.HealthCover;
+import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Insured;
 import com.ctm.web.health.model.results.Promo;
+import com.ctm.web.health.quote.model.response.HealthQuote;
+import com.ctm.web.health.quote.model.response.HealthResponseV2;
+import com.ctm.web.health.quote.model.response.Info;
+import com.ctm.web.health.quote.model.response.Premium;
 import com.ctm.web.health.quote.model.response.Promotion;
 import com.ctm.web.health.quote.model.response.SpecialOffer;
-import org.junit.Assert;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
 public class ResponseAdapterV2Test {
 
@@ -129,5 +146,175 @@ public class ResponseAdapterV2Test {
 		assertEquals(calculatedPromo.getPromoText(), promo.getPromoText());
 		assertEquals(calculatedPromo.getProviderPhoneNumber(), promo.getProviderPhoneNumber());
 		assertEquals(calculatedPromo.getProviderDirectPhoneNumber(), promo.getProviderDirectPhoneNumber());
+    }
+
+    @Test
+    public void TestGetPaymentType() {
+        assertEquals("BankAccount", ResponseAdapterV2.getPaymentType(PaymentType.BANK));
+        assertEquals("CreditCard", ResponseAdapterV2.getPaymentType(PaymentType.CREDIT));
+        assertEquals("Invoice", ResponseAdapterV2.getPaymentType(PaymentType.INVOICE));
+    }
+
+    @Test
+    public void testFormatCurrency() {
+        assertEquals("14.00", ResponseAdapterV2.formatCurrency(BigDecimal.valueOf(14l), false, false));
+        assertEquals("$14.00", ResponseAdapterV2.formatCurrency(BigDecimal.valueOf(14l), true, false));
+    }
+
+    @Test
+    public void testAdaptUnavailableResponse() {
+        // Given
+        HealthRequest healthRequest = Mockito.mock(HealthRequest.class);
+        HealthResponseV2 healthResponseV2 = Mockito.mock(HealthResponseV2.class);
+        IncomingQuotesResponse.Payload<HealthQuote> payload = (IncomingQuotesResponse.Payload<HealthQuote>) Mockito.mock(IncomingQuotesResponse.Payload.class);
+        when(healthResponseV2.getPayload()).thenReturn(payload);
+        Content content = Mockito.mock(Content.class);
+        String brandCode = "CTM";
+        // When
+        ResponseAdapterModel response = ResponseAdapterV2.adapt(healthRequest, healthResponseV2, content, brandCode);
+        // Then
+        assertNotNull(response);
+        assertTrue(response.isHasPriceChanged());
+        assertFalse(response.getPremiumRange().isPresent());
+    }
+
+    @Test
+    public void testAdaptOnSingleQuote() {
+        // Given
+        HealthRequest healthRequest = Mockito.mock(HealthRequest.class);
+        HealthResponseV2 healthResponseV2 = Mockito.mock(HealthResponseV2.class);
+        IncomingQuotesResponse.Payload<HealthQuote> payload = (IncomingQuotesResponse.Payload<HealthQuote>) Mockito.mock(IncomingQuotesResponse.Payload.class);
+        com.ctm.web.health.model.form.HealthQuote healthQuote = Mockito.mock(com.ctm.web.health.model.form.HealthQuote.class);
+        when(healthQuote.getApplyDiscounts()).thenReturn("Y");
+        HealthCover cover = new HealthCover();
+        Insured insured = new Insured();
+        insured.setDob("01/01/1990");
+        cover.setPartner(insured);
+        cover.setPrimary(insured);
+        when(healthQuote.getHealthCover()).thenReturn(cover);
+        when(healthRequest.getQuote()).thenReturn(healthQuote);
+        HealthQuote quote = new HealthQuote();
+        quote.setAvailable(true);
+        quote.setPromotion(new Promotion());
+        quote.setPremium(new Premium());
+        JsonNode mockJson = Mockito.mock(JsonNode.class);
+        quote.setCustom(mockJson);
+        quote.setHospital(mockJson);
+        quote.setExtras(mockJson);
+        when(mockJson.has("hasSpecialFeatures")).thenReturn(true);
+        quote.setAmbulance(mockJson);
+        quote.setAccident(mockJson);
+        Info info = new Info();
+        Map<String, String> otherInfo = new HashMap<>();
+        info.setOtherInfoProperties(otherInfo);
+        quote.setInfo(info);
+        List<HealthQuote> quoteList = Collections.singletonList(quote);
+        when(payload.getQuotes()).thenReturn(quoteList);
+        when(healthResponseV2.getPayload()).thenReturn(payload);
+        Content content = Mockito.mock(Content.class);
+        when(content.getContentValue()).thenReturn("Y");
+        String brandCode = "CTM";
+        // When
+        ResponseAdapterModel response = ResponseAdapterV2.adapt(healthRequest, healthResponseV2, content, brandCode);
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getResults().size() );
+        assertEquals(AvailableType.Y, response.getResults().get(0).getAvailable());
+    }
+
+    @Test
+    public void testAdaptOnSingleQuoteWithPaymentTypePremium() {
+        // Given
+        HealthRequest healthRequest = Mockito.mock(HealthRequest.class);
+        HealthResponseV2 healthResponseV2 = Mockito.mock(HealthResponseV2.class);
+        IncomingQuotesResponse.Payload<HealthQuote> payload = (IncomingQuotesResponse.Payload<HealthQuote>) Mockito.mock(IncomingQuotesResponse.Payload.class);
+        com.ctm.web.health.model.form.HealthQuote healthQuote = Mockito.mock(com.ctm.web.health.model.form.HealthQuote.class);
+        when(healthQuote.getApplyDiscounts()).thenReturn("Y");
+        HealthCover cover = new HealthCover();
+        Insured insured = new Insured();
+        insured.setDob("01/01/2002");
+        cover.setPartner(insured);
+        cover.setPrimary(insured);
+        when(healthQuote.getHealthCover()).thenReturn(cover);
+        when(healthRequest.getQuote()).thenReturn(healthQuote);
+        HealthQuote quote = new HealthQuote();
+        quote.setAvailable(true);
+        quote.setPromotion(new Promotion());
+        quote.setPremium(null);
+        quote.setPaymentTypePremiums(new HashMap<>());
+        Map<PaymentType, Premium> altPremiums = new HashMap<>();
+        altPremiums.put(PaymentType.BANK, new Premium());
+        quote.setPaymentTypeAltPremiums(altPremiums);
+        JsonNode mockJson = Mockito.mock(JsonNode.class);
+        quote.setCustom(mockJson);
+        quote.setHospital(mockJson);
+        quote.setExtras(mockJson);
+        when(mockJson.has("hasSpecialFeatures")).thenReturn(true);
+        quote.setAmbulance(mockJson);
+        quote.setAccident(mockJson);
+        Info info = new Info();
+        Map<String, String> otherInfo = new HashMap<>();
+        info.setOtherInfoProperties(otherInfo);
+        quote.setInfo(info);
+        List<HealthQuote> quoteList = Collections.singletonList(quote);
+        when(payload.getQuotes()).thenReturn(quoteList);
+        when(healthResponseV2.getPayload()).thenReturn(payload);
+        Content content = Mockito.mock(Content.class);
+        when(content.getContentValue()).thenReturn("Y");
+        String brandCode = "CTM";
+        // When
+        ResponseAdapterModel response = ResponseAdapterV2.adapt(healthRequest, healthResponseV2, content, brandCode);
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getResults().size() );
+        assertEquals(AvailableType.Y, response.getResults().get(0).getAvailable());
+    }
+
+    @Test
+    public void testAdaptOnSingleQuoteWithPaymentTypePremiumNullPaymentAtlPremiums() {
+        // Given
+        HealthRequest healthRequest = Mockito.mock(HealthRequest.class);
+        HealthResponseV2 healthResponseV2 = Mockito.mock(HealthResponseV2.class);
+        IncomingQuotesResponse.Payload<HealthQuote> payload = (IncomingQuotesResponse.Payload<HealthQuote>) Mockito.mock(IncomingQuotesResponse.Payload.class);
+        com.ctm.web.health.model.form.HealthQuote healthQuote = Mockito.mock(com.ctm.web.health.model.form.HealthQuote.class);
+        when(healthQuote.getApplyDiscounts()).thenReturn("Y");
+        HealthCover cover = new HealthCover();
+        Insured insured = new Insured();
+        insured.setDob("01/01/2002");
+        cover.setPartner(insured);
+        cover.setPrimary(insured);
+        when(healthQuote.getHealthCover()).thenReturn(cover);
+        when(healthRequest.getQuote()).thenReturn(healthQuote);
+        HealthQuote quote = new HealthQuote();
+        quote.setAvailable(true);
+        quote.setPromotion(new Promotion());
+        quote.setPremium(null);
+        quote.setPaymentTypePremiums(new HashMap<>());
+        Map<PaymentType, Premium> altPremiums = new HashMap<>();
+        altPremiums.put(PaymentType.BANK, new Premium());
+        quote.setPaymentTypeAltPremiums(null);
+        JsonNode mockJson = Mockito.mock(JsonNode.class);
+        quote.setCustom(mockJson);
+        quote.setHospital(mockJson);
+        quote.setExtras(mockJson);
+        when(mockJson.has("hasSpecialFeatures")).thenReturn(true);
+        quote.setAmbulance(mockJson);
+        quote.setAccident(mockJson);
+        Info info = new Info();
+        Map<String, String> otherInfo = new HashMap<>();
+        info.setOtherInfoProperties(otherInfo);
+        quote.setInfo(info);
+        List<HealthQuote> quoteList = Collections.singletonList(quote);
+        when(payload.getQuotes()).thenReturn(quoteList);
+        when(healthResponseV2.getPayload()).thenReturn(payload);
+        Content content = Mockito.mock(Content.class);
+        when(content.getContentValue()).thenReturn("Y");
+        String brandCode = "CTM";
+        // When
+        ResponseAdapterModel response = ResponseAdapterV2.adapt(healthRequest, healthResponseV2, content, brandCode);
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getResults().size() );
+        assertEquals(AvailableType.Y, response.getResults().get(0).getAvailable());
     }
 }
