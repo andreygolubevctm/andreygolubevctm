@@ -39,6 +39,7 @@
             setupBenefitGroups();
             toggleWrapper(meerkat.modules.healthBenefitsCategorySelectHospital.getSelectedCategory());
             renderOptions();
+            initActiveOptions();
             if(isXS) {
                 renderShowHideToggles();
             }
@@ -104,6 +105,23 @@
         });
     }
 
+    function initActiveOptions() {
+        activeOptions = [];
+        var optionsStr = $elements.input.val();
+        if(!_.isEmpty(optionsStr) && optionsStr.length > 1) {
+            activeOptions = optionsStr.split(",");
+        }
+        for(var i=0; i < activeOptions.length; i++) {
+            var group = activeOptions[i];
+            var $option = $elements.options.find("[data-group=" + group + "]");
+            if ($option.length) {
+                var count = getBenefitsCountForGroup(group);
+                $option.toggleClass("active", true).find(".groupCount").html("&nbsp;(" + count + ")");
+            }
+        }
+        _.defer(toggleGroupLabels);
+    }
+
     function toggleWrapper(category) {
         if(category === "SPECIFIC_COVER") {
             $elements.wrapper.slideDown("fast");
@@ -134,6 +152,16 @@
         _.defer(toggleGroupLabels);
         meerkat.messaging.publish(moduleEvents.sortBenefits);
         meerkat.messaging.publish(moduleEvents.updateBenefitCounters);
+    }
+
+    function getBenefitsCountForGroup(group) {
+        var count = 0;
+        for(var i = 0; i < benefitGroups.length; i++){
+            if(benefitGroups[i].length > 0 && _.indexOf(benefitGroups[i], group) !== -1) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /**
