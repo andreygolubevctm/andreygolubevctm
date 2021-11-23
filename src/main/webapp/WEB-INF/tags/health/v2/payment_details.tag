@@ -54,6 +54,10 @@
 			<field_v2:array_select items="=Please choose..." xpath="${fieldXpath}" title="frequency of payments" required="true" delims="||" className="health-payment_details-frequency" />
 			<div class="fieldrow_legend lhcText"></div>
 		</form_v3:row>
+		<p class="red hidden" id="health_auf_fortnightly_payment_frequency_message"></p>
+		<simples:dialogue id="229" className="hidden" vertical="health" mandatory="true" />
+		<simples:dialogue id="230" className="hidden" vertical="health" mandatory="true" />
+		<simples:dialogue id="231" className="hidden" vertical="health" mandatory="true" />
 
 		<c:if test="${isDualPriceActive eq true}">
 			<div class="frequencyWarning simples-dialogue mandatory"></div>
