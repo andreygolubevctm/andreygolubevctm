@@ -7,7 +7,8 @@
             categoryGroupChangedExtras:   "EXTRAS_CATEGORY_GROUP_CHANGED",
 			categoryGroupChangedHospital: "HOSPITAL_CATEGORY_GROUP_CHANGED",
             manualBenefitSelection:       "BENEFIT_MANUALLY_SELECTED",
-			hardResetBenefits:            "HARD_RESET_BENEFITS"
+            hardResetBenefits:            "HARD_RESET_BENEFITS",
+            sortBenefits:                 "SORT_BENEFITS"
         },
         coverType = null,
         selectedCategory = null,
@@ -59,6 +60,7 @@
             $elements.buttons.find('label').each(function(){
                 $(this).addClass("no-width col-xs-6 col-sm-4 col-md-3 col-lg-2");
             });
+            intiSelectedCategory();
 
             eventSubscriptions();
             eventListeners();
@@ -70,6 +72,7 @@
             if(coverType) {
                 coverTypeToggled();
             }
+            meerkat.messaging.publish(moduleEvents.sortBenefits);
         });
     }
 
@@ -123,6 +126,12 @@
             $elements.inputs.filter('[value=' + selectedCategory + ']').prop('checked', true).parent().addClass('active');
         } else {
             meerkat.messaging.publish(moduleEvents.categoryGroupChangedExtras, {selectedCategory:selectedCategory});
+        }
+    }
+
+    function intiSelectedCategory() {
+        if($elements.inputs.filter(':checked').length === 1) {
+            selectedCategory = $elements.inputs.filter(':checked').val();
         }
     }
 

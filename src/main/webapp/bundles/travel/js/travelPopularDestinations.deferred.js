@@ -65,7 +65,7 @@
 			} else {
 				$elements.existInternationalTravel = $elements.existInternationalTravel - 1;
 			}
-			$('#DestinationReminder').toggleClass('hidden', !($elements.existDomesticTravel > 0 && $elements.existInternationalTravel > 0))
+			$('#DestinationReminder').toggleClass('hidden', !($elements.existDomesticTravel > 0 && $elements.existInternationalTravel > 0));
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.selectTags.SELECTED_TAG_ADDED, function onSelectedTagAdd(isoCode) {
@@ -75,7 +75,7 @@
 			} else {
 				$elements.existInternationalTravel = $elements.existInternationalTravel + 1;
 			}
-			$('#DestinationReminder').toggleClass('hidden', !($elements.existDomesticTravel > 0 && $elements.existInternationalTravel > 0))
+			$('#DestinationReminder').toggleClass('hidden', !($elements.existDomesticTravel > 0 && $elements.existInternationalTravel > 0));
 		});
 	}
 

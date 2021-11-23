@@ -28,6 +28,7 @@ var healthFunds_AUF = {
     <%--credit card & bank account frequency & day frequency--%>
     meerkat.modules.healthPaymentStep.overrideSettings('bank', { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });
     meerkat.modules.healthPaymentStep.overrideSettings('credit', {'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });
+    meerkat.modules.healthPaymentStep.overrideSettings('isAUF', true);
 
     <%--selections for payment date--%>
     meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':5, 'weekends':false });
@@ -79,6 +80,8 @@ var healthFunds_AUF = {
       meerkat.modules.healthFunds._dependants(false);
 
       meerkat.modules.healthFunds._previousfund_authority(false);
+
+    meerkat.modules.healthPaymentStep.resetSettings();
 
     <%--credit card options--%>
     meerkat.modules.healthCreditCard.resetConfig();

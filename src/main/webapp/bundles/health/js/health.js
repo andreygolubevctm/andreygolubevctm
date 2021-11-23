@@ -667,7 +667,8 @@
 							}
 						});
 
-						secondaryValidation = meerkat.modules.healthSplitTransaction.checkTLAuthorised();
+						secondaryValidation = meerkat.modules.healthSplitTransaction.checkTLAuthorised() &&
+							meerkat.modules.healthBestPricePromiseAuthorisation.checkTLAuthorised();
 					}
 
 					// Submits an HTTP request to InIn to stop VAGR call snipping if required then submits the application

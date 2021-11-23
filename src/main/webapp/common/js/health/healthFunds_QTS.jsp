@@ -18,7 +18,7 @@ var healthFunds_QTS = {
     $medicareLastname: $('#health_payment_medicare_surname'),
     set: function(){
         <%--Contact Point question--%>
-        meerkat.modules.healthFunds.showHowToSendInfo('QTS', true);
+        meerkat.modules.healthFunds.showHowToSendInfo('Qantas Insurance', true);
 
         <%-- Previous funds --%>
         $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr({'maxlength': '10'});

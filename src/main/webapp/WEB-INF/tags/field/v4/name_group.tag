@@ -26,7 +26,7 @@
     </form_v4:row>
     <c:if test="${showInitial eq true}">
         <c:set var="fieldXpath" value="${xpath}/middleName" />
-        <form_v4:row fieldXpath="${fieldXpath}" label="Middle Name" smRowOverride="2" isNestedField="${true}" className="nameGroupMiddleNameRow">
+        <form_v4:row fieldXpath="${fieldXpath}" label="Middle Initial" smRowOverride="2" isNestedField="${true}" className="nameGroupMiddleNameRow">
             <field_v1:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" className="contactField data-hj-suppress" placeholder="M" disableErrorContainer="${true}" />
         </form_v4:row>
     </c:if>
