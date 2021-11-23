@@ -38,6 +38,7 @@
         <form_v4:row fieldXpath="${fieldXpath}" label="How often would you like to make payments" className="changes-premium">
             <field_v2:array_select items="=Please choose..." xpath="${fieldXpath}" title="frequency of payments" required="true" delims="||" className="health-payment_details-frequency" />
             <div class="fieldrow_legend lhcText"></div>
+            <p class="red hidden" id="health_auf_fortnightly_payment_frequency_message"></p>
             <c:if test="${isDualPriceActive eq true}">
                 <div class="hidden frequencyWarning definition alert alert-info"></div>
             </c:if>
