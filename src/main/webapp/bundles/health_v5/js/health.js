@@ -267,14 +267,6 @@
                 touchComment: 'HLT benefi',
                 includeFormData: true
             },
-            validation: {
-                validate: true,
-                customValidation: function validateSelection(callback) {
-                    var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn();
-
-                    callback(areBenefitsSwitchOn);
-                }
-            },
             externalTracking: {
                 method: 'trackQuoteForms',
                 object: meerkat.modules.health.getTrackingFieldsObject
@@ -609,7 +601,7 @@
                     if(!product) {
                         return;
                     }
-                    
+
                     $('.next-steps-content').html(product.whatHappensNext);
                 }
             },
