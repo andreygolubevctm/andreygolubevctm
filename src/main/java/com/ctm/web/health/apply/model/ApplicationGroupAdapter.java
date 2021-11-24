@@ -157,7 +157,8 @@ public class ApplicationGroupAdapter {
                     createPreviousFund(
                             previousFund,
                             person.map(Person::getCover),
-                            situation.map(Situation::getCoverType)
+                            situation.map(Situation::getCoverType),
+                            insured.map(Insured::getHealthEverHeld)
                     ),
                     certifiedAgeEntry
                             .map(CertifiedAgeEntry::new)
@@ -229,7 +230,7 @@ public class ApplicationGroupAdapter {
         }
     }
 
-    protected static com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund createPreviousFund(Optional<Fund> previousFund, Optional<com.ctm.web.health.model.form.Cover> cover, Optional<String> purchaseType) {
+    protected static com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund createPreviousFund(Optional<Fund> previousFund, Optional<com.ctm.web.health.model.form.Cover> cover, Optional<String> purchaseType, Optional<String> healthEverHeld) {
         final HealthFund healthFund = previousFund.map(Fund::getFundName)
                 .map(HealthFund::findByCode)
                 .orElse(HealthFund.NONE);
@@ -254,7 +255,10 @@ public class ApplicationGroupAdapter {
                     // This attribute comes from the xpath "/health/application/{person}/cover/type" so that has to be passed
                     cover.map(com.ctm.web.health.model.form.Cover::getType)
                         .map(CoverType::fromCode) // Map the string to enum
-                        .orElse(null),
+                        .orElse(    // If the user was not prompted to select cover type
+                            healthEverHeld.map(CoverType::fromHealthEverHeld)   // Derive from 'healthEverHeld'
+                                .orElse(null)   // If all else fails, use a null (WILL THROW ERROR, this should never be reached)
+                        ),
 
                     // What is being cancelled on the previous fund, one of "C", "H", "E" or "N"
                     previousFund.map(Fund::getFundCancellationType) // Try getting the attribute from xpath "health/previousFund/{applicant}/fundCancellationType"

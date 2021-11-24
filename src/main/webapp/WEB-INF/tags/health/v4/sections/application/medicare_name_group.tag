@@ -14,17 +14,17 @@
     </form_v4:row>
 
     <c:set var="fieldXpath" value="${xpath}/firstName" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="First Name" smRowOverride="4" isNestedField="${true}">
+    <form_v4:row fieldXpath="${fieldXpath}" label="First Name" smRowOverride="4" isNestedField="${true}" className="hidden">
         <field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField health-medicare_details-first_name hidden" placeholder="First name" maxlength="24" additionalAttributes="data-validation-position='append' " disableErrorContainer="${false}" />
     </form_v4:row>
     <c:if test="${showInitial eq true}">
         <c:set var="fieldXpath" value="${xpath}/middleName" />
-        <form_v4:row fieldXpath="${fieldXpath}" label="Middle Name" smRowOverride="2" isNestedField="${true}">
+        <form_v4:row fieldXpath="${fieldXpath}" label="Middle Name" smRowOverride="2" isNestedField="${true}" className="hidden">
             <field_v1:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" className="contactField hidden" placeholder="M" maxlength="1" disableErrorContainer="${true}" />
         </form_v4:row>
     </c:if>
     <c:set var="fieldXpath" value="${xpath}/surname" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Last Name" smRowOverride="4" isNestedField="${true}">
+    <form_v4:row fieldXpath="${fieldXpath}" label="Last Name" smRowOverride="4" isNestedField="${true}" className="hidden">
         <field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField hidden" placeholder="Last name" additionalAttributes="data-rule-medicareLastName='true' data-validation-position='append' " disableErrorContainer="${false}" />
     </form_v4:row>
 </form_v4:row>

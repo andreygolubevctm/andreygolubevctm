@@ -68,7 +68,7 @@ public class HealthModelTranslator implements EmailTranslator {
     @Override
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException {
         List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName", NUM_RESULTS);
-        List<String> premiumLabel = EmailUtils.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_premiumText", NUM_RESULTS));
+        List<String> premiumLabel = emailUtils.buildParameterList(request, "rank_premiumText", NUM_RESULTS);
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider", NUM_RESULTS);
         List<String> premium = emailUtils.buildParameterList(request, "rank_premium", NUM_RESULTS);
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/health/");
@@ -96,7 +96,7 @@ public class HealthModelTranslator implements EmailTranslator {
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
 
         List<String> altPremium = emailUtils.buildParameterList(request, "rank_altPremium", NUM_RESULTS);
-        List<String> altPremiumLabel = EmailUtils.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_altPremiumText", NUM_RESULTS));
+        List<String> altPremiumLabel = emailUtils.buildParameterList(request, "rank_altPremiumText", NUM_RESULTS);
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
         healthEmailModel.setBenefitCodes(benefitCodes);

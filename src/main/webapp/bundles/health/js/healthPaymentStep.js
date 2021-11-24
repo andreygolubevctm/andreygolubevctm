@@ -20,6 +20,12 @@
 	var $frequencySelect;
 	var $bankAccountDetailsRadioGroup;
 	var $sameBankAccountRadioGroup;
+	var $bppEligible;
+	var $bppPolicy;
+	var $bppOfferNotEligible;
+	var $bppDialogue232;
+	var $bppHealthAuthorisationRow;
+	var $bppTeamLeaderValidationGroup;
 
 	var settings = {
 		bank: [],
@@ -30,7 +36,8 @@
 		minStartDateOffset: 0,
 		maxStartDateOffset: 90,
 		minStartDate: '',
-		maxStartDate: ''
+		maxStartDate: '',
+		isAUF: false
 	};
 
 	var currentCoupon = false,
@@ -88,6 +95,7 @@
 						updatePaymentPremium();
 						updatePaymentDayOptions();
 					});
+					toggleSimplesCreditCardScript();
 				});
 			});
 
@@ -96,6 +104,7 @@
 			$frequencySelect.on('change', function updateSidebarQuote(){
 				updateProductFrequency();
 				updatePaymentDayOptions();
+				toggleSimplesCreditCardScript();
 			});
 
 			meerkat.modules.healthCreditCard.setCreditCardRules();
@@ -140,6 +149,37 @@
 			// Set Dom state
 			$paymentContainer.hide();
 
+			$bppEligible.on('change', function(){
+				if($(this).val() === 'Y') {
+					$bppPolicy.toggleClass('hidden', false);
+					$bppOfferNotEligible.toggleClass('hidden', true);
+					var showBppTeamLeaderValidationGroup =
+						$bppPolicy.first().find('input#health_price_promise_bppPolicyStart_Y').is(':checked') &&
+						$bppPolicy.first().find('input#health_price_promise_bppPolicyStart_N').is(':unchecked');
+					var showBppOfferNotEligible = $bppPolicy.first().find('input#health_price_promise_bppPolicyStart_N').is(':checked');
+					$bppTeamLeaderValidationGroup.toggleClass('hidden', !showBppTeamLeaderValidationGroup);
+					$bppOfferNotEligible.toggleClass('hidden', !showBppOfferNotEligible);
+					$bppDialogue232.toggleClass('hidden', !showBppTeamLeaderValidationGroup);
+				} else {
+					$bppPolicy.toggleClass('hidden', true);
+					$bppOfferNotEligible.toggleClass('hidden', false);
+					$bppTeamLeaderValidationGroup.toggleClass('hidden', true);
+					$bppDialogue232.toggleClass('hidden', true);
+				}
+			});
+
+			$bppPolicy.first().find('input').on('change', function(){
+				if($(this).val() === 'Y') {
+					$bppDialogue232.toggleClass('hidden', false);
+					$bppOfferNotEligible.toggleClass('hidden', true);
+					$bppTeamLeaderValidationGroup.toggleClass('hidden', false);
+				} else {
+					$bppDialogue232.toggleClass('hidden', true);
+					$bppOfferNotEligible.toggleClass('hidden', false);
+					$bppTeamLeaderValidationGroup.toggleClass('hidden', true);
+				}
+			});
+
 		});
 	}
 
@@ -154,6 +194,12 @@
 		$paymentCalendar = $('#health_payment_details_start');
 		$pricePromiseMentioned = $('#health_price_promise_mentioned');
         $pricePromisePromotionRow = $('.healthPricePromisePromotionRow');
+		$bppEligible = $('#paymentForm .bppEligibilityQuestion').first().find('input');
+		$bppPolicy =   $('#paymentForm .bppPolicyStartDateQuestion');
+		$bppOfferNotEligible = $('#paymentForm .offerNotBppEligible');
+		$bppDialogue232 = $('#paymentForm .pricePromisePromotionFormDialogue');
+		$bppHealthAuthorisationRow = $('#paymentForm .healthBPPAuthorisationRow');
+		$bppTeamLeaderValidationGroup = $('#paymentForm #bppAuthorisationGroup');
 
 		// Containers
 		$paymentContainer = $(".update-content");
@@ -172,6 +218,7 @@
 		settings.frequency = { 'weekly':27, 'fortnightly':31, 'monthly':27, 'quarterly':27, 'halfyearly':27, 'annually':27 };
 		settings.creditBankSupply = false;
 		settings.creditBankQuestions = false;
+		settings.isAUF = false;
 
 		meerkat.modules.healthCreditCard.resetConfig();
 
@@ -420,6 +467,14 @@
 				setDefaultFields();
 			});
 		});
+	}
+
+	function toggleSimplesCreditCardScript() {
+		if(meerkat.site.isCallCentreUser && settings.isAUF && getSelectedPaymentMethod() === 'cc') {
+			$('.simples-dialogue-29').hide();
+		} else {
+			$('.simples-dialogue-29').show();
+		}
 	}
 
 	function togglePaymentGroups() {
@@ -693,7 +748,8 @@
 		setCoverStartDaysOfWeekDisabled: setCoverStartDaysOfWeekDisabled,
         getCoverStartVal: getCoverStartVal,
 		setCoverStartValues: setCoverStartValues,
-        toggleCouponSeenText: toggleCouponSeenText
+        toggleCouponSeenText: toggleCouponSeenText,
+		resetSettings: resetSettings
 	});
 
 })(jQuery);

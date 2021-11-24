@@ -104,7 +104,8 @@
                                             </div>
                                         </div>
                                     </c:set>
-                                    <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false"
+                                    <c:set var="formatedXpath" value="${fn:replace(selectedValue.getShortlistKey(), '_','/')}" />
+                                    <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${formatedXpath}" value="Y" required="false"
                                                 label="true" title="${benefitLabel}" errorMsg="Please tick"
                                                 customAttribute=" data-attach=true data-benefit-id='${selectedValue.getId()}' data-benefit-code='${selectedValue.getShortlistKey()}' " additionalLabelAttributes="${analyticsLabelAttr}"
                                                 additionalHelpAttributes="${analyticsHelpAttr}" />

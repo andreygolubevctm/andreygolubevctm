@@ -68,7 +68,7 @@
                 <div class="premium-LHC-text lhcText">
                     {{ if (lhtText && isDualPricingActive) { }}
                         <span>
-                            {{= 'The premiums above may be affected by LHC.' }}
+                            {{= 'LHC loading may increase the premium.' }}
                         </span>
                     {{ } }}
                 </div>
