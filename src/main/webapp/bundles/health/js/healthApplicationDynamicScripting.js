@@ -251,11 +251,7 @@
                         return '';
                     }
 
-                    if (_selectedProductFundCode === 'NIB' || _selectedProductFundCode === 'BUP') {
-                        return ', middle initial ' + natoPhoneticText(_derivedData.partner.middleInitial);
-                    } else {
-                        return '';
-                    }
+                    return ', middle initial ' + natoPhoneticText(_derivedData.partner.middleInitial);
                 }
             },
             {
@@ -572,11 +568,7 @@
 
             $fields.partner.title.on('change.dynamicScriptingPartnerTitle', dynamicScriptingPartnerTitleUpdated);
             $fields.partner.firstName.on('change.dynamicScriptingPartnerFirstName', dynamicScriptingPartnerNameDtlsUpdated);
-
-            if (_selectedProductFundCode === 'NIB' || _selectedProductFundCode === 'BUP') {
-                $fields.partner.middleName.on('change.dynamicScriptingPartnerMiddleName', dynamicScriptingPartnerNameDtlsUpdated);
-            }
-
+            $fields.partner.middleName.on('change.dynamicScriptingPartnerMiddleName', dynamicScriptingPartnerNameDtlsUpdated);
             $fields.partner.surname.on('change.dynamicScriptingPartnerSurname', dynamicScriptingPartnerNameDtlsUpdated);
             $fields.partner.gender.on('change.dynamicScriptingPartnerGender', dynamicScriptingPartnerGenderUpdated);
 
@@ -1485,11 +1477,7 @@
                 $fields.medicare.number.off('change.dynamicScriptingMedicarePosition');
                 $fields.partner.title.off('change.dynamicScriptingPartnerTitle');
                 $fields.partner.firstName.off('change.dynamicScriptingPartnerFirstName');
-
-                if (_selectedProductFundCode === 'NIB' || _selectedProductFundCode === 'BUP') {
-                    $fields.partner.middleName.off('change.dynamicScriptingPartnerMiddleName');
-                }
-
+                $fields.partner.middleName.off('change.dynamicScriptingPartnerMiddleName');
                 $fields.partner.surname.off('change.dynamicScriptingPartnerSurname');
                 $fields.partner.dob.off('change.dynamicScriptingPartnerDob');
                 $fields.partner.gender.off('change.dynamicScriptingPartnerGender');
