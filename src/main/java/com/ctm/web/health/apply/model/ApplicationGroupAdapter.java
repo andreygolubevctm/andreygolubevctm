@@ -127,6 +127,12 @@ public class ApplicationGroupAdapter {
 
     protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund, Optional<Integer> certifiedAgeEntry, Optional<Insured> insured, Emigrate emigrate,Optional<Integer> lhcPercentage, Optional<Situation> situation) {
         if (person.isPresent()) {
+            //for Simples apply
+            Optional<String> healthEverHeld = insured.map(Insured::getHealthEverHeld);
+            if (!healthEverHeld.isPresent()) {
+                //for Online apply
+                healthEverHeld = person.map(Person::getEverHadCoverPrivateHospital1);
+            }
             return new Applicant(
                     person.map(Person::getTitle)
                             .map(Title::findByCode)
@@ -158,7 +164,7 @@ public class ApplicationGroupAdapter {
                             previousFund,
                             person.map(Person::getCover),
                             situation.map(Situation::getCoverType),
-                            insured.map(Insured::getHealthEverHeld)
+                            healthEverHeld
                     ),
                     certifiedAgeEntry
                             .map(CertifiedAgeEntry::new)
