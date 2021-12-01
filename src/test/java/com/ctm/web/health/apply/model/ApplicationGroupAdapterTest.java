@@ -21,6 +21,7 @@ import com.ctm.web.health.model.form.Insured;
 import com.ctm.web.health.model.form.Person;
 import com.ctm.web.health.model.form.Qch;
 import org.junit.Test;
+import org.opensaml.xml.signature.P;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -139,6 +140,52 @@ public class ApplicationGroupAdapterTest {
         verify(insured, times(1)).getEverHadCover();
         verify(person, times(1)).getAuthority();
 
+    }
+
+    @Test
+    public void testCreateApplicantWithPreviousCoverOnline() {
+        final Person person = new Person();
+        person.setEverHadCoverPrivateHospital1("Y");
+        person.setEmail("test@test.com");
+        person.setAuthority("Y");
+        final Fund previousFund = mock(Fund.class);
+        final Integer certifiedAge = 1;
+        final Insured insured = mock(Insured.class);
+        final Integer lhcPercentage = 8;
+        final com.ctm.web.health.model.form.Situation situation = mock(com.ctm.web.health.model.form.Situation.class);
+
+        when(insured.getEverHadCover()).thenReturn("N");
+        when(previousFund.getMemberID()).thenReturn("123456");
+        when(previousFund.getFundName()).thenReturn("NAB");
+
+        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
+                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation));
+        assertNotNull(applicant);
+        assertEquals(EverHadCover.N, applicant.getHealthCover().getEverHadCover());
+        assertNotNull(applicant.getHealthCover());
+        assertEquals(CoverType.HOSPITAL, applicant.getPreviousFund().getCoverType().get());
+    }
+
+    @Test
+    public void testCreateApplicantWithPreviousCoverSimples() {
+        final Person person = mock(Person.class);
+        final Fund previousFund = mock(Fund.class);
+        final Integer certifiedAge = 1;
+        final Insured insured = mock(Insured.class);
+        final Integer lhcPercentage = 8;
+        final com.ctm.web.health.model.form.Situation situation = mock(com.ctm.web.health.model.form.Situation.class);
+
+        when(insured.getEverHadCover()).thenReturn("N");
+        when(insured.getHealthEverHeld()).thenReturn("Y");
+        when(previousFund.getMemberID()).thenReturn("123456");
+        when(previousFund.getFundName()).thenReturn("NAB");
+
+        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
+                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation));
+        assertNotNull(applicant);
+        assertEquals(EverHadCover.N, applicant.getHealthCover().getEverHadCover());
+        assertNotNull(applicant.getHealthCover());
+        assertEquals(CoverType.HOSPITAL, applicant.getPreviousFund().getCoverType().get());
     }
 
     @Test
