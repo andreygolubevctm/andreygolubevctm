@@ -18,6 +18,9 @@ public class Person {
 
     private Cover cover;
 
+    private String everHadCoverPrivateHospital1;
+
+
     public String getTitle() {
         return title;
     }
@@ -77,4 +80,13 @@ public class Person {
     public Cover getCover() { return this.cover; }
 
     public void setCover(Cover cover) { this.cover = cover; }
+
+    public String getEverHadCoverPrivateHospital1() {
+        return everHadCoverPrivateHospital1;
+    }
+
+    public void setEverHadCoverPrivateHospital1(String everHadCoverPrivateHospital1) {
+        this.everHadCoverPrivateHospital1 = everHadCoverPrivateHospital1;
+    }
+
 }
