@@ -122,11 +122,11 @@
 
                     var returnStr = '';
                     if (_derivedData.mobileNumber && _derivedData.otherNumber) {
-                        returnStr = 'And your mobile is ' + _derivedData.mobileNumber + ' and your land line is ' + _derivedData.otherNumber + '.  Is that correct?';
+                        returnStr = 'And your mobile is ' + _derivedData.mobileNumber + ' and your land line is ' + _derivedData.otherNumber + '.  Is that right?';
                     } else if (_derivedData.mobileNumber) {
-                        returnStr = 'And your mobile is ' + _derivedData.mobileNumber + '.  Is that correct?';
+                        returnStr = 'And your mobile is ' + _derivedData.mobileNumber + '.  Is that right?';
                     } else if (_derivedData.otherNumber) {
-                        returnStr = 'And your land line is ' + _derivedData.otherNumber + '.  Is that correct?';
+                        returnStr = 'And your land line is ' + _derivedData.otherNumber + '.  Is that right?';
                     } else {
                         returnStr = 'Please provide at least one phone number';
                     }
@@ -653,15 +653,9 @@
             if (updateBoth && !isTitleTriggeringChange) {
                 performUpdatePrimaryDataDynamicDialogueBoxes();
             }
-            if (updateGender) {
-                performUpdatePrimaryGenderDynamicDialogueBoxes();
-            }
         } else if (person === 'partner')  {
             if (updateBoth && !isTitleTriggeringChange) {
                 performUpdatePartnerDataDynamicDialogueBoxes();
-            }
-            if (updateGender) {
-                performUpdatePartnerGenderDynamicDialogueBoxes();
             }
         }
 
@@ -1104,7 +1098,6 @@
 
         _derivedData = _getTemplateData();
         performUpdatePrimaryDataDynamicDialogueBoxes();
-        performUpdatePrimaryGenderDynamicDialogueBoxes();
         performUpdatePrimaryDOBDynamicDialogueBox();
         performUpdateResidentialDynamicDialogueBox();
         performUpdatePostalDynamicDialogueBox();
@@ -1112,7 +1105,6 @@
         performUpdatePrimaryEmailDynamicDialogueBox();
         performUpdateMedicareDynamicDialogueBox();
         performUpdatePartnerDataDynamicDialogueBoxes();
-        performUpdatePartnerGenderDynamicDialogueBoxes();
         performUpdatePartnerDOBDynamicDialogueBox();
         performUpdateDependantsDynamicDialogueBox();
 

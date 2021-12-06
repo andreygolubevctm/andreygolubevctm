@@ -48,7 +48,7 @@ var healthFunds_MYO = {
                         <div class="checkbox-custom simples_dialogue-checkbox-164 checkbox">
                             <input type="checkbox" name="health_simples_dialogue-checkbox-164" id="health_simples_dialogue-checkbox-164" class="checkbox-custom  checkbox" value="Y" required="" data-msg-required="Please confirm each mandatory dialog has been read to the client" aria-required="true">
 
-                                <label for="health_simples_dialogue-checkbox-164">Your partner&apos;s email address is %PARTNER_EMAIL_ADDRESS_PHONETIC% is that correct?</label>
+                                <label class="red" for="health_simples_dialogue-checkbox-164">Your partner&apos;s email address is %PARTNER_EMAIL_ADDRESS_PHONETIC% is that right?</label>
                         </div>
                     </div>
                 </div>
