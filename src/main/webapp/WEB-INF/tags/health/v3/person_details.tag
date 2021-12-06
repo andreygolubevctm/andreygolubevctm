@@ -22,25 +22,14 @@
 <%-- HTML --%>
 <div class="health-person-details-${id} health-person-details ${id}">
 
-		<c:choose>
-			<c:when test="${id eq 'partner'}">
-				<simples:dialogue id="159" vertical="health" mandatory="true"  className="simplesDynamicElements" />
-			</c:when>
-			<c:otherwise>
-				<simples:dialogue id="145" vertical="health" mandatory="true"  className="simplesDynamicElements" />
-			</c:otherwise>
-		</c:choose>
+		<c:if test="${id eq 'partner'}">
+			<simples:dialogue id="159" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+			<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" middleInitialMaxlength="1" label="Name as it appears on Medicare Card" className="no-label" />
+		</c:if>
 
-		<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" middleInitialMaxlength="1" label="Name as it appears on Medicare Card" className="no-label" />
-
-		<c:choose>
-			<c:when test="${id eq 'partner'}">
-				<simples:dialogue id="160" vertical="health" mandatory="true"  className="simplesDynamicElements" />
-			</c:when>
-			<c:otherwise>
-				<simples:dialogue id="146" vertical="health" mandatory="true"  className="simplesDynamicElements" />
-			</c:otherwise>
-		</c:choose>
+		<c:if test="${id eq 'partner'}">
+			<simples:dialogue id="160" vertical="health" mandatory="true"  className="simplesDynamicElements" />
+		</c:if>
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium no-label">
@@ -69,15 +58,6 @@
 		<form_v2:row fieldXpath="${fieldXpath}" label="Gender" id="${name}_genderRow" smRowOverride="5" className="no-label">
 			<field_v2:array_radio id="${name}_gender" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" disableErrorContainer="${true}" />
 		</form_v2:row>
-
-		<c:choose>
-			<c:when test="${id eq 'partner'}">
-				<simples:dialogue id="163" vertical="health" mandatory="true"  className="simplesDynamicElements" />
-			</c:when>
-			<c:otherwise>
-				<simples:dialogue id="149" vertical="health" mandatory="true"  className="simplesDynamicElements" />
-			</c:otherwise>
-		</c:choose>
 
 		<c:if test="${id == 'partner'}">
 			<c:set var="fieldXpath" value="${xpath}/authority" />
