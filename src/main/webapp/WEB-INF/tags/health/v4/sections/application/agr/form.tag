@@ -31,7 +31,7 @@
 
 
     <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/application/agr/entitledToMedicare" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Are all the people on the policy listed on a Medicare card or entitled to a Medicare card?" id=""
+    <form_v4:row fieldXpath="${fieldXpath}" label="Are all the people on the policy eligible for Medicare?" id=""
                  className="required_input">
         <field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="" required="true" id="" />
 
