@@ -164,28 +164,7 @@
             _toggleUnitShopRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', !_.isEmpty(this.value));
         });
 
-        // Show Check format message on name fields when field isn't in 'Proper case'
-        $personName.on('change', function() {
-            var value = $(this).val(),
-                showCheckFormat = false,
-                i = 1,
-                character = '',
-                $checkFormat = $(this).parent().find('.person-name-check-format');
-
-            if (!_.isEmpty(value)) {
-                for (i = 1; i < value.length; i++) {
-                    character = value.charAt(i);
-
-                    if (character === character.toUpperCase()) {
-                        showCheckFormat = true;
-                    }
-                }
-
-                $checkFormat.toggleClass('hidden', showCheckFormat === false);
-            } else {
-                $checkFormat.addClass('hidden');
-            }
-        });
+        initCapitalisationChecks();
 
         $primaryName.first.on('blur.apply', function(){
             $primaryName.medicare.first.val($primaryName.first.val());
@@ -211,6 +190,34 @@
             input.val(value);
         });
 
+        meerkat.messaging.subscribe(meerkat.modules.events.healthDependants.DEPENDANTS_RENDERED, initCapitalisationChecks);
+    }
+
+    function initCapitalisationChecks() {
+
+        // Show "Check Capitalisation" message when value fails validation
+        $('.check-capitalisation').off('change.capitalisationCheck')
+        .on('change.capitalisationCheck', function checkCapitalisation() {
+            var $that = $(this),
+                value = $.trim($that.val()),
+                showCheckCapitalisation = false,
+                $checkCapitalisation = $that.parent().find('.person-name-check-format'),
+                utils = meerkat.modules.stringUtils;
+
+            if (!_.isEmpty(value)) {
+                if ($that.hasClass('expect-sentence-case')) {
+                    showCheckCapitalisation = utils.hasMultipleUppercase(value) || utils.startsWithLowercase(value);
+                } else if ($that.hasClass('expect-title-case')) {
+                    showCheckCapitalisation = utils.hasWordsStartingLowercase(value) || utils.isAllUppercase() || utils.hasWordsWithMultipleUppercase(value);
+                } else {
+                    // do nothing;
+                }
+            } else {
+                // do nothing
+            }
+
+            $checkCapitalisation.toggleClass('hidden', showCheckCapitalisation === false);
+        });
     }
 
     function _changeStreetNoLabel(unitType) {
@@ -253,7 +260,8 @@
     meerkat.modules.register('healthApplyStep', {
         init: init,
         onBeforeEnter: onBeforeEnter,
-        onInitialise: onInitialise
+        onInitialise: onInitialise,
+        initCapitalisationChecks: initCapitalisationChecks
     });
 
 })(jQuery);

@@ -95,7 +95,8 @@
 	</c:choose>
 	<c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Street Name" className="${name}_nonStd_street" smRowOverride="5" hideHelpIconCol="${true}" renderLabelAsSimplesDialog="${renderLabelAsSimplesDialog}">
-		<field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" placeHolder="Enter street name e.g. Smith Street" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} data-rule-regex='[a-zA-Z0-9 ]+' data-msg-regex='Street name may only contain letters and numbers' data-validation-position='append' " disableErrorContainer="${false}" maxlength="32" />
+		<health_v3:check_name_capitalisation />
+		<field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude check-capitalisation expect-title-case" placeHolder="Enter street name e.g. Smith Street" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} data-rule-regex='[a-zA-Z0-9 ]+' data-msg-regex='Street name may only contain letters and numbers' data-validation-position='append' " disableErrorContainer="${false}" maxlength="32" />
 	</form_v2:row>
 </div>
 
