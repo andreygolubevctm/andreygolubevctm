@@ -19,6 +19,7 @@
     "shared/currency",
     "shared/currencyUtils",
     "shared/dateUtils",
+    "shared/stringUtils",
     "shared/age",
     "shared/datepicker",
     "shared/commencementDate",

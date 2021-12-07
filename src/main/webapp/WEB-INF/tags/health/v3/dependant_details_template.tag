@@ -38,14 +38,16 @@
 
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/firstName"/>
                 <form_v2:row fieldXpath="${fieldXpath}" label="First Name" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}">
-                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s first name" required="true" className="sessioncamexclude"
+                    <health_v3:check_name_capitalisation />
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s first name" required="true" className="sessioncamexclude check-capitalisation expect-sentence-case"
                                     additionalAttributes=" data-rule-personName='true' " defaultValue="{{= obj.firstName }}" placeHolder="First name" disableErrorContainer="${true}" maxlength="24" />
                 </form_v2:row>
 
                 {{ if(providerConfig.showMiddleName === true) { }}
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/middleName"/>
                 <form_v2:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_dependant_details_middleName" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}">
-                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s middle name" required="false" className="sessioncamexclude"
+                    <health_v3:check_name_capitalisation />
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s middle name" required="false" className="sessioncamexclude check-capitalisation expect-sentence-case"
                                     additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.middleName }}" disableErrorContainer="${true}" />
                 </form_v2:row>
                 {{ } }}
@@ -53,7 +55,8 @@
 
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/lastname"/>
                 <form_v2:row fieldXpath="${fieldXpath}" label="Last Name" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}">
-                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s last name" required="true" className="sessioncamexclude"
+                    <health_v3:check_name_capitalisation />
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s last name" required="true" className="sessioncamexclude check-capitalisation expect-sentence-case"
                                     additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.lastname }}" placeHolder="Last name" disableErrorContainer="${true}" maxlength="20" />
                 </form_v2:row>
 
