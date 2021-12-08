@@ -5,15 +5,13 @@
         _mustShowList = [
             "gmhba",
             "frank",
-            "budget direct",
             "bupa",
             "hif",
-            "qchf",
-            "navy health",
             "tuh",
             "myown",
             "nib",
-            "qantas"
+            "qantas insurance",
+            "union health"
         ];
 
     function initHealthMedicare() {
