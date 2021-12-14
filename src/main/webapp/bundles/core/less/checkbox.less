@@ -12,7 +12,6 @@
 			position: relative;
 			display: block;
 			/* Use the icon-tick from CTM icon font */
-			.icon-tick;
 			font-size:0.86em;
 			line-height: 1.1em;
 			padding-top:6px;
@@ -20,6 +19,7 @@
 
 		& + label:before {
 			.user-select(none);
+			content: "\e947";
 			border-radius: @border-radius-base;
 			/* By default, apply the success theme */
 			border: 1px solid @input-border;
@@ -63,6 +63,7 @@
 			& + label:before {
 				background-color: @form-input-common-selected-bg-colour;
 				border-color: @form-input-common-selected-bg-colour;
+				content: "\e600";
 			}
 		}
 
