@@ -52,12 +52,12 @@
   .@{class}.checkbox label {
     & when not (@labelClass = '') {
       .@{labelClass}:before {
-        content: @content;
+        content: @content!important;
       }
     }
     & when (@labelClass = '') {
       &:before {
-        content: @content;
+        content: @content!important;
       }
     }
   }
