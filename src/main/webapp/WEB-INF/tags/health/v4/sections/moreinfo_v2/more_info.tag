@@ -96,7 +96,7 @@
 			<div class="col-xs-12 col-sm-8 col-md-9">
 				<health_v4:switching_accordion id="more_info_switching_accordion"/>
 			</div>
-			<div class="moreInfoTopLeftColumn_v2 Hospital_container">
+			<div class="col-xs-12 col-sm-8 col-md-9 moreInfoTopLeftColumn_v2 Hospital_container">
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">
 					<div class="row">
