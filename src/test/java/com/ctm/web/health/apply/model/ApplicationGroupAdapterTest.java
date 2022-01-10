@@ -116,7 +116,7 @@ public class ApplicationGroupAdapterTest {
         final Insured insured = mock(Insured.class);
         final Integer lhcPercentage = 8;
         final com.ctm.web.health.model.form.Situation situation = mock(com.ctm.web.health.model.form.Situation.class);
-
+        when(insured.getCover()).thenReturn("N");
         when(insured.getEverHadCover()).thenReturn("Y");
 
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
@@ -135,7 +135,7 @@ public class ApplicationGroupAdapterTest {
         verify(person, times(1)).getGender();
         verify(person, times(1)).getDob();
         verify(person, times(1)).getCover();
-        verify(insured, times(1)).getCover();
+        verify(insured, times(2)).getCover();
         verify(insured, times(1)).getHealthCoverLoading();
         verify(insured, times(1)).getEverHadCover();
         verify(person, times(1)).getAuthority();
@@ -157,6 +157,7 @@ public class ApplicationGroupAdapterTest {
         when(insured.getEverHadCover()).thenReturn("N");
         when(previousFund.getMemberID()).thenReturn("123456");
         when(previousFund.getFundName()).thenReturn("NAB");
+        when(insured.getCover()).thenReturn("N");
 
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
                 Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation));
@@ -179,6 +180,7 @@ public class ApplicationGroupAdapterTest {
         when(insured.getHealthEverHeld()).thenReturn("Y");
         when(previousFund.getMemberID()).thenReturn("123456");
         when(previousFund.getFundName()).thenReturn("NAB");
+        when(insured.getCover()).thenReturn("N");
 
         final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
                 Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation));
@@ -216,7 +218,9 @@ public class ApplicationGroupAdapterTest {
     public void testPreviousFund() throws Exception {
         final Fund fund = mock(Fund.class);
         when(fund.getFundName()).thenReturn("BUPA");
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.empty());
+        final Insured insured = mock(Insured.class);
+        when(insured.getCover()).thenReturn("Y");
+        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.of(insured));
         assertNotNull(previousFund);
         verify(fund, times(1)).getFundName();
         verify(fund, times(1)).getMemberID();
@@ -227,7 +231,9 @@ public class ApplicationGroupAdapterTest {
         final Fund fund = mock(Fund.class);
         when(fund.getFundName()).thenReturn("UHF");
         final HealthFund healthFund = HealthFund.UHF;
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.empty());
+        final Insured insured = mock(Insured.class);
+        when(insured.getCover()).thenReturn("Y");
+        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.of(insured));
         assertNotNull(previousFund);
         verify(fund, times(1)).getFundName();
         verify(fund, times(1)).getMemberID();
@@ -244,9 +250,12 @@ public class ApplicationGroupAdapterTest {
         // Instantiate the cover form, again making sure it has a cover type of "C"
         final Cover cover = new Cover();
         cover.setType("C");
-
+        final Person person = mock(Person.class);
+        final Insured insured = mock(Insured.class);
+        when(insured.getCover()).thenReturn("Y");
+        when(person.getCover()).thenReturn(cover);
         // Try creating the previousFund object
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.ofNullable(cover), Optional.empty(), Optional.ofNullable("Y"));
+        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.of(person), Optional.empty(), Optional.of(insured));
         assertNotNull(previousFund);    // Fail if it's null
 
         // Check the previous fund's cancellation option and cover type properties
