@@ -11,6 +11,25 @@
 				}
 			},
 			{
+				text: '%DYNAMIC_BENEFITS_INTRO_TEXT%',
+				get: function (product) {
+					var healthSituationCoverText = "";
+					var $healthSitCoverType = $('#health_situation_coverType');
+					switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
+						case 'c':
+							healthSituationCoverText = "So what I'll do now is go through your hospital cover and show you exactly where you’ll be able to get the most benefit from it, then your extras and explain how they work. If you have any questions along the way please let me know and I'll be more than happy to answer them for you." ;
+							break;
+						case 'h':
+							healthSituationCoverText = "So what I'll do now is go through your hospital cover and show you exactly where you’ll be able to get the most benefit from it. If you have any questions along the way please let me know and I'll be more than happy to answer them for you.";
+							break;
+						case 'e':
+							healthSituationCoverText = "So what I'll do now is go through your extras cover and show you exactly where you’ll be able to get the most benefit from it. If you have any questions along the way please let me know and I'll be more than happy to answer them for you.";
+							break;
+					}
+					return healthSituationCoverText;
+				}
+			},
+			{
 				text: '%DYNAMIC_HOSPITALBENEFITS%',
 				get: function (product) {
 					var productBenefits = {};
@@ -18,6 +37,7 @@
 					var selectedClinicalBenefits = _getSelectedClinicalBenefits();
 					var list = [];
 					var productBenefit;
+
 					if (selectedBenefits && selectedBenefits.length || selectedClinicalBenefits && selectedClinicalBenefits.length) {
 						var prefix = "So, starting with the hospital this policy's a great fit because it covers ";
 						list = [];
@@ -40,7 +60,7 @@
 						var listTextBenefits = ['Brain and Nervous system', 'Kidney and bladder', 'Digestive system'];
 						var listTextBenefitsCovered = _allCopyBenefitsAreCovered(product.custom.reform.tab1.benefits, listTextBenefits);
 						if(listTextBenefitsCovered) {
-							return "A number of clinical categories like Brain and Nervous System, Kidney and Bladder and Digestive System, just to name a few";
+							return "A number of clinical categories like Brain and Nervous System, Kidney and Bladder and Digestive System, just to name a few.";
 						} else {
 							list = [];
 							productBenefits = product.custom.reform.tab1.benefits;

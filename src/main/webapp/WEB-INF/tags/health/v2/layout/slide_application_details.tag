@@ -16,7 +16,6 @@
 			<simples:dialogue id="84" vertical="health" />
 			<simples:dialogue id="71" vertical="health" />
 
-			<simples:dialogue id="166" vertical="health"  />
 
 			<form  id="applicationForm_3" autocomplete="off" class="form-horizontal" role="form">
 					<simples:dialogue id="145" vertical="health" mandatory="true"  className="simplesDynamicElements" />

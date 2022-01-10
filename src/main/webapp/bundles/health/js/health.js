@@ -551,7 +551,7 @@
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["gmhba","frank","budget direct","bupa","hif","qchf","navy health","tuh","myown","nib", "qantas"];
+					var mustShowList = ["gmhba","frank","bupa","hif","tuh","myown","nib", "qantas insurance","union health"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName.toLowerCase(), mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
