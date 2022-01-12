@@ -127,12 +127,6 @@ public class ApplicationGroupAdapter {
 
     protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund, Optional<Integer> certifiedAgeEntry, Optional<Insured> insured, Emigrate emigrate,Optional<Integer> lhcPercentage, Optional<Situation> situation) {
         if (person.isPresent()) {
-            //for Simples apply
-            Optional<String> healthEverHeld = insured.map(Insured::getHealthEverHeld);
-            if (!healthEverHeld.isPresent()) {
-                //for Online apply
-                healthEverHeld = person.map(Person::getEverHadCoverPrivateHospital1);
-            }
             return new Applicant(
                     person.map(Person::getTitle)
                             .map(Title::findByCode)
@@ -162,9 +156,9 @@ public class ApplicationGroupAdapter {
                             .orElse(null),
                     createPreviousFund(
                             previousFund,
-                            person.map(Person::getCover),
+                            person,
                             situation.map(Situation::getCoverType),
-                            healthEverHeld
+                            insured
                     ),
                     certifiedAgeEntry
                             .map(CertifiedAgeEntry::new)
@@ -236,12 +230,24 @@ public class ApplicationGroupAdapter {
         }
     }
 
-    protected static com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund createPreviousFund(Optional<Fund> previousFund, Optional<com.ctm.web.health.model.form.Cover> cover, Optional<String> purchaseType, Optional<String> healthEverHeld) {
+    protected static com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund createPreviousFund(Optional<Fund> previousFund, Optional<Person> person, Optional<String> purchaseType, Optional<Insured> insured) {
         final HealthFund healthFund = previousFund.map(Fund::getFundName)
                 .map(HealthFund::findByCode)
                 .orElse(HealthFund.NONE);
-
-        if (previousFund.isPresent() && !HealthFund.NONE.equals(healthFund)) {
+        //for Simples apply
+        Optional<String> healthEverHeld = insured.map(Insured::getHealthEverHeld);
+        if (!healthEverHeld.isPresent()) {
+            //for Online apply
+            healthEverHeld = person.map(Person::getEverHadCoverPrivateHospital1);
+        }
+        Optional<com.ctm.web.health.model.form.Cover> cover = person.map(Person::getCover);
+        boolean currentCovered = false;
+        if (insured.isPresent() && "Y".equalsIgnoreCase(insured.get().getCover())) {
+            currentCovered = true;
+        }
+        if ( previousFund.isPresent() && !HealthFund.NONE.equals(healthFund)
+                && ((!currentCovered && healthEverHeld.isPresent() && "Y".equals(healthEverHeld.get()))
+                || currentCovered)) {
             return new com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund(
                     // The fund name, i.e "AAPI"
                     healthFund,

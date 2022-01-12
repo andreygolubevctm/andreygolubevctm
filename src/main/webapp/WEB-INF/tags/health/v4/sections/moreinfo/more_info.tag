@@ -86,7 +86,7 @@
                 </div>
             </div>
 						
-			<div class="moreInfoTopLeftColumn Hospital_container">
+			<div class="col-xs-12 col-sm-8 col-md-9 moreInfoTopLeftColumn Hospital_container">
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">
 					<div class="row">
