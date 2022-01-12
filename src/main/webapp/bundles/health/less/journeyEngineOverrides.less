@@ -182,7 +182,7 @@ body[data-step="start"]{
 body[data-step="contact"] {
 	.sidebar-box {
 		&.quoteSnapshot {display:block;}
-		&.callCentreHelp {display:none;}
+		&.callCentreHelp {display:block;}
 		&.testimonials {display:none;}
 	}
 }
@@ -208,6 +208,20 @@ body.callCentre {
 		.sidebar-box.callCentreHelp,
 		.sidebar-box.testimonials {
 			display: none !important;
+		}
+	}
+
+	.callCentreAppNumber {
+		display:none;
+	}
+
+	&[data-step="apply"],
+	&[data-step="payment"] {
+		.callCentreNumber {
+			display: none;
+		}
+		.callCentreAppNumber {
+			display: inline-block !important;
 		}
 	}
 }
