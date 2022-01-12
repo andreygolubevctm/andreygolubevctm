@@ -230,7 +230,17 @@ body.callCentre {
 		}
 	}
 	.callCentreAppNumber {
-		display:none !important;
+		display:none;
+	}
+
+	&[data-step="apply"],
+	&[data-step="payment"] {
+		.callCentreNumber {
+			display: none;
+		}
+		.callCentreAppNumber {
+			display: inline-block !important;
+		}
 	}
 }
 

@@ -98,3 +98,19 @@
 	}
   }
 }
+
+body {
+	.callCentreAppNumber {
+		display: none;
+	}
+
+	&[data-step="apply"],
+	&[data-step="payment"] {
+		.callCentreNumber {
+			display: none;
+		}
+		.callCentreAppNumber {
+			display: inline-block !important;
+		}
+	}
+}
