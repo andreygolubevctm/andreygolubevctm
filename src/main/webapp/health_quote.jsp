@@ -55,6 +55,7 @@
 
         <%-- Call centre numbers --%>
         <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
+        <c:set var="callCentreAppNumber" scope="request"><content:get key="callCentreAppNumber"/></c:set>
         <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
 
         <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
@@ -91,7 +92,10 @@
                         </div>
                         <div class="navbar-text hidden-xs" data-livechat="target">
                             <span class="icon-phone"></span>
-                            <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
+                            <h1>
+                                <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
+                            </h1>
                                 ${openingHoursHeader }
                         </div>
                         <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
