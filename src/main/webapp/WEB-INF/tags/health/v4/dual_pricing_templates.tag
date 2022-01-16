@@ -64,17 +64,19 @@
 		<div class="hidden-xs moreInfoPricingDual">
 			<div class="moreInfoPriceWrapper current-price">
 				<div class="moreInfoPriceContainer">
-					<div class="moreInfoPriceHeading">NOW</div>
+					<div class="moreInfoPriceHeading">Current price</div>
 					<div class="moreInfoPrice">
 						{{= renderedPriceTemplate }}
+						<health_v4:abd_badge_with_link />
 					</div>
 				</div>
 			</div>
 			<div class="moreInfoPriceWrapper">
 				<div class="moreInfoPriceContainer future-price">
-					<div class="moreInfoPriceHeading">Premiums rise from April 1</div>
+					<div class="moreInfoPriceHeading">Price from April 1</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltPriceTemplate }}
+						<health_v4:abd_badge_with_link />
 					</div>
 				</div>
 			</div>

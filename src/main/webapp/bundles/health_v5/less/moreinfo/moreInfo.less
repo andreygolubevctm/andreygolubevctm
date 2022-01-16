@@ -280,7 +280,6 @@
   div[class*="col-xs-"] {
     vertical-align: middle;
     margin-top: 10px;
-    padding-left: 0px;
 
     img {
       margin-top: -10px;
@@ -289,10 +288,6 @@
 
   .vertical-align {
     line-height: 30px;
-  }
-
-  .productNames {
-    color: @theme-accent-4;
   }
 }
 
@@ -386,7 +381,7 @@
   margin: 10px;
   min-height: 150px;
   width: 45px;
-  max-width: 400px;
+  max-width: 360px;
 }
 
 .moreInfoPriceContainer {
@@ -445,6 +440,7 @@
       text-align: center;
       .small;
       margin-top: 10px;
+      padding-bottom: 13px;
     }
   }
 }
@@ -478,10 +474,10 @@
   padding: 0px;
 
   @media (@sm) {
-  padding-top: 10px;
-  padding-bottom: 15px;
-  padding-left: 15px;
-  font-size: 12px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    font-size: 12px;
   }
 }
 
@@ -1005,7 +1001,6 @@ body[data-is-single="true"] {
       &.cloned-docked-header {
         background: #fff;
         padding-top: 0;
-        border-bottom: 1px solid lightgray;
         width: 100%;
         z-index: 1;
         top: 40px;
@@ -1018,7 +1013,6 @@ body[data-is-single="true"] {
     }
 
     .dockedHeaderLarge {
-      border-bottom: 1px solid lightgray;
 
       .header-fund-details {
         display: flex;
@@ -1128,23 +1122,4 @@ body[data-is-single="true"] {
     line-height: 20px;
     color: @primary500;
   }
-}
-
-.abd-badge {
-  background-color: #FFFFFF;
-  color: #666666;
-  border-radius: 20px;
-  border: 1px solid #666666;
-  font-size: 14px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  min-height: 25px;
-  font-weight: bold;
-  width: 80%;
-  min-width: 130px;
-  max-width: 220px;
-  margin-bottom: 2px;
-  margin-top: 15px;
 }
