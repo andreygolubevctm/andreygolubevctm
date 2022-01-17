@@ -2,14 +2,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="resultsHeaderMoreInfoLinkClass">
-    <c:if test="${resultsHeaderMoreInfoLinkSplitTest eq true}">link-more-info</c:if>
-</c:set>
-
-<c:set var="resultsHeaderMoreInfoLinkAttributes">
-    <c:if test="${resultsHeaderMoreInfoLinkSplitTest eq true}">data-productId="{{= obj.productId }}" title="View policy details"</c:if>
-</c:set>
-
 {{ var restrictedClass = obj.info.restrictedFund === "Y" ? "restricted" : ""; }}
 
 <div class="result">
@@ -37,7 +29,7 @@
             </div>
         {{ } }}
         <div class="results-header-inner-container">
-            <div class="productSummary vertical results{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }} hasDualPricing{{ } }} ${resultsHeaderMoreInfoLinkClass}"  ${resultsHeaderMoreInfoLinkAttributes}">
+            <div class="productSummary vertical results{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }} hasDualPricing{{ } }} link-more-info" data-productId="{{= obj.productId }}" title="View policy details">
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); var logoHtml = logoTemplate(obj); }}
                 {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
                 {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
