@@ -25,7 +25,7 @@
 	{{ var textLhcFreeDualPricing= 'inc ' + formatCurrency(prem.rebateValue) + ' Govt Rebate';}}
     {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
 
-    <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }} {{= (!isDualPricingActive && textLhcFreePricing !== '') ? 'hasLhcFreePricingText' : '' }}">
+    <div class="more-info-frequency frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }} {{= (!isDualPricingActive && textLhcFreePricing !== '') ? 'hasLhcFreePricingText' : '' }}">
         {{ if (!result.hasValidPrice) { }}
         {{ var comingSoonLabel = frequency; }}
         {{ if (comingSoonLabel == 'annually') { }}
@@ -37,14 +37,30 @@
     </div>
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
     {{ return; } }}
-    <div class="frequencyAmount">
-        {{ var dollarPriceResult = healthResultsTemplate.getPrice(result); }}
-        <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
+    <div class="frequencyAndAmount">
+        <div class="frequencyAmount">
+            {{ var dollarPriceResult = healthResultsTemplate.getPrice(result); }}
+            <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
+        </div>
+        <div class="hide-on-affix">
+            <span class="select-frequency">
+                <span class=" input-group-addon" data-target="${freq}">
+                    <i class="icon-angle-down"></i>
+                </span>
+                <select name="more-info-payment-frequency-current" id="more-info-payment-frequency-current" title=""
+                        class="more-info-payment-frequency data-hj-suppress" data-freq="{{= frequency}}" data-attach="true" data-validation-position='append'>
+                    <option value="fortnightly" {{= frequency === 'fortnightly' ? 'selected' : '' }}>Fortnightly</option>
+                    <option value="monthly" {{= frequency === 'monthly' ? 'selected' : '' }}>Monthly</option>
+                    <option value="annually" {{= frequency === 'annually' ? 'selected' : '' }}>Annually</option>
+                </select>
+                /
+            </span>
+        </div>
     </div>
-    <div class="hide-on-affix">
-        <span class="frequencyTitle">{{= freqObj.key }} / </span>
-        <span class="lhcText">{{= textLhcFreeDualPricing}}</span>
-    </div>
+    <div class="lhcText">{{= textLhcFreeDualPricing}}</div>
+    {{ if (!isDualPricingActive && textLhcFreePricing !== '') { }}
+    <div class="lhcStaticText">{{= textLhcFreePricing}}</div>
+    {{ } }}
 
     {{ if (frequency === obj._selectedFrequency && (obj.hasOwnProperty('priceBreakdown') || (!obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown)) && window.meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment') { }}
         {{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, frequency, false) }}

@@ -70,10 +70,7 @@ section: Results v4
   .frequency {
     text-align: center;
     .frequencyAmount {
-      color: #000;
-      @media (@sm) {
-        color: #555;
-      }
+      color: #333333;
       text-align: center;
       // set font family:
       font-family: @results-price-font-family;
@@ -83,11 +80,8 @@ section: Results v4
         font-family: @results-price-cents-font-family;
       }
       // set font sizes
-      font-size: 32px;
-      @media (@md-only) {
-        font-size: 42px;
-      }
-      @media (@lg-only) {
+      font-size: 52px;
+      @media (@xs-only) {
         font-size: 52px;
       }
       .dollarSign {

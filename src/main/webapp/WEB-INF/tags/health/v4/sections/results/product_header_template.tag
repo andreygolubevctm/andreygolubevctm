@@ -2,14 +2,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="resultsHeaderMoreInfoLinkClass">
-    <c:if test="${resultsHeaderMoreInfoLinkSplitTest eq true}">link-more-info</c:if>
-</c:set>
-
-<c:set var="resultsHeaderMoreInfoLinkAttributes">
-    <c:if test="${resultsHeaderMoreInfoLinkSplitTest eq true}">data-productId="{{= obj.productId }}" title="View policy details"</c:if>
-</c:set>
-
 {{ var restrictedClass = obj.info.restrictedFund === "Y" ? "restricted" : ""; }}
 
 <div class="result">
@@ -37,28 +29,24 @@
             </div>
         {{ } }}
         <div class="results-header-inner-container">
-            <div class="productSummary vertical results{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }} hasDualPricing{{ } }} ${resultsHeaderMoreInfoLinkClass}"  ${resultsHeaderMoreInfoLinkAttributes}">
+            <div class="productSummary vertical results{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }} hasDualPricing{{ } }} link-more-info" data-productId="{{= obj.productId }}" title="View policy details">
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); var logoHtml = logoTemplate(obj); }}
                 {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
                 {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
                 {{ var frequency = obj._selectedFrequency; }}
                 {{ var frequencyPremium = obj.premium[frequency]; }}
                 {{ var lhtText = frequencyPremium.lhcfreepricing.split("<br>")[0]; }}
-                {{ var abdRequestFlag = obj.info.abdRequestFlag; }}
                 {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
-                {{ var isConfirmation = false; }}
-                {{ try{ }}
-                {{ isConfirmation = _.isNumber(meerkat.modules.healthConfirmation.getPremium()); }}
-                {{ } catch(e){} }}
 
                 <div class="hide-on-affix logo-full-width">{{= logoHtml }}</div>
 
                 <div class="price-row">
                     <div class="more-info-showapply" data-productId='{{= obj.productId }}' data-available='{{= obj.available }}'>
-                        {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
+                        {{ if (isDualPricingActive) { }}
                             <div class="dual-pricing-before-after-text">Now</div>
                         {{ } }}
                         {{= priceTemplate(obj) }}
+                        <health_v4:lhcText />
                     </div>
 
                     {{ if (isDualPricingActive) { }}
@@ -103,21 +91,8 @@
                 </c:when>
                 </c:choose>
 
-                {{ if(obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 && isDualPricingActive ) { }}
-                {{ if(abdRequestFlag === 'A') { }}
-                <health_v4:abd_badge_with_link abd="true" />
-                {{ } else { }}
-                <health_v4:abd_badge_with_link abd="false" />
-                {{ } }}
-                {{ } }}
+                <health_v4:abd_badge_with_link />
 
-                {{ if(obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 > 0 && !obj.isForResultPage && !isDualPricingActive ) { }}
-                {{ if(obj.custom.reform.yad === "A" || (obj.custom.reform.yad === "R" && (isConfirmation || !meerkat.modules.healthRABD.isRABD()))) { }}
-                <health_v4:abd_badge_with_link abd="true" />
-                {{ } else { }}
-                <health_v4:abd_badge_with_link abd="false" />
-                {{ } }}
-                {{ } }}
             </div>
             {{ if(obj.promo.providerPhoneNumber) { }}
             <div class="callCentreNumber">

@@ -45,9 +45,12 @@
 	{{ } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
 		{{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
+		{{ obj.showAltPremium = false; obj.priceBreakdown = false; }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
 		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
-		{{ obj.showAltPremium = false; obj.priceBreakdown = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+		{{ obj.renderedNormalAffixedHeaderPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+		{{ var priceTemplateMoreInfo = meerkat.modules.templateCache.getTemplate($("#price-template-more-info")); }}
+		{{ obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplateMoreInfo(obj); }}
 	{{ } }}
 
 	<%-- Prepare the call to action bar template. --%>

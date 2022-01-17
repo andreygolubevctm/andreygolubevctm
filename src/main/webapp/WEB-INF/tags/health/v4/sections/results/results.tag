@@ -65,6 +65,10 @@
         <health_v4_results:price_template />
     </jsp:attribute>
 
+    <jsp:attribute name="priceTemplateForMoreInfo">
+        <health_v4:price_template_multi_frequencies />
+    </jsp:attribute>
+
     <jsp:attribute name="resultsHeaderTemplate">
         <health_v4_results:product_header_template />
     </jsp:attribute>

@@ -65,6 +65,7 @@
     }
 
     function updateBenefits(category, extrasOnly) {
+        meerkat.modules.benefitsModel.setBenefits([]);
         extrasOnly = extrasOnly || false;
         var $benefitElements = $elements.extrasBenefits;
         if(!extrasOnly) {

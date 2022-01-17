@@ -230,7 +230,7 @@
         } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
             obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false);
         } else {
-            var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template"));
+            var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template-more-info"));
             obj.showAltPremium = false;
             obj._selectedFrequency = Results.getFrequency();
             obj.renderedPriceTemplate = priceTemplate(obj);

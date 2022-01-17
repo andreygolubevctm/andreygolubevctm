@@ -73,7 +73,6 @@
                 if (settings.affixedHeaderTemplate && typeof settings.affixedHeaderTemplate.length !== 'undefined') {
                     affixedHeaderTemplate = _.template(settings.affixedHeaderTemplate);
                 }
-
                 applyEventListeners();
                 eventSubscriptions();
             }
@@ -171,6 +170,60 @@
                 textSpan.html("&nbsp;More details");
             }
         });
+        $(document.body).on('click', '.readMoreDescriptionLink', function () {
+            var fundDescription = $('.fundDescription');
+            var arrow = $('.readMoreFundDescription').find('span').last();
+
+            if (arrow.hasClass('icon-angle-down')) {
+                arrow.removeClass('icon-angle-down').addClass('icon-angle-up');
+                $(this).html("Read less&nbsp;");
+                fundDescription.css("-webkit-box-orient", "unset");
+            } else {
+                arrow.removeClass('icon-angle-up').addClass('icon-angle-down');
+                $(this).html("Read more&nbsp;");
+                fundDescription.css("-webkit-box-orient", "vertical");
+            }
+        });
+        $(document.body).on('change', '.moreInfoPriceContainer .more-info-payment-frequency', function () {
+            var currentFrequency = $(this).val();
+            $('.moreInfoPriceContainer .more-info-frequency.' + currentFrequency).removeClass('displayNone');
+            $('.moreInfoPriceContainer .more-info-frequency').not('.' + currentFrequency).addClass('displayNone');
+            $(this).val($(this).attr('data-freq'));
+            var frequencyId;
+            switch (currentFrequency) {
+                case 'fortnightly':
+                    frequencyId = "health_filterBar_frequency_F";
+                    break;
+                case 'monthly':
+                    frequencyId = "health_filterBar_frequency_M";
+                    break;
+                case 'annually':
+                    frequencyId = "health_filterBar_frequency_A";
+                    break;
+            }
+            $('#' + frequencyId).prop('checked', true).change();
+        });
+        window.addEventListener('resize', toggleReadMoreLink);
+    }
+
+    function toggleReadMoreLink() {
+        var fundDescription = $('.fundDescription');
+        var readMoreLink = $('.readMoreFundDescription');
+        if (fundDescription.length > 0) {
+            if (isEllipsisActive(fundDescription)) {
+                readMoreLink.removeClass('hidden');
+            } else {
+                readMoreLink.addClass('hidden');
+            }
+        }
+    }
+
+    function isEllipsisActive(e) {
+        var originalValue = e.css('-webkit-box-orient');
+        e.css("-webkit-box-orient", "vertical");
+        var isEllipsis = (e[0].offsetHeight < e[0].scrollHeight);
+        e.css("-webkit-box-orient", originalValue);
+        return isEllipsis;
     }
 
     function _triggerBeforeTabContent() {
@@ -270,9 +323,12 @@
             // fade out loading anim
             moreInfoContainer.find(".spinner").fadeOut();
 
+            var animDuration = 400;
+            var scrollToTopDuration = 250;
+            var totalDuration = 0;
             // append content
             moreInfoContainer.html(htmlString);
-
+            setTimeout(toggleReadMoreLink, animDuration);
             if (typeof affixedHeaderTemplate === 'function' && settings.affixedHeaderContainer && settings.affixedHeaderContainer.length === 1) {
                 var affixedHtmlString = affixedHeaderTemplate(product);
                 settings.affixedHeaderContainer.html(affixedHtmlString);
@@ -281,10 +337,6 @@
             if (typeof settings.onBeforeShowTemplate == 'function') {
                 settings.onBeforeShowTemplate(jsonResult, moreInfoContainer);
             }
-
-            var animDuration = 400;
-            var scrollToTopDuration = 250;
-			var totalDuration = 0;
 
             if (isBridgingPageOpen) {
 				moreInfoContainer.find(".more-info-content")[settings.showActionWhenOpen](animDuration, function() {
@@ -425,7 +477,6 @@
      */
     function showModal() {
         prepareProduct(function moreInfoShowModalSuccess() {
-
             toggleBodyClass(true);
 
             var options = {
@@ -448,12 +499,9 @@
                 options = $.extend(options, settings.modalOptions);
             }
             modalId = meerkat.modules.dialogs.show(options);
-
-
             isModalOpen = true;
-
             settings.container.add(".more-info-content").show();
-
+            setTimeout(toggleReadMoreLink, 200);
             if (typeof settings.onAfterShowModal == 'function') {
                 settings.onAfterShowModal(product);
             }
@@ -490,7 +538,6 @@
                 productName:  product && product.info && product.info.name ? product.info.name : "",
                 providerCode: product && product.info && product.info.provider ? product.info.provider : ""
             });
-
             initMoreInfoProductExtraInfo();
         });
     }
