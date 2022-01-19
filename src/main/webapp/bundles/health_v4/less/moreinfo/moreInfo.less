@@ -325,35 +325,6 @@
     vertical-align: super;
   }
 
-  .frequencyTitle {
-    font-weight : bolder;
-    text-transform: capitalize;
-
-    @media (max-width: @screen-xs) {
-      font-weight: 100;
-      font-size: 12px;
-    }
-  }
-
-  .lhcText {
-    color: @gray-darker;
-    text-align: center;
-    .small;
-    padding-bottom: 5px;
-    display: inline-flex;
-    @media (@xs-only) {
-      display: flex;
-      justify-content: center;
-    }
-  }
-
-  .lhcStaticText {
-    color: @gray-dark;
-    text-align: start;
-    .small;
-    margin-top: 10px;
-  }
-
   .quote-reference-number {
     line-height: inherit;
     h3 {
@@ -409,8 +380,10 @@
   flex: 1 0 auto;
   margin: 10px;
   min-height: 150px;
-  width: 45px;
-  max-width: 360px;
+  @media (@sm) {
+    width: 45px;
+    max-width: 360px;
+  }
 }
 
 .moreInfoPriceContainer {
@@ -468,7 +441,8 @@
       color: @gray-dark;
       text-align: center;
       .small;
-      margin-top: 13px;
+      margin-top: 10px;
+      padding-bottom: 13px;
     }
   }
 }
@@ -502,10 +476,10 @@
   padding: 0px;
 
   @media (@sm) {
-  padding-top: 10px;
-  padding-bottom: 15px;
-  padding-left: 15px;
-  font-size: 12px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    font-size: 12px;
   }
 }
 

@@ -380,8 +380,10 @@
   flex: 1 0 auto;
   margin: 10px;
   min-height: 150px;
-  width: 45px;
-  max-width: 360px;
+  @media (@sm) {
+    width: 45px;
+    max-width: 360px;
+  }
 }
 
 .moreInfoPriceContainer {
