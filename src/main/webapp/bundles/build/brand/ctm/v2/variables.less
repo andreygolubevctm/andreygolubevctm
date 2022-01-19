@@ -120,7 +120,7 @@
 //
 //## Font, line-height, and color for body text, headings, and more.
 @font-family-theme-regular: 'SourceSansProRegular';
-@font-family-theme-bold: @font-family-theme-regular;
+@font-family-theme-bold: 'SourceSansProBold';
 @font-family-theme-light: @font-family-theme-regular;
 @font-family-theme-semibold: 'SourceSansProSemiBold';
 @font-family-sans-serif: @font-family-theme-regular, Helvetica, Arial, sans-serif;
@@ -251,7 +251,7 @@
 //## For each of Bootstrap's buttons, define text, background and border color.
 
 //** common attributes
-@btn-font-weight: normal;
+@btn-font-weight: bold;
 @btn-border-width: 1px;
 @btn-border-style: solid;
 @btn-padding-standard: 10px 15px;
@@ -384,11 +384,11 @@
 
 //** Form (nextstep, toggles, default-switches, radio buttons)
 @btn-next-bg-color: @theme-accent-1;
-@btn-next-color: @btn-foreground-color;
+@btn-next-color: @gray-base;
 @btn-next-border-color: @btn-next-bg-color;
 
 @btn-next-hover-bg-color: darken(@btn-next-bg-color, 12%);
-@btn-next-hover-color: @btn-foreground-color;
+@btn-next-hover-color: @gray-base;
 @btn-next-hover-border-color: @btn-next-hover-bg-color;
 
 @btn-next-active-bg-color: @theme-tertiary;
@@ -469,11 +469,11 @@
 // Hi! When @btn-cta-bg-color gets changed from theme-primary to theme-secondary as per new design, please delete ctm.theme.new-cta.less
 //
 @btn-cta-bg-color: @theme-primary;
-@btn-cta-color: @btn-foreground-color;
+@btn-cta-color: @gray-base;
 @btn-cta-border-color: @btn-cta-bg-color;
 
 @btn-cta-hover-bg-color: darken(@btn-cta-bg-color, 12%);
-@btn-cta-hover-color: @btn-foreground-color;
+@btn-cta-hover-color: @gray-base;
 @btn-cta-hover-border-color: @btn-cta-hover-bg-color;
 
 @btn-cta-active-bg-color: @theme-secondary;

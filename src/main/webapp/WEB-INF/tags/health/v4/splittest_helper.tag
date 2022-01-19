@@ -57,7 +57,7 @@
     </c:choose>
 </c:set>
 
-<%-- CTM-3902 Split Test J=6 test --%>
+<%-- SML-2095 Split Test J=6 test --%>
 <c:set var="resultsHeaderMoreInfoLinkSplitTest" scope="request">
     <c:choose>
         <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 6)}">${true}</c:when>
