@@ -34,22 +34,26 @@
 .abd-support-text {
   width: 65%;
   margin-left: 35%;
-  .abd-badge {
-    background-color: #FFFFFF;
-    color: #666666;
-    border-radius: 20px;
-    border: 1px solid #666666;
-    font-size: 14px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 25px;
-    font-weight: bold;
-    min-width: 130px;
-    max-width: 210px;
-    width: 80%;
-    margin-bottom: 6px;
-    margin-top: 6px;
+  p {
+    line-height: 1.8 !important;
+    .abd-badge {
+      @media (max-width: @screen-xs) {
+        max-width: 182px;
+      }
+      background-color: #FFFFFF;
+      color: #666666;
+      border-radius: 20px;
+      border: 1px solid #666666;
+      font-size: 14px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 25px;
+      font-weight: bold;
+      min-width: 130px;
+      max-width: 210px;
+      width: 80%;
+    }
   }
 }
 
