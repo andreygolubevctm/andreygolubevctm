@@ -813,6 +813,7 @@
             isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'custom') && selectedProduct.custom.reform.tab1.benefits && selectedProduct.custom.reform.tab1.benefits.find(function(benefit) { return benefit.covered === 'Y'; }) === undefined && selectedProduct.accident.covered === 'N';
 
         $dialogue97.add($dialogue102).toggleClass('hidden', true);
+        toggleDB125DynamicText();
 
 	    switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
@@ -863,6 +864,21 @@
             }
         }
     }
+
+    function toggleDB125DynamicText() {
+        if (meerkat.modules.healthContactType.is('inbound') || meerkat.modules.healthContactType.is('cli')  || meerkat.modules.healthContactType.is('energyTransfer')
+            || meerkat.modules.healthContactType.is('qSms') || meerkat.modules.healthContactType.is('qSmsMax')
+            || meerkat.modules.healthContactType.is('trialCampaignAMA') || meerkat.modules.healthContactType.is('trialCampaignNJL') || meerkat.modules.healthContactType.is('trialCampaignRedlands')
+        ) {
+            hostpitalInfoGatherText = "I'm really glad I've got you on the line. The benefit of speaking to an expert like myself is that I take the time to ask the right questions and truly understand your individual needs, ensuring you only pay for the things you require. Now I just want to ask a few more questions to help me find you the most suitable option.";
+        } else {
+            hostpitalInfoGatherText = "I'm really glad that I called you. The benefit of speaking to an expert like myself is that I take the time to ask the right questions and truly understand your individual needs, ensuring you only pay for the things you require. Now I just want to ask a few more questions to help me find you the most suitable option.";
+        }
+        $(".simples-dialogue-125 .dynamicHospitalGatherText").each(function() {
+            $(this).text(hostpitalInfoGatherText);
+        });
+    }
+
 
     function toggleCoverDialogues() {
         togglePrimaryCoverDialogue();
