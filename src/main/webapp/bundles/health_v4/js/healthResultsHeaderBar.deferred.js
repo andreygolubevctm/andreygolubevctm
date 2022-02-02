@@ -13,6 +13,8 @@
                     return $('.resultsOverflow').offset().top;
                 }
             };
+
+            $('.navbar-affix').affix();
             meerkat.modules.resultsHeaderBar.initResultsHeaderBar(settings);
         });
 

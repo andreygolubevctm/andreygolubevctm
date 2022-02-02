@@ -38,7 +38,12 @@
     line-height: 1.8 !important;
     .abd-badge {
       @media (max-width: @screen-xs) {
-        max-width: 182px;
+        @supports (-webkit-touch-callout: none) {
+          max-width: 200px;
+        }
+        @supports not (-webkit-touch-callout: none) {
+          max-width: 182px;
+        }
       }
       background-color: #FFFFFF;
       color: #666666;
