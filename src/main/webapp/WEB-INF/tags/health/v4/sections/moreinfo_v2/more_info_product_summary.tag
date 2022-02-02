@@ -2,38 +2,25 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <health_v1:dual_pricing_settings />
-<c:set var="oldClass">
-    <c:if test="${resultsHeaderMoreInfoLinkSplitTest eq false}">-old</c:if>
-</c:set>
-<c:set var="hiddenTitleClass">
-    <c:if test="${resultsHeaderMoreInfoLinkSplitTest eq false}">hidden-xs</c:if>
-</c:set>
 <!-- Product Summary. Logo, price, LHC etc... -->
 <div class="row priceRow productSummary">
     <div class="col-xs-12">
         {{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
             {{= renderedPyrrCampaign }}
         {{ } }}
-        <div class="noTopMargin productName ${hiddenTitleClass}"><span class="productTitle${oldClass}">{{= info.productTitle }}</span></div>
+        <div class="noTopMargin productName"><span class="productTitle">{{= info.productTitle }}</span></div>
     </div>
-    <div class="col-xs-12 about-this-fund-row${oldClass}">
-        <div class="fundDescription${oldClass}">
+    <div class="col-xs-12 about-this-fund-row">
+        <div class="fundDescription">
             <div>
             {{= product.aboutFund}}
             </div>
         </div>
-        <c:if test="${resultsHeaderMoreInfoLinkSplitTest eq true}">
-            <div class="readMoreFundDescription hidden">
-                <a class="readMoreDescriptionLink" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">Read more&nbsp;</a>
-                <span class="icon-angle-down"/>
-            </div>
-        </c:if>
-    </div>
-    <c:if test="${resultsHeaderMoreInfoLinkSplitTest eq false}">
-        <div class="col-xs-12 aboutThisFundLink">
-            <a href="javascript:;" class="about-this-fund"><span class="help-icon icon-info"></span>About this fund</a>
+        <div class="readMoreFundDescription hidden">
+            <a class="readMoreDescriptionLink" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">Read more&nbsp;</a>
+            <span class="icon-angle-down"/>
         </div>
-    </c:if>
+    </div>
     <div class="col-xs-12">
         <c:choose>
             <c:when test="${!isDualPriceActive eq true}">

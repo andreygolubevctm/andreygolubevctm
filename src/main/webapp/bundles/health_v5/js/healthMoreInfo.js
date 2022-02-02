@@ -116,13 +116,6 @@
             var callbackModalId = meerkat.modules.dialogs.show(modalOptions);
         });
 
-        $(document).on('click', '.about-this-fund', function() {
-            meerkat.modules.dialogs.show({
-                title: 'About the fund',
-                htmlContent: Results.getSelectedProduct().aboutFund
-            });
-        });
-
         $(document).on('click', '.postAprilReformLink', function () {
             $('.preAprilReformLink').removeClass('active');
             $(this).addClass('active');
