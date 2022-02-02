@@ -25,6 +25,8 @@
         affixedHeaderTemplate,
         isModalOpen = false,
         isBridgingPageOpen = false,
+        updateFrequencyOnClose = false,
+        newFrequencyId,
         modalId,
         topPosition,// for Health's unique results view.
         jsonResult,
@@ -91,7 +93,7 @@
             // some opens may be in modals or tooltips
             $(document).on("click", ".open-more-info", openBridgingPage);
             // close bridging page
-            $(Results.settings.elements.page + ", .navMenu-row header").on("click", ".btn-close-more-info", closeBridgingPage);
+            $(Results.settings.elements.page + ", .navMenu-row header").on("click", ".btn-close-more-info", closeMoreInfoPage);
         }
 
         // Close any more info panels when fetching new results
@@ -186,22 +188,25 @@
         });
         $(document.body).on('change', '.moreInfoPriceContainer .more-info-payment-frequency', function () {
             var currentFrequency = $(this).val();
-            $('.moreInfoPriceContainer .more-info-frequency.' + currentFrequency).removeClass('displayNone');
-            $('.moreInfoPriceContainer .more-info-frequency').not('.' + currentFrequency).addClass('displayNone');
+            $('.moreInfoPriceContainer .more-info-frequency.' + currentFrequency).removeClass("displayNone");
+            $('.more-info-affixed-header .frequency.' + currentFrequency).removeClass("displayNone");
+            $('.moreInfoPriceContainer .more-info-frequency').not('.' + currentFrequency).addClass("displayNone");
+            $('.more-info-affixed-header .frequency').not('.' + currentFrequency).addClass("displayNone");
+
             $(this).val($(this).attr('data-freq'));
-            var frequencyId;
+            updateFrequencyOnClose = true;
+
             switch (currentFrequency) {
                 case 'fortnightly':
-                    frequencyId = "health_filterBar_frequency_F";
+                    newFrequencyId = "health_filterBar_frequency_F";
                     break;
                 case 'monthly':
-                    frequencyId = "health_filterBar_frequency_M";
+                    newFrequencyId = "health_filterBar_frequency_M";
                     break;
                 case 'annually':
-                    frequencyId = "health_filterBar_frequency_A";
+                    newFrequencyId = "health_filterBar_frequency_A";
                     break;
             }
-            $('#' + frequencyId).prop('checked', true).change();
         });
         window.addEventListener('resize', toggleReadMoreLink);
     }
@@ -542,6 +547,18 @@
         });
     }
 
+    function closeMoreInfoPage() {
+        updateResultsFrequency();
+        closeBridgingPage();
+    }
+
+    function updateResultsFrequency() {
+        if (updateFrequencyOnClose) {
+            updateFrequencyOnClose = false;
+            $('#' + newFrequencyId).prop('checked', true).change();
+        }
+    }
+
     /**
      * Funnel - determines whether to close a modal or template view.
      */
@@ -759,7 +776,8 @@
         setDataResult: setDataResult,
         getDataResult: getDataResult,
         applyCallback: applyCallback,
-        updateSettings: updateSettings
+        updateSettings: updateSettings,
+        updateResultsFrequency: updateResultsFrequency
     });
 
 })(jQuery);

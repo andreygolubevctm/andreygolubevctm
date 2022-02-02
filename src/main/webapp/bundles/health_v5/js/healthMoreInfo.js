@@ -163,7 +163,7 @@
     }
 
     function onClickApplyNow(product, applyCallback) {
-
+        meerkat.modules.moreInfo.updateResultsFrequency();
         meerkat.modules.healthResults.setSelectedProduct(product);
         // this variable declared in __health_legacy.js
         meerkat.modules.healthFunds.load(product.info.provider, applyCallback);
@@ -434,6 +434,7 @@
         // unfade all headers
         $(Results.settings.elements.page).find(".result").removeClass("faded");
         dynamicPyrrBanner();
+        meerkat.modules.moreInfo.updateResultsFrequency();
     }
 
     function initialiseBrochureEmailForm(product, parent, form) {
