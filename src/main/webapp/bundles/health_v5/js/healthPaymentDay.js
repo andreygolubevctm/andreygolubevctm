@@ -96,9 +96,13 @@
             // Skips days after fix day limit
             if (typeof (meerkat.modules.healthFunds.getPayments().maxDay) !== 'undefined' && meerkat.modules.healthFunds.getPayments().maxDay < _date.getDate()) {
                 _days++;
+                _count++;
             // Parse out the weekends if not applicable
-            } else if ( _isWeekend && ( businessDaysOnly || !meerkat.modules.healthFunds.getPayments().weekend ) ) {
+            } else if ( _isWeekend && ( businessDaysOnly || !meerkat.modules.healthFunds.getPayments().weekends ) ) {
                 _days++;
+                if (!businessDaysOnly) {
+                    _count++;
+                }
             } else {
                 _html += '<option value="' + meerkat.modules.dateUtils.dateValueServerFormat(_date) + '">' +
                     meerkat.modules.dateUtils.dateValueLongFormat(_date) + '</option>';
