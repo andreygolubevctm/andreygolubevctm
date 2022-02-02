@@ -107,7 +107,7 @@ var healthFunds_QTS = {
     renderPaymentDays: function(){
         var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
         if (freq == 'fortnightly') {
-            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':10, 'weekends':false, 'countFrom' : 'effectiveDate'});
+            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':27, 'weekends':false, 'countFrom' : 'effectiveDate'});
             <%-- Redundant code, due to the fact that rules are getting triggered on the payment step for cover start date
                  calendar on the application step, due to the cover start date being moved to the application step. --%>
             <%--healthFunds_QTS.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');--%>
