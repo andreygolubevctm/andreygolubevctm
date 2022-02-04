@@ -30,6 +30,7 @@
 <%@ attribute fragment="true" required="false" name="sidebarColumnRight" %>
 <%@ attribute fragment="true" required="false" name="zeroResultsFoundMessage" %>
 <%@ attribute fragment="true" required="false" name="additionalPagination" %>
+<%@ attribute fragment="true" required="false" name="resultsBanner" %>
 <%@ attribute fragment="true" required="false" name="resultsErrorMessage" %>
 <%@ attribute fragment="true" required="false" name="hiddenInputs" description="Any hidden " %>
 <%@ attribute fragment="true" required="false" name="quoterefTemplate" description="A template customisable to display the quote reference number" %>
@@ -37,6 +38,8 @@
               description="A template just for the logo. Logos tend to be displayed in different places independent of price, so should be a different template." %>
 <%@ attribute fragment="true" required="false" name="productTitleTemplate" description="A template customisable to display the product title" %>
 <%@ attribute fragment="true" required="true" name="priceTemplate" description="A template customisable to display price based on frequency etc, must exclude logo" %>
+<%@ attribute fragment="true" required="true" name="priceTemplateResultCard" description="A template customisable to display price based on frequency etc, must exclude logo" %>
+
 <%@ attribute fragment="true" required="true" name="priceTemplateForMoreInfo" description="A template customisable to display price based on frequency dropdown list could select, must exclude logo" %>
 <%@ attribute fragment="true" required="false" name="compareTemplate" description="A template for compare mode" %>
 <%@ attribute fragment="true" required="true" name="resultsContainerTemplate" description="A template from the result-row wrapper" %>
@@ -84,6 +87,7 @@
     </c:if>
 
     <div class="col-md-${resultsColsMd} results-column-container">
+        <jsp:invoke fragment="resultsBanner" />
         <div class="${resultsContainerClassName} resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
             <jsp:invoke fragment="additionalPagination"/>
             <div class="resultsOverflow notScrolling">
@@ -155,6 +159,7 @@
 <core_v1:js_template id="logo-template"><jsp:invoke fragment="logoTemplate"/></core_v1:js_template>
 <core_v1:js_template id="product-title-template"><jsp:invoke fragment="productTitleTemplate"/></core_v1:js_template>
 <core_v1:js_template id="price-template"><jsp:invoke fragment="priceTemplate"/></core_v1:js_template>
+<core_v1:js_template id="price-template-result-card"><jsp:invoke fragment="priceTemplateResultCard"/></core_v1:js_template>
 <core_v1:js_template id="price-template-more-info"><jsp:invoke fragment="priceTemplateForMoreInfo"/></core_v1:js_template>
 <core_v1:js_template id="result-template"><jsp:invoke fragment="resultsContainerTemplate"/></core_v1:js_template>
 <core_v1:js_template id="result-header-template"><jsp:invoke fragment="resultsHeaderTemplate"/></core_v1:js_template>

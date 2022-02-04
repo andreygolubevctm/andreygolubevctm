@@ -57,6 +57,10 @@
         <health_v4_results:quoteref_template />
     </jsp:attribute>
 
+    <jsp:attribute name="resultsBanner">
+        <health_v4_results:price_rise_banner />
+    </jsp:attribute>
+
     <jsp:attribute name="logoTemplate">
         <health_v4_results:logo_template />
     </jsp:attribute>
@@ -65,12 +69,16 @@
         <health_v4_results:price_template />
     </jsp:attribute>
 
+    <jsp:attribute name="priceTemplateResultCard">
+        <health_v4_results:price_template_result_card />
+    </jsp:attribute>
+
     <jsp:attribute name="priceTemplateForMoreInfo">
         <health_v4:price_template_multi_frequencies />
     </jsp:attribute>
 
     <jsp:attribute name="resultsHeaderTemplate">
-        <health_v4_results:product_header_template />
+        <health_v4_results:product_header_template_result_card />
     </jsp:attribute>
 
     <jsp:attribute name="resultsContainerTemplate">

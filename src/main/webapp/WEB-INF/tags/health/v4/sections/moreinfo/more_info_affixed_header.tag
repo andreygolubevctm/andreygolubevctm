@@ -1,4 +1,4 @@
-<%@ tag description="The Health More Info template"%>
+<%@ tag description="The Health More Info template - NOT IN USE"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <core_v1:js_template id="moreInfoAffixedHeaderTemplate">

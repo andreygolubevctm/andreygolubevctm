@@ -75,6 +75,14 @@
         <health_v3:price_template />
     </jsp:attribute>
 
+    <jsp:attribute name="priceTemplateResultCard">
+        <health_v3:price_template_result_card />
+    </jsp:attribute>
+
+    <jsp:attribute name="resultsBanner">
+        <health_v4_results:price_rise_banner />
+    </jsp:attribute>
+
     <jsp:attribute name="priceTemplateForMoreInfo">
         <health_v3:price_template />
     </jsp:attribute>
@@ -180,6 +188,7 @@
         <health_v3:extras_list_template />
         <health_v3:credit_card_template />
         <health_v1:logo_price_template />
+        <health_v1:logo_price_template_result_card />
 
     </jsp:body>
 

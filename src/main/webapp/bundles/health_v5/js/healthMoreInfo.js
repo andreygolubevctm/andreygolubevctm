@@ -39,7 +39,7 @@
                             $(eventObject.currentTarget).closest('.modal').modal('hide');
                         }
                     },
-                    showCloseBtn: true,
+                    showCloseBtn: false,
                     onClose: function () {
                         onBeforeHideTemplate();
                         meerkat.modules.moreInfo.close();
@@ -114,6 +114,13 @@
                 };
 
             var callbackModalId = meerkat.modules.dialogs.show(modalOptions);
+        });
+
+        $(document).on('click', '.about-this-fund', function() {
+            meerkat.modules.dialogs.show({
+                title: 'About the fund',
+                htmlContent: Results.getSelectedProduct().aboutFund
+            });
         });
 
         $(document).on('click', '.postAprilReformLink', function () {

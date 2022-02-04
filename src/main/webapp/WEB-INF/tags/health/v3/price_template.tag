@@ -25,7 +25,7 @@
         {{ if (!result.hasValidPrice) { }}
         {{ var frequencyLabel = frequency; }}
         {{ if (frequencyLabel == 'annually') { }}
-            {{ frequencyLabel = 'Annual'; }}
+        {{ frequencyLabel = 'Annual'; }}
         {{ } }}
         <%-- Convert to title case --%>
         {{ frequencyLabel = frequencyLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
@@ -39,13 +39,13 @@
         <div class="frequencyTitle">{{= freqObj.label }}</div>
     </div>
 
-        {{ if(obj.custom.reform.yad !== "N" && availablePremiums[frequency].abd > 0) { }}
-        {{ if(obj.custom.reform.yad === "A" || (obj.custom.reform.yad === "R" && (isConfirmation || !meerkat.modules.healthRABD.isRABD()))) { }}
-                <health_v4:abd_badge abd="true" />
-            {{ } else { }}
-                <health_v4:abd_badge abd="false" />
-            {{ } }}
-        {{ } }}
+    {{ if(obj.custom.reform.yad !== "N" && availablePremiums[frequency].abd > 0) { }}
+    {{ if(obj.custom.reform.yad === "A" || (obj.custom.reform.yad === "R" && (isConfirmation || !meerkat.modules.healthRABD.isRABD()))) { }}
+    <health_v4:abd_badge abd="true" />
+    {{ } else { }}
+    <health_v4:abd_badge abd="false" />
+    {{ } }}
+    {{ } }}
 
     <div class="lhcText">
         <span>

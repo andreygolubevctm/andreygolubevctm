@@ -3,6 +3,7 @@ package com.ctm.web.simples.admin.dao;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.AuditTableDao;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.utils.DatabaseUtils;
 import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.simples.admin.model.SpecialOffers;
 import com.ctm.web.simples.helper.SpecialOffersHelper;
@@ -170,10 +171,10 @@ public class SpecialOffersDao {
             return "success";
         } catch (SQLException | NamingException | ParseException e) {
             LOGGER.error("Failed to delete Special Offers {}, {}, {}, {}", kv("offerId", offerId), kv("serverDate", serverDate), kv("userName", userName), kv("ipAddress", ipAddress), e);
-            rollbackTransaction(dbSource);
+            DatabaseUtils.rollbackTransaction(dbSource, LOGGER);
             throw new DaoException(e);
         } finally {
-            resetDefaultsAndCloseConnection(dbSource);
+            DatabaseUtils.resetDefaultsAndCloseConnection(dbSource, autoCommit);
         }
     }
 
@@ -224,10 +225,10 @@ public class SpecialOffersDao {
             specialOffers = fetchSingleRecSpecialOffers(offerId);
         } catch (SQLException | NamingException | ParseException e) {
             LOGGER.error("Failed to update Special Offers {}, {}, {}", kv("specialOffersParams", specialOffersParams), kv("userName", userName), kv("ipAddress", ipAddress), e);
-            rollbackTransaction(dbSource);
+            DatabaseUtils.rollbackTransaction(dbSource, LOGGER);
             throw new DaoException(e);
         } finally {
-            resetDefaultsAndCloseConnection(dbSource);
+            DatabaseUtils.resetDefaultsAndCloseConnection(dbSource, autoCommit);
         }
         return specialOffers;
     }
@@ -283,39 +284,12 @@ public class SpecialOffersDao {
             specialOffers = fetchSingleRecSpecialOffers(offerId);
         } catch (SQLException | NamingException | ParseException e) {
             LOGGER.error("Failed to create Special Offers {}, {}, {}", kv("specialOffersParams", specialOffersParams), kv("userName", userName), kv("ipAddress", ipAddress), e);
-            rollbackTransaction(dbSource);
+            DatabaseUtils.rollbackTransaction(dbSource, LOGGER);
             throw new DaoException(e);
         } finally {
-            resetDefaultsAndCloseConnection(dbSource);
+            DatabaseUtils.resetDefaultsAndCloseConnection(dbSource, autoCommit);
         }
         return specialOffers;
     }
-    /**
-     * This method will roleback the changes made via connection in supplied SimpleDatabaseConnection
-     * @param dbSource
-     * @throws DaoException
-     */
-    private void rollbackTransaction(SimpleDatabaseConnection dbSource) throws DaoException {
-        try {
-            LOGGER.error("Transaction is being rolled back");
-            dbSource.getConnection().rollback();
-        } catch (SQLException | NamingException e) {
-            throw new DaoException(e);
-        }
-    }
 
-    /**
-     * This method will reset autocommit option to the default value and also commit changes and close the connection
-     * @param dbSource
-     * @throws DaoException
-     */
-    private void resetDefaultsAndCloseConnection(SimpleDatabaseConnection dbSource) throws DaoException {
-        try {
-            dbSource.getConnection().commit();
-            dbSource.getConnection().setAutoCommit(autoCommit);
-        } catch (SQLException | NamingException e) {
-            throw new DaoException(e);
-        }
-        dbSource.closeConnection();
-    }
 }

@@ -4,7 +4,7 @@
         meerkatEvents = meerkat.modules.events,
         $elements = {},
         selectedProduct = {},
-        modalId = null,
+        bannerModalId = null,
         freqTextMapping = {
             'halfyearly': 'half yearly',
             'quarterly': 'quarterly',
@@ -12,14 +12,9 @@
             'fortnightly': 'fortnightly',
             'weekly': 'weekly'
         },
-        freqValuesMapping = {
-            'F': 'fortnightly',
-            'M': 'monthly',
-            'A': 'annual'
-        },
         isActive = null,
-        _startMonthFirst = null,
-        _trackModalClose = true;
+        _trackModalClose = true,
+        _startMonthFirst = null;
 
     function initDualPricing() {
         if (!isDualPricingActive()) {
@@ -51,6 +46,7 @@
 
     function _setupElements() {
         $elements = {
+            logoPriceTemplateResultCard: $('#logo-price-template-result-card'),
             logoPriceTemplate: $('#logo-price-template'),
             affixedHeaderLogoPriceTemplate: $('#affixed-header-logo-price-template'),
             template: {
@@ -65,8 +61,9 @@
                 sidebar: $('#dual-pricing-template-sidebar'),
                 applicationXS: $('#dual-pricing-application-xs-template')
             },
-            modalTemplate: $('#dual-pricing-modal-template'),
+            bannerModalTemplate: $('#price-rise-banner-template'),
             sideBarFrequency: $('.sidebarFrequency'),
+            priceRiseBanner: $('.price-rise-tag'),
             sideBarFrequencyTemplate: $('#sideBarFrequency'),
             paymentDetailsSelection: $('#health_payment_details-selection'),
             paymentDetailsFrequency: $('#health_payment_details-selection').find('#health_payment_details_frequency'),
@@ -78,6 +75,7 @@
         };
 
         $elements.sideBarFrequency.hide();
+        $elements.priceRiseBanner.removeClass("hidden");
     }
 
     function _applyEventListeners() {
@@ -127,8 +125,12 @@
             $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
         });
 
-        $(document).on('click', '.dual-pricing-learn-more', function(e) {
-            _showModal($(e.target).attr('data-dropDeadDate'));
+        $(document).on('click', '.price-rise-banner-learn-more', function(e) {
+            _showBannerModal();
+        });
+        $(document).on('click', '.price-rise-banner-close-btn', function() {
+            _trackModalClose = false;
+            _hideBannerModal();
         });
 
         $(document).on('click', 'a.live-chat', function() {
@@ -137,31 +139,6 @@
 
         $(document).on('change', 'input[name=health_dual_pricing_frequency]', function() {
             $('.dual-pricing-update-frequency-btn').toggleClass('dual-pricing-frequency-updated', $(this).val() !== $('#health_filter_frequency').val());
-        });
-
-        $(document).on('click', '.dual-pricing-update-frequency-btn', function() {
-            var $filterBarFrequency = $('input[name=health_filterBar_frequency]'),
-                currFrequency = $filterBarFrequency.filter(':checked').val(),
-                newFrequency = currFrequency;
-
-            if ($(this).hasClass('dual-pricing-frequency-updated')) {
-                newFrequency = $('input[name=health_dual_pricing_frequency]').filter(':checked').val();
-
-                $filterBarFrequency.filter('[value='+newFrequency+']').trigger('click');
-                $('.current-frequency').text(freqValuesMapping[newFrequency]);
-            }
-
-            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                method: 'trackRateRise',
-                object: {
-                    category: 'Health Rate Rise Modal',
-                    action: 'Learn More Engaged',
-                    label: freqValuesMapping[currFrequency] + ':' + freqValuesMapping[newFrequency]
-                }
-            });
-
-            _trackModalClose = false;
-            _hideModal();
         });
     }
 
@@ -175,47 +152,17 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.device.DEVICE_MEDIA_STATE_CHANGE, function editDetailsEnterXsState() {
-            _hideModal();
+            _hideBannerModal();
         });
     }
-
-    function _showModal(dropDeadDate) {
-        var template = _.template($elements.modalTemplate.html()),
-            hiddenFreqVal = $('#health_filter_frequency').val(),
-            ddd = new Date(dropDeadDate),
-            dddDay = meerkat.modules.dateUtils.format(ddd, "D"),
-            dddSuffix = meerkat.modules.dateUtils.format(ddd, "Do").replace(dddDay, '');
+    function _showBannerModal() {
 
         _trackModalClose = true;
 
-        modalId = meerkat.modules.dialogs.show({
+        bannerModalId = meerkat.modules.dialogs.show({
             className: 'dual-pricing-modal',
-            htmlContent: template({
-                dropDeadDate: meerkat.modules.dateUtils.format(ddd, "Do MMMM"),
-                dddMonth: meerkat.modules.dateUtils.format(ddd, "MMMM"),
-                dddDay: dddDay,
-                dddSuffix: dddSuffix,
-                frequency: [
-                    {
-                        value: 'F',
-                        label: 'Fortnightly',
-                        selected: hiddenFreqVal === 'F'
-                    },
-                    {
-                        value: 'M',
-                        label: 'Monthly',
-                        selected: hiddenFreqVal === 'M'
-                    },
-                    {
-                        value: 'A',
-                        label: 'Annually',
-                        selected: hiddenFreqVal === 'A'
-                    }
-                ]
-            }),
+            htmlContent: $elements.bannerModalTemplate.html(),
             onOpen : function() {
-                $('a.live-chat').toggleClass('hidden', $('.LPMcontainer').length === 0);
-
                 meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                     method: 'trackRateRise',
                     object: {
@@ -237,12 +184,12 @@
             }
         });
 
-        return modalId;
+        return bannerModalId;
     }
 
-    function _hideModal() {
-        if (modalId !== null) {
-            meerkat.modules.dialogs.close(modalId);
+    function _hideBannerModal() {
+        if (bannerModalId !== null) {
+            meerkat.modules.dialogs.close(bannerModalId);
         }
     }
 
@@ -303,8 +250,13 @@
         product.pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "MMMM Do, YYYY");
 
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        var htmlTemplateResultCard = _.template($elements.logoPriceTemplateResultCard.html());
+        var htmlTemplateMoreInfo = meerkat.modules.templateCache.getTemplate($("#price-template-more-info"));
+
         var affixedHeaderTemplate = '';
         product.renderedPriceTemplate = htmlTemplate(product);
+        product.renderedPriceTemplateResultCard = htmlTemplateResultCard(product);
+        product.renderedMoreInfoDualPricing = htmlTemplateMoreInfo(product);
 
         if($elements.affixedHeaderLogoPriceTemplate.html()) {
             affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
@@ -322,6 +274,9 @@
             product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
         }
 
+        htmlTemplateResultCard =  _.template($elements.logoPriceTemplateResultCard.html());
+        product.renderedAltPriceTemplateResultCard = htmlTemplateResultCard(product);
+        product.renderedAltMoreInfoDualPricing = htmlTemplateMoreInfo(product);
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);

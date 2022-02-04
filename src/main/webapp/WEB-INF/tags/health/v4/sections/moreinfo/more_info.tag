@@ -41,7 +41,6 @@
 	{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true && meerkat.modules.deviceMediaState.get() !== 'xs') { }}
 	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ obj.renderedAffixedHeaderPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, null, true); }}
-		{{ _.delay(function() { $('.dualPricingAffixedHeader').html(obj.renderedAffixedHeaderPriceTemplate);}); }}
 	{{ } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
 		{{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
 	{{ } else { }}

@@ -68,7 +68,8 @@
                             </c:if>
 							<li><a target="simplesiframe" href="simples/help_box.jsp">Help Box</a></li>
 							<li><a target="simplesiframe" href="simples/special_opt_in.jsp">Special opt in</a></li>
-							<%-- DISABLED UNTIL CAN BE WORKED ON
+							<li><a target="simplesiframe" href="simples/rate_rise_banner.jsp">Rate Rise label</a></li>
+						<%-- DISABLED UNTIL CAN BE WORKED ON
 							<li><a target="simplesiframe" href="simples/report_managerOpEnq.jsp">Manager - Operator enquires</a></li>
 							--%>
 

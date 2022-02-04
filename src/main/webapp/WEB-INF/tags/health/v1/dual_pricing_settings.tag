@@ -23,3 +23,6 @@
         <c:otherwise>false</c:otherwise>
     </c:choose>
 </c:set>
+
+
+<%--<c:set var="isDualPriceActive" scope="application" value="true"/>--%>

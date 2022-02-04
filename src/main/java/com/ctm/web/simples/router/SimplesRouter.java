@@ -14,9 +14,10 @@ import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
+import com.ctm.web.simples.admin.model.UserEditableTextType;
 import com.ctm.web.simples.admin.openinghours.services.OpeningHoursAdminService;
 import com.ctm.web.simples.admin.router.AdminRouter;
-import com.ctm.web.simples.admin.services.HelpBoxService;
+import com.ctm.web.simples.admin.services.UserEditableTextService;
 import com.ctm.web.simples.admin.services.SpecialOffersService;
 import com.ctm.web.simples.admin.services.SpecialOptInService;
 import com.ctm.web.simples.dao.UserDao;
@@ -76,6 +77,11 @@ import static javax.servlet.http.HttpServletResponse.*;
         "/simples/admin/helpbox/delete.json",
         "/simples/admin/helpbox/getAllRecords.json",
         "/simples/admin/helpbox/getCurrentRecords.json",
+        "/simples/admin/raterise/update.json",
+        "/simples/admin/raterise/create.json",
+        "/simples/admin/raterise/delete.json",
+        "/simples/admin/raterise/getAllRecords.json",
+        "/simples/admin/raterise/getCurrentRecords.json",
         "/simples/admin/specialOptIn/update.json",
         "/simples/admin/specialOptIn/getAllRecords.json",
         "/simples/admin/providerContent/getAllRecords.json",
@@ -206,9 +212,11 @@ public class SimplesRouter extends HttpServlet {
         } else if (uri.endsWith("/simples/admin/offers/getAllRecords.json")) {
             objectMapper.writeValue(writer, new SpecialOffersService().getAllOffers());
         } else if (uri.endsWith("/simples/admin/helpbox/getAllRecords.json")) {
-            objectMapper.writeValue(writer, new HelpBoxService().getAllHelpBox());
+            objectMapper.writeValue(writer, new UserEditableTextService().getAllUserEditableText(UserEditableTextType.HELP_BOX));
         } else if (uri.endsWith("/simples/admin/specialOptIn/getAllRecords.json")) {
             objectMapper.writeValue(writer, new SpecialOptInService().getAllSpecialOptIn());
+        } else if (uri.endsWith("/simples/admin/raterise/getAllRecords.json")) {
+            objectMapper.writeValue(writer, new UserEditableTextService().getAllUserEditableText(UserEditableTextType.RATE_RISE_MESSAGE));
         } else if (uri.contains("/simples/admin/")) {
             AdminRouter adminRouter = new AdminRouter(request, response, ipAddressHandler, objectMapper);
             adminRouter.doGet(uri.split("/simples/admin/")[1]);
@@ -282,12 +290,12 @@ public class SimplesRouter extends HttpServlet {
             } else {
                 objectMapper.writeValue(writer, jsonObjectNode("result", result));
             }
-        } else if (uri.endsWith("/simples/admin/helpbox/update.json")) {
-            HelpBoxService service = new HelpBoxService();
-            List<SchemaValidationError> errors = service.validateHelpBoxData(request, authenticatedData);
+        } else if (uri.endsWith("/simples/admin/helpbox/update.json") || uri.endsWith("/simples/admin/raterise/update.json")) {
+            UserEditableTextService service = new UserEditableTextService();
+            List<SchemaValidationError> errors = service.validateUserEditableTextData(request, authenticatedData);
             if (errors == null || errors.isEmpty()) {
                 try {
-                    objectMapper.writeValue(writer, service.updateHelpBox(request, authenticatedData));
+                    objectMapper.writeValue(writer, service.updateUserEditableText(request, authenticatedData));
                 } catch (CrudValidationException e) {
                     objectMapper.writeValue(writer, jsonObjectNode("error", e.getValidationErrors()));
                 }
@@ -295,12 +303,12 @@ public class SimplesRouter extends HttpServlet {
                 response.setStatus(400);
                 objectMapper.writeValue(writer, jsonObjectNode("error", errors));
             }
-        } else if (uri.endsWith("/simples/admin/helpbox/create.json")) {
-            HelpBoxService service = new HelpBoxService();
-            List<SchemaValidationError> errors = service.validateHelpBoxData(request, authenticatedData);
+        } else if (uri.endsWith("/simples/admin/helpbox/create.json") || uri.endsWith("/simples/admin/raterise/create.json")) {
+            UserEditableTextService service = new UserEditableTextService();
+            List<SchemaValidationError> errors = service.validateUserEditableTextData(request, authenticatedData);
             if (errors == null || errors.isEmpty()) {
                 try {
-                    objectMapper.writeValue(writer, service.createHelpBox(request, authenticatedData));
+                    objectMapper.writeValue(writer, service.createUserEditableText(request, authenticatedData));
                 } catch (CrudValidationException e) {
                     objectMapper.writeValue(writer, jsonObjectNode("error", e.getValidationErrors()));
                 }
@@ -308,15 +316,15 @@ public class SimplesRouter extends HttpServlet {
                 response.setStatus(400);
 
             }
-        } else if (uri.endsWith("/simples/admin/helpbox/delete.json")) {
-            String result = new HelpBoxService().deleteHelpBox(request, authenticatedData);
+        } else if (uri.endsWith("/simples/admin/helpbox/delete.json") || uri.endsWith("/simples/admin/raterise/delete.json")) {
+            String result = new UserEditableTextService().deleteUserEditableText(request, authenticatedData);
             if (!result.equalsIgnoreCase("success")) {
                 response.setStatus(400);
                 objectMapper.writeValue(writer, jsonObjectNode("error", result));
             } else {
                 objectMapper.writeValue(writer, jsonObjectNode("result", result));
             }
-        } else if (uri.contains("/simples/admin/specialOptIn/update.json")) {
+        }  else if (uri.contains("/simples/admin/specialOptIn/update.json")) {
             SpecialOptInService service = new SpecialOptInService();
             List<SchemaValidationError> errors = service.validateSpecialOptInData(request, authenticatedData);
             if (errors == null || errors.isEmpty()) {

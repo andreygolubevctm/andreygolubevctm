@@ -284,7 +284,7 @@ public class ResponseAdapterV2 {
 
         final BigDecimal lhcAmount = quotePrice.getLhcAmount();
 
-        String pricingText = String.format("Includes rebate of %1$s & LHC loading of %2$s.", rebateValue, formatCurrency(lhcAmount, true, true)).trim();
+        String pricingText = String.format("inc. %1$s Govt Rebate & LHC loading of %2$s.", rebateValue, formatCurrency(lhcAmount, true, true)).trim();
         price.setPricing(pricingText);
 
         final BigDecimal lhcFreeAmount = calculateLHCFreeAmount(rebatePercentage, quotePrice.getBasePremium(), quotePrice.getLhcFreeAmount());

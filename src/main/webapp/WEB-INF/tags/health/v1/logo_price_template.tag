@@ -20,11 +20,11 @@
     {{ } }}
 
     {{ if(typeof obj.hasOwnProperty('showBeforeAfterText') && obj.showBeforeAfterText === true) { }}
-       <div class="dual-pricing-before-after-text">
+    <div class="dual-pricing-before-after-text">
             <span class="text-bold">
               {{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { }}After{{ } else { }}Before{{ } }}
             </span> April 1st
-        </div>
+    </div>
     {{ } }}
 
     {{ var pyrrClass = meerkat.modules.healthPyrrCampaign.isPyrrActive(true) ? " pyrrMoreInfoInline" : ""; }}
@@ -40,19 +40,19 @@
 
         <div class="frequency {{=freq}} {{= obj._selectedFrequency === freq.toLowerCase() ? '' : 'displayNone' }}" data-text="{{= priceText }}" data-lhcfreetext="{{= priceLhcfreetext }}">
             {{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
-                        <div class="frequencyAmount">
-                            {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
-                            {{ premiumSplit = premiumSplit.split(".") }}
-                            <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
-                            <div class="frequencyTitle">
-                                {{= freq === 'annually' ? 'per year' : '' }}
-                                {{= freq.toLowerCase() === 'halfyearly' ? 'per half year' : '' }}
-                                {{= freq === 'quarterly' ? 'per quarter' : '' }}
-                                {{= freq === 'monthly' ? 'per month' : '' }}
-                                {{= freq === 'fortnightly' ? 'per f/night' : '' }}
-                                {{= freq === 'weekly' ? 'per week' : '' }}
-                            </div>
-                        </div>
+            <div class="frequencyAmount">
+                {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
+                {{ premiumSplit = premiumSplit.split(".") }}
+                <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
+                <div class="frequencyTitle">
+                    {{= freq === 'annually' ? 'per year' : '' }}
+                    {{= freq.toLowerCase() === 'halfyearly' ? 'per half year' : '' }}
+                    {{= freq === 'quarterly' ? 'per quarter' : '' }}
+                    {{= freq === 'monthly' ? 'per month' : '' }}
+                    {{= freq === 'fortnightly' ? 'per f/night' : '' }}
+                    {{= freq === 'weekly' ? 'per week' : '' }}
+                </div>
+            </div>
             {{ } else { }}
             <div class="frequencyAmount comingSoon">New price not yet released</div>
             {{ } }}
@@ -60,19 +60,6 @@
             <div class="rounding">Premium may vary slightly due to rounding</div>
             {{ } }}
 
-            {{ if(obj.custom.reform.yad !== "N" && premium.abd > 0) { }}
-                {{ if(info.abdRequestFlag === 'A') { }}
-                    <health_v4:abd_badge abd="true" />
-                {{ } else { }}
-                    <health_v4:abd_badge abd="false" />
-                {{ } }}
-            {{ } }}
-
-            <div class="lhcText">
-                <span>
-					{{= textPricing}}
-                </span>
-            </div>
         </div>
         {{ } }}
         {{ }) }}

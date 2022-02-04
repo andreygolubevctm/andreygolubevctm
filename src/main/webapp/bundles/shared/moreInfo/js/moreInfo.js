@@ -189,9 +189,9 @@
         $(document.body).on('change', '.moreInfoPriceContainer .more-info-payment-frequency', function () {
             var currentFrequency = $(this).val();
             $('.moreInfoPriceContainer .more-info-frequency.' + currentFrequency).removeClass("displayNone");
-            $('.more-info-affixed-header .frequency.' + currentFrequency).removeClass("displayNone");
+            $('.more-info-affixed-header .frequency.' + currentFrequency).removeClass("displayNone").addClass("vertical-center-lines");
             $('.moreInfoPriceContainer .more-info-frequency').not('.' + currentFrequency).addClass("displayNone");
-            $('.more-info-affixed-header .frequency').not('.' + currentFrequency).addClass("displayNone");
+            $('.more-info-affixed-header .frequency').not('.' + currentFrequency).removeClass("vertical-center-lines").addClass("displayNone");
 
             $(this).val($(this).attr('data-freq'));
             updateFrequencyOnClose = true;

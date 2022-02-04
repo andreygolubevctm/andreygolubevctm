@@ -6,7 +6,6 @@
 {{ var prem = obj.premium[frequency]; }}
 {{ var textLhcFreePricing = 'LHC loading may increase the premium.'; }}
 {{ if (prem.lhcfreepricing.indexOf('premium') === -1) { textLhcFreePricing = ''; } }}
-{{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
-{{ if (!isDualPricingActive && textLhcFreePricing !== '') { }}
+{{ if (textLhcFreePricing !== '') { }}
 <div class="lhcStaticText">{{= textLhcFreePricing}}</div>
 {{ } }}

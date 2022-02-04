@@ -29,9 +29,9 @@ section: Results v4
     Inner Container wraps the content that needs to be constrained within the padding of the resultInsert.
     */
   .results-header-inner-container {
-    margin: 10px 8px 15px 8px;
-    @media(@sm) {
-      margin: 10px 6px 25px 6px;
+    margin: 10px 0 25px 0;
+    @media(@lg) {
+      margin: 10px 8px 15px 8px;
     }
   }
 }
@@ -69,16 +69,25 @@ section: Results v4
   // Components are: .frequency, .frequencyAmount, .cents, .dollarSign, .comma, .frequencyTitle
   .frequency {
     text-align: center;
+    .frequencyTitle {
+      font-family: @font-family-theme-semibold;
+      text-transform: capitalize;
+      font-size: 10px;
+      color: #424242;
+    }
+    .text-pricing-in-frequency-title {
+      font-family: @font-family-theme-regular;
+      font-size: 10px;
+    }
+    .lhcText {
+      font-family: @font-family-theme-semibold;
+      font-size: 14px;
+    }
     .frequencyAmount {
       color: #333333;
       text-align: center;
       // set font family:
-      font-family: @results-price-font-family;
-      .cents,
-      .comma,
-      .frequencyTitle {
-        font-family: @results-price-cents-font-family;
-      }
+      font-family: @font-family-theme-semibold;
       // set font sizes
       font-size: 52px;
       @media (@xs-only) {
@@ -102,7 +111,7 @@ section: Results v4
         vertical-align: super;
       }
       .dollarSign {
-        top: 2px;
+        top: -2px;
       }
       .cents {
         left: 3px;
@@ -115,7 +124,6 @@ section: Results v4
       }
     }
     // end frequency amount
-    .lhcText,
     .rounding {
       text-align: center;
       display: block;

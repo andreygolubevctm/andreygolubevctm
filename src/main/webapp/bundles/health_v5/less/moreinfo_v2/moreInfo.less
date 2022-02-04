@@ -298,22 +298,25 @@
 
 .more-info-affixed-header {
   .container {
-    display: table;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
   }
 
-  div[class*="col-xs-"] {
-    display: table-cell;
-    float: none;
-    vertical-align: middle;
-    margin-top: 10px;
-
+  div.col {
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    padding-left: 15px;
+    padding-right: 15px;
     img {
       margin-top: -10px;
     }
   }
 
-  .companyLogo {
-    margin-left: -50px;
+  .logo-col {
+    padding-left: 0px!important;
+    padding-right: 5px!important;
   }
 
   .vertical-align {
@@ -321,12 +324,26 @@
   }
 
   .productNames {
-    font-size: 25px;
+    font-size: 17px;
     font-family: @font-family-theme-bold;
   }
-  .lhcTextAndABD {
+
+  .lhcStaticText {
+    font-family: @font-family-theme-bold;
+    color: #757575;
     font-size: 11px;
+    text-align: left;
   }
+
+  .lhcTextAndABD {
+    .lhcStaticText {
+      text-align: center;
+    }
+    .abd-badge {
+      margin-top: 0;
+    }
+  }
+
   .abd-badge {
     background-color: #FFFFFF;
     border-radius: 20px;
@@ -336,11 +353,11 @@
     justify-content: center;
     align-items: self-end;
     text-align: center;
-    min-height: 25px;
-    font-weight: bold;
-    width: 100%;
-    min-width: 170px;
-    padding-bottom: 3px;
+    min-height: 20px;
+    font-family: @font-family-theme-semibold;
+    min-width: 160px;
+    width: 66%;
+    padding-left: 3px;
     &:hover, &:focus, &:active{
       background-color: fade(@primary500, 20%);
       border-color: @primary500;
@@ -376,12 +393,9 @@
     color: @gray-darker;
     font-size: 16px;
   }
-  .productNames {
-    font-size: 17px;
-    font-weight: bold;
-  }
   .frequencyAmount {
     font-size: 36px;
+    font-family: @font-family-theme-semibold;
 
     &.comingSoon {
       font-size: 18px;
@@ -391,14 +405,23 @@
   .hide-on-affix {
     display: flex;
     align-items: baseline;
-    @media (@xs-sm-only) {
-      flex-direction: column;
-    }
     .frequencyTitle {
-      font-size: 16px;
-      font-weight : bolder;
+      font-size: 14px;
+      font-family: @font-family-theme-semibold;
       text-transform: capitalize;
       margin-right: 3px;
+      white-space: nowrap;
+    }
+    .lhcText {
+      font-family: @font-family-theme-semibold;
+      white-space: nowrap;
+    }
+  }
+  .btn-more-info-apply {
+    width: 160px;
+    border-radius: 5px;
+    .icon-arrow-right {
+      padding-left: 5px;
     }
   }
 }
@@ -427,22 +450,38 @@
 
 .moreInfoPricingDual {
   display: flex;
-  justify-content: space-between;
-  margin: -10px;
+  justify-content: flex-start;
   width: 100%;
+  gap: 20px;
 
   .current-price .frequencyAmount{
     font-size: 56px;
   }
 }
 
+.moreInfoPricingDualMobile {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .current-price .frequencyAmount{
+    font-size: 56px;
+  }
+  .future-price {
+    min-height: 240px;
+  }
+}
+
 .moreInfoPriceWrapper {
   flex: 1 0 auto;
-  margin: 10px;
+  @media(@xs-only) {
+    margin: auto;
+  }
   min-height: 150px;
-  @media (@sm) {
-    width: 45px;
-    max-width: 360px;
+  width: 45px;
+  max-width: 360px;
+  @media(@xs-only) {
+    width: 100%;
   }
 }
 
@@ -504,6 +543,7 @@
     width: 100%;
     justify-content: center;
     text-align: center;
+    padding: 0 8px;
 
     .price-breakdown {
       display:none;
@@ -553,11 +593,6 @@
   }
 
   .moreInfoPrice {
-    .frequencyAmount {
-      font-size: 42px;
-      color: #DD4C5D;
-    }
-
     .frequencyTitle {
       color: @gray-dark;
     }
@@ -599,6 +634,19 @@
 
 // Bridging page
 .moreInfoDropdown {
+  .xs-results-pagination {
+    .navbar-nav {
+      background-color: white!important;
+      .btn-back {
+        background-color: white!important;
+      }
+    }
+  }
+  @media (@xs-only) {
+    .modal-body {
+      background-color: white;
+    }
+  }
   margin-top: 0px !important;
 
   .more-info-content {
@@ -676,7 +724,7 @@
   }
   .productSummary {
     .frequency {
-      padding: 16px 0;
+      padding: 16px 0 12px 0;
       .lhcText {
         color: @gray-darker;
         span {
@@ -960,7 +1008,7 @@
         padding: 0;
       }
     }
-    padding: 18px 0 15px 0;
+    padding: 12px 0 9px 0;
   }
 
   .benefitsOverflow {
@@ -1364,3 +1412,8 @@ body[data-is-single="true"] {
   border-right: 1px solid #E0E0E0;
   border-left: 1px solid #E0E0E0;
 }
+
+.vertical-center-items-gap {
+  gap: 13px;
+}
+
