@@ -18,7 +18,7 @@
 
     function initDualPricing() {
         if (!isDualPricingActive()) {
-            return false;
+            return true;
         }
 
         _startMonthFirst = getStartMonthFirst('01/04/');
@@ -47,6 +47,7 @@
     function _setupElements() {
         $elements = {
             logoPriceTemplateResultCard: $('#logo-price-template-result-card'),
+            logoPriceTemplateSideBar: $('#logo-price-template-side-bar'),
             logoPriceTemplate: $('#logo-price-template'),
             affixedHeaderLogoPriceTemplate: $('#affixed-header-logo-price-template'),
             template: {
@@ -258,6 +259,9 @@
         product.renderedPriceTemplateResultCard = htmlTemplateResultCard(product);
         product.renderedMoreInfoDualPricing = htmlTemplateMoreInfo(product);
 
+        var htmlTemplateSideBar = !meerkat.site.isCallCentreUser ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
+        product.renderedPriceTemplateSideBar = !htmlTemplateSideBar ? undefined : htmlTemplateSideBar(product);
+
         if($elements.affixedHeaderLogoPriceTemplate.html()) {
             affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
             product.renderedAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
@@ -277,6 +281,10 @@
         htmlTemplateResultCard =  _.template($elements.logoPriceTemplateResultCard.html());
         product.renderedAltPriceTemplateResultCard = htmlTemplateResultCard(product);
         product.renderedAltMoreInfoDualPricing = htmlTemplateMoreInfo(product);
+
+        htmlTemplateSideBar = !meerkat.site.isCallCentreUser ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
+        product.renderedAltPriceTemplateSideBar = !htmlTemplateSideBar ? undefined : htmlTemplateSideBar(product);
+
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
@@ -304,7 +312,7 @@
         }
 
         if (isForSidebar) {
-            return deviceMediaState !== 'xs' ? $elements.template.sidebar : $elements.template.applicationXS;
+            return $elements.template.sidebar;
         }
 
         page = page || 'moreinfo';
@@ -312,10 +320,34 @@
         return $elements.template[page][deviceMediaState] || $elements.template[page]['default'];
     }
 
+    function initAccordionsEvents() {
+         _.defer(function() {
+             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-single'); 
+             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-dual'); 
+             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .policySummary-sidebar #price-breakdown-accordion-mobile'); 
+
+             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .policySummary-sidebar #policy_details_accordion'); 
+
+             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-single'); 
+             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-dual'); 
+             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .policySummary-sidebar #price-breakdown-accordion-mobile'); 
+             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .policySummary-sidebar #policy_details_accordion'); 
+
+             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .fieldset-column-side .dual-pricing-off-container .price-boxes-wrapper .current-pricing .price-breakdown-wrapper.hidden-xs #price-breakdown-accordion-single-price'); 
+             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm #price-breakdown-accordion-single-price'); 
+
+             meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#applicationDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-single-combined'); 
+             meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#applicationDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-dual-combined'); 
+             meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#paymentDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-single-combined'); 
+             meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#paymentDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-dual-combined'); 
+             });
+    }
+
     meerkat.modules.register('healthDualPricing', {
         initDualPricing: initDualPricing,
         isDualPricingActive: isDualPricingActive,
-        renderTemplate: renderTemplate
+        renderTemplate: renderTemplate,
+        initAccordionsEvents: initAccordionsEvents
     });
 
 })(jQuery);

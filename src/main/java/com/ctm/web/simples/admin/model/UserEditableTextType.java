@@ -2,8 +2,9 @@ package com.ctm.web.simples.admin.model;
 
 public enum UserEditableTextType {
     HELP_BOX("helpBox", "Help Box"),
-    RATE_RISE_MESSAGE("rateRiseBanner", "Rate Rise Label");
-
+    RATE_RISE_MESSAGE("rateRiseBanner", "Rate Rise Label"),
+    RATE_RISE_MESSAGE_SIDE_BAR("rateRiseBannerSideBar", "Rate Rise Label for Side Bar");
+  
     private String type;
     private String description;
 

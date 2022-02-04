@@ -1,6 +1,8 @@
 <%@ tag description="The Health Logo template" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<%-- PRICE TEMPLATE FOR RESULT CARD IN SIMPLES --%>
 {{ if (!obj.hasOwnProperty('premium')) {return;} }}
 {{ var isConfirmation = false; }}
 {{ try{ }}
@@ -39,7 +41,6 @@
     <div class="frequencyAmount">
         {{ var dollarPriceResult = healthResultsTemplate.getPrice(result); }}
         <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
-<%--        <div class="frequencyTitle">{{= freqObj.label }}</div>--%>
     </div>
 
 

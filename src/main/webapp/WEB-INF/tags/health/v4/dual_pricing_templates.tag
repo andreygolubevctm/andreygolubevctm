@@ -124,13 +124,20 @@
 
 <core_v1:js_template id="dual-pricing-template-sidebar">
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
-		<div class="current-pricing">
-			{{= priceBreakdownLHCCopy }}
-			{{= renderedPriceTemplate }}
+		<div class="logo-name-lhc-abd-container">
+			<div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
+			<h5 class="name">{{= ((obj.info.providerName ? obj.info.providerName : obj.info.fundName) + " " + obj.info.name) }}</h5>
+			<div class="resultInsert">
+				<health_v4:abd_badge_with_link_and_lhc />
+			</div>
 		</div>
-		<hr />
-		<div class="raterisemonth-pricing">
-			{{= renderedAltPriceTemplate }}
+		<div class="price-boxes-wrapper">
+			{{= renderedPriceTemplateSideBar }}
+			{{= renderedAltPriceTemplateSideBar }}
+		</div>
+		<health_v4:price_details_side_bar/>
+		<div class="about-this-product-link hidden-xs">
+			<a href="javascript:;" class="about-this-fund">About this fund</a>
 		</div>
 	</div>
 </core_v1:js_template>

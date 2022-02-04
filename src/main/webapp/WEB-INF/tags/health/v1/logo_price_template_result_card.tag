@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- LOGO AND PRICES TEMPLATE --%>
+<%-- LOGO AND PRICES TEMPLATE FOR RESULT CARD IN SIMPLES --%>
 <script id="logo-price-template-result-card" type="text/html">
     {{ if (!obj.hasOwnProperty('premium')) {return;} }}
     <%-- Decide whether to render the normal premium or the alt premium (for dual-pricing) --%>
@@ -17,12 +17,6 @@
             {{ } }}
         {{ } }}
     {{ }); }}
-
-<%--    {{ if(showFromDate === true) { }}--%>
-<%--    <div class="dual-price-date">--%>
-<%--        From April 1--%>
-<%--    </div>--%>
-<%--    {{ } }}--%>
 
     {{ if(typeof obj.displayLogo === 'undefined' || obj.displayLogo == true) { }}
     <div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
@@ -97,12 +91,7 @@
                             {{= data.freq === 'fortnightly' ? 'fortnightly' : '' }}
                             {{= data.freq === 'weekly' ? 'per week' : '' }}
                         </span>
-<%--                        {{ if((typeof obj.hasOwnProperty('showBeforeAfterText') && obj.showBeforeAfterText === true)) { }}--%>
-<%--                            <span class="text-pricing-in-frequency-title changed-1"> / {{= data.textPricing}}</span>--%>
-<%--                        {{ } }}--%>
                     </div>
-<%--                {{ } else { }}--%>
-<%--                    <div class="frequencyAmount comingSoon">New price not yet released</div>--%>
                 {{ } }}
                 {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
                     <div class="rounding">Premium may vary slightly due to rounding</div>
