@@ -793,6 +793,11 @@ body[data-step="results"]:not(.moreInfoVisible) {
 .policySummary-sidebar.hasDualPricing {
   h1 {
     margin-top: 0;
+    font-family: @font-family-theme-bold;
+    font-size: 18px;
+    color: #333333;
+    text-align: center;
+    line-height: 23px;
   }
 
   .premium-rising-tag {
@@ -810,7 +815,9 @@ body[data-step="results"]:not(.moreInfoVisible) {
   }
 
   .raterisemonth-pricing {
-    margin-top: 5px;
+    @media(@sm-md-only) {
+      margin-top: 5px;
+    }
 
     .frequencyAmount {
       color: @theme-accent-3;
@@ -894,7 +901,7 @@ body[data-step="payment"] {
     align-items: center;
   }
 
-  @media (@lg) {
+  @media (@sm) {
     padding-top: 2%;
   }
 
@@ -1097,3 +1104,1583 @@ div.result > div > div.results-header-inner-container > a {
   text-align: center;
 }
 
+.quoterefTemplateHolder {
+  padding-bottom: 7px;
+  border-bottom: 1px solid #DADADA;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 20px;
+  font-family: @font-family-theme-semibold;
+}
+
+.sidebar-box.hasDualPricing.policySummary-sidebar .current-pricing .dual-pricing-container .raterisemonth-pricing .altPriceContainer .price-wrapper {
+  display: flex;
+  flex-flow: column wrap;
+  margin-top: 10px;
+
+  @media (@sm) {
+    flex-flow: row wrap;
+  }
+}
+
+#applicationDetailsForm > div > div > div.fieldset-column-side.col-sm-3.hidden-xs > div.sidebar-box.hasDualPricing.policySummary-sidebar > div.policySummary.productSummary.dualPricing > div > div.current-pricing > div > div > div.frequency > div.hide-on-affix {
+  @media (min-width: 380px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (@sm) {
+    padding-top: 2%;
+  }
+
+  @media (max-width: 370px) {
+    margin-top: -5%;
+  }
+
+  margin-bottom: 5%;
+
+  span.lhcText {
+    font-size: 10px;
+    margin-left: 2%;
+    padding-top: 4px;
+  }
+
+  div.lhcText {
+    font-size: 10px;
+    margin-left: 2%;
+    padding-top: 2px;
+  }
+}
+
+.value-in-content-title {
+  font-family: @font-family-theme-semibold;
+}
+
+#applicationDetailsForm {
+
+  @media(@sm-only) {
+    div > div.row > div {
+      &.col-sm-9 {
+        width: 72%;
+      }
+      &.fieldset-column-side {
+        width: 31%;
+        margin-left: -25px;
+      }
+    }
+  }
+
+  .sidebar-box {
+    .frequency .hide-on-affix {
+      @media (min-width: 380px) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @media(@not-lg) {
+        flex-flow: column wrap;
+      }
+
+      @media (@sm) {
+        padding-top: 2%;
+      }
+
+      @media(@sm-md-only) {
+        flex-flow: column;
+      }
+
+      @media (max-width: 370px) {
+        margin-top: -5%;
+      }
+
+      margin-bottom: 5%;
+
+      span.lhcText {
+        font-size: 10px;
+        margin-left: 2%;
+        padding-top: 4px;
+      }
+
+      div.lhcText {
+        font-size: 12px;
+        margin-left: 2%;
+        padding-top: 2px;
+        font-family: @font-family-theme-regular;
+        color: #616161;
+      }
+    }
+    .background-wrapper {
+      .altPriceContainer .price-wrapper {
+        display: flex;
+        flex-flow: column wrap;
+        @media(@sm) {
+          flex-flow: row wrap;
+        }
+        @media(@sm-md-only) {
+          flex-flow: column wrap;
+          justify-content: center;
+        }
+      }
+
+      &.blue-background {
+        background-color: #E7F0FB;
+        border: 2px solid #E7F0FB;
+        border-radius: 2px;
+        box-shadow: 0 2px 4px rgba(208, 206, 206, 0.5);
+        padding-top: 2px;
+      }
+    }
+
+    .dual-pricing-off-container .background-wrapper {
+      .altPriceContainer .price-wrapper {
+        @media(@sm) {
+          flex-flow: column wrap;
+        }
+      }
+    }
+  }
+
+  .raterisemonth-pricing .dual-pricing-before-after-text {
+    @media(@sm) {
+      width: 45%;
+      padding-top: 10px;
+    }
+    @media(@sm-md-only) {
+      width: 100%;
+    }
+    color: #25130E;
+    padding-top: 16px;
+    font-size: 14px;
+  }
+
+  .current-pricing .dual-pricing-before-after-text {
+    @media(@sm) {
+      width: 45%;
+    }
+    @media(@sm-md-only) {
+      width: 100%;
+    }
+    color: #25130E;
+    padding-top: 20px;
+    font-size: 14px;
+  }
+
+  .frequencyTitle {
+    text-transform: capitalize;
+    color: #25130E;
+    font-size: 12px;
+  }
+
+  .current-pricing {
+    .frequencyAmount {
+      font-family: @font-family-theme-semibold;
+      font-size: 40px;
+      color: #25130E;
+    }
+  }
+  .raterisemonth-pricing {
+    .frequencyAmount {
+      font-family: @font-family-theme-semibold;
+      font-size: 40px;
+      color: #004A8E;
+    }
+  }
+
+  .current-pricing {
+    background: #FAFAFA;
+    box-shadow: 0 2px 4px #D0CECE7F;
+    border-radius: 4px;
+    padding-top: 2px;
+    @media(@sm) {
+      margin-bottom: 15px;
+    }
+    @media(@lg) {
+      margin-top: 10px;
+    }
+    .name {
+      text-align: center;
+      font-family: @font-family-theme-bold;
+      font-size: 16px;
+      color: #25130E;
+    }
+  }
+
+  .current-pricing .accordion-container {
+    margin: 0;
+    border: none;
+    height: 40px;
+
+    .accordion-content-container .accordion-content {
+      width: 100%;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      padding-top: 25px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .accordion-title-container {
+      background-color: #FAFAFA;
+      padding: 0;
+      height: 40px;
+      border-bottom: 1px solid #DADADA;
+      border-top: 1px solid #DADADA;
+
+      .accordion-title {
+        font-family: @font-family-theme-semibold;
+        font-size: 12px;
+        padding-left: 5px;
+        color: #424242;
+      }
+
+      .accordion-expand-icon {
+        font-size: 20px;
+        padding-right: 5px;
+        padding-left: 5px;
+      }
+    }
+  }
+
+  .raterisemonth-pricing .accordion-container {
+    margin: 0;
+    border: none;
+    height: 40px;
+
+    .accordion-content-container .accordion-content {
+      width: 100%;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      background-color: #E7F0FB;
+      padding-top: 25px;
+      padding-left: 5px;
+      padding-right: 5px;
+      border-top: 1px solid #C2D9F0;
+    }
+
+    .accordion-title-container {
+      background-color: #E7F0FB;
+      padding: 0;
+      height: 40px;
+      border-top: 1px solid #C2D9F0;
+      font-family: @font-family-theme-semibold;
+
+      .accordion-title {
+        font-family: @font-family-theme-semibold;
+        padding-left: 5px;
+        color: #424242;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 22px;
+      }
+
+      .accordion-expand-icon {
+        font-size: 20px;
+        padding-right: 5px;
+        padding-left: 5px;
+      }
+    }
+  }
+
+   .accordion-content-header {
+    text-align: left;
+     font-family: @font-family-theme-bold;
+     margin-bottom: 15px;
+     color: #424242;
+     font-style: normal;
+     font-weight: bold;
+     font-size: 12px;
+     line-height: 15px;
+     letter-spacing: 0.1em;
+  }
+
+  .accordion-content-footer {
+    text-align: left;
+    font-family: @font-family-theme-bold;
+    font-size: 12px;
+    @media(@not-lg) {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 22px;
+      font-family: @font-family-theme-semibold;
+      color: #25130E;
+    }
+    @media(max-width: 320px) {
+      .price-rise-tag {
+        span > p {
+          line-height: 12px;
+        }
+      }
+    }
+    .price-rise-tag {
+      font-size: 12px;
+      padding: 10px 16px 10px 16px;
+      border-top: 1px solid #C2D9F0;
+      @media(@not-lg) {
+        padding: 10px 12px 10px 1px;
+      }
+      @media(max-width: 320px) {
+        span {
+          width: 50%;
+        }
+        a {
+          text-align: right;
+          width: 50%;
+          span {
+            width: 15%;
+          }
+        }
+      }
+    }
+  }
+
+  .content-title {
+    width: 65%;
+    color: #424242;
+    @media(@sm-md-only) {
+      width: 60%;
+    }
+    @media(max-width: 300px) {
+      width: 60%;
+    }
+  }
+
+  .accordion-content-body {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    width: 100%;
+    margin-bottom: 10px;
+
+    .content-value {
+      font-family: @font-family-theme-semibold;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 18px;
+    }
+    .content-title {
+      .abd-modal-trigger {
+        text-align: left;
+      }
+    }
+  }
+
+  .raterisemonth-pricing.blue-background .accordion-container .accordion-title-container {
+    background-color: #E7F0FB;
+  }
+
+  .sidebar-box.hasDualPricing.policySummary-sidebar .new-price-not-yet-released .frequencyAmount.comingSoon-results {
+    font-family: @font-family-theme-regular;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .new-price-not-yet-released {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px 0 10px;
+    @media(@sm-md-only) {
+      justify-content: center;
+    }
+  }
+
+  .price.premium.full-width {
+    width: 100%;
+  }
+
+  .price-rise-tag {
+    width: 100%;
+    margin: 0;
+    padding: 10px 5px 10px 5px;
+    justify-content: space-between;
+    font-size: 10px;
+
+    .icon-expand {
+      margin: 0 5px 0 5px;
+    }
+  }
+
+  .blue-background {
+    .price-breakdown-wrapper {
+      border-top: 1px solid #C2D9F0;
+    }
+    .accordion-container .accordion-title-container {
+      border-bottom: 1px solid #C2D9F0;
+    }
+  }
+
+  .grey-background {
+    .price-breakdown-wrapper {
+      border-top: 1px solid #DADADA;
+    }
+  }
+
+  .policy-details {
+    display: flex;
+    flex-flow: column wrap;
+    margin-top: 25px;
+    padding: 0 5px 0 5px;
+    @media(@not-lg) {
+      margin-top: 10px;
+    }
+
+    .policy-details-header {
+      font-family: @font-family-theme-bold;
+      margin-bottom: 10px;
+      font-style: normal;
+      font-size: 12px;
+      line-height: 15px;
+      letter-spacing: 0.1em;
+    }
+    .policy-details-body {
+      flex-flow: row wrap;
+      justify-content: space-between;
+      display: flex;
+      &.start-date {
+        @media(@not-lg) {
+          padding-top: 10px;
+        }
+      }
+      @media(@not-lg) {
+        padding: 0 5px 0 5px;
+      }
+
+      .content-title {
+        width: 70%;
+        @media(@sm-md-only) {
+          width: 60%;
+        }
+        @media(max-width: 300px) {
+          width: 60%;
+        }
+      }
+      .content-value {
+        font-family: @font-family-theme-semibold;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 18px;
+      }
+      &.excess-text {
+        margin-bottom: 10px;
+        color: #424242;
+        font-family: @font-family-theme-regular;
+      }
+    }
+  }
+
+  .abd-modal-trigger {
+    display: block !important;
+  }
+
+  .accordion-content .abd-modal-trigger {
+    a {
+      color: #424242;
+    }
+  }
+  .dual-pricing-container {
+    .name {
+      margin-top: 25px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      font-family: @font-family-theme-bold;
+      text-align: center;
+      color: #25130E;
+      @media(@not-lg) {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .frequency .comingSoon-dash {
+    font-family: @font-family-theme-bold;
+    font-size: 26px;
+    padding-top: 1%;
+    padding-left: 10px;
+    @media(@not-lg) {
+      width: 100%;
+    }
+  }
+
+  .price-boxes-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: row wrap;
+    @media(@lg) {
+      margin-top: 15px;
+    }
+
+    @media(@sm) {
+      flex-flow: column wrap;
+      margin-top: 5px;
+    }
+  }
+
+  .current-pricing {
+    @media(@not-lg) {
+      width: 45%;
+    }
+  }
+
+  .raterisemonth-pricing {
+    box-shadow: 0 2px 4px rgba(208, 206, 206, 0.5);
+    border-radius: 4px;
+    .price-rise-tag {
+      border-bottom: 0.5px solid #C2D9F0;
+      @media(@sm-md-only) {
+        span {
+          width: 50%;
+        }
+        a {
+          text-align: right;
+          width: 50%;
+          span {
+            width: 15%;
+          }
+        }
+      }
+    }
+    .price-rise-banner-side-bar.grey-background {
+      .price-rise-tag {
+        background-color: #EEEEEE;
+        border-bottom: 0.5px solid #C4C4C4;
+        @media(@sm) {
+          margin-bottom: 10px;
+        }
+      }
+    }
+    .frequency {
+      margin-top: 10px;
+      margin-bottom: 8px;
+      @media(@sm) {
+        margin-top: 5px;
+      }
+    }
+    @media(@not-lg) {
+      width: 45%;
+    }
+  }
+
+  .price-breakdown-wrapper.hidden-lg {
+    margin-top: 20px;
+    .accordion-content {
+      .accordion-content-body {
+        .abd-badge.abd-modal-trigger {
+          text-align: left;
+        }
+      }
+    }
+    .accordion-container {
+      border: none !important;
+      margin: 2px 0 2px 0;
+      height: 40px;
+    }
+    #price-breakdown-accordion-mobile {
+      .accordion-title-container {
+        background: #FFFFFF;
+        border-bottom: 1px solid #E0E0E0;
+        height: 40px;
+        font-family: @font-family-theme-bold;
+        color: #424242;
+        font-size: 14px;
+        font-style: normal;
+        line-height: 18px;
+        letter-spacing: 0.1em;
+        @media(@not-lg) {
+          padding: 16px 16px 16px 15px;
+        }
+      }
+      .accordion-content-container {
+        flex-flow: column wrap;
+        @media(@not-lg) {
+          background: #F6F6F6;
+        }
+        .accordion-content {
+          flex-flow: column wrap;
+        }
+        #price-breakdown-accordion-dual-combined .accordion-content-container {
+          background-color: #E7F0FB;
+          color: #424242;
+          .accordion-content {
+            padding: 16px 0 0 0;
+          }
+          @media(@not-lg) {
+            .accordion-content {
+              padding: 16px 0 0 15px;
+            }
+            .accordion-content-body {
+              padding: 0 16px 0 1px;
+            }
+          }
+        }
+        .price-breakdown-accordions-wrapper {
+          .accordion-title-container {
+            font-family: @font-family-theme-semibold;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 22px;
+            letter-spacing: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .policy-details.hidden-lg {
+    .accordion-container {
+      border: none !important;
+      margin: 2px 0 2px 0;
+      height: 40px;
+    }
+    #policy_details_accordion {
+      .accordion-title-container {
+        background: #FFFFFF;
+        height: 40px;
+        font-family: @font-family-theme-bold;
+        color: #424242;
+        font-style: normal;
+        font-size: 14px;
+        line-height: 18px;
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.1em;
+        @media(@not-lg) {
+          padding: 16px 10px 16px 10px;
+        }
+
+      }
+      .accordion-content-container {
+        @media(@not-lg) {
+          border-top: 1px solid #E0E0E0;
+          .about-this-product-link {
+            width: 100%;
+            margin: 15px 0 17px 0;
+            a {
+              border: none;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .accordion-plus-icon {
+    font-size: 25px;
+    color: #0B60B7;
+    padding-bottom: 5px;
+    padding-right: 2px;
+  }
+
+  .raterisemonth-pricing .background-wrapper.grey-background {
+    background-color: #EEEEEE;
+    .frequencyAmount.comingSoon-results {
+      color: #25130E;
+    }
+  }
+
+  .about-this-product-link {
+    .about-this-fund {
+      text-align: center;
+      color: #0B60B7;
+      font-family: @font-family-theme-regular;
+      font-size: 14px;
+      text-decoration: underline;
+      padding-top: 10px;
+      margin-top: 20px;
+      border-top: 1px solid #DADADA;
+    }
+  }
+
+  .dual-pricing-container {
+    .resultInsert {
+      .lhcText {
+        color: #757575;
+        text-align: center;
+        font-family: @font-family-theme-regular;
+        font-size: 14px;
+      }
+    }
+    &.dual-pricing-off-container {
+      .resultInsert {
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .single-price-side-bar-header {
+    h1 {
+      margin-top: 0;
+      font-family: @font-family-theme-bold;
+      font-size: 18px;
+      color: #333333;
+      text-align: center;
+    }
+    .quote-reference {
+      padding-bottom: 7px;
+      border-bottom: 1px solid #DADADA;
+      text-align: center;
+      font-family: @font-family-theme-regular;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .altPriceContainer-with-padding {
+    padding: 15px 0 20px 0;
+    background-color: #EEEEEE;
+    @media(@sm) {
+      padding: 0 0 10px 0;
+    }
+    @media(@not-lg) {
+      background: #EEEEEE;
+      box-shadow: 0 2px 4px rgba(208, 206, 206, 0.5);
+      border-radius: 4px;
+    }
+  }
+
+  .quoterefTemplateHolder .quote-reference {
+    font-family: @font-family-theme-semibold;
+  }
+
+  .logo-name-lhc-abd-container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+  }
+
+  @media(@not-lg) {
+    .logo-name-lhc-abd-container {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      align-items: center;
+      .resultInsert {
+        display: flex;
+        justify-content: center;
+        flex-flow: row wrap;
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  @media(@sm-md-only) {
+    .logo-name-lhc-abd-container {
+      .resultInsert {
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .accordion-expand-icon {
+    font-size: 25px;
+  }
+
+  .dual-pricing-off-container {
+    display: flex;
+    flex-flow: column;
+  }
+
+  @media(@sm-md-only) {
+    #health_application_primary_dobInputY {
+      padding-right: 40px;
+    }
+    #health_application_primary_dobInputM {
+      padding-right: 40px;
+    }
+    #health_application_primary_dobInputD {
+      padding-right: 40px;
+    }
+    .sessioncamexclude.form-control.contact_telno.phone.sessioncamexclude.data-hj-suppress.placeholder.mobile.health_application_mobile {
+      width: 115%;
+    }
+    .sessioncamexclude.form-control.contact_telno.phone.sessioncamexclude.data-hj-suppress.placeholder.landline.health_application_other {
+      width: 115%;
+    }
+  }
+
+  .aged-based-inline {
+    display: inline-block;
+  }
+  .word-discount-and-help-icon-inline {
+    display: inline-block;
+    @media(@sm-md-only) {
+      display: block;
+      margin-top: -3px;
+    }
+  }
+
+}
+
+#paymentDetailsForm {
+
+  @media(@sm-only) {
+    div > div.row > div {
+      &.col-sm-9 {
+        width: 72%;
+      }
+      &.fieldset-column-side {
+        width: 31%;
+        margin-left: -25px;
+      }
+    }
+  }
+
+  .sidebar-box {
+    .frequency .hide-on-affix {
+      @media (min-width: 380px) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @media(@not-lg) {
+        flex-flow: column wrap;
+      }
+
+      @media (@sm) {
+        padding-top: 2%;
+      }
+
+      @media(@sm-md-only) {
+        flex-flow: column;
+      }
+
+      @media (max-width: 370px) {
+        margin-top: -5%;
+      }
+
+      margin-bottom: 5%;
+
+      span.lhcText {
+        font-size: 10px;
+        margin-left: 2%;
+        padding-top: 4px;
+      }
+
+      div.lhcText {
+        font-size: 12px;
+        margin-left: 2%;
+        padding-top: 2px;
+        font-family: @font-family-theme-regular;
+        color: #616161;
+      }
+    }
+    .background-wrapper {
+      .altPriceContainer .price-wrapper {
+        display: flex;
+        flex-flow: column wrap;
+        @media(@sm) {
+          flex-flow: row wrap;
+        }
+        @media(@sm-md-only) {
+          flex-flow: column wrap;
+          justify-content: center;
+        }
+      }
+
+      &.blue-background {
+        background-color: #E7F0FB;
+        border: 2px solid #E7F0FB;
+        border-radius: 2px;
+        box-shadow: 0 2px 4px rgba(208, 206, 206, 0.5);
+        padding-top: 2px;
+      }
+    }
+
+    .dual-pricing-off-container .background-wrapper {
+      .altPriceContainer .price-wrapper {
+        @media(@sm) {
+          flex-flow: column wrap;
+        }
+      }
+    }
+  }
+
+  .raterisemonth-pricing .dual-pricing-before-after-text {
+    @media(@sm) {
+      width: 45%;
+      padding-top: 10px;
+    }
+    @media(@sm-md-only) {
+      width: 100%;
+    }
+    color: #25130E;
+    padding-top: 16px;
+    font-size: 14px;
+  }
+
+  .current-pricing .dual-pricing-before-after-text {
+    @media(@sm) {
+      width: 45%;
+    }
+    @media(@sm-md-only) {
+      width: 100%;
+    }
+    color: #25130E;
+    padding-top: 20px;
+    font-size: 14px;
+  }
+
+  .frequencyTitle {
+    text-transform: capitalize;
+    color: #25130E;
+    font-size: 12px;
+  }
+
+  .current-pricing {
+    .frequencyAmount {
+      font-family: @font-family-theme-semibold;
+      font-size: 40px;
+      color: #25130E;
+    }
+  }
+  .raterisemonth-pricing {
+    .frequencyAmount {
+      font-family: @font-family-theme-semibold;
+      font-size: 40px;
+      color: #004A8E;
+    }
+  }
+
+  .current-pricing {
+    background: #FAFAFA;
+    box-shadow: 0 2px 4px #D0CECE7F;
+    border-radius: 4px;
+    padding-top: 2px;
+    @media(@sm) {
+      margin-bottom: 15px;
+    }
+    @media(@lg) {
+      margin-top: 10px;
+    }
+    .name {
+      text-align: center;
+      font-family: @font-family-theme-bold;
+      font-size: 16px;
+      color: #25130E;
+    }
+  }
+
+  .current-pricing .accordion-container {
+    margin: 0;
+    border: none;
+    height: 40px;
+
+    .accordion-content-container .accordion-content {
+      width: 100%;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      padding-top: 25px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .accordion-title-container {
+      background-color: #FAFAFA;
+      padding: 0;
+      height: 40px;
+      border-bottom: 1px solid #DADADA;
+      border-top: 1px solid #DADADA;
+
+      .accordion-title {
+        font-family: @font-family-theme-semibold;
+        font-size: 12px;
+        padding-left: 5px;
+        color: #424242;
+      }
+
+      .accordion-expand-icon {
+        font-size: 20px;
+        padding-right: 5px;
+        padding-left: 5px;
+      }
+    }
+  }
+
+  .raterisemonth-pricing .accordion-container {
+    margin: 0;
+    border: none;
+    height: 40px;
+
+    .accordion-content-container .accordion-content {
+      width: 100%;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      background-color: #E7F0FB;
+      padding-top: 25px;
+      padding-left: 5px;
+      padding-right: 5px;
+      border-top: 1px solid #C2D9F0;
+    }
+
+    .accordion-title-container {
+      background-color: #E7F0FB;
+      padding: 0;
+      height: 40px;
+      border-top: 1px solid #C2D9F0;
+      font-family: @font-family-theme-semibold;
+
+      .accordion-title {
+        font-family: @font-family-theme-semibold;
+        padding-left: 5px;
+        color: #424242;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 22px;
+      }
+
+      .accordion-expand-icon {
+        font-size: 20px;
+        padding-right: 5px;
+        padding-left: 5px;
+      }
+    }
+  }
+
+  .accordion-content-header {
+    text-align: left;
+    font-family: @font-family-theme-bold;
+    margin-bottom: 15px;
+    color: #424242;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 0.1em;
+  }
+
+  .accordion-content-footer {
+    text-align: left;
+    font-family: @font-family-theme-bold;
+    font-size: 12px;
+    @media(@not-lg) {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 22px;
+      font-family: @font-family-theme-semibold;
+      color: #25130E;
+    }
+    @media(max-width: 320px) {
+      .price-rise-tag {
+        span > p {
+          line-height: 12px;
+        }
+      }
+    }
+    .price-rise-tag {
+      font-size: 12px;
+      padding: 10px 16px 10px 16px;
+      border-top: 1px solid #C2D9F0;
+      @media(@not-lg) {
+        padding: 10px 12px 10px 1px;
+      }
+      @media(max-width: 320px) {
+        span {
+          width: 50%;
+        }
+        a {
+          text-align: right;
+          width: 50%;
+          span {
+            width: 15%;
+          }
+        }
+      }
+    }
+  }
+
+  .content-title {
+    width: 65%;
+    color: #424242;
+    @media(@sm-md-only) {
+      width: 60%;
+    }
+    @media(max-width: 300px) {
+      width: 60%;
+    }
+  }
+
+  .accordion-content-body {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    width: 100%;
+    margin-bottom: 10px;
+
+    .content-value {
+      font-family: @font-family-theme-semibold;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 18px;
+    }
+    .content-title {
+      .abd-modal-trigger {
+        text-align: left;
+      }
+    }
+  }
+
+  .raterisemonth-pricing.blue-background .accordion-container .accordion-title-container {
+    background-color: #E7F0FB;
+  }
+
+  .sidebar-box.hasDualPricing.policySummary-sidebar .new-price-not-yet-released .frequencyAmount.comingSoon-results {
+    font-family: @font-family-theme-regular;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .new-price-not-yet-released {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px 0 10px;
+    @media(@sm-md-only) {
+      justify-content: center;
+    }
+  }
+
+  .price.premium.full-width {
+    width: 100%;
+  }
+
+  .price-rise-tag {
+    width: 100%;
+    margin: 0;
+    padding: 10px 5px 10px 5px;
+    justify-content: space-between;
+    font-size: 10px;
+
+    .icon-expand {
+      margin: 0 5px 0 5px;
+    }
+  }
+
+  .blue-background {
+    .price-breakdown-wrapper {
+      border-top: 1px solid #C2D9F0;
+    }
+    .accordion-container .accordion-title-container {
+      border-bottom: 1px solid #C2D9F0;
+    }
+  }
+
+  .grey-background {
+    .price-breakdown-wrapper {
+      border-top: 1px solid #DADADA;
+    }
+  }
+
+  .policy-details {
+    display: flex;
+    flex-flow: column wrap;
+    margin-top: 25px;
+    padding: 0 5px 0 5px;
+    @media(@not-lg) {
+      margin-top: 10px;
+    }
+
+    .policy-details-header {
+      font-family: @font-family-theme-bold;
+      margin-bottom: 10px;
+      font-style: normal;
+      font-size: 12px;
+      line-height: 15px;
+      letter-spacing: 0.1em;
+    }
+    .policy-details-body {
+      flex-flow: row wrap;
+      justify-content: space-between;
+      display: flex;
+      &.start-date {
+        @media(@not-lg) {
+          padding-top: 10px;
+        }
+      }
+      @media(@not-lg) {
+        padding: 0 5px 0 5px;
+      }
+
+      .content-title {
+        width: 70%;
+        @media(@sm-md-only) {
+          width: 60%;
+        }
+        @media(max-width: 300px) {
+          width: 60%;
+        }
+      }
+      .content-value {
+        font-family: @font-family-theme-semibold;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 18px;
+      }
+      &.excess-text {
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .abd-modal-trigger {
+    display: block !important;
+  }
+
+  .accordion-content .abd-modal-trigger {
+    a {
+      color: #424242;
+    }
+  }
+  .dual-pricing-container {
+    .name {
+      margin-top: 25px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      font-family: @font-family-theme-bold;
+      text-align: center;
+      color: #25130E;
+      @media(@not-lg) {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .frequency .comingSoon-dash {
+    font-family: @font-family-theme-bold;
+    font-size: 26px;
+    padding-top: 1%;
+    padding-left: 10px;
+    @media(@not-lg) {
+      width: 100%;
+    }
+  }
+
+  .price-boxes-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: row wrap;
+    @media(@lg) {
+      margin-top: 15px;
+    }
+
+    @media(@sm) {
+      flex-flow: column wrap;
+      margin-top: 5px;
+    }
+  }
+
+  .current-pricing {
+    @media(@not-lg) {
+      width: 45%;
+    }
+  }
+
+  .raterisemonth-pricing {
+    box-shadow: 0 2px 4px rgba(208, 206, 206, 0.5);
+    border-radius: 4px;
+    .price-rise-tag {
+      border-bottom: 0.5px solid #C2D9F0;
+      @media(@sm-md-only) {
+        span {
+          width: 50%;
+        }
+        a {
+          text-align: right;
+          width: 50%;
+          span {
+            width: 15%;
+          }
+        }
+      }
+    }
+    .price-rise-banner-side-bar.grey-background {
+      .price-rise-tag {
+        background-color: #EEEEEE;
+        border-bottom: 0.5px solid #C4C4C4;
+        @media(@sm) {
+          margin-bottom: 10px;
+        }
+      }
+    }
+    .frequency {
+      margin-top: 10px;
+      margin-bottom: 8px;
+      @media(@sm) {
+        margin-top: 5px;
+      }
+    }
+    @media(@not-lg) {
+      width: 45%;
+    }
+  }
+
+  .price-breakdown-wrapper.hidden-lg {
+    margin-top: 20px;
+    .accordion-content {
+      .accordion-content-body {
+        .abd-badge.abd-modal-trigger {
+          text-align: left;
+        }
+      }
+    }
+    .accordion-container {
+      border: none !important;
+      margin: 2px 0 2px 0;
+      height: 40px;
+    }
+    #price-breakdown-accordion-mobile {
+      .accordion-title-container {
+        background: #FFFFFF;
+        border-bottom: 1px solid #E0E0E0;
+        height: 40px;
+        font-family: @font-family-theme-bold;
+        color: #424242;
+        font-size: 14px;
+        font-style: normal;
+        line-height: 18px;
+        letter-spacing: 0.1em;
+        @media(@not-lg) {
+          padding: 16px 16px 16px 15px;
+        }
+      }
+      .accordion-content-container {
+        flex-flow: column wrap;
+        @media(@not-lg) {
+          background: #F6F6F6;
+        }
+        .accordion-content {
+          flex-flow: column wrap;
+        }
+        #price-breakdown-accordion-dual-combined .accordion-content-container {
+          background-color: #E7F0FB;
+          color: #424242;
+          .accordion-content {
+            padding: 16px 0 0 0;
+          }
+          @media(@not-lg) {
+            .accordion-content {
+              padding: 16px 0 0 15px;
+            }
+            .accordion-content-body {
+              padding: 0 16px 0 1px;
+            }
+          }
+        }
+        .price-breakdown-accordions-wrapper {
+          .accordion-title-container {
+            font-family: @font-family-theme-semibold;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 22px;
+            letter-spacing: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .policy-details.hidden-lg {
+    .accordion-container {
+      border: none !important;
+      margin: 2px 0 2px 0;
+      height: 40px;
+    }
+    #policy_details_accordion {
+      .accordion-title-container {
+        background: #FFFFFF;
+        height: 40px;
+        font-family: @font-family-theme-bold;
+        color: #424242;
+        font-style: normal;
+        font-size: 14px;
+        line-height: 18px;
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.1em;
+        @media(@not-lg) {
+          padding: 16px 10px 16px 10px;
+        }
+
+      }
+      .accordion-content-container {
+        @media(@not-lg) {
+          border-top: 1px solid #E0E0E0;
+          .about-this-product-link {
+            width: 100%;
+            margin: 15px 0 17px 0;
+            a {
+              border: none;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .accordion-plus-icon {
+    font-size: 25px;
+    color: #0B60B7;
+    padding-bottom: 5px;
+    padding-right: 2px;
+  }
+
+  .raterisemonth-pricing .background-wrapper.grey-background {
+    background-color: #EEEEEE;
+    .frequencyAmount.comingSoon-results {
+      color: #25130E;
+    }
+  }
+
+  .about-this-product-link {
+    .about-this-fund {
+      text-align: center;
+      color: #0B60B7;
+      font-family: @font-family-theme-regular;
+      font-size: 14px;
+      text-decoration: underline;
+      padding-top: 10px;
+      margin-top: 20px;
+      border-top: 1px solid #DADADA;
+    }
+  }
+
+  .dual-pricing-container {
+    .resultInsert {
+      .lhcText {
+        color: #757575;
+        text-align: center;
+        font-family: @font-family-theme-regular;
+        font-size: 14px;
+      }
+    }
+    &.dual-pricing-off-container {
+      .resultInsert {
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .single-price-side-bar-header {
+    h1 {
+      margin-top: 0;
+      font-family: @font-family-theme-bold;
+      font-size: 18px;
+      color: #333333;
+      text-align: center;
+    }
+    .quote-reference {
+      padding-bottom: 7px;
+      border-bottom: 1px solid #DADADA;
+      text-align: center;
+      font-family: @font-family-theme-regular;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .altPriceContainer-with-padding {
+    padding: 15px 0 20px 0;
+    background-color: #EEEEEE;
+    @media(@sm) {
+      padding: 0 0 10px 0;
+    }
+    @media(@not-lg) {
+      background: #EEEEEE;
+      box-shadow: 0 2px 4px rgba(208, 206, 206, 0.5);
+      border-radius: 4px;
+    }
+  }
+
+  .quoterefTemplateHolder .quote-reference {
+    font-family: @font-family-theme-semibold;
+  }
+
+  .logo-name-lhc-abd-container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+  }
+
+  @media(@not-lg) {
+    .logo-name-lhc-abd-container {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      align-items: center;
+      .resultInsert {
+        display: flex;
+        justify-content: center;
+        flex-flow: row wrap;
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  @media(@sm-md-only) {
+    .logo-name-lhc-abd-container {
+      .resultInsert {
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .accordion-expand-icon {
+    font-size: 25px;
+  }
+
+  .dual-pricing-off-container {
+    display: flex;
+    flex-flow: column;
+  }
+
+  @media(@sm-md-only) {
+    #health_application_primary_dobInputY {
+      padding-right: 40px;
+    }
+    #health_application_primary_dobInputM {
+      padding-right: 40px;
+    }
+    #health_application_primary_dobInputD {
+      padding-right: 40px;
+    }
+    .sessioncamexclude.form-control.contact_telno.phone.sessioncamexclude.data-hj-suppress.placeholder.mobile.health_application_mobile {
+      width: 115%;
+    }
+    .sessioncamexclude.form-control.contact_telno.phone.sessioncamexclude.data-hj-suppress.placeholder.landline.health_application_other {
+      width: 115%;
+    }
+  }
+
+  .aged-based-inline {
+    display: inline-block;
+  }
+  .word-discount-and-help-icon-inline {
+    display: inline-block;
+    @media(@sm-md-only) {
+      display: block;
+      margin-top: -3px;
+    }
+  }
+
+}

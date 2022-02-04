@@ -1,7 +1,14 @@
 .policySummary-sidebar {
+  @media(@not-lg) {
+    border: none;
+    margin-bottom: 0;
+    padding: 10px 10px 5px 10px;
+  }
   border: 1px solid @gray-light;
   margin-bottom: 15px;
   padding: 10px;
+  display: flex;
+  flex-flow: column wrap;
 
   h1 {
     font-size: 23px;

@@ -12,6 +12,8 @@
         <health_v4:price_rise_modal />
         <health_v4:logo_price_template />
         <health_v4:logo_price_template_result_card />
+        <health_v4:logo_price_template_side_bar />
+        <health_v4:logo_price_template_single_price_side_bar />
         <health_v4:logo_price_template_affixed_header />
         <health_v4:about_the_fund_template />
     </layout_v3:slide_content>

@@ -3,6 +3,7 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- PRICE TEMPLATE FOR RESULT CARD V4 --%>
 {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
 {{ if (!obj.hasOwnProperty('premium')) {return;} }}
 {{ var isConfirmation = false; }}
