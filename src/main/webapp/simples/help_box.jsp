@@ -119,13 +119,14 @@
             <br>
             {{ if(data.modalAction === "edit") { }}
             <h1>Edit Help Box</h1>
-            <input type="hidden" name="helpBoxId" value="{{= data.helpBoxId }}">
+            <input type="hidden" name="textId" value="{{= data.textId }}">
             {{ } else if(data.modalAction === "clone") { }}
             <h1>Clone Help Box</h1>
             {{ } else { }}
             <h1>Create Help Box Content</h1>
             {{ } }}
         </div>
+        <input type="hidden" name="textType" value="helpBox">
     </div>
 
     <div class="row">
@@ -167,7 +168,7 @@
 </script>
 
 <script id="help-box-row-template" class="crud-row-template" type="text/html">
-    <div class="sortable-results-row row" data-id="{{= data.helpBoxId }}">
+    <div class="sortable-results-row row" data-id="{{= data.textId }}">
         <div class="col-lg-6">
             {{= data.content }}
         </div>

@@ -29,7 +29,7 @@
     </div>
 
 <c:if test="${isDualPriceActive eq true}">
-    <h1 class="hidden-xs">Your quote details</h1>
+    <h1>Your quote details</h1>
     <div class="quoterefTemplateHolder"></div>
     <div class="policySummary productSummary dualPricing"></div>
 </c:if>
@@ -38,34 +38,5 @@
     </div>
     <div class="sidebar-box sidebarFrequency hidden-xs"></div>
     <div class="sidebar-box">
-</c:if>
-
-<c:if test="${showProductDetails == true}">
-    <div class="productSummaryDetails">
-        <c:if test="${isAltView}">
-            <h1 class="hidden-sm">Your quote details</h1>
-            <div class="companyLogo hidden-sm"></div>
-        </c:if>
-        <h5 class="name">NAME</h5>
-        <p class="startDate-wrapper">
-            <strong>Start Date:</strong> <span class="startDate">XXX</span>
-        </p>
-        <p>
-            <strong>Excess:</strong> <span class="excess">XXX</span>
-        </p>
-        <p>
-            <strong>Excess Waivers:</strong> <span class="excessWaivers">XXX</span>
-        </p>
-        <p>
-            <strong>Co-payment / % Hospital Contribution:</strong> <span class="copayment">XXX</span>
-        </p>
-        <p class="brochurePlaceholder">
-
-        </p>
-        <div class="footer">
-            <a href="javascript:;" class="open-more-info hidden" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>view more info</a>
-        </div>
-    </div>
-
 </c:if>
 </div>

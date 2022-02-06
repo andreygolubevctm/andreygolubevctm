@@ -20,14 +20,6 @@
                 <span class="icon icon-pin" title="Pin this result" <field_v1:analytics_attr analVal="pin {{= obj.info.provider }}" quoteChar="\"" />></span>
             </div>
         </div>
-        {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
-            <div class="premium-rising-tag">
-                <span class="text-bold">Premiums Rise</span>
-                from April 1st
-                <br/>
-                <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
-            </div>
-        {{ } }}
         <div class="results-header-inner-container">
             <div class="productSummary vertical results{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }} hasDualPricing{{ } }} link-more-info" data-productId="{{= obj.productId }}" title="View policy details">
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); var logoHtml = logoTemplate(obj); }}

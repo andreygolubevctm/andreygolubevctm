@@ -39,30 +39,53 @@
 <c:set var="note">You must purchase before {{= obj.dropDeadDateFormatted }}.</c:set>
 <c:set var="heading">Premiums are rising April 1</c:set>
 <c:set var="whyPremiumsRising"><a href="javascript:;" class="why-rising-premiums">Why are premiums rising?</a></c:set>
-<c:set var="rateRiseDay1Header">from April 1</c:set>
-<c:set var="rateRiseDay1HeaderNoSup">from April 1st</c:set>
+<c:set var="rateRiseDay1Header">From April 1</c:set>
+<c:set var="rateRiseDay1HeaderNoSup">From April 1st</c:set>
 
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
 	{{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}
 	{{ var prem = obj.premium[obj._selectedFrequency] }}
 	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
-	{{ var textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
+	{{ var textPricing = prem.pricing ? prem.pricing : 'Includes HH rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
+
+	{{ var property = premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; } }}
+	{{ var showFromDate = false; }}
+	{{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
+		{{ if (typeof property[freq] !== "undefined") { }}
+			{{ var premium = property[freq] }}
+			{{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
+				{{ showFromDate = true; }}
+			{{ } }}
+		{{ } }}
+	{{ }); }}
 
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
 		<div class="current-pricing">
-			<div>
-				Now
+			<div class="current-price-header">
+				Current price
 			</div>
-			{{= renderedPriceTemplate }}
+			{{= renderedPriceTemplateResultCard }}
 		</div>
-		<div class="raterisemonth-pricing">
-			<div>
+		<div class="raterisemonth-pricing {{= (showFromDate === true ? 'blue-background' : 'grey-background') }}">
+			{{ if(showFromDate === true) { }}
+			<div class="dual-price-date">
 				${rateRiseDay1Header}
 			</div>
-			{{= renderedAltPriceTemplate }}
+			{{ } }}
+			{{= renderedAltPriceTemplateResultCard }}
 		</div>
 	</div>
+
+	<div class="lhc-and-abd-container">
+		<div class="lhs-text-container">
+			<div class="premium-LHC-text lhcText">
+				<span>{{= textPricing}}</span>
+			</div>
+		</div>
+		<health_v4:abd_badge_with_link />
+	</div>
+
 </core_v1:js_template>
 
 <%-- MORE INFO TEMPLATES --%>

@@ -29,36 +29,22 @@
 
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
-	{{ var comingSoonClass = ''; }}
-	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
-		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
-		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
-	{{ } }}
-	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
-		<div class="raterisemonth-pricing">
-		  <div class="dual-pricing-before-after-text">From April 1</div>
-			<div class="altPriceContainer">
-				{{= renderedAltPriceTemplate }}
-			</div>
-		</div>
-	</div>
+	{{= renderedAltPriceTemplateResultCard }}
 </core_v1:js_template>
 
 <%-- MORE INFO TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-moreinfo-template">
-	{{ var comingSoonClass = ''; }}
+	{{ var comingSoon = false; }}
+	{{ var today = new Date(); }}
+	{{ var currentYear = today.getFullYear(); }}
+	{{ var currentMonth = today.getMonth(); }}
+	{{ if ( currentMonth >= 3) { }}
+	{{ currentYear =  currentYear + 1; }}
+	{{ } }}
 	{{ var alternatePremium = obj.altPremium[obj._selectedFrequency]; }}
-	{{ var currFreq = obj._selectedFrequency === 'annually' ? 'annual' : obj._selectedFrequency; }}
-	{{ var prem = obj.premium[obj._selectedFrequency] }}
-	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
-	{{ var textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
-
-	{{ var altTextLhcFreePricing = alternatePremium.lhcfreepricing ? alternatePremium.lhcfreepricing : '+ ' + formatCurrency(alternatePremium.lhcAmount) + ' LHC inc ' + formatCurrency(alternatePremium.rebateAmount) + ' Government Rebate' }}
-	{{ var altTextPricing = alternatePremium.pricing ? alternatePremium.pricing : 'Includes rebate of ' + formatCurrency(alternatePremium.rebateAmount) + ' & LHC loading of ' + formatCurrency(alternatePremium.lhcAmount) }}
-
 	{{ if (!_.isUndefined(alternatePremium)) { }}
 		{{ var productPremium = alternatePremium }}
-		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
+		{{ comingSoon = (productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0); }}
 	{{ } }}
 	<div class="dual-pricing-container">
 		<div class="hidden-xs moreInfoPricingDual">
@@ -66,17 +52,19 @@
 				<div class="moreInfoPriceContainer">
 					<div class="moreInfoPriceHeading">Current price</div>
 					<div class="moreInfoPrice">
-						{{= renderedPriceTemplate }}
+						{{= renderedMoreInfoDualPricing }}
 						<health_v4:abd_badge_with_link />
 					</div>
 				</div>
 			</div>
 			<div class="moreInfoPriceWrapper">
 				<div class="moreInfoPriceContainer future-price">
-					<div class="moreInfoPriceHeading">Price from April 1</div>
+					<div class="moreInfoPriceHeading">Price from April 1 {{= currentYear}}</div>
 					<div class="moreInfoPrice">
-						{{= renderedAltPriceTemplate }}
-						<health_v4:abd_badge_with_link />
+						{{= renderedAltMoreInfoDualPricing }}
+						{{ if (comingSoon) {}}
+							<health_v4:abd_badge_with_link />
+						{{ } }}
 					</div>
 				</div>
 			</div>
@@ -85,37 +73,49 @@
 </core_v1:js_template>
 
 <core_v1:js_template id="dual-pricing-moreinfo-affixed-header-template">
-	<div class="row">
-		<div class="col-xs-6">
+	<div class="even-space-row">
+		<div class="col-half">
 			{{= renderedAffixedHeaderPriceTemplate }}
 		</div>
-		<div class="col-xs-6">
+		<div class="col-half">
 			{{= renderedAltAffixedHeaderPriceTemplate }}
 		</div>
 	</div>
 </core_v1:js_template>
 
 <core_v1:js_template id="dual-pricing-moreinfo-xs-template">
-	{{ var comingSoonClass = ''; }}
-	{{ var lhcText = meerkat.site.isCallCentreUser ? 'pricing' : 'lhcfreepricing'; }}
-	{{ var currFreq = obj._selectedFrequency === 'annually' ? 'annual' : obj._selectedFrequency; }}
-
-	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
-		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
-		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
+	{{ var comingSoon = false; }}
+	{{ var alternatePremium = obj.altPremium[obj._selectedFrequency]; }}
+	{{ var today = new Date(); }}
+	{{ var currentYear = today.getFullYear(); }}
+	{{ var currentMonth = today.getMonth(); }}
+	{{ if ( currentMonth >= 3) { }}
+	{{ currentYear =  currentYear + 1; }}
 	{{ } }}
-	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
-		<div class="row">
-			<div class="col-xs-6 current-container">
-				<div class="current-pricing">
-					<div class="dual-pricing-before-after-text">Now</div>
-					{{= renderedPriceTemplate }}
+	{{ if (!_.isUndefined(alternatePremium)) { }}
+	{{ var productPremium = alternatePremium }}
+	{{ comingSoon = (productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0); }}
+	{{ } }}
+	<div class="dual-pricing-container">
+		<div class="moreInfoPricingDualMobile">
+			<div class="row moreInfoPriceWrapper">
+				<div class="moreInfoPriceContainer current-price">
+					<div class="moreInfoPriceHeading">Current price</div>
+					<div class="moreInfoPrice">
+						{{= renderedMoreInfoDualPricing }}
+						<health_v4:abd_badge_with_link />
+					</div>
 				</div>
 			</div>
-			<div class="col-xs-6 raterisemonth-container">
-				<div class="raterisemonth-pricing">
-					<div class="dual-pricing-before-after-text">Price after April 1</div>
-					{{= renderedAltPriceTemplate }}
+			<div class="row moreInfoPriceWrapper">
+				<div class="moreInfoPriceContainer future-price">
+					<div class="moreInfoPriceHeading">Price from April 1 {{= currentYear}}</div>
+					<div class="moreInfoPrice">
+						{{= renderedAltMoreInfoDualPricing }}
+						{{ if (comingSoon) {}}
+						<health_v4:abd_badge_with_link />
+						{{ } }}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -124,13 +124,20 @@
 
 <core_v1:js_template id="dual-pricing-template-sidebar">
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
-		<div class="current-pricing">
-			{{= priceBreakdownLHCCopy }}
-			{{= renderedPriceTemplate }}
+		<div class="logo-name-lhc-abd-container">
+			<div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
+			<h5 class="name">{{= ((obj.info.providerName ? obj.info.providerName : obj.info.fundName) + " " + obj.info.name) }}</h5>
+			<div class="resultInsert">
+				<health_v4:abd_badge_with_link_and_lhc />
+			</div>
 		</div>
-		<hr />
-		<div class="raterisemonth-pricing">
-			{{= renderedAltPriceTemplate }}
+		<div class="price-boxes-wrapper">
+			{{= renderedPriceTemplateSideBar }}
+			{{= renderedAltPriceTemplateSideBar }}
+		</div>
+		<health_v4:price_details_side_bar/>
+		<div class="about-this-product-link hidden-xs">
+			<a href="javascript:;" class="about-this-fund">About this fund</a>
 		</div>
 	</div>
 </core_v1:js_template>

@@ -34,4 +34,12 @@ public class StringUtils {
         }
         return csvString.length()>0?csvString.substring(0,csvString.length()-1):null;
     }
+
+    public static boolean isBlank(String string) {
+        if (string == null || string.trim().equals("")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -305,6 +305,12 @@
                 title: 'Application Review',
                 htmlContent: htmlContent,
                 showCloseBtn: false,
+                leftBtn: {
+                    label: 'Back',
+                    icon: '',
+                    className: 'btn-sm btn-close-dialog',
+                    callback: null
+                },
                 rightBtn: {
                     label: 'Jump to declaration',
                     className: 'btn-sm affixed-jump-to-form',
