@@ -48,7 +48,6 @@
 	{{ var prem = obj.premium[obj._selectedFrequency] }}
 	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
 	{{ var textPricing = prem.pricing ? prem.pricing : 'Includes HH rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
-
 	{{ var property = premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; } }}
 	{{ var showFromDate = false; }}
 	{{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
@@ -77,13 +76,22 @@
 		</div>
 	</div>
 
-	<div class="lhc-and-abd-container">
-		<div class="lhs-text-container">
-			<div class="premium-LHC-text lhcText">
-				<span>{{= textPricing}}</span>
+	<div class="price premium">
+		<div class="lhc-and-abd-container">
+			<div class="lhs-text-container">
+				<div class="premium-LHC-text lhcText">
+					{{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
+						{{ if (obj.premium && typeof obj.premium[freq] !== "undefined") { }}
+							{{ var textPricing = obj.premium[freq].pricing ? obj.premium[freq].pricing : 'Includes rebate of ' + formatCurrency(obj.premium[freq].rebateAmount) + ' & LHC loading of ' + formatCurrency(obj.premium[freq].lhcAmount) }}
+							<div class="frequency {{= freq }} ">
+								<span>{{= textPricing }}</span>
+							</div>
+						{{ } }}
+					{{ }); }}
+				</div>
 			</div>
+			<health_v4:abd_badge_with_link />
 		</div>
-		<health_v4:abd_badge_with_link />
 	</div>
 
 </core_v1:js_template>
