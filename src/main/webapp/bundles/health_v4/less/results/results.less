@@ -548,8 +548,28 @@
 
       .empty-abd-badge {
         height: 50px;
-        @media (min-width: 429px) {
-          height: 32px;
+        @media (min-width: 1200px) {
+          height: 9px;
+        }
+        @media (max-width: 1199px) and (min-width: 992px) {
+          height: 0;
+          margin-bottom: -13px;
+        }
+        @media (max-width: 991px) and (min-width: 469px) {
+          height: 6px;
+        }
+        @media (max-width: 468px) and (min-width: 429px) {
+          height: 0;
+          margin-bottom: -12px;
+        }
+        @media (max-width: 428px) and (min-width: 269px) {
+          height: 9px;
+        }
+        @media (max-width: 428px) and (min-width: 269px) {
+          height: 9px;
+        }
+        @media (max-width: 268px) {
+          height: 30px;
         }
       }
 

@@ -176,13 +176,16 @@ body[data-step="results"]:not(.moreInfoVisible) {
     @media (max-width: @screen-lg) {
       padding-top: 5%;
     }
+    @media (max-width: 766px) {
+      padding-top: 3%;
+    }
   }
 
   .resultInsert .productSummary.hasDualPricing {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 95%;
+    width: 98%;
 
     .lhcText {
       font-size: 10px;
@@ -273,6 +276,10 @@ body[data-step="results"]:not(.moreInfoVisible) {
           background-color: #E7F0FB;
           border: 2px solid #E7F0FB;
           border-radius: 2px;
+          height: 88px;
+          @media(max-width: 1200px) {height: 87px;}
+          @media(max-width: 480px) {padding-top: 5px;}
+          @media(max-width: 379px) and (min-width: 370px) {padding-top: 0;}
         }
 
         &.grey-background {
@@ -366,8 +373,9 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
       &.comingsoon {
         .raterisemonth-pricing {
-          padding: 15% 0 15% 0;
+          padding: 32px 0 15px 0;
           margin-bottom: initial;
+          height: 86px;
 
           @media (@lg) {
             line-height: 20px;
