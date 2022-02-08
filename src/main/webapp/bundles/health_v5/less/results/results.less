@@ -371,17 +371,18 @@
     background-color: #FFFFFF;
     border-radius: 20px;
     border: 1px solid #ddd;
-    font-size: 13px;
-    display: inherit;
+    font-size: 12px;
+    display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 3px auto 12px auto;
     padding: 3px 2px 3px 2px;
     min-height: 25px;
-    font-weight: bold;
-    width: 100%;
-    min-width: 130px;
+    color: #0B60B7;
+    font-weight: normal;
+    @media (@lg) {
+      font-size: 16px;
+    }
     &:hover, &:focus, &:active{
       background-color: fade(@primary500, 20%);
       border-color: @primary500;
@@ -402,6 +403,32 @@
 
     .results-header-classification {
       margin: 0 0 24px 0;
+
+      .lhc-and-abd-container {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        padding: 3px 10px 0 3px;
+
+        .abd-badge {
+          width: 95%;
+        }
+
+        .lhs-text-container {
+          padding: 0 0 5px 0;
+          text-align: center;
+        }
+
+        .empty-abd-badge {
+          height: 32px;
+        }
+
+        .lhcText {
+          font-family: @font-family-theme-bold;
+          color: #757575;
+          font-size: 14px;
+        }
+      }
 
       @media (@lg) {
         margin: 15px 0px 19px 0;
@@ -500,9 +527,59 @@
       }
     }
 
-    .lhcText {
-      text-align: center;
-      font-size: 12px;
+    .lhc-and-abd-container {
+      display: flex;
+      flex-flow: column wrap;
+      align-items: center;
+      @media (@lg) {
+        padding: 3px 10px 0 3px;
+      }
+
+      .abd-badge {
+        width: 98%;
+        @media (@lg) {
+          width: 95%;
+        }
+      }
+
+      .lhs-text-container {
+        padding: 0 0 5px 0;
+        text-align: center;
+      }
+
+      .empty-abd-badge {
+
+        height: 50px;
+        @media (min-width: 1200px) {
+          height: 9px;
+        }
+        @media (max-width: 1199px) and (min-width: 992px) {
+          height: 0;
+          margin-bottom: -13px;
+        }
+        @media (max-width: 991px) and (min-width: 469px) {
+          height: 6px;
+        }
+        @media (max-width: 468px) and (min-width: 429px) {
+          height: 0;
+          margin-bottom: -12px;
+        }
+        @media (max-width: 428px) and (min-width: 269px) {
+          height: 9px;
+        }
+        @media (max-width: 428px) and (min-width: 269px) {
+          height: 9px;
+        }
+        @media (max-width: 268px) {
+          height: 30px;
+        }
+      }
+
+      .lhcText {
+        font-family: @font-family-theme-semibold;
+        color: #757575;
+        font-size: 14px;
+      }
     }
 
     .btn-more-info {
@@ -518,10 +595,8 @@
     }
   }
   .results-classification-abd {
-    height: 100px;
-    @media (@xs-only) {
-      height: 125px;
-    }
+    margin-bottom: 10%;
+    margin-top: 10%;
   }
   .productSummary {
     margin-bottom: 10px;
@@ -552,20 +627,17 @@
 
     .frequencyTitle {
       font-size: 16px;
-      font-weight : bolder;
+      font-weight : 600;
       text-transform: capitalize;
-
-      @media (max-width: @screen-xs) {
-        font-weight: 100;
-        font-size: 12px;
-      }
     }
 
     .lhcText {
       color: @gray-darker;
       text-align: center;
       .small;
-      padding-bottom: 5px;
+      @media (@lg) {
+        padding-bottom: 5px;
+      }
       display: inline-flex;
       @media (@xs-only) {
         display: flex;
@@ -1349,7 +1421,9 @@ body {
 
     &:not(.moreInfoVisible) {
       .price.premium {
-        margin-top: 20px;
+        @media (@lg) {
+          margin-top: 10px;
+        }
 
         .frequency {
 
@@ -1358,7 +1432,6 @@ body {
               height: 87px;
             }
 
-            height: 70px;
           }
 
           @media (@lg) {
@@ -1366,7 +1439,7 @@ body {
               height: 80px;
             }
 
-            height: 63px;
+            height: 45px;
           }
         }
       }

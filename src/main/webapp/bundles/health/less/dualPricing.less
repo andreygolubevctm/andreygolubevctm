@@ -1,6 +1,6 @@
 body[data-step="results"] {
   .resultInsert .productSummary.hasDualPricing {
-    height: 290px;
+    height: 100%;
     @media(@xs-only) {
       height: 210px;
     }
@@ -14,14 +14,15 @@ body[data-step="results"] {
     }
 
     .dual-pricing-container {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 20px;
+      margin-bottom: 10px;
 
       .lhcText {
         color: @dual-pricing-dark-font-colour;
         text-align: center;
-        font-size: 12px;
+        font-size: 10px;
       }
 
       @media(@sm) {
@@ -29,14 +30,65 @@ body[data-step="results"] {
       }
 
       .raterisemonth-pricing {
-        flex: 1 1 auto;
-        width: 50%;
-        text-align: center;
+
+
+        &.blue-background {
+          display: flex;
+          flex: 1 1 auto;
+          flex-flow: row wrap;
+          justify-content: space-evenly;
+          background-color: #E7F0FB;
+          border: 2px solid #E7F0FB;
+          border-radius: 2px;
+          padding-top: 4px;
+          margin-bottom: 10px;
+        }
+
+        &.grey-background {
+          display: flex;
+          flex: 1 1 auto;
+          flex-flow: column wrap;
+          justify-content: space-evenly;
+          align-content: center;
+          background-color: #EEEEEE;
+          border: 2px solid #EEEEEE;
+          border-radius: 2px;
+          padding-bottom: 4%;
+          padding-top: 7%;
+          font-family: @font-family-theme-semibold;
+        }
+
+        .dual-price-date{
+          font-weight: bold;
+          font-size: 11px;
+          font-family: @font-family-theme-semibold;
+          color: #25130E;
+          order: 0;
+          padding-top: 6%;
+        }
+
+        .price.premium {
+          padding-top: 2%;
+          padding-bottom: 2%;
+
+          .frequencyAmount {
+            font-size: 28px;
+            color: #004A8E;
+          }
+
+          .comingSoon-results {
+            font-size: 11px;
+            color: #25130E;
+          }
+        }
 
         .frequencyTitle {
-          text-transform: lowercase;
+          text-transform: capitalize;
           top: 0px;
           left: 0px;
+          font-weight: bold;
+          font-size: 10px;
+          color: #424242;
         }
 
         .deadline,
@@ -48,6 +100,7 @@ body[data-step="results"] {
 
         .dollarSign {
           font-size: 15px;
+          top: -5px;
         }
 
         .cents {
@@ -67,18 +120,88 @@ body[data-step="results"] {
     }
 
     .current-pricing {
+      display: flex;
       flex: 1 1 auto;
-      width: 50%;
-      border-right: 1px solid #707070;
-      text-align: center;
+      flex-flow: row wrap;
+      margin-bottom: 5%;
+      justify-content: space-evenly;
+
+      .current-price-header {
+        order: 0;
+        font-size: 11px;
+        font-family: @font-family-theme-semibold;
+        color: #25130E;
+        padding-left: 5%;
+        padding-top: 6%;
+      }
+
+      .price.premium {
+        order: 1;
+        padding-top: 2%;
+        width: 50%;
+
+        .frequencyAmount {
+          font-size: 39px;
+          color: #25130E;
+        }
+
+        .dollarSign {
+          top: -5px;
+        }
+      }
 
       .frequencyTitle {
-        text-transform: lowercase;
+        text-transform: capitalize;
         top: 0px;
         left: 0px;
+        font-family: @font-family-theme-semibold;
+        font-size: 10px;
+        color: #25130E;
       }
     }
   }
+}
+
+div.hide-on-affix > span.text-pricing-in-frequency-title {
+  font-weight: normal;
+  font-size: 10px;
+  color: #666666;
+}
+.current-pricing {
+  .line-break {
+    flex-basis: 0%;
+    height: 0;
+  }
+}
+
+.raterisemonth-pricing {
+  .line-break {
+    flex-basis: 100%;
+    height: 0;
+  }
+}
+
+div.result > div > div.results-header-inner-container > div.results-header-info-container > a {
+  background: #F49E1E;
+  border-color: #F49E1E;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 3.2px;
+}
+
+div.result > div > div.results-header-inner-container > div.results-header-info-container > a > div.more-info-text {
+  color: #25130E;
+  font-weight: bold;
+}
+
+div.result > div > div.results-header-inner-container > div.results-header-info-container > a > div > span {
+  padding-left: 7px;
+}
+
+.frequency .comingSoon-dash {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 14px;
+  padding-top: 7%;
 }
 
 body[data-step=apply],
@@ -102,5 +225,135 @@ body[data-step=payment] {
         }
       }
     }
+  }
+}
+
+.abd-badge-discount-and-icon-group {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.dual-pricing-modal {
+  color: #666;
+  @media (@xs-only) {
+    background-color: #FAFAFA;
+  }
+  @media (@sm) {
+    font-size: @font-size-large;
+  }
+  .price-up-img {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    width: 68px;
+    height: 68px;
+    background-image: url('../../../../assets/graphics/price_rise.png');
+  }
+  h2 {
+    font-family: @font-family-theme-bold;
+    margin: -20px -20px 20px -20px;
+    padding: 10px;
+    font-size: 26px;
+  }
+  h3 {
+    color: black;
+    font-family: @font-family-theme-bold;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  h4 {
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  ol li::marker {
+    color: @theme-tertiary;
+    font-weight: bold;
+  }
+
+  ol {
+    @media (@xs-only) {
+      padding-inline-start: 15px;
+    }
+    li {
+      margin-bottom: 9px;
+    }
+  }
+
+  .need-to-review-cover {
+    font-size: @font-size-small;
+    line-height: 25px;
+    text-align: right;
+  }
+
+  hr {
+    margin-top: 15px;
+    margin-bottom: 20px;
+  }
+
+  .row {
+    margin-bottom: 15px;
+
+    &:first-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  .price-rise-banner-close-btn {
+    background-color: @btn-info-bg;
+    color: #fff;
+    width: 50%;
+    margin:  20px 0;
+    border-radius: 3.2px;
+    //box-shadow: 0 3px 8px rgb(0 0 0 / 20%);
+    @media (@xs-only) {
+      width: 80%
+    }
+    .dual-pricing-frequency-ok-text {
+      display: block;
+    }
+  }
+
+  a[href^="tel"] {
+    @media (@xs-only) {
+      display: block;
+      font-size: 20px;
+      padding-top: 6px;
+    }
+  }
+}
+
+.vertical-center-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.price-rise-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #E7F0FB;
+  padding: 15px;
+  width: ~"calc(100% - 32px)";
+  margin: 1px 0px 10px 17px;
+  border-radius: 3px;
+  .price-rise-banner-learn-more {
+    text-decoration: underline;
+    margin-left: 10px;
+  }
+  span > p{
+    margin: 0;
+  }
+  @media (@xs-only) {
+    width: ~"calc(100% - 10px)";
+    margin: 0 0 0 6px;
+  }
+}
+
+.dual-pricing-modal .modal-body {
+  padding: 20px 50px 20px 50px;
+  @media (@xs-only) {
+    padding: 20px;
   }
 }

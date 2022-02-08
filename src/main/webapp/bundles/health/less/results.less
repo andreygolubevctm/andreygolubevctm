@@ -179,25 +179,52 @@
 // The product header
 .resultInsert {
 
+  .abd-modal-trigger {
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    padding-left: 5px;
+
+    a {
+      color: @primary500;
+      text-decoration: none !important;
+    }
+
+    .help-icon {
+      line-height: 20px;
+      color: @primary500;
+      padding-left: 5px;
+    }
+  }
+
   .abd-badge {
     background-color: #FFFFFF;
-    color: #666666;
     border-radius: 20px;
-    border: 1px solid #666666;
-    font-size: 14px;
-    display: inline-flex;
+    border: 1px solid #ddd;
+    font-size: 12px;
+    display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 auto;
+    text-align: center;
+    padding: 3px 2px 3px 2px;
     min-height: 25px;
-    font-weight: bold;
-    width: 85%;
-    min-width: 130px;
-    margin-bottom: 2px;
-    margin-top: 5px;
-
-    &.retains {
-      background-color: #f3ba1b;
+    color: #0B60B7;
+    font-weight: normal;
+    @media (@lg) {
+      font-size: 16px;
+    }
+    &:hover, &:focus, &:active{
+      background-color: fade(@primary500, 20%);
+      border-color: @primary500;
+    }
+    &:active > .help-icon  {
+      background-color: @primary500;
+      border: fade(@primary500, 30%);
+    }
+    @media (@xs-only) {
+      font-size: 14px;
+      padding: 3px 4px 3px 4px;
     }
   }
 
@@ -247,7 +274,6 @@
   // only apply a height in results so the rows stay all the same height.
   .productSummary {
     height: 140px;
-    border-bottom: 1px solid #707070;
 
     @media (@sm-only) {
       height: 150px;
@@ -766,3 +792,35 @@ body[data-is-single="true"] {
   text-decoration:underline;
 }
 
+.lhc-and-abd-container {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  @media (@lg) {
+    padding: 6px 10px 0 3px;
+  }
+
+  .abd-badge {
+    width: 98%;
+    @media (@lg) {
+      width: 95%;
+    }
+  }
+
+  .lhs-text-container {
+    text-align: center;
+  }
+
+  .empty-abd-badge {
+    height: 50px;
+    @media (min-width: 429px) {
+      height: 32px;
+    }
+  }
+
+  .lhcText {
+    font-family: @font-family-theme-semibold;
+    color: #757575;
+    font-size: 14px;
+  }
+}

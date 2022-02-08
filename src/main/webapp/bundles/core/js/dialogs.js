@@ -46,9 +46,9 @@
             buttons: [],
             className: '',
             leftBtn: {
-                label: 'Back',
+                label: '',
                 icon: '',
-                className: 'btn-sm btn-close-dialog',
+                className: '',
                 callback: null
             },
             rightBtn: {
@@ -74,6 +74,7 @@
                 '<div class="modal-closebar">' +
                 '	<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>' +
                 '</div>{{ } }}' +
+                '<div class="modal-closebar-placeholder"> </div>' +
                 '<div class="navbar navbar-default xs-results-pagination visible-xs">' +
                 '<div class="container">' +
                 '<ul class="nav navbar-nav">' +

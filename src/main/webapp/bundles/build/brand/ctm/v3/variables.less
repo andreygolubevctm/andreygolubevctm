@@ -1292,10 +1292,7 @@
 @modal-title-label-color: #ffffff;
 
 //** Modal close styling
-@modal-close-button-bg-color: @theme-tertiary;
-@modal-close-button-text-color: @navbar-default-toggle-icon-bar-bg;
-@modal-close-button-border: 3px solid @body-bg;
-@modal-close-button-border-radius: 50%;
+@modal-close-button-text-color: @gray700;
 
 //** Modal tabs
 @modal-tabs-text-color: @theme-default;
@@ -1304,9 +1301,9 @@
 @modal-tabs-active-bg-color: @modal-backdrop-bg;
 
 //** XS Modals - Background color of modal content area
-@modal-xs-content-bg-color: transparent;
-@modal-xs-body-bg-color: #ffffff;
-@modal-xs-header-content-bg-color: #ffffff;
+@modal-xs-content-bg-color: #FAFAFA;
+@modal-xs-body-bg-color: #FAFAFA;
+@modal-xs-header-content-bg-color: #FAFAFA;
 @modal-xs-header-border-top-width-style: 1px solid @modal-header-border-color;
 
 //** Modal size variants
@@ -1640,6 +1637,7 @@
 
 @lg: ~'min-width: @{screen-lg-min}';
 @lg-only: @lg;
+@not-lg: ~'max-width: @{screen-sm-min}';
 
 @screen-xs-max: (@screen-sm-min - 1);
 @progress-lg: ~'min-width: @{screen-xs-max}';

@@ -28,9 +28,7 @@
 	}
 }
 
-@modal-closebar-button-offset: 12px;
-@modal-closebar-button-negoffset-right: @modal-closebar-button-offset;
-@modal-closebar-button-negoffset-top:   @modal-closebar-button-offset;
+@modal-closebar-button-offset: 10px;
 
 @media (min-width: @screen-sm-min) {
 
@@ -88,32 +86,35 @@
 
 	.modal-closebar {
 		position: absolute;
-		right: -@modal-closebar-button-negoffset-right;
-		top: -@modal-closebar-button-negoffset-top;
+		right: @modal-closebar-button-offset;
+		top: @modal-closebar-button-offset;
 		z-index: (@zindex-modal+10);
+		cursor: pointer;
 
 		text-align: right;
 		a {
 			width: 33px;
 			height: 33px;
-			background-color: @modal-close-button-bg-color;
 			margin: 0;
 			color: @modal-close-button-text-color;
-			border: @modal-close-button-border !important;
 			padding: 0;
 			.icon {
 				display: none;
 				color: @modal-close-button-text-color;
+				&:hover {
+					color: @primary500;
+				}
 			}
 			.icon-cross {
 				display: block;
 				font-size: 13px;
 				margin-top: 6px;
 			}
-			border-radius: @modal-close-button-border-radius;
 		}
-
 	}
+}
+.modal-closebar a .icon-cross {
+	padding-left: 0px!important;
 }
 
 .modal-breakpoint-wide{
@@ -163,19 +164,46 @@
 			}
 		}
 	}
-
+	.modal-closebar-placeholder {
+		height: 33px;
+	}
 	.modal-closebar {
+		position: absolute;
+		right: @modal-closebar-button-offset;
+		top: @modal-closebar-button-offset;
+		z-index: (@zindex-modal+10);
+		cursor: pointer;
+
 		text-align: right;
 		a {
-			border-radius: 0;
-			width: 40px;
-			height: 40px;
-			line-height: 21px; //Needs to match the bumped up font size as specified below
+			width: 33px;
+			height: 33px;
 			margin: 0;
-			padding-left: 10px;
+			color: @modal-close-button-text-color;
+			padding: 0;
+			.icon {
+				display: none;
+				color: @modal-close-button-text-color;
+				&:hover {
+					color: @primary500;
+				}
+			}
+			.icon-cross {
+				display: block;
+				font-size: 13px;
+				margin-top: 6px;
+			}
 		}
 	}
-
+	.xs-results-pagination {
+		.navbar-nav {
+			background-color: @modal-xs-body-bg-color;
+			height: 40px;
+			.btn-back {
+				background-color: @modal-xs-body-bg-color;
+			}
+		}
+	}
 	.modal-body {
 		background-color: @modal-xs-body-bg-color;
 
@@ -201,5 +229,11 @@
 
 	.modal-title-label {
 		color: @modal-title-label-color;
+	}
+
+	.modal-dialog {
+		.xs-results-pagination {
+			border-bottom: 0!important;
+		}
 	}
 }

@@ -16,7 +16,7 @@
             if($("#help-box-container").length) {
                 CRUD = new meerkat.modules.crud.newCRUD({
                     baseURL: "admin/helpbox",
-                    primaryKey: "helpBoxId",
+                    primaryKey: "textId",
                     models: {
                         datum: function(helpBox) {
                             return {

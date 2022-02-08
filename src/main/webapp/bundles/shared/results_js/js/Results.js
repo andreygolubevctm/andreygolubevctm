@@ -664,5 +664,51 @@ var Results = {
 
     removePinnedProduct: function() {
         Results.model.removePinnedProduct();
+	},
+
+	isAnyResultContainsLHCText: function(isDualPricingActive, frequency) {
+		var contains = false;
+		this.getReturnedResults().forEach(function(result) {
+			var frequencyPremium = result.premium[frequency];
+			var lhtText = frequencyPremium.lhcfreepricing.split("<br>")[0];
+			if (lhtText && isDualPricingActive) {
+				contains = true;
+			}
+		});
+		return contains;
+	},
+
+	isAnyResultContainsABD: function(isDualPricingActive, frequency) {
+		var contains = false;
+		this.getReturnedResults().forEach(function(result) {
+			var frequencyPremium = result.premium[frequency];
+			if (result.custom.reform.yad !== "N" && frequencyPremium.abd > 0 && isDualPricingActive) {
+				contains = true;
+			}
+		});
+		return contains;
+	},
+
+	isAnyResultContainsLHCTextSinglePrice: function(isDualPricingActive, frequency) {
+		var contains = false;
+		this.getReturnedResults().forEach(function(result) {
+			var frequencyPremium = result.premium[frequency];
+			var lhtText = frequencyPremium.lhcfreepricing.split("<br>")[0];
+			if (lhtText && !isDualPricingActive) {
+				contains = true;
+			}
+		});
+		return contains;
+	},
+
+	isAnyResultContainsABDSinglePrice: function(isDualPricingActive, frequency) {
+		var contains = false;
+		this.getReturnedResults().forEach(function(result) {
+			var frequencyPremium = result.premium[frequency];
+			if (result.custom.reform.yad !== "N" && frequencyPremium.abd > 0  && !result.isForResultPage && !isDualPricingActive) {
+				contains = true;
+			}
+		});
+		return contains;
 	}
 };

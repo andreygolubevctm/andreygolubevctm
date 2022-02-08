@@ -10,7 +10,7 @@
 {{ var availablePremiums = obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true ? obj.altPremium : obj.premium; }}
 {{ var healthResultsTemplate = meerkat.modules.healthResultsTemplate; }}
 {{ var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies(); }}
-{{ var discountText = healthResultsTemplate.getDiscountText(obj); }}
+{{ var textLhcFreePricing = 'LHC loading may increase the premium.'; }}
 <div class="price premium">
     {{ _.each(availableFrequencies, function(freqObj) { }}
     {{ var formatCurrency = meerkat.modules.currencyField.formatCurrency; }}
@@ -20,12 +20,11 @@
     {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
     {{ var property = obj.premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = obj.altPremium; } }}
 	{{ var prem = obj.premium[frequency]; }}
-    {{ var textLhcFreePricing = 'LHC loading may increase the premium.'; }}
     {{ if (prem.lhcfreepricing.indexOf('premium') === -1) { textLhcFreePricing = ''; } }}
 	{{ var textLhcFreeDualPricing= 'inc ' + formatCurrency(prem.rebateValue) + ' Govt Rebate';}}
     {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
 
-    <div class="more-info-frequency frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }} {{= (!isDualPricingActive && textLhcFreePricing !== '') ? 'hasLhcFreePricingText' : '' }}">
+    <div class="more-info-frequency frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
         {{ if (!result.hasValidPrice) { }}
         {{ var comingSoonLabel = frequency; }}
         {{ if (comingSoonLabel == 'annually') { }}
@@ -33,7 +32,10 @@
         {{ } }}
         <%-- Convert to title case --%>
         {{ comingSoonLabel = comingSoonLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
-        <div class="frequencyAmount comingSoon">{{= comingSoonLabel }} payments not available</div>
+        <div class="frequencyAmount comingSoon">
+            <div class="comingSoon-text">New price not yet released</div>
+            <div class="comingSoon-dash">&#8211;</div>
+        </div>
     </div>
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
     {{ return; } }}
@@ -58,13 +60,10 @@
         </div>
     </div>
     <div class="lhcText">{{= textLhcFreeDualPricing}}</div>
-    {{ if (!isDualPricingActive && textLhcFreePricing !== '') { }}
+    {{ if (textLhcFreePricing !== '') { }}
     <div class="lhcStaticText">{{= textLhcFreePricing}}</div>
     {{ } }}
 
-    {{ if (frequency === obj._selectedFrequency && (obj.hasOwnProperty('priceBreakdown') || (!obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown)) && window.meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment') { }}
-        {{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, frequency, false) }}
-    {{ } }}
 </div>
 {{ }); }}
 </div>

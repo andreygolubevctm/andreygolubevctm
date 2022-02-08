@@ -19,7 +19,7 @@
                 <%-- Product summary header for mobile --%>
                 <div class="row productSummary-parent visible-xs">
                     <div class="productSummary visible-xs">
-                        <health_v4_payment:policySummary />
+                        <health_v4_payment:policySummary showProductDetails="true"/>
                     </div>
                 </div>
 

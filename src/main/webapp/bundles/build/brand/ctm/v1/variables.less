@@ -55,6 +55,7 @@
 @gray-lighter: lighten(@gray-base, 80%); // #ccc
 @gray800: #424242;
 @gray900: #25130E;
+@gray700: #616161;
 
 // Manor Header colours
 @header-primary-color: #0b60b7;
@@ -1252,10 +1253,7 @@
 @modal-title-label-color: #ffffff;
 
 //** Modal close styling
-@modal-close-button-bg-color: @theme-tertiary;
-@modal-close-button-text-color: @navbar-default-toggle-icon-bar-bg;
-@modal-close-button-border: 3px solid @body-bg;
-@modal-close-button-border-radius: 50%;
+@modal-close-button-text-color: @gray700;
 
 //** Modal tabs
 @modal-tabs-text-color: @theme-default;
@@ -1264,9 +1262,9 @@
 @modal-tabs-active-bg-color: @modal-backdrop-bg;
 
 //** XS Modals - Background color of modal content area
-@modal-xs-content-bg-color: transparent;
-@modal-xs-body-bg-color: #ffffff;
-@modal-xs-header-content-bg-color: #ffffff;
+@modal-xs-content-bg-color: #FAFAFA;
+@modal-xs-body-bg-color: #FAFAFA;
+@modal-xs-header-content-bg-color: #FAFAFA;
 @modal-xs-header-border-top-width-style: 1px solid @modal-header-border-color;
 
 //** Modal size variants
@@ -1595,6 +1593,7 @@
 
 @lg: ~'min-width: @{screen-lg-min}';
 @lg-only: @lg;
+@not-lg: ~'max-width: @{screen-sm-min}';
 
 @progress-sm-max-size: (@screen-xs-max - 1);
 @progress-sm: ~'max-width: @{progress-sm-max-size}';
@@ -1811,3 +1810,11 @@
 
 @primary50opacity: rgba(231, 240, 251, 0.4);
 @primary50: #E7F0FB;
+
+//## Font, line-height, and color for body text, headings, and more.
+@font-family-theme-regular: 'SourceSansProRegular';
+@font-family-theme-bold: 'SourceSansProBold';
+@font-family-theme-light: @font-family-theme-regular;
+@font-family-theme-semibold: 'SourceSansProSemiBold';
+
+@primary500: #0B60B7;
