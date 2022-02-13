@@ -57,24 +57,23 @@
 
             {{ if (isDualPricingActive) { }}
                 <div class="lhc-and-abd-container">
+                    <div class="lhs-text-container">
+                        <div class="premium-LHC-text lhcText">
+                            {{ if (!obj.hasOwnProperty('premium')) {return;} }}
+                            {{ var frequency = obj._selectedFrequency; }}
+                            {{ var prem = obj.premium[frequency]; }}
+                            {{ var textLhcFreePricing = 'The premium may be affected by LHC'; }}
+                            {{ if (prem.lhcfreepricing.indexOf('premium') === -1) { textLhcFreePricing = ''; } }}
+                            {{ if (textLhcFreePricing !== '') { }}
+                            <span>{{= textLhcFreePricing }} </span>
+                            {{ } }}
+                        </div>
+                    </div>
                     {{ if(obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 && isDualPricingActive ) { }}
                         <health_v4:abd_badge_with_link />
                     {{ } else { }}
-                        <div class="lhs-text-container">
-                            <div class="premium-LHC-text lhcText">
-                                {{ if (lhtText && isDualPricingActive) { }}
-                                <span>
-                                    {{= 'The premium may be affected by LHC' }}
-                                </span>
-                                {{ } else { }}
-                                    {{ if(Results.isAnyResultContainsLHCText(isDualPricingActive, obj._selectedFrequency)) { }}
-                                        {{= '' }}
-                                    {{ } }}
-                                {{ } }}
-                            </div>
-                        </div>
                         {{ if(Results.isAnyResultContainsABD(isDualPricingActive, obj._selectedFrequency)) { }}
-                            <div class="empty-abd-badge"></div>
+                            <div class="empty-abd-badge dual-price"></div>
                         {{ } }}
                     {{ } }}
                 </div>
@@ -97,23 +96,25 @@
                 </c:choose>
 
                 <div class="lhc-and-abd-container">
-                    <div class="lhs-text-container">
-                        <div class="premium-LHC-text lhcText">
-                            {{ if (lhtText && !isDualPricingActive) { }}
-                                <span>{{= 'The premium may be affected by LHC' }} </span>
-                            {{ } else { }}
-                                {{ if(Results.isAnyResultContainsLHCTextSinglePrice(isDualPricingActive, obj._selectedFrequency)) { }}
-                                    {{= '' }}
+                    {{ if (!isDualPricingActive) { }}
+                        <div class="lhs-text-container">
+                            <div class="premium-LHC-text lhcText">
+                                {{ if (!obj.hasOwnProperty('premium')) {return;} }}
+                                {{ var frequency = obj._selectedFrequency; }}
+                                {{ var prem = obj.premium[frequency]; }}
+                                {{ var textLhcFreePricing = 'The premium may be affected by LHC'; }}
+                                {{ if (prem.lhcfreepricing.indexOf('premium') === -1) { textLhcFreePricing = ''; } }}
+                                {{ if (textLhcFreePricing !== '' && !isDualPricingActive) { }}
+                                    <span>{{= textLhcFreePricing }} </span>
                                 {{ } }}
-                            {{ } }}
+                            </div>
                         </div>
-                    </div>
-
+                    {{ } }}
                     {{ if(obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 && !obj.isForResultPage && !isDualPricingActive ) { }}
                         <health_v4:abd_badge_with_link />
                     {{ } else { }}
                         {{ if(Results.isAnyResultContainsABDSinglePrice(isDualPricingActive, obj._selectedFrequency)) { }}
-                            <div class="empty-abd-badge"></div>
+                            <div class="empty-abd-badge single-price"></div>
                         {{ } }}
                     {{ } }}
                 </div>

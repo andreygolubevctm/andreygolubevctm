@@ -24,7 +24,7 @@
             {{ } }}
             <c:if test="${not empty showPriceRiseBanner and showPriceRiseBanner eq true}">
                 <div class="accordion-content-footer hidden-lg">
-                    <health_v4_results:price_rise_banner showHelpIcon="false" textType="rateRiseBannerSideBar"/>
+                    <health_v4_results:price_rise_banner showHelpIcon="false" textType="rateRiseBannerSideBar" isHiddenByDefault="false"/>
                 </div>
             </c:if>
         </div>

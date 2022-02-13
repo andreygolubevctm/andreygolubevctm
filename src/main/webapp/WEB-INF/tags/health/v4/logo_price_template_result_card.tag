@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- PRICE TEMPLATE FOR RESULT CARD --%>
+<%-- PRICE TEMPLATE FOR RESULT CARD- --%>
 <script id="logo-price-template-result-card" type="text/html">
 
 	{{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
