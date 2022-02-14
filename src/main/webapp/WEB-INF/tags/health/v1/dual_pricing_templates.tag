@@ -90,7 +90,7 @@
 					{{ }); }}
 				</div>
 			</div>
-			<health_v4:abd_badge_with_link />
+			<health_v4:abd_badge_with_link_empty_space />
 		</div>
 	</div>
 

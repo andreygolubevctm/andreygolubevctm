@@ -34,7 +34,7 @@
 
 	{{ if(showAltPremium) { }}
 		<div class="price-rise-banner-side-bar {{= showPriceAndFrequency(property[obj._selectedFrequency]) ? '' : 'grey-background'}} hidden-xs">
-			<health_v4_results:price_rise_banner showHelpIcon="false" textType="rateRiseBannerSideBar"/>
+			<health_v4_results:price_rise_banner showHelpIcon="false" textType="rateRiseBannerSideBar" isHiddenByDefault="false"/>
 		</div>
 	{{ } }}
 
