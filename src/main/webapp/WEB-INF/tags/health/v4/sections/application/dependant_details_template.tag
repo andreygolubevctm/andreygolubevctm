@@ -85,6 +85,11 @@
                 <div class="select">
                     <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'" />
                 </div>
+                {{ } else if(providerConfig.isAUF === true) { }}
+                <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
+                <div class="select">
+                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/auf_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'" />
+                </div>
                 {{ } else if(usesSchoolDropdown === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">
@@ -97,7 +102,14 @@
                 <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude data-hj-suppress" defaultValue="{{= obj.school }}" disableErrorContainer="${true}" placeHolder="School"/>
                 {{ } }}
             </form_v4:row>
-            {{ if(providerConfig.isNibOrQts === true) { }}
+            {{ if(providerConfig.showSchoolCommencementField === true && providerConfig.isAUF === true) { }}
+            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
+            <form_v4:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}_schoolDateGroup"
+                         className="health_dependant_details_schoolDateGroup hidden">
+                <field_v2:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement" required="{{= providerConfig.schoolDateRequired }}" />
+            </form_v4:row>
+            {{ } }}
+            {{ if(providerConfig.isNibOrQts === true || providerConfig.isAUF === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/gradDate"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="Graduation Date" id="${name}_schoolGraduationDate" className="health_dependant_details_schoolGraduationDate hidden" helpId="654">
                 <field_v1:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="dependant graduation date " required="true" className="sessioncamexclude data-hj-suppress dependant-graduation-day" maxYears="10" medicareCardValidationField="schoolGraduationDate" />
@@ -111,7 +123,7 @@
             </form_v4:row>
             {{ } }}
 
-            {{ if(providerConfig.showSchoolCommencementField === true) { }}
+            {{ if(providerConfig.showSchoolCommencementField === true && providerConfig.isAUF === false) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}_schoolDateGroup"
                          className="health_dependant_details_schoolDateGroup hidden">
