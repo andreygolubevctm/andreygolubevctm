@@ -78,6 +78,13 @@
                     <field_v2:import_select xpath="${storeGroupName}" className="form-control" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="false" />
                     </select>
                 </div>
+                {{ } else if(providerConfig.isAUF === true) { }}
+                <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
+                <div class="select">
+                    <span class="input-group-addon"><i class="icon-angle-down"></i></span>
+                    <field_v2:import_select xpath="${storeGroupName}" className="form-control" url="/WEB-INF/option_data/auf_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="false" />
+                    </select>
+                </div>
                 {{ } else if(usesSchoolDropdown === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">

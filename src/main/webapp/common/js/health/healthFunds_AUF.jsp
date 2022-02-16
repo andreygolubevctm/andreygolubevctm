@@ -29,7 +29,7 @@ var healthFunds_AUF = {
       meerkat.modules.healthFunds._previousfund_authority(true);
 
     <%--school Age--%>
-    meerkat.modules.healthDependants.updateConfig({schoolMinAge: 23, isAUF: true});
+    meerkat.modules.healthDependants.updateConfig({schoolMinAge: 23, isAUF: true, showSchoolFields:true, showSchoolIdField:true, showSchoolCommencementField: true});
 
     <%--credit card & bank account frequency & day frequency--%>
     meerkat.modules.healthPaymentStep.overrideSettings('bank', { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });

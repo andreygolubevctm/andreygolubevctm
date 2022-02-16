@@ -22,7 +22,7 @@
 <%@ attribute name="disableRowHack" 		required="false" 	rtexprvalue="true"    	 description="Disable the row-hack class" %>
 <%@ attribute name="analyticsPrefix" 		required="false" 	rtexprvalue="true"    	 description="The prefix applied to the data analytics label" %>
 <%@ attribute name="showCalendarOnXS" 		required="false" 	rtexprvalue="true"    	 description="Show the calendar date picker on xs devices" %>
-
+<%@ attribute name="defaultDay" required="false" rtexprvalue="true"   description="The default value for day" %>
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <fmt:formatDate var="todayDateEuro" value="${now}" pattern="dd/MM/yyyy" />
@@ -95,6 +95,10 @@
 <c:set var="dateEurRule">
 	data-rule-dateEUR='${required}' data-msg-dateEUR="Please enter a valid ${title} date for DD MM YYYY"
 </c:set>
+
+<c:if test="${empty defaultDay}">
+	<c:set var="defaultDay" value="1" />
+</c:if>
 <%--
 	Datepicker useful links for devs:
 		http://bootstrap-datepicker.readthedocs.org/
@@ -161,7 +165,7 @@
 			<div class="row dateinput-tripleField withDatePicker">
 				<div class="hidden-calendar-mm-yy-input">
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Day" quoteChar="\"" /></c:set>
-					<field_v2:input defaultValue="31" type="text" size="2" className="dateinput-day dontSubmit ${className}"  xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" required="false" requiredMessage="Please enter the day" additionalAttributes=" data-rule-range='1,31' data-msg-range='Day must be between 1 and 31.' ${analyticsAttr}" />
+					<field_v2:input defaultValue="${defaultDay}" type="text" size="2" className="dateinput-day dontSubmit ${className}"  xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" required="false" requiredMessage="Please enter the day" additionalAttributes=" data-rule-range='1,31' data-msg-range='Day must be between 1 and 31.' ${analyticsAttr}" />
 				</div>
 				<div class="${xsCols} col-sm-3"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${analyticsPrefix}Month" quoteChar="\"" /></c:set>
