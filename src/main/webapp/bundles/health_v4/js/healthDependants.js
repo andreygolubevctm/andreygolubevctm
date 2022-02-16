@@ -258,7 +258,7 @@
             $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
             $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
             $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
-            $(selectorPrefix + '_schoolGraduationDate').toggleClass('hidden', !providerConfig.isNibOrQts);
+            $(selectorPrefix + '_schoolGraduationDate').toggleClass('hidden', !providerConfig.isNibOrQts && !providerConfig.isAUF);
             $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
         } else {
             // Hide them all if they aren't in the date range.
@@ -339,7 +339,7 @@
                 $(prefix + '_dob').val(dependantsArr[i].dob);
             }
 
-            if (providerConfig.isNibOrQts) {
+            if (providerConfig.isNibOrQts || providerConfig.isAUF) {
                 var month, year;
                 if (typeof dependantsArr[i].gradDate !== 'undefined' && dependantsArr[i].gradDate != null) {
                     month = "" + dependantsArr[i].gradDate.cardExpiryMonth;

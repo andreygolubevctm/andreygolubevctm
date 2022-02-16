@@ -74,10 +74,10 @@ var healthFunds_MYO = {
         $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '50');
 
         <%--dependant definition--%>
-        meerkat.modules.healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+        meerkat.modules.healthFunds._dependants('This policy provides cover for children until their 23rd birthday. Student dependents aged between 23-25 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
         <%--schoolgroups and defacto --%>
-        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
+        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':23, 'schoolMaxAge':24, showSchoolIdField:true });
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });

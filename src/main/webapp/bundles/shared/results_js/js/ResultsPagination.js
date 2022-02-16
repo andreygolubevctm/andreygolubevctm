@@ -376,6 +376,7 @@ var ResultsPagination = {
 			 * sets the innerWidth and thus excludes those properties from its width.
              */
 			columnWidth = Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($rows) : $rows.outerWidth(true);
+			columnWidth = Math.round(columnWidth * 100) / 100;
 			viewableArea += Results.settings.pagination.margin;
 			columnsPerPage = Math.round(viewableArea/columnWidth);
 		}

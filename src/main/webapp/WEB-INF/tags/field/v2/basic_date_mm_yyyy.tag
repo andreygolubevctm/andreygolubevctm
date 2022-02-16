@@ -17,7 +17,7 @@
 <%@ attribute name="startView" 			required="false" rtexprvalue="true"	 description="The view either 0:Month|1:Year|2:Decade|"%>
 
 <%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
-
+<%@ attribute name="defaultDay" required="false" rtexprvalue="true"   description="The default value for day" %>
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="dateXpath" value="${xpath}/date" />
@@ -26,8 +26,10 @@
 <c:if test="${empty mode}">
 	<c:set var="mode" value="separated" />
 </c:if>
-
+<c:if test="${empty defaultDay}">
+	<c:set var="defaultDay" value="1" />
+</c:if>
 <%-- HTML --%>
-<field_v2:calendar_mm_yyyy mode="${mode}" validateMinMax="true" xpath="${xpath}" required="${required}" title="${title}" minDate="${minDate}" maxDate="${maxDate}" startView="0" nonLegacy="true" disableErrorContainer="${disableErrorContainer}"/>
+<field_v2:calendar_mm_yyyy mode="${mode}" validateMinMax="true" xpath="${xpath}" required="${required}" title="${title}" minDate="${minDate}" maxDate="${maxDate}" startView="0" nonLegacy="true" disableErrorContainer="${disableErrorContainer}" defaultDay="${defaultDay}"/>
 
 <%-- VALIDATION --%>
