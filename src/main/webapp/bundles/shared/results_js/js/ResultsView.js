@@ -174,9 +174,9 @@ var ResultsView = {
 		}
 
 		var spaceToExcludeFromRowWidth = (rowMargins * nbMargins) + rowBorders;
-		var width = ( $container.width() - spaceToExcludeFromRowWidth ) / nbColumns;
+		var width = Math.floor(( $container.width() - spaceToExcludeFromRowWidth ) / nbColumns);
 
-		$(Results.settings.elements.rows).width( width );
+		$(Results.settings.elements.rows).css('width', width + 'px');
 
 		if( typeof(Features) != "undefined" && Features ){
 			Features.balanceVisibleRowsHeight();
