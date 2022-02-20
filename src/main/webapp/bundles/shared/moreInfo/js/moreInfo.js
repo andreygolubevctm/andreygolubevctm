@@ -175,15 +175,24 @@
         $(document.body).on('click', '.readMoreDescriptionLink', function () {
             var fundDescription = $('.fundDescription');
             var arrow = $('.readMoreFundDescription').find('span').last();
-
+            var isSafari = meerkat.modules.performanceProfiling.isSafari();
+            var fundDescriptionBr = $('.fundDescription br');
             if (arrow.hasClass('icon-angle-down')) {
                 arrow.removeClass('icon-angle-down').addClass('icon-angle-up');
                 $(this).html("Read less&nbsp;");
                 fundDescription.css("-webkit-box-orient", "unset");
+                fundDescription.css("display", "block");
+                if (isSafari) {
+                    fundDescriptionBr.css("display", "block");
+                }
             } else {
                 arrow.removeClass('icon-angle-up').addClass('icon-angle-down');
                 $(this).html("Read more&nbsp;");
                 fundDescription.css("-webkit-box-orient", "vertical");
+                fundDescription.css("display", "-webkit-box");
+                if (isSafari) {
+                    fundDescriptionBr.css("display", "inline");
+                }
             }
         });
         $(document.body).on('change', '.moreInfoPriceContainer .more-info-payment-frequency', function () {
@@ -223,11 +232,32 @@
         }
     }
 
+    function initReadMoreLink() {
+        var isSafari = meerkat.modules.performanceProfiling.isSafari();
+        var fundDescriptionBr = $('.fundDescription br');
+        if (isSafari) {
+            fundDescriptionBr.css("display", "inline");
+        }
+        toggleReadMoreLink();
+    }
+
     function isEllipsisActive(e) {
         var originalValue = e.css('-webkit-box-orient');
+        var originalValue1 = e.css('display');
+        var br = e.find('br');
+        var originalValue2 = br.css('display');
         e.css("-webkit-box-orient", "vertical");
+        e.css("display", "-webkit-box");
+        var isSafari = meerkat.modules.performanceProfiling.isSafari();
+        if (isSafari) {
+            br.css("display", "inline");
+        }
         var isEllipsis = (e[0].offsetHeight < e[0].scrollHeight);
         e.css("-webkit-box-orient", originalValue);
+        e.css("display", originalValue1);
+        if (isSafari) {
+            br.css("display", originalValue2);
+        }
         return isEllipsis;
     }
 
@@ -333,7 +363,7 @@
             var totalDuration = 0;
             // append content
             moreInfoContainer.html(htmlString);
-            setTimeout(toggleReadMoreLink, animDuration);
+            setTimeout(initReadMoreLink, animDuration);
             if (typeof affixedHeaderTemplate === 'function' && settings.affixedHeaderContainer && settings.affixedHeaderContainer.length === 1) {
                 var affixedHtmlString = affixedHeaderTemplate(product);
                 settings.affixedHeaderContainer.html(affixedHtmlString);
@@ -506,7 +536,7 @@
             modalId = meerkat.modules.dialogs.show(options);
             isModalOpen = true;
             settings.container.add(".more-info-content").show();
-            setTimeout(toggleReadMoreLink, 200);
+            setTimeout(initReadMoreLink, 200);
             if (typeof settings.onAfterShowModal == 'function') {
                 settings.onAfterShowModal(product);
             }

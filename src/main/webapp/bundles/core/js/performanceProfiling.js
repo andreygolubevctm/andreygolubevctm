@@ -77,6 +77,18 @@
 		return USER_AGENT.match(/(8\.\d+\.?\d?|7\.1|6\.2) safari/i);
 	}
 
+	function isSafari() {
+		if (USER_AGENT.indexOf('safari')!=-1){
+			if(USER_AGENT.indexOf('chrome')  > -1){
+				return false;
+			}else{
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+
 	function isIE8(){
 		if(getIEVersion() === 8){
 			return true;
@@ -185,6 +197,7 @@
 		isMobile:isMobile,
 		isFFAffectedByDropdownMenuBug: isFFAffectedByDropdownMenuBug,
 		isSafariAffectedByColumnCountBug: isSafariAffectedByColumnCountBug,
+		isSafari: isSafari,
 		isIE8:isIE8,
 		isIE9:isIE9,
 		isIE10:isIE10,
