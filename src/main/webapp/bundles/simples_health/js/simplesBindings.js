@@ -101,7 +101,9 @@
         isAustralian = null,
         isNZCitizen = null,
         hasMedicareCard = null,
-        isAvoidSurcharge = null
+        isAvoidSurcharge = null,
+        $dialogue107,
+        $dialogue233
     ;
 
     function init() {
@@ -191,6 +193,8 @@
             $medicare_hascard_notpayingmls = $('#medicare-questions-isreciprocalorinterim .simples-dialogue-200');
             $medicare_nocard_notpayingmls = $('#medicare-questions-medicarelevysurcharge .simples-dialogue-200');
             $dialogue210 = $('#simples-dialogue-210');
+            $dialogue107 = $('.simples-dialogue-107');
+            $dialogue233 = $('.simples-dialogue-233');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -206,6 +210,7 @@
             toggleEnergyCrossSell();
             toggleCoverDialogues();
             _toggleRebateFromMedicareDetails();
+            togglePreSubmitDialogue()
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
@@ -288,6 +293,7 @@
 			toggleRedlandsTrailCampaign();
             toggleQSmsQSmsMaxContactType();
             cleanupOptins();
+            togglePreSubmitDialogue();
         });
         // Handle callback checkbox 68
         $followupCallCheckbox.on('change', toggleFollowupCallDialog);
@@ -919,6 +925,18 @@
             $pricePromisePromotionDialogue.slideDown();
         } else {
             $pricePromisePromotionDialogue.slideUp();
+        }
+    }
+
+    function togglePreSubmitDialogue() {
+        var healthContactTypeSelection = $healthContactTypeField.val();
+        if (healthContactTypeSelection === 'inbound') {
+            $dialogue107.toggleClass('hidden', true);
+            $dialogue233.toggleClass('hidden', false);
+
+        } else {
+            $dialogue107.toggleClass('hidden', false);
+            $dialogue233.toggleClass('hidden', true);
         }
     }
 
