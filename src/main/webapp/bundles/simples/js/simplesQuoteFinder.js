@@ -41,6 +41,7 @@
 		modalId = meerkat.modules.dialogs.show({
 			title: ' ',
 			fullHeight: true,
+			showCloseBtn: false,
 			onOpen: function(id) {
 				modalId = id;
 				performSearch();

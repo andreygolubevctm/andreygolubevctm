@@ -232,6 +232,7 @@
 			//htmlContent: htmlContent,
 			title: ' ',
 			fullHeight: true,
+			showCloseBtn: false,
 			onOpen: function(id) {
 				modalId = id;
 				performSearch();
