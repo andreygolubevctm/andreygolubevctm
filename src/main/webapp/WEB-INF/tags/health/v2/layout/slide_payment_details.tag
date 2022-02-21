@@ -30,6 +30,7 @@
 				<health_v2:whats-next />
 
 				<simples:dialogue id="107" vertical="health" />
+				<simples:dialogue id="233" vertical="health" />
 
 				<competition:africaCompSettings />
 				<c:if test="${africaComp}">
