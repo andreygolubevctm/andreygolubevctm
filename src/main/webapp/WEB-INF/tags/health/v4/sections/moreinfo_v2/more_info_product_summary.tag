@@ -12,9 +12,10 @@
     </div>
     <div class="col-xs-12 about-this-fund-row">
         <div class="fundDescription">
-            <div>
-            {{= product.aboutFund}}
-            </div>
+            {{ var content = product.aboutFund; }}
+            {{ content = content.replaceAll('<p>', ''); }}
+            {{ content = content.replaceAll('</p>', '<br />');}}
+            {{= content}}
         </div>
         <div class="readMoreFundDescription hidden">
             <a class="readMoreDescriptionLink" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">Read more&nbsp;</a>

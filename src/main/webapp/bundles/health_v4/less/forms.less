@@ -16,7 +16,7 @@
   }
 }
 
-@media (max-width: @screen-xs) {
+@media (@xs-only) {
   .health {
     &[data-step="contact"] {
       #health-contact-fieldset {
@@ -34,10 +34,14 @@
 .abd-support-text {
   width: 65%;
   margin-left: 35%;
+  @media (@xs-only) {
+    width: 100%;
+    margin-left: 0;
+  }
   p {
     line-height: 1.8 !important;
     .abd-badge {
-      @media (max-width: @screen-xs) {
+      @media (@xs-only) {
         @supports (-webkit-touch-callout: none) {
           max-width: 200px;
         }
@@ -59,13 +63,6 @@
       max-width: 210px;
       width: 80%;
     }
-  }
-}
-
-#single_18_to_30, #single_has_abd_policy{
-  @media (max-width: @screen-xs) {
-    width: 100%;
-    margin-left: 0;
   }
 }
 
