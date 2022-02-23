@@ -93,7 +93,7 @@
 
             if (_.isEmpty($(this).val())) return;
 
-            $elements.frequencyWarning.text('If you elect to pay your premium ${frequency}, only payments made by ${pricingDateFormatted} will be at the current amount, thereafter the new premium will apply.');
+            $elements.frequencyWarning.text('If your premiums are increasing on the 1st April and you elect to pay ${frequency}, only payments made by the ${pricingDateFormatted} will be at the current amount, thereafter the new premium will apply.');
 
             // hide if cover start date after or on 1st of start month or altPremium price is $0 on online journey
             if (coverStartDateTime >= startMonthFirstTime || (!meerkat.site.isCallCentreUser && selectedProduct.altPremium[frequency].value === 0)) {
@@ -198,6 +198,12 @@
         var product = Results.getSelectedProduct(),
             dropDeadDate = new Date(product.dropDeadDate),
             pricingDate = new Date(product.pricingDate);
+
+        if (!meerkat.modules.dateUtils.isValidDate(dropDeadDate)) {
+            $('.hidden-if-drop-dead-date-invalid').hide();
+        } else {
+            $('.hidden-if-drop-dead-date-invalid').show();
+        }
 
         if (!isNaN(dropDeadDate.getTime()) && !isNaN(pricingDate.getTime())) {
             $('.pricingDateText').text(meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"));

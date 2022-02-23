@@ -30,7 +30,7 @@
                     Your waiting periods transfer with you                
                 </div>
                 <div>
-                    You won’t have to serve waiting periods again for the same level of benefits you were able to claim with your previous fund. Note: when it comes to Extras cover, any claims you have already made will be taken off you.</div>
+                    You won’t have to serve waiting periods again for the same level of benefits you were able to claim with your previous fund. Note: when it comes to Extras cover, any claims you have already made will be deducted from your new limits.</div>
             </div>
         </div>
         <div class="accordion-content">
