@@ -34,8 +34,8 @@
                 <health_v4_application:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
 
                 <c:if test="${isDualPriceActive eq true}">
-                    <div class="alert alert-info text-center">
-                        Remember: Premiums will rise from <span class="dropDeadDateText"></span>. You must select a cover start date before <span class="dropDeadDateText"></span> to be eligible for the lower rate.
+                    <div class="alert alert-info text-center hidden-if-drop-dead-date-invalid">
+                        Remember: Premiums will rise from <span class="pricingDateText"></span>. You must select a cover start date and payment date before <span class="dropDeadDateText"></span> to be eligible for the lower rate on your first payment
                     </div>
                 </c:if>
 

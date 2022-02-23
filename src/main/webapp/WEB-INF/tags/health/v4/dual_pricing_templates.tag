@@ -6,7 +6,7 @@
 <c:set var="thisYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
 
 <core_v1:js_template id="price-frequency-template">
-	If you elect to pay your premium {{= frequency }}, only payments made by {{= pricingDateFormatted }} will be at the current amount, thereafter the new premium will apply.
+	If your premiums are increasing on the 1st April and you elect to pay {{= frequency }}, only payments made by the {{= pricingDateFormatted}} will be at the current amount, thereafter the new premium will apply.
 </core_v1:js_template>
 
 <core_v1:js_template id="price-congratulations-template">

@@ -47,8 +47,11 @@
         <c:redirect url="${redirectURL}transactionId=${rememberMeTransactionId}&reviewedit=true" />
     </c:when>
 
+    <%-- Do not redirect to v5 journey here while v5 journey is turned off (CTM-4456)
+        - 'callcentre' condition added back so it will not redirect to v5 when in online journey;
+        - this should be reverted when v5 jourey is turned on. --%>
     <%-- Redirect to V5 journey if CLINICAL_CATEGORIES --%>
-    <c:when test="${not empty data['health/hospitalBenefitsSource'] and data['health/hospitalBenefitsSource'] eq 'CLINICAL_CATEGORIES'}">
+    <c:when test="${callCentre and not empty data['health/hospitalBenefitsSource'] and data['health/hospitalBenefitsSource'] eq 'CLINICAL_CATEGORIES'}">
         <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v5.jsp?" />
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
