@@ -19,6 +19,7 @@
     var token = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
     var twoDigits = /\d\d?/;
     var fourDigits = /\d{4}/;
+    var invalidDate = 'Invalid Date';
 
     var formatFlags = {
             D: function(dateObj) {
@@ -190,6 +191,14 @@
         }
     }
 
+    function isValidDate(dateObject) {
+        try {
+            return dateObject instanceof Date && dateObject.toString() !== invalidDate && !isNaN(dateObject.getTime());
+        } catch(err) {
+            return false;
+        }
+    }
+
     meerkat.modules.register('dateUtils', {
         format  : format,
         parse : parse,
@@ -198,7 +207,8 @@
         dateValueServerFormat : dateValueServerFormat,
         dateValueFormFormat : dateValueFormFormat,
         returnDateTimeString: returnDateTimeString,
-        isDate: isDate
+        isDate: isDate,
+        isValidDate: isValidDate
     });
 
 })(jQuery);

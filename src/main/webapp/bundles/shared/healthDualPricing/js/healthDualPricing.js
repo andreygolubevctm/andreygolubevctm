@@ -199,6 +199,12 @@
             dropDeadDate = new Date(product.dropDeadDate),
             pricingDate = new Date(product.pricingDate);
 
+        if (!meerkat.modules.dateUtils.isValidDate(dropDeadDate)) {
+            $('.hidden-if-drop-dead-date-invalid').hide();
+        } else {
+            $('.hidden-if-drop-dead-date-invalid').show();
+        }
+
         if (!isNaN(dropDeadDate.getTime()) && !isNaN(pricingDate.getTime())) {
             $('.pricingDateText').text(meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"));
             $('.dropDeadDateText').text(meerkat.modules.dateUtils.format(dropDeadDate, "Do MMMM"));

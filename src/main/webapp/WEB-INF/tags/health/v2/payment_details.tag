@@ -24,8 +24,8 @@
 	<form_v3:fieldset legend="Payment Details" >
 
 		<c:if test="${isDualPriceActive eq true}">
-			<div class="alert alert-info">
-				Remember: Premiums will rise from April 1st. You <b>must</b> select a cover start date <b>before <span class="pricingDateText"></span></b> and a payment start date <b>before <span class="dropDeadDateText"></span></b> to be eligible for the lower rate
+			<div class="alert alert-info hidden-if-drop-dead-date-invalid">
+				Remember: Premiums will rise from April 1st. You <b>must</b> select a cover start date <b>before <span class="pricingDateText"></span></b> and a payment start date <b>before <span class="dropDeadDateText"></span></b> to be eligible for the lower rate on your first payment
 			</div>
 		</c:if>
 
