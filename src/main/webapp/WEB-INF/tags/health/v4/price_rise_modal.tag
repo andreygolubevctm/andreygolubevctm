@@ -36,6 +36,12 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-xs-12">
+            <p>There is no change to the Australian Government Rebate in 2022.</p>
+        </div>
+    </div>
+
     <div class="row text-center">
         <div class="col-xs-12 vertical-center-items">
             <a href="javascript:;" class="btn btn-lg price-rise-banner-close-btn">
