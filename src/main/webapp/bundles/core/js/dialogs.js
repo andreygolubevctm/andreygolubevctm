@@ -349,6 +349,7 @@
             var modalHeaderHeight = $dialog.find(".modal-header").outerHeight(true);
             var modalFooterHeight = $dialog.find(".modal-footer").outerHeight(true);
 	        var modalCloseBarHeight = $dialog.find(".modal-closebar").outerHeight(true);
+	        var modalNavBarHeight = $dialog.find(".modal-closebar-placeholder").outerHeight(true);
 	        content_height = viewport_height;
 	        content_height -= _.isUndefined(modalHeaderHeight) ? 0 : modalHeaderHeight;
             content_height -= _.isUndefined(modalFooterHeight) ? 0 : modalFooterHeight;
@@ -357,6 +358,7 @@
             // On XS, the modal fills the whole viewport.
             // Put the modals to the top of XS so the "X" close icon overlaps the navbar correctly.
             if (isXS) {
+                content_height -= _.isUndefined(modalNavBarHeight) ? 0 : modalNavBarHeight;
                 $modalContent.css('height', viewport_height);
                 $dialog.find(".modal-body").css('max-height', 'none').css('height', content_height);
 
