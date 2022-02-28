@@ -16,6 +16,7 @@
         <div class="col-xs-12">
             <h3>Why are health insurance premiums reviewed annually?</h3>
             <p>Each year, all health funds review their premiums to balance the growing costs of healthcare and to support the rising demand for health services, the increase in chronic health concerns, and the beneficial but costly advances in technology for better health outcomes.</p>
+            <p>This year some funds have chosen to delay their rate rises to later in the year, for those funds the premiums will remain the same from April 1 and you will receive confirmation from the fund closer to the time the premiums will change.</p>
         </div>
     </div>
 
@@ -47,7 +48,7 @@
             <a href="javascript:;" class="btn btn-lg price-rise-banner-close-btn">
                 <span class="dual-pricing-frequency-ok-text">OK, got it</span>
             </a>
-            <div>Need to review your cover? <span class="text-bold">Call our experts on </span><a href="tel: ${callCentreNumber}"><span class="icon icon-phone-hollow"/>${callCentreNumber}</a></div>
+            <div>Need more information? <span class="text-bold">Call our experts on </span><a href="tel: ${callCentreNumber}"><span class="icon icon-phone-hollow"/>${callCentreNumber}</a></div>
         </div>
     </div>
 </core_v1:js_template>
