@@ -256,18 +256,24 @@
         // for some reason Results.getSelectedProduct().pricingDate gets updated
         product.pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "MMMM Do, YYYY");
 
-        var htmlTemplate = _.template($elements.logoPriceTemplate.html());
-        var htmlTemplateResultCard = _.template($elements.logoPriceTemplateResultCard.html());
+        var htmlTemplate = '';
+        if ($elements.logoPriceTemplate.html()) {
+            htmlTemplate= _.template($elements.logoPriceTemplate.html());
+        }
+        var htmlTemplateResultCard = '';
+        if ($elements.logoPriceTemplateResultCard.html()) {
+            htmlTemplateResultCard = _.template($elements.logoPriceTemplateResultCard.html());
+        }
         var htmlTemplateMoreInfo = meerkat.modules.templateCache.getTemplate($("#price-template-more-info"));
 
-        var affixedHeaderTemplate = '';
-        product.renderedPriceTemplate = htmlTemplate(product);
-        product.renderedPriceTemplateResultCard = htmlTemplateResultCard(product);
-        product.renderedMoreInfoDualPricing = htmlTemplateMoreInfo(product);
+        product.renderedPriceTemplate = !htmlTemplate ? undefined : htmlTemplate(product);
+        product.renderedPriceTemplateResultCard = !htmlTemplateResultCard ? undefined : htmlTemplateResultCard(product);
+        product.renderedMoreInfoDualPricing = !htmlTemplateMoreInfo ? undefined : htmlTemplateMoreInfo(product);
 
-        var htmlTemplateSideBar = !meerkat.site.isCallCentreUser ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
+        var htmlTemplateSideBar = (!meerkat.site.isCallCentreUser && $elements.logoPriceTemplateSideBar.html()) ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
         product.renderedPriceTemplateSideBar = !htmlTemplateSideBar ? undefined : htmlTemplateSideBar(product);
 
+        var affixedHeaderTemplate = '';
         if($elements.affixedHeaderLogoPriceTemplate.html()) {
             affixedHeaderTemplate = _.template($elements.affixedHeaderLogoPriceTemplate.html());
             product.renderedAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
@@ -278,25 +284,29 @@
         product.showCurrPremText = false;
         product.showRisingTag = false;
 
-        htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        if ($elements.logoPriceTemplate.html()) {
+            htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        }
 
         if($elements.affixedHeaderLogoPriceTemplate.html()) {
             product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
         }
-
-        htmlTemplateResultCard =  _.template($elements.logoPriceTemplateResultCard.html());
-        product.renderedAltPriceTemplateResultCard = htmlTemplateResultCard(product);
-        product.renderedAltMoreInfoDualPricing = htmlTemplateMoreInfo(product);
-
-        htmlTemplateSideBar = !meerkat.site.isCallCentreUser ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
+        if ($elements.logoPriceTemplateResultCard.html()) {
+            htmlTemplateResultCard = _.template($elements.logoPriceTemplateResultCard.html());
+        }
+        product.renderedAltPriceTemplateResultCard = !htmlTemplateResultCard ? undefined : htmlTemplateResultCard(product);
+        product.renderedAltMoreInfoDualPricing = !htmlTemplateMoreInfo ? undefined : htmlTemplateMoreInfo(product);
+        htmlTemplateSideBar = (!meerkat.site.isCallCentreUser && $elements.logoPriceTemplateSideBar.html()) ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
         product.renderedAltPriceTemplateSideBar = !htmlTemplateSideBar ? undefined : htmlTemplateSideBar(product);
 
-        product.renderedAltPriceTemplate = htmlTemplate(product);
+        product.renderedAltPriceTemplate = !htmlTemplate ? undefined : htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
         $elements.mainDualPricingTemplate = _getTemplate(isForSidebar, isForAffixedHeader, page);
-
-        var dualPriceTemplate = _.template($elements.mainDualPricingTemplate.html());
+        var dualPriceTemplate = '';
+        if ($elements.mainDualPricingTemplate.html()) {
+            dualPriceTemplate = _.template($elements.mainDualPricingTemplate.html());
+        }
 
         if (returnTemplate === true) {
             return dualPriceTemplate(product);
