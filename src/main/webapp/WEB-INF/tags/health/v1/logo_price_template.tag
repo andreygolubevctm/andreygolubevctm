@@ -7,6 +7,7 @@
     {{ if (!obj.hasOwnProperty('premium')) {return;} }}
     <%-- Decide whether to render the normal premium or the alt premium (for dual-pricing) --%>
     {{ var property = premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; } }}
+    {{ var isPendingConfirmation = false; if (obj.hasOwnProperty('healthPendingConfirmation') && obj.healthPendingConfirmation === true) { isPendingConfirmation = true; } }}
 
     {{ if(typeof obj.displayLogo === 'undefined' || obj.displayLogo == true) { }}
     <div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
@@ -63,7 +64,11 @@
             {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
             <div class="rounding">Premium may vary slightly due to rounding</div>
             {{ } }}
-            {{ if(obj.custom.reform.yad !== "N" && premium.abd > 0) { }}
+            <%-- isPendingConfirmation === true when transaction has reached confirmation step but is still Pending.
+                 load_confirmation_pending.tag (for pending transaction) does not define an abd, therefore premium.abd will be undefined in this case.
+                 Do not display abd badge for pending confirmed transactions for now.
+            --%>
+            {{ if(!isPendingConfirmation && obj.custom.reform.yad !== "N" && premium.abd > 0) { }}
                 {{ if(info.abdRequestFlag === 'A' || (obj.custom.reform.yad === "R" && (isConfirmation || !meerkat.modules.healthRABD.isRABD()))) { }}
                     <health_v4:abd_badge abd="true" />
                 {{ } else { }}
