@@ -200,7 +200,12 @@
 	function getPremium(freq) {
 		freq = freq || 'annually';
 		if(confirmationProduct && _.isObject(confirmationProduct) && _.has(confirmationProduct, "premium") && confirmationProduct.premium && _.isObject(confirmationProduct.premium) && _.has(confirmationProduct.premium,freq)) {
-			return confirmationProduct.premium[freq].lhcfreevalue;
+			if (confirmationProduct.pending === true) {
+				// pending product does not have lhcfreevalue; premium 'value' is defined in load_confirmation_pending.tag
+				return confirmationProduct.premium[freq].value;
+			} else {
+				return confirmationProduct.premium[freq].lhcfreevalue;
+			}
 		} else {
 			return null;
 		}
