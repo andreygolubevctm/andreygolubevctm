@@ -137,6 +137,7 @@
 				</c:when>
 				<c:when test="${row.xpath == 'health/application/paymentFreq'}">
 					<c:set var="premium"><c:out value="${go:formatCurrency(row.textValue, true, true)}" /></c:set>
+					<c:set var="premiumValue"><c:out value="${row.textValue}" /></c:set>
 				</c:when>
 				<c:when test="${row.xpath == 'health/payment/details/frequency'}">
 					<c:set var="frequency"><c:out value="${row.textValue}" /></c:set>
@@ -188,31 +189,37 @@
 				<premium>
 					<weekly>
 						<text><c:out value="${premium}" /></text>
+						<value><c:out value="${premiumValue}" /></value>
 						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
 						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</weekly>
 					<fortnightly>
 						<text><c:out value="${premium}" /></text>
+						<value><c:out value="${premiumValue}" /></value>
 						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
 						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</fortnightly>
 					<monthly>
 						<text><c:out value="${premium}" /></text>
+						<value><c:out value="${premiumValue}" /></value>
 						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
 						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</monthly>
 					<quarterly>
 						<text><c:out value="${premium}" /></text>
+						<value><c:out value="${premiumValue}" /></value>
 						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
 						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</quarterly>
 					<halfyearly>
 						<text><c:out value="${premium}" /></text>
+						<value><c:out value="${premiumValue}" /></value>
 						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
 						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</halfyearly>
 					<annually>
 						<text><c:out value="${premium}" /></text>
+						<value><c:out value="${premiumValue}" /></value>
 						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
 						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</annually>
