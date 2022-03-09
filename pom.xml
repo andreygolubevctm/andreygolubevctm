@@ -20,8 +20,8 @@
         <sonar.organization>ctmaus</sonar.organization>
     	  <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/coverage-reports/ut/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <common-logging.version>1.13.0-RC1</common-logging.version>
-        <common-interfaces.version>1.15.0-RC1</common-interfaces.version>
+        <common-logging.version>2.0.2-RC3</common-logging.version>
+        <common-interfaces.version>1.20.0-RC2</common-interfaces.version>
         <http-client.version>1.3.0-RC1</http-client.version>
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
         <life-common.version>1.1.0-RC1</life-common.version>
@@ -36,12 +36,14 @@
         <spring-boot.version>1.3.3.RELEASE</spring-boot.version>
         <spring-boot-legacy.version>1.0.2.RELEASE</spring-boot-legacy.version>
         <spring.version>4.2.5.RELEASE</spring.version> <!-- must match spring version -->
+        <spring-core.version>4.3.20.RELEASE</spring-core.version>
         <spring.ws.version>2.3.0.RELEASE</spring.ws.version>
         <tomcat.version>8.5.42</tomcat.version>
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
         <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
         <frontend-maven-plugin.version>1.10.3</frontend-maven-plugin.version>
         <jackson.version>2.6.2</jackson.version>
+        <jackson-updated.version>2.9.10</jackson-updated.version>
         <java-uuid-generator.version>3.1.3</java-uuid-generator.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
         <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
@@ -67,12 +69,17 @@
 
         <!-- Sentry -->
         <sentry-logback.version>1.7.10</sentry-logback.version>
-        <logback.version>1.1.5</logback.version>
+        <logback.version>1.2.10</logback.version>
+        <logback-encoder.version>4.9</logback-encoder.version>
         <!-- Schematic -->
         <schema-model.version>1.16.0</schema-model.version>
         <schema-model.feature.classifier></schema-model.feature.classifier>
 
         <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
+
+        <oauth.version>2.2.6.RELEASE</oauth.version>
+        <json-sanitizer.version>1.2.3</json-sanitizer.version>
+        <fileupload.version>1.4</fileupload.version>
     </properties>
 
     <dependencyManagement>
@@ -86,6 +93,16 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logback-encoder.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
@@ -502,14 +519,14 @@
         <dependency>
             <groupId>com.mikesamuel</groupId>
             <artifactId>json-sanitizer</artifactId>
-            <version>1.0</version>
+            <version>${json-sanitizer.version}</version>
         </dependency>
 
         <!-- jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
+            <version>${jackson-updated.version}</version>
         </dependency>
 
         <dependency>
@@ -520,12 +537,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
+            <version>${jackson-updated.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <version>${jackson-updated.version}.8</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -540,7 +557,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>${jackson.version}</version>
+            <version>${jackson-updated.version}</version>
         </dependency>
 
         <dependency>
@@ -564,7 +581,7 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3</version>
+            <version>${fileupload.version}</version>
         </dependency>
 
         <dependency>
@@ -636,7 +653,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring-core.version}</version>
         </dependency>
 
         <dependency>
@@ -743,7 +760,7 @@
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-            <version>2.2.1.RELEASE</version>
+            <version>${oauth.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -767,6 +784,11 @@
                     <artifactId>schema-support</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.1</version>
         </dependency>
     </dependencies>
 

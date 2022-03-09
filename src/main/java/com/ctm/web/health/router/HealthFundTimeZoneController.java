@@ -2,7 +2,6 @@ package com.ctm.web.health.router;
 
 import com.ctm.web.health.model.HealthFundTimeZoneResponse;
 import com.ctm.web.health.services.HealthFundTimeZoneService;
-import com.sun.istack.NotNull;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by msmerdon on 27/11/2017.

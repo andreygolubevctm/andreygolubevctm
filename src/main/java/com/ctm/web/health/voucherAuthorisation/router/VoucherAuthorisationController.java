@@ -3,7 +3,6 @@ package com.ctm.web.health.voucherAuthorisation.router;
 import com.ctm.web.health.voucherAuthorisation.services.VoucherAuthorisation;
 import com.ctm.web.health.voucherAuthorisation.services.VoucherAuthorisationService;
 import com.ctm.web.core.exceptions.DaoException;
-import com.sun.istack.NotNull;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by msmerdon on 5/10/2016.
