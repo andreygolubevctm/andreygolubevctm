@@ -284,8 +284,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
         &.grey-background {
           align-content: center;
-          background-color: #EEEEEE;
-          border: 2px solid #EEEEEE;
+          background-color: rgba(231,240,251,0.5);
           border-radius: 2px;
         }
 
@@ -374,6 +373,9 @@ body[data-step="results"]:not(.moreInfoVisible) {
       &.comingsoon {
         .raterisemonth-pricing {
           padding: 32px 0 15px 0;
+          @media (@xs-only) {
+            padding: 27px 0 10px 0;
+          }
           margin-bottom: initial;
           height: 86px;
 
@@ -393,6 +395,12 @@ body[data-step="results"]:not(.moreInfoVisible) {
               .comingSoon-results {
                 font-size: 11px;
                 color: #25130E;
+                @media (@xs-only) {
+                  b {
+                    display: block;
+                    line-height: 14pt;
+                  }
+                }
               }
             }
           }
@@ -972,22 +980,12 @@ div.result > div > div.results-header-inner-container > a {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
-.frequency .comingSoon-dash {
-  font-family: @font-family-theme-semibold;
-  font-size: 16px;
-  line-height: 14px;
-  padding-top: 2%;
-}
-
 .moreInfoPriceContainer .frequency {
   .comingSoon {
     line-height: 2.5rem;
     padding: 0 5px;
     .comingSoon-text {
       font-size: 16px;
-    }
-    .comingSoon-dash {
-      font-size: 30px;
     }
   }
 }
@@ -1072,8 +1070,7 @@ div.result > div > div.results-header-inner-container > a {
 
     &.grey-background {
       align-content: center;
-      background-color: #EEEEEE;
-      border: 2px solid #EEEEEE;
+      background-color: rgba(231,240,251,0.5);
       border-radius: 2px;
       white-space: nowrap;
       min-width: 146px;
@@ -1492,7 +1489,7 @@ div.result > div > div.results-header-inner-container > a {
   .new-price-not-yet-released {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     padding: 0 10px 0 10px;
     @media(@sm-md-only) {
@@ -1609,16 +1606,6 @@ div.result > div > div.results-header-inner-container > a {
     }
   }
 
-  .frequency .comingSoon-dash {
-    font-family: @font-family-theme-bold;
-    font-size: 26px;
-    padding-top: 1%;
-    padding-left: 10px;
-    @media(@not-lg) {
-      width: 100%;
-    }
-  }
-
   .price-boxes-wrapper {
     display: flex;
     justify-content: space-evenly;
@@ -1659,7 +1646,7 @@ div.result > div > div.results-header-inner-container > a {
     }
     .price-rise-banner-side-bar.grey-background {
       .price-rise-tag {
-        background-color: #EEEEEE;
+        background-color: rgba(231,240,251,0.5);
         border-bottom: 0.5px solid #C4C4C4;
         @media(@sm) {
           margin-bottom: 10px;
@@ -1791,7 +1778,6 @@ div.result > div > div.results-header-inner-container > a {
   }
 
   .raterisemonth-pricing .background-wrapper.grey-background {
-    background-color: #EEEEEE;
     .frequencyAmount.comingSoon-results {
       color: #25130E;
     }
@@ -1845,13 +1831,12 @@ div.result > div > div.results-header-inner-container > a {
   }
 
   .altPriceContainer-with-padding {
-    padding: 15px 0 20px 0;
-    background-color: #EEEEEE;
-    @media(@sm) {
-      padding: 0 0 10px 0;
+    padding: 20px 0;
+    background-color: rgba(231, 240, 251, 0.5);
+    @media (@sm) {
+      padding: 10px 0;
     }
-    @media(@not-lg) {
-      background: #EEEEEE;
+    @media (@not-lg) {
       box-shadow: 0 2px 4px rgba(208, 206, 206, 0.5);
       border-radius: 4px;
     }
@@ -2257,7 +2242,7 @@ div.result > div > div.results-header-inner-container > a {
   .new-price-not-yet-released {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     padding: 0 10px 0 10px;
     @media(@sm-md-only) {
@@ -2372,16 +2357,6 @@ div.result > div > div.results-header-inner-container > a {
     }
   }
 
-  .frequency .comingSoon-dash {
-    font-family: @font-family-theme-bold;
-    font-size: 26px;
-    padding-top: 1%;
-    padding-left: 10px;
-    @media(@not-lg) {
-      width: 100%;
-    }
-  }
-
   .price-boxes-wrapper {
     display: flex;
     justify-content: space-evenly;
@@ -2422,7 +2397,7 @@ div.result > div > div.results-header-inner-container > a {
     }
     .price-rise-banner-side-bar.grey-background {
       .price-rise-tag {
-        background-color: #EEEEEE;
+        background-color: rgba(231,240,251,0.5);
         border-bottom: 0.5px solid #C4C4C4;
         @media(@sm) {
           margin-bottom: 10px;
@@ -2554,7 +2529,6 @@ div.result > div > div.results-header-inner-container > a {
   }
 
   .raterisemonth-pricing .background-wrapper.grey-background {
-    background-color: #EEEEEE;
     .frequencyAmount.comingSoon-results {
       color: #25130E;
     }
@@ -2608,13 +2582,12 @@ div.result > div > div.results-header-inner-container > a {
   }
 
   .altPriceContainer-with-padding {
-    padding: 15px 0 20px 0;
-    background-color: #EEEEEE;
+    padding: 20px 0;
+    background-color: rgba(231,240,251,0.5);
     @media(@sm) {
-      padding: 0 0 10px 0;
+      padding: 10px 0;
     }
     @media(@not-lg) {
-      background: #EEEEEE;
       box-shadow: 0 2px 4px rgba(208, 206, 206, 0.5);
       border-radius: 4px;
     }
@@ -2689,5 +2662,18 @@ div.result > div > div.results-header-inner-container > a {
       display: block;
       margin-top: -3px;
     }
+  }
+}
+
+.policySummary-sidebar .raterisemonth-pricing .grey-background .frequencyAmount {
+  margin-bottom: 0;
+}
+
+.comingSoon,
+.comingSoon-results {
+  font-family: @font-family-theme-regular!important;
+  b {
+    font-weight: normal!important;
+    font-family: @font-family-theme-semibold!important;
   }
 }

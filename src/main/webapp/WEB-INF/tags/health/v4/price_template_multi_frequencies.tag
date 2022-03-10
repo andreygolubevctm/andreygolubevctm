@@ -33,8 +33,7 @@
         <%-- Convert to title case --%>
         {{ comingSoonLabel = comingSoonLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
         <div class="frequencyAmount comingSoon">
-            <div class="comingSoon-text">New price not yet released</div>
-            <div class="comingSoon-dash">&#8211;</div>
+            <div class="comingSoon-text">No change to rates <b>on April 1</b></div>
         </div>
     </div>
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
