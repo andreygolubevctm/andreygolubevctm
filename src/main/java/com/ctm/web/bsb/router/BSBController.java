@@ -3,7 +3,6 @@ package com.ctm.web.bsb.router;
 import com.ctm.web.bsb.services.BSBDetails;
 import com.ctm.web.bsb.services.BSBDetailsService;
 import com.ctm.web.core.exceptions.DaoException;
-import com.sun.istack.NotNull;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by akhurana on 8/09/2016.

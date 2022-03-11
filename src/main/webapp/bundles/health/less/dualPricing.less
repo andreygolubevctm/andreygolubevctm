@@ -50,8 +50,7 @@ body[data-step="results"] {
           flex-flow: column wrap;
           justify-content: space-evenly;
           align-content: center;
-          background-color: #EEEEEE;
-          border: 2px solid #EEEEEE;
+          background-color: rgba(231,240,251,0.5);
           border-radius: 2px;
           padding-bottom: 4%;
           padding-top: 7%;
@@ -195,13 +194,6 @@ div.result > div > div.results-header-inner-container > div.results-header-info-
 
 div.result > div > div.results-header-inner-container > div.results-header-info-container > a > div > span {
   padding-left: 7px;
-}
-
-.frequency .comingSoon-dash {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 14px;
-  padding-top: 7%;
 }
 
 body[data-step=apply],
@@ -355,5 +347,14 @@ body[data-step=payment] {
   padding: 20px 50px 20px 50px;
   @media (@xs-only) {
     padding: 20px;
+  }
+}
+
+.comingSoon,
+.comingSoon-results {
+  font-family: @font-family-theme-regular!important;
+  b {
+    font-weight: normal!important;
+    font-family: @font-family-theme-semibold!important;
   }
 }
