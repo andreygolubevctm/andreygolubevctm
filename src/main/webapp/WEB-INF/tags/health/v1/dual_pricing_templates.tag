@@ -7,7 +7,7 @@
 
 <core_v1:js_template id="price-frequency-template">
 	<c:set var="dialogueText">
-		{{ var altPremiumText = altPremium === '$0.00' ? 'at the higher premium' : altPremium; }}
+		{{ var altPremiumText = altPremium === '$0.00' ? 'at the same rate due to your rate rise being delayed.' : altPremium; }}
 		You've chosen to pay {{= frequency }}, which means premiums paid before April 1st will be {{= premium }} and then your ongoing premiums will be {{= altPremiumText }}
 	</c:set>
 	<field_v2:checkbox
