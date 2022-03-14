@@ -59,7 +59,7 @@
                 </div>
             </div>
             {{ } else { }}
-            <div class="frequencyAmount comingSoon">New price not yet released</div>
+            <div class="frequencyAmount comingSoon">No change to rates <b>on April 1</b></div>
             {{ } }}
             {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
             <div class="rounding">Premium may vary slightly due to rounding</div>

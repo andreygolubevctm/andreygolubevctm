@@ -2,9 +2,7 @@ package com.ctm.web.core.leadfeed.model;
 
 import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 import org.hibernate.validator.constraints.NotBlank;
-import org.immutables.value.internal.$processor$.meta.$JacksonMirrors;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;

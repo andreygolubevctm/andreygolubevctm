@@ -32,8 +32,8 @@
 
 	<div class="{{= showAltPremium ? !showPriceAndFrequency(property[obj._selectedFrequency]) ? 'raterisemonth-pricing altPriceContainer-with-padding' : 'raterisemonth-pricing' : 'current-pricing' }}">
 
-	{{ if(showAltPremium) { }}
-		<div class="price-rise-banner-side-bar {{= showPriceAndFrequency(property[obj._selectedFrequency]) ? '' : 'grey-background'}} hidden-xs">
+	{{ if(showAltPremium && showPriceAndFrequency(property[obj._selectedFrequency])) { }}
+		<div class="price-rise-banner-side-bar hidden-xs">
 			<health_v4_results:price_rise_banner showHelpIcon="false" textType="rateRiseBannerSideBar" isHiddenByDefault="false"/>
 		</div>
 	{{ } }}
@@ -86,8 +86,7 @@
 														</span>
 									{{ } else { }}
 										<div class="new-price-not-yet-released">
-											<div class="frequencyAmount comingSoon-results">New price not yet released</div>
-											<div class="comingSoon-dash">&#8211;</div> <%-- long dash--%>
+											<div class="frequencyAmount comingSoon-results">No change to rates <b>on April 1</b></div>
 										</div>
 									{{ } }}
 									{{ if (showRoundingMessage) { }}

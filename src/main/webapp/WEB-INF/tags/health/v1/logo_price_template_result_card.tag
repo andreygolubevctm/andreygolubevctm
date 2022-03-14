@@ -67,8 +67,7 @@
                             <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
                         </div>
             {{ } else { }}
-            <div class="frequencyAmount comingSoon-results">New price not yet released</div>
-            <div class="comingSoon-dash">&#8211;</div> <%-- long dash--%>
+            <div class="frequencyAmount comingSoon-results">No change to rates <b>on April 1</b></div>
             {{ } }}
         </div>
         {{ } }}

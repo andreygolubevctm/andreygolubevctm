@@ -31,8 +31,7 @@
         {{ if (!result.hasValidPrice) { }}
         <div class="frequency grey-background center-align-items {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? 'vertical-center-lines' : 'displayNone' }}">
             <div class="frequencyAmount comingSoon">
-                <div>New price not yet released</div>
-                <div class="comingSoon-dash">&#8211;</div>
+                <div>No change to rates <b>on April 1</b></div>
             </div>
         </div>
         <%-- Close the opened tags and return, to reduce complexity of nesting --%>
