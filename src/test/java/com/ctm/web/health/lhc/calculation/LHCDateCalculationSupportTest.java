@@ -13,6 +13,7 @@ import java.util.Set;
 
 import static com.ctm.web.health.lhc.calculation.Constants.JULY_FIRST_2000;
 import static com.ctm.web.health.lhc.calculation.Constants.MIN_LHC_PERCENTAGE;
+import static com.ctm.web.health.lhc.calculation.LHCDateCalculationSupport.checkIfStartOfFinancialYear;
 import static com.ctm.web.health.lhc.calculation.TestScenarioConstants.*;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -293,5 +294,22 @@ public class LHCDateCalculationSupportTest {
         LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
 
         assertEquals(LocalDate.of(2010, Month.JULY, 1), baseDate);
+    }
+
+    @Test
+    public void givenDate_whenStartOfFinYear_thenReturnTrue() {
+        LocalDate date = LocalDate.of(2021, 4, 5);
+        assertFalse(checkIfStartOfFinancialYear(date));
+        date = LocalDate.of(2025, 4, 5);
+        assertFalse(checkIfStartOfFinancialYear(date));
+        date = LocalDate.of(2021, 7, 1);
+        assertTrue(checkIfStartOfFinancialYear(date));
+        date = LocalDate.of(2027, 7, 1);
+        assertTrue(checkIfStartOfFinancialYear(date));
+
+        date = LocalDate.of(2021, 7, 2);
+        assertFalse(checkIfStartOfFinancialYear(date));
+        date = LocalDate.of(2021, 6, 30);
+        assertFalse(checkIfStartOfFinancialYear(date));
     }
 }
