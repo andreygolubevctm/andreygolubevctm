@@ -24,9 +24,6 @@ import java.util.stream.Stream;
  */
 public class LHCDateCalculationSupport {
 
-    public static final int FIN_YEAR_START_DAY = 1;
-    public static final int FIN_YEAR_START_MONTH = 7;
-
     /**
      * Function to determine whether an instance is between or equal to the from and to dates of an instance of
      * {@link CoverDateRange}.
@@ -336,9 +333,5 @@ public class LHCDateCalculationSupport {
             }
         }
         return permittedGapDays;
-    }
-
-    public static Boolean checkIfStartOfFinancialYear(LocalDate date) {
-        return date.getMonthValue() == FIN_YEAR_START_MONTH && date.getDayOfMonth() == FIN_YEAR_START_DAY;
     }
 }
