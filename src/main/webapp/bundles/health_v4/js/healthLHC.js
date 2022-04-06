@@ -14,7 +14,6 @@
         },
         _newLhc = null,
         _newLhcCompleteResult = null;
-        $applicationDate = $('#health_searchDate');
 
     function onInitialise() {
         var hasPartner = meerkat.modules.healthChoices.hasPartner(),
@@ -31,9 +30,7 @@
                 continuousCover: null,
                 neverHadCover: null,
                 coverDates: []
-            },
-            // make the applicationDate LocalDate.java default compatible
-            applicationDate: !$applicationDate && !$applicationDate.val() ? null : $applicationDate.val().split("/").reverse().join("-")
+            }
         };
 
         if (hasPartner) {
