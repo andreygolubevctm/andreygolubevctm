@@ -15,8 +15,7 @@
         _newLhc = null,
         _newLhcCompleteResult = null,
         _primary_lhc_override = null,
-        _partner_lhc_override = null,
-        $applicationDate = $('#health_searchDate');
+        _partner_lhc_override = null;
 
     function onInitialise(callback) {
         var $healthCoverDetails = $('#contactForm');
@@ -35,9 +34,7 @@
                 continuousCover: null,
                 neverHadCover: null,
                 coverDates: []
-            },
-            // make the applicationDate LocalDate.java default compatible
-            applicationDate: !$applicationDate && !$applicationDate.val() ? null : $applicationDate.val().split("/").reverse().join("-")
+            }
         };
 
         if (hasPartner) {

@@ -15,17 +15,10 @@
 <%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"   description="Show or hide the error message container" %>
 <%@ attribute name="hideElement" 			required="false" 	rtexprvalue="true"   description="If true hides the entire element" %>
 <%@ attribute name="requiredErrorMessage" 	required="false" 	rtexprvalue="true"   description="If required is true and this attribute is set, shows the text as error message when required validation fires" %>
-<%@ attribute name="defaultValue" 			required="false" rtexprvalue="true"  description="An optional default value for the field" %>
+
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:choose>
-	<c:when test="${empty data[xpath] and not empty defaultValue}">
-		<c:set var="value" value="${defaultValue}" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
-	</c:otherwise>
-</c:choose>
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <c:set var="placeholderText" value='Please choose...' />
 <c:if test="${not empty placeHolder}">
