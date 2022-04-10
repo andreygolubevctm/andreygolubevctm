@@ -62,6 +62,8 @@
             "trialcampaignFacebook",
             "trialcampaignHealthEngine",
             "trialcampaignHealthEngineLP",
+            "trialcampaignHealthEngineInbound",
+            "trialcampaignHealthEngineCLI",
             "trialcampaignJackMedia",
             "trialcampaignMicrosite",
             "trialcampaignOmnilead",
@@ -210,7 +212,7 @@
             toggleEnergyCrossSell();
             toggleCoverDialogues();
             _toggleRebateFromMedicareDetails();
-            togglePreSubmitDialogue()
+            togglePreSubmitDialogue();
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
@@ -506,28 +508,51 @@
 	            .removeClass('nextgencli')
                 .removeClass('energycross')
                 .removeClass('energytransfer')
-			.removeClass('trialCampaignRedlands')
+			    .removeClass('trialCampaignRedlands')
+                .removeClass('trialcampaignhealthengine')
+                .removeClass('trialcampaignhealthengineinbound')
+                .removeClass('trialcampaignhealthenginecli')
                 .addClass('inbound');
         }
         else if(healthContactTypeSelection === 'nextgen') {
             $healthContactType.val('inbound');
-            $healthContactTypeTrial.val('nextgen');
-
             $body
                 .removeClass('outbound trial')
                 .removeClass('outbound cli')
                 .removeClass('inbound')
                 .removeClass('energycross')
                 .removeClass('energytransfer')
-				.removeClass('trialCampaignRedlands')
+                .removeClass('trialCampaignRedlands')
+                .removeClass('trialcampaignhealthengine')
+                .removeClass('trialcampaignhealthengineinbound')
+                .removeClass('trialcampaignhealthenginecli')
                 .addClass('nextgen');
+
+            $healthContactTypeTrial.val('nextgen');
+
+        }
+        else if(healthContactTypeSelection === 'trialcampaignHealthEngineInbound') {
+            $healthContactType.val('inbound');
+            $healthContactTypeTrial.val('trialcampaignHealthEngineInbound');
+
+            $body
+                .removeClass('outbound trial')
+                .removeClass('outbound cli')
+                .removeClass('energycross')
+                .removeClass('energytransfer')
+                .removeClass('trialCampaignRedlands')
+                .removeClass('trialcampaignhealthengine')
+                .removeClass('trialcampaignhealthenginecli')
+                .removeClass('nextgen')
+                .addClass('inbound trialcampaignhealthengineinbound trial');
         }
         // Outbound
         else {
 	        var healthContactTypeSelectionStr = healthContactTypeSelection.toLowerCase();
             $body
-                .removeClass('inbound cli trial nextgen nextgenoutbound nextgencli energycross energytransfer trialCampaignRedlands')
+                .removeClass('inbound cli trial nextgen nextgenoutbound nextgencli energycross energytransfer trialCampaignRedlands trialcampaignhealthengine trialcampaignhealthengineinbound trialcampaignhealthenginecli')
 	            .toggleClass(healthContactTypeSelectionStr, isOutboundNextGenContactType(healthContactTypeSelection))
+                .toggleClass(healthContactTypeSelectionStr, isOutboundHealthEngineContactType(healthContactTypeSelection))
                 .addClass('outbound');
 
 
@@ -573,6 +598,11 @@
             }
 
         }
+    }
+
+    function isOutboundHealthEngineContactType(type) {
+        type = type || $healthContactTypeField.val() || "";
+        return _.indexOf(['trialcampaignhealthengine', 'trialcampaignhealthenginecli'], type.toLowerCase()) >= 0;
     }
 
     function isOutboundNextGenContactType(type) {
@@ -631,11 +661,11 @@
         var callTypeToBeReturned = $healthContactTypeSelectOption.is(':selected') ? (healthContactTypeSelection != "" ? healthContactTypeSelection : null) : null;
         var contatTypeTrialRegex = new RegExp('trial','i');
 
-        // treat trial campaigns as outbound
+        // treat trial campaigns as outbound (except for trialcampaignHealthEngineInbound)
         // for all intents and purposes trial campaign should be handled as an outbound call type - just have a different value stored in the DB
         // unsure if cli outbound should be handled here too
         if (callTypeToBeReturned !== null) {
-            if (contatTypeTrialRegex.test(callTypeToBeReturned)){
+            if (contatTypeTrialRegex.test(callTypeToBeReturned) && callTypeToBeReturned != 'trialcampaignHealthEngineInbound'){
                 callTypeToBeReturned = 'trial';
             }
         }
@@ -661,7 +691,7 @@
         // Set the calltype variables
         callType = getCallType();
         if (!_.isEmpty(callType)) {
-            isValidCallType = _.indexOf(['outbound','inbound','cli','nextgen','nextgenoutbound','nextgencli','energyCrossSell','energyTransfer', 'qSms', 'qSmsMax'], callType) >= 0;
+            isValidCallType = _.indexOf(['outbound','inbound','cli','nextgen','nextgenoutbound','nextgencli','energyCrossSell','energyTransfer', 'qSms', 'qSmsMax', 'trialcampaignHealthEngine', 'trialcampaignHealthEngineInbound', 'trialcampaignHealthEngineCLI'], callType) >= 0;
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
