@@ -150,7 +150,8 @@
   .simples-dialog-nextgenoutbound,
   .simples-dialog-nextgencli,
   .simples-dialog-energycross,
-  .simples-dialog-energytransfer {
+  .simples-dialog-energytransfer,
+  .simples-dialog-trialcampaignhealthengine {
       display: none;
   }
 
@@ -291,6 +292,28 @@
   &.inbound {
     .simples-dialog-inbound {
       display: block;
+    }
+
+    &[data-step=results].moreInfoVisible,
+    &[data-step=payment],
+    &[data-step=apply] {
+      &.trial {
+        #pageContent {
+          background-color: #efe2f5;
+        }
+      }
+    }
+  }
+
+  &.outbound {
+    &.trialcampaignhealthengine {
+      .simples-dialog-trialcampaignhealthengine {
+        display: block;
+      }
+      // TODO: commenting this out while waiting for script approval (CTM-4669)
+      //.simples-dialogue-20 {
+      //  display: none;
+      //}
     }
   }
 
