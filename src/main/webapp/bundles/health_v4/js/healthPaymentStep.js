@@ -22,8 +22,7 @@
 		credit: [],
 		frequency: [],
 		creditBankSupply: false,
-		creditBankQuestions: false,
-		isAUF: false
+		creditBankQuestions: false
 	};
 
 	var currentCoupon = false;
@@ -213,7 +212,6 @@
 		settings.frequency = { 'weekly':27, 'fortnightly':31, 'monthly':27, 'quarterly':27, 'halfyearly':27, 'annually':27 };
 		settings.creditBankSupply = false;
 		settings.creditBankQuestions = false;
-		settings.isAUF = false;
 
 		meerkat.modules.healthCreditCard.resetConfig();
 
