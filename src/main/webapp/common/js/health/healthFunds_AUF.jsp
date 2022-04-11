@@ -142,6 +142,8 @@ var healthFunds_AUF = {
 
       meerkat.modules.healthFunds._previousfund_authority(false);
 
+    meerkat.modules.healthPaymentStep.resetSettings();
+
     <%--credit card options--%>
     meerkat.modules.healthCreditCard.resetConfig();
     meerkat.modules.healthCreditCard.render();

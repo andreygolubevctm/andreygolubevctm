@@ -35,9 +35,9 @@
     </c:when>
     <c:when test="${brandCode eq 'bddd'}">
         <c:set var="healthCvrExcludeItems" value="'EF','ESP'" />
-        <c:set var="excludeItemsContactType" value="'trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignJackMedia','trialcampaignFacebook','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC','trialcampaignOmnilead'" />
+        <c:set var="excludeItemsContactType" value="'trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignHealthEngineInbound','trialcampaignHealthEngineCLI','trialcampaignJackMedia','trialcampaignFacebook','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC','trialcampaignOmnilead'" />
         <c:if test="${hideChatOption}">
-            <c:set var="excludeItemsContactType" value="'webchat','trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignJackMedia','trialcampaignFacebook','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC','trialcampaignOmnilead'" />
+            <c:set var="excludeItemsContactType" value="'webchat','trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignHealthEngineInbound','trialcampaignHealthEngineCLI','trialcampaignJackMedia','trialcampaignFacebook','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC','trialcampaignOmnilead'" />
         </c:if>
     </c:when>
     <c:otherwise>
@@ -78,6 +78,9 @@
             <simples:dialogue id="113" vertical="health" className="simples-dialog-nextgen"/>
             <simples:dialogue id="135" vertical="health" className="simples-dialog-outbound"/>
             <simples:dialogue id="20" vertical="health" className="simples-dialog-outbound"/>
+            <%-- TODO: commenting this out while waiting for script approval (CTM-4669)
+            <simples:dialogue id="234" vertical="health" className="simples-dialog-trialcampaignhealthengine"/>
+            --%>
             <simples:dialogue id="115" vertical="health" className="simples-dialog-nextgenoutbound"/>
             <simples:dialogue id="121" vertical="health" className="simples-dialog-nextgencli"/>
             <simples:dialogue id="78" vertical="health" className="simples-dialog-cli"/>
