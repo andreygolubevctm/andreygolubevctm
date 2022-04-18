@@ -81,6 +81,7 @@
             <%-- TODO: commenting this out while waiting for script approval (CTM-4669)
             <simples:dialogue id="234" vertical="health" className="simples-dialog-trialcampaignhealthengine"/>
             --%>
+            <simples:dialogue id="235" vertical="health" className="simples-dialog-trialcampaignhealthenginecli"/>
             <simples:dialogue id="115" vertical="health" className="simples-dialog-nextgenoutbound"/>
             <simples:dialogue id="121" vertical="health" className="simples-dialog-nextgencli"/>
             <simples:dialogue id="78" vertical="health" className="simples-dialog-cli"/>

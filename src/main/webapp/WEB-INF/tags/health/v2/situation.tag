@@ -31,6 +31,7 @@
 			<%-- TODO: commenting this out while waiting for script approval (CTM-4669)
 			<simples:dialogue id="234" vertical="health" className="simples-dialog-trialcampaignhealthengine"/>
 			--%>
+			<simples:dialogue id="235" vertical="health" className="simples-dialog-trialcampaignhealthenginecli"/>
 			<simples:dialogue id="135" vertical="health" className="simples-dialog-outbound"/>
 			<simples:dialogue id="0" vertical="health" className="red">
 				<div class="row">
