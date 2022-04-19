@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LHCCalculationQuery {
@@ -12,6 +13,7 @@ public class LHCCalculationQuery {
     private LHCCalculationDetails primary;
     @Valid
     private LHCCalculationDetails partner;
+    private LocalDate applicationDate;
 
     public LHCCalculationQuery() { /* Intentionally Empty for Jackson deserialization. */ }
 
@@ -41,4 +43,11 @@ public class LHCCalculationQuery {
         return this;
     }
 
+    public LocalDate getApplicationDate() {
+        return applicationDate;
+    }
+
+    public void setApplicationDate(LocalDate applicationDate) {
+        this.applicationDate = applicationDate;
+    }
 }
