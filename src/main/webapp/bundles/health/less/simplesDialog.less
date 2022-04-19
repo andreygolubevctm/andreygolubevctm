@@ -151,7 +151,8 @@
   .simples-dialog-nextgencli,
   .simples-dialog-energycross,
   .simples-dialog-energytransfer,
-  .simples-dialog-trialcampaignhealthengine {
+  .simples-dialog-trialcampaignhealthengine,
+  .simples-dialog-trialcampaignhealthenginecli {
       display: none;
   }
 
@@ -310,10 +311,17 @@
       .simples-dialog-trialcampaignhealthengine {
         display: block;
       }
-      // TODO: commenting this out while waiting for script approval (CTM-4669)
-      //.simples-dialogue-20 {
-      //  display: none;
-      //}
+      .simples-dialogue-20 {
+        display: none;
+      }
+    }
+    &.trialcampaignhealthenginecli {
+      .simples-dialog-trialcampaignhealthenginecli {
+        display: block;
+      }
+      .simples-dialogue-20 {
+        display: none;
+      }
     }
   }
 
