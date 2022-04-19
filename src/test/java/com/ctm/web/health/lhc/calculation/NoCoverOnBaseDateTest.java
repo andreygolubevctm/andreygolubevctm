@@ -327,8 +327,8 @@ public class NoCoverOnBaseDateTest {
     @Ignore("Long Execution time - but proves LHC Correctness for all values of a birthday in a given financial year")
     @Test
     public void givenNeverHeldCover_whenAged36OnFirstDayOfFinancialYear_thenLHCRemainsTheSame() {
-        Set<LocalDate> daysInFinancialYear = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(new CoverDateRange(LocalDate.of(2017, Month.JULY, 1), LocalDate.of(2018, Month.JUNE, 30))));
-        Set<LocalDate> daysAged36ForFinYear = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(new CoverDateRange(LocalDate.of(1980, Month.JULY, 2), LocalDate.of(1981, Month.JULY, 1))));
+        Set<LocalDate> daysInFinancialYear = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(new CoverDateRange(LocalDate.of(2017, Month.JULY, 1), LocalDate.of(2017, Month.JULY, 1))));
+        Set<LocalDate> daysAged36ForFinYear = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(new CoverDateRange(LocalDate.of(1981, Month.JULY, 1), LocalDate.of(1981, Month.JULY, 1))));
 
         daysAged36ForFinYear.forEach(birthday -> {
             daysInFinancialYear.forEach(lhcCheckDate -> {
