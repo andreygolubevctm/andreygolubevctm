@@ -137,6 +137,25 @@
                 <field_v1:hidden xpath="${xpath}/healthSitu" defaultValue="LC" />
                 <field_v1:hidden xpath="${xpath}/addExtrasCover" />
 
+                <c:if test="${callCentre}">
+                    <%-- If original transaction is from Online journey it will have health/healthCover/primary/fundName value;
+                        Add value as a hidden field in Simples, so the Online field will still be populated when the transaction is
+                        retrieved Online (i.e. Get Product Link functionality)
+                    --%>
+                    <c:set var="fieldXpath" value="health/healthCover/primary/fundName" />
+                    <c:set var="value"><c:out value="${data[fieldXpath]}" escapeXml="true"/></c:set>
+                    <c:if test="${not empty value}">
+                        <field_v1:hidden xpath="${fieldXpath}Hidden" />
+                    </c:if>
+
+                    <%--Add same hidden field for partner --%>
+                    <c:set var="fieldXpath" value="health/healthCover/partner/fundName" />
+                    <c:set var="value"><c:out value="${data[fieldXpath]}" escapeXml="true"/></c:set>
+                    <c:if test="${not empty value}">
+                        <field_v1:hidden xpath="${fieldXpath}Hidden" />
+                    </c:if>
+                </c:if>
+
             </form_v3:fieldset>
 
         </jsp:body>
