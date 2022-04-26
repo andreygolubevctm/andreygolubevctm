@@ -72,8 +72,8 @@
         <logback.version>1.2.10</logback.version>
         <logback-encoder.version>4.9</logback-encoder.version>
         <!-- Schematic -->
-        <schema-model.version>1.16.0</schema-model.version>
-        <schema-model.feature.classifier></schema-model.feature.classifier>
+        <schema-model.version>1.108.0</schema-model.version>
+        <schema-model.feature.classifier/>
 
         <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
 
@@ -784,6 +784,12 @@
                     <artifactId>schema-support</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.ctm.schema</groupId>
+            <artifactId>schema-support</artifactId>
+            <version>${schema-model.version}</version>
+            <classifier>${schema-model.feature.classifier}</classifier>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>

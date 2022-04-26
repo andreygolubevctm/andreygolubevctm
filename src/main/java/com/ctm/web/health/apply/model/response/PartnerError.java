@@ -22,4 +22,8 @@ public class PartnerError {
     public Boolean isFatal() {
         return fatal;
     }
+
+    public PartnerError(String message) {
+        this.message = message;
+    }
 }
