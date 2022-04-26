@@ -1,0 +1,11 @@
+{
+  "@type": "health/1-0-0/applyResponse",
+  "providerCode": "BUP",
+  "bccEmailAddress": "joe@bloggs.com",
+  "applyId": "7705918f-b838-4a17-b0a1-d1eec80a5004",
+  "applyReference": "ABC-123",
+  "errors": [{"message":  "This service is borked"}],
+  "responseReceived": "2021-11-03T12:00:36.526Z",
+  "message": "Fail",
+  "status": 200
+}

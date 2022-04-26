@@ -48,8 +48,8 @@ import com.ctm.web.health.model.results.ResponseError;
 import com.ctm.web.health.services.HealthApplyService;
 import com.ctm.web.health.services.HealthConfirmationService;
 import com.ctm.web.health.services.HealthLeadService;
-import com.ctm.web.health.validation.HealthApplicationValidation;
 import com.ctm.web.health.utils.HealthRequestParser;
+import com.ctm.web.health.validation.HealthApplicationValidation;
 import com.ctm.web.reward.services.RewardCampaignService;
 import com.ctm.web.reward.services.RewardService;
 import com.ctm.web.simples.services.TransactionService;
@@ -123,8 +123,8 @@ public class HealthApplicationController extends CommonQuoteRouter {
                                        IPAddressHandler ipAddressHandler,
                                        TransactionDetailsDao transactionDetailsDao,
                                        HealthLeadService leadService,
-									   RewardService rewardService,
-                                       RememberMeService rememberMeService ) {
+                                       RewardService rewardService,
+                                       RememberMeService rememberMeService) {
         super(sessionDataServiceBean, ipAddressHandler);
         this.transactionDetailsDao = transactionDetailsDao;
         this.leadService = leadService;
@@ -140,24 +140,24 @@ public class HealthApplicationController extends CommonQuoteRouter {
     public HealthResultWrapper getHealthApply(@ModelAttribute final HealthRequest data,
                                               BindingResult bindingResult,
                                               HttpServletRequest request,
-                                              final HttpServletResponse httpServletResponse) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException , GeneralSecurityException, HealthApplyServiceException {
+                                              final HttpServletResponse httpServletResponse) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException, GeneralSecurityException, HealthApplyServiceException {
 
         if (bindingResult.hasErrors()) {
             for (ObjectError e : bindingResult.getAllErrors()) {
-                LOGGER.error("FORM POST MAPPING ERROR: {},", kv("error" , e));
+                LOGGER.error("FORM POST MAPPING ERROR: {},", kv("error", e));
             }
         }
 
-        if(data.getHealth().getApplication().getPrimary().getFirstname() != null && data.getHealth().getPayment().getMedicare().getFirstName() == null) {
+        if (data.getHealth().getApplication().getPrimary().getFirstname() != null && data.getHealth().getPayment().getMedicare().getFirstName() == null) {
             data.getHealth().getPayment().getMedicare().setFirstName(data.getHealth().getApplication().getPrimary().getFirstname());
         }
 
-        if(data.getHealth().getApplication().getPrimary().getSurname() != null && data.getHealth().getPayment().getMedicare().getSurname() == null) {
+        if (data.getHealth().getApplication().getPrimary().getSurname() != null && data.getHealth().getPayment().getMedicare().getSurname() == null) {
             data.getHealth().getPayment().getMedicare().setSurname(data.getHealth().getApplication().getPrimary().getSurname());
         }
 
         List<SchemaValidationError> validationErrors = HealthApplicationValidation.validateCoverType(data);
-        if(!validationErrors.isEmpty()) {
+        if (!validationErrors.isEmpty()) {
             throw new RouterException(data.getTransactionId(), validationErrors);
         }
         final Vertical.VerticalType vertical = HEALTH;
@@ -178,11 +178,12 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         // get the response
         HealthApplyResponse applyResponse;
+
         try {
             applyResponse = healthApplyService.apply(request, brand, data);
-        } catch(HealthApplyServiceException e) {
+        } catch (HealthApplyServiceException e) {
             LOGGER.error(String.format("healthApplyService.apply threw an exception with message: %1$s", e.getMessage()), e);
-            if(isCallCentre) {
+            if (isCallCentre) {
                 final List<ResponseError> errors = new ArrayList<>();
                 ResponseError error = new ResponseError();
                 error.setCode("APPLY_ERROR");
@@ -209,7 +210,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         // Get the productId removing the PHIO-HEALTH- prefix, if required
         final String productId;
-        if (data.getQuote().getApplication().getProductId().contains("HEALTH-")){
+        if (data.getQuote().getApplication().getProductId().contains("HEALTH-")) {
             productId = data.getQuote().getApplication().getProductId()
                     .substring(data.getQuote().getApplication().getProductId().indexOf("HEALTH-") + 7);
         } else {
@@ -241,14 +242,14 @@ public class HealthApplicationController extends CommonQuoteRouter {
             // write to join
             boolean successfulJoin = joinService.writeJoin(data.getTransactionId(), productId, productCode, providerId);
 
-           if(successfulJoin) {
-               String providerCode = data.getQuote().getApplication().getProvider();
-               String productName = data.getQuote().getApplication().getProductTitle();
-               String state = data.getQuote().getSituation().getState();
-               String membershipType = data.getQuote().getSituation().getHealthCvr();
-               ApplyCompleteEvent applyCompleteEvent = createCompleteEvent(providerCode, productName, state, membershipType, productId, ApplyCompleteStatus.SUCCESS);
-               cloudWatchNotifier.send(applyCompleteEvent, response);
-           }
+            if (successfulJoin) {
+                String providerCode = data.getQuote().getApplication().getProvider();
+                String productName = data.getQuote().getApplication().getProductTitle();
+                String state = data.getQuote().getSituation().getState();
+                String membershipType = data.getQuote().getSituation().getHealthCvr();
+                ApplyCompleteEvent applyCompleteEvent = createCompleteEvent(providerCode, productName, state, membershipType, productId, ApplyCompleteStatus.SUCCESS);
+                cloudWatchNotifier.send(applyCompleteEvent, response);
+            }
 
             TransactionService.writeAllowableErrors(data.getTransactionId(), getErrors(response.getErrorList(), true));
 
@@ -357,7 +358,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                 recordTouch(request, data, productId, Touch.TouchType.FAIL);
             }
 
-            leadService.sendLead(4, getDataBucket(request, data.getTransactionId()), request, "PENDING",brand.getCode());
+            leadService.sendLead(4, getDataBucket(request, data.getTransactionId()), request, "PENDING", brand.getCode());
         }
 
         LOGGER.info("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
@@ -368,7 +369,6 @@ public class HealthApplicationController extends CommonQuoteRouter {
         resultWrapper.setResult(result);
         return resultWrapper;
     }
-
 
 
     private boolean isOperatorLoggedIn(final Optional<AuthenticatedData> authenticatedSessionData) {
@@ -444,10 +444,10 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     private void writePolicyNoToTransactionDetails(@FormParam("") HealthRequest data, HealthApplicationResponse response) {
         try {
-            if(StringUtils.isNotEmpty(response.getProductId())) {
+            if (StringUtils.isNotEmpty(response.getProductId())) {
                 transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -2, "health/policyNo", response.getProductId());
             } else {
-                throw new InvalidParameterException("Cannot insert transaction detail for xpath: health/policyNo with empty textValue." );
+                throw new InvalidParameterException("Cannot insert transaction detail for xpath: health/policyNo with empty textValue.");
             }
         } catch (Exception e) {
             LOGGER.warn("Failed to add transactionDetail {} because {}", data.getTransactionId(), e);
@@ -467,13 +467,13 @@ public class HealthApplicationController extends CommonQuoteRouter {
         // write to join
         boolean successfulJoin = joinService.writeJoin(data.getTransactionId(), productId, productCode, providerId);
 
-        if(successfulJoin) {
+        if (successfulJoin) {
             String providerCode = data.getQuote().getApplication().getProvider();
             String productName = data.getQuote().getApplication().getProductTitle();
             String state = data.getQuote().getSituation().getState();
             String membershipType = data.getQuote().getSituation().getHealthCvr();
             ApplyCompleteEvent applyCompleteEvent = createCompleteEvent(providerCode, productName, state, membershipType, productId, ApplyCompleteStatus.ERROR);
-            cloudWatchNotifier.send(applyCompleteEvent,  request.getAttribute("applicationResponse"));
+            cloudWatchNotifier.send(applyCompleteEvent, request.getAttribute("applicationResponse"));
         }
     }
 
@@ -503,8 +503,8 @@ public class HealthApplicationController extends CommonQuoteRouter {
     }
 
     private String getMembershipType(String type) {
-        switch(type) {
-            case "SM" :
+        switch (type) {
+            case "SM":
             case "SF":
                 return "SINGLE";
             case "C":
