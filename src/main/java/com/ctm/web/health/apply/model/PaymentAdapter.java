@@ -1,32 +1,25 @@
 package com.ctm.web.health.apply.model;
 
-import com.ctm.schema.health.v1_0_0.BankingDetails;
-import com.ctm.schema.health.v1_0_0.CreditCard;
-import com.ctm.schema.health.v1_0_0.CreditCardExpiry;
-import com.ctm.schema.health.v1_0_0.CreditCardType;
-import com.ctm.schema.health.v1_0_0.IncomeTier;
-import com.ctm.schema.health.v1_0_0.MedicareCardExpiry;
-import com.ctm.schema.health.v1_0_0.MedicareCardType;
-import com.ctm.schema.health.v1_0_0.PaymentAccount;
-import com.ctm.schema.health.v1_0_0.PaymentGatewayType;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
-import com.ctm.web.health.apply.model.request.payment.details.PaymentType;
-import com.ctm.web.health.exceptions.HealthApplyServiceException;
-import com.ctm.web.health.model.form.Application;
-import com.ctm.web.health.model.form.BankDetails;
-import com.ctm.web.health.model.form.Credit;
-import com.ctm.web.health.model.form.Expiry;
-import com.ctm.web.health.model.form.Gateway;
-import com.ctm.web.health.model.form.HealthQuote;
-import com.ctm.web.health.model.form.Ipp;
-import com.ctm.web.health.model.form.Medicare;
-import com.ctm.web.health.model.form.Nab;
-import com.ctm.web.health.model.form.Payment;
-import com.ctm.web.health.model.form.PaymentDetails;
-import com.google.common.collect.ImmutableMap;
+import com.ctm.web.health.apply.model.request.application.applicant.healthCover.Cover;
+import com.ctm.web.health.apply.model.request.application.common.FirstName;
+import com.ctm.web.health.apply.model.request.application.common.LastName;
+import com.ctm.web.health.apply.model.request.payment.Claims;
+import com.ctm.web.health.apply.model.request.payment.Payment;
+import com.ctm.web.health.apply.model.request.payment.bank.Bank;
+import com.ctm.web.health.apply.model.request.payment.bank.account.*;
+import com.ctm.web.health.apply.model.request.payment.common.Expiry;
+import com.ctm.web.health.apply.model.request.payment.common.ExpiryDay;
+import com.ctm.web.health.apply.model.request.payment.common.ExpiryMonth;
+import com.ctm.web.health.apply.model.request.payment.common.ExpiryYear;
+import com.ctm.web.health.apply.model.request.payment.credit.*;
+import com.ctm.web.health.apply.model.request.payment.credit.Number;
+import com.ctm.web.health.apply.model.request.payment.details.*;
+import com.ctm.web.health.apply.model.request.payment.medicare.*;
+import com.ctm.web.health.apply.model.request.payment.medicare.Medicare;
+import com.ctm.web.health.model.form.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -37,266 +30,293 @@ public class PaymentAdapter {
 
     private static final List<String> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK = asList("BUD", "CUA", "FRA", "GMH", "AHM", "QTU", "NIB", "QTS", "MYO", "HIF", "WFD", "HEA", "UHF");
 
-    private static final String MEDICARE_YEAR_EXPIRY_FORMAT = "20%s";
 
-    private static final String BSB_FORMAT = "%s-%s";
-
-    private static final ImmutableMap<String, com.ctm.schema.health.v1_0_0.PaymentType> PAYMENT_TYPE_MAP = ImmutableMap.<String, com.ctm.schema.health.v1_0_0.PaymentType>builder()
-            .put("BA", com.ctm.schema.health.v1_0_0.PaymentType.BANK)
-            .put("CC", com.ctm.schema.health.v1_0_0.PaymentType.CREDIT_CARD)
-            .build();
-
-    public static com.ctm.schema.health.v1_0_0.Payment createPayment(Optional<HealthQuote> quote) throws HealthApplyServiceException {
+    public static Payment createPayment(Optional<HealthQuote> quote) {
         final Optional<com.ctm.web.health.model.form.Payment> payment = quote.map(HealthQuote::getPayment);
         if (payment.isPresent()) {
-            final Optional<Medicare> medicare = quote.map(HealthQuote::getPayment)
-                    .map(com.ctm.web.health.model.form.Payment::getMedicare);
-
-            return new com.ctm.schema.health.v1_0_0.Payment()
-                    .withDetails(createPaymentDetails(quote, payment))
-                    .withIsCoveredByMedicare(medicare.map(com.ctm.web.health.model.form.Medicare::getCover)
-                            .map(RequestAdapter.YES_INDICATOR::equalsIgnoreCase)
-                            .orElse(false))
-                    .withMedicare(createMedicare(medicare))
-                    .withBankingDetails(createBankDetails(quote.map(HealthQuote::getPayment), quote.map(HealthQuote::getApplication)))
-                    .withCreditCard(createCreditCard(quote.map(HealthQuote::getPayment)));
+            return new Payment(
+                    createPaymentDetails(quote, payment),
+                    createCreditCard(quote.map(HealthQuote::getPayment)),
+                    createCreditIppCreditCard(quote.map(HealthQuote::getPayment)),
+                    createGatewayCreditCard(quote.map(HealthQuote::getPayment)),
+                    createBank(quote.map(HealthQuote::getPayment), quote.map(HealthQuote::getApplication)),
+                    createMedicare(quote.map(HealthQuote::getPayment)
+                            .map(com.ctm.web.health.model.form.Payment::getMedicare)),
+                    payment.map(com.ctm.web.health.model.form.Payment::getDetails)
+                            .map(PaymentDetails::getClaims)
+                            .map(Claims::valueOf)
+                            .orElse(null));
         } else {
             return null;
         }
     }
 
-    protected static com.ctm.schema.health.v1_0_0.Details createPaymentDetails(Optional<HealthQuote> quote, Optional<com.ctm.web.health.model.form.Payment> payment) {
-
-        return new com.ctm.schema.health.v1_0_0.Details()
-                .withFrequency(payment.map(com.ctm.web.health.model.form.Payment::getDetails)
-                        .map(PaymentDetails::getFrequency)
-                        .map(String::toUpperCase)
-                        .map(com.ctm.schema.health.v1_0_0.PaymentFrequency::fromValue)
-                        .orElse(null))
-                .withPaymentType(payment.map(com.ctm.web.health.model.form.Payment::getDetails)
+    protected static Details createPaymentDetails(Optional<HealthQuote> quote, Optional<com.ctm.web.health.model.form.Payment> payment) {
+        return new Details(
+                paymentStartDate(payment),
+                payment.map(com.ctm.web.health.model.form.Payment::getDetails)
                         .map(PaymentDetails::getType)
-                        .map(String::toUpperCase)
-                        .map(PAYMENT_TYPE_MAP::get)
-                        .orElse(null))
-                .withIsEligibleForRebate(quote.map(HealthQuote::getHealthCover)
+                        .map(PaymentType::findByCode)
+                        .orElse(null),
+                payment.map(com.ctm.web.health.model.form.Payment::getDetails)
+                        .map(PaymentDetails::getFrequency)
+                        .map(Frequency::findByDescription)
+                        .orElse(null),
+                quote.map(HealthQuote::getHealthCover)
                         .map(com.ctm.web.health.model.form.HealthCover::getRebate)
-                        .map(RequestAdapter.YES_INDICATOR::equalsIgnoreCase)
-                        .orElse(false))
-                .withIncomeTier(new IncomeTier()
-                        .withTier(quote.map(HealthQuote::getHealthCover)
-                                .map(com.ctm.web.health.model.form.HealthCover::getIncome)
-                                .orElse(0)))
-//                .withTaxFileStatus()  // not currently sent to health-apply
-                .withRebatePercentage(quote.map(HealthQuote::getRebate)
-                        .map(BigDecimal::valueOf)
-                        .orElse(null))
-                .withPaymentStartDate(paymentStartDate(payment))
-                .withLifetimeHealthCoverLoading(quote.map(HealthQuote::getLoading)
-                        .map(BigDecimal::valueOf)
+                        .map(Rebate::valueOf)
+                        .orElse(null),
+                quote.map(HealthQuote::getRebate)
+                        .map(Double::new)
+                        .map(RebatePercentage::new)
+                        .orElse(null),
+                quote.map(HealthQuote::getHealthCover)
+                        .map(com.ctm.web.health.model.form.HealthCover::getIncome)
+                        .map(Income::new)
+                        .orElse(null),
+                quote.map(HealthQuote::getLoading)
+                        .map(Integer::doubleValue)
+                        .map(LifetimeHealthCoverLoading::new)
                         .orElse(null));
     }
 
-    protected static com.ctm.schema.health.v1_0_0.Medicare createMedicare(Optional<com.ctm.web.health.model.form.Medicare> medicare) {
+    protected static Medicare createMedicare(Optional<com.ctm.web.health.model.form.Medicare> medicare) {
         if (medicare.isPresent()) {
-            return new com.ctm.schema.health.v1_0_0.Medicare()
-                    .withFirstName(medicare.map(com.ctm.web.health.model.form.Medicare::getFirstName).orElse(null))
-                    .withLastName(medicare.map(com.ctm.web.health.model.form.Medicare::getSurname).orElse(null))
-                    .withMiddleInitial(medicare.map(com.ctm.web.health.model.form.Medicare::getMiddleName)
-                            .map(String::trim)
-                            .map(m -> StringUtils.substring(m, 0, 1))
-                            .orElse(null))
-                    .withCardType(getMedicareCardType(medicare))
-                    .withCardExpiry(medicare.map(com.ctm.web.health.model.form.Medicare::getExpiry)
-                            .map(e -> new MedicareCardExpiry()
-                                    .withDay(e.getCardExpiryDay())
-                                    .withMonth(e.getCardExpiryMonth())
-                                    .withYear(String.format(MEDICARE_YEAR_EXPIRY_FORMAT, e.getCardExpiryYear())))
-                            .orElse(null))
-                    .withIrn(medicare.map(com.ctm.web.health.model.form.Medicare::getCardPosition).orElse(null))
-                    .withNumber(medicare.map(com.ctm.web.health.model.form.Medicare::getNumber).orElse(null));
+            return new Medicare(
+                    medicare.map(com.ctm.web.health.model.form.Medicare::getCover)
+                            .map(Cover::valueOf)
+                            .orElse(null),
+                    medicare.map(com.ctm.web.health.model.form.Medicare::getNumber)
+                            .map(MedicareNumber::new)
+                            .orElse(null),
+                    medicare.map(com.ctm.web.health.model.form.Medicare::getFirstName)
+                            .map(FirstName::new)
+                            .orElse(null),
+                    medicare.map(com.ctm.web.health.model.form.Medicare::getMiddleName)
+                            .map(MiddleInitial::new)
+                            .orElse(null),
+                    medicare.map(com.ctm.web.health.model.form.Medicare::getSurname)
+                            .map(LastName::new)
+                            .orElse(null),
+                    new Position(medicare.get().getCardPosition()),
+                    medicare.map(com.ctm.web.health.model.form.Medicare::getExpiry)
+                            .map(e -> {
+                                Optional<ExpiryDay> cardExpiryDay = Optional.ofNullable(e.getCardExpiryDay()).map(ExpiryDay::new);
+                                Optional<ExpiryMonth> cardExpiryMonth = Optional.ofNullable(e.getCardExpiryMonth()).map(ExpiryMonth::new);
+                                Optional<ExpiryYear> cardExpiryYear = Optional.ofNullable(e.getCardExpiryYear()).map(ExpiryYear::new);
+
+                                return new Expiry(
+                                        cardExpiryDay.orElse(null), cardExpiryMonth.orElse(null), cardExpiryYear.orElse(null)
+                                );
+                            }).orElse(null),
+                    medicare.map(com.ctm.web.health.model.form.Medicare::getColour)
+                            .map(CardColour::new)
+                            .orElse(null));
         } else {
             return null;
         }
     }
 
-    private static MedicareCardType getMedicareCardType(Optional<com.ctm.web.health.model.form.Medicare> medicare) {
-        String colour = medicare.map(com.ctm.web.health.model.form.Medicare::getColour).map(String::toUpperCase).orElse("");
-        switch (colour) {
-            case "GREEN":
-                return MedicareCardType.AUSTRALIAN_RESIDENT;
-            case "YELLOW":
-                return MedicareCardType.RECIPROCAL;
-            case "BLUE":
-                return MedicareCardType.INTERIM;
-            default:
-                return MedicareCardType.NONE;
-        }
-    }
+    protected static Bank createBank(Optional<com.ctm.web.health.model.form.Payment> payment, Optional<Application> application) {
 
-    protected static BankingDetails createBankDetails(Optional<com.ctm.web.health.model.form.Payment> payment, Optional<Application> application) {
-
-        final String paymentType = getPaymentType(payment);
-
-        final Optional<com.ctm.web.health.model.form.Bank> bank = payment.map(com.ctm.web.health.model.form.Payment::getBank);
-
-        boolean usePaymentAccountForClaimsAndRefunds = bank.map(com.ctm.web.health.model.form.Bank::getClaims)
-                .map(RequestAdapter.YES_INDICATOR::equalsIgnoreCase)
-                .orElse(false);
-        // Check if one of the providers then set to N
-        if (application.filter(a -> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK.contains(a.getProvider())).isPresent() && PaymentType.CREDIT_CARD.getCode().equals(paymentType)) {
-            usePaymentAccountForClaimsAndRefunds = false;
-        }
-
-        final boolean supplyRefundBankAccount = payment.map(com.ctm.web.health.model.form.Payment::getDetails)
-                .map(PaymentDetails::getClaims)
-                .map(RequestAdapter.YES_INDICATOR::equalsIgnoreCase)
-                .orElse(false);
-
-        final BankingDetails bankingDetails = new BankingDetails()
-                .withUsePaymentBankAccountForRefunds(usePaymentAccountForClaimsAndRefunds)
-                .withSupplyClaimsAccountForRefunds(supplyRefundBankAccount);
-
-        if (PaymentType.BANK.getCode().equals(paymentType)) {
-            return bankingDetails
-                    .withPaymentAccount(createAccount(bank))
-                    .withRefundAccount(!usePaymentAccountForClaimsAndRefunds ? createAccount(bank.map(com.ctm.web.health.model.form.Bank::getClaim)) : null);
-        } else if (PaymentType.CREDIT_CARD.getCode().equals(paymentType)) {
-            return bankingDetails
-                    .withRefundAccount(!usePaymentAccountForClaimsAndRefunds ? createAccount(bank.map(com.ctm.web.health.model.form.Bank::getClaim)) : null);
-        } else {
-            return null;
-        }
-    }
-
-
-    protected static PaymentAccount createAccount(Optional<? extends BankDetails> bank) {
-        if (bank.isPresent()) {
-            return new PaymentAccount()
-                    .withBankName(bank.map(BankDetails::getName).orElse(null))
-                    .withBsb(bank.map(BankDetails::getBsb)
-                            .map(String::trim)
-                            .filter(bsb -> bsb.length() == 6)
-                            .map(bsb -> String.format(BSB_FORMAT, bsb.substring(0,3), bsb.substring(3,6)))
-                            .orElse(null))
-                    .withAccountName(bank.map(BankDetails::getAccount).orElse(null))
-                    .withAccountNumber(bank.map(BankDetails::getNumber).orElse(null));
-        } else {
-            return null;
-        }
-    }
-
-    protected static CreditCard createCreditCard(Optional<Payment> payment) throws HealthApplyServiceException {
-        final String paymentType = getPaymentType(payment);
-        if (!PaymentType.CREDIT_CARD.getCode().equals(paymentType)) {
-            return null;
-        }
-        return getPaymentGatewayCreditCard(payment)
-                .orElseThrow(() -> new HealthApplyServiceException("The PaymentGatewayType cannot be determined for the application which has credit card set as the payment method"));
-    }
-
-    protected static Optional<CreditCard> getPaymentGatewayCreditCard(Optional<com.ctm.web.health.model.form.Payment> payment) {
-        // NAB and WESTPAC payment gateways
-        Optional<Gateway> gateway = payment.map(com.ctm.web.health.model.form.Payment::getGateway);
-        if (gateway.isPresent()) {
-            if (gateway.map(Gateway::getNab).isPresent()) {
-                return Optional.of(getNabCreditCard(gateway));
-            } else {
-                return Optional.of(getWestpacCreditCard(gateway));
-            }
-        }
-
-        final Optional<Credit> credit = payment.map(com.ctm.web.health.model.form.Payment::getCredit);
-        // IPP payment gateway
-        if (credit.map(Credit::getIpp)
-                .map(Ipp::getTokenisation).isPresent()) {
-            return Optional.of(getIppCreditCard(credit));
-        }
-
-        // Inline credit card form
-        if (credit.isPresent()) {
-            return Optional.of(getInlineCreditCard(credit));
-        }
-
-        return Optional.empty();
-    }
-
-    protected static CreditCard getNabCreditCard(Optional<Gateway> gateway) {
-        final Optional<Nab> nab = gateway.map(Gateway::getNab);
-        return new CreditCard()
-                .withPaymentGatewayType(PaymentGatewayType.NAB)
-                .withCardType(nab.map(Nab::getCardType)
-                        .map(StringUtils::trim)
-                        .map(String::toUpperCase)
-                        .map(CreditCardType::fromValue)
-                        .orElse(null))
-                .withName(nab.map(Nab::getCardName).orElse(null))
-                .withNumber(nab.map(Nab::getCardNumber).orElse(null))
-                .withCardExpiry(new CreditCardExpiry()
-                        .withMonth(nab.map(Nab::getExpiryMonth).orElse(null))
-                        .withYear(nab.map(Nab::getExpiryYear).orElse(null)))
-                .withCrn(nab.map(Nab::getCrn).orElse(null));
-    }
-
-    protected static CreditCard getWestpacCreditCard(Optional<Gateway> gateway) {
-        return new CreditCard()
-                .withPaymentGatewayType(PaymentGatewayType.WESTPAC)
-                .withCardType(gateway.map(Gateway::getType)
-                        .map(String::toUpperCase)
-                        .map(CreditCardType::fromValue)
-                        .orElse(null))
-                .withName(gateway.map(Gateway::getName).orElse(null))
-                .withNumber(gateway.map(Gateway::getNumber).orElse(null))
-                .withCardExpiry(gateway.map(Gateway::getExpiry)
-                        .map(e -> {
-                            final String[] params = StringUtils.split(e, "/");
-                            if (params != null && params.length == 2) {
-                                return new CreditCardExpiry()
-                                        .withMonth(params[0])
-                                        .withYear(params[1].substring(Math.max(params[1].length() - 2, 0)));
-                            } else {
-                                return null;
-                            }
-                        }).orElse(null));
-    }
-
-    protected static CreditCard getIppCreditCard(Optional<Credit> credit) {
-        return new CreditCard()
-                .withPaymentGatewayType(PaymentGatewayType.IPP)
-                .withCardType(credit.map(Credit::getType)
-                        .map(String::toUpperCase)
-                        .map(CreditCardType::fromValue)
-                        .orElse(null))
-                .withName(credit.map(Credit::getName).orElse(null))
-                .withNumber(credit.map(Credit::getIpp)
-                        .map(Ipp::getMaskedNumber)
-                        .orElse(null))
-                .withToken(credit.map(Credit::getIpp)
-                        .map(Ipp::getTokenisation)
-                        .orElse(null))
-                .withCardExpiry(new CreditCardExpiry()
-                        .withMonth(credit.map(Credit::getExpiry).map(Expiry::getCardExpiryMonth).orElse(null))
-                        .withYear(credit.map(Credit::getExpiry).map(Expiry::getCardExpiryYear).orElse(null)));
-    }
-
-    protected static CreditCard getInlineCreditCard(Optional<Credit> credit) {
-        return new CreditCard()
-                .withPaymentGatewayType(PaymentGatewayType.INLINE)
-                .withCardType(credit.map(Credit::getType)
-                        .map(String::toUpperCase)
-                        .map(CreditCardType::fromValue)
-                        .orElse(null))
-                .withName(credit.map(Credit::getName).orElse(null))
-                .withNumber(credit.map(Credit::getNumber).orElse(null))
-                .withCvv(credit.map(Credit::getCcv).orElse(null))
-                .withCardExpiry(new CreditCardExpiry()
-                        .withMonth(credit.map(Credit::getExpiry).map(Expiry::getCardExpiryMonth).orElse(null))
-                        .withYear(credit.map(Credit::getExpiry).map(Expiry::getCardExpiryYear).orElse(null)));
-    }
-
-    private static String getPaymentType(Optional<com.ctm.web.health.model.form.Payment> payment) {
-        return payment.map(com.ctm.web.health.model.form.Payment::getDetails)
+        final String paymentType = payment.map(com.ctm.web.health.model.form.Payment::getDetails)
                 .map(PaymentDetails::getType)
                 .orElse(null);
+        final Optional<com.ctm.web.health.model.form.Bank> bank = payment.map(com.ctm.web.health.model.form.Payment::getBank);
+
+        final Claims claimsSameBankAccount;
+        // Check if one of the providers then set to N
+        if (application.filter(a -> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK.contains(a.getProvider())).isPresent() && "cc".equals(paymentType)) {
+            claimsSameBankAccount = Claims.N;
+        } else {
+            claimsSameBankAccount = bank.map(com.ctm.web.health.model.form.Bank::getClaims)
+                    .map(Claims::valueOf)
+                    .orElse(Claims.N);
+        }
+
+        final Claims withRefund = payment.map(com.ctm.web.health.model.form.Payment::getDetails)
+                .map(PaymentDetails::getClaims)
+                .map(Claims::valueOf)
+                .orElse(Claims.N);
+        if ("ba".equals(paymentType)) {
+            return new Bank(
+                    createAccount(bank),
+                    Claims.Y.equals(withRefund) && Claims.N.equals(claimsSameBankAccount) ?
+                            createAccount(bank.map(com.ctm.web.health.model.form.Bank::getClaim)) :
+                            Claims.N.equals(withRefund) && Claims.N.equals(claimsSameBankAccount) ?
+                                    createAccount(bank.map(com.ctm.web.health.model.form.Bank::getClaim)) : null,
+                    claimsSameBankAccount);
+        } else if ("cc".equals(paymentType) && Claims.Y.equals(withRefund)) {
+            return new Bank(
+                    null,
+                    Claims.N.equals(claimsSameBankAccount) ?
+                            createAccount(bank.map(com.ctm.web.health.model.form.Bank::getClaim)) : null,
+                    claimsSameBankAccount);
+        } else if ("cc".equals(paymentType) && Claims.N.equals(withRefund)) {
+            return new Bank(
+                    null,
+                    Claims.N.equals(claimsSameBankAccount) ?
+                            createAccount(bank.map(com.ctm.web.health.model.form.Bank::getClaim)) : null,
+                    claimsSameBankAccount);
+        } else {
+            return null;
+        }
+    }
+
+    protected static Account createAccount(Optional<? extends BankDetails> bank) {
+        if (bank.isPresent()) {
+            return new Account(
+                    bank.map(BankDetails::getName)
+                            .map(BankName::new)
+                            .orElse(null),
+                    bank.map(BankDetails::getBsb)
+                            .map(BSB::new)
+                            .orElse(null),
+                    bank.map(BankDetails::getAccount)
+                            .map(AccountName::new)
+                            .orElse(null),
+                    bank.map(BankDetails::getNumber)
+                            .map(AccountNumber::new)
+                            .orElse(null));
+        } else {
+            return null;
+        }
+    }
+
+    protected static GatewayCreditCard createGatewayCreditCard(Optional<com.ctm.web.health.model.form.Payment> payment) {
+        if (payment.map(com.ctm.web.health.model.form.Payment::getDetails)
+                .map(PaymentDetails::getType).filter(t -> "cc".equals(t)).isPresent()) {
+            if (payment.map(com.ctm.web.health.model.form.Payment::getGateway)
+                    .map(Gateway::getNab).isPresent()) {
+                final Optional<Nab> nab = payment.map(com.ctm.web.health.model.form.Payment::getGateway)
+                        .map(Gateway::getNab);
+                return new GatewayCreditCard(
+                        nab.map(Nab::getCardType)
+                                .map(StringUtils::trim)
+                                .map(Type::new)
+                                .orElse(null),
+                        nab.map(Nab::getCardName)
+                                .map(Name::new)
+                                .orElse(null),
+                        nab.map(Nab::getCardNumber)
+                                .map(com.ctm.web.health.apply.model.request.payment.credit.Number::new)
+                                .orElse(null),
+                        nab.map(n ->
+                                new Expiry(
+                                        Optional.ofNullable(n.getExpiryMonth())
+                                                .map(ExpiryMonth::new)
+                                                .orElse(null),
+                                        Optional.ofNullable(n.getExpiryYear())
+                                                .map(ExpiryYear::new)
+                                                .orElse(null)))
+                                .orElse(null),
+                        nab.map(Nab::getCrn)
+                                .map(CRN::new)
+                                .orElse(null));
+            } else if (payment.map(com.ctm.web.health.model.form.Payment::getGateway).isPresent()) {
+                final Optional<Gateway> gateway = payment.map(com.ctm.web.health.model.form.Payment::getGateway);
+                return new GatewayCreditCard(
+                        gateway.map(Gateway::getType)
+                                .map(Type::new)
+                                .orElse(null),
+                        gateway.map(Gateway::getName)
+                                .map(Name::new)
+                                .orElse(null),
+                        gateway.map(Gateway::getNumber)
+                                .map(Number::new)
+                                .orElse(null),
+                        gateway.map(Gateway::getExpiry)
+                                .map(e -> {
+                                    final String[] params = StringUtils.split(e, "/");
+                                    if (params != null && params.length == 2) {
+                                        return new Expiry(new ExpiryMonth(params[0]), new ExpiryYear(params[1]));
+                                    } else {
+                                        return null;
+                                    }
+                                }).orElse(null),
+                        null);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    protected static CreditCard createCreditCard(Optional<com.ctm.web.health.model.form.Payment> payment) {
+        if (payment.map(com.ctm.web.health.model.form.Payment::getDetails)
+                .map(PaymentDetails::getType).filter(t -> "cc".equals(t)).isPresent() &&
+                !payment.map(com.ctm.web.health.model.form.Payment::getGateway).isPresent() &&
+                payment.map(com.ctm.web.health.model.form.Payment::getCredit).isPresent() &&
+                !payment.map(com.ctm.web.health.model.form.Payment::getCredit)
+                        .map(Credit::getIpp)
+                        .map(Ipp::getTokenisation).isPresent()) {
+            final Optional<Credit> credit = payment.map(com.ctm.web.health.model.form.Payment::getCredit);
+            return new CreditCard(
+                    credit.map(Credit::getType)
+                            .map(Type::new)
+                            .orElse(null),
+                    credit.map(Credit::getName)
+                            .map(Name::new)
+                            .orElse(null),
+                    credit.map(Credit::getNumber)
+                            .map(Number::new)
+                            .orElse(null),
+                    credit.map(Credit::getExpiry)
+                            .map(e -> {
+                                Optional<com.ctm.web.health.model.form.Expiry> expiry = Optional.ofNullable(e);
+                                return new Expiry(
+                                        expiry.map(com.ctm.web.health.model.form.Expiry::getCardExpiryMonth)
+                                                .map(ExpiryMonth::new).orElse(null),
+                                        expiry.map(com.ctm.web.health.model.form.Expiry::getCardExpiryYear)
+                                                .map(ExpiryYear::new).orElse(null)
+                                );
+                            })
+                            .orElse(null),
+                    credit.map(Credit::getCcv)
+                            .map(CCV::new)
+                            .orElse(null));
+        } else {
+            return null;
+        }
+    }
+
+    private static IppCreditCard createCreditIppCreditCard(Optional<com.ctm.web.health.model.form.Payment> payment) {
+        if (payment.map(com.ctm.web.health.model.form.Payment::getDetails)
+                .map(PaymentDetails::getType).filter(t -> "cc".equals(t)).isPresent() &&
+                payment.map(com.ctm.web.health.model.form.Payment::getCredit)
+                        .map(Credit::getIpp)
+                        .map(Ipp::getTokenisation).isPresent()) {
+            final Optional<Credit> credit = payment.map(com.ctm.web.health.model.form.Payment::getCredit);
+            return new IppCreditCard(
+                    credit.map(Credit::getType)
+                            .map(Type::new)
+                            .orElse(null),
+                    credit.map(Credit::getName)
+                            .map(Name::new)
+                            .orElse(null),
+                    credit.map(Credit::getIpp)
+                            .map(Ipp::getMaskedNumber)
+                            .map(Number::new)
+                            .orElse(null),
+                    credit.map(Credit::getIpp)
+                            .map(Ipp::getTokenisation)
+                            .map(Token::new)
+                            .orElse(null),
+                    credit.map(Credit::getExpiry)
+                            .map(e -> {
+                                Optional<com.ctm.web.health.model.form.Expiry> expiry = Optional.ofNullable(e);
+                                return new Expiry(
+                                        expiry.map(com.ctm.web.health.model.form.Expiry::getCardExpiryMonth)
+                                                .map(ExpiryMonth::new).orElse(null),
+                                        expiry.map(com.ctm.web.health.model.form.Expiry::getCardExpiryYear)
+                                                .map(ExpiryYear::new).orElse(null)
+                                );
+                            })
+                            .orElse(null));
+        } else {
+            return null;
+        }
     }
 
     protected static LocalDate paymentStartDate(Optional<com.ctm.web.health.model.form.Payment> payment) {
@@ -357,4 +377,5 @@ public class PaymentAdapter {
             return null;
         }
     }
+
 }

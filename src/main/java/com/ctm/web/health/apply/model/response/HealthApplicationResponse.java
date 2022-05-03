@@ -35,24 +35,4 @@ public class HealthApplicationResponse {
     public String getBccEmail() {
         return bccEmail;
     }
-
-    public void setFundId(String fundId) {
-        this.fundId = fundId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public void setSuccess(Status success) {
-        this.success = success;
-    }
-
-    public void setErrorList(List<PartnerError> errorList) {
-        this.errorList = errorList;
-    }
-
-    public void setBccEmail(String bccEmail) {
-        this.bccEmail = bccEmail;
-    }
 }

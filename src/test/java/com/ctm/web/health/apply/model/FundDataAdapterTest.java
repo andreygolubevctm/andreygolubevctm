@@ -1,45 +1,37 @@
 package com.ctm.web.health.apply.model;
 
-import com.ctm.schema.health.v1_0_0.Eligibility;
-import com.ctm.schema.health.v1_0_0.PartnerDetails;
-import com.ctm.schema.health.v1_0_0.ProviderDetails;
-import com.ctm.web.health.model.form.Application;
-import com.ctm.web.health.model.form.Cbh;
-import com.ctm.web.health.model.form.HealthQuote;
-import com.ctm.web.health.model.form.Nhb;
-import com.ctm.web.health.model.form.PaymentDetails;
-import com.ctm.web.health.model.form.Qtu;
-import com.ctm.web.health.model.form.Uhf;
-import com.ctm.web.health.model.form.Wfd;
+import com.ctm.web.health.apply.model.request.fundData.Declaration;
+import com.ctm.web.health.apply.model.request.fundData.membership.Membership;
+import com.ctm.web.health.apply.model.request.fundData.membership.PartnerDetails;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.Eligibility;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.NhbEligibilityReasonID;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.NhbEligibilitySubReasonID;
+import com.ctm.web.health.model.form.*;
 import org.junit.Test;
 
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-public class ProviderDetailsAdapterTest {
+public class FundDataAdapterTest {
 
     @Test
-    public void testCreateFundDataEmpty() {
-        final ProviderDetails result = ProviderDetailsAdapter.createProviderDetails(Optional.empty());
+    public void testCreateFundDataEmpty() throws Exception {
+        final com.ctm.web.health.apply.model.request.fundData.FundData result = FundDataAdapter.createFundData(Optional.empty());
         assertNotNull(result);
-        assertTrue(result.getFundJoinDeclarationConfirmation());
-        assertNull(result.getPolicyStartDate());
+        assertNull(result.getProvider());
+        assertNull(result.getProduct());
+        assertEquals(Declaration.Y, result.getDeclaration());
+        assertNull(result.getStartDate());
         assertNull(result.getBenefits());
         assertNull(result.getMembership());
     }
 
     @Test
-    public void testCreateFundData() {
+    public void testCreateFundData() throws Exception {
         final HealthQuote healthQuote = mock(HealthQuote.class);
         final Application application = mock(Application.class);
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
@@ -49,31 +41,31 @@ public class ProviderDetailsAdapterTest {
         when(healthQuote.getPayment()).thenReturn(payment);
         when(payment.getDetails()).thenReturn(paymentDetails);
         when(healthQuote.getSituation()).thenReturn(situation);
-        final ProviderDetails result = ProviderDetailsAdapter.createProviderDetails(Optional.of(healthQuote));
+        final com.ctm.web.health.apply.model.request.fundData.FundData result = FundDataAdapter.createFundData(Optional.ofNullable(healthQuote));
         assertNotNull(result);
-        verify(application, never()).getProvider();
-        verify(application, never()).getProductId();
+        verify(application, times(1)).getProvider();
+        verify(application, times(1)).getProductId();
         verify(paymentDetails, times(1)).getStart();
     }
 
     @Test
-    public void testMembershipEmpty() {
-        assertNull(ProviderDetailsAdapter.createMembership((Cbh) null));
+    public void testMembershipEmpty() throws Exception {
+        assertNull(FundDataAdapter.createMembership((Cbh)null));
     }
 
     @Test
-    public void testMembership() {
+    public void testMembership() throws Exception {
         final Cbh cbh = mock(Cbh.class);
-        final com.ctm.schema.health.v1_0_0.Membership membership = ProviderDetailsAdapter.createMembership(cbh);
-        assertNull(membership.getIsACurrentMember());
+        final Membership membership = FundDataAdapter.createMembership(cbh);
+        assertNull(membership.getCurrentMember());
         assertNull(membership.getRegisteredMember());
         assertNull(membership.getMembershipNumber());
         assertNull(membership.getMembershipGroup());
         final PartnerDetails partnerDetails = membership.getPartnerDetails();
         assertNotNull(partnerDetails);
         assertNull(partnerDetails.getRelationshipToPrimary());
-        assertNull(partnerDetails.getIsGroupMember());
-        assertFalse(membership.getRegisterForGroupServices());
+        assertNull(partnerDetails.getSameGroupMember());
+        assertNull(membership.getRegisterForGroupServices());
         verify(cbh, times(1)).getCurrentemployee();
         verify(cbh, never()).getCurrentnumber();
         verify(cbh, never()).getCurrentwork();
@@ -89,10 +81,10 @@ public class ProviderDetailsAdapterTest {
     }
 
     @Test
-    public void testMembershipCurrent() {
+    public void testMembershipCurrent() throws Exception {
         final Cbh cbh = mock(Cbh.class);
         when(cbh.getCurrentemployee()).thenReturn("Y");
-        ProviderDetailsAdapter.createMembership(cbh);
+        FundDataAdapter.createMembership(cbh);
         verify(cbh, times(1)).getCurrentemployee();
         verify(cbh, times(1)).getCurrentnumber();
         verify(cbh, times(1)).getCurrentwork();
@@ -108,10 +100,10 @@ public class ProviderDetailsAdapterTest {
     }
 
     @Test
-    public void testMembershipFormer() {
+    public void testMembershipFormer() throws Exception {
         final Cbh cbh = mock(Cbh.class);
         when(cbh.getFormeremployee()).thenReturn("Y");
-        ProviderDetailsAdapter.createMembership(cbh);
+        FundDataAdapter.createMembership(cbh);
         verify(cbh, times(1)).getCurrentemployee();
         verify(cbh, never()).getCurrentnumber();
         verify(cbh, never()).getCurrentwork();
@@ -127,10 +119,10 @@ public class ProviderDetailsAdapterTest {
     }
 
     @Test
-    public void testMembershipFamily() {
+    public void testMembershipFamily() throws Exception {
         final Cbh cbh = mock(Cbh.class);
         when(cbh.getFamilymember()).thenReturn("Y");
-        ProviderDetailsAdapter.createMembership(cbh);
+        FundDataAdapter.createMembership(cbh);
         verify(cbh, times(1)).getCurrentemployee();
         verify(cbh, never()).getCurrentnumber();
         verify(cbh, never()).getCurrentwork();
@@ -146,41 +138,53 @@ public class ProviderDetailsAdapterTest {
     }
 
     @Test
-    public void testNhbEmpty() {
-        assertNull(ProviderDetailsAdapter.createMembership((Nhb) null));
+    public void testNavEmpty() throws Exception {
+        assertNull(FundDataAdapter.createMembership((Nhb)null));
     }
 
     @Test
-    public void testNhb() {
+    public void testNav() throws Exception {
         Nhb nav = mock(Nhb.class);
-        ProviderDetailsAdapter.createMembership(nav);
-        verify(nav, times(1)).getEligibility();
-        verify(nav, times(1)).getSubreason();
+        FundDataAdapter.createMembership(nav);
+        verify(nav, times(2)).getEligibility();
+        verify(nav, times(2)).getSubreason();
         verify(nav, times(1)).getPartnerrel();
     }
 
     @Test
-    public void testWfdEmpty() {
-        assertNull(ProviderDetailsAdapter.createMembership((Wfd) null));
+    public void testNavValues() throws Exception {
+        Nhb nav = mock(Nhb.class);
+        when(nav.getEligibility()).thenReturn("CF");
+        when(nav.getSubreason()).thenReturn("DODEFam");
+        final Membership membership = FundDataAdapter.createMembership(nav);
+        final Eligibility eligibility = membership.getEligibility();
+        assertEquals(NhbEligibilityReasonID.ContractorFamily, eligibility.getNhbEligibilityReasonID());
+        assertEquals(NhbEligibilitySubReasonID.ContractorFamilyDptDefence, eligibility.getNhbEligibilitySubReasonID());
+        assertEquals("CF", eligibility.getEligibilityReasonID().get());
+        assertEquals("DODEFam", eligibility.getEligibilitySubReasonID().get());
     }
 
     @Test
-    public void testWfd() {
+    public void testWfdEmpty() throws Exception {
+        assertNull(FundDataAdapter.createMembership((Wfd)null));
+    }
+
+    @Test
+    public void testWfd() throws Exception {
         Wfd wfd = mock(Wfd.class);
-        ProviderDetailsAdapter.createMembership(wfd);
+        FundDataAdapter.createMembership(wfd);
         verify(wfd, times(1)).getPartnerrel();
     }
 
     @Test
-    public void testMembershipCurrentQtu() {
+    public void testMembershipCurrentQtu() throws Exception {
         final Qtu qtu = mock(Qtu.class);
         when(qtu.getEligibility()).thenReturn("CURR");
         when(qtu.getUnion()).thenReturn("TOGTH");
-        final com.ctm.schema.health.v1_0_0.Membership membership = ProviderDetailsAdapter.createMembership(qtu);
-        final Optional<Eligibility> eligibility = Optional.ofNullable(membership.getEligibility());
-        assertTrue(eligibility.isPresent());
-        assertEquals("CURR", eligibility.map(Eligibility::getReason).orElse(""));
-        assertEquals("TOGTH", eligibility.map(Eligibility::getSubReason).orElse(""));
+        final Membership membership = FundDataAdapter.createMembership(qtu);
+        final Eligibility eligibility = membership.getEligibility();
+        assertEquals("CURR", eligibility.getEligibilityReasonID().get());
+        assertEquals("TOGTH", eligibility.getEligibilitySubReasonID().get());
     }
 
     @Test
@@ -188,26 +192,24 @@ public class ProviderDetailsAdapterTest {
         final Uhf uhf = mock(Uhf.class);
         when(uhf.getEligibility()).thenReturn("CURR");
         when(uhf.getUnion()).thenReturn("TOGTH");
-        final com.ctm.schema.health.v1_0_0.Membership membership = ProviderDetailsAdapter.createMembership(uhf);
-        final Optional<Eligibility> eligibility = Optional.ofNullable(membership.getEligibility());
-        assertTrue(eligibility.isPresent());
-        assertEquals("CURR", eligibility.map(Eligibility::getReason).orElse(""));
-        assertEquals("TOGTH", eligibility.map(Eligibility::getSubReason).orElse(""));
+        final Membership membership = FundDataAdapter.createMembership(uhf);
+        final Eligibility eligibility = membership.getEligibility();
+        assertEquals("CURR", eligibility.getEligibilityReasonID().get());
+        assertEquals("TOGTH", eligibility.getEligibilitySubReasonID().get());
     }
 
     @Test
     public void testMembershipFormerUhf() throws Exception {
         final Uhf uhf = mock(Uhf.class);
         when(uhf.getEligibility()).thenReturn("FORM");
-        final com.ctm.schema.health.v1_0_0.Membership membership = ProviderDetailsAdapter.createMembership(uhf);
-        final Optional<Eligibility> eligibility = Optional.ofNullable(membership.getEligibility());
-        assertTrue(eligibility.isPresent());
-        assertEquals("FORM", eligibility.map(Eligibility::getReason).orElse(""));
-        assertNull(eligibility.map(Eligibility::getSubReason).orElse(null));
+        final Membership membership = FundDataAdapter.createMembership(uhf);
+        final Eligibility eligibility = membership.getEligibility();
+        assertEquals("FORM", eligibility.getEligibilityReasonID().get());
+        assertNull(eligibility.getEligibilitySubReasonID());
     }
 
     @Test
-    public void testMembershipCallsGetUhf() {
+    public void testMembershipCallsGetUhf() throws Exception {
         final Uhf uhf = mock(Uhf.class);
         final HealthQuote healthQuote = mock(HealthQuote.class);
         final Application application = mock(Application.class);
@@ -215,7 +217,7 @@ public class ProviderDetailsAdapterTest {
         when(application.getCbh()).thenReturn(null);
         when(application.getNhb()).thenReturn(null);
         when(application.getUhf()).thenReturn(uhf);
-        com.ctm.schema.health.v1_0_0.Membership membership = ProviderDetailsAdapter.createMembership(Optional.of(healthQuote));
+        Membership membership = FundDataAdapter.createMembership(Optional.ofNullable(healthQuote));
         verify(application, times(1)).getUhf();
         verify(uhf, times(1)).getEligibility();
     }

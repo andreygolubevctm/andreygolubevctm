@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 public class HealthQuote {
 
@@ -17,10 +16,6 @@ public class HealthQuote {
     public String productId;
 
     public String productUpi;
-
-    private UUID journeyId;
-
-    private UUID quoteId;
 
     private Info info;
 
@@ -198,21 +193,5 @@ public class HealthQuote {
 
     public void setAccident(JsonNode accident) {
         this.accident = accident;
-    }
-
-    public UUID getJourneyId() {
-        return journeyId;
-    }
-
-    public void setJourneyId(UUID journeyId) {
-        this.journeyId = journeyId;
-    }
-
-    public UUID getQuoteId() {
-        return quoteId;
-    }
-
-    public void setQuoteId(UUID quoteId) {
-        this.quoteId = quoteId;
     }
 }

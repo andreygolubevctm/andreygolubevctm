@@ -2,8 +2,6 @@ package com.ctm.web.health.services;
 
 import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
-import com.ctm.schema.health.v1_0_0.ApplyRequest;
-import com.ctm.schema.health.v1_0_0.ApplyResponse;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -11,14 +9,16 @@ import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.resultsData.PricesObj;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.providers.model.ApplicationOutgoingRequest;
 import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.utils.ObjectMapperUtil;
-import com.ctm.web.health.apply.model.RequestAdapter;
+import com.ctm.web.health.apply.model.RequestAdapterV2;
+import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
 import com.ctm.web.health.apply.model.response.HealthApplyResponse;
-import com.ctm.web.health.apply.model.response.ResponseAdapter;
+import com.ctm.web.health.apply.model.response.HealthApplyResponsePrev;
 import com.ctm.web.health.exceptions.HealthApplyServiceException;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
@@ -49,7 +49,10 @@ public class HealthApplyService extends CommonRequestServiceV2 {
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplyService.class);
 
     @Autowired
-    private Client<ApplyRequest, ApplyResponse> clientV2Application;
+    private Client<com.ctm.web.core.providers.model.Request<HealthApplicationRequest>, HealthApplyResponsePrev> clientApplication;
+
+    @Autowired
+    private Client<ApplicationOutgoingRequest<HealthApplicationRequest>, HealthApplyResponse> clientV2Application;
 
     @Autowired
     private TransactionDao transactionDao;
@@ -69,7 +72,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
 
         LOGGER.info("Calling HealthApplyService.apply");
 
-        final QuoteServiceProperties properties = getQuoteServiceProperties("atlasApplyService", brand, HEALTH.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
+        final QuoteServiceProperties properties = getQuoteServiceProperties("healthApplyService", brand, HEALTH.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
         Long transactionId = data.getTransactionId(); // transactionId cannot be null.
 
@@ -98,7 +101,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         try {
             productId = HealthRequestParser.getProductIdFromHealthRequest(data);
             LOGGER.info(String.format("productId retrieved from health request: transactionId %1$s, productId %2$s.", transactionId, productId));
-        } catch (Exception e) {
+        } catch(Exception e) {
             String errorCopy = String.format("Exception (%1$s) retrieving productId from health-request with message: %2$s", e.getClass(), e.getMessage());
             LOGGER.error(errorCopy, e);
             throw new HealthApplyServiceException(errorCopy);
@@ -107,7 +110,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         String productXml;
         try {
             productXml = healthSelectedProductService.getProductXML(transactionId, productId);
-        } catch (Exception e) {
+        } catch(Exception e) {
             String errorCopy = String.format("Exception (%1$s) retrieving productXML with message: %2$s", e.getClass(), e.getMessage());
             LOGGER.error(errorCopy, e);
             throw new HealthApplyServiceException(errorCopy);
@@ -115,9 +118,8 @@ public class HealthApplyService extends CommonRequestServiceV2 {
 
         final PricesObj<HealthQuoteResult> products;
         try {
-            products = ObjectMapperUtil.getObjectMapper().readValue(productXml, new TypeReference<PricesObj<HealthQuoteResult>>() {
-            });
-        } catch (Exception e) {
+            products = ObjectMapperUtil.getObjectMapper().readValue(productXml, new TypeReference<PricesObj<HealthQuoteResult>>() {});
+        } catch(Exception e) {
             String errorCopy = String.format("Exception (%1$s) retrieving products list from productXML with message: %2$s", e.getClass(), e.getMessage());
             LOGGER.error(errorCopy, e);
             throw new HealthApplyServiceException(errorCopy);
@@ -126,7 +128,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         final Optional<HealthQuoteResult> productForApply;
         try {
             productForApply = products.getPrice().stream().findFirst();
-        } catch (Exception e) {
+        } catch(Exception e) {
             String errorCopy = String.format("Exception (%1$s) retrieving first product from product list with message: %2$s", e.getClass(), e.getMessage());
             LOGGER.error(errorCopy, e);
             throw new HealthApplyServiceException(errorCopy);
@@ -148,12 +150,29 @@ public class HealthApplyService extends CommonRequestServiceV2 {
 
         selectedProduct = productForApply.get();
 
-        // Schematic ApplyRequest
-        final ApplyRequest applyRequest;
+        // Version 2
+        final HealthApplicationRequest applyRequest;
         try {
-            applyRequest = RequestAdapter.adapt(data, selectedProduct, operator, cid, trialCampaign, brand.getCode());
-        } catch (Exception e) {
-            String errorCopy = String.format("Exception %1$s adapting request to Schematic ApplyRequest with message: %2$s.", e.getClass(), e.getMessage());
+            applyRequest = RequestAdapterV2.adapt(data, selectedProduct, operator, cid, trialCampaign);
+        } catch(Exception e) {
+            String errorCopy = String.format("Exception %1$s adapting request to HealthApplicationRequest with message: %2$s.", e.getClass(), e.getMessage());
+            LOGGER.error(errorCopy, e);
+            throw new HealthApplyServiceException(errorCopy);
+        }
+
+        final ApplicationOutgoingRequest<HealthApplicationRequest> request;
+        try {
+            request = ApplicationOutgoingRequest.<HealthApplicationRequest>newBuilder()
+                .transactionId(transactionId)
+                .brandCode(brand.getCode())
+                .requestAt(data.getRequestAt())
+                .providerFilter(data.getQuote().getApplication().getProvider())
+                .payload(applyRequest)
+                .sessionId(anonymousId)
+                .userId(userId)
+                .build();
+        } catch(Exception e) {
+            String errorCopy = String.format("Exception %1$s building request to ApplicationOutgoingRequest with message: %2$s.", e.getClass(), e.getMessage());
             LOGGER.error(errorCopy, e);
             throw new HealthApplyServiceException(errorCopy);
         }
@@ -163,25 +182,23 @@ public class HealthApplyService extends CommonRequestServiceV2 {
         try {
             rootId = transactionDao.getRootIdOfTransactionId(transactionId);
             LOGGER.info(String.format("Successfully retrieved the RootId (%1$s) using TransactionId (%2$s).", rootId, transactionId));
-        } catch (Exception e) {
+        } catch(Exception e) {
             String errorCopy = String.format("Exception %1$s getting RootID from the TransactionID (%2$s) with message: %3$s.", e.getClass(), transactionId, e.getMessage());
             LOGGER.error(errorCopy, e);
             throw new HealthApplyServiceException(errorCopy);
         }
 
-        final ApplyResponse schematicApplyResponse = clientV2Application.post(RestSettings.<ApplyRequest>builder()
-                        .request(applyRequest)
-                        .header("rootId", Long.toString(rootId))
-                        .jsonHeaders()
-                        .url(properties.getServiceUrl() + "/apply/")
-                        .timeout(properties.getTimeout())
-                        .responseType(MediaType.APPLICATION_JSON)
-                        .response(ApplyResponse.class)
-                        .build())
+        return clientV2Application.post(RestSettings.<ApplicationOutgoingRequest<HealthApplicationRequest>>builder()
+                .request(request)
+                .header("rootId", Long.toString(rootId))
+                .jsonHeaders()
+                .url(properties.getServiceUrl() + "/apply")
+                .timeout(properties.getTimeout())
+                .responseType(MediaType.APPLICATION_JSON)
+                .response(HealthApplyResponse.class)
+                .build())
                 .doOnError(this::logHttpClientError)
                 .observeOn(Schedulers.io()).toBlocking().single();
-
-        return ResponseAdapter.adapt(transactionId, schematicApplyResponse);
     }
 
     private String getCidFromData(HealthRequest data) {
@@ -198,6 +215,17 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                 .map(HealthQuote::getSimples)
                 .map(Simples::getContactTypeRadio)
                 .orElse(null);
+    }
+
+    @Deprecated
+    private com.ctm.web.core.providers.model.Request<HealthApplicationRequest> createRequest(Brand brand, HealthRequest data, HealthApplicationRequest payload) {
+        com.ctm.web.core.providers.model.Request<HealthApplicationRequest> request = new com.ctm.web.core.providers.model.Request<>();
+        request.setBrandCode(brand.getCode());
+        request.setClientIp(data.getClientIpAddress());
+        request.setTransactionId(data.getTransactionId());
+        request.setPayload(payload);
+        request.setRequestAt(data.getRequestAt());
+        return request;
     }
 
 }

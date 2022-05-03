@@ -80,8 +80,6 @@ public class ResponseAdapterV2 {
                 for (final HealthQuote quote : quoteResponse.getQuotes()) {
                     final HealthQuoteResult result = new HealthQuoteResult();
 
-                    result.setJourneyId(quote.getJourneyId());
-                    result.setQuoteId(quote.getQuoteId());
                     result.setAvailable(quote.isAvailable() ? AvailableType.Y : AvailableType.N);
                     result.setTransactionId(request.getTransactionId());
                     result.setServiceName("PHIO");
