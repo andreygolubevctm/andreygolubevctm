@@ -65,38 +65,65 @@ public class HealthAuthorisePaymentService extends CommonRequestServiceV2 {
 
         final AuthorisePaymentRequest payload = com.ctm.web.health.payment.authorise.model.RequestAdapter.adapt(data);
 
-        LOGGER.info("Calling health ipp authorise v2");
+        if (properties.getServiceUrl().matches(".*://.*/health-apply-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
+            LOGGER.info("Calling health ipp authorise v2");
 
-        String operator = null;
-        AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(httpServletRequest);
-        if (authenticatedSessionData != null) {
-            operator = authenticatedSessionData.getUid();
+            String operator = null;
+            AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(httpServletRequest);
+            if (authenticatedSessionData != null) {
+                operator = authenticatedSessionData.getUid();
+            }
+
+            final GenericOutgoingRequest<AuthorisePaymentRequest> request = GenericOutgoingRequest.<AuthorisePaymentRequest>newBuilder()
+                    .transactionId(data.getTransactionId())
+                    .brandCode(brand.getCode())
+                    .requestAt(data.getRequestAt())
+                    .payload(payload)
+                    .providerFilter(data.getProviderId())
+                    .build();
+
+            // Getting RootId from the transactionId
+            final long rootId = transactionDao.getRootIdOfTransactionId(data.getTransactionId());
+            LOGGER.debug("Getting {} from {}", kv("rootId", rootId), kv("transactionId", data.getTransactionId()));
+
+            final AuthorisePaymentResponseV2 response = clientV2.post(RestSettings.<GenericOutgoingRequest<AuthorisePaymentRequest>>builder()
+                    .request(request)
+                    .header("rootId", Long.toString(rootId))
+                    .header("operator", operator)
+                    .jsonHeaders()
+                    .url(properties.getServiceUrl() + "/payment/authorise")
+                    .timeout(properties.getTimeout())
+                    .responseType(MediaType.APPLICATION_JSON)
+                    .response(AuthorisePaymentResponseV2.class)
+                    .build())
+                    .observeOn(Schedulers.io()).toBlocking().single();
+            return ResponseAdapterV2.adapt(response);
+
+
+        } else {
+            LOGGER.info("Calling health ipp authorise v1");
+
+            com.ctm.web.core.providers.model.Request<AuthorisePaymentRequest> request = new com.ctm.web.core.providers.model.Request<>();
+            request.setBrandCode(brand.getCode());
+            request.setClientIp(data.getClientIpAddress());
+            request.setTransactionId(data.getTransactionId());
+            request.setPayload(payload);
+            request.setRequestAt(data.getRequestAt());
+
+            final AuthorisePaymentResponse response = client.post(RestSettings.<Request<AuthorisePaymentRequest>>builder()
+                    .request(request)
+                    .jsonHeaders()
+                    .url(properties.getServiceUrl() + "/payment/authorise")
+                    .timeout(properties.getTimeout())
+                    .responseType(MediaType.APPLICATION_JSON)
+                    .response(AuthorisePaymentResponse.class)
+                    .build())
+                    .observeOn(Schedulers.io()).toBlocking().single();
+
+            return ResponseAdapter.adapt(response);
+
+
         }
-
-        final GenericOutgoingRequest<AuthorisePaymentRequest> request = GenericOutgoingRequest.<AuthorisePaymentRequest>newBuilder()
-                .transactionId(data.getTransactionId())
-                .brandCode(brand.getCode())
-                .requestAt(data.getRequestAt())
-                .payload(payload)
-                .providerFilter(data.getProviderId())
-                .build();
-
-        // Getting RootId from the transactionId
-        final long rootId = transactionDao.getRootIdOfTransactionId(data.getTransactionId());
-        LOGGER.debug("Getting {} from {}", kv("rootId", rootId), kv("transactionId", data.getTransactionId()));
-
-        final AuthorisePaymentResponseV2 response = clientV2.post(RestSettings.<GenericOutgoingRequest<AuthorisePaymentRequest>>builder()
-                        .request(request)
-                        .header("rootId", Long.toString(rootId))
-                        .header("operator", operator)
-                        .jsonHeaders()
-                        .url(properties.getServiceUrl() + "/payment/authorise")
-                        .timeout(properties.getTimeout())
-                        .responseType(MediaType.APPLICATION_JSON)
-                        .response(AuthorisePaymentResponseV2.class)
-                        .build())
-                .observeOn(Schedulers.io()).toBlocking().single();
-        return ResponseAdapterV2.adapt(response);
 
     }
 
