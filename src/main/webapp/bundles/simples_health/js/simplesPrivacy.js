@@ -27,6 +27,14 @@
                 toggle($(this));
             });
         });
+
+        $(document).ready(function () {
+            $('.agg_privacy_button').on('keydown', function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                }
+            });
+        });
     }
 
     function callback(state) {

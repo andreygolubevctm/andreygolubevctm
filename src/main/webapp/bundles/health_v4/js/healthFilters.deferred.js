@@ -529,10 +529,16 @@
             toggleQuoteRefTemplate('slideDown');
         });
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_UPDATED, function (event) {
+            var pinnedProduct = Results.getPinnedProduct();
+            Results.setProductToPin(pinnedProduct);
             toggleQuoteRefTemplate('slideDown');
             // note: unpinning products happens in healthResults.js due to the internal JS variable over there.
             meerkat.modules.healthResultsTemplate.unhideFilteredProducts();
             meerkat.modules.healthResults.unpinProductFromFilterUpdate();
+        });
+
+        meerkat.messaging.subscribe(meerkat.modules.events.filters.SHUFFLING_FINISHED, function (event) {
+            meerkat.modules.healthResults.pinProductHelper(event.productId, null);
         });
 
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCoupon() {

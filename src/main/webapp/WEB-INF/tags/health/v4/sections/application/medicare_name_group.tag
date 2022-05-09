@@ -6,10 +6,10 @@
 <%@ attribute name="showInitial" required="false" rtexprvalue="true" description="Toggle to display initial field"%>
 
 <%-- HTML --%>
-<form_v4:row label="# and name on Medicare card" className="row" isNestedStyleGroup="${true}" id="medicare_group">
+<form_v4:row label="# and name on Medicare card" className="row" isNestedStyleGroup="${true}" id="medicare_group" helpId="655">
 
     <c:set var="fieldXpath" value="${xpath}/cardPosition" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Position you appear on your medicare card"  className="health_payment_medicare_cardPosition-group"  isNestedField="${true}" smRowOverride="2">
+    <form_v4:row fieldXpath="${fieldXpath}" label="Position you appear on your medicare card"  className="health_payment_medicare_cardPosition-group" isNestedField="${true}" smRowOverride="2">
         <field_v2:count_select xpath="${fieldXpath}" min="1" max="9" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition data-hj-suppress" placeHolder="#" disableErrorContainer="${true}"/>
     </form_v4:row>
 
