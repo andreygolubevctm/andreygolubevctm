@@ -552,6 +552,10 @@ var ResultsView = {
 				Results.pagination.refresh();
 
 				$(Results.settings.elements.resultsContainer).trigger("results.view.animation.end");
+				if(Results.getProductToPin()) {
+					meerkat.messaging.publish(meerkat.modules.events.filters.SHUFFLING_FINISHED, {productId: Results.getProductToPin().productId});
+					Results.setProductToPin(null);
+				}
 			});
 
 

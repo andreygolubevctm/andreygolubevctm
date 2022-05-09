@@ -968,6 +968,10 @@ var ResultsModel = {
 		return Results.model.pinnedProduct = product;
 	},
 
+	setProductToPin: function( product ) {
+		return Results.model.productToPin = product;
+	},
+
 	removePinnedProduct: function() {
 		Results.model.pinnedProduct = false;
 	},
