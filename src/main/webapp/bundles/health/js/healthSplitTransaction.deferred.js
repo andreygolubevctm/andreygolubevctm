@@ -34,6 +34,8 @@
             if(meerkat.site.isCallCentreUser) {
                 // Cache all required jquery element objects
                 $elements.root = $('#possibleMatchingCustomer');
+                $elements.bppAuthorisationGroup = $('#bppAuthorisationGroup');
+                $elements.healthVouchers = $('#healthVouchers');
                 $elements.wrappers = {
                     reason:         $elements.root.find('.healthSplitTransactionReasonRow').first(),
                     approvedby:     $elements.root.find('.healthSplitTransactionApprovedByRow').first(),
@@ -57,7 +59,10 @@
                     reasonDisplay:     $elements.root.find('#healthSplitTransactionReason'),
                     approvedby:        $elements.root.find('#health_payment_details_splitTransaction_approvedby'),
                     approvedbydisplay: $elements.root.find('#healthSplitTransactionApprovedBy'),
-                    code:              $elements.root.find('#health_payment_details_splitTransaction_authorisationcode')
+                    code:              $elements.root.find('#health_payment_details_splitTransaction_authorisationcode'),
+                    bestPricePromise:  $elements.bppAuthorisationGroup.find('#health_price_promise_bestPrisePromise_authorisationcode'),
+                    couponCode:        $elements.healthVouchers.find('#health_coupon_code'),
+                    voucherCode:       $elements.healthVouchers.find('#health_voucher_authorisationcode')
                 };
 
                 applyEventListeners();
@@ -81,6 +86,18 @@
             updateData();
             updateView();
         });
+
+        $elements.inputs.bestPricePromise.on("keydown", preventEnterKeyEvent);
+        $elements.inputs.voucherCode.on("keydown", preventEnterKeyEvent);
+        $elements.inputs.couponCode.on("keydown", preventEnterKeyEvent);
+        $elements.inputs.code.on("keydown", preventEnterKeyEvent);
+
+        function preventEnterKeyEvent(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+            }
+        }
+
     }
 
 

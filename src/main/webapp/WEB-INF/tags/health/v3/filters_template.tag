@@ -77,7 +77,6 @@
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
-                <span class="helper-text"><a href="javascript:;" data-content="helpid:542" data-toggle="dialog" data-title="Hospital Cover Information" data-dialog-hash-id="hospitalCover" tabindex="-1" data-cache="true" <field_v1:analytics_attr analVal="filter help modal coverLevel" quoteChar="\"" />>Help ?</a></span>
                 <span class="heading-text">Hospital cover level</span>
             </div>
             <div class="filter-cover-level select">

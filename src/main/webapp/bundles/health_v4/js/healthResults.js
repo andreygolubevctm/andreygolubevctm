@@ -1266,7 +1266,8 @@
         setCallCentreText: setCallCentreText,
         resetCallCentreText: resetCallCentreText,
         unpinProductFromFilterUpdate: unpinProductFromFilterUpdate,
-        resultsHasLimitedProducts: resultsHasLimitedProducts
+        resultsHasLimitedProducts: resultsHasLimitedProducts,
+        pinProductHelper: _pinProductHelper
     });
 
 })(jQuery);

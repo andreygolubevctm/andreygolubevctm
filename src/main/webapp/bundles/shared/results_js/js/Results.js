@@ -607,9 +607,13 @@ var Results = {
         product.isPinned = 'Y';
 
         Results.setPinnedProduct(product);
+		Results.setProductToPin(null);
 
         // Must copy the element before filtering or it gets unnecessary classes etc.
         Results.$pinnedResultRow = $('.result_' + pinnedProductId).clone(true);
+
+		// Hide the not-pinned product after cloning it
+		$('.result_'+ pinnedProductId + '.not-pinned').hide();
 
 		// Now do the filtering to filter this product out of the normal results.
         Results.filterBy('isPinned', "value", { "notEquals": 'Y' });
@@ -658,9 +662,17 @@ var Results = {
 		Results.model.setPinnedProduct(product);
 	},
 
+	setProductToPin: function(product) {
+		return Results.model.setProductToPin(product);
+	},
+
     getPinnedProduct: function() {
         return Results.model.pinnedProduct;
     },
+
+	getProductToPin: function() {
+		return Results.model.productToPin;
+	},
 
     removePinnedProduct: function() {
         Results.model.removePinnedProduct();
