@@ -1,8 +1,17 @@
 package com.ctm.web.health.apply.model;
 
-import com.ctm.web.health.apply.model.request.payment.credit.CreditCard;
-import com.ctm.web.health.apply.model.request.payment.credit.GatewayCreditCard;
-import com.ctm.web.health.model.form.*;
+import com.ctm.schema.health.v1_0_0.CreditCard;
+import com.ctm.web.health.model.form.Application;
+import com.ctm.web.health.model.form.Bank;
+import com.ctm.web.health.model.form.BankDetails;
+import com.ctm.web.health.model.form.Credit;
+import com.ctm.web.health.model.form.Expiry;
+import com.ctm.web.health.model.form.Gateway;
+import com.ctm.web.health.model.form.HealthCover;
+import com.ctm.web.health.model.form.HealthQuote;
+import com.ctm.web.health.model.form.Medicare;
+import com.ctm.web.health.model.form.Nab;
+import com.ctm.web.health.model.form.PaymentDetails;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -11,13 +20,18 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class PaymentAdapterTest {
 
     @Test
     public void testCreatePaymentEmpty() throws Exception {
-        final com.ctm.web.health.apply.model.request.payment.Payment result = PaymentAdapter.createPayment(Optional.empty());
+        final com.ctm.schema.health.v1_0_0.Payment result = PaymentAdapter.createPayment(Optional.empty());
         assertNull(result);
     }
 
@@ -28,19 +42,18 @@ public class PaymentAdapterTest {
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         when(healthQuote.getPayment()).thenReturn(payment);
         when(payment.getDetails()).thenReturn(paymentDetails);
-        final com.ctm.web.health.apply.model.request.payment.Payment result = PaymentAdapter.createPayment(Optional.ofNullable(healthQuote));
+        final com.ctm.schema.health.v1_0_0.Payment result = PaymentAdapter.createPayment(Optional.of(healthQuote));
         assertNotNull(result);
-        // 2 times - createBank and claims valueOf
-        verify(paymentDetails, times(2)).getClaims();
+        verify(paymentDetails, times(1)).getClaims();
     }
 
     @Test
-    public void testCreatePaymentDetailsEmpty() throws Exception {
+    public void testCreatePaymentDetailsEmpty() {
         assertNotNull(PaymentAdapter.createPaymentDetails(Optional.empty(), Optional.empty()));
     }
 
     @Test
-    public void testCreatePaymentDetails() throws Exception {
+    public void testCreatePaymentDetails() {
         final HealthQuote healthQuote = mock(HealthQuote.class);
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
@@ -60,12 +73,12 @@ public class PaymentAdapterTest {
     }
 
     @Test
-    public void testCreateMedicare() throws Exception {
+    public void testCreateMedicare() {
         final Medicare medicare = mock(Medicare.class);
         final Expiry expiry = mock(Expiry.class);
         when(medicare.getExpiry()).thenReturn(expiry);
         assertNotNull(PaymentAdapter.createMedicare(Optional.of(medicare)));
-        verify(medicare, times(1)).getCover();
+        verify(medicare, never()).getCover();
         verify(medicare, times(1)).getNumber();
         verify(medicare, times(1)).getFirstName();
         verify(medicare, times(1)).getSurname();
@@ -73,29 +86,32 @@ public class PaymentAdapterTest {
         verify(expiry, times(1)).getCardExpiryMonth();
         verify(expiry, times(1)).getCardExpiryYear();
         verify(expiry, times(1)).getCardExpiryDay();
+        verify(medicare, times(1)).getCardPosition();
+        verify(medicare, times(1)).getColour();
+        verify(medicare, times(1)).getMiddleName();
     }
 
     @Test
-    public void testCreateMedicareEmpty() throws Exception {
+    public void testCreateMedicareEmpty() {
         assertNull(PaymentAdapter.createMedicare(Optional.empty()));
     }
 
     @Test
-    public void testCreateBankEmpty() throws Exception {
-        assertNull(PaymentAdapter.createBank(Optional.empty(), Optional.empty()));
+    public void testCreateBankEmpty() {
+        assertNull(PaymentAdapter.createBankDetails(Optional.empty(), Optional.empty()));
     }
 
     @Test
-    public void testCreateBankDiffType() throws Exception {
+    public void testCreateBankDiffType() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         when(payment.getDetails()).thenReturn(paymentDetails);
         when(paymentDetails.getType()).thenReturn("xx");
-        assertNull(PaymentAdapter.createBank(Optional.of(payment), Optional.empty()));
+        assertNull(PaymentAdapter.createBankDetails(Optional.of(payment), Optional.empty()));
     }
 
     @Test
-    public void testCreateBankWithClaims() throws Exception {
+    public void testCreateBankWithClaims() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Bank bank = mock(Bank.class);
@@ -103,7 +119,7 @@ public class PaymentAdapterTest {
         when(payment.getBank()).thenReturn(bank);
         when(paymentDetails.getType()).thenReturn("ba");
         when(paymentDetails.getClaims()).thenReturn("Y");
-        assertNotNull(PaymentAdapter.createBank(Optional.of(payment), Optional.empty()));
+        assertNotNull(PaymentAdapter.createBankDetails(Optional.of(payment), Optional.empty()));
         verify(paymentDetails, times(1)).getType();
         verify(bank, times(1)).getClaims();
         verify(paymentDetails, times(1)).getClaims();
@@ -111,7 +127,7 @@ public class PaymentAdapterTest {
     }
 
     @Test
-    public void testCreateBankCCWithClaims() throws Exception {
+    public void testCreateBankCCWithClaims() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Bank bank = mock(Bank.class);
@@ -119,7 +135,7 @@ public class PaymentAdapterTest {
         when(payment.getBank()).thenReturn(bank);
         when(paymentDetails.getType()).thenReturn("cc");
         when(paymentDetails.getClaims()).thenReturn("Y");
-        assertNotNull(PaymentAdapter.createBank(Optional.of(payment), Optional.empty()));
+        assertNotNull(PaymentAdapter.createBankDetails(Optional.of(payment), Optional.empty()));
         verify(paymentDetails, times(1)).getType();
         verify(bank, never()).getAccount();
         verify(paymentDetails, times(1)).getClaims();
@@ -140,12 +156,11 @@ public class PaymentAdapterTest {
         final Application application = mock(Application.class);
         when(application.getProvider()).thenReturn("BUD");
 
-        assertNotNull(PaymentAdapter.createBank(Optional.of(payment), Optional.of(application)));
+        assertNotNull(PaymentAdapter.createBankDetails(Optional.of(payment), Optional.of(application)));
         verify(paymentDetails, times(1)).getType();
         verify(bank, never()).getAccount();
         verify(paymentDetails, times(1)).getClaims();
         verify(bank, times(1)).getClaim();
-        verify(bank, never()).getClaims();
     }
 
     @Test
@@ -162,21 +177,20 @@ public class PaymentAdapterTest {
         final Application application = mock(Application.class);
         when(application.getProvider()).thenReturn("BUP");
 
-        assertNotNull(PaymentAdapter.createBank(Optional.of(payment), Optional.of(application)));
+        assertNotNull(PaymentAdapter.createBankDetails(Optional.of(payment), Optional.of(application)));
         verify(paymentDetails, times(1)).getType();
         verify(bank, never()).getAccount();
         verify(paymentDetails, times(1)).getClaims();
         verify(bank, times(1)).getClaims();
-        verify(bank, never()).getClaim();
     }
 
     @Test
-    public void testCreateAccountEmpty() throws Exception {
+    public void testCreateAccountEmpty() {
         assertNull(PaymentAdapter.createAccount(Optional.empty()));
     }
 
     @Test
-    public void testCreateAccount() throws Exception {
+    public void testCreateAccount() {
         final BankDetails bankDetails = mock(BankDetails.class);
         assertNotNull(PaymentAdapter.createAccount(Optional.of(bankDetails)));
         verify(bankDetails, times(1)).getName();
@@ -200,15 +214,15 @@ public class PaymentAdapterTest {
     }
 
     @Test
-    public void testCreateCreditCardGateway() throws Exception {
+    public void testCreateCreditCardGateway() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Gateway gateway = mock(Gateway.class);
         when(payment.getDetails()).thenReturn(paymentDetails);
         when(payment.getGateway()).thenReturn(gateway);
         when(paymentDetails.getType()).thenReturn("cc");
-        final GatewayCreditCard result = PaymentAdapter.createGatewayCreditCard(Optional.of(payment));
-        assertNotNull(result);
+        final Optional<com.ctm.schema.health.v1_0_0.CreditCard> result = PaymentAdapter.getPaymentGatewayCreditCard(Optional.of(payment));
+        assertTrue(result.isPresent());
         verify(gateway, times(1)).getType();
         verify(gateway, times(1)).getName();
         verify(gateway, times(1)).getNumber();
@@ -217,7 +231,7 @@ public class PaymentAdapterTest {
     }
 
     @Test
-    public void testCreateCreditCardGatewayNab() throws Exception {
+    public void testCreateCreditCardGatewayNab() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Gateway gateway = mock(Gateway.class);
@@ -226,8 +240,8 @@ public class PaymentAdapterTest {
         when(payment.getGateway()).thenReturn(gateway);
         when(paymentDetails.getType()).thenReturn("cc");
         when(gateway.getNab()).thenReturn(nab);
-        final GatewayCreditCard result = PaymentAdapter.createGatewayCreditCard(Optional.of(payment));
-        assertNotNull(result);
+        final Optional<com.ctm.schema.health.v1_0_0.CreditCard> result = PaymentAdapter.getPaymentGatewayCreditCard(Optional.of(payment));
+        assertTrue(result.isPresent());
         verify(gateway, never()).getType();
         verify(gateway, never()).getName();
         verify(gateway, never()).getNumber();
@@ -255,28 +269,28 @@ public class PaymentAdapterTest {
         verify(credit, times(1)).getType();
         verify(credit, times(1)).getName();
         verify(credit, times(1)).getNumber();
-        verify(credit, times(1)).getExpiry();
+        verify(credit, times(2)).getExpiry();
         verify(credit, times(1)).getCcv();
         verify(expiry, times(1)).getCardExpiryMonth();
         verify(expiry, times(1)).getCardExpiryYear();
     }
 
     @Test
-    public void testPaymentStartDateEmpty() throws Exception {
+    public void testPaymentStartDateEmpty() {
         assertNull(PaymentAdapter.paymentStartDate(Optional.empty()));
     }
 
     @Test
-    public void testPaymentStartDate() throws Exception {
+    public void testPaymentStartDate() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         when(payment.getDetails()).thenReturn(paymentDetails);
         when(paymentDetails.getType()).thenReturn("xx");
-        assertNull(PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertNull(PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateCreditCard() throws Exception {
+    public void testPaymentStartDateCreditCard() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Credit credit = mock(Credit.class);
@@ -284,11 +298,11 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("cc");
         when(payment.getCredit()).thenReturn(credit);
         when(credit.getDay()).thenReturn(null);
-        assertNull(PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertNull(PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateCreditCardDay() throws Exception {
+    public void testPaymentStartDateCreditCardDay() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Credit credit = mock(Credit.class);
@@ -296,11 +310,11 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("cc");
         when(payment.getCredit()).thenReturn(credit);
         when(credit.getDay()).thenReturn(1);
-        assertEquals(LocalDate.now().withDayOfMonth(1), PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertEquals(LocalDate.now().withDayOfMonth(1), PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateCreditCardPaymentDay() throws Exception {
+    public void testPaymentStartDateCreditCardPaymentDay() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Credit credit = mock(Credit.class);
@@ -308,11 +322,11 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("cc");
         when(payment.getCredit()).thenReturn(credit);
         when(credit.getPaymentDay()).thenReturn("2015-01-01");
-        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateCreditCardPolicyDay() throws Exception {
+    public void testPaymentStartDateCreditCardPolicyDay() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Credit credit = mock(Credit.class);
@@ -320,11 +334,11 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("cc");
         when(payment.getCredit()).thenReturn(credit);
         when(credit.getPolicyDay()).thenReturn("2015-01-01");
-        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateCreditCardPolicyDate() throws Exception {
+    public void testPaymentStartDateCreditCardPolicyDate() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Credit credit = mock(Credit.class);
@@ -332,11 +346,11 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("cc");
         when(payment.getCredit()).thenReturn(credit);
         when(payment.getPolicyDate()).thenReturn("2015-01-01");
-        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateBank() throws Exception {
+    public void testPaymentStartDateBank() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Bank bank = mock(Bank.class);
@@ -344,11 +358,11 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("ba");
         when(payment.getBank()).thenReturn(bank);
         when(bank.getDay()).thenReturn(null);
-        assertNull(PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertNull(PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateBankDay() throws Exception {
+    public void testPaymentStartDateBankDay() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Bank bank = mock(Bank.class);
@@ -356,11 +370,11 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("ba");
         when(payment.getBank()).thenReturn(bank);
         when(bank.getDay()).thenReturn(1);
-        assertEquals(LocalDate.now().withDayOfMonth(1), PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertEquals(LocalDate.now().withDayOfMonth(1), PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateBankPaymentDay() throws Exception {
+    public void testPaymentStartDateBankPaymentDay() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Bank bank = mock(Bank.class);
@@ -368,11 +382,11 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("ba");
         when(payment.getBank()).thenReturn(bank);
         when(bank.getPaymentDay()).thenReturn("2015-01-01");
-        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateBankPolicyDay() throws Exception {
+    public void testPaymentStartDateBankPolicyDay() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Bank bank = mock(Bank.class);
@@ -380,11 +394,11 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("ba");
         when(payment.getBank()).thenReturn(bank);
         when(bank.getPolicyDay()).thenReturn("2015-01-01");
-        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 
     @Test
-    public void testPaymentStartDateBankPolicyDate() throws Exception {
+    public void testPaymentStartDateBankPolicyDate() {
         final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         final Bank bank = mock(Bank.class);
@@ -392,6 +406,6 @@ public class PaymentAdapterTest {
         when(paymentDetails.getType()).thenReturn("ba");
         when(payment.getBank()).thenReturn(bank);
         when(payment.getPolicyDate()).thenReturn("2015-01-01");
-        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.ofNullable(payment)));
+        assertEquals(LocalDate.of(2015, 1, 1), PaymentAdapter.paymentStartDate(Optional.of(payment)));
     }
 }
