@@ -88,13 +88,6 @@
             <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
             <form_v2:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
                          className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="290">
-                {{ if (!isNibOrQts) { }}
-                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/other_providers_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'"
-                                            disableErrorContainer="${false}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No Educational institute selected."/>
-                {{ } else { }}
-                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'"
-                                            disableErrorContainer="${false}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No Educational institute selected."/>
-                {{ } }}
                 {{ if (isNibOrQts) { }}
                     <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'"
                                         disableErrorContainer="${false}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No Educational institute selected."/>
