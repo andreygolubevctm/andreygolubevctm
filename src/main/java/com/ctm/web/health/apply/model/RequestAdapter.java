@@ -61,6 +61,7 @@ public class RequestAdapter {
             .put("C", PolicyType.COMBINED)
             .put("H", PolicyType.HOSPITAL)
             .put("E", PolicyType.ANCILLARY)
+            .put("A", PolicyType.ANCILLARY)
             .build();
 
     public static ApplyRequest adapt(HealthRequest healthRequest, HealthQuoteResult healthSelectedProduct,
