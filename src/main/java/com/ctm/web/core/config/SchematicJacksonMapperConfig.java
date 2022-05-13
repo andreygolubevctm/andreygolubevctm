@@ -2,6 +2,7 @@ package com.ctm.web.core.config;
 
 import com.ctm.httpclient.jackson.DefaultJacksonMappers;
 import com.ctm.schema.serialisation.SchemaObjectMapper;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,9 @@ public class SchematicJacksonMapperConfig extends DefaultJacksonMappers {
         super(jacksonMapperBuilder);
         this.jsonMapper = SchemaObjectMapper
                 .getInstance(com.ctm.schema.filter.Filter.EXCLUDED_FROM_RESULTS)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     @Override
