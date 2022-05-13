@@ -198,12 +198,11 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		mailingName = getPageSetting(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
 		ExactTargetEmailSender<HealthProductBrochuresEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings,transactionId);
 		try {
-			String lastname = Optional.ofNullable(request.getParameter("lastName")).orElse("null");
 			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);
 			emailDetails.setOptedInMarketing("Y".equals(request.getParameter("marketing")), VERTICAL);
 			emailDetails.setFirstName(request.getParameter("firstName"));
-			emailDetails.setLastName(lastname.equals("") ? "null" : lastname);
+			emailDetails.setLastName(Optional.ofNullable(request.getParameter("lastName")).orElse(""));
 			emailDetails.setSource("BROCHURE");
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(emailBrochureRequest.transactionId, emailDetails, "ONLINE" ,  ipAddressHandler.getIPAddress(request));
 
