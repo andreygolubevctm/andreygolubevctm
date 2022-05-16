@@ -1,18 +1,17 @@
 package com.ctm.web.health.apply.model;
 
-import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
+import com.ctm.schema.health.v1_0_0.Applicant;
+import com.ctm.schema.health.v1_0_0.Applicants;
+import com.ctm.schema.health.v1_0_0.CurrentFund;
+import com.ctm.schema.health.v1_0_0.HealthCoverHistory;
+import com.ctm.schema.health.v1_0_0.PolicyType;
 import com.ctm.web.health.apply.model.request.application.Emigrate;
-import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
-import com.ctm.web.health.apply.model.request.application.applicant.healthCover.EverHadCover;
-import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CancelOption;
-import com.ctm.web.health.apply.model.request.application.applicant.previousFund.CoverType;
-import com.ctm.web.health.apply.model.request.application.situation.Situation;
 import com.ctm.web.health.apply.model.request.fundData.HealthFund;
 import com.ctm.web.health.model.form.Application;
+import com.ctm.web.health.model.form.Cover;
 import com.ctm.web.health.model.form.Dependant;
 import com.ctm.web.health.model.form.Dependants;
 import com.ctm.web.health.model.form.Fund;
-import com.ctm.web.health.model.form.Cover;
 import com.ctm.web.health.model.form.GovtRebateDeclaration;
 import com.ctm.web.health.model.form.GradDate;
 import com.ctm.web.health.model.form.HealthQuote;
@@ -21,7 +20,6 @@ import com.ctm.web.health.model.form.Insured;
 import com.ctm.web.health.model.form.Person;
 import com.ctm.web.health.model.form.Qch;
 import org.junit.Test;
-import org.opensaml.xml.signature.P;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -38,16 +37,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class ApplicationGroupAdapterTest {
+public class ApplicantsAdapterTest {
 
     @Test
-    public void testCreateApplicationGroupEmpty() throws Exception {
-        final ApplicationGroup applicationGroup = ApplicationGroupAdapter.createApplicationGroup(Optional.empty());
+    public void testCreateApplicantsEmpty() {
+        final Applicants applicationGroup = ApplicantsAdapter.createApplicants(Optional.empty());
         assertNotNull(applicationGroup);
     }
 
     @Test
-    public void testCreateApplicationGroup() throws Exception {
+    public void testCreateApplicants() {
         final HealthQuote healthQuote = mock(HealthQuote.class);
         final Application application = mock(Application.class);
         final Person partner = mock(Person.class);
@@ -64,9 +63,9 @@ public class ApplicationGroupAdapterTest {
         when(application.getHif()).thenReturn(hif);
         when(application.getQch()).thenReturn(qch);
         when(application.getGovtRebateDeclaration()).thenReturn(govtRebateDeclaration);
-        final ApplicationGroup applicationGroup = ApplicationGroupAdapter.createApplicationGroup(Optional.ofNullable(healthQuote));
+        final Applicants applicationGroup = ApplicantsAdapter.createApplicants(Optional.of(healthQuote));
         assertNotNull(applicationGroup);
-        assertNull(applicationGroup.getSituation());
+        assertNull(applicationGroup.getMembershipType());
         assertNull(applicationGroup.getDependants());
         verify(application, times(1)).getPrimary();
         verify(previousFund, times(1)).getPrimary();
@@ -77,8 +76,6 @@ public class ApplicationGroupAdapterTest {
         verify(healthQuote, times(1)).getPrimaryLHC();
         verify(healthQuote, times(1)).getPartnerLHC();
 
-        //verify(hif, times(1)).getEmigrate();
-        verify(qch, times(1)).getEmigrate();
         verify(govtRebateDeclaration, times(1)).getApplicantCovered();
         verify(govtRebateDeclaration, times(1)).getDeclarationDate();
         verify(govtRebateDeclaration, times(1)).getEntitledToMedicare();
@@ -89,27 +86,13 @@ public class ApplicationGroupAdapterTest {
 
 
     @Test
-    public void testCreateApplicantEmpty() throws Exception {
-        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty(), Optional.empty());
+    public void testCreateApplicantEmpty() {
+        final com.ctm.schema.health.v1_0_0.Applicant applicant = ApplicantsAdapter.createApplicant(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty(), Optional.empty(), Optional.empty());
         assertNull(applicant);
     }
 
     @Test
-    public void testCreateSituationEmpty() throws Exception {
-        final Situation situation = ApplicationGroupAdapter.createSituation(Optional.empty());
-        assertNull(situation);
-    }
-
-    @Test
-    public void testCreateSituation() throws Exception {
-        final com.ctm.web.health.model.form.Situation situation = mock(com.ctm.web.health.model.form.Situation.class);
-        final Situation result = ApplicationGroupAdapter.createSituation(Optional.ofNullable(situation));
-        assertNotNull(result);
-        verify(situation, times(1)).getHealthCvr();
-    }
-
-    @Test
-    public void testCreateApplicant() throws Exception {
+    public void testCreateApplicant() {
         final Person person = mock(Person.class);
         final Fund previousFund = mock(Fund.class);
         final Integer certifiedAge = 1;
@@ -119,12 +102,12 @@ public class ApplicationGroupAdapterTest {
         when(insured.getCover()).thenReturn("N");
         when(insured.getEverHadCover()).thenReturn("Y");
 
-        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
-                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation));
+        final com.ctm.schema.health.v1_0_0.Applicant applicant = ApplicantsAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
+                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation), Optional.empty());
         assertNotNull(applicant);
-        assertEquals(applicant.getHealthCover().getEverHadCover(), EverHadCover.Y);
-        assertNotNull(applicant.getHealthCover());
-        assertNull(applicant.getPreviousFund());
+        assertNotNull(applicant.getHealthCoverHistory());
+        assertTrue(applicant.getHealthCoverHistory().getEverHadCover());
+        assertNull(applicant.getHealthCoverHistory().getCurrentFund());
 
         assertNotNull(applicant.getCertifiedAgeEntry());
         assertEquals(applicant.getLhcPercentage(), (Integer) 8);
@@ -144,10 +127,13 @@ public class ApplicationGroupAdapterTest {
 
     @Test
     public void testCreateApplicantWithPreviousCoverOnline() {
+        final Cover cover = new Cover();
+        cover.setType("H");
         final Person person = new Person();
         person.setEverHadCoverPrivateHospital1("Y");
         person.setEmail("test@test.com");
         person.setAuthority("Y");
+        person.setCover(cover);
         final Fund previousFund = mock(Fund.class);
         final Integer certifiedAge = 1;
         final Insured insured = mock(Insured.class);
@@ -159,18 +145,19 @@ public class ApplicationGroupAdapterTest {
         when(previousFund.getFundName()).thenReturn("NAB");
         when(insured.getCover()).thenReturn("N");
 
-        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
-                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation));
+        final com.ctm.schema.health.v1_0_0.Applicant applicant = ApplicantsAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
+                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation), Optional.empty());
         assertNotNull(applicant);
-        assertEquals(EverHadCover.N, applicant.getHealthCover().getEverHadCover());
-        assertNotNull(applicant.getHealthCover());
-        assertEquals(CoverType.HOSPITAL, applicant.getPreviousFund().getCoverType().get());
+        assertNotNull(applicant.getHealthCoverHistory());
+        assertFalse(applicant.getHealthCoverHistory().getEverHadCover());
+        assertEquals(PolicyType.HOSPITAL, applicant.getHealthCoverHistory().getCurrentFund().getPolicyType());
     }
 
     @Test
     public void testCreateApplicantWithPreviousCoverSimples() {
         final Person person = mock(Person.class);
         final Fund previousFund = mock(Fund.class);
+        final Cover cover = mock(Cover.class);
         final Integer certifiedAge = 1;
         final Insured insured = mock(Insured.class);
         final Integer lhcPercentage = 8;
@@ -181,23 +168,24 @@ public class ApplicationGroupAdapterTest {
         when(previousFund.getMemberID()).thenReturn("123456");
         when(previousFund.getFundName()).thenReturn("NAB");
         when(insured.getCover()).thenReturn("N");
+        when(person.getCover()).thenReturn(cover);
+        when(cover.getType()).thenReturn("H");
 
-        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
-                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation));
+        final com.ctm.schema.health.v1_0_0.Applicant applicant = ApplicantsAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
+                Optional.of(certifiedAge), Optional.of(insured), Emigrate.Y, Optional.of(lhcPercentage), Optional.of(situation), Optional.empty());
         assertNotNull(applicant);
-        assertEquals(EverHadCover.N, applicant.getHealthCover().getEverHadCover());
-        assertNotNull(applicant.getHealthCover());
-        assertEquals(CoverType.HOSPITAL, applicant.getPreviousFund().getCoverType().get());
+        assertNotNull(applicant.getHealthCoverHistory());
+        assertFalse(applicant.getHealthCoverHistory().getEverHadCover());
+        assertEquals(PolicyType.HOSPITAL, applicant.getHealthCoverHistory().getCurrentFund().getPolicyType());
     }
 
     @Test
-    public void testCreateApplicantEmptyExceptPerson() throws Exception {
+    public void testCreateApplicantEmptyExceptPerson() {
         final Person person = mock(Person.class);
-        final Applicant applicant = ApplicationGroupAdapter.createApplicant(Optional.of(person), Optional.empty(),
-                Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty(), Optional.empty());
+        final Applicant applicant = ApplicantsAdapter.createApplicant(Optional.of(person), Optional.empty(),
+                Optional.empty(), Optional.empty(), Emigrate.Y, Optional.empty(), Optional.empty(), Optional.empty());
         assertNotNull(applicant);
-        assertNull(applicant.getHealthCover());
-        assertNull(applicant.getPreviousFund());
+        assertNotNull(applicant.getHealthCoverHistory());
         assertNull(applicant.getCertifiedAgeEntry());
         assertEquals(applicant.getLhcPercentage(), (Integer) 0);
 
@@ -209,39 +197,45 @@ public class ApplicationGroupAdapterTest {
     }
 
     @Test
-    public void testPreviousFundEmpty() throws Exception {
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-        assertNull(previousFund);
+    public void testPreviousFundEmpty() {
+        final HealthCoverHistory healthCoverHistory = ApplicantsAdapter.createHealthCoverHistory(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        assertNotNull(healthCoverHistory);
+        assertFalse(healthCoverHistory.getEverHadCover());
+        assertFalse(healthCoverHistory.getHasCurrentHealthCover());
+        assertNull(healthCoverHistory.getDifferentProvidersForHospitalAndExtrasCover());
+        assertNull(healthCoverHistory.getHasHadContinuousCover());
+        assertFalse(healthCoverHistory.getIsLHCLoadingApplied());
+        assertNull(healthCoverHistory.getPriorCoverPeriods());
     }
 
     @Test
-    public void testPreviousFund() throws Exception {
+    public void testPreviousFund() {
         final Fund fund = mock(Fund.class);
         when(fund.getFundName()).thenReturn("BUPA");
         final Insured insured = mock(Insured.class);
         when(insured.getCover()).thenReturn("Y");
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.of(insured));
-        assertNotNull(previousFund);
+        final CurrentFund currentFund = ApplicantsAdapter.createCurrentFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.ofNullable(insured));
+        assertNotNull(currentFund);
         verify(fund, times(1)).getFundName();
         verify(fund, times(1)).getMemberID();
     }
 
     @Test
-    public void testPreviousFundUHF() throws Exception {
+    public void testPreviousFundUHF() {
         final Fund fund = mock(Fund.class);
         when(fund.getFundName()).thenReturn("UHF");
         final HealthFund healthFund = HealthFund.UHF;
         final Insured insured = mock(Insured.class);
         when(insured.getCover()).thenReturn("Y");
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.of(insured));
-        assertNotNull(previousFund);
+        final CurrentFund currentFund = ApplicantsAdapter.createCurrentFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.ofNullable(insured));
+        assertNotNull(currentFund);
         verify(fund, times(1)).getFundName();
         verify(fund, times(1)).getMemberID();
-        assertEquals(healthFund.getDescription(), previousFund.getFundName().getDescription());
+        assertEquals(healthFund.name(), currentFund.getProviderCode());
     }
 
     @Test
-    public void testPreviousFundExtraInfo() throws Exception {
+    public void testPreviousFundExtraInfo() {
         // Instantiate the fund form, making sure it has a fund name of "BUPA" and a cancellation option of "E"
         final Fund fund = new Fund();
         fund.setFundName("BUPA");
@@ -255,62 +249,44 @@ public class ApplicationGroupAdapterTest {
         when(insured.getCover()).thenReturn("Y");
         when(person.getCover()).thenReturn(cover);
         // Try creating the previousFund object
-        final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.of(person), Optional.empty(), Optional.of(insured));
-        assertNotNull(previousFund);    // Fail if it's null
+        final CurrentFund currentFund = ApplicantsAdapter.createCurrentFund(Optional.ofNullable(fund), Optional.ofNullable(person), Optional.empty(), Optional.ofNullable(insured));
+        assertNotNull(currentFund);    // Fail if it's null
 
         // Check the previous fund's cancellation option and cover type properties
-        assertNotNull(previousFund.getFundName());
-        assertNotNull(previousFund.getConfirmCover());
-        assertEquals(CancelOption.EXTRAS, previousFund.getCancel().get());
-        assertEquals(CoverType.COMBINED, previousFund.getCoverType().get());
+        assertNotNull(currentFund);
+        assertFalse(currentFund.getHasAuthorityToContactFund());
+        assertEquals(PolicyType.ANCILLARY, currentFund.getCancelOption());
+        assertEquals(PolicyType.COMBINED, currentFund.getPolicyType());
     }
 
     @Test
-    public void testCancelOption() throws Exception {
-        // Asserting equals for when the user is prompted to select a cancel option
-        assertEquals(CancelOption.COMBINED, CancelOption.fromCancellationType("C"));
-        assertEquals(CancelOption.HOSPITAL, CancelOption.fromCancellationType("H"));
-        assertEquals(CancelOption.EXTRAS, CancelOption.fromCancellationType("E"));
-        assertEquals(CancelOption.NOTHING, CancelOption.fromCancellationType("KH"));
-        assertEquals(CancelOption.NOTHING, CancelOption.fromCancellationType("KE"));
-
-        // When the user is not prompted to select a cancellation option, the CancelOption is derived from the xpath `health/situation/coverType`
-        assertEquals(CancelOption.COMBINED, CancelOption.fromPurchaseType("C"));
-        assertEquals(CancelOption.HOSPITAL, CancelOption.fromPurchaseType("H"));
-        assertEquals(CancelOption.EXTRAS, CancelOption.fromPurchaseType("E"));
-
-        // Finally, make sure we'll get a null if we try to use an invalid code
-        assertNull(CancelOption.fromCancellationType("A"));
+    public void testCreateDependantsEmpty() {
+        assertNull(ApplicantsAdapter.createDependants(Optional.empty()));
     }
 
     @Test
-    public void testCreateDependantsEmpty() throws Exception {
-        assertNull(ApplicationGroupAdapter.createDependants(Optional.empty()));
-    }
-
-    @Test
-    public void testCreateDependantsEmpty1() throws Exception {
+    public void testCreateDependantsEmpty1() {
         final Dependants dependants = mock(Dependants.class);
-        final List<com.ctm.web.health.apply.model.request.application.dependant.Dependant> result = ApplicationGroupAdapter.createDependants(Optional.of(dependants));
+        final List<com.ctm.schema.health.v1_0_0.Dependant> result = ApplicantsAdapter.createDependants(Optional.of(dependants));
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
 
     @Test
-    public void testCreateDependants1Dependant() throws Exception {
+    public void testCreateDependants1Dependant() {
         final Dependants dependants = mock(Dependants.class);
         final Dependant dependant = mock(Dependant.class);
         when(dependant.getLastname()).thenReturn("x");
         List<Dependant> dependantList = new ArrayList<>();
         when(dependants.getDependant()).thenReturn(dependantList);
         dependantList.add(dependant);
-        final List<com.ctm.web.health.apply.model.request.application.dependant.Dependant> result = ApplicationGroupAdapter.createDependants(Optional.of(dependants));
+        final List<com.ctm.schema.health.v1_0_0.Dependant> result = ApplicantsAdapter.createDependants(Optional.of(dependants));
         assertNotNull(result);
         assertEquals(1, result.size());
     }
 
     @Test
-    public void testCreateDependants12Dependant() throws Exception {
+    public void testCreateDependants12Dependant() {
         final Dependants dependants = mock(Dependants.class);
         final Dependant dependant = mock(Dependant.class);
         when(dependant.getLastname()).thenReturn("x");
@@ -328,20 +304,20 @@ public class ApplicationGroupAdapterTest {
         dependantList.add(dependant);
         dependantList.add(dependant);
         dependantList.add(dependant);
-        final List<com.ctm.web.health.apply.model.request.application.dependant.Dependant> result = ApplicationGroupAdapter.createDependants(Optional.of(dependants));
+        final List<com.ctm.schema.health.v1_0_0.Dependant> result = ApplicantsAdapter.createDependants(Optional.of(dependants));
         assertNotNull(result);
         assertEquals(12, result.size());
     }
 
     @Test
-    public void testCreateDependantEmpty() throws Exception {
-        assertNull(ApplicationGroupAdapter.createDependant(Optional.empty()));
+    public void testCreateDependantEmpty() {
+        assertNull(ApplicantsAdapter.createDependant(Optional.empty()));
     }
 
     @Test
-    public void testCreateDependant() throws Exception {
+    public void testCreateDependant() {
         final Dependant dependant = mock(Dependant.class);
-        assertNotNull(ApplicationGroupAdapter.createDependant(Optional.of(dependant)));
+        assertNotNull(ApplicantsAdapter.createDependant(Optional.of(dependant)));
         // 2 times - title and gender
         verify(dependant, times(2)).getTitle();
         verify(dependant, times(1)).getFirstName();
@@ -354,7 +330,7 @@ public class ApplicationGroupAdapterTest {
     }
 
     @Test
-    public void testNonMockedCreateDependant() throws Exception {
+    public void testNonMockedCreateDependant() {
         // Given
         Dependant dependant = new Dependant();
         dependant.setDob("01/01/1999");
@@ -371,20 +347,20 @@ public class ApplicationGroupAdapterTest {
         dependant.setSchoolID("QUT");
         dependant.setTitle("MR");
         // When
-        com.ctm.web.health.apply.model.request.application.dependant.Dependant appDependant =
-                ApplicationGroupAdapter.createDependant(Optional.of(dependant));
+        com.ctm.schema.health.v1_0_0.Dependant appDependant =
+                ApplicantsAdapter.createDependant(Optional.of(dependant));
         // Then
         assertNotNull(appDependant);
         assertEquals(appDependant.getDateOfBirth(), LocalDate.of(1999, 1, 1));
-        assertEquals(appDependant.getFirstName().get(), "Abe");
-        assertEquals(appDependant.getGender().name(), "M");
-        assertEquals(appDependant.getLastName().get(), "Simpson");
-        assertEquals(appDependant.getSchool().get(), "Queensland University of Technology");
-        assertEquals(appDependant.getSchoolDate(), LocalDate.of(2000, 1, 1));
+        assertEquals(appDependant.getFirstName(), "Abe");
+        assertEquals(appDependant.getGender().name(), "MALE");
+        assertEquals(appDependant.getLastName(), "Simpson");
+        assertEquals(appDependant.getSchoolName(), "Queensland University of Technology");
+        assertEquals(appDependant.getSchoolStartDate(), LocalDate.of(2000, 1, 1));
         assertEquals(appDependant.getRelationship().name(), "NONE");
-        assertEquals(appDependant.getGraduationDate().get(), "2004-08-15");
-        assertEquals(appDependant.getSchoolID().get(), "QUT");
-        assertEquals(appDependant.getFullTimeStudent(), null);
-        assertEquals(appDependant.getTitle().getName(), "MR");
+        assertEquals(appDependant.getGraduationDate(), LocalDate.of(2004, 8, 15));
+        assertEquals(appDependant.getStudentID(), "QUT");
+        assertFalse(appDependant.getIsFullTimeStudent());
+        assertEquals(appDependant.getTitle().name(), "MR");
     }
 }

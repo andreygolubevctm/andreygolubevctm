@@ -88,7 +88,7 @@ var healthFunds_WFD = {
             <form_v2:row id="wfd_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you" renderLabelAsSimplesDialog="true">
             <field_v2:array_select xpath="${fieldXpath}"
                     required="true"
-                    title="Relationship to you" items="=Please choose...,2=Spouse,3=Defacto" placeHolder="Relationship" disableErrorContainer="${true}" />
+                    title="Relationship to you" items="=Please choose...,SPOUSE=Spouse,PARTNER=Defacto" placeHolder="Relationship" disableErrorContainer="${true}" />
             </form_v2:row>
             </c:set>
             <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
