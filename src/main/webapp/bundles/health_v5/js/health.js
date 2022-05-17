@@ -451,7 +451,6 @@
                         }
                     }, 1000);
 
-                    meerkat.modules.healthLHC.resetNewLHC();
                 }else{
                     $('.results-pagination, .results-filters-frequency').removeClass('invisible');
                 }
