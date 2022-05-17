@@ -20,7 +20,7 @@
 			<form  id="applicationForm_3" autocomplete="off" class="form-horizontal" role="form">
 					<simples:dialogue id="145" vertical="health" mandatory="true"  className="simplesDynamicElements" />
 					<c:set var="xpath" value="${pageSettings.getVerticalCode()}/application" />
-					<field_v3:name_group xpath="${xpath}/primary" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" middleInitialMaxlength="1" label="Name as it appears on Medicare Card" className="no-label simples-name-input-primary" />
+					<field_v3:name_group xpath="${xpath}/primary" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="23" middleInitialMaxlength="1" label="Name as it appears on Medicare Card" className="no-label simples-name-input-primary" />
 
 					<simples:dialogue id="146" vertical="health" mandatory="true"  className="simplesDynamicElements" />
 
