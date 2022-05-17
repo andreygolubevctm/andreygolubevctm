@@ -154,8 +154,10 @@
             $_dependantDefinition = $('#mainform').find('.health-dependants').find('.definition');
             $_dependantDefinition.html(message);
         } else {
-            $_dependantDefinition.html('');
-            $_dependantDefinition = undefined;
+            if ($_dependantDefinition) {
+                $_dependantDefinition.html('');
+                $_dependantDefinition = undefined;
+            }
         }
     }
 
