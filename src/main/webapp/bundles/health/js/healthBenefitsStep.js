@@ -321,7 +321,10 @@
 
         $allHospitalButtons.on('change', function onHospitalBenefitsChange() {
             $benefitsForm.find("a[data-category=customise]:visible").first().addClass('active');
-            $coverType.val('customise');
+            // if a hospital benefit is checked, change cover type to 'customise'
+            if ($(this).is(':checked')) {
+                $coverType.val('customise');
+            }
         });
     }
 
