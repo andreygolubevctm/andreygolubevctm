@@ -24,7 +24,7 @@
 
 		<c:if test="${id eq 'partner'}">
 			<simples:dialogue id="159" vertical="health" mandatory="true"  className="simplesDynamicElements" />
-			<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" middleInitialMaxlength="1" label="Name as it appears on Medicare Card" className="no-label" />
+			<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="23" middleInitialMaxlength="1" label="Name as it appears on Medicare Card" className="no-label" />
 		</c:if>
 
 		<c:if test="${id eq 'partner'}">

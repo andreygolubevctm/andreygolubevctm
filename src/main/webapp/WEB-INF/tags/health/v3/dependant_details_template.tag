@@ -65,7 +65,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/dob"/>
             <form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth">
                 <field_v2:person_dob xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s date of birth" required="true" ageMin="0"
-                                     additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}" disableErrorContainer="${true}"/>
+                                     additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}"/>
             </form_v2:row>
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/gender" />
