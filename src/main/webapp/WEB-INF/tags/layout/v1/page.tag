@@ -104,11 +104,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 <!DOCTYPE html>
 <go:html>
 <head>
-	<%-- Google Optimise 360 --%>
-	<c:if test="${empty callCentre or not callCentre}">
-		<content:get key="googleOptimise360" />
-	</c:if>
-
 	<title>${title} - ${pageSettings.getSetting('brandName')}</title>
 	<meta charset='utf-8'>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -121,18 +116,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-  <c:if test="${GTMEnabled eq true}">
-      <c:set var="VAR06_CA_PROFILE" value="${pageSettings.getSetting('VAR06_CA_PROFILE')}"/>
-
-      <script data-cfasync="false" src="https://www.googleoptimize.com/optimize.js?id=${pageSettings.getSetting('VAR02_ID_OPT')}"></script>
-
-      <script data-cfasync="false">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js',anonymousID:localStorage.getItem('ca_identity') || undefined,accounts:JSON.parse(localStorage.getItem('ca_accountsData')) || undefined});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl${pageSettings.getSetting('VAR04_ENV_GTM_S')};f.parentNode.insertBefore(j,f);
-          })(window,document,'script','${pageSettings.getSetting('VAR01_DL')}','${pageSettings.getSetting('VAR03_ID_GTM')}');
-      </script>
-    </c:if>
+	<c:if test="${GTMEnabled eq true}">
+		<c:set var="VAR06_CA_PROFILE" value="${pageSettings.getSetting('VAR06_CA_PROFILE')}"/>
+		<core_v2:CTMDataLayer_head />
+	</c:if>
 
 	<c:if test="${pageSettings.getSetting('appleTouchIconsEnabled') eq 'Y'}">
 		<link rel="apple-touch-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone.png">
@@ -178,9 +165,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 	<body class="jeinit  ${bodyClass}">
     <c:if test="${GTMEnabled eq true}">
-        <noscript>
-            <iframe src="https://www.googletagmanager.com/ns.html?id=${pageSettings.getSetting('VAR03_ID_GTM')}${pageSettings.getSetting('VAR05_ENV_GTM_NS')}"height="0" width="0" style="display:none;visibility:hidden"></iframe>
-        </noscript>
+		<core_v2:CTMDataLayer_body />
     </c:if>
 
 
