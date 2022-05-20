@@ -46,9 +46,6 @@
 		<jsp:body>
 			<layout_v1:slide_content>
 				<%-- TRAVEL RESTRICTION MESSAGE --%>
-				<div style="padding-bottom:40px">
-						<content:get key="currentTravelRestrictions" />
-				</div>
 				<%-- PROVIDER TESTING --%>
 				<agg_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" displayFullWidth="true" />
 				<field_v1:hidden xpath="travel/lastCoverTabLevel" />
