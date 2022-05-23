@@ -326,6 +326,8 @@
 	function eventSubscriptions() { // might not need all/any
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 		$(document.body).on('click', 'a.productSuitability', launchProductSuitability);
+		$(document.body).on('click', 'a.learnMoreDomestic', launchLearnMoreDomestic);
+		$(document.body).on('click', 'a.learnMoreInternational', launchLearnMoreInternational);
 
 		// Model updated, make changes before rendering
 		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
@@ -524,12 +526,12 @@
 
 		if (isDomestic ) {
 			oSMedical2ColText = "Expenses";
-			cancelFeeColText = "Cancellation Fee&nbsp;Cover*";
-			luggageColText = "Luggage**";
+			cancelFeeColText = "Cancellation Fee&nbsp;Cover";
+			luggageColText = "Luggage";
 		} else {
-			oSMedical2ColText = "Expenses*";
-			cancelFeeColText = "Cancellation Fee&nbsp;Cover**";
-			luggageColText = "Luggage***";
+			oSMedical2ColText = "Expenses";
+			cancelFeeColText = "Cancellation Fee&nbsp;Cover";
+			luggageColText = "Luggage";
 		}
 
 		// This is coming from the WebCTM database, ctm.content_control contentKey = travelAdvisoryMessageDomestic, travelAdvisoryMessageInternational
@@ -626,6 +628,43 @@
 			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2><div class='termsWrapper suitabilityContentWrapper'>" +  $productSuitabilityContent.html() + "</div>"
 		});
 	}
+
+
+	function launchLearnMoreDomestic(event) {
+		event.preventDefault();
+
+		meerkat.modules.dialogs.show({
+			title:"",
+			hashId: 'learn-more',
+			className: 'learn-more-modal',
+			openOnHashChange: false,
+			closeOnHashChange: true,
+			htmlContent: "<h2 class='visible-xs heading'>" +  "</h2><div class='termsWrapper learnMoreWrapper'>"
+				+ "<p><strong>Exclusions and sub-limits</strong></p>"
+				+ "<p>Exclusions and sub-limits may apply to each policy benefit and these differ between providers. Please read the Product Disclosure Statement (PDS) to ensure the product is right for you. </p>"
+				+"</div>"
+		});
+	}
+
+	function launchLearnMoreInternational(event) {
+		event.preventDefault();
+
+		meerkat.modules.dialogs.show({
+			title:"",
+			hashId: 'learn-more',
+			className: 'learn-more-modal',
+			openOnHashChange: false,
+			closeOnHashChange: true,
+			htmlContent: "<h2 class='visible-xs heading'>" +  "</h2><div class='termsWrapper learnMoreWrapper'>"
+				+ "<p><strong>Exclusions and sub-limits</strong></p>"
+				+ "<p>Exclusions and sub-limits may apply to each policy benefit and these differ between providers. Please read the Product Disclosure Statement (PDS) to ensure the product is right for you. </p> <br />"
+				+ "<p><strong>Smartraveller.gov.au</strong></p>"
+				+ "<p>The Smartraveller.gov.au website provides detailed travel advice about most worldwide destinations and this may affect the cover your chosen product provides in those destinations. </p>"
+				+ "<p>It is important that you refer to the travel alerts/restrictions of your chosen insurer as some insurers will also exclude countries with increased travel risk in addition to official government warnings. </p>"
+				+"</div>"
+		});
+	}
+
 
 	function rankingCallback(product, position) {
 		var data = {};

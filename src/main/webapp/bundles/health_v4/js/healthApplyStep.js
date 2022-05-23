@@ -79,6 +79,7 @@
             receivesAgeBasedDiscount: $('#' + applicant + '_abd_health_cover'),
             ageBasedDiscountPolicyStartRow: $('#health_previousfund_' + applicant + '_abd_start_date'),
             previousFundNumber: $('input[name=health_previousfund_' + applicant + '_memberID]'),
+            previousFundExtrasNumber: $('input[name=health_previousfund_' + applicant + '_extras_memberID]'),
             extrasFund: $('#' + applicant + 'extrasfund')
         };
 
@@ -206,6 +207,29 @@
             _toggleUnitShopRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', !_.isEmpty(this.value));
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function(step) {
+            if(step.navigationId === 'apply') {
+                var isAHM = Results.getSelectedProduct().info.FundCode === "AHM";
+                $elements.primary.previousFundNumber.prop("required", !isAHM);
+                $elements.partner.previousFundNumber.prop("required", !isAHM);
+                $elements.primary.previousFundExtrasNumber.prop("required", !isAHM);
+                $elements.partner.previousFundExtrasNumber.prop("required", !isAHM);
+
+                if(isAHM) {
+                    $elements.primary.previousFundNumber.parent().toggleClass('has-error', false);
+                    $elements.partner.previousFundNumber.parent().toggleClass('has-error', false);
+                    $elements.primary.previousFundExtrasNumber.parent().toggleClass('has-error', false);
+                    $elements.partner.previousFundExtrasNumber.parent().toggleClass('has-error', false);
+
+                    $elements.primary.previousFundNumber.parent().find('label').remove();
+                    $elements.partner.previousFundNumber.parent().find('label').remove();
+                    $elements.primary.previousFundExtrasNumber.parent().find('label').remove();
+                    $elements.partner.previousFundExtrasNumber.parent().find('label').remove();
+
+                    $('#applicationDetailsForm .journeyNavButtonError').toggleClass("hidden", true);
+                }
+            }
+        });
     }
 
     function _applyEventListenersByApplicant(applicant) {

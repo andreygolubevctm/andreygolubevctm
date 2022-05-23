@@ -213,8 +213,12 @@
 
     //If fulltime student toggle is enabled, use this validator instead of the above one
     $.validator.addMethod("validateFulltime", function (value, element) {
-            var fullTime = $(element).parents('.health_dependant_details').find('.health_dependant_details_fulltimeGroup input[type=radio]:checked').val();
-            var getAge = meerkat.modules.age.returnAge(value, true);
+            var $wrapper = $(element).closest('.health_dependant_details'),
+                dependantId = $wrapper.attr('data-id'),
+                $dob = $('#health_application_dependants_dependant' + dependantId + '_dob');
+
+            var fullTime = $wrapper.find('.health_dependant_details_fulltimeGroup input[type=radio]:checked').val();
+            var getAge = meerkat.modules.age.returnAge($dob.val(), true);
             var dependantConfig = meerkat.modules.healthDependants.getConfig();
             var maxAge = meerkat.modules.healthDependants.getMaxAge();
             var suffix = dependantConfig.schoolMinAge == 21 ? 'st' : dependantConfig.schoolMinAge == 22 ? 'nd' : dependantConfig.schoolMinAge == 23 ? 'rd' : 'th';
@@ -222,7 +226,7 @@
                 $.validator.messages.validateFulltime = 'Dependants over ' + maxAge + ' are considered adult dependants and can still be covered by applying for a separate singles policy';
                 return false;
             } else if (fullTime === 'N' && getAge >= dependantConfig.schoolMinAge) {
-                $.validator.messages.validateFulltime = 'This policy provides cover for children until their ' + dependantConfig.schoolMinAge + suffix + ' birthday';
+                $.validator.messages.validateFulltime = 'This product only covers dependants who are studying full-time, past the age of ' + dependantConfig.schoolMinAge;
                 return false;
             }
             return true;

@@ -61,6 +61,13 @@
         });
     }
 
+    function _createFieldReferences (applicant) {
+        return   {
+            previousFundNumber: $('input[name=health_previousfund_' + applicant + '_memberID]'),
+            previousFundExtrasNumber: $('input[name=health_previousfund_' + applicant + '_extras_memberID]'),
+        };
+    }
+
     function _prefillPreviousFund(applicant) {
         var selectedFieldCurrentVal = applicant == 'primary'? meerkat.modules.healthPreviousFund.getPrimaryPreviousFund() : meerkat.modules.healthPreviousFund.getPartnerPreviousFund() ;
 
@@ -191,6 +198,33 @@
         });
 
         meerkat.messaging.subscribe(meerkat.modules.events.healthDependants.DEPENDANTS_RENDERED, initCapitalisationChecks);
+
+        var $primary = _createFieldReferences('primary');
+        var $partner = _createFieldReferences('partner');
+
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function(step) {
+            if(step.navigationId === 'apply') {
+                var isAHM = Results.getSelectedProduct().info.FundCode === "AHM";
+                $primary.previousFundNumber.prop("required", !isAHM);
+                $partner.previousFundNumber.prop("required", !isAHM);
+                $primary.previousFundExtrasNumber.prop("required", !isAHM);
+                $partner.previousFundExtrasNumber.prop("required", !isAHM);
+
+                if(isAHM) {
+                    $primary.previousFundNumber.parent().toggleClass('has-error', false);
+                    $partner.previousFundNumber.parent().toggleClass('has-error', false);
+                    $primary.previousFundExtrasNumber.parent().toggleClass('has-error', false);
+                    $partner.previousFundExtrasNumber.parent().toggleClass('has-error', false);
+
+                    $primary.previousFundNumber.parent().find('label').remove();
+                    $partner.previousFundNumber.parent().find('label').remove();
+                    $primary.previousFundExtrasNumber.parent().find('label').remove();
+                    $partner.previousFundExtrasNumber.parent().find('label').remove();
+
+                    $('#applicationDetailsForm .journeyNavButtonError').toggleClass("hidden", true);
+                }
+            }
+        });
     }
 
     function initCapitalisationChecks() {
