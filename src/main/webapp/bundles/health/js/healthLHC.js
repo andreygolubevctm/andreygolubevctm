@@ -337,7 +337,13 @@
 
                 $('.health_cover_details_rebate .fieldrow_legend').html(getOverallLoadingText(rates.primary.lhcPercentage));
 
-                $('.simples_dialogue-checkbox-26 span[data-loading=true]').html(rates[hasPartner ? 'combined' : 'primary'].lhcPercentage);
+                var rate = rates[hasPartner ? 'combined' : 'primary'].lhcPercentage;
+                $('.simples_dialogue-checkbox-26 span[data-loading=true]').html(rate);
+                if (rate > 0) {
+                    $('#simples-dialogue-26').removeClass("hidden");
+                } else {
+                    $('#simples-dialogue-26').addClass("hidden");
+                }
 
                 if(hasPartner && rates.partner){
                     $('#health_healthCover_primaryCover .fieldrow_legend').html(getLoadingText(rates.primary.lhcPercentage, rates.combined.lhcPercentage));

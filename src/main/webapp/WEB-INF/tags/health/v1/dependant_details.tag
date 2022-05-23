@@ -49,7 +49,8 @@
 		<c:set var="fieldXpath" value="${xpath}${count}/fulltime" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Full-time student" id="${name}_fulltimeGroup"
 					  className="health_dependant_details_fulltimeGroup">
-			<field_v2:array_radio xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="dependant ${count}'s fulltime status" className="sessioncamexclude" />
+			<field_v2:array_radio xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="dependant ${count}'s fulltime status" className="sessioncamexclude"
+								  additionalAttributes=" data-rule-validateFulltime='true' " disableErrorContainer="${false}"/>
 		</form_v2:row>
 
 		<c:set var="fieldXpath" value="${xpath}${count}/school" />
