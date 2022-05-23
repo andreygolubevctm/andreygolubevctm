@@ -258,7 +258,7 @@
 
             <c:set var="fieldXpath" value="${xpath}/primary/fundHistory" />
             <form_v3:row fieldXpath="${fieldXpath}" label="Based on your answers it looks like you may be affected by the Government Lifetime Health Cover loading, please enter the approximate date ranges you have held <span class='text-bold'>private hospital</span> cover so we can estimate the impact on your premiums." id="health-primary-fund-history" className="changes-premium text-danger hidden" renderLabelAsSimplesDialog="true">
-                <field_v2:coverage_dates_input xpath="${fieldXpath}" footerText="Based on your answers, you may be affected by LHC. The LHC amount will be shown in the premium on the next page, if applicable." />
+                <field_v2:coverage_dates_input xpath="${fieldXpath}"/>
             </form_v3:row>
             <%-- I don't know my LHC history - apply full LHC --%>
             <div id="primaryLhcDatesUnsureApplyFullLHC" class="applyFullLHC hidden">
