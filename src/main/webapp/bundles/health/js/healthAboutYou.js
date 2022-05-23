@@ -50,7 +50,11 @@
         $complianceCopyPreviousCover,
         $complianceCopyExtrasOnly,
         $complianceCopyHospitalChoices,
-        $complianceCopyExtrasChoices;
+        $complianceCopyExtrasChoices,
+		$evenLHCMessage,
+		$primary_lhc_input,
+		$partner_lhc_input;
+
 
 	function init(){
 		$(document).ready(function () {
@@ -133,6 +137,10 @@
         $complianceCopyExtrasOnly = $('#simples-dialogue-213');
         $complianceCopyHospitalChoices = $('#simples-dialogue-214');
         $complianceCopyExtrasChoices = $('#simples-dialogue-215');
+		$evenLHCMessage = $('#contactForm .even-lhc-value-message');
+		$primary_lhc_input = $('#health_healthCover_primary_lhc');
+		$partner_lhc_input = $('#health_healthCover_partner_lhc');
+
 
 
 		if (!meerkat.modules.healthChoices.hasSpouse()) {
@@ -275,6 +283,18 @@
 			}
 
             setupComplianceCopy();
+
+			$primary_lhc_input.on('change', function (event) {
+				$primary_lhc_input.prev().toggleClass('hidden', ifNotNumericOrEven(event.target.value));
+			});
+
+			$partner_lhc_input.on('change', function (event) {
+				$partner_lhc_input.prev().toggleClass('hidden', ifNotNumericOrEven(event.target.value));
+			});
+
+			function ifNotNumericOrEven(val) {
+				return !$.isNumeric(val) || val % 2 === 0;
+			}
 		});
 
 		$healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
