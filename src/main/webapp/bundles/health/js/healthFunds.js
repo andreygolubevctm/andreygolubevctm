@@ -153,7 +153,7 @@
             // SET and ADD the dependant definition
             $_dependantDefinition = $('#mainform').find('.health-dependants').find('.definition');
             $_dependantDefinition.html(message);
-        } else {
+        } else if (typeof _dependantDefinition !== 'undefined' && _dependantDefinition !== undefined) {
             $_dependantDefinition.html('');
             $_dependantDefinition = undefined;
         }

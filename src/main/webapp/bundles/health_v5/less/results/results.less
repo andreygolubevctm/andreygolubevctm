@@ -155,12 +155,16 @@
     }
   }
 
-  .health_filterBar_excess > .vertical,
   .health_filterBar_coverLevel > .vertical {
     padding-left: 0;
 
-    .checkbox > input[name="health_filterBar_excess"],
     .checkbox > input[name="health_filterBar_coverLevel"] {
+      float: right;
+    }
+  }
+
+  .health_filterBar_excess > .vertical {
+    .checkbox > input[name="health_filterBar_excess"] {
       float: right;
     }
   }
