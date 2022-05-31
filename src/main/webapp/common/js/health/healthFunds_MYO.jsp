@@ -68,16 +68,24 @@ var healthFunds_MYO = {
 
         <%--Contact Point question--%>
         meerkat.modules.healthFunds.showHowToSendInfo('AIA', true);
+        <%--Age requirements for applicants--%>
+        <%--primary--%>
+        healthFunds_MYO.$_dobPrimary = $('#health_application_primary_dob');
+            <%--partner--%>
+        healthFunds_MYO.$_dobPartner = $('#health_application_partner_dob');
+
+        healthFunds_MYO.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+        healthFunds_MYO.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
         <%--Authority--%>
         meerkat.modules.healthFunds._previousfund_authority(true);
         $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '50');
 
         <%--dependant definition--%>
-        meerkat.modules.healthFunds._dependants('This policy provides cover for children until their 23rd birthday. Student dependents aged between 23-25 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+        meerkat.modules.healthDependants.setMaxAge(25);
 
-        <%--schoolgroups and defacto --%>
-        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':23, 'schoolMaxAge':24, showSchoolIdField:true });
+            <%--schoolgroups and defacto --%>
+        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:false, 'schoolMinAge':23, 'schoolMaxAge':24, showSchoolIdField:false });
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
@@ -141,6 +149,9 @@ var healthFunds_MYO = {
         meerkat.messaging.unsubscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_MYO.paymentDayChange);
 
         meerkat.modules.healthFunds._reset();
+        <%--Age requirements for applicants (back to default)--%>
+        healthFunds_MYO.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+        healthFunds_MYO.$_dobPartner.addRule('youngestDOB', dob_health_application_partner_dob.ageMin, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
         <%--Authority off--%>
         meerkat.modules.healthFunds._previousfund_authority(false);
