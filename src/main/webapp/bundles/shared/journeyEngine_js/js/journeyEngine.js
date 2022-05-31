@@ -557,7 +557,6 @@
         var waitForCallback = false;
 
         if(!_.isNull(step.validation) && !_.isUndefined(step.validation)) {
-
             if(step.validation.validate === true){
 
 
@@ -720,7 +719,12 @@
 
                         meerkat.modules.address.setHash(navigationId);
                         if(typeof $target !== 'undefined') meerkat.modules.loadingAnimation.hide($target);
-                    }, logValidationErrors);
+                    }, function(){
+                        if (currentStep.validationFailCallBack != null) {
+                            currentStep.validationFailCallBack();
+                        }
+                        logValidationErrors();
+                    });
                 }else{
                     meerkat.modules.address.setHash(navigationId);
                     if(typeof $target !== 'undefined') meerkat.modules.loadingAnimation.hide($target);
