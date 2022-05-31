@@ -588,6 +588,10 @@
 
 				adjustLayout();
 			},
+			validationFailCallBack: function validationFailCallBack() {
+				$('#health_application_postal_streetNum').trigger('blur');
+				$('#health_application_postal_nonStdStreet').trigger('blur');
+			},
             onBeforeLeave: function beforeLeaveApplyStep(event) {
                 if (_.indexOf(['wfdd', 'bddd'], meerkat.site.tracking.brandCode) >= 0) {
                     meerkat.messaging.unsubscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, contactDtlsEmailEventHandle);
