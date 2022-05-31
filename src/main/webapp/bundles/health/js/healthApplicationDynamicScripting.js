@@ -1950,10 +1950,6 @@
                     addrLn1 += streetNum + " ";
                 }
 
-                if (unitNo.length > 0) {
-                    addrLn1 += unitNo + " ";
-                }
-
             } else {
                 if (unitNo.length > 0) {
                     addrLn1 += unitNo + " ";

@@ -163,8 +163,36 @@
             });
 
         $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
-            _changeStreetNoLabel(this.value);
+            _changeOtherFields(this.value);
             _toggleRegexValidation(this.value);
+        }).trigger('change');
+
+        $unitElements.appPostalStreetNum.on('blur', function () {
+            setTimeout(function () {
+                var $errorField = $('#health_application_postal_streetNum-error');
+                var val = $unitElements.appPostalNonStdStreet.val();
+                if ($errorField.length > 0 && (val == null || val.trim() === '')) {
+                    if ($unitElements.appPostalUnitType.val() === 'PO') {
+                        $errorField.text('Please enter "Po Box"');
+                    } else {
+                        $errorField.text('Please enter a street number');
+                    }
+                }
+            }, 10);
+        });
+
+        $unitElements.appPostalNonStdStreet.on('blur', function () {
+            setTimeout(function () {
+                var $errorField = $('#health_application_postal_nonStdStreet-error');
+                var val = $unitElements.appPostalNonStdStreet.val();
+                if ($errorField.length > 0 && (val == null || val.trim() === '')) {
+                    if ($unitElements.appPostalUnitType.val() === 'PO') {
+                        $errorField.text('Please enter a box number');
+                    } else {
+                        $errorField.text('Please enter the postal street');
+                    }
+                }
+            }, 10);
         });
 
         $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
@@ -254,32 +282,48 @@
         });
     }
 
-    function _changeStreetNoLabel(unitType) {
-        var $label = $unitElements.appPostalStreetNum.closest('.form-group').find('label.control-label'),
-            $errorField = $('#health_application_postal_streetNum-error'),
-            labelText = 'Street No.',
-            msgRequired = 'Please enter a street number';
+    function _changeOtherFields(unitType) {
+        //
 
+        //For Simples, below are not correct
+        var msgRequired = null,
+            msgRequired2 = null;
+
+        resetInputField('#health_application_postal_streetNumRow');
+        resetInputField('#health_application_postal_nonStd_streetRow');
         if (unitType === 'PO') {
-            labelText = 'Box No.';
-            msgRequired = 'Please enter a box number';
+            $unitElements.appPostalStreetNum.closest('.form-group').find('p').text('Enter text "Po Box"');
+            $unitElements.appPostalStreetNum.attr('placeholder', 'Please enter "Po Box"');
+            msgRequired = 'Please enter "Po Box"';
+            $unitElements.appPostalUnitShop.closest('.form-group').hide();
+            $unitElements.appPostalNonStdStreet.closest('.form-group').find('p').text("Po Box number");
+            $unitElements.appPostalNonStdStreet.attr('placeholder', 'Enter a box number e.g. 66');
+            msgRequired2 = 'Please enter a box number';
+        } else {
+            $unitElements.appPostalStreetNum.closest('.form-group').find('p').text('Street Number');
+            $unitElements.appPostalStreetNum.attr('placeholder', 'Enter street number e.g. 66');
+            msgRequired = 'Please enter a street number';
+            $unitElements.appPostalUnitShop.closest('.form-group').show();
+            $unitElements.appPostalNonStdStreet.closest('.form-group').find('p').text("Street Name");
+            $unitElements.appPostalNonStdStreet.attr('placeholder', 'Enter street name e.g. Smith Street');
+            msgRequired2 = 'Please enter the postal street';
         }
-
-        $label.text(labelText);
         $unitElements.appPostalStreetNum.attr('data-msg-required', msgRequired);
-
-        if ($errorField.length > 0) {
-            $errorField.text(msgRequired);
-        }
+        $unitElements.appPostalNonStdStreet.attr('data-msg-required', msgRequired2);
     }
 
     function _toggleRegexValidation(unitType) {
         if (unitType === 'PO') {
             $unitElements.appPostalNonStdStreet.removeRule('regex');
-            $unitElements.appPostalNonStdStreet.blur();
         } else {
             $unitElements.appPostalNonStdStreet.addRule('regex', _postalNonStdStreetRegexRule);
         }
+    }
+
+    function resetInputField(inputRowElement) {
+        $(inputRowElement).find('input[type=text].form-control').val('');
+        $(inputRowElement).find('.error-field').remove();
+        $(inputRowElement).find('.has-error').removeClass('has-error');
     }
 
     function _toggleUnitShopRequired(addressType, isUnitShop) {

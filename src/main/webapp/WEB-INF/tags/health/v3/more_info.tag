@@ -643,7 +643,8 @@
 
         <div class="row ambulanceCoverSection">
             <h2 class="text-dark">Ambulance cover
-                {{ if(ambulanceSelected) { }}
+                {{ var isSpecialCaseAIA = obj.info.FundCode === 'MYO' && !['QLD', 'TAS'].includes(obj.info.State); }} <%-- MYO is AIA --%>
+                {{ if(ambulanceSelected || isSpecialCaseAIA) { }}
                 <span class="checkbox ambulanceAccidentCoverCheckbox">
 					<input type="checkbox" name="health_simples_dialogue-radio-ambulancecover" id="health_simples_dialogue-radio-ambulancecover" class="checkbox-custom simples-more-info-scripting-checkbox checkbox" value="READNOW" data-msg-required="Please confirm you have read the Ambulance Cover copy" required="required">
 					<label for="health_simples_dialogue-radio-ambulancecover"></label>
@@ -659,7 +660,7 @@
                         Waiting period
                     </div>
                 </div>
-                <div class="row benefitRow {{ if(ambulanceSelected) { }}highlight{{ } }}">
+                <div class="row benefitRow {{ if(ambulanceSelected || isSpecialCaseAIA) { }}highlight{{ } }}">
                     <div class="col-xs-8 newBenefitRow benefitRowTitle">
                         {{= obj.ambulance.otherInformation }}
                     </div>
