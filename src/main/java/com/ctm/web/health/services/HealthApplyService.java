@@ -173,7 +173,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                         .request(applyRequest)
                         .header("rootId", Long.toString(rootId))
                         .jsonHeaders()
-                        .url(properties.getServiceUrl() + "/apply/")
+                        .url(properties.getServiceUrl())
                         .timeout(properties.getTimeout())
                         .responseType(MediaType.APPLICATION_JSON)
                         .response(ApplyResponse.class)
