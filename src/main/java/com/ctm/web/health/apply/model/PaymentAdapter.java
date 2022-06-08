@@ -10,6 +10,7 @@ import com.ctm.schema.health.v1_0_0.MedicareCardType;
 import com.ctm.schema.health.v1_0_0.PaymentAccount;
 import com.ctm.schema.health.v1_0_0.PaymentGatewayType;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
+import com.ctm.web.health.apply.model.request.payment.details.Frequency;
 import com.ctm.web.health.apply.model.request.payment.details.PaymentType;
 import com.ctm.web.health.exceptions.HealthApplyServiceException;
 import com.ctm.web.health.model.form.Application;
@@ -82,7 +83,8 @@ public class PaymentAdapter {
         return new com.ctm.schema.health.v1_0_0.Details()
                 .withFrequency(payment.map(com.ctm.web.health.model.form.Payment::getDetails)
                         .map(PaymentDetails::getFrequency)
-                        .map(String::toUpperCase)
+                        .map(Frequency::findByDescription)
+                        .map(Frequency::name)
                         .map(com.ctm.schema.health.v1_0_0.PaymentFrequency::fromValue)
                         .orElse(null))
                 .withPaymentType(payment.map(com.ctm.web.health.model.form.Payment::getDetails)
