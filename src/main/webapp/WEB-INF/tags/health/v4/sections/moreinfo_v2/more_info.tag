@@ -37,23 +37,7 @@
 	{{ obj.renderedDualPricing = ''; }}
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
-	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true ) { }}
-		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
-		{{ if (meerkat.modules.deviceMediaState.get() !== 'xs' ) { }}
-			{{ obj.renderedAffixedHeaderDualPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, null, true); }}
-		{{ } }}
-	{{ } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
-		{{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
-	{{ } else { }}
-		{{ obj.showAltPremium = false; obj.priceBreakdown = false; }}
-		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
-		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
-		{{ obj.renderedAffixedHeaderSinglePriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
-
-		{{ var priceTemplateMoreInfo = meerkat.modules.templateCache.getTemplate($("#price-template-more-info")); }}
-		{{ obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplateMoreInfo(obj); }}
-	{{ } }}
+	{{ meerkat.modules.healthDualPricing.initMoreInfoPriceTemplate(obj); }}
 
 	<%-- Prepare the call to action bar template. --%>
 	{{ var template = $("#more-info-call-to-action-template").html(); }}

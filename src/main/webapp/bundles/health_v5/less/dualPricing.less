@@ -162,6 +162,9 @@ body[data-step="results"]:not(.moreInfoVisible) {
     font-size: 11px;
     font-family: @font-family-theme-semibold;
     text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 14px;
     @media (@lg) {
       width: 50%;
     }
@@ -173,6 +176,7 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
   .raterisemonth-pricing .dual-pricing-before-after-text {
     padding-right: 5%;
+    padding-top: 5px;
     @media (max-width: @screen-lg) {
       padding-top: 5%;
     }
@@ -188,8 +192,11 @@ body[data-step="results"]:not(.moreInfoVisible) {
     width: 98%;
 
     .lhcText {
+      font-family: @font-family-theme-regular;
+      font-style: normal;
+      font-weight: 400;
       font-size: 10px;
-      color: #25130E;
+      line-height: 14px;
     }
 
     .logo-full-width {
@@ -276,10 +283,14 @@ body[data-step="results"]:not(.moreInfoVisible) {
           background-color: #E7F0FB;
           border: 2px solid #E7F0FB;
           border-radius: 2px;
-          height: 88px;
-          @media(max-width: 1200px) {height: 87px;}
+          height: 71px;
+          @media(max-width: 1199px) {height: 96px;}
           @media(max-width: 480px) {padding-top: 5px;}
           @media(max-width: 379px) and (min-width: 370px) {padding-top: 0;}
+
+          .altPriceContainer .price-wrapper .price.premium .frequency {
+            height: 35px;
+          }
         }
 
         &.grey-background {
@@ -377,11 +388,20 @@ body[data-step="results"]:not(.moreInfoVisible) {
             padding: 27px 0 10px 0;
           }
           margin-bottom: initial;
-          height: 86px;
+          height: 71px;
 
           @media (@lg) {
             line-height: 20px;
-            height: 88px;
+            height: 71px;
+          }
+
+          @media(max-width: 1199px) and (min-width: 10px) {
+            line-height: 20px;
+            height: 96px;
+            padding-top: 40px;
+            @media(max-width: 480px) {
+              height: 95px;
+            }
           }
 
           .altPriceContainer {
@@ -393,8 +413,11 @@ body[data-step="results"]:not(.moreInfoVisible) {
               }
 
               .comingSoon-results {
-                font-size: 11px;
                 color: #25130E;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 22px;
                 @media (@xs-only) {
                   b {
                     display: block;
@@ -911,10 +934,11 @@ body[data-step="payment"] {
 }
 
 .results-header-inner-container .hide-on-affix {
-  @media (min-width: 380px) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: 380px) {
+    flex-direction: column;
   }
 
   @media (@sm) {
@@ -922,7 +946,94 @@ body[data-step="payment"] {
   }
 
   @media (max-width: 370px) {
-    margin-top: -5%;
+    margin-top: -5px;
+  }
+
+  &.doesntHaveDualPricing {
+    @media (min-width: 1200px) {
+      padding-top: 16px;
+      margin-bottom: 2.6em;
+    }
+    @media (max-width: 1199px) and (min-width: 992px) {
+      margin-bottom: 8.1rem;
+    }
+    @media (max-width: 991px) and (min-width: 767px) {
+      height: 109px;
+    }
+    @media (max-width: 766px) and (min-width: 469px) {
+      height: 74px;
+    }
+    @media (max-width: 468px) and (min-width: 457px) {
+      height: 61px;
+    }
+    @media (max-width: 456px) and (min-width: 429px) {
+      height: 60px;
+    }
+    @media (max-width: 428px) and (min-width: 415px) {
+      height: 56px;
+    }
+    @media (max-width: 414px) and (min-width: 381px) {
+      height: 55px;
+    }
+    @media (max-width: 380px) and (min-width: 375px) {
+      height: 67px;
+    }
+    @media (max-width: 374px) and (min-width: 340px) {
+      height: 66px;
+    }
+    @media (max-width: 339px) and (min-width: 335px) {
+      height: 67px;
+    }
+
+    @media (max-width: 334px) and (min-width: 235px) {
+      height: 66px;
+    }
+
+    @media (max-width: 1199px) {
+      flex-direction: column;
+    }
+
+    span.lhcText {
+      font-family: @font-family-theme-regular;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 14px;
+      padding-top: 2px;
+      @media (max-width: 379px) {
+        font-size: 14px;
+      }
+    }
+  }
+
+  #resultsForm .frequency.monthly .hide-on-affix.doesntHaveDualPricing  span.lhcText {
+    @media(max-width: 354px) {
+      width: 90%;
+    }
+  }
+
+  #resultsForm .frequency.halfyearly .hide-on-affix.doesntHaveDualPricing  span.lhcText {
+    @media(max-width: 354px) {
+      width: 90%;
+    }
+  }
+
+  #resultsForm .frequency.fortnightly .hide-on-affix.doesntHaveDualPricing  span.lhcText {
+    @media(max-width: 354px) {
+      width: 90%;
+    }
+  }
+
+  #resultsForm .frequency.quarterly .hide-on-affix.doesntHaveDualPricing  span.lhcText {
+    @media(max-width: 354px) {
+      width: 90%;
+    }
+  }
+
+  #resultsForm .frequency.weekly .hide-on-affix.doesntHaveDualPricing  span.lhcText {
+    @media(max-width: 354px) {
+      width: 90%;
+    }
   }
 
   margin-bottom: 5%;
@@ -930,7 +1041,6 @@ body[data-step="payment"] {
   span.lhcText {
     font-size: 10px;
     margin-left: 2%;
-    padding-top: 4px;
   }
 
   div.lhcText {
@@ -960,7 +1070,103 @@ body[data-step="payment"] {
   }
 }
 
+.result .resultInsert .doesntHaveDualPricing {
+  .frequency {
+    @media (min-width: 1200px) {
+      margin-top: 30px;
+    }
+    @media (max-width: 1199px) and (min-width: 992px) {
+      //margin-bottom: 19px;
+    }
+    @media (max-width: 991px) and (min-width: 469px) {
+      margin-bottom: 1px;
+    }
+    @media (max-width: 468px) and (min-width: 429px) {
+      margin-bottom: 13px;
+    }
+    @media (max-width: 428px) and (min-width: 269px) {
+      margin-bottom: 13px;
+    }
+    @media (max-width: 268px) {
+      margin-bottom: 30px;
+    }
+  }
+
+  .price.premium {
+    @media (max-width: 766px) and (min-width: 469px) {
+      margin-top: 42px;
+    }
+
+    @media (max-width: 469px) and (min-width: 429px) {
+      margin-top: 40px;
+    }
+    @media (max-width: 428px) and (min-width: 293px) {
+      margin-top: 46px;
+    }
+    @media (max-width: 292px) and (min-width: 100px) {
+      margin-top: 45px;
+    }
+    .frequencyAmount {
+      top: -5px;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 56.2583px;
+      line-height: 71px;
+      color: #25130E;
+      font-family: @font-family-theme-semibold;
+      @media (max-width: 428px) and (min-width: 340px) {
+        font-size: 45px;
+      }
+      @media (max-width: 339px) and (min-width: 300px) {
+        font-size: 39px;
+      }
+      @media (max-width: 299px) {
+        font-size: 39px;
+      }
+
+      .dollarSign {
+        top: -5px;
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 71px;
+        @media (max-width: 428px) and (min-width: 340px) {
+          font-size: 25px;
+        }
+        @media (max-width: 339px) and (min-width: 300px) {
+          font-size: 22px;
+        }
+        @media (max-width: 299px) {
+          font-size: 20px;
+        }
+      }
+
+      .cents {
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 71px;
+        @media (max-width: 428px) and (min-width: 340px) {
+          font-size: 17px;
+        }
+        @media (max-width: 339px) and (min-width: 300px) {
+          font-size: 16px;
+        }
+        @media (max-width: 299px) {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
 .result .resultInsert .results-header-inner-container .productSummary .hide-on-affix .frequencyTitle {
+  font-size: 10px;
+  font-family: @font-family-theme-semibold;
+  color: #25130E;
+}
+
+.result .resultInsert .results-header-inner-container .productSummary .hide-on-affix.doesntHaveDualPricing .frequencyTitle {
   font-size: 16px;
   font-family: @font-family-theme-semibold;
   color: #25130E;
@@ -999,11 +1205,19 @@ div.result > div > div.results-header-inner-container > a {
   flex-direction: column;
   align-items: center;
 }
+
 .vertical-center-lines {
   display: flex!important;
   flex-direction: column;
   justify-content: center;
 }
+
+.centralized-single-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .dual-pricing-modal .modal-body {
   padding: 20px 50px 20px 50px;
   @media (@xs-only) {
@@ -1231,10 +1445,10 @@ div.result > div > div.results-header-inner-container > a {
 
       &.blue-background {
         background-color: #E7F0FB;
-        border: 2px solid #E7F0FB;
         border-radius: 2px;
         box-shadow: 0 2px 4px rgba(208, 206, 206, 0.5);
         padding-top: 2px;
+        padding-bottom: 8px;
       }
     }
 
@@ -1256,7 +1470,7 @@ div.result > div > div.results-header-inner-container > a {
       width: 100%;
     }
     color: #25130E;
-    padding-top: 16px;
+    padding-top: 20px;
     font-size: 14px;
   }
 
@@ -1631,16 +1845,15 @@ div.result > div > div.results-header-inner-container > a {
     border-radius: 4px;
     .price-rise-tag {
       border-bottom: 0.5px solid #C2D9F0;
-      @media(@sm-md-only) {
-        span {
-          width: 50%;
-        }
-        a {
-          text-align: right;
-          width: 50%;
-          span {
-            width: 15%;
-          }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      a {
+        white-space: nowrap;
+        margin-left: 0;
+        @media(@sm-md-only) {
+          margin-top: 2px;
         }
       }
     }
@@ -1655,7 +1868,6 @@ div.result > div > div.results-header-inner-container > a {
     }
     .frequency {
       margin-top: 10px;
-      margin-bottom: 8px;
       @media(@sm) {
         margin-top: 5px;
       }
@@ -1803,6 +2015,7 @@ div.result > div > div.results-header-inner-container > a {
         text-align: center;
         font-family: @font-family-theme-regular;
         font-size: 14px;
+        margin-top: 9px;
       }
     }
     &.dual-pricing-off-container {
@@ -1863,6 +2076,7 @@ div.result > div > div.results-header-inner-container > a {
         justify-content: center;
         flex-flow: row wrap;
         margin-bottom: 15px;
+        flex-direction: column;
       }
     }
   }
@@ -2382,16 +2596,15 @@ div.result > div > div.results-header-inner-container > a {
     border-radius: 4px;
     .price-rise-tag {
       border-bottom: 0.5px solid #C2D9F0;
-      @media(@sm-md-only) {
-        span {
-          width: 50%;
-        }
-        a {
-          text-align: right;
-          width: 50%;
-          span {
-            width: 15%;
-          }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      a {
+        white-space: nowrap;
+        margin-left: 0;
+        @media(@sm-md-only) {
+          margin-top: 2px;
         }
       }
     }
@@ -2554,6 +2767,7 @@ div.result > div > div.results-header-inner-container > a {
         text-align: center;
         font-family: @font-family-theme-regular;
         font-size: 14px;
+        margin: 9px 0;
       }
     }
     &.dual-pricing-off-container {
@@ -2614,6 +2828,7 @@ div.result > div > div.results-header-inner-container > a {
         justify-content: center;
         flex-flow: row wrap;
         margin-bottom: 15px;
+        flex-direction: column;
       }
     }
   }
@@ -2665,15 +2880,26 @@ div.result > div > div.results-header-inner-container > a {
   }
 }
 
+.single-price {
+  flex-flow: column wrap;
+  justify-content: center;
+}
 .policySummary-sidebar .raterisemonth-pricing .grey-background .frequencyAmount {
   margin-bottom: 0;
 }
 
 .comingSoon,
 .comingSoon-results {
-  font-family: @font-family-theme-regular!important;
-  b {
-    font-weight: normal!important;
+  font-weight: normal!important;
+  font-family: @font-family-theme-semibold!important;
+}
+
+.policySummary-sidebar {
+  a.about-this-fund {
     font-family: @font-family-theme-semibold!important;
   }
+}
+
+#applicationDetailsForm .blue-background .altPriceContainer .price-wrapper .price.premium {
+  margin-bottom: 8px;
 }

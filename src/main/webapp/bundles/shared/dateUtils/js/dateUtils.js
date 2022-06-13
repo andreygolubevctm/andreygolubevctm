@@ -19,7 +19,7 @@
     var token = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
     var twoDigits = /\d\d?/;
     var fourDigits = /\d{4}/;
-    var invalidDate = 'Invalid Date';
+    var invalidYear = 0;
 
     var formatFlags = {
             D: function(dateObj) {
@@ -150,6 +150,47 @@
     }
 
     // param: Date object
+    // returns: short date string in the following format:
+    // MMMM D
+    // e.g. April 25
+    function dateValueShortFormat( dateObj ) {
+        try {
+            var longFormat = dateValueLongFormat(parse(dateObj, 'YYYY-MM-DD'));
+            var longFormatSplit = longFormat.split(",")[1];
+            return longFormatSplit.split(" ")[2] + " " + longFormatSplit.split(" ")[1];
+        } catch (e) {
+            return null;
+        }
+    }
+
+    // param: Date object
+    // returns: month string of the date in the following format:
+    // MMMM
+    // e.g. April
+    function monthOfDateValue( dateObj ) {
+        try {
+            var longFormat = dateValueLongFormat(parse(dateObj, 'YYYY-MM-DD'));
+            var longFormatSplit = longFormat.split(",")[1];
+            return longFormatSplit.split(" ")[2];
+        } catch (e) {
+            return null;
+        }
+    }
+
+    // param: Date object
+    // returns: medium long date string in the following format:
+    // D MMMM YYYY
+    // e.g. 25 April 2016
+    function dateValueMediumFormat( dateObj ) {
+        try {
+            var longFormat = dateValueLongFormat(parse(dateObj, 'YYYY-MM-DD'));
+            return longFormat.split(",")[1];
+        } catch (e) {
+            return null;
+        }
+    }
+
+    // param: Date object
     // returns: server date string in the following format:
     // YYYY-MM-DD
     // e.g. 2016-04-25
@@ -193,10 +234,16 @@
 
     function isValidDate(dateObject) {
         try {
-            return dateObject instanceof Date && dateObject.toString() !== invalidDate && !isNaN(dateObject.getTime());
+            return dateObject instanceof Date && dateObject.getFullYear() !== invalidYear && !isNaN(dateObject.getTime());
         } catch(err) {
             return false;
         }
+    }
+
+    function compareTwoDate(dateObj1, dateObj2) {
+        var date1 = dateObj1.setHours(0,0,0,0);
+        var date2 = dateObj2.setHours(0,0,0,0);
+        return Math.sign(date1 - date2);
     }
 
     meerkat.modules.register('dateUtils', {
@@ -208,7 +255,11 @@
         dateValueFormFormat : dateValueFormFormat,
         returnDateTimeString: returnDateTimeString,
         isDate: isDate,
-        isValidDate: isValidDate
+        isValidDate: isValidDate,
+        dateValueShortFormat: dateValueShortFormat,
+        monthOfDateValue: monthOfDateValue,
+        dateValueMediumFormat: dateValueMediumFormat,
+        compareTwoDate: compareTwoDate
     });
 
 })(jQuery);

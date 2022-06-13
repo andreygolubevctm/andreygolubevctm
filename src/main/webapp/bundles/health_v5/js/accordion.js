@@ -27,11 +27,11 @@
   }
 
   function initClickEventBySelector(accordionSelector) {
-    $(accordionSelector).find('.accordion-title-container').first().off('click', expandAccordion40px).on('click', expandAccordion40px);
+    $(accordionSelector).find('.accordion-title-container').first().on('click', expandAccordion40px);
   }
 
   function initClickEventBySelectorForWrappedAccordions(accordionSelector) {
-    $(accordionSelector).find('.accordion-title-container').first().off('click', expandCurrentAndParentAccordions40px).on('click', expandCurrentAndParentAccordions40px);
+    $(accordionSelector).find('.accordion-title-container').first().on('click', expandCurrentAndParentAccordions40px);
   }
 
   function expandAccordion40px(event) {

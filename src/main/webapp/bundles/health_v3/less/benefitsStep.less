@@ -1,0 +1,184 @@
+// Mixins for icon sizes.
+.benefitsIconSize(@icon-font-size, @label-font-size, @margin-offset){
+    div.checkbox {
+        float: left;
+
+        label{
+            width: @icon-font-size * 1.3 + 2; // padding * 2 + font-size + border * 2
+            font-size: @label-font-size;
+            &:before{
+                font-size: @icon-font-size;
+                display: inline-block;
+            }
+        }
+
+        // minimum 2 lines of label text for float to work properly
+        min-height: (@icon-font-size * 1.3 + 2) + ceil(@label-font-size * 2.2) + 34; // Icon height + label-font-size's line-height * 2 + margin-bottom
+        margin: @icon-font-size * 0.15 + @margin-offset;
+    }
+}
+
+#benefitsForm{
+
+    @media(@xs-only) {
+        .Orthotics_container {
+            padding-top: 2px;
+        }
+    }
+
+    .health-situation-healthCvrType {
+        label.disabled {
+            background:transparent;
+        }
+    }
+
+    .help-icon {
+        margin-top:2px;
+    }
+
+    .benefits-list {
+        margin-left: 15px;
+
+        // custom column width because of the design
+        .section{
+            min-height: 1px;
+            padding-left: 15px;
+            padding-right: 15px;
+
+            &.hasShortlistableChildren {
+                padding-bottom:15px;
+                h4 {
+                    color: #000;
+                }
+            }
+
+            @media (@sm) {
+                float:left;
+            }
+        }
+
+        .hasIcons {
+            float: left;
+            .categoriesCell {
+                float:left;
+
+                .checkbox {
+                    padding:0;
+
+                    input{
+                        &:checked,
+                        &.checked {
+                            & + label:before {
+                                background-color: @health-benefits-icon-bg-checked-color;
+                                border-color: @benefits-selected-checkbox-border;
+                                color: #fff;
+                            }
+                        }
+                    }
+
+                    label{
+                        display:inline-block;
+                        padding: 0;
+                        margin: 0;
+                        text-align: center;
+
+                        .iconLabel {
+                            display:block;
+                            height:2.4em;
+                            margin-top:0.25em;
+                        }
+
+                        &:before{
+                            display:table;
+                            float: none;
+                            margin:0;
+                            margin-bottom: 10px;
+                            padding:0.15em;
+                            border-radius: 50%;
+                            background-color: @health-benefits-icon-bg-color;
+                            border-color: @health-benefits-icon-border-color;
+                            color: @theme-tertiary;
+                        }
+                    }
+                }
+
+                @media (@xs) {
+                    .benefitsIconSize(60px, @font-size-base, 0);
+                }
+                @media (@sm-only) {
+                    .benefitsIconSize(50px, @font-size-small, 1);
+                }
+                @media (@md-only) {
+                    .benefitsIconSize(50px, @font-size-small, -1);
+                }
+            }
+        }
+    }
+}
+
+.lt-ie9,
+.lt-ie10 {
+    #benefitsForm .benefits-list {
+        .hasIcons {
+            .categoriesCell {
+                width: auto;
+
+                .checkbox {
+                    label.checked:before {
+                        background-color: @health-benefits-icon-bg-checked-color !important;
+                        border-color: @health-benefits-icon-border-checked-color !important;
+                        color: #fff;
+                    }
+                }
+
+                .benefitsIconSize(60px, @font-size-base, 0);
+            }
+        }
+    }
+}
+.title {
+    position: relative;
+    z-index: 2;
+}
+.situation-wrapper {
+    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    &:before {
+        display: block;
+        font-family: 'ctm-health';
+        content: " ";
+        font-size: 120px;
+        color: #f0f0f0;
+        line-height: 100px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    &.N:before {
+      content: "\e934";
+    }
+
+    &.LC:before {
+      content: "\e935";
+    }
+
+    &.CSF:before {
+      content: "\e93c";
+    }
+
+    &.SHN:before {
+      content: "\e937";
+    }
+
+    &.ATP:before {
+      content: "\e936";
+    }
+
+    &.SF:before {
+      content: "\e93b";
+    }
+
+}

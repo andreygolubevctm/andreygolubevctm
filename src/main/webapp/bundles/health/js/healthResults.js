@@ -1315,6 +1315,7 @@
         var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
         data["rank_specialOffer" + position] = specialOffer.specialOffer;
         data["rank_specialOfferTerms" + position] = specialOffer.specialOfferTerms;
+        data["rank_altPremiumDate" + position] = meerkat.modules.dateUtils.dateValueShortFormat(product.dualPricingDate);
 
         if (_.isNumber(best_price_count) && position < best_price_count) {
             data["rank_provider" + position] = product.info.provider;

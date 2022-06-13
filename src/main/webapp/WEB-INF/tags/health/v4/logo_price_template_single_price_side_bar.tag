@@ -13,7 +13,7 @@
 		{{ } }}
 	{{ }); }}
 	{{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}
-	{{ var isPaymentPage = meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment'; }}
+	{{ var isPaymentPageOrConfirmation = (meerkat.modules.journeyEngine.getCurrentStep() === null || meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment'); }}
 	{{ var showRoundingMessage = typeof showRoundingText !== 'undefined' && showRoundingText === true; }}
 	{{ function showPriceAndFrequency(premium) { return ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)); } }}
 
@@ -32,7 +32,7 @@
 		<div class="price-boxes-wrapper">
 			<div class="current-pricing">
 				<div class="comingsoon">
-					<div class="background-wrapper grey-background">
+					<div class="background-wrapper grey-background v4-logo-price-template-single-price-side-bar-tag">
 							<div class="altPriceContainer">
 								{{ if (!obj.hasOwnProperty('premium')) {return;} }}
 								<%-- Decide whether to render the normal premium or the alt premium (for dual-pricing) --%>
@@ -45,14 +45,14 @@
 												{{ var premium = property[freq] }}
 												{{ var availablePremiums = showAltPremium ? obj.altPremium : obj.premium; }}
 												{{ var priceText = premium.text ? premium.text : formatCurrency(premium.payableAmount) }}
-												{{ if(!isPaymentPage) { }}
+												{{ if(!isPaymentPageOrConfirmation) { }}
 													{{ priceText = premium.lhcfreetext; }}
 												{{ } }}
 												{{ var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount) }}
 												{{ var textLhcFreeDualPricing = 'inc ' + formatCurrency(premium.rebateValue) + ' Govt Rebate'; }}
 												{{ var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount) }}
 												{{ var showABDToolTip = premium.abd > 0; }}
-												{{ var lhtText = premium.lhcfreepricing.split("<br>")[0]; }}
+												{{ var lhtText = premium.lhcfreepricing ? premium.lhcfreepricing.split("<br>")[0] : ''; }}
 												{{ var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate' }}
 
 												<%-- grab data for "frequency / lhc text" display as we need to render it in a separate line now --%>
@@ -79,12 +79,7 @@
 										<div class="line-break"></div>
 										<div class="hide-on-affix">
 												<span class="frequencyTitle">
-													{{= data.freq === 'annually' ? 'annually / ' : '' }}
-													{{= data.freq.toLowerCase() === 'halfyearly' ? 'per half year / ' : '' }}
-													{{= data.freq === 'quarterly' ? 'per quarter / ' : '' }}
-													{{= data.freq === 'monthly' ? 'monthly / ' : '' }}
-													{{= data.freq === 'fortnightly' ? 'fortnightly / ' : '' }}
-													{{= data.freq === 'weekly' ? 'per week / ' : '' }}
+													{{= meerkat.modules.healthDualPricing.getFrequencyName(data.freq, " / ") }}
 												</span>
 												<div class="lhcText">
 													<span>{{= data.textLhcFreePricing.split(".<br>")[0] }}</span>
@@ -99,7 +94,7 @@
 						</div>
 					</div>
 				<div class="price-breakdown-wrapper hidden-xs">
-					<health_v4:price_breakdown_accordion id="price-breakdown-accordion-single-price" hidden="false" title="Current price breakdown"/>
+					<health_v4:price_breakdown_accordion id="price-breakdown-accordion-single-price" hidden="false" title="Price breakdown"/>
 				</div>
 			</div>
 		</div>

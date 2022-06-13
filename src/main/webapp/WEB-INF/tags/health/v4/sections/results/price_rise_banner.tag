@@ -10,6 +10,9 @@
 <c:if test="${empty textType}">
     <c:set var="textType" value="rateRiseBanner" />
 </c:if>
+<c:if test="${empty showHelpIcon}">
+    <c:set var="showHelpIcon" value="true" />
+</c:if>
 
 <c:if test="${empty isHiddenByDefault}">
     <c:set var="isHiddenByDefault" value="true" />

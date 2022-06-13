@@ -9,7 +9,9 @@
     {{ if(coverType == 'C' && promo.hospitalPDF == promo.extrasPDF) { }}
     <a class="btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank" ${btnAttribute}>Download Brochures</a>
     {{ } else if(coverType == 'C' && promo.hospitalPDF != promo.extrasPDF) { }}
-    <a class="btn btn-block btn-download" href="javascript:;" data-class="brochuresTooltip" data-toggle="popover" data-adjust-y="5" data-trigger="click" data-my="top center" data-at="bottom center" data-scroll="false" data-content="#brochurePopover{{= productId }}" ${btnAttribute}>Download Brochures</a>
+    <a class="btn btn-block btn-download" href="javascript:;" data-class="brochuresTooltip" data-toggle="popover" data-adjust-y="5" data-trigger="click" data-my="top center" data-at="bottom center" data-scroll="false" data-content="#brochurePopover{{= productId }}" ${btnAttribute}>
+        Download Brochures<span class="icon-external-link"></span>
+    </a>
     <div id="brochurePopover{{= productId }}" class="hidden">
         <div class="row">
             <div class="col-xs-12 col-md-6 brochureRow">

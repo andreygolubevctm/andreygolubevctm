@@ -10,7 +10,6 @@
 {{ var availablePremiums = obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true ? obj.altPremium : obj.premium; }}
 {{ var healthResultsTemplate = meerkat.modules.healthResultsTemplate; }}
 {{ var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies(); }}
-{{ var textLhcFreePricing = 'LHC loading may increase the premium.'; }}
 <div class="price premium">
     {{ _.each(availableFrequencies, function(freqObj) { }}
     {{ var formatCurrency = meerkat.modules.currencyField.formatCurrency; }}
@@ -19,8 +18,7 @@
     {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode); }}
     {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
     {{ var property = obj.premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = obj.altPremium; } }}
-	{{ var prem = obj.premium[frequency]; }}
-    {{ if (prem.lhcfreepricing.indexOf('premium') === -1) { textLhcFreePricing = ''; } }}
+	{{ var prem = availablePremiums[frequency]; }}
 	{{ var textLhcFreeDualPricing= 'inc ' + formatCurrency(prem.rebateValue) + ' Govt Rebate';}}
     {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
 
@@ -33,7 +31,7 @@
         <%-- Convert to title case --%>
         {{ comingSoonLabel = comingSoonLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
         <div class="frequencyAmount comingSoon">
-            <div class="comingSoon-text">No change to rates <b>on April 1</b></div>
+            <div class="comingSoon-text">New price not yet released</div>
         </div>
     </div>
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
@@ -59,9 +57,6 @@
         </div>
     </div>
     <div class="lhcText">{{= textLhcFreeDualPricing}}</div>
-    {{ if (textLhcFreePricing !== '') { }}
-    <div class="lhcStaticText">{{= textLhcFreePricing}}</div>
-    {{ } }}
 
 </div>
 {{ }); }}

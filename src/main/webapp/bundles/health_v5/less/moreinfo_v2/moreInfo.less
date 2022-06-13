@@ -332,7 +332,7 @@
     font-family: @font-family-theme-bold;
     color: #757575;
     font-size: 11px;
-    text-align: left;
+    text-align: center;
   }
 
   .lhcTextAndABD {
@@ -358,6 +358,7 @@
     min-width: 160px;
     width: 66%;
     padding-left: 3px;
+    margin: 5px 0;
     &:hover, &:focus, &:active{
       background-color: fade(@primary500, 20%);
       border-color: @primary500;
@@ -499,13 +500,13 @@
 }
 
 .moreInfoPriceContainer {
-  border-radius: 10px 10px 0 0;
+  border-radius: 3px 3px 0px 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   .moreInfoPriceHeading {
-    line-height: 2;
+    line-height: 2.5;
     background-color: #c4c4c4;
     font-size: 12pt;
     font-weight: 900;
@@ -513,6 +514,7 @@
     text-align: center;
     width: 100%;
     padding: 2px 0 2px 0;
+    border-radius: 3px 3px 0px 0px;
   }
   .select-frequency {
     flex-direction: row-reverse;
@@ -556,7 +558,7 @@
     width: 100%;
     justify-content: center;
     text-align: center;
-    padding: 0 8px;
+    padding: 0 8px 15px 8px;
 
     .price-breakdown {
       display:none;
@@ -583,7 +585,7 @@
     font-weight: bold;
     min-width: 130px;
     max-width: 220px;
-    margin: 2px auto 35px auto;
+    margin: 2px auto 10px auto;
     &:hover, &:focus, &:active {
       background-color: fade(@primary500, 20%);
       border-color: @primary500;

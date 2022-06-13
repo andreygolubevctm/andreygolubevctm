@@ -40,8 +40,7 @@ body[data-step="results"] {
           background-color: #E7F0FB;
           border: 2px solid #E7F0FB;
           border-radius: 2px;
-          padding-top: 4px;
-          margin-bottom: 10px;
+          padding-top: 6px;
         }
 
         &.grey-background {
@@ -52,9 +51,10 @@ body[data-step="results"] {
           align-content: center;
           background-color: rgba(231,240,251,0.5);
           border-radius: 2px;
-          padding-bottom: 4%;
-          padding-top: 7%;
+          padding-top: 20px;
+          padding-bottom: 20px;
           font-family: @font-family-theme-semibold;
+          margin-bottom: 12px;
         }
 
         .dual-price-date{
@@ -76,7 +76,10 @@ body[data-step="results"] {
           }
 
           .comingSoon-results {
-            font-size: 11px;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 22px;
             color: #25130E;
           }
         }
@@ -122,8 +125,11 @@ body[data-step="results"] {
       display: flex;
       flex: 1 1 auto;
       flex-flow: row wrap;
-      margin-bottom: 5%;
+      margin-bottom: 10px;
       justify-content: space-evenly;
+      &.dual-price-not-yet-released-additional-space {
+        margin-bottom: 11px;
+      }
 
       .current-price-header {
         order: 0;
@@ -132,16 +138,32 @@ body[data-step="results"] {
         color: #25130E;
         padding-left: 5%;
         padding-top: 6%;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 14px;
       }
 
       .price.premium {
         order: 1;
         padding-top: 2%;
         width: 50%;
+        &.doesntHaveDualPricingSimples {
+          width: 100%;
+        }
+        &.dual-price-not-yet-released-simples {
+          width: 100%;
+        }
 
         .frequencyAmount {
           font-size: 39px;
           color: #25130E;
+          &.doesntHaveDualPricingSimples {
+            font-style: normal;
+            font-weight: 600;
+            font-size: 56.2583px;
+            line-height: 71px;
+            color: #25130E;
+          }
         }
 
         .dollarSign {
@@ -156,6 +178,12 @@ body[data-step="results"] {
         font-family: @font-family-theme-semibold;
         font-size: 10px;
         color: #25130E;
+        &.doesntHaveDualPricingSimples {
+          font-style: normal;
+          font-weight: 600;
+          font-size: 16.5354px;
+          line-height: 21px;
+        }
       }
     }
   }
@@ -352,9 +380,6 @@ body[data-step=payment] {
 
 .comingSoon,
 .comingSoon-results {
-  font-family: @font-family-theme-regular!important;
-  b {
-    font-weight: normal!important;
-    font-family: @font-family-theme-semibold!important;
-  }
+  font-weight: normal!important;
+  font-family: @font-family-theme-semibold!important;
 }

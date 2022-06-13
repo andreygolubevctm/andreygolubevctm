@@ -37,7 +37,7 @@
 	</div>
 	
 	<c:if test="${not empty sideAbove}">
-		<div class="col-sm-8 col-sm-pull-4">
+		<div class="col-sm-${colSize} col-sm-pull-4">
 			<jsp:doBody />
 		</div>
 	</c:if>

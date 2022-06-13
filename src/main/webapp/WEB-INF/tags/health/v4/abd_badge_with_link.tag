@@ -4,7 +4,6 @@
 
 {{ var frequency = obj._selectedFrequency; }}
 {{ var frequencyPremium = obj.premium[frequency]; }}
-{{ var abdRequestFlag = obj.info.abdRequestFlag; }}
 {{ var isConfirmation = false; }}
 {{ var showABD = false; }}
 {{ var abd = true; }}
@@ -13,7 +12,7 @@
 {{ } catch(err) { console.warn('Bad premium number', err); } }}
 {{ if (obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 ) { }}
   {{ showABD = true; }}
-  {{ if (obj.custom.reform.yad === 'A' || (obj.custom.reform.yad === "R" && (isConfirmation || !meerkat.modules.healthRABD.isRABD()))) { }}
+  {{ if (isConfirmation && obj.info.abdRequestFlag === 'A' || !isConfirmation && meerkat.modules.healthRABD.isABD()) { }}
     {{ abd = true; }}
   {{ } else { }}
     {{ abd = false; }}

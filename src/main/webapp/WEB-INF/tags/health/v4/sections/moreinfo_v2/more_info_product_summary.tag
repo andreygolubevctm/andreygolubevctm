@@ -23,27 +23,21 @@
         </div>
     </div>
     <div class="col-xs-12">
-        <c:choose>
-            <c:when test="${!isDualPriceActive eq true}">
-            	{{ var prem = obj.premium[obj._selectedFrequency] }}
-	            {{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
-	            {{ var textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
-
+        {{ if (meerkat.modules.healthDualPricing.validateAndGetDualPricingDate(obj)) { }}
+            <health_v4_moreinfo_v2:more_info_dual_pricing_header />
+        {{ } else { }}
             <div class="row moreInfoPricingSingle">
                 <div class="moreInfoPriceWrapper">
                     <div class="moreInfoPriceContainer">
                         <div class="moreInfoPriceHeading">Current price</div>
                         <div class="moreInfoPrice">
-                            {{= renderedPriceTemplate }}
+                            {{= renderedMoreInfoSinglePriceTemplate }}
                             <health_v4:abd_badge_with_link />
+                            <health_v4:lhcText />
                         </div>
                     </div>
                 </div>
             </div>
-            </c:when>
-            <c:otherwise>
-                <health_v4_moreinfo_v2:more_info_dual_pricing_header />
-            </c:otherwise>
-        </c:choose>
+        {{ } }}
     </div>
 </div>

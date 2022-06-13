@@ -1,0 +1,78 @@
+.companyLogo {
+  max-height: @standard-logo-height;
+  max-width: 200px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  overflow: hidden;
+  min-height: (@standard-logo-height * 0.55);
+  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; 0.54);
+  @media (@md-only) {
+    .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; 0.625);
+    min-height: (@standard-logo-height * 0.625);
+  }
+  @media (@lg-only) {
+    min-height: @standard-logo-height;
+    .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames);
+  }
+}
+
+.policySummaryContainer {
+  .quote-reference {
+    font-family:@font-family-theme-bold;
+    span {
+      margin-left:0.25em;
+    }
+  }
+  .discountText {
+    display: inline-block;
+  }
+}
+
+// sidebar overrides on apply/payment
+@media (@xs-only) {
+  .policySummaryContainer {
+    padding-top: 5px;
+    .productSummary.horizontal {
+      .companyLogo {
+        float: left;
+      }
+      .frequency {
+        .frequencyAmount {
+          .frequencyTitle {
+            display: inline;
+            top: 11px;
+            left: -22px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (@sm) {
+  .policySummaryTemplateHolder.productSummary {
+    .frequency {
+      text-align: right;
+      .frequencyAmount, .lhcText {
+        text-align: right;
+      }
+    }
+  }
+}
+
+// no idea what this is for!
+.modal-body {
+
+  @media (@xs-only) {
+    .productNameContainer {
+      height: auto !important;
+    }
+
+    .more-info-blue-header .xs-productName-container {
+      height: 80px;
+    }
+
+  }
+}

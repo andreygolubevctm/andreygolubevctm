@@ -7,7 +7,6 @@
     {{ if (!obj.hasOwnProperty('premium')) {return;} }}
     <%-- Decide whether to render the normal premium or the alt premium (for dual-pricing) --%>
     {{ var property = premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; } }}
-    {{ var isPendingConfirmation = false; if (obj.hasOwnProperty('healthPendingConfirmation') && obj.healthPendingConfirmation === true) { isPendingConfirmation = true; } }}
 
     {{ if(typeof obj.displayLogo === 'undefined' || obj.displayLogo == true) { }}
     <div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
@@ -15,7 +14,7 @@
 
     {{ if(!meerkat.site.isCallCentreUser && (typeof obj.showRisingTag === 'undefined' || obj.showRisingTag == true)) { }}
     <div class="premium-rising-tag">
-        <span class="icon-arrow-thick-up"></span> Premiums are rising from April 1st<br/>
+        <span class="icon-arrow-thick-up"></span> Premiums are rising from {{= obj.dualPricingDateFormatted}}<br/>
         <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
     </div>
     {{ } }}
@@ -24,12 +23,12 @@
     <div class="dual-pricing-before-after-text">
             <span class="text-bold">
               {{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { }}After{{ } else { }}Before{{ } }}
-            </span> April 1st
+            </span> {{= obj.dualPricingDateFormatted}}
     </div>
     {{ } }}
 
     {{ var pyrrClass = meerkat.modules.healthPyrrCampaign.isPyrrActive(true) ? " pyrrMoreInfoInline" : ""; }}
-    <div class="price premium{{= pyrrClass}}">
+    <div class="price premium{{= pyrrClass}} v1-logo-price-template-tag">
         {{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}
         {{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
         {{ if (typeof property[freq] !== "undefined") { }}
@@ -58,18 +57,11 @@
                     {{= freq === 'weekly' ? 'per week' : '' }}
                 </div>
             </div>
-            {{ } else { }}
-            <div class="frequencyAmount comingSoon">No change to rates <b>on April 1</b></div>
-            {{ } }}
             {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
-            <div class="rounding">Premium may vary slightly due to rounding</div>
+                <div class="rounding">Premium may vary slightly due to rounding</div>
             {{ } }}
-            <%-- isPendingConfirmation === true when transaction has reached confirmation step but is still Pending.
-                 load_confirmation_pending.tag (for pending transaction) does not define an abd, therefore premium.abd will be undefined in this case.
-                 Do not display abd badge for pending confirmed transactions for now.
-            --%>
-            {{ if(!isPendingConfirmation && obj.custom.reform.yad !== "N" && premium.abd > 0) { }}
-                {{ if(info.abdRequestFlag === 'A' || (obj.custom.reform.yad === "R" && (isConfirmation || !meerkat.modules.healthRABD.isRABD()))) { }}
+            {{ if(obj.custom.reform.yad !== "N" && premium.abd > 0) { }}
+                {{ if(obj.info.abdRequestFlag === 'A' || (!isConfirmation && meerkat.modules.healthRABD.isABD())) { }}
                     <health_v4:abd_badge abd="true" />
                 {{ } else { }}
                     <health_v4:abd_badge abd="false" />
@@ -80,6 +72,10 @@
 					{{= textPricing}}
                 </span>
             </div>
+            {{ } else if (obj.hasValidDualPricingDate){ }}
+            <div class="frequencyAmount comingSoon">New price not yet released</div>
+            {{ } }}
+
         </div>
         {{ } }}
         {{ }) }}

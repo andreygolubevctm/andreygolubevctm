@@ -29,6 +29,9 @@
 <field_v1:hidden xpath="health/rebateChangeover" />
 <field_v1:hidden xpath="health/previousRebate" />
 <field_v1:hidden xpath="health/loading" />
+<field_v1:hidden xpath="health/abd" defaultValue="0" />
+<field_v1:hidden xpath="health/abdValue" defaultValue="0" />
+<field_v1:hidden xpath="health/dualPricingDate"/>
 <field_v1:hidden xpath="health/primaryCAE" />
 <field_v1:hidden xpath="health/partnerCAE" />
 <field_v1:hidden xpath="health/primaryLHC" defaultValue="0" />

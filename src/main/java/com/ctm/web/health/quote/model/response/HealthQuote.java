@@ -48,6 +48,8 @@ public class HealthQuote {
 
     private GiftCard giftCard;
 
+    private LocalDate alternativePremiumDate;
+
     public boolean isAvailable() {
         return available;
     }
@@ -198,6 +200,14 @@ public class HealthQuote {
 
     public void setAccident(JsonNode accident) {
         this.accident = accident;
+    }
+
+    public LocalDate getAlternativePremiumDate() {
+        return alternativePremiumDate;
+    }
+
+    public void setAlternativePremiumDate(LocalDate alternativePremiumDate) {
+        this.alternativePremiumDate = alternativePremiumDate;
     }
 
     public UUID getJourneyId() {

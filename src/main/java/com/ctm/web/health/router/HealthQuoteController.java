@@ -162,6 +162,7 @@ public class HealthQuoteController extends CommonQuoteRouter {
             healthQuoteService.healthCompetitionEntry(request, data, quote, competitionEnabled, dataBucket);
 
             PricesObj<HealthQuoteResult> results = new PricesObj<>();
+
             results.setResult(quotes.getResults());
             results.setInfo(info);
 
@@ -178,7 +179,6 @@ public class HealthQuoteController extends CommonQuoteRouter {
                     LOGGER.error("Failed to write selected product to db {} {} {}", kv("error", e.getMessage()), kv("transactionId", tranId), kv("productId", prodId), e);
                 }
             }
-
 
             // create resultsWrapper with the token
             return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), results);

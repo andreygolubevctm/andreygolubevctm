@@ -556,6 +556,8 @@
 		if( selected_credit_day ) {
 			$("#health_payment_credit_day").val( selected_credit_day );
 		}
+
+		meerkat.modules.healthDualPricing.initAccordionsEvents();
 	}
 
 	// Render the claims details

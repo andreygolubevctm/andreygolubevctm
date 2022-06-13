@@ -97,6 +97,7 @@ public class HealthModelTranslator implements EmailTranslator {
 
         List<String> altPremium = emailUtils.buildParameterList(request, "rank_altPremium", NUM_RESULTS);
         List<String> altPremiumLabel = emailUtils.buildParameterList(request, "rank_altPremiumText", NUM_RESULTS);
+        List<String> altPremiumDates = emailUtils.buildParameterList(request, "rank_altPremiumDate", NUM_RESULTS);
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
         healthEmailModel.setBenefitCodes(benefitCodes);
@@ -116,6 +117,7 @@ public class HealthModelTranslator implements EmailTranslator {
         healthEmailModel.setPopProviderCodes(emailUtils.buildParameterList(request, "rank_popProviderCode", NUM_RESULTS));
         healthEmailModel.setPopProvider1HospitalPds(request.getParameter("rank_popProvider1HospitalPds"));
         healthEmailModel.setPopProvider1ExtrasPds(request.getParameter("rank_popProvider1ExtrasPds"));
+        healthEmailModel.setAltPremiumDates(altPremiumDates);
         emailRequest.setHealthEmailModel(healthEmailModel);
 
         emailRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
