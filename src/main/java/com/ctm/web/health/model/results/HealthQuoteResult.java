@@ -52,6 +52,9 @@ public class HealthQuoteResult extends Result {
 
     private BigDecimal giftCardAmount;
 
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate dualPricingDate;
+
     public Promo getPromo() {
         return promo;
     }
@@ -180,6 +183,14 @@ public class HealthQuoteResult extends Result {
         this.accident = accident;
     }
 
+    public LocalDate getDualPricingDate() {
+        return dualPricingDate;
+    }
+
+    public void setDualPricingDate(LocalDate dualPricingDate) {
+        this.dualPricingDate = dualPricingDate;
+    }
+
     public UUID getJourneyId() {
         return journeyId;
     }
@@ -194,5 +205,6 @@ public class HealthQuoteResult extends Result {
 
     public void setQuoteId(UUID quoteId) {
         this.quoteId = quoteId;
+
     }
 }

@@ -18,7 +18,7 @@
 
 	{{ if(typeof obj.showRisingTag === 'undefined' || obj.showRisingTag == true) { }}
 	<div class="premium-rising-tag">
-		<span class="icon-arrow-thick-up"></span> Premiums are rising from April 1st
+		<span class="icon-arrow-thick-up"></span> Premiums are rising from {{= obj.dualPricingDateFormatted}}
 		<br/>
 		<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
 	</div>
@@ -28,7 +28,7 @@
 	<div class="dual-pricing-before-after-text">
 		<span class="text-bold">
 		{{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { }}After{{ } else { }}Before{{ } }}
-		</span> April 1st</div>
+		</span> {{= obj.dualPricingDateFormatted}}</div>
 	{{ } }}
 
 	<div class="price premium">
@@ -85,7 +85,7 @@
                 		    {{= meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, freq, obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) }}
                 		{{ } }}
 					{{ } else { }}
-					<div class="frequencyAmount comingSoon">No change to rates <b>on April 1</b></div>
+					<div class="frequencyAmount comingSoon">New price not yet released</div>
 					{{ } }}
 					{{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
 					<div class="rounding">Premium may vary slightly due to rounding</div>

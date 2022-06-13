@@ -10,7 +10,7 @@
 {{ var healthResultsTemplate = meerkat.modules.healthResultsTemplate; }}
 {{ var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies(); }}
 {{ var discountText = healthResultsTemplate.getDiscountText(obj); }}
-<div class="price premium">
+<div class="price premium v3-price-template-tag">
     {{ _.each(availableFrequencies, function(freqObj) { }}
         {{ var frequency = freqObj.key; }}
         {{ if (typeof availablePremiums[frequency] === "undefined") { return; } }}
@@ -39,7 +39,7 @@
             </div>
 
             {{ if(obj.custom.reform.yad !== "N" && availablePremiums[frequency].abd > 0) { }}
-                {{ if(obj.custom.reform.yad === "A" || (obj.custom.reform.yad === "R" && (isConfirmation || !meerkat.modules.healthRABD.isRABD()))) { }}
+                {{ if((isConfirmation && obj.info.abdRequestFlag === 'A') || (!isConfirmation && meerkat.modules.healthRABD.isABD())) { }}
                     <health_v4:abd_badge abd="true" />
                 {{ } else { }}
                     <health_v4:abd_badge abd="false" />

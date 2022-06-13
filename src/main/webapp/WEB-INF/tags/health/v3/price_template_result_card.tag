@@ -4,24 +4,17 @@
 
 <%-- PRICE TEMPLATE FOR RESULT CARD IN SIMPLES --%>
 {{ if (!obj.hasOwnProperty('premium')) {return;} }}
-{{ var isConfirmation = false; }}
-{{ try{ }}
-{{ isConfirmation = _.isNumber(meerkat.modules.healthConfirmation.getPremium()); }}
-{{ } catch(e){} }}
-{{ var availablePremiums = (!meerkat.site.isCallCentreUser || !isConfirmation) && _.has(meerkat.site,"alternatePricing") && meerkat.site.alternatePricing.isActive && _.has(obj,"altPremium") ? obj.altPremium : obj.premium; }}
-{{ var healthResultsTemplate = meerkat.modules.healthResultsTemplate; }}
-{{ var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies(); }}
-{{ var discountText = healthResultsTemplate.getDiscountText(obj); }}
+{{ var priceVars = meerkat.modules.healthDualPricing.getPriceTemplateResultCardVarsSimples(obj); }}
 {{ var frequencyAndLHCData = []; }}
-<div class="price premium">
-    {{ _.each(availableFrequencies, function(freqObj) { }}
+<div class="price premium v3-price-template-result-card-tag">
+    {{ _.each(priceVars.availableFrequencies, function(freqObj) { }}
         {{ var frequency = freqObj.key; }}
-        {{ if (typeof availablePremiums[frequency] === "undefined") { return; } }}
+        {{ if (typeof priceVars.availablePremiums[frequency] === "undefined") { return; } }}
         <c:if test="${callCentre}">
             {{ obj.mode = "lhcInc"; }}
         </c:if>
-        {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode); }}
-        {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
+        {{ var result = priceVars.healthResultsTemplate.getPricePremium(frequency, priceVars.availablePremiums, obj.mode); }}
+        {{ var discountPercentage = priceVars.healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
 
         {{ frequencyAndLHCData.push({ freqObj: freqObj, result: result }); }}
 
@@ -39,7 +32,7 @@
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
         {{ return; } }}
     <div class="frequencyAmount">
-        {{ var dollarPriceResult = healthResultsTemplate.getPrice(result); }}
+        {{ var dollarPriceResult = priceVars.healthResultsTemplate.getPrice(result); }}
         <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
     </div>
 
@@ -51,7 +44,7 @@
 
 
 
-<div class="price premium">
+<div class="price premium v3-price-template-result-card-tag">
     {{ _.each(frequencyAndLHCData, function(data){ }}
         {{ var lhcText = data.result.lhcFreePriceMode ? data.result.textLhcFreePricing : data.result.textPricing; }}
         {{ var textPricing = ''; var textPricingLHC = ''; }}

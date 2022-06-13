@@ -153,6 +153,7 @@ public class ResponseAdapterV2 {
                     if (quote.isPriceChanged()) {
                         hasPriceChanged = true;
                     }
+                    result.setDualPricingDate(quote.getAlternativePremiumDate());
                     results.add(result);
                 }
 

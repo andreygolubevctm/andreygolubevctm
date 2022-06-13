@@ -46,7 +46,7 @@
 <%-- Force this to be confirmation because it is set by a param value and might change. This is a safety decision because if it is something else, bad things happen. --%>
 <c:set var="pageAction">
 	<c:choose>
-		<c:when test="${pageContext.request.servletPath == '/health_confirmation.jsp'}">
+		<c:when test="${pageContext.request.servletPath == '/health_confirmation_v3.jsp'}">
 			confirmation
 		</c:when>
 		<c:otherwise>

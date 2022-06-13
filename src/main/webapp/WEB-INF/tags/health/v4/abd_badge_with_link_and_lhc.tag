@@ -4,7 +4,6 @@
 
 {{ var frequency = obj._selectedFrequency; }}
 {{ var frequencyPremium = obj.premium[frequency]; }}
-{{ var abdRequestFlag = obj.info.abdRequestFlag; }}
 {{ var isConfirmation = false; }}
 {{ var showABD = false; }}
 {{ var abd = true; }}
@@ -13,19 +12,20 @@
 {{ } catch(err) { console.warn('Bad premium number', err); } }}
 {{ if (obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 ) { }}
   {{ showABD = true; }}
-  {{ if (obj.custom.reform.yad === 'A' || (obj.custom.reform.yad === "R" && (isConfirmation || !meerkat.modules.healthRABD.isRABD()))) { }}
+  {{ if (isConfirmation && obj.info.abdRequestFlag === 'A' || !isConfirmation && meerkat.modules.healthRABD.isABD()) { }}
     {{ abd = true; }}
   {{ } else { }}
     {{ abd = false; }}
   {{ } }}
 {{ } }}
-
+{{ var showLhcFreePricingText = true; }}
+{{ if (frequencyPremium.lhcfreepricing.indexOf('premium') === -1) { showLhcFreePricingText = false; } }}
 {{ if (showABD) { }}
 <c:set var="abdModalContent" scope="request"><content:get key="abdModalContent"/></c:set>
-
 <div class="abd-badge {{=abd ? '': 'retains'}} abd-modal-trigger">
   <a class="dialogPop" data-content="${abdModalContent}" title="What is the Age-Based Discount?">{{=abd ? "Includes Age-Based " : "Retains Age-Based "}}<span class="abd-badge-discount-and-icon-group">Discount<span class="help-icon icon-info"></span></span></a>
 </div>
-{{ } else { }}
+{{ } }}
+{{ if (showLhcFreePricingText) { }}
   <div class="lhcText">The premium may be affected by LHC</div>
 {{ } }}

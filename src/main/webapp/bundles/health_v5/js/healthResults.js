@@ -1098,6 +1098,7 @@
         data["rank_rebate" + position] = product.premium[frequency].rebate;
         data["rank_discounted" + position] = product.premium[frequency].discounted;
         data["rank_premiumDiscountPercentage" + position] = product.premium[frequency].discountPercentage;
+        data["rank_altPremiumDate" + position] = meerkat.modules.dateUtils.dateValueShortFormat(product.dualPricingDate);
 
         var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
         data["rank_specialOffer" + position] = specialOffer.specialOffer;

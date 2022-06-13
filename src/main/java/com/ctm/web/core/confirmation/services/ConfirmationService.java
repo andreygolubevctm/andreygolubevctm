@@ -120,7 +120,7 @@ public class ConfirmationService {
 				switch (details.getVerticalCode()) {
 					case "health":
 						confirmationUrl.append(details.getVerticalCode());
-						confirmationUrl.append("_confirmation.jsp?action=confirmation");
+						confirmationUrl.append("_confirmation_v3.jsp?action=confirmation");
 						confirmationUrl.append("&transactionId=" + details.getTransactionId());
 						confirmationUrl.append("&token=").append(URLEncoder.encode(confirmationKey, "UTF-8"));
 						break;

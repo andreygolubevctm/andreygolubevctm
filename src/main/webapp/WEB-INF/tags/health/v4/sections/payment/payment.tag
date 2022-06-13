@@ -10,6 +10,13 @@
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
+<health_v1:dual_pricing_settings />
+<%-- Product summary header for mobile --%>
+<div class="row productSummary-parent visible-xs">
+    <div class="productSummary visible-xs">
+        <health_v4_payment:policySummary />
+    </div>
+</div>
 <div class="health-payment ${className}" id="${id}">
 
     <health_v4_payment:payment_details xpath="${xpath}/details" base_xpath="${xpath}" />

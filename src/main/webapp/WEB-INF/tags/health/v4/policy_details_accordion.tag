@@ -23,15 +23,20 @@
     </jsp:attribute>
     <jsp:body>
         <div class="policy-details">
-            <div class="policy-details-body start-date"><span class="content-title">Policy start date</span><span class="content-value">{{= meerkat.modules.healthCoverStartDate.getVal() }}</span></div>
+            <div class="policy-details-body start-date">
+                <span class="content-title">Policy start date</span>
+                <span class="content-value startDate">{{= (typeof meerkat.modules.healthCoverStartDate !== 'undefined' ?meerkat.modules.healthCoverStartDate.getVal() : obj.startDateString )}}</span>
+            </div>
             <div class="policy-details-body excess"><span class="content-title">Excess</span><span class="content-value">{{= excessValue }}</span></div>
             <div class="policy-details-body excess-text">{{= excessText }}</div>
             <div class="policy-details-body co-payment"><span class="content-title">Co-payment / % Hospital contribution</span>
                 <span class="content-value">{{= (typeof copayment === 'string' && copayment.trim().startsWith('No')) ? 'No' : copayment }}</span>
             </div>
         </div>
-        <div class="about-this-product-link hidden-lg hidden-md hidden-sm">
-            <a href="javascript:;" class="about-this-fund">About this fund</a>
-        </div>
+        {{ if (typeof meerkat.modules.healthCoverStartDate !== 'undefined') { }}
+            <div class="about-this-product-link hidden-lg hidden-md hidden-sm">
+                <a href="javascript:;" class="about-this-fund">About this fund</a>
+            </div>
+        {{ } }}
     </jsp:body>
 </health_v4:accordion>

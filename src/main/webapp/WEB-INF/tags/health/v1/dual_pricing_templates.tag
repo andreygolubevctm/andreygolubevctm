@@ -6,9 +6,11 @@
 <c:set var="thisYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
 
 <core_v1:js_template id="price-frequency-template">
+	{{ var altPremiumText = altPremium; }}
+	{{ if (altPremium === '$0.00' && !hasValidDualPricingDate) { altPremiumText = 'at the same rate due to your rate rise being delayed';} }}
+	{{ if (altPremium === '$0.00' && hasValidDualPricingDate) { altPremiumText = 'at the higher premium';} }}
 	<c:set var="dialogueText">
-		{{ var altPremiumText = altPremium === '$0.00' ? 'at the same rate due to your rate rise being delayed.' : altPremium; }}
-		You've chosen to pay {{= frequency }}, which means premiums paid before April 1st will be {{= premium }} and then your ongoing premiums will be {{= altPremiumText }}
+		You've chosen to pay {{= frequency }}, which means premiums paid before {{= pricingDateFormatted}} will be {{= premium }} and then your ongoing premiums will be {{= altPremiumText }}.
 	</c:set>
 	<field_v2:checkbox
 			xpath="health/simples/dialogue-checkbox-dual-pricing-frequency"
@@ -37,52 +39,42 @@
 </core_v1:js_template>
 
 <c:set var="note">You must purchase before {{= obj.dropDeadDateFormatted }}.</c:set>
-<c:set var="heading">Premiums are rising April 1</c:set>
+<c:set var="heading">Premiums are rising {{= obj.dualPricingDateFormatted}}</c:set>
 <c:set var="whyPremiumsRising"><a href="javascript:;" class="why-rising-premiums">Why are premiums rising?</a></c:set>
-<c:set var="rateRiseDay1Header">From April 1</c:set>
-<c:set var="rateRiseDay1HeaderNoSup">From April 1st</c:set>
+<c:set var="rateRiseDay1HeaderNoSup">From {{= obj.dualPricingDateFormatted}}</c:set>
 
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
-	{{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}
-	{{ var prem = obj.premium[obj._selectedFrequency] }}
-	{{ var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate' }}
-	{{ var textPricing = prem.pricing ? prem.pricing : 'Includes HH rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount) }}
-	{{ var property = premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; } }}
-	{{ var showFromDate = false; }}
-	{{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
-		{{ if (typeof property[freq] !== "undefined") { }}
-			{{ var premium = property[freq] }}
-			{{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
-				{{ showFromDate = true; }}
-			{{ } }}
-		{{ } }}
-	{{ }); }}
+	{{ var resultVars = meerkat.modules.healthDualPricing.getDualPricingTemplateVarsSimples(obj, premium, altPremium) }}
 
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
-		<div class="current-pricing">
-			<div class="current-price-header">
-				Current price
-			</div>
+		<div class="current-pricing {{= resultVars.comingSoonClass }}">
+			{{ if (resultVars.showCurrentPriceWording) { }}
+				<div class="current-price-header">
+					Current price
+				</div>
+			{{ } }}
 			{{= renderedPriceTemplateResultCard }}
 		</div>
-		<div class="raterisemonth-pricing {{= (showFromDate === true ? 'blue-background' : 'grey-background') }}">
-			{{ if(showFromDate === true) { }}
-			<div class="dual-price-date">
-				${rateRiseDay1Header}
+		{{ if (resultVars.dualPricingDate) { }}
+			<div class="raterisemonth-pricing {{= resultVars.background }}">
+				{{ if(resultVars.showFromDate === true) { }}
+				<div class="dual-price-date">
+					From {{= resultVars.dualPricingDateFormatted }}
+				</div>
+				{{ } }}
+				{{= renderedAltPriceTemplateResultCard }}
 			</div>
-			{{ } }}
-			{{= renderedAltPriceTemplateResultCard }}
-		</div>
+		{{ } }}
 	</div>
 
-	<div class="price premium">
+	<div class="price premium {{= resultVars.productSummaryClass }} v1-dual-pricing-templates-tag">
 		<div class="lhc-and-abd-container">
 			<div class="lhs-text-container">
 				<div class="premium-LHC-text lhcText">
 					{{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
 						{{ if (obj.premium && typeof obj.premium[freq] !== "undefined") { }}
-							{{ var textPricing = obj.premium[freq].pricing ? obj.premium[freq].pricing : 'Includes rebate of ' + formatCurrency(obj.premium[freq].rebateAmount) + ' & LHC loading of ' + formatCurrency(obj.premium[freq].lhcAmount) }}
+							{{ var textPricing = obj.premium[freq].pricing ? obj.premium[freq].pricing : 'Includes rebate of ' + resultVars.formatCurrency(obj.premium[freq].rebateAmount) + ' & LHC loading of ' + resultVars.formatCurrency(obj.premium[freq].lhcAmount) }}
 							<div class="frequency {{= freq }} ">
 								<span>{{= textPricing }}</span>
 							</div>
@@ -105,7 +97,7 @@
 			{{= renderedPriceTemplate }}
 		</div>
 		<div class="raterisemonth-pricing">
-			<h3>From April 1</h3>
+			<h3>From {{= obj.dualPricingDateFormatted}}</h3>
 			{{= renderedAltPriceTemplate }}
 		</div>
 	</div>

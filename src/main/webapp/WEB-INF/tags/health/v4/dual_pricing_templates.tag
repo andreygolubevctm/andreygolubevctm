@@ -6,7 +6,7 @@
 <c:set var="thisYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
 
 <core_v1:js_template id="price-frequency-template">
-	If your premiums are increasing on the 1st April and you elect to pay {{= frequency }}, only payments made by the {{= pricingDateFormatted}} will be at the current amount, thereafter the new premium will apply.
+	If your premiums are increasing on {{= pricingDateFormatted}} and you elect to pay {{= frequency }}, only payments made by the {{= dropDeadDateFormatted}} will be at the current amount, thereafter the new premium will apply.
 </core_v1:js_template>
 
 <core_v1:js_template id="price-congratulations-template">
@@ -35,12 +35,6 @@
 <%-- MORE INFO TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-moreinfo-template">
 	{{ var comingSoon = false; }}
-	{{ var today = new Date(); }}
-	{{ var currentYear = today.getFullYear(); }}
-	{{ var currentMonth = today.getMonth(); }}
-	{{ if ( currentMonth >= 3) { }}
-	{{ currentYear =  currentYear + 1; }}
-	{{ } }}
 	{{ var alternatePremium = obj.altPremium[obj._selectedFrequency]; }}
 	{{ if (!_.isUndefined(alternatePremium)) { }}
 		{{ var productPremium = alternatePremium }}
@@ -54,16 +48,18 @@
 					<div class="moreInfoPrice">
 						{{= renderedMoreInfoDualPricing }}
 						<health_v4:abd_badge_with_link />
+						<health_v4:lhcText />
 					</div>
 				</div>
 			</div>
 			<div class="moreInfoPriceWrapper">
 				<div class="moreInfoPriceContainer future-price">
-					<div class="moreInfoPriceHeading">Price from April 1 {{= currentYear}}</div>
+					<div class="moreInfoPriceHeading">Price from {{= obj.dualPricingDateWithYear}}</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltMoreInfoDualPricing }}
 						{{ if (comingSoon) {}}
 							<health_v4:abd_badge_with_link />
+							<health_v4:lhcText />
 						{{ } }}
 					</div>
 				</div>
@@ -86,12 +82,6 @@
 <core_v1:js_template id="dual-pricing-moreinfo-xs-template">
 	{{ var comingSoon = false; }}
 	{{ var alternatePremium = obj.altPremium[obj._selectedFrequency]; }}
-	{{ var today = new Date(); }}
-	{{ var currentYear = today.getFullYear(); }}
-	{{ var currentMonth = today.getMonth(); }}
-	{{ if ( currentMonth >= 3) { }}
-	{{ currentYear =  currentYear + 1; }}
-	{{ } }}
 	{{ if (!_.isUndefined(alternatePremium)) { }}
 	{{ var productPremium = alternatePremium }}
 	{{ comingSoon = (productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0); }}
@@ -104,16 +94,18 @@
 					<div class="moreInfoPrice">
 						{{= renderedMoreInfoDualPricing }}
 						<health_v4:abd_badge_with_link />
+						<health_v4:lhcText />
 					</div>
 				</div>
 			</div>
 			<div class="row moreInfoPriceWrapper">
 				<div class="moreInfoPriceContainer future-price">
-					<div class="moreInfoPriceHeading">Price from April 1 {{= currentYear}}</div>
+					<div class="moreInfoPriceHeading">Price from {{= obj.dualPricingDateWithYear}}</div>
 					<div class="moreInfoPrice">
 						{{= renderedAltMoreInfoDualPricing }}
 						{{ if (comingSoon) {}}
 						<health_v4:abd_badge_with_link />
+						<health_v4:lhcText />
 						{{ } }}
 					</div>
 				</div>
@@ -133,9 +125,11 @@
 		</div>
 		<div class="price-boxes-wrapper">
 			{{= renderedPriceTemplateSideBar }}
-			{{= renderedAltPriceTemplateSideBar }}
+			{{ if (meerkat.modules.healthDualPricing.validateAndGetDualPricingDate(obj)) { }}
+				{{= renderedAltPriceTemplateSideBar }}
+			{{ } }}
 		</div>
-		<health_v4:price_details_side_bar/>
+			<health_v4:price_details_side_bar/>
 		<div class="about-this-product-link hidden-xs">
 			<a href="javascript:;" class="about-this-fund">About this fund</a>
 		</div>

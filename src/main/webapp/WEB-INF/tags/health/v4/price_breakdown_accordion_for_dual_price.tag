@@ -21,9 +21,11 @@
     </jsp:attribute>
     <jsp:body>
         <div class="price-breakdown-accordions-wrapper">
-            <health_v4:price_breakdown_accordion id="price-breakdown-accordion-single-combined" hidden="false" title="Current price breakdown" iconClass="plus"/>
             {{ if(showPriceAndFrequency(property[obj._selectedFrequency])) { }}
-                <health_v4:price_breakdown_accordion id="price-breakdown-accordion-dual-combined" hidden="false" title="April price breakdown" showPriceRiseBanner="true" iconClass="plus"/>
+            <health_v4:price_breakdown_accordion id="price-breakdown-accordion-single-combined" hidden="false" title="Current price breakdown" iconClass="plus" mobileAltPremium="false"/>
+            <health_v4:price_breakdown_accordion id="price-breakdown-accordion-dual-combined" hidden="false" title="{{= obj.dualPricingDateOnlyMonth}} price breakdown" showPriceRiseBanner="true" iconClass="plus" mobileAltPremium="true"/>
+            {{ } else { }}
+            <health_v4:price_breakdown_accordion id="price-breakdown-accordion-single-combined" hidden="false" title="Current price breakdown" iconClass="plus" mobileAltPremium="false"/>
             {{ } }}
         </div>
     </jsp:body>

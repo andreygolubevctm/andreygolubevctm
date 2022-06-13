@@ -1,0 +1,123 @@
+.navbar-text {
+	color: #333333 !important;
+
+	@media(@sm) {
+		position: relative;
+	}
+}
+
+.modal-title-label {
+	color: #333333 !important;
+}
+
+.mobile-hours {
+	padding: 15px;
+}
+.all-opening-hours{
+	.day_row{
+		margin-top: 5px;
+	}
+	h1{
+		font-size: 38px;
+		color: @theme-secondary;
+
+		a {
+			color: @theme-secondary;
+		}
+	}
+	h4,h3{
+		color: @theme-tertiary;
+	}
+	h3{
+		font-weight: normal;
+		font-family: @font-family-theme-bold;
+	}
+	.day-description{
+		text-align: right;
+		font-family: @font-family-theme-bold;
+	}
+	.call-details div  .call-us {
+		text-align: left;
+		h1{
+			line-height: 50px;
+			font-weight: normal;
+			font-family: @font-family-theme-regular;
+			span{
+				font-family: @font-family-base;
+				font-size: 38px;
+				height: auto;
+				text-align: left;
+				white-space: now;
+				font-weight: normal;
+			}
+		}
+		h4{
+			line-height: 45px;
+			display: inline-block;
+			color: #333;
+			float:left;
+			font-size: 18px;
+			font-family: @font-family-base;
+		}
+	}
+	.special-hours{
+		margin-top : 30px;
+	}
+}
+.header-collapse-contact {
+	> ul li {
+		.opening-hours{
+			color: @gray-base;
+			font-size: 91%;
+			margin-top:-21px;
+
+			@media(@sm-only) {
+			  margin-top: -13px;
+			}
+
+			.tomorrow-hours {
+				color: lighten(@gray-dark, 40%);
+				@media (max-width: 767px){
+					color: #fff;
+				}
+			}
+
+			@media (max-width: 767px){
+				a{
+					color: @theme-tertiary !important;
+				}
+			}
+		}
+	}
+}
+
+.journeyEngineSlide {
+  .callCentreNumberSection {
+	.callCentreNumber {
+	  //This one picks white based on highest contrast
+	  color: #fff;
+	  font-size: 32px;
+	  @media (@xs-only) {
+		&.callCentreNumber {
+		  color: #ffffff;
+		}
+	  }
+	}
+  }
+}
+
+body {
+	.callCentreAppNumber {
+		display: none;
+	}
+
+	&[data-step="apply"],
+	&[data-step="payment"] {
+		.callCentreNumber {
+			display: none;
+		}
+		.callCentreAppNumber {
+			display: inline-block !important;
+		}
+	}
+}

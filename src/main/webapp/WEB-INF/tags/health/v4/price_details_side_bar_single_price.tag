@@ -10,5 +10,3 @@
 <div class="policy-details hidden-lg hidden-md hidden-sm">
     <health_v4:policy_details_accordion id="policy_details_accordion" hidden="false" title="POLICY DETAILS"/>
 </div>
-
-{{ meerkat.modules.healthDualPricing.initAccordionsEvents(); }}

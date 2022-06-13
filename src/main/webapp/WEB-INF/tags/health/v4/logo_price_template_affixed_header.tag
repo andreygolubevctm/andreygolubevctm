@@ -14,7 +14,7 @@
     {{ var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies(); }}
     {{ var dualPriceText = 'Current price'; }}
     {{ var backgroundColor = ''; }}
-    {{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { dualPriceText = 'From April 1'; backgroundColor = 'blue-background';} }}
+    {{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { dualPriceText = 'From ' + obj.dualPricingDateFormatted; backgroundColor = 'blue-background';} }}
     <div class="price premium">
         {{ _.each(availableFrequencies, function(freqObj) { }}
         {{ var formatCurrency = meerkat.modules.currencyField.formatCurrency; }}
@@ -23,7 +23,7 @@
         {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode); }}
         {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
         {{ var property = obj.premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = obj.altPremium; } }}
-        {{ var prem = obj.premium[frequency]; }}
+        {{ var prem = availablePremiums[frequency]; }}
         {{ var textLhcFreePricing = 'LHC loading may increase the premium.'; }}
         {{ if (prem.lhcfreepricing.indexOf('premium') === -1) { textLhcFreePricing = ''; } }}
         {{ var textLhcFreeDualPricing= 'inc ' + formatCurrency(prem.rebateValue) + ' Govt Rebate';}}
@@ -31,7 +31,7 @@
         {{ if (!result.hasValidPrice) { }}
         <div class="frequency grey-background center-align-items {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? 'vertical-center-lines' : 'displayNone' }}">
             <div class="frequencyAmount comingSoon">
-                <div>No change to rates <b>on April 1</b></div>
+                <div>New price not yet released</div>
             </div>
         </div>
         <%-- Close the opened tags and return, to reduce complexity of nesting --%>
