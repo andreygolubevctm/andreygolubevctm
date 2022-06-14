@@ -1,0 +1,325 @@
+.slide-feature-benefits.open {
+  .grouping-header,
+  .grouping-border {
+    display: none;
+  }
+
+}
+
+.hideNavbar {
+  display: none !important;
+}
+
+#benefitsForm .quoteSnapshot.tieredHospitalCover {
+  /*margin-top: 84px;*/
+}
+
+// prevents non ab test checkboxes from using the health icons.
+fieldset {
+  &:not(.tieredHospitalCover) {
+    .categoriesCell.noIcon label:before {
+      font-family: 'framework_font';
+      content: "\e600";
+    }
+  }
+}
+
+#benefitsForm .tieredHospitalCover {
+
+  @media(@sm) {
+    /*margin-top:30px;*/
+  }
+
+  .content {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .hospitalCoverToggles.hidden-xs {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    margin-top: 20px;
+    .btn.benefit-category {
+      display: table-cell;
+      margin-left: 1%;
+      margin-right: 1%;
+      width: 18%;
+      border: 1px solid @btn-benefit-category-border-color;
+      background: @btn-benefit-category-bg-color;
+      color: @btn-benefit-category-color;
+
+      &.active {
+        background: @btn-benefit-category-active-bg-color;
+        color: @btn-benefit-category-active-color;
+        outline: 0;
+      }
+    }
+  }
+
+  .hospitalCoverToggles {
+    margin-left: 0px;
+    .btn-group-justified {
+      margin-bottom: 5px;
+      .btn {
+        padding: 7px;
+      }
+    }
+
+    .nonComprehensiveCover {
+      text-align: center;
+      margin-bottom: 10px;
+      .btn {
+        display: block;
+        padding: 7px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+      }
+
+      .limited {
+        font-size: @font-size-small;
+      }
+    }
+  }
+
+  .grouping-header {
+    width: 81%;
+    text-align: center;
+    color: @benefits-grouping-font-color;
+  }
+
+  .grouping-border {
+    margin-top: 8px;
+    width: 79%;
+    margin-left: 1%;
+    border: 1px solid @benefits-grouping-border-color;
+    border-bottom: 0;
+    height: 10px;
+  }
+
+  .fourIconWidth {
+    @media (@md) {
+      width: 45%;
+    }
+
+    @media (@sm-only) {
+      width: 44%;
+    }
+
+    margin-left: 2%;
+    display: inline-block;
+  }
+
+  .twoIconWidth {
+
+    @media (@md) {
+      width: 22%;
+    }
+
+    @media (@sm-only) {
+      width: 21%;
+    }
+    margin-left: 2%;
+    display: inline-block;
+  }
+
+  .hospitalCoverToggles .grouping-border {
+    margin-bottom: 8px;
+  }
+
+  .lastRow {
+    display: block;
+  }
+
+  @media (@xs-only) {
+    .healthBenefits {
+      br {
+        display: none;
+      }
+
+      .iconLabel {
+        vertical-align: middle;
+        &:before {
+          vertical-align: middle;
+          font-family: 'ctm-health';
+          font-size: 26px;
+          color: @benefits-xs-icon-color;
+          margin-right: 8px;
+        }
+      }
+
+      .checkbox input {
+        + label {
+          line-height: 0.3em;
+        }
+
+        &:checked {
+          + label {
+            line-height: 0.3em;
+            font-family: @font-family-theme-bold;
+            &:before {
+              font-family: 'framework_font';
+              content: "\e600";
+            }
+          }
+        }
+      }
+    }
+
+    .Hospital_container .healthBenefits .checkbox input:checked + label:before {
+      background: @btn-benefit-category-bg-color;
+      color: @btn-benefit-category-color;
+    }
+  }
+
+  .coverExplanationContainer {
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+
+  .help-icon {
+    margin-top: 2px;
+    @media (@xs-only) {
+      display: none;
+    }
+  }
+
+  .benefits-list {
+    margin-left: 0px;
+    .hasIcons {
+      .categoriesCell {
+        .checkbox {
+          padding: 0;
+
+          @media (@sm) {
+            height: 118px;
+          }
+
+          @media (@md) {
+            height: 150px;
+          }
+
+          @media (@lg) {
+            height: 170px;
+          }
+
+          input {
+            &:disabled + label:before {
+              color: @health-benefits-icon-disabled-color;
+            }
+
+            &:checked,
+            &.checked {
+              & + label:before {
+                background-color: @health-benefits-icon-bg-checked-color;
+                border-color: @health-benefits-icon-bg-checked-color;
+                color: #fff;
+              }
+            }
+          }
+
+          label {
+            .iconLabel {
+              @media (@xs-only) {
+                font-size: 1em;
+              }
+            }
+          }
+        }
+      }
+
+      @media (@sm-only) {
+        .benefitsIconSize(34px, @font-size-extra-small, 1);
+      }
+    }
+
+    @media (@sm) {
+      .Hospital_container .categoriesCell {
+        width: 14.28%;
+      }
+    }
+  }
+}
+
+.customiseTHCover-modal {
+  .modal-closebar {
+    a {
+      visibility: hidden !important;
+    }
+  }
+  .customerCover-yes,
+  .customerCover-no {
+    button {
+      margin-top: 0;
+    }
+  }
+  .customerCover-yes {
+    text-align: right;
+  }
+  .customerCover-no {
+    text-align: left;
+  }
+  @media(@sm) {
+    max-width:375px;
+  }
+}
+
+#benefitsForm:not(.altBenefitsJourney) {
+  .altBenefitsJourney.customise,
+  .altBenefitsJourney.limited {
+    display: none;
+  }
+}
+
+#benefitsForm.altBenefitsJourney {
+  .benefits-list {
+    .section.hasShortlistableChildren {
+      padding-bottom:0px;
+    }
+  }
+  .Hospital-wrapper {
+    .coverExplanationContainer {
+      .coverExplanation.limitedCover {
+        display:none;
+      }
+    }
+  }
+  .hospitalCoverToggles {
+    &.visible-xs {
+      .btn-group,
+      .nonComprehensiveCover {
+        display:none;
+      }
+    }
+    &.hidden-xs {
+      .grouping-header,
+      .grouping-border,
+      .btn.benefit-category {
+        display:none;
+      }
+    }
+    .altBenefitsJourney {
+      display:none;
+      h5 {
+        text-align: center;
+      }
+      .btn.benefit-category {
+        display:block;
+        width:auto;
+      }
+    }
+    &.customise {
+      .altBenefitsJourney.customise {
+        display: block;
+        a {
+          margin-bottom:1em;
+        }
+      }
+    }
+    &.limited {
+      .altBenefitsJourney.limited {
+        display: block;
+      }
+    }
+  }
+}

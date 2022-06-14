@@ -5,7 +5,9 @@
 <settings:setVertical verticalCode="HEALTH" />
 
 <%-- redirect to the health confirmation page if coming from an email with old link --%>
-<c:if test="${!fn:containsIgnoreCase(pageContext.request.servletPath, 'health_confirmation.jsp') && !fn:containsIgnoreCase(pageContext.request.servletPath, 'health_confirmation_v2.jsp')}">
+<c:if test="${!fn:containsIgnoreCase(pageContext.request.servletPath, 'health_confirmation.jsp')
+	&& !fn:containsIgnoreCase(pageContext.request.servletPath, 'health_confirmation_v2.jsp')
+	&& !fn:containsIgnoreCase(pageContext.request.servletPath, 'health_confirmation_v3.jsp')}">
 	<c:if test="${not empty param.action and param.action eq 'confirmation' and ( not empty param.PendingID or not empty param.ConfirmationID or not empty param.token )}">
 
 		<c:set var="token" value="" />

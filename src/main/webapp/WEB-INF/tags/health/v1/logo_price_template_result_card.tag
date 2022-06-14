@@ -6,17 +6,7 @@
 <script id="logo-price-template-result-card" type="text/html">
     {{ if (!obj.hasOwnProperty('premium')) {return;} }}
     <%-- Decide whether to render the normal premium or the alt premium (for dual-pricing) --%>
-    {{ var property = premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; } }}
-
-    {{ var showFromDate = false; }}
-    {{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
-        {{ if (typeof property[freq] !== "undefined") { }}
-            {{ var premium = property[freq] }}
-            {{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
-                {{ showFromDate = true; }}
-            {{ } }}
-        {{ } }}
-    {{ }); }}
+    {{ var priceVarsSimples = meerkat.modules.healthDualPricing.getLogoPriceTemplateResultCardVarsSimples(obj, premium, altPremium); }}
 
     {{ if(typeof obj.displayLogo === 'undefined' || obj.displayLogo == true) { }}
     <div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
@@ -24,7 +14,7 @@
 
     {{ if(!meerkat.site.isCallCentreUser && (typeof obj.showRisingTag === 'undefined' || obj.showRisingTag == true)) { }}
     <div class="premium-rising-tag">
-        <span class="icon-arrow-thick-up"></span> Premiums are rising from April 1st<br/>
+        <span class="icon-arrow-thick-up"></span> Premiums are rising from {{= priceVarsSimples.dualPricingDate }}<br/>
         <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
     </div>
     {{ } }}
@@ -33,48 +23,36 @@
        <div class="dual-pricing-before-after-text">
             <span class="text-bold">
               {{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { }}After{{ } else { }}Before{{ } }}
-            </span> April 1st
+            </span> {{= priceVarsSimples.dualPricingDate }}
         </div>
     {{ } }}
 
     {{ var pyrrClass = meerkat.modules.healthPyrrCampaign.isPyrrActive(true) ? " pyrrMoreInfoInline" : ""; }}
     {{ var frequencyAndLHCData = []; }}
-    <div class="price premium{{= pyrrClass}}">
-        {{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}
+    <div class="price premium{{= pyrrClass}} {{= priceVarsSimples.productSummaryClass }} {{= priceVarsSimples.productSummaryClass2 }} v1-logo-price-template-result-card-tag">
         {{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
-        {{ if (typeof property[freq] !== "undefined") { }}
-        {{ var premium = property[freq] }}
-        {{ var priceText = premium.text ? premium.text : formatCurrency(premium.payableAmount) }}
-        {{ var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount) }}
-        {{ var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate' }}
-        {{ if (premium.pricing) { }}
-            {{ var textPricing = premium.pricing.indexOf('&') > 0 ? premium.pricing.split('&')[0] + ' &' : premium.pricing }}
-            {{ var textPricingLHC = premium.pricing.indexOf('&') > 0 ? premium.pricing.split('&')[1] : '' }}
-        {{ } else { }}
-            {{ var textPricing = 'Includes of ' + formatCurrency(premium.rebateAmount) + ' &'}}
-            {{ var textPricingLHC = 'LHC loading of ' + formatCurrency(premium.lhcAmount) }}
-        {{ } }}
+        {{ if (typeof priceVarsSimples.property[freq] !== "undefined") { }}
+            {{ var priceVarsSimplesFreq = meerkat.modules.healthDualPricing.getLogoPriceTemplateResultCardVarsSimplesForFreq(freq, priceVarsSimples); }}
 
+            <%-- grab data for "frequency / lhc text" display as we need to render it in a separate line now --%>
+            {{ frequencyAndLHCData.push({freq: freq, selectedFrequency: obj._selectedFrequency, priceText: priceVarsSimplesFreq.priceText, priceLhcfreetext: priceVarsSimplesFreq.priceLhcfreetext, premium: priceVarsSimplesFreq.premium, textLhcFreePricing: priceVarsSimplesFreq.textLhcFreePricing, textPricing: priceVarsSimplesFreq.textPricing, textPricingLHC: priceVarsSimplesFreq.textPricingLHC}); }}
 
-        <%-- grab data for "frequency / lhc text" display as we need to render it in a separate line now --%>
-        {{ frequencyAndLHCData.push({freq: freq, selectedFrequency: obj._selectedFrequency, priceText: priceText, priceLhcfreetext: priceLhcfreetext, premium: premium, textLhcFreePricing: textLhcFreePricing, textPricing: textPricing, textPricingLHC: textPricingLHC}); }}
-
-        <div class="frequency {{=freq}} {{= obj._selectedFrequency === freq.toLowerCase() ? '' : 'displayNone' }}" data-text="{{= priceText }}" data-lhcfreetext="{{= priceLhcfreetext }}">
-            {{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
-                        <div class="frequencyAmount">
-                            {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
-                            {{ premiumSplit = premiumSplit.split(".") }}
-                            <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
-                        </div>
-            {{ } else { }}
-            <div class="frequencyAmount comingSoon-results">No change to rates <b>on April 1</b></div>
+            <div class="frequency {{=freq}} {{= obj._selectedFrequency === freq.toLowerCase() ? '' : 'displayNone' }}" data-text="{{= priceVarsSimplesFreq.priceText }}" data-lhcfreetext="{{= priceVarsSimplesFreq.priceLhcfreetext }}">
+                {{ if ((priceVarsSimplesFreq.premium.value && priceVarsSimplesFreq.premium.value > 0) || (priceVarsSimplesFreq.premium.text && priceVarsSimplesFreq.premium.text.indexOf('$0.') < 0) || (priceVarsSimplesFreq.premium.payableAmount && priceVarsSimplesFreq.premium.payableAmount > 0)) { }}
+                            <div class="frequencyAmount {{= priceVarsSimples.productSummaryClass }}">
+                                {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceVarsSimplesFreq.priceLhcfreetext : priceVarsSimplesFreq.priceText) }}
+                                {{ premiumSplit = premiumSplit.split(".") }}
+                                <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
+                            </div>
+                {{ } else { }}
+                    <div class="frequencyAmount comingSoon-results">New price not yet released</div>
+                {{ } }}
+            </div>
             {{ } }}
-        </div>
-        {{ } }}
         {{ }); }}
     </div>
 
-    {{ if(showFromDate) { }}
+    {{ if(priceVarsSimples.showFromDate) { }}
     <div class="line-break"></div>
     <div class="price premium{{= pyrrClass}}">
         {{ _.each(frequencyAndLHCData, function(data){ }}
@@ -82,13 +60,8 @@
                 {{ if ((data.premium.value && data.premium.value > 0) || (data.premium.text && data.premium.text.indexOf('$0.') < 0) || (data.premium.payableAmount && data.premium.payableAmount > 0)) { }}
                     <div class="line-break"></div>
                     <div class="hide-on-affix">
-                        <span class="frequencyTitle">
-                            {{= data.freq === 'annually' ? 'annually' : '' }}
-                            {{= data.freq.toLowerCase() === 'halfyearly' ? 'per half year' : '' }}
-                            {{= data.freq === 'quarterly' ? 'per quarter' : '' }}
-                            {{= data.freq === 'monthly' ? 'monthly' : '' }}
-                            {{= data.freq === 'fortnightly' ? 'fortnightly' : '' }}
-                            {{= data.freq === 'weekly' ? 'per week' : '' }}
+                        <span class="frequencyTitle {{= priceVarsSimples.productSummaryClass }}">
+                            {{= meerkat.modules.healthDualPricing.getFrequencyName(data.freq, '') }}
                         </span>
                     </div>
                 {{ } }}

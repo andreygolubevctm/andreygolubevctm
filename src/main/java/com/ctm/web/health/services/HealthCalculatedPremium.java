@@ -10,8 +10,26 @@ public class HealthCalculatedPremium {
     private Double lhcValue;
     private Double rebateValue;
     private Integer periods;
+    private Double abd;
+    private Double abdValue;
 
     public HealthCalculatedPremium() {
+    }
+
+    public Double getAbd() {
+        return abd;
+    }
+
+    public void setAbd(Double abd) {
+        this.abd = abd;
+    }
+
+    public Double getAbdValue() {
+        return abdValue;
+    }
+
+    public void setAbdValue(Double abdValue) {
+        this.abdValue = abdValue;
     }
 
     public Double getHospitalValue() {

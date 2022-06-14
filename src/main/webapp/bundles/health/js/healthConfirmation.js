@@ -180,7 +180,7 @@
 			ea :	'health simples completed application',
 			el :	'health cc sale',
 			ds :	'call center',
-			dp :	'/ctm/health_confirmation_v2.jsp',
+			dp :	'/ctm/health_confirmation_v3.jsp',
 			cd104 :	meerkat.site.contactType,
 			cd105 :	meerkat.site.userId,
 			cd28 :	meerkat.modules.transactionId.get(),

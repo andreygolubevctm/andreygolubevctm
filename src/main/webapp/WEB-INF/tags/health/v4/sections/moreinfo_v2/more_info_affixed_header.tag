@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <core_v1:js_template id="moreInfoAffixedHeaderTemplate">
     <div class="container">
-        {{ if (!meerkat.modules.healthDualPricing.isDualPricingActive()) { }}
+        {{ if (!meerkat.modules.healthDualPricing.validateAndGetDualPricingDate(obj)) { }}
             <div class="col logo-col">
                 <div class="companyLogo {{= info.provider }}"></div>
             </div>
@@ -18,14 +18,14 @@
                 <div class="vertical-center-items vertical-center-items-gap">
                     <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now<span class="icon-arrow-right" /></a>
                     <div class="lhcTextAndABD">
-                        <health_v4:lhcText />
                         <health_v4:abd_badge_with_link />
+                        <health_v4:lhcText />
                     </div>
                 </div>
             </div>
             <div class="col hidden-sm">
-                <health_v4:lhcText />
                 <health_v4:abd_badge_with_link />
+                <health_v4:lhcText />
             </div>
             <div class="col hidden-sm">
                 <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now<span class="icon-arrow-right" /></a>
@@ -50,14 +50,14 @@
                 <div class="vertical-center-items vertical-center-items-gap">
                     <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now<span class="icon-arrow-right" /></a>
                     <div class="lhcTextAndABD">
-                        <health_v4:lhcText />
                         <health_v4:abd_badge_with_link />
+                        <health_v4:lhcText />
                     </div>
                 </div>
             </div>
             <div class="col hidden-sm">
-                <health_v4:lhcText />
                 <health_v4:abd_badge_with_link />
+                <health_v4:lhcText />
             </div>
             <div class="col hidden-sm">
                 <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Join Now<span class="icon-arrow-right" /></a>

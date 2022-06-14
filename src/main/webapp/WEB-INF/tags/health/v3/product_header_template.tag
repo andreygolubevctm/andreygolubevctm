@@ -3,9 +3,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 {{ var hasCustomHeaderContent = custom.info && custom.info.content && custom.info.content.results && custom.info.content.results.header; }}
-
+{{ var headerVars = meerkat.modules.healthDualPricing.getPriceTemplateResultCardVarsSimplesHeader(obj); }}
 <div class="result">
-    <div class="resultInsert">
+    <div class="resultInsert v3-product-header-template-tag">
         {{ if((Results.getFrequency() && obj.premium[Results.getFrequency()].discountPercentage > 0) || (!_.isEmpty(obj.promo) && !_.isEmpty(obj.promo.discountText))) { }}
             {{ var panelClass = ''; }}
             {{ if (!_.isEmpty(obj.promo) && _.isEmpty(obj.promo.discountText)) { }}
@@ -32,19 +32,19 @@
             </div>
         </div>
         {{ var comingSoonClass = ''; }}
-        {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
+        {{ if (headerVars.isDualPricingActive) { }}
             {{ if (!_.isUndefined(obj.altPremium[Results.getFrequency()])) { }}
                 {{ var productPremium = obj.altPremium[Results.getFrequency()] }}
                 {{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
             {{ } }}
         {{ } }}
         <div class="results-header-inner-container {{= comingSoonClass }}">
-            <div class="productSummary vertical results <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
+            <div class="productSummary vertical results {{= headerVars.hasDualPricing }}">
                 <%-- If dual pricing is enabled, update the template --%>
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
                 {{= logoTemplate(obj) }}
 
-                {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
+                {{ if (headerVars.isDualPricingActive) { }}
                     {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}
                     {{= productTitleTemplate(obj) }}
                     {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
@@ -65,9 +65,11 @@
             <c:choose>
             <c:when test="${simplesHealthReformMessaging eq 'Y'}">
                 {{ var newName = meerkat.modules.healthResultsTemplate.getNewProductName(obj); }}
-                    <div class="productTitle">
+                {{ if (!_.isNull(newName) && !_.isUndefined(newName) && newName !== '') { }}
+                    <div class="productTitle hidden">
                         {{= newName }}
                     </div>
+                {{ } }}
 
                 {{ var classification = meerkat.modules.healthResultsTemplate.getClassification(obj); }}
                 {{ var isExtrasOnly = obj.info.ProductType === 'Ancillary' || obj.info.ProductType === 'GeneralHealth'; }}

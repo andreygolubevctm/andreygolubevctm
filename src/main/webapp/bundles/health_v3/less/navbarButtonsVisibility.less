@@ -1,0 +1,39 @@
+.health {
+
+	// Add your slide feature here to be hidden by default
+	.slide-feature-emailquote,
+	.slide-feature-emailresults,
+	.slide-feature-close-more-info,
+    .slide-feature-filters,
+    .slide-feature-benefits,
+	.slide-feature-savequote {
+		.slide-feature-hidden();
+
+		// Necessary to make use of the journeyEngine slide-feature styles that animate max-width.
+		a {
+			white-space: nowrap;
+		}
+	}
+	@media (@xs) {
+		&[data-step="results"] {
+			.slide-feature-filters,
+			.slide-feature-benefits,
+			.slide-feature-savequote {
+				.slide-feature-is-visible();
+			}
+		}
+	}
+
+    &[data-step="start"] {
+      .slide-feature-back {
+        .slide-feature-hidden();
+      }
+    }
+
+	@media (@sm) {
+		#navbar-main {
+			display: none !important;
+		}
+	}
+
+}

@@ -1,0 +1,147 @@
+/**********************************************
+	LESS PORTED FROM core/resultsHeaderBar.less
+**********************************************/
+
+.resultsContainer {
+  position: relative;
+  z-index: @results-zindex-resultItems;
+
+  // always in effect
+  &.affixed-settings {
+
+    .result-row {
+      // To make up for the space no longer consumed by the .result element.
+      padding-top: 360px;
+      @media (@sm) {
+        padding-top: 400px;
+      }
+      @media (@lg) {
+        padding-top: 430px;
+      }
+    }
+
+    .result {
+      top: 0px;
+      width: inherit;
+      box-shadow: 0 4px 2px -2px #ccc;
+    }
+    .hide-on-affix {
+      display: none;
+    }
+  }
+
+  // .affixed is not in effect while going between pages.
+  &.affixed {
+
+    @media (@xs-only) {
+      .result {
+        top: 80px; // to make up for pagination and header bar.
+      }
+
+      .lhcText {
+        display: none;
+      }
+
+      .productSummary {
+        height: 100px;
+      }
+
+      .btn-more-info {
+        .btn-sm;
+      }
+    }
+
+    .result {
+      display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
+      position: fixed;
+    }
+
+    .currentPage {
+      .result {
+        display: block;
+      }
+    }
+
+  }
+
+  &.affixed-compact {
+    h3 {
+      display: block; // for some reason it's hidden in the core.
+    }
+    .remove-result {
+      display: none;
+    }
+    @media (@xs-only) {
+      .result {
+        .opacity(0);
+      }
+
+      .isScrolling .result {
+        .opacity(0);
+      }
+
+      .currentPage {
+        .result {
+          .opacity(1);
+        }
+      }
+
+    }
+  }
+
+  // only in effect during the pagination animation
+  &.affixed-absoluted {
+    .result {
+      position: absolute;
+    }
+  }
+}
+
+.callCentre {
+  .resultInsert {
+    .btn.btn-block {
+      &.btn-more-info,
+      &.btn-download {
+        padding: 5px 15px;
+      }
+    }
+    // only apply a height in results so the rows stay all the same height.
+    .productSummary {
+      height: 160px;
+      @media (@sm-only) {
+        height: 170px;
+      }
+      @media (@md-only) {
+        height: 185px;
+      }
+      @media (@lg-only) {
+        height: 195px;
+      }
+      overflow: hidden;
+
+      .productTitle {
+        height:2.5em;
+        overflow:hidden;
+        margin-top:5px;
+      }
+      .price.premium {
+        .frequencyAmount {
+          font-size:38px;
+          line-height:1;
+          @media(@xs-only) {
+            .frequencyTitle {
+              top:-8px;
+            }
+          }
+        }
+        @media(@xs-only) {
+          .frequency {
+            .lhcText {
+              line-height: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

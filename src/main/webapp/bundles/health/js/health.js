@@ -1371,7 +1371,7 @@
 
 					meerkat.modules.leavePageWarning.disable();
 
-					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+(!_.isEmpty(meerkat.site.urlStyleCodeId) && (_.indexOf(['wfdd', 'bddd'], meerkat.site.urlStyleCodeId) >= 0) ? "&brandCode=" + meerkat.site.urlStyleCodeId : "")+"&token=";
+					var redirectURL = "health_confirmation_v3.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+(!_.isEmpty(meerkat.site.urlStyleCodeId) && (_.indexOf(['wfdd', 'bddd'], meerkat.site.urlStyleCodeId) >= 0) ? "&brandCode=" + meerkat.site.urlStyleCodeId : "")+"&token=";
 					var extraParameters = "";
 
 					if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== ''){

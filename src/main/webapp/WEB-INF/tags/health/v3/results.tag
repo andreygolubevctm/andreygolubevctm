@@ -183,7 +183,7 @@
 
         <%-- FEATURE TEMPLATE --%>
         <health_v3:resultsItemTemplate />
-        <health_v3:brochure_template />
+        <health_v2:brochure_template />
         <health_v3:excess_template />
         <health_v3:extras_list_template />
         <health_v3:credit_card_template />

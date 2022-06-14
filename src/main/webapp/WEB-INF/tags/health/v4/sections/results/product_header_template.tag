@@ -4,7 +4,7 @@
 
 {{ var restrictedClass = obj.info.restrictedFund === "Y" ? "restricted" : ""; }}
 
-<div class="result">
+<div class="result product-header-template-tag">
     <div class="resultInsert">
         <div class="result-header-utility-bar {{= restrictedClass }}">
             {{ if(obj.info.restrictedFund === "Y") { }}
@@ -22,22 +22,16 @@
         </div>
         <div class="results-header-inner-container">
             <div class="productSummary vertical results{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }} hasDualPricing{{ } }} link-more-info" data-productId="{{= obj.productId }}" title="View policy details">
-                {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); var logoHtml = logoTemplate(obj); }}
-                {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
-                {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
-                {{ var frequency = obj._selectedFrequency; }}
-                {{ var frequencyPremium = obj.premium[frequency]; }}
-                {{ var lhtText = frequencyPremium.lhcfreepricing.split("<br>")[0]; }}
-                {{ var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;}}
+                {{ var dualPricingVars = meerkat.modules.healthDualPricing.getDualPricingVarsForProductHeaderTemplate(obj); }}
 
-                <div class="hide-on-affix logo-full-width">{{= logoHtml }}</div>
+                <div class="hide-on-affix logo-full-width">{{= dualPricingVars.logoHtml }}</div>
 
                 <div class="price-row">
                     <div class="more-info-showapply" data-productId='{{= obj.productId }}' data-available='{{= obj.available }}'>
                         {{ if (isDualPricingActive) { }}
                             <div class="dual-pricing-before-after-text">Now</div>
                         {{ } }}
-                        {{= priceTemplate(obj) }}
+                        {{= dualPricingVars.priceTemplate(obj) }}
                         <health_v4:lhcText />
                     </div>
 
@@ -46,7 +40,7 @@
                     {{ } }}
                 </div>
                 <div class="premium-LHC-text lhcText">
-                    {{ if (lhtText && isDualPricingActive) { }}
+                    {{ if (dualPricingVars.lhtText && dualPricingVars.isDualPricingActive) { }}
                         <span>
                             {{= 'LHC loading may increase the premium.' }}
                         </span>
@@ -82,9 +76,7 @@
                     {{ } }}
                 </c:when>
                 </c:choose>
-
                 <health_v4:abd_badge_with_link />
-
             </div>
             {{ if(obj.promo.providerPhoneNumber) { }}
             <div class="callCentreNumber">

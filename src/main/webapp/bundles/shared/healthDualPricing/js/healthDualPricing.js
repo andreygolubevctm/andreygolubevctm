@@ -14,28 +14,18 @@
         },
         isActive = null,
         _trackModalClose = true,
-        _startMonthFirst = null;
+        dualPricingVarsProductHeaderTemplate = {};
+        dualPricingVarsProductHeaderTemplateResultCard = {};
 
     function initDualPricing() {
-        if (!isDualPricingActive()) {
+        if (!isDualPricingActive() && meerkat.site.pageAction !== 'confirmation') {
             return true;
         }
-
-        _startMonthFirst = getStartMonthFirst('01/04/');
 
         _setupElements();
         _applyEventListeners();
         _eventSubscriptions();
     }
-
-	function getStartMonthFirst(datePrefix) {
-		var now = new Date();
-		var rateRiseDate = meerkat.modules.dateUtils.parse(datePrefix + now.getFullYear(), 'DD/MM/YYYY');
-		var utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-		now = new Date(utc + (3600000*10));
-		rateRiseDate.setFullYear(now.getFullYear() + (now > rateRiseDate ? 1 : 0));
-		return rateRiseDate;
-	}
 
     function isDualPricingActive() {
         if(isActive === null) {
@@ -48,6 +38,7 @@
         $elements = {
             logoPriceTemplateResultCard: $('#logo-price-template-result-card'),
             logoPriceTemplateSideBar: $('#logo-price-template-side-bar'),
+            logoPriceTemplateSinglePriceSideBar: $('#logo-price-template-single-price-side-bar'),
             logoPriceTemplate: $('#logo-price-template'),
             affixedHeaderLogoPriceTemplate: $('#affixed-header-logo-price-template'),
             template: {
@@ -81,28 +72,31 @@
 
     function _applyEventListeners() {
         $elements.paymentDetailsFrequency.on('change.healthDualPricing', function updateWarningLabel() {
-        	var coverStartDateTime = meerkat.modules.dateUtils.parse($("#health_payment_details_start").val(), 'DD/MM/YYYY').getTime(),
-                startMonthFirstTime = _startMonthFirst.getTime(),
+            if (_.isEmpty($(this).val())) return;
+
+        	var coverStartDate = getCoverStartDate(),
                 frequency = $(this).val().toLowerCase(),
                 selectedProduct = meerkat.modules.healthResults.getSelectedProduct(),
                 selectedPayment = meerkat.modules.healthPaymentStep.getPaymentMethodNode(),
                 pricingDate = new Date(selectedProduct.pricingDate),
                 pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"),
+                dropDeadDate = new Date(selectedProduct.dropDeadDate),
+                dropDeadDateFormatted = meerkat.modules.dateUtils.format(dropDeadDate, "Do MMMM"),
                 template = null,
                 obj = null;
 
-            if (_.isEmpty($(this).val())) return;
+            $elements.frequencyWarning.text('If your premiums are increasing on {{= pricingDateFormatted}} and you elect to pay ${frequency}, only payments made by the ${dropDeadDateFormatted} will be at the current amount, thereafter the new premium will apply.');
 
-            $elements.frequencyWarning.text('If your premiums are increasing on the 1st April and you elect to pay ${frequency}, only payments made by the ${pricingDateFormatted} will be at the current amount, thereafter the new premium will apply.');
-
-            // hide if cover start date after or on 1st of start month or altPremium price is $0 on online journey
-            if (coverStartDateTime >= startMonthFirstTime || (!meerkat.site.isCallCentreUser && selectedProduct.altPremium[frequency].value === 0)) {
+            // This script should only appear when there is a valid drop dead date entered.
+            if (typeof selectedProduct.dropDeadDate === 'undefined'
+                    || meerkat.modules.dateUtils.compareTwoDate(coverStartDate, dropDeadDate) >= 0 ) {
                 $elements.frequencyWarning.slideUp();
                 return;
             }
 
             if (frequency === 'annually') {
-                if ($elements.priceCongratsTemplate.length === 1) {
+                if ($elements.priceCongratsTemplate.length === 1
+                        && selectedProduct.paymentTypeAltPremiums[selectedPayment][frequency].value > 0) {
                     template = _.template($elements.priceCongratsTemplate.html());
                     var priceCalc = (parseFloat(selectedProduct.paymentTypeAltPremiums[selectedPayment][frequency].value - selectedProduct.paymentTypePremiums[selectedPayment][frequency].value)).toFixed(2);
                     obj = {
@@ -120,7 +114,9 @@
                     frequency: freqTextMapping[frequency],
                     pricingDateFormatted: pricingDateFormatted,
                     premium: selectedProduct.paymentTypePremiums[selectedPayment][frequency].text,
-                    altPremium: selectedProduct.paymentTypeAltPremiums[selectedPayment][frequency].text
+                    altPremium: selectedProduct.paymentTypeAltPremiums[selectedPayment][frequency].text,
+                    hasValidDualPricingDate: (validateAndGetDualPricingDate(selectedProduct) !== null),
+                    dropDeadDateFormatted: dropDeadDateFormatted
                 };
             }
             $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
@@ -198,8 +194,11 @@
         var product = Results.getSelectedProduct(),
             dropDeadDate = new Date(product.dropDeadDate),
             pricingDate = new Date(product.pricingDate);
+        var coverStartDate = getCoverStartDate();
 
-        if (!meerkat.modules.dateUtils.isValidDate(dropDeadDate)) {
+
+        if (!meerkat.modules.dateUtils.isValidDate(dropDeadDate)
+            || meerkat.modules.dateUtils.compareTwoDate(coverStartDate, dropDeadDate) >= 0) {
             $('.hidden-if-drop-dead-date-invalid').hide();
         } else {
             $('.hidden-if-drop-dead-date-invalid').show();
@@ -212,6 +211,9 @@
     }
 
     function renderTemplate(target, product, returnTemplate, isForSidebar, page, isForAffixedHeader, isForResultPage) {
+        if (typeof isForAffixedHeader === 'undefined') {
+            isForAffixedHeader = false;
+        }
         var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
         selectedProduct = product;
@@ -223,7 +225,7 @@
         product.priceBreakdownLHCCopy = '';
         product.isForResultPage = isForResultPage;
 
-        if ($elements.priceBreakdownLHCCopyTemplate.length && meerkat.modules.healthPriceBreakdown.showBreakdown()) {
+        if ($elements.priceBreakdownLHCCopyTemplate && $elements.priceBreakdownLHCCopyTemplate.length && meerkat.modules.healthPriceBreakdown.showBreakdown()) {
             var LHCCopy = _.template($elements.priceBreakdownLHCCopyTemplate.html());
             product.priceBreakdownLHCCopy = LHCCopy(product);
         }
@@ -248,13 +250,26 @@
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
         product.showRisingTag = (isForSidebar && deviceMediaState !== 'xs') || (meerkat.site.pageAction === 'confirmation');
-        product.showBeforeAfterText = (isForSidebar) || isForAffixedHeader;
+        product.showFromDate = false;
+        if (_.has(product, 'altPremium') && product.altPremium !== null) {
+            var selectedAltPremium = meerkat.modules.healthResultsTemplate.getPricePremium(product._selectedFrequency, product.altPremium, product.mode);
+            if (selectedAltPremium.hasValidPrice !== undefined) {
+                product.showFromDate = selectedAltPremium.hasValidPrice;
+            }
+        }
+        product.hasValidDualPricingDate = (validateAndGetDualPricingDate(product) !== null);
+        product.showBeforeAfterText = (isForSidebar && product.hasValidDualPricingDate) || isForAffixedHeader;
         product.priceBreakdown = meerkat.modules.healthPriceBreakdown.showBreakdown();
 
         var pricingDate = new Date(selectedProduct.pricingDate);
         // named pricingDateFormatted because inside _updatePricingDate function it throws an invalid date when creating a new Date object with pricingDate,
         // for some reason Results.getSelectedProduct().pricingDate gets updated
         product.pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "MMMM Do, YYYY");
+        if (product.hasValidDualPricingDate) {
+            product.dualPricingDateFormatted = meerkat.modules.dateUtils.dateValueShortFormat(product.dualPricingDate);
+            product.dualPricingDateOnlyMonth = meerkat.modules.dateUtils.monthOfDateValue(product.dualPricingDate);
+            product.dualPricingDateWithYear = meerkat.modules.dateUtils.dateValueMediumFormat(product.dualPricingDate);
+        }
 
         var htmlTemplate = '';
         if ($elements.logoPriceTemplate.html()) {
@@ -264,13 +279,14 @@
         if ($elements.logoPriceTemplateResultCard.html()) {
             htmlTemplateResultCard = _.template($elements.logoPriceTemplateResultCard.html());
         }
-        var htmlTemplateMoreInfo = meerkat.modules.templateCache.getTemplate($("#price-template-more-info"));
+        var htmlTemplateMoreInfo = $("#price-template-more-info").length ? meerkat.modules.templateCache.getTemplate($("#price-template-more-info")) : undefined;
 
         product.renderedPriceTemplate = !htmlTemplate ? undefined : htmlTemplate(product);
         product.renderedPriceTemplateResultCard = !htmlTemplateResultCard ? undefined : htmlTemplateResultCard(product);
         product.renderedMoreInfoDualPricing = !htmlTemplateMoreInfo ? undefined : htmlTemplateMoreInfo(product);
 
-        var htmlTemplateSideBar = (!meerkat.site.isCallCentreUser && $elements.logoPriceTemplateSideBar.html()) ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
+        var htmlTemplateSideBar = $elements.logoPriceTemplateSideBar.html() ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
+
         product.renderedPriceTemplateSideBar = !htmlTemplateSideBar ? undefined : htmlTemplateSideBar(product);
 
         var affixedHeaderTemplate = '';
@@ -279,27 +295,30 @@
             product.renderedAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
         }
 
-        product.showAltPremium = _.has(product, 'altPremium');
-        product.displayLogo = false;
-        product.showCurrPremText = false;
-        product.showRisingTag = false;
+        product.showAltPremium = _.has(product, 'altPremium') && product.altPremium !== null;
+        if (product.showAltPremium) {
+            product.displayLogo = false;
+            product.showCurrPremText = false;
+            product.showRisingTag = false;
 
-        if ($elements.logoPriceTemplate.html()) {
-            htmlTemplate = _.template($elements.logoPriceTemplate.html());
-        }
+            if ($elements.logoPriceTemplate.html()) {
+                htmlTemplate = _.template($elements.logoPriceTemplate.html());
+            }
 
-        if($elements.affixedHeaderLogoPriceTemplate.html()) {
-            product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
-        }
-        if ($elements.logoPriceTemplateResultCard.html()) {
-            htmlTemplateResultCard = _.template($elements.logoPriceTemplateResultCard.html());
-        }
-        product.renderedAltPriceTemplateResultCard = !htmlTemplateResultCard ? undefined : htmlTemplateResultCard(product);
-        product.renderedAltMoreInfoDualPricing = !htmlTemplateMoreInfo ? undefined : htmlTemplateMoreInfo(product);
-        htmlTemplateSideBar = (!meerkat.site.isCallCentreUser && $elements.logoPriceTemplateSideBar.html()) ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
-        product.renderedAltPriceTemplateSideBar = !htmlTemplateSideBar ? undefined : htmlTemplateSideBar(product);
+            if($elements.affixedHeaderLogoPriceTemplate.html()) {
+                product.renderedAltAffixedHeaderPriceTemplate = affixedHeaderTemplate(product);
+            }
+            if ($elements.logoPriceTemplateResultCard.html()) {
+                htmlTemplateResultCard = _.template($elements.logoPriceTemplateResultCard.html());
+            }
+            product.renderedAltPriceTemplateResultCard = !htmlTemplateResultCard ? undefined : htmlTemplateResultCard(product);
+            product.renderedAltMoreInfoDualPricing = !htmlTemplateMoreInfo ? undefined : htmlTemplateMoreInfo(product);
+            htmlTemplateSideBar = $elements.logoPriceTemplateSideBar.html() ? _.template($elements.logoPriceTemplateSideBar.html()) : undefined;
 
-        product.renderedAltPriceTemplate = !htmlTemplate ? undefined : htmlTemplate(product);
+            product.renderedAltPriceTemplateSideBar = !htmlTemplateSideBar ? undefined : htmlTemplateSideBar(product);
+
+            product.renderedAltPriceTemplate = !htmlTemplate ? undefined : htmlTemplate(product);
+        }
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
         $elements.mainDualPricingTemplate = _getTemplate(isForSidebar, isForAffixedHeader, page);
@@ -336,34 +355,540 @@
         return $elements.template[page][deviceMediaState] || $elements.template[page]['default'];
     }
 
+    function getDualPricingVarsForProductHeaderTemplate(obj) {
+        var output = {};
+        
+        var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template"));
+        var logoHtml = logoTemplate(obj);
+        var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template"));
+        obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false;
+        var frequency = obj._selectedFrequency;
+        var frequencyPremium = obj.premium[frequency];
+        var lhtText = getLhcText(frequencyPremium);
+        
+        output.isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;
+        output.logoHtml = logoHtml;
+        output.priceTemplate = priceTemplate;
+        output.lhtText = lhtText;
+
+        return output;
+    }
+
+    function getDualPricingVarsForProductHeaderTemplateResultCard(obj) {
+        var output = {};
+        
+        var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template"));
+        var logoHtml = logoTemplate(obj);
+        var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template-result-card"));
+        obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false;
+        var frequency = obj._selectedFrequency;
+        var frequencyPremium = obj.premium[frequency];
+        var lhtText = getLhcText(frequencyPremium);
+        var abdRequestFlag = obj.info.abdRequestFlag;
+        var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;
+        var isConfirmation = false;
+
+        try{
+            isConfirmation = _.isNumber(meerkat.modules.healthConfirmation.getPremium());
+            } catch(e) {}
+
+        var availablePremiums = getProperty(obj, obj.premium, obj.altPremium);
+        var healthResultsTemplate = meerkat.modules.healthResultsTemplate;
+        var discountText = healthResultsTemplate.getDiscountText(obj);
+        var result = healthResultsTemplate.getPricePremium(obj._selectedFrequency, availablePremiums, obj.mode);
+        var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result);
+
+        if (!obj.hasOwnProperty('premium')) {return;}
+        var prem = obj.premium[frequency];
+        var textLhcFreePricing = 'The premium may be affected by LHC';
+        if (prem.lhcfreepricing.indexOf('premium') === -1) { textLhcFreePricing = ''; }
+
+        var classification = meerkat.modules.healthResultsTemplate.getClassification(obj);
+        var isExtrasOnly = obj.info.ProductType === 'Ancillary' || obj.info.ProductType === 'GeneralHealth';
+        var icon = isExtrasOnly ? 'small-height' : classification.icon;
+
+        output.isDualPricingActive = isDualPricingActive;
+        output.logoHtml = logoHtml;
+        output.priceTemplate = priceTemplate;
+        output.lhtText = lhtText;
+        output.frequencyPremium = frequencyPremium;
+        output.availablePremiums = availablePremiums;
+        output.result = result;
+        output.textLhcFreePricing = textLhcFreePricing;
+        output.isExtrasOnly = isExtrasOnly;
+        output.icon = icon;
+
+        if (obj.hasOwnProperty('premium')) {
+            if (obj.hasOwnProperty('priceBreakdown') && obj.priceBreakdown && window.meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment') {
+                output.priceBreakDownTemplate = meerkat.modules.healthPriceBreakdown.renderTemplate(availablePremiums, result.frequency, true);
+            }
+        }
+
+        output.dualPricingDate = validateAndGetDualPricingDate(obj);
+        output.productSummaryClass = getProductSummaryClass(output.dualPricingDate, " hasDualPricing ");
+        output.showAbdBadge = obj.custom.reform.yad !== "N" && frequencyPremium.abd > 0 && !obj.isForResultPage && !(isDualPricingActive && !_.isNull(output.dualPricingDate));
+
+        return output;
+    }
+
+    function getDualPricingVarsForLogoPriceTemplateResultCard(obj, premium, altPremium) {
+        var output = {};
+        var comingSoonClass = getComingSoonClass(obj);
+        var property = getProperty(obj, premium, altPremium);
+        var showFromDate = getShowFromDate(property);
+
+        output.dualPricingDate = validateAndGetDualPricingDate(obj);
+
+        if(output.dualPricingDate) {
+            output.dualPricingDateFormatted = meerkat.modules.dateUtils.dateValueShortFormat(output.dualPricingDate);
+        }
+
+        output.showFromDate = showFromDate;
+        output.comingSoonClass = comingSoonClass;
+        output.currentPriceOrFromApril = obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true ? 'From April 1' : 'Current price';
+
+         return output;
+    }
+
+    function getDualPricingVarsForLogoPriceTemplateResultCardForFrequency(obj, freq, property, mode) {
+         var output = {};
+         var premium = property[freq];
+         var availablePremiums = getProperty(obj, obj.premium, obj.altPremium);
+         var priceText = premium.text ? premium.text : formatCurrency(premium.payableAmount);
+         var isPaymentPage = meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment'; 
+         if(!isPaymentPage) { 
+             priceText = premium.lhcfreetext; 
+             }
+         var formatCurrency = meerkat.modules.currencyField.formatCurrency;
+         var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount);
+         var textLhcFreeDualPricing = 'inc ' + formatCurrency(premium.rebateValue) + ' Govt Rebate'; 
+         var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount);
+         var showABDToolTip = premium.abd > 0; 
+         var lhtText = getLhcText(premium);
+         var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate';
+         var showPriceOrComingSoon = (premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0);
+         if(showPriceOrComingSoon) {
+             var premiumSplit = ((typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText)).split(".");
+             output.premiumSplitDollars = premiumSplit[0].replace('$', '');
+             output.premiumSplitCents = premiumSplit[1];
+         }
+
+        output.availablePremiums = availablePremiums;
+        output.priceText = priceText;
+        output.priceLhcfreetext = priceLhcfreetext;
+        output.premium = premium;
+        output.lhtText = lhtText;
+        output.textLhcFreeDualPricing = textLhcFreeDualPricing;
+        output.textLhcFreePricing = textLhcFreePricing;
+        output.showPriceOrComingSoon = showPriceOrComingSoon;
+        output.renderPriceBreakdown = !((!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) || window.meerkat.modules.journeyEngine.getCurrentStep().navigationId !=='payment' );
+
+        return output;
+    }
+    
+    function getDualPricingVarsForTemplateResultCard(obj) {
+        var output = {};
+        var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;
+        if (!obj.hasOwnProperty('premium')) {return;}
+        var isConfirmation = false;
+        try{
+            isConfirmation = _.isNumber(meerkat.modules.healthConfirmation.getPremium());
+            } catch(err){ console.warn('Bad premium number', err); }
+        var availablePremiums = obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true ? obj.altPremium : obj.premium;
+        var healthResultsTemplate = meerkat.modules.healthResultsTemplate;
+        var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies();
+        var discountText = healthResultsTemplate.getDiscountText(obj);
+
+        output.isDualPricingActive = isDualPricingActive;
+        output.availableFrequencies = availableFrequencies;
+        output.availablePremiums = availablePremiums;
+        output.healthResultsTemplate = healthResultsTemplate;
+        output.dualPricingDate = validateAndGetDualPricingDate(obj);
+        output.productSummaryClass = getProductSummaryClass(output.dualPricingDate, " ");
+        
+        return output;
+    }
+
+    function getDualPricingVarsForTemplateResultCardForFrequency(obj, freqObj, availablePremiums, healthResultsTemplate) {
+        var output = {};
+        var formatCurrency = meerkat.modules.currencyField.formatCurrency;
+        var frequency = freqObj.key;
+        if (typeof availablePremiums[frequency] === "undefined") { return; }
+        var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode);
+        var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result);
+        var property = getProperty(obj, obj.premium, obj.altPremium);
+        var prem = obj.premium[frequency];
+        var textLhcFreePricing = 'LHC loading may increase the premium.';
+        if (prem.lhcfreepricing.indexOf('premium') === -1) { textLhcFreePricing = ''; }
+        var textLhcFreeDualPricing= 'inc ' + formatCurrency(prem.rebateValue) + ' Govt Rebate';
+
+        var comingSoonLabel = frequency;
+        if (comingSoonLabel === 'annually') {
+            comingSoonLabel = 'Annual';
+        }
+        // <%-- Convert to title case --%>
+        comingSoonLabel = comingSoonLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase(); });
+
+        output.result = result;
+        output.comingSoonLabel = comingSoonLabel;
+        output.textLhcFreePricing = textLhcFreePricing;
+        output.textLhcFreeDualPricing = textLhcFreeDualPricing;
+        output.property = property;
+        output.frequency = frequency;
+        output.availablePremiums = availablePremiums;
+
+        return output;
+    }
+
+    function getDualPricingVarsForSideBar(obj, premium, altPremium) {
+        var output = {};
+        var isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive() === true;
+        var isSinglePricingMode = typeof obj.displayLogo === 'undefined' || obj.displayLogo == true;
+        var showAltPremium = obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true;
+        var comingSoonClass = getComingSoonClass(obj);
+        var property = premium;
+        if (showAltPremium) {
+            property = altPremium;
+        }
+
+        function showPriceAndFrequency(premium) {
+            return ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0));
+        }
+
+        var formatCurrency = meerkat.modules.currencyField.formatCurrency;
+        var isPaymentPageOrConfirmation = (meerkat.modules.journeyEngine.getCurrentStep() === null || meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment');
+        var showRoundingMessage = typeof showRoundingText !== 'undefined' && showRoundingText === true;
+
+        output.isDualPricingActive = isDualPricingActive;
+        output.showAltPremium = showAltPremium;
+        output.showPriceAndFrequency = showPriceAndFrequency;
+        output.comingSoonClass = comingSoonClass;
+        output.isSinglePricingMode = isSinglePricingMode;
+        output.formatCurrency = formatCurrency;
+        output.isPaymentPageOrConfirmation = isPaymentPageOrConfirmation;
+        output.showRoundingMessage = showRoundingMessage;
+        output.property = property;
+
+        return output;
+    }
+
+
+    function getDualPricingVarsForSideBarForFreq(obj, freq, isPaymentOrConfirmationPage, property, showAltPremium) {
+        var output = {};
+        var premium = property[freq];
+        var availablePremiums = showAltPremium ? obj.altPremium : obj.premium;
+        var priceText = premium.text ? premium.text : meerkat.modules.currencyField.formatCurrency(premium.payableAmount);
+        if(!isPaymentOrConfirmationPage) {
+            priceText = premium.lhcfreetext;
+        }
+        var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : meerkat.modules.currencyField.formatCurrency(premium.lhcFreeAmount);
+        var textLhcFreeDualPricing = 'inc ' + meerkat.modules.currencyField.formatCurrency(premium.rebateValue) + ' Govt Rebate';
+        var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + meerkat.modules.currencyField.formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + meerkat.modules.currencyField.formatCurrency(premium.lhcAmount);
+        var showABDToolTip = premium.abd > 0;
+        var lhtText = getLhcText(premium);
+        var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + meerkat.modules.currencyField.formatCurrency(premium.lhcAmount) + ' LHC inc ' + meerkat.modules.currencyField.formatCurrency(premium.rebateAmount) + ' Government Rebate';
+
+        output.premium = premium;
+        output.availablePremiums = availablePremiums;
+        output.priceText = priceText;
+        output.priceLhcfreetext = priceLhcfreetext;
+        output.textLhcFreeDualPricing = textLhcFreeDualPricing;
+        output.textPricing = textPricing;
+        output.showABDToolTip = showABDToolTip;
+        output.lhtText = lhtText;
+        output.textLhcFreePricing = textLhcFreePricing;
+
+        return output;
+    }
+
+    function getPriceTemplateResultCardVarsSimples(obj) {
+        var output = {};
+        try{
+            isConfirmation = _.isNumber(meerkat.modules.healthConfirmation.getPremium());
+        } catch(e){}
+        var isConfirmation = (!meerkat.site.isCallCentreUser || !isConfirmation) && _.has(meerkat.site,"alternatePricing") && meerkat.site.alternatePricing.isActive && _.has(obj,"altPremium") ? obj.altPremium : obj.premium;
+        var healthResultsTemplate = meerkat.modules.healthResultsTemplate;
+        var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies();
+        var discountText = healthResultsTemplate.getDiscountText(obj);
+
+        output.isConfirmation = isConfirmation;
+        output.healthResultsTemplate = healthResultsTemplate;
+        output.availableFrequencies = availableFrequencies;
+        output.discountText = discountText;
+        output.dualPriceAvailable = meerkat.modules.healthDualPricing.isDualPricingActive() === true && validateAndGetDualPricingDate(obj);
+
+        return output;
+    }
+
+    function getPriceTemplateResultCardVarsSimplesHeader(obj) {
+        var output = {};
+        output.isDualPricingActive = meerkat.modules.healthDualPricing.isDualPricingActive();
+        output.dualPriceAvailable = meerkat.modules.healthDualPricing.isDualPricingActive() === true && validateAndGetDualPricingDate(obj);
+        output.hasDualPricing = meerkat.modules.healthDualPricing.isDualPricingActive() === true ? " hasDualPricing " : " ";
+        return output;
+    }
+// ===========================================================================================
+    function getDualPricingTemplateVarsSimples(obj, premium, altPremium) {
+        var output = {};
+        var formatCurrency = meerkat.modules.currencyField.formatCurrency;
+        var prem = obj.premium[obj._selectedFrequency];
+        var textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) + ' LHC inc ' + formatCurrency(prem.rebateAmount) + ' Government Rebate';
+        var textPricing = prem.pricing ? prem.pricing : 'Includes HH rebate of ' + formatCurrency(prem.rebateAmount) + ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
+        var property = getProperty(obj, premium, altPremium);
+        var showFromDate = getShowFromDate(property);
+
+        output.formatCurrency = formatCurrency;
+        output.prem = prem;
+        output.textLhcFreePricing = textLhcFreePricing;
+        output.textPricing = textPricing;
+        output.property = property;
+        output.showFromDate = showFromDate;
+        output.dualPriceAvailable = isDualPriceAvailable(obj, showFromDate);
+        output.dualPricingDate = validateAndGetDualPricingDate(obj);
+        output.productSummaryClass = !output.dualPricingDate ? " doesntHaveDualPricing " : " ";
+
+        if(output.dualPricingDate) {
+            output.dualPricingDateFormatted = meerkat.modules.dateUtils.dateValueShortFormat(output.dualPricingDate);
+        }
+        output.background = output.showFromDate === true ? ' blue-background ' : ' grey-background ';
+        output.showCurrentPriceWording = getResultType(obj) !== 'SINGLE_PRICE';
+        return output;
+    }
+
+    function getLogoPriceTemplateResultCardVarsSimples(obj, premium, altPremium) {
+        var output = {};
+
+        var property = getProperty(obj, premium, altPremium);
+        var showFromDate = getShowFromDate(property);
+
+        output.property = property;
+        output.showFromDate = showFromDate;
+        output.dualPricingDate = validateAndGetDualPricingDate(obj);
+        output.dualPriceAvailable = isDualPriceAvailable(obj, showFromDate);
+        output.priceType = getResultType(obj);
+        switch (output.priceType) {
+            case 'SINGLE_PRICE': output.productSummaryClass = " doesntHaveDualPricingSimples "; break;
+            case 'DUAL_PRICE_NOT_YET_RELEASED': output.productSummaryClass = " dual-price-released-simples "; break;
+            case 'DUAL_PRICE': output.productSummaryClass = " dual-price-released-simples "; break;
+            default: output.productSummaryClass = " ";
+        }
+        output.productSummaryClass2 = output.test;
+        debugger;
+        return output;
+    }
+
+    function getResultType(obj) {
+        // the logic is described in SML-2331
+        var dualPricingDate = validateAndGetDualPricingDate(obj);
+        if(!dualPricingDate) return 'SINGLE_PRICE';
+        var property = obj.altPremium[obj._selectedFrequency];
+        if(!property) return null;
+        var hasValidAltPremium = (
+            (property.hasOwnProperty('value') && property.value > 0) ||
+            (property.hasOwnProperty('text') && property.text.indexOf('$0.') < 0) ||
+            (property.hasOwnProperty('payableAmount') && property.payableAmount > 0)
+        );
+        if (dualPricingDate && !hasValidAltPremium) return 'DUAL_PRICE_NOT_YET_RELEASED';
+        if (dualPricingDate && hasValidAltPremium) return 'DUAL_PRICE';
+        return null;
+    }
+// ========================================================================================================
+    function getLogoPriceTemplateResultCardVarsSimplesForFreq(freq, priceVarsSimples) {
+        var output = {};
+
+        var formatCurrency = meerkat.modules.currencyField.formatCurrency;
+        var textPricing;
+        var textPricingLHC;
+        var premium = priceVarsSimples.property[freq];
+        var priceText = premium.text ? premium.text : formatCurrency(premium.payableAmount);
+        var priceLhcfreetext = premium.lhcfreetext ? premium.lhcfreetext : formatCurrency(premium.lhcFreeAmount);
+        var textLhcFreePricing = premium.lhcfreepricing ? premium.lhcfreepricing : '+ ' + formatCurrency(premium.lhcAmount) + ' LHC inc ' + formatCurrency(premium.rebateAmount) + ' Government Rebate';
+        if (premium.pricing) {
+            textPricing = premium.pricing.indexOf('&') > 0 ? premium.pricing.split('&')[0] + ' &' : premium.pricing;
+            textPricingLHC = premium.pricing.indexOf('&') > 0 ? premium.pricing.split('&')[1] : '';
+        } else {
+            textPricing = 'Includes of ' + formatCurrency(premium.rebateAmount) + ' &';
+            textPricingLHC = 'LHC loading of ' + formatCurrency(premium.lhcAmount);
+        }
+
+        output.premium = premium;
+        output.priceText = priceText;
+        output.priceLhcfreetext = priceLhcfreetext;
+        output.textLhcFreePricing = textLhcFreePricing;
+        output.textPricing = textPricing;
+        output.textPricingLHC = textPricingLHC;
+
+        return output;
+    }
+
+    function validateAndGetDualPricingDate(obj) {
+        var result = null;
+        if (obj.dualPricingDate) {
+            var dualPricingDate = meerkat.modules.dateUtils.parse(obj.dualPricingDate, "YYYY-MM-DD");
+            var coverStartDate = getCoverStartDate(obj);
+            if (isDualPricingActive() && dualPricingDate && meerkat.modules.dateUtils.compareTwoDate(dualPricingDate, coverStartDate) > 0) {
+                result = obj.dualPricingDate;
+            }
+        }
+        return result;
+    }
+
+    function isApplicationOrPaymentPage() {
+        return (meerkat.modules.journeyEngine.getCurrentStep() !== null
+            && (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'payment'
+            || meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'apply'));
+    }
+    function isConfirmationPage() {
+        return meerkat.modules.journeyEngine.getCurrentStep() === null;
+    }
+
+    function getCoverStartDate(obj) {
+        var coverStartDate = new Date();
+        if (isApplicationOrPaymentPage() && $("#health_payment_details_start").val() !== undefined && $("#health_payment_details_start").val() !== ''){
+            coverStartDate = meerkat.modules.dateUtils.parse($("#health_payment_details_start").val(), 'DD/MM/YYYY');
+        } else if (isConfirmationPage()) {
+            if (typeof obj !== 'undefined') {
+                coverStartDate = meerkat.modules.dateUtils.parse(obj.startDate, 'DD/MM/YYYY');
+            } else {
+                coverStartDate = null;
+            }
+        } else if (!isApplicationOrPaymentPage() && $("#health_searchDate").val() !== undefined && $("#health_searchDate").val() !== '') {
+            coverStartDate = meerkat.modules.dateUtils.parse($("#health_searchDate").val(), 'DD/MM/YYYY');
+        }
+        return coverStartDate;
+    }
+
+    function getProperty(obj, premium, altPremium) {
+        var property = premium;
+        if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; }
+        return property;
+    }
+
+    function isDualPriceAvailable(obj, showFromDate) {
+        return meerkat.modules.healthDualPricing.isDualPricingActive() === true && validateAndGetDualPricingDate(obj) && showFromDate;
+    }
+
+    function getShowFromDate(property) {
+        var showFromDate = false;
+        _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){
+            if(typeof property[freq] !== "undefined") {
+                var premium = property[freq];
+                if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) {
+                    showFromDate = true;
+                }
+            }
+        });
+        return showFromDate;
+    }
+
+    function getComingSoonClass(obj) {
+        var comingSoonClass = '';
+        if (obj.altPremium !== null && !_.isUndefined(obj.altPremium[obj._selectedFrequency])) {
+            var productPremium = obj.altPremium[obj._selectedFrequency];
+            comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0)) ? '' : 'comingsoon';
+        }
+        return comingSoonClass;
+    }
+
+    function getFrequencyName(frequency, postfix) {
+        if (!postfix) postfix = "";
+        var result;
+        switch (frequency.toLowerCase()) {
+            case 'annually': result = 'annually' + postfix; break;
+            case 'halfyearly': result = 'per half year' + postfix; break;
+            case 'quarterly': result = 'per quarter' + postfix; break;
+            case 'monthly': result = 'monthly' + postfix; break;
+            case 'fortnightly': result = 'fortnightly' + postfix; break;
+            case 'weekly': result = 'per week' + postfix; break;
+            default: result = '';
+        }
+        return result;
+    }
+    
+    function getLhcText(premium) {
+        return premium.lhcfreepricing ? premium.lhcfreepricing.split("<br>")[0] : '';
+    }
+    
+    function getProductSummaryClass(dualPricingDate, defaultClass) {
+        if (!defaultClass) defaultClass = " ";
+        var productSummaryClass = " ";
+        if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) {
+            productSummaryClass = _.isNull(dualPricingDate) ? " doesntHaveDualPricing " : defaultClass;
+        }
+        return productSummaryClass;
+    }
+
     function initAccordionsEvents() {
          _.defer(function() {
-             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-single'); 
-             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-dual'); 
-             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .policySummary-sidebar #price-breakdown-accordion-mobile'); 
+             if (meerkat.site.pageAction !== 'confirmation') {
+                 meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-single');
+                 meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-dual');
+                 meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .policySummary-sidebar #price-breakdown-accordion-mobile');
+                 meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .policySummary-sidebar #policy_details_accordion');
+                 meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .fieldset-column-side .dual-pricing-off-container .price-boxes-wrapper .current-pricing .price-breakdown-wrapper.hidden-xs #price-breakdown-accordion-single-price');
+                 meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#applicationDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-single-combined');
+                 meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#applicationDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-dual-combined');
 
-             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .row .policySummary-sidebar #policy_details_accordion'); 
+                 meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-single');
+                 meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-dual');
+                 meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .policySummary-sidebar #price-breakdown-accordion-mobile');
+                 meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .policySummary-sidebar #policy_details_accordion');
+                 meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm #price-breakdown-accordion-single-price');
+                 meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#paymentDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-single-combined');
+                 meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#paymentDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-dual-combined');
+             } else {
+                 meerkat.modules.Accordion.initClickEventBySelector('#confirmationForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-single');
+                 meerkat.modules.Accordion.initClickEventBySelector('#confirmationForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-dual');
+                 meerkat.modules.Accordion.initClickEventBySelector('#confirmationForm .row .policySummary-sidebar #price-breakdown-accordion-mobile');
+                 meerkat.modules.Accordion.initClickEventBySelector('#confirmationForm .row .policySummary-sidebar #policy_details_accordion');
+                 //meerkat.modules.Accordion.initClickEventBySelector('#confirmationForm #price-breakdown-accordion-single-price');
+                 meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#confirmationForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-single-combined');
+                 meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#confirmationForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-dual-combined');
+             }
+         });
+    }
 
-             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-single'); 
-             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .fieldset-column-side .policySummary-sidebar #price-breakdown-accordion-dual'); 
-             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .policySummary-sidebar #price-breakdown-accordion-mobile'); 
-             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm .row .policySummary-sidebar #policy_details_accordion'); 
+    function initMoreInfoPriceTemplate(product) {
+        if (meerkat.modules.healthDualPricing.validateAndGetDualPricingDate(product)) {
+            product.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', product, true, false);
+            if (meerkat.modules.deviceMediaState.get() !== 'xs' ) {
+                product.renderedAffixedHeaderDualPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', product, true, false, null, true);
+            }
+        } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) {
+            product.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', product, true, false);
+        } else {
+            product.showAltPremium = false;
+            product.priceBreakdown = false;
+            var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template"));
+            var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template"));
+            product.renderedAffixedHeaderSinglePriceTemplate = logoTemplate(product) + priceTemplate(product);
 
-             meerkat.modules.Accordion.initClickEventBySelector('#applicationDetailsForm .fieldset-column-side .dual-pricing-off-container .price-boxes-wrapper .current-pricing .price-breakdown-wrapper.hidden-xs #price-breakdown-accordion-single-price'); 
-             meerkat.modules.Accordion.initClickEventBySelector('#paymentDetailsForm #price-breakdown-accordion-single-price'); 
-
-             meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#applicationDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-single-combined'); 
-             meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#applicationDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-dual-combined'); 
-             meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#paymentDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-single-combined'); 
-             meerkat.modules.Accordion.initClickEventBySelectorForWrappedAccordions('#paymentDetailsForm .price-breakdown-accordions-wrapper #price-breakdown-accordion-dual-combined'); 
-             });
+            var priceTemplateMoreInfo = meerkat.modules.templateCache.getTemplate($("#price-template-more-info"));
+            product.renderedMoreInfoSinglePriceTemplate = logoTemplate(product) + priceTemplateMoreInfo(product);
+        }
     }
 
     meerkat.modules.register('healthDualPricing', {
         initDualPricing: initDualPricing,
         isDualPricingActive: isDualPricingActive,
         renderTemplate: renderTemplate,
-        initAccordionsEvents: initAccordionsEvents
+        initAccordionsEvents: initAccordionsEvents,
+        initMoreInfoPriceTemplate: initMoreInfoPriceTemplate,
+        getDualPricingVarsForProductHeaderTemplate: getDualPricingVarsForProductHeaderTemplate,
+        getDualPricingVarsForProductHeaderTemplateResultCard: getDualPricingVarsForProductHeaderTemplateResultCard,
+        getDualPricingVarsForLogoPriceTemplateResultCard: getDualPricingVarsForLogoPriceTemplateResultCard,
+        getDualPricingVarsForLogoPriceTemplateResultCardForFrequency: getDualPricingVarsForLogoPriceTemplateResultCardForFrequency,
+        getFrequencyName: getFrequencyName,
+        getDualPricingVarsForTemplateResultCard: getDualPricingVarsForTemplateResultCard,
+        getDualPricingVarsForTemplateResultCardForFrequency: getDualPricingVarsForTemplateResultCardForFrequency,
+        getDualPricingVarsForSideBar: getDualPricingVarsForSideBar,
+        getDualPricingVarsForSideBarForFreq: getDualPricingVarsForSideBarForFreq,
+        validateAndGetDualPricingDate: validateAndGetDualPricingDate,
+        getPricetemplateResultCardVarsSimples: getPriceTemplateResultCardVarsSimples,
+        getPriceTemplateResultCardVarsSimplesHeader: getPriceTemplateResultCardVarsSimplesHeader,
+        getDualPricingTemplateVarsSimples: getDualPricingTemplateVarsSimples,
+        getLogoPriceTemplateResultCardVarsSimples: getLogoPriceTemplateResultCardVarsSimples,
+        getLogoPriceTemplateResultCardVarsSimplesForFreq: getLogoPriceTemplateResultCardVarsSimplesForFreq
     });
 
 })(jQuery);
