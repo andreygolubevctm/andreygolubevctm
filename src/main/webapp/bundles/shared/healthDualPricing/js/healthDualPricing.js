@@ -88,8 +88,7 @@
             $elements.frequencyWarning.text('If your premiums are increasing on {{= pricingDateFormatted}} and you elect to pay ${frequency}, only payments made by the ${dropDeadDateFormatted} will be at the current amount, thereafter the new premium will apply.');
 
             // This script should only appear when there is a valid drop dead date entered.
-            if (typeof selectedProduct.dropDeadDate === 'undefined'
-                    || meerkat.modules.dateUtils.compareTwoDate(coverStartDate, dropDeadDate) >= 0 ) {
+            if (typeof selectedProduct.dropDeadDate === 'undefined' || !meerkat.modules.dateUtils.isValidDate(selectedProduct.dropDeadDate)) {
                 $elements.frequencyWarning.slideUp();
                 return;
             }
@@ -196,9 +195,7 @@
             pricingDate = new Date(product.pricingDate);
         var coverStartDate = getCoverStartDate();
 
-
-        if (!meerkat.modules.dateUtils.isValidDate(dropDeadDate)
-            || meerkat.modules.dateUtils.compareTwoDate(coverStartDate, dropDeadDate) >= 0) {
+        if (!meerkat.modules.dateUtils.isValidDate(dropDeadDate)) {
             $('.hidden-if-drop-dead-date-invalid').hide();
         } else {
             $('.hidden-if-drop-dead-date-invalid').show();
