@@ -71,7 +71,7 @@ public class TransactionDetailsDao {
 	 * @param transactionId
 	 */
 	private void initialiseXpathSecurity(long transactionId) {
-		if(hasXPathSecurity()) {
+		if(!hasXPathSecurity()) {
 			try {
 				TransactionDao transactionDao = new TransactionDao();
 				long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
