@@ -125,6 +125,7 @@ Process:
 
 	function openModal(htmlContent) {
 
+		console.log('==================== open ipp modal');
 		launchTime = new Date().getTime();
 
 		// If no content yet, use a loading animation
