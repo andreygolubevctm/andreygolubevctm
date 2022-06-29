@@ -153,9 +153,11 @@ Process:
 			'</div>\n';
 		meerkat.modules.dialogs.changeContent(modalId, htmlContent);
 
-		setTimeout(function() {
-			initBamboraModal();
-		}, 5000);
+		// setTimeout(function() {
+		// 	initBamboraModal();
+		// }, 5000);
+
+		initBamboraModal();
 	}
 
 	function initBamboraModal() {
