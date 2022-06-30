@@ -20,7 +20,7 @@ Process:
 		initialised = false;
 
 
-	function initHealthPaymentIPP() {
+	function initHealthPaymentBambora() {
 		if(!initialised) {
 			initialised = true;
 
@@ -115,10 +115,6 @@ Process:
 	}
 
 	function openModal(htmlContent) {
-
-		console.log('==================== open ipp modal v4');
-
-		debugger;
 		launchTime = new Date().getTime();
 
 		// If no content yet, use a loading animation
@@ -198,43 +194,8 @@ Process:
 		}
 	}
 
-	function register(jsonData) {
-
-		jsonData.transactionId = meerkat.modules.transactionId.get();
-		jsonData.providerId = $("#health_application_provider").val();
-
-		if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi') {
-			jsonData.environmentOverride = $("#developmentApplicationEnvironment").val();
-		}
-
-		var registerUrl = '/' + meerkat.site.urls.context + "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime());
-		if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
-			registerUrl = '/' + meerkat.site.urls.context + "spring/rest/health/payment/register.json";
-		}
-
-		meerkat.modules.comms.post({
-			url: registerUrl,
-			data: jsonData,
-			dataType: 'json',
-			cache: false,
-			errorLevel: "silent",
-			onSuccess: function onRegisterSuccess(data) {
-				if (!data || !data.result || data.result.success !== true) {
-					fail('IPP Token Log false');
-					return;
-				}
-
-				$token.val(jsonData.sessionid);
-				$maskedNumber.val(jsonData.maskedcardno);
-				modalContent = '';
-				meerkat.modules.dialogs.close(modalId);
-			},
-			onError: function onRegisterError(obj, txt, errorThrown) {
-				fail('IPP Token Log http');
-			}
-		});
-	}
-
+	// the whole function is from https://dev-apac.bambora.com/checkout/guides/custom-checkout/demos
+	// with console logs removed
 	function initBamboraModal() {
 		var customCheckout = customcheckout();
 
@@ -466,7 +427,7 @@ Process:
 
 
 	meerkat.modules.register("healthPaymentBambora", {
-		initHealthPaymentIPP: initHealthPaymentIPP,
+		initHealthPaymentBambora: initHealthPaymentBambora,
 		show: show,
 		hide: hide,
 		fail: fail,

@@ -571,7 +571,7 @@
             onInitialise: function onPaymentInit(event) {
                 meerkat.modules.healthPaymentDate.initPaymentDate();
                 // meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
-                meerkat.modules.healthPaymentBambora.initHealthPaymentIPP();
+                meerkat.modules.healthPaymentBambora.initHealthPaymentBambora();
                 meerkat.modules.healthSubmitApplication.initHealthSubmitApplication();
             },
             onBeforeEnter: function beforeEnterPaymentStep(event) {
