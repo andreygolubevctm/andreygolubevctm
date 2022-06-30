@@ -1,3 +1,4 @@
+// third-party js from https://customcheckout-uat.bambora.net.au/2.0.0/customcheckout.js
 (function webpackUniversalModuleDefinition(root, factory) {
     if(typeof exports === 'object' && typeof module === 'object')
         module.exports = factory();
@@ -8,6 +9,7 @@
     else
         root["customcheckout"] = factory();
 })(this, function() {
+    /* jshint elision:true */
     return /******/ (function(modules) { // webpackBootstrap
         /******/ 	// The module cache
         /******/ 	var installedModules = {};
@@ -264,7 +266,8 @@
                 /***/ }),
             /* 3 */
             /***/ (function(module, exports) {
-
+                // https://github.com/jshint/jshint/issues/2444
+                /* jshint esnext: true */
                 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
                 var Style = {
