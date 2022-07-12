@@ -2,7 +2,7 @@ package com.ctm.web.health.apply.model;
 
 import com.ctm.schema.health.v1_0_0.Applicant;
 import com.ctm.schema.health.v1_0_0.Applicants;
-import com.ctm.schema.health.v1_0_0.CurrentFund;
+import com.ctm.schema.health.v1_0_0.PreviousFund;
 import com.ctm.schema.health.v1_0_0.HealthCoverHistory;
 import com.ctm.schema.health.v1_0_0.MembershipType;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
@@ -170,7 +170,7 @@ public class ApplicantsAdapter {
                 .withIsLHCLoadingApplied(insured.map(Insured::getHealthCoverLoading)
                         .map(RequestAdapter.YES_INDICATOR::equalsIgnoreCase)
                         .orElse(false))
-                .withCurrentFund(createCurrentFund(previousFund,
+                .withPreviousFund(createPreviousFund(previousFund,
                         person,
                         situation.map(Situation::getCoverType), insured))
 //                .withHasHadContinuousCover()  // TODO - not currently used by health-apply service
@@ -229,7 +229,7 @@ public class ApplicantsAdapter {
         }
     }
 
-    protected static CurrentFund createCurrentFund(Optional<Fund> previousFund, Optional<Person> person, Optional<String> purchaseType, Optional<Insured> insured) {
+    protected static PreviousFund createPreviousFund(Optional<Fund> previousFund, Optional<Person> person, Optional<String> purchaseType, Optional<Insured> insured) {
         final HealthFund healthFund = previousFund.map(Fund::getFundName)
                 .map(HealthFund::findByCode)
                 .orElse(HealthFund.NONE);
@@ -247,13 +247,14 @@ public class ApplicantsAdapter {
         if ( previousFund.isPresent() && !HealthFund.NONE.equals(healthFund)
                 && ((!currentCovered && healthEverHeld.isPresent() && "Y".equals(healthEverHeld.get()))
                 || currentCovered)) {
-            return new CurrentFund()
+            return new PreviousFund()
                     // FIXME - confirm this is the provider code
                     .withProviderCode(healthFund.name())
                     .withMembershipNumber(previousFund.map(Fund::getMemberID).orElse(null))
                     .withPolicyType(cover.map(com.ctm.web.health.model.form.Cover::getType)
                             .map(RequestAdapter.POLICY_TYPE_MAP::get)
-                            .orElse(null))
+                            .orElse(healthEverHeld.map(RequestAdapter::getPolicyTypeFromHealthEverHeld)   // Derive from 'healthEverHeld'
+                                    .orElse(null)))
                     .withHasAuthorityToContactFund(previousFund.map(Fund::getAuthority)
                             .map(RequestAdapter.YES_INDICATOR::equalsIgnoreCase)
                             .orElse(false))
