@@ -6,7 +6,7 @@
 <%@ attribute name="showInitial" required="false" rtexprvalue="true" description="Toggle to display initial field"%>
 
 <%-- HTML --%>
-<form_v2:row label="# and name on Medicare card" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}" id="medicare_group" helpId="655">
+<form_v2:row label="# and name on Medicare card" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}" id="medicare_group">
 
 	<c:set var="fieldXpath" value="${xpath}/cardPosition" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Position you appear on your medicare card"  className="health_payment_medicare_cardPosition-group"  isNestedField="${true}" smRowOverride="2" hideHelpIconCol="${true}">
