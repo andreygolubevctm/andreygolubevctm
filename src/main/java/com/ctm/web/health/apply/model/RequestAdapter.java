@@ -64,6 +64,13 @@ public class RequestAdapter {
             .put("A", PolicyType.ANCILLARY)
             .build();
 
+    protected static PolicyType getPolicyTypeFromHealthEverHeld(final String healthEverHeld) {
+        if(healthEverHeld.equals("Y")) {
+            return PolicyType.HOSPITAL;  // Return the HOSPITAL/"H" enum
+        }
+        return null;
+    }
+
     public static ApplyRequest adapt(HealthRequest healthRequest, HealthQuoteResult healthSelectedProduct,
                                      String operator, String cid, String trialCampaign, String brandCode) throws DaoException, HealthApplyServiceException {
 

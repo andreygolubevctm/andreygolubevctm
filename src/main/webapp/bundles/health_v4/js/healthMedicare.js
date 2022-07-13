@@ -39,8 +39,7 @@
 
     // Did think of moving healthApplyStep.js in health_v2 but it had some dependancies that exist only in v2
     function _updateMedicareLabel() {
-        $helpSpan = $('#medicare_group').find('label:first span.help-icon-with-label').clone();
-        $('#medicare_group').find('label:first').text('IRN').append($helpSpan);
+        $('#medicare_group').find('label:first').text('Position you appear on your Medicare card');
     }
 
     function _applyEventListeners() {
