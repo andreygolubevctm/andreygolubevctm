@@ -28,7 +28,7 @@ Process:
 				var $this = $(this);
 
 				$token = $this.find('.payment-ipp-tokenisation');
-                $cardtype = $('.health-credit_card_details-type input');
+				$cardtype = $('.health-credit_card_details-type input');
 				$maskedNumber = $this.find('.payment-ipp-maskedNumber');
 				$maskedNumber.prop('readonly', true);
 				$maskedNumber.css('cursor', 'pointer');
@@ -79,35 +79,35 @@ Process:
 			'\n' +
 			'\n' +
 			'<div class="bambora-iframe">\n' +
-				'<div class="bambora-container">\n' +
-				'    <div class="row">\n' +
-				'        <!-- Add form -->\n' +
-				'        <form id="checkout-form" class="form-inline  text-center">\n' +
-				'            <div class="form-group col-md-4 mb-4 has-feedback" id="card-number-bootstrap">\n' +
-				'                <div id="card-number" class="form-control"></div>\n' +
-				'                <label class="help-block" for="card-number" id="card-number-error"></label>\n' +
-				'            </div>\n' +
-				'            <div class="form-group col-md-3 mb-3 has-feedback" id="card-cvv-bootstrap">\n' +
-				'                <div id="card-cvv" class="form-control"></div>\n' +
-				'                <label class="help-block" for="card-cvv" id="card-cvv-error"></label>\n' +
-				'            </div>\n' +
-				'            <div class="form-group col-md-3 mb-3 has-feedback" id="card-expiry-bootstrap">\n' +
-				'                <div id="card-expiry" class="form-control"></div>\n' +
-				'                <label class="help-block" for="card-expiry" id="card-expiry-error"></label>\n' +
-				'            </div>\n' +
-				'            <span class="sr-only"></span>\n' +
-				'            <div class="form-group col-md-2 mb-2 text-center">\n' +
-				'                <button id="pay-button" type="submit" class="btn btn-primary disabled" disabled="true">Pay</button>\n' +
-				'            </div>\n' +
-				'        </form>\n' +
-				'    </div>\n' +
-				'</div>\n' +
-				'\n' +
-				'<div class="row">\n' +
-				'    <div class="col-lg-12 text-center">\n' +
-				'        <div id="feedback"></div>\n' +
-				'    </div>\n' +
-				'</div>\n' +
+			'<div class="bambora-container">\n' +
+			'    <div class="row">\n' +
+			'        <!-- Add form -->\n' +
+			'        <form id="checkout-form" class="form-inline  text-center">\n' +
+			'            <div class="form-group col-md-4 mb-4 has-feedback" id="card-number-bootstrap">\n' +
+			'                <div id="card-number" class="form-control"></div>\n' +
+			'                <label class="help-block" for="card-number" id="card-number-error"></label>\n' +
+			'            </div>\n' +
+			'            <div class="form-group col-md-3 mb-3 has-feedback" id="card-cvv-bootstrap">\n' +
+			'                <div id="card-cvv" class="form-control"></div>\n' +
+			'                <label class="help-block" for="card-cvv" id="card-cvv-error"></label>\n' +
+			'            </div>\n' +
+			'            <div class="form-group col-md-3 mb-3 has-feedback" id="card-expiry-bootstrap">\n' +
+			'                <div id="card-expiry" class="form-control"></div>\n' +
+			'                <label class="help-block" for="card-expiry" id="card-expiry-error"></label>\n' +
+			'            </div>\n' +
+			'            <span class="sr-only"></span>\n' +
+			'            <div class="form-group col-md-2 mb-2 text-center">\n' +
+			'                <button id="pay-button" type="submit" class="btn btn-primary disabled" disabled="true">Pay</button>\n' +
+			'            </div>\n' +
+			'        </form>\n' +
+			'    </div>\n' +
+			'</div>\n' +
+			'\n' +
+			'<div class="row">\n' +
+			'    <div class="col-lg-12 text-center">\n' +
+			'        <div id="feedback"></div>\n' +
+			'    </div>\n' +
+			'</div>\n' +
 			'</div>\n';
 		meerkat.modules.dialogs.changeContent(modalId, htmlContent);
 
@@ -170,27 +170,27 @@ Process:
 	}
 
 	function reset() {
-        if (initialised) {
-            $token.val('');
-            $maskedNumber.val('');
-            modalContent = '';
-        }
+		if (initialised) {
+			$token.val('');
+			$maskedNumber.val('');
+			modalContent = '';
+		}
 	}
 
 	function cardType() {
 		var cardVal = $cardtype.find(':checked').val();
 		switch (cardVal)
 		{
-		case 'v':
-			return 'Visa';
-		case 'a':
-			return 'Amex';
-		case 'm':
-			return 'Mastercard';
-		case 'd':
-			return 'Diners';
-		default:
-			return 'Unknown';
+			case 'v':
+				return 'Visa';
+			case 'a':
+				return 'Amex';
+			case 'm':
+				return 'Mastercard';
+			case 'd':
+				return 'Diners';
+			default:
+				return 'Unknown';
 		}
 	}
 
@@ -431,7 +431,6 @@ Process:
 		show: show,
 		hide: hide,
 		fail: fail,
-		register: register,
 		reset: reset
 	});
 

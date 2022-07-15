@@ -122,12 +122,18 @@
         $_objCCV.attr('maxlength', len);
     }
 
+    function hideCardTypeAndExpiry() {
+        $('#health_payment_credit-selection .nestedGroup.form-group.fieldrow').hide();
+        $('#health_payment_credit-selection .form-group.row.fieldrow.health_credit-card_details_type_group').hide();
+    }
+
     meerkat.modules.register("healthCreditCard", {
         init: init,
         events: events,
         resetConfig: resetCreditCardConfig,
         setCreditCardRules: setCreditCardRules,
         setCreditCardConfig: setCreditCardConfig,
+        hideCardTypeAndExpiry: hideCardTypeAndExpiry,
         render: renderFields
     });
 

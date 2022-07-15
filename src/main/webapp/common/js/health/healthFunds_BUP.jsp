@@ -193,6 +193,7 @@ var healthFunds_BUP = {
 		<%-- credit card options --%>
 		meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':true, 'diners':false });
 		meerkat.modules.healthCreditCard.render();
+		meerkat.modules.healthCreditCard.hideCardTypeAndExpiry();
 
 		meerkat.modules.healthPaymentBambora.show();
 
