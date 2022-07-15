@@ -2,7 +2,7 @@ package com.ctm.web.health.apply.model;
 
 import com.ctm.schema.health.v1_0_0.Applicant;
 import com.ctm.schema.health.v1_0_0.Applicants;
-import com.ctm.schema.health.v1_0_0.CurrentFund;
+import com.ctm.schema.health.v1_0_0.PreviousFund;
 import com.ctm.schema.health.v1_0_0.HealthCoverHistory;
 import com.ctm.schema.health.v1_0_0.PolicyType;
 import com.ctm.web.health.apply.model.request.application.Emigrate;
@@ -107,7 +107,7 @@ public class ApplicantsAdapterTest {
         assertNotNull(applicant);
         assertNotNull(applicant.getHealthCoverHistory());
         assertTrue(applicant.getHealthCoverHistory().getEverHadCover());
-        assertNull(applicant.getHealthCoverHistory().getCurrentFund());
+        assertNull(applicant.getHealthCoverHistory().getPreviousFund());
 
         assertNotNull(applicant.getCertifiedAgeEntry());
         assertEquals(applicant.getLhcPercentage(), (Integer) 8);
@@ -150,7 +150,7 @@ public class ApplicantsAdapterTest {
         assertNotNull(applicant);
         assertNotNull(applicant.getHealthCoverHistory());
         assertFalse(applicant.getHealthCoverHistory().getEverHadCover());
-        assertEquals(PolicyType.HOSPITAL, applicant.getHealthCoverHistory().getCurrentFund().getPolicyType());
+        assertEquals(PolicyType.HOSPITAL, applicant.getHealthCoverHistory().getPreviousFund().getPolicyType());
     }
 
     @Test
@@ -176,7 +176,7 @@ public class ApplicantsAdapterTest {
         assertNotNull(applicant);
         assertNotNull(applicant.getHealthCoverHistory());
         assertFalse(applicant.getHealthCoverHistory().getEverHadCover());
-        assertEquals(PolicyType.HOSPITAL, applicant.getHealthCoverHistory().getCurrentFund().getPolicyType());
+        assertEquals(PolicyType.HOSPITAL, applicant.getHealthCoverHistory().getPreviousFund().getPolicyType());
     }
 
     @Test
@@ -214,8 +214,8 @@ public class ApplicantsAdapterTest {
         when(fund.getFundName()).thenReturn("BUPA");
         final Insured insured = mock(Insured.class);
         when(insured.getCover()).thenReturn("Y");
-        final CurrentFund currentFund = ApplicantsAdapter.createCurrentFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.ofNullable(insured));
-        assertNotNull(currentFund);
+        final PreviousFund PreviousFund = ApplicantsAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.ofNullable(insured));
+        assertNotNull(PreviousFund);
         verify(fund, times(1)).getFundName();
         verify(fund, times(1)).getMemberID();
     }
@@ -227,11 +227,11 @@ public class ApplicantsAdapterTest {
         final HealthFund healthFund = HealthFund.UHF;
         final Insured insured = mock(Insured.class);
         when(insured.getCover()).thenReturn("Y");
-        final CurrentFund currentFund = ApplicantsAdapter.createCurrentFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.ofNullable(insured));
-        assertNotNull(currentFund);
+        final PreviousFund PreviousFund = ApplicantsAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.empty(), Optional.empty(), Optional.ofNullable(insured));
+        assertNotNull(PreviousFund);
         verify(fund, times(1)).getFundName();
         verify(fund, times(1)).getMemberID();
-        assertEquals(healthFund.name(), currentFund.getProviderCode());
+        assertEquals(healthFund.name(), PreviousFund.getProviderCode());
     }
 
     @Test
@@ -249,14 +249,14 @@ public class ApplicantsAdapterTest {
         when(insured.getCover()).thenReturn("Y");
         when(person.getCover()).thenReturn(cover);
         // Try creating the previousFund object
-        final CurrentFund currentFund = ApplicantsAdapter.createCurrentFund(Optional.ofNullable(fund), Optional.ofNullable(person), Optional.empty(), Optional.ofNullable(insured));
-        assertNotNull(currentFund);    // Fail if it's null
+        final PreviousFund PreviousFund = ApplicantsAdapter.createPreviousFund(Optional.ofNullable(fund), Optional.ofNullable(person), Optional.empty(), Optional.ofNullable(insured));
+        assertNotNull(PreviousFund);    // Fail if it's null
 
         // Check the previous fund's cancellation option and cover type properties
-        assertNotNull(currentFund);
-        assertFalse(currentFund.getHasAuthorityToContactFund());
-        assertEquals(PolicyType.ANCILLARY, currentFund.getCancelOption());
-        assertEquals(PolicyType.COMBINED, currentFund.getPolicyType());
+        assertNotNull(PreviousFund);
+        assertFalse(PreviousFund.getHasAuthorityToContactFund());
+        assertEquals(PolicyType.ANCILLARY, PreviousFund.getCancelOption());
+        assertEquals(PolicyType.COMBINED, PreviousFund.getPolicyType());
     }
 
     @Test
