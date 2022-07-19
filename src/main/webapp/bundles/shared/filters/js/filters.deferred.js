@@ -13,8 +13,7 @@
                 FILTERS_UPDATED: "FILTERS_UPDATED",
                 FILTER_CHANGED: "FILTER_CHANGED",
                 FILTERS_CANCELLED: "FILTERS_CANCELLED",
-                FILTERS_RENDERED: "FILTERS_RENDERED",
-                SHUFFLING_FINISHED: "SHUFFLING_FINISHED"
+                FILTERS_RENDERED: "FILTERS_RENDERED"
             }
         },
         settings = {
@@ -215,9 +214,6 @@
             _.defer(function () {
                 if (needToFetchFromServer) {
                     settings.events.update.apply(window, [event]);
-                } else {
-                    meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
-                    Results.applyFiltersAndSorts(true);
                 }
                 needToFetchFromServer = false;
             });
