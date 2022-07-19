@@ -670,7 +670,6 @@
             default: output.productSummaryClass = " ";
         }
         output.productSummaryClass2 = output.test;
-        debugger;
         return output;
     }
 
