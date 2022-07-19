@@ -2,7 +2,11 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        $elements = {};
+        $elements = {},
+        startDateIsValid = true,
+        endDateIsValid = true,
+        minDate = new Date("1000-01-01"),
+        maxDate = new Date("9999-12-31");
 
     function init() {
         _setupFields();
@@ -23,6 +27,7 @@
         var xpath = xpathPrefix + applicant + xpathPostFix;
 
         return {
+            datesControls: xpath + 'dates_controls',
             startDateFieldName: xpath + 'dates_controls_startDateInput',
             endDateFieldName: xpath + 'dates_controls_endDateInput',
             addBtnFieldName: xpath + 'dates_controls_add',
@@ -66,6 +71,8 @@
             _cancelbtn_EventListener(applicant);
         });
 
+        setCustomPreviousCoverDatesValidation(applicant);
+
     }
 
     function _applyEventListeners_partner() {
@@ -90,6 +97,18 @@
             _cancelbtn_EventListener(applicant);
         });
 
+        setCustomPreviousCoverDatesValidation(applicant);
+
+    }
+
+    function setCustomPreviousCoverDatesValidation(applicant) {
+        $elements[applicant].startDate.on('focusout', function () {
+            validateCoverDates(applicant);
+        });
+
+        $elements[applicant].endDate.on('focusout', function () {
+            validateCoverDates(applicant);
+        });
     }
 
     function _addbtn_EventListener(applicant) {
@@ -97,7 +116,7 @@
         $elements[applicant].selectedRowId = -1;
 
         var myEntry = { "from": $elements[applicant].startDate.val(), "to": $elements[applicant].endDate.val()};
-        var isDataTableValidationSuccessful = _validateCoverDatesDataTable(applicant, $elements[applicant].startDate.val(), $elements[applicant].endDate.val());
+        var isDataTableValidationSuccessful = validateCoverDates(applicant);
 
         if (isDataTableValidationSuccessful) {
             $elements[applicant].coverDates.push(myEntry);
@@ -190,52 +209,97 @@
         return '<div class="' + type + '-field  ' + identifier + 'validation" style="display: block;"><label id="' + fieldname + '-' + type + '" class="has-' + type + '" for="' + fieldname + '">' + msg + '</label></div>';
     }
 
-    function _validateCoverDatesDataTable(applicant, startDt, endDt) {
+    function _validateCoverDatesDataTable(applicant, startDateStr, endDateStr) {
 
-        var lblStartDt = "";
-        var lblEndDt = "";
-        var errorMsgTxt = "";
+        var lblStartDt = "",
+             datesNotValidMessage = 'Please enter a valid {s1} date{s2}',
+             s1_start = "",
+             s1_end = "",
+             s1,
+             s2,
+             startDateObj = null,
+             endDateObj = null;
+        if(startDateStr) {
+            try { startDateObj = new Date(startDateStr); } catch (e) { startDateIsValid = false; }
+        }
+        if(endDateStr) {
+            try { endDateObj = new Date(endDateStr); } catch (e) { endDateIsValid = false; }
+        }
 
         $elements[applicant].startDateValidationLabel.parent().remove();
         $elements[applicant].endDateValidationLabel.parent().remove();
+        $elements[applicant].startDateValidationLabel.remove();
+        $elements[applicant].endDateValidationLabel.remove();
+        $elements[applicant].startDate.prev().remove();
+        $elements[applicant].endDate.prev().remove();
 
-        if (!(startDt)) {
-            errorMsgTxt = "Please enter a start date";
-            lblStartDt = _createValidationTag('error', $elements[applicant].startDateFieldName, $elements[applicant].idPrefix, errorMsgTxt);
-        } else if (!(endDt)) {
-            errorMsgTxt = "Please enter an end date";
-            lblEndDt = _createValidationTag('error', $elements[applicant].endDateFieldName, $elements[applicant].idPrefix, errorMsgTxt);
-        } else if (startDt === endDt) {
-            errorMsgTxt = "Start date cannot be equal to end date";
-            lblStartDt = _createValidationTag('error', $elements[applicant].startDateFieldName, $elements[applicant].idPrefix, errorMsgTxt);
-        } else if (startDt > endDt) {
-            errorMsgTxt = "Start date cannot be greater than end date";
-            lblEndDt = _createValidationTag('error', $elements[applicant].endDateFieldName, $elements[applicant].idPrefix, errorMsgTxt);
-        } else if (endDt > _formatDate(new Date())) {
-            errorMsgTxt = "End date cannot be greater than today";
-            lblEndDt = _createValidationTag('error', $elements[applicant].endDateFieldName, $elements[applicant].idPrefix, errorMsgTxt);
+        if (!(startDateStr)) {
+            startDateIsValid = false; s1_start = "start";
+        } else if (startDateObj < minDate || startDateObj > maxDate) {
+            startDateIsValid = false; s1_start = "start";
         } else {
+            startDateIsValid = true;
+        }
 
-            $elements[applicant].startDate.toggleClass( "has-error", false );
-            $elements[applicant].endDate.toggleClass( "has-error", false );
-            $elements[applicant].startDate.parent().toggleClass( "has-error", false );
-            $elements[applicant].endDate.parent().toggleClass( "has-error", false );
-            $elements[applicant].startDate.toggleClass( "has-success", true );
-            $elements[applicant].endDate.toggleClass( "has-success", true );
+        if (!(endDateStr)) {
+            endDateIsValid = false; s1_end = "end";
+        } else if (endDateObj < minDate || endDateObj > maxDate) {
+            endDateIsValid = false; s1_end = "end";
+        } else if (endDateObj > new Date()) {
+            endDateIsValid = false;
+            datesNotValidMessage = "End date cannot be greater than today";
+        } else {
+            endDateIsValid = true;
+        }
+
+        if(startDateIsValid && endDateIsValid) {
+            if (startDateStr === endDateStr) {
+                startDateIsValid = false; endDateIsValid = false;
+                datesNotValidMessage = "Start date cannot be equal to end date";
+            } else if (startDateObj > endDateObj) {
+                startDateIsValid = false; endDateIsValid = false;
+                datesNotValidMessage = "Start date cannot be greater than end date";
+            } else {
+                startDateIsValid = true; endDateIsValid = true;
+            }
+        }
+
+        s1 = s1_start ? s1_start : "";
+        s1 = (s1_end ? (s1 ? s1 + " and " + s1_end : s1_end) : s1);
+        s2 = s1_start && s1_end ? "s" : "";
+        datesNotValidMessage = datesNotValidMessage.replace("{s1}", s1).replace("{s2}", s2);
+
+        setTimeout(function() {
+            changeStartDateErrorStatus(applicant, startDateIsValid);
+            changeEndDateErrorStatus(applicant, endDateIsValid);
+        }, 1);
+
+        if (startDateIsValid && endDateIsValid) {
             $elements[applicant].validationContainer.html("");
-
             return true;
-        }
-
-        if (lblStartDt.length > 0) {
-            $elements[applicant].startDate.parent().toggleClass( "has-error", true );
-            $elements[applicant].validationContainer.html(lblStartDt);
         } else {
-            $elements[applicant].endDate.parent().toggleClass( "has-error", true );
-            $elements[applicant].validationContainer.html(lblEndDt);
+            lblStartDt = _createValidationTag('error', $elements[applicant].datesControls, $elements[applicant].idPrefix, datesNotValidMessage);
+            $elements[applicant].validationContainer.html(lblStartDt);
         }
-
         return false;
+    }
+
+    function changeStartDateErrorStatus(applicant, isSuccess) {
+        $elements[applicant].startDate.parent().toggleClass("has-error", !isSuccess);
+        $elements[applicant].startDate.parent().toggleClass("has-success", isSuccess);
+        $elements[applicant].startDate.toggleClass("has-error", !isSuccess);
+        $elements[applicant].startDate.toggleClass("has-success", isSuccess);
+    }
+
+    function changeEndDateErrorStatus(applicant, isSuccess) {
+        $elements[applicant].endDate.parent().toggleClass("has-error", !isSuccess);
+        $elements[applicant].endDate.parent().toggleClass("has-success", isSuccess);
+        $elements[applicant].endDate.toggleClass("has-error", !isSuccess);
+        $elements[applicant].endDate.toggleClass("has-success", isSuccess);
+    }
+
+    function validateCoverDates(applicant) {
+        return _validateCoverDatesDataTable(applicant, $elements[applicant].startDate.val(), $elements[applicant].endDate.val());
     }
 
     function _displayCoverDatesDataTable(applicant) {
@@ -384,7 +448,6 @@
         $elements[applicant].coverDatesHiddenField.removeAttr('aria-required');
         $elements[applicant].coverDatesHiddenField.removeAttr('data-validation-placement');
     }
-
 
     function getPrimaryCoverDates() {
         return getCoverDates('primary');

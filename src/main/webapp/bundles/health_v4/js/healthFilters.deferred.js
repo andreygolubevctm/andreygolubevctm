@@ -389,12 +389,11 @@
     function applyEventListeners() {
         $(document).on('change', 'input[name=health_filterBar_frequency]', function (e) {
             var frequency = $(this).val();
-            meerkat.messaging.publish(meerkatEvents.filters.FILTERS_UPDATED);
             _.defer(function () {
                 $('#health_filter_frequency').val(frequency);
                 Results.setFrequency(meerkat.modules.healthResults.getFrequencyInWords(frequency), false);
                 meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
-                Results.applyFiltersAndSorts(false);
+                Results.view.toggleFrequency(Results.settings.frequency);
             });
         });
 
@@ -534,10 +533,6 @@
             // note: unpinning products happens in healthResults.js due to the internal JS variable over there.
             meerkat.modules.healthResultsTemplate.unhideFilteredProducts();
             meerkat.modules.healthResults.unpinProductFromFilterUpdate();
-        });
-
-        meerkat.messaging.subscribe(meerkat.modules.events.filters.SHUFFLING_FINISHED, function (event) {
-            meerkat.modules.healthResults.pinProductHelper(event.productId, null);
         });
 
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCoupon() {
