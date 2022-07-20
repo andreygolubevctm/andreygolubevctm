@@ -615,7 +615,8 @@
 			onInitialise: function initPaymentStep(event){
 
 				meerkat.modules.healthPaymentDate.initPaymentDate();
-				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
+				// meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
+				meerkat.modules.healthPaymentBambora.initHealthPaymentBambora();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();

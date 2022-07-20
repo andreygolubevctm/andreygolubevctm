@@ -391,7 +391,7 @@ Process:
 
 	function openModal(htmlContent) {
 
-		console.log('==================== open ipp modal v4');
+		console.log('==================== open ipp modal v1');
 
 		debugger;
 		launchTime = new Date().getTime();
