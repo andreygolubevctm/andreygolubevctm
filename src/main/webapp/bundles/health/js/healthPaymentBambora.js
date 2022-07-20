@@ -413,6 +413,8 @@ Process:
 			processTokenSuccess: function(token) {
 				console.log('processTokenSuccess: ' + token);
 
+				$token.val(token);
+				$maskedNumber.val(token);
 				this.showSuccessFeedback('Success! Created token: ' + token);
 				this.setPayButton(true);
 				this.toggleProcessingScreen();

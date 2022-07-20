@@ -223,7 +223,7 @@ public class PaymentAdapter {
         // IPP payment gateway
         if (credit.map(Credit::getIpp)
                 .map(Ipp::getTokenisation).isPresent()) {
-            return Optional.of(getIppCreditCard(credit));
+            return Optional.of(getBamboraCreditCard(credit));
         }
 
         // Inline credit card form
@@ -273,9 +273,9 @@ public class PaymentAdapter {
                         }).orElse(null));
     }
 
-    protected static CreditCard getIppCreditCard(Optional<Credit> credit) {
+    protected static CreditCard getBamboraCreditCard(Optional<Credit> credit) {
         return new CreditCard()
-                .withPaymentGatewayType(PaymentGatewayType.IPP)
+                .withPaymentGatewayType(PaymentGatewayType.BAMBORA)
                 .withCardType(credit.map(Credit::getType)
                         .map(String::toUpperCase)
                         .map(CREDIT_CARD_TYPE_MAP::get)

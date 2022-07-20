@@ -776,8 +776,8 @@
         <dependency>
             <groupId>com.ctm.schema</groupId>
             <artifactId>schema-model</artifactId>
-            <version>${schema-model.version}</version>
-            <classifier>${schema-model.feature.classifier}</classifier>
+            <version>1.138.0-20220720.042220-6</version>
+            <classifier>SML-2427</classifier>
             <exclusions>
                 <exclusion>
                     <groupId>com.ctm.schema</groupId>

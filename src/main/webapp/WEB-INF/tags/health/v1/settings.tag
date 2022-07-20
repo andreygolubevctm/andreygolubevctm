@@ -123,7 +123,7 @@
 	<c:set var="extrasSpecificDisabled" value="${benefitsContent.getSupplementaryValueByKey('extrasSpecificDisabled')}" />
 
 	<c:set var="extrasLimitedAll" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedAll')}" />
-	
+
 	<c:set var="combinedNewHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedNewHelp')}" />
 	<c:set var="combinedCompareHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedCompareHelp')}" />
 	<c:set var="combinedFamilyHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedFamilyHelp')}" />
@@ -308,7 +308,7 @@
 	},
 	africaComp: <c:out value="${africaComp}" />,
 	pauseRecordingOverride : {
-		enabled : <c:out value="${pageSettings.getSetting('pauseRecordingOverride') eq 'Y'}"/>
+		enabled : <c:out value="${true}"/>
 	},
     hospitalBenefitsSource: '${hospitalBenefitsSource}'
 }
