@@ -298,6 +298,7 @@
 	<c:if test="${not empty data.health.application.dependants}">dependants:  <c:out value="${go:XMLtoJSON(data.health.application.dependants)}" escapeXml="false" />,</c:if>
 	alternatePricing: <health_v1:alternate_pricing_json />,
 	bsbServiceURL : "<content:get key="bsbValidationServiceUrl" />",
+	bupaBamboraMerchantId : '<c:out value="${pageSettings.getSetting('bupaBamboraMerchantId')}"/>',
 	ccOpeningHoursText : "<content:get key="ccHoursText" />",
 	situationHealthCvr: "<c:out value="${data['health/situation/healthCvr']}"/>",
 	hasPrimaryCover: "<c:out value="${data['health/healthCover/primary/cover']}"/>",

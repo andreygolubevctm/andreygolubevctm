@@ -325,7 +325,9 @@ Process:
 				};
 
 				console.log('checkout.createToken()');
-				customCheckout.createOneTimeToken('10e9aa9c-6da2-46c9-948f-efabe3eb2c6b', callback);
+				console.log('>>>>>>>>>>>>>>>> checkout.createToken() v5', meerkat.site.bupaBamboraMerchantId);
+				//test token provided by bambora 10e9aa9c-6da2-46c9-948f-efabe3eb2c6b
+				customCheckout.createOneTimeToken(meerkat.site.bupaBamboraMerchantId, callback);
 
 			},
 			hideErrorForId: function(id) {

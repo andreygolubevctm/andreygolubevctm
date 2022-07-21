@@ -204,6 +204,7 @@
 	<c:if test="${not empty data.health.application.dependants}">dependants:  <c:out value="${go:XMLtoJSON(data.health.application.dependants)}" escapeXml="false" />,</c:if>
 	alternatePricing: <health_v1:alternate_pricing_json />,
 	bsbServiceURL : "<content:get key="bsbValidationServiceUrl" />",
+	bupaBamboraMerchantId : '<c:out value="${pageSettings.getSetting('bupaBamboraMerchantId')}"/>',
 	ccOpeningHoursText : "<content:get key="ccHoursText" />"
 	<c:if test="${fund1800NumberActive eq 'true'}">
 	,fund1800s : {
