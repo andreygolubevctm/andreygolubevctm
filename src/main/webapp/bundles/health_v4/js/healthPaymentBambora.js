@@ -205,12 +205,10 @@ Process:
 
 		var customCheckoutController = {
 			init: function() {
-				console.log('checkout.init()');
 				this.createInputs();
 				this.addListeners();
 			},
 			createInputs: function() {
-				console.log('checkout.createInputs()');
 				var options = {};
 
 				// Create and mount the inputs
@@ -234,8 +232,6 @@ Process:
 				}
 
 				customCheckout.on('brand', function(event) {
-					console.log('brand: ' + JSON.stringify(event));
-
 					var cardLogo = 'none';
 					if (event.brand && event.brand !== 'unknown') {
 						var filePath =
@@ -248,16 +244,12 @@ Process:
 				});
 
 				customCheckout.on('blur', function(event) {
-					console.log('blur: ' + JSON.stringify(event));
 				});
 
 				customCheckout.on('focus', function(event) {
-					console.log('focus: ' + JSON.stringify(event));
 				});
 
 				customCheckout.on('empty', function(event) {
-					console.log('empty: ' + JSON.stringify(event));
-
 					if (event.empty) {
 						if (event.field === 'card-number') {
 							isCardNumberComplete = false;
@@ -271,8 +263,6 @@ Process:
 				});
 
 				customCheckout.on('complete', function(event) {
-					console.log('complete: ' + JSON.stringify(event));
-
 					if (event.field === 'card-number') {
 						isCardNumberComplete = true;
 						self.hideErrorForId('card-number');
@@ -290,8 +280,6 @@ Process:
 				});
 
 				customCheckout.on('error', function(event) {
-					console.log('error: ' + JSON.stringify(event));
-
 					if (event.field === 'card-number') {
 						isCardNumberComplete = false;
 						self.showErrorForId('card-number', event.message);
@@ -308,14 +296,11 @@ Process:
 			onSubmit: function(event) {
 				var self = this;
 
-				console.log('checkout.onSubmit()');
-
 				event.preventDefault();
 				self.setPayButton(false);
 				self.toggleProcessingScreen();
 
 				var callback = function(result) {
-					console.log('token result : ' + JSON.stringify(result));
 
 					if (result.error) {
 						self.processTokenError(result.error);
@@ -324,15 +309,11 @@ Process:
 					}
 				};
 
-				console.log('checkout.createToken()');
-				console.log('>>>>>>>>>>>>>>>> checkout.createToken() v4', meerkat.site.bupaBamboraMerchantId);
 				//test token provided by bambora 10e9aa9c-6da2-46c9-948f-efabe3eb2c6b
 				customCheckout.createOneTimeToken(meerkat.site.bupaBamboraMerchantId, callback);
 
 			},
 			hideErrorForId: function(id) {
-				console.log('hideErrorForId: ' + id);
-
 				var element = document.getElementById(id);
 
 				if (element !== null) {
@@ -347,12 +328,10 @@ Process:
 						bootStrapParent.classList.add('has-success');
 					}
 				} else {
-					console.log('showErrorForId: Could not find ' + id);
+					console.error('showErrorForId: Could not find ' + id);
 				}
 			},
 			showErrorForId: function(id, message) {
-				console.log('showErrorForId: ' + id + ' ' + message);
-
 				var element = document.getElementById(id);
 
 				if (element !== null) {
@@ -367,11 +346,10 @@ Process:
 						bootStrapParent.classList.remove('has-success');
 					}
 				} else {
-					console.log('showErrorForId: Could not find ' + id);
+					console.error('showErrorForId: Could not find ' + id);
 				}
 			},
 			setPayButton: function(enabled) {
-				console.log('checkout.setPayButton() disabled: ' + !enabled);
 
 				var payButton = document.getElementById('pay-button');
 				if (enabled) {
@@ -404,7 +382,6 @@ Process:
 			},
 			processTokenError: function(error) {
 				error = JSON.stringify(error, undefined, 2);
-				console.log('processTokenError: ' + error);
 
 				this.showErrorFeedback(
 					'Error creating token: </br>' + JSON.stringify(error, null, 4)
@@ -413,16 +390,11 @@ Process:
 				this.toggleProcessingScreen();
 			},
 			processTokenSuccess: function(token) {
-				console.log('processTokenSuccess: ' + token);
-
 				$token.val(token);
 				$maskedNumber.prop('required',false);
 				this.showSuccessFeedback('Success! Created token: ' + token);
 				this.setPayButton(true);
 				this.toggleProcessingScreen();
-
-				// Use token to call payments api
-				// this.makeTokenPayment(token);
 			},
 		};
 

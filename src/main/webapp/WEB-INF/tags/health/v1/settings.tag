@@ -309,7 +309,7 @@
 	},
 	africaComp: <c:out value="${africaComp}" />,
 	pauseRecordingOverride : {
-		enabled : <c:out value="${true}"/>
+			enabled : <c:out value="${pageSettings.getSetting('pauseRecordingOverride') eq 'Y'}"/>
 	},
     hospitalBenefitsSource: '${hospitalBenefitsSource}'
 }
