@@ -214,6 +214,9 @@
             _.defer(function () {
                 if (needToFetchFromServer) {
                     settings.events.update.apply(window, [event]);
+                } else {
+                    meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
+                    Results.applyFiltersAndSorts(true);
                 }
                 needToFetchFromServer = false;
             });
