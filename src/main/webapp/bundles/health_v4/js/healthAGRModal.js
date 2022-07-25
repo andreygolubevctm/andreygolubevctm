@@ -204,7 +204,11 @@
         });
 
         $primaryDob.add($partnerDob).add($dependantsIncome).on('change.AGR', function updateThePremiumOnInput() {
-            meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'start'
+                && meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'benefits'
+                && meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'contact') {
+                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+            }
         });
     }
 
