@@ -20,7 +20,7 @@
 	<field_v1:hidden xpath="${xpath}/tokenisation" required="false" className="payment-ipp-tokenisation" />
 
 	<c:set var="fieldXpath" value="${xpath}/maskedNumber" />
-	<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Number" renderLabelAsSimplesDialog="true">
+	<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Details" renderLabelAsSimplesDialog="true">
 		<field_v2:input xpath="${fieldXpath}" className="payment-ipp-maskedNumber sessioncamexclude" required="true" title="your secure credit card details" readOnly="${false}" />
 	</form_v3:row>
 </div>
