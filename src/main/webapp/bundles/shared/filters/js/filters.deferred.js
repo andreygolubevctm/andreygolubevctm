@@ -13,8 +13,7 @@
                 FILTERS_UPDATED: "FILTERS_UPDATED",
                 FILTER_CHANGED: "FILTER_CHANGED",
                 FILTERS_CANCELLED: "FILTERS_CANCELLED",
-                FILTERS_RENDERED: "FILTERS_RENDERED",
-                SHUFFLING_FINISHED: "SHUFFLING_FINISHED"
+                FILTERS_RENDERED: "FILTERS_RENDERED"
             }
         },
         settings = {

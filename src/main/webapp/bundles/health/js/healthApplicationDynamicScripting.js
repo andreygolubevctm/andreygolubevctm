@@ -590,7 +590,6 @@
 
         var updateBoth = true;
         var updateGender = false;
-        var nameTitleTextSubstring = '';
 
         if ($fields[person].title.val() === 'DR') {
             if (!isTitleTriggeringChange) {
@@ -600,21 +599,7 @@
         } else {
             if ($fields[person].gender.filter(':checked').val() === 'M'){
                 if ($fields[person].title.val() === 'MR') {
-
-                    // Note this will most likely break if the scripting for primary/partner name changes
-                    if (person === 'primary') {
-                        nameTitleTextSubstring = $dynamicDialogueBoxesPrimaryData.elementRef.text().toUpperCase().trim().substring(15,19);
-                    } else if (person === 'partner') {
-                        nameTitleTextSubstring = $dynamicDialogueBoxesPartnerData.elementRef.text().toUpperCase().trim().substring(12,16);
-                    }
-
-                    if (nameTitleTextSubstring.indexOf("MR ") === 0) {
-                        // do a check to see if the text is different else update both
-                        updateBoth = false;
-                    } else {
-                        updateGender = true;
-                    }
-
+                    updateBoth = false;
                     if (!isTitleTriggeringChange) {
                         updateGender = true;
                     }
@@ -624,25 +609,10 @@
 
             } else if ($fields[person].gender.filter(':checked').val() === 'F') {
                 if ($fields[person].title.val() === 'MRS' || $fields[person].title.val() === 'MISS' || $fields[person].title.val() === 'MS') {
-
-                    // Note this will most likely break if the scripting for primary/partner name changes
-                    if (person === 'primary') {
-                        nameTitleTextSubstring = $dynamicDialogueBoxesPrimaryData.elementRef.text().toUpperCase().trim().substring(15,20);
-                    } else if (person === 'partner') {
-                        nameTitleTextSubstring = $dynamicDialogueBoxesPartnerData.elementRef.text().toUpperCase().trim().substring(12,17);
-                    }
-
-                    if (nameTitleTextSubstring.indexOf("MRS ") === 0 || nameTitleTextSubstring.indexOf("MISS ") === 0 || nameTitleTextSubstring.indexOf("MS ") === 0) {
-                        // do a check to see if the text is different else update both
-                        updateBoth = false;
-                    } else {
-                        updateGender = true;
-                    }
-
+                    updateBoth = false;
                     if (!isTitleTriggeringChange) {
                         updateGender = true;
                     }
-
                 } else {
                     updateGender = true;
                 }

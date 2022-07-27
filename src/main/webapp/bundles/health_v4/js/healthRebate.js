@@ -17,7 +17,7 @@
         rates = null,
         rebate = '',
         rebateTiers = [
-            'Full rebate applies',
+            'Base Tier applied',
             'Tier 1 applied',
             'Tier 2 applied',
             'Tier 3 applied',
