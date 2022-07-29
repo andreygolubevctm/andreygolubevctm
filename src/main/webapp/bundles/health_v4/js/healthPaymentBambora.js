@@ -97,7 +97,7 @@ Process:
 				'            </div>\n' +
 				'            <span class="sr-only"></span>\n' +
 				'            <div class="form-group col-md-2 mb-2 text-center">\n' +
-				'                <button id="pay-button" type="submit" class="btn btn-primary disabled" disabled="true">Pay</button>\n' +
+				'                <button id="pay-button" type="submit" class="btn btn-primary disabled" disabled="true">Add</button>\n' +
 				'            </div>\n' +
 				'        </form>\n' +
 				'    </div>\n' +
@@ -124,9 +124,9 @@ Process:
 
 		modalId = meerkat.modules.dialogs.show({
 			htmlContent: htmlContent,
-			title: 'Credit Card Number',
+			title: 'Credit Card Details',
 			buttons: [{
-				label: "Cancel",
+				label: "Close",
 				className: 'btn-default',
 				closeWindow:true
 			}],
@@ -393,7 +393,7 @@ Process:
 				$token.val(token);
 				$maskedNumber.prop('required',false);
 				$maskedNumber.val('Success');
-				this.showSuccessFeedback('Success! Created token: ' + token);
+				this.showSuccessFeedback('Success!');
 				this.setPayButton(true);
 				this.toggleProcessingScreen();
 			},
