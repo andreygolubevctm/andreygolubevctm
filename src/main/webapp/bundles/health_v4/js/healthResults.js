@@ -273,6 +273,7 @@
                 balanceCurrentPageRowsHeightOnly: {
                     mobile: true
                 },
+                sameHeightForAllResults: ['.content.excess-wavier'],
                 popularProducts: {
                     enabled: meerkat.modules.healthPopularProducts.isEnabled()
                 }
