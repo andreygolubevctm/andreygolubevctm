@@ -259,9 +259,25 @@ Features = {
 			Results.settings.balanceCurrentPageRowsHeightOnly.mobile) ? ' .result-row.currentPage ' : ' ';
 		var visibleMultiRowElements = $( Features.target + currentPageElements + Results.settings.elements.features.values+":visible"  ); // Removed .filter(":visible") because IE couldn't handle it.
 		Features.sameHeightRows( visibleMultiRowElements );
+		Features.sameHeightForAllResults(Results.settings.sameHeightForAllResults);
 	},
 
-	sameHeightRows: function( elements ){
+	sameHeightForAllResults: function ( elements) {
+		elements.forEach(function elementsEach(element) {
+			var maxHeight = 0;
+
+			$(element).each(function () {
+				if ($(this).height() > maxHeight) {
+					maxHeight = $(this).height();
+				}
+			});
+			$(element).each(function () {
+				$(this).height(maxHeight);
+			});
+		});
+	},
+
+	sameHeightRows: function ( elements ){
 
 		var featureRowCache = [];
 
@@ -315,9 +331,6 @@ Features = {
 
 			}
 		}
-
-
-
 	},
 	getHeight: function($h){
 		// the h class means its a header cell which is always recalculated
