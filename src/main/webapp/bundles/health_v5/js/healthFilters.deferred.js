@@ -494,6 +494,7 @@
             toggleQuoteRefTemplate('slideDown');
         });
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_UPDATED, function (event) {
+            meerkat.modules.resultsHeaderBar.removeEventListeners();
             var pinnedProduct = Results.getPinnedProduct();
             Results.setProductToPin(pinnedProduct);
             toggleQuoteRefTemplate('slideDown');
