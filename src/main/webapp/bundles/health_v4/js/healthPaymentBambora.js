@@ -159,7 +159,7 @@ Process:
 			var failTime = ', ' + Math.round((new Date().getTime() - launchTime) / 1000) + ' seconds';
 			//Add reasons: HLT-1111
 			$token.val('fail, ' + reason + failTime );
-			$maskedNumber.val('Try again or continue');
+			$maskedNumber.val('');
 			modalContent = '';
 		}
 	}
@@ -196,6 +196,7 @@ Process:
 	// the whole function is from https://dev-apac.bambora.com/checkout/guides/custom-checkout/demos
 	// with console logs removed
 	function initBamboraModal() {
+		$maskedNumber.val('');
 		var customCheckout = customcheckout();
 
 		var isCardNumberComplete = false;
@@ -310,7 +311,6 @@ Process:
 
 				//test token provided by bambora 10e9aa9c-6da2-46c9-948f-efabe3eb2c6b
 				customCheckout.createOneTimeToken(meerkat.site.bupaBamboraMerchantId, callback);
-
 			},
 			hideErrorForId: function(id) {
 				var element = document.getElementById(id);
@@ -392,6 +392,7 @@ Process:
 				$token.val(token);
 				$maskedNumber.prop('required',false);
 				$maskedNumber.val('Success');
+				$maskedNumber.valid();
 				this.showSuccessFeedback('Success!');
 				this.setPayButton(true);
 				this.toggleProcessingScreen();

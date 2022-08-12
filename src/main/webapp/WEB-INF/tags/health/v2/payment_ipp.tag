@@ -21,6 +21,6 @@
 
 	<c:set var="fieldXpath" value="${xpath}/maskedNumber" />
 	<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Details" renderLabelAsSimplesDialog="true">
-		<field_v2:input xpath="${fieldXpath}" className="payment-ipp-maskedNumber sessioncamexclude" required="true" title="your secure credit card details" readOnly="${false}" />
+		<field_v2:input xpath="${fieldXpath}" className="payment-ipp-maskedNumber sessioncamexclude" required="true" title="your secure credit card details" additionalAttributes=" data-rule-validateBupaCard='true'" readOnly="${false}" />
 	</form_v3:row>
 </div>

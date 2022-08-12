@@ -242,7 +242,7 @@
         val = $(el).val();
         // Validation rules:
         // - Digits and asterisks only (no spaces or what not)
-        return val.match(/[0-9]{1,12}(\*){1,}[0-9]{1,4}/) ;
+        return !!val ;
     }, 'Please register a valid credit card');
 
     $.validator.addMethod("matchStates", function (value, element) {
