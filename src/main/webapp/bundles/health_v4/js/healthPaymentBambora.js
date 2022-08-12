@@ -82,22 +82,26 @@ Process:
 				'<div class="bambora-container">\n' +
 				'    <div class="row">\n' +
 				'        <!-- Add form -->\n' +
-				'        <form id="checkout-form" class="form-inline  text-center">\n' +
-				'            <div class="form-group col-md-4 mb-4 has-feedback" id="card-number-bootstrap">\n' +
-				'                <div id="card-number" class="form-control"></div>\n' +
-				'                <label class="help-block" for="card-number" id="card-number-error"></label>\n' +
+				'        <form id="checkout-form" class="form-inline text-center">\n' +
+				'            <div class="row">\n' +
+					'            <div class="form-group col-md-4 mb-4 has-feedback" id="card-number-bootstrap">\n' +
+					'                <div id="card-number" class="form-control"></div>\n' +
+					'                <label class="help-block" for="card-number" id="card-number-error"></label>\n' +
+					'            </div>\n' +
+					'            <div class="form-group col-md-4 mb-4 has-feedback" id="card-cvv-bootstrap">\n' +
+					'                <div id="card-cvv" class="form-control"></div>\n' +
+					'                <label class="help-block" for="card-cvv" id="card-cvv-error"></label>\n' +
+					'            </div>\n' +
+					'            <div class="form-group col-md-4 mb-4 has-feedback" id="card-expiry-bootstrap">\n' +
+					'                <div id="card-expiry" class="form-control"></div>\n' +
+					'                <label class="help-block" for="card-expiry" id="card-expiry-error"></label>\n' +
+					'            </div>\n' +
+					'            <span class="sr-only"></span>\n' +
 				'            </div>\n' +
-				'            <div class="form-group col-md-3 mb-3 has-feedback" id="card-cvv-bootstrap">\n' +
-				'                <div id="card-cvv" class="form-control"></div>\n' +
-				'                <label class="help-block" for="card-cvv" id="card-cvv-error"></label>\n' +
-				'            </div>\n' +
-				'            <div class="form-group col-md-3 mb-3 has-feedback" id="card-expiry-bootstrap">\n' +
-				'                <div id="card-expiry" class="form-control"></div>\n' +
-				'                <label class="help-block" for="card-expiry" id="card-expiry-error"></label>\n' +
-				'            </div>\n' +
-				'            <span class="sr-only"></span>\n' +
-				'            <div class="form-group col-md-2 mb-2 text-center">\n' +
-				'                <button id="pay-button" type="submit" class="btn btn-primary disabled" disabled="true">Add</button>\n' +
+				'            <div class="row bambora-add-button">\n' +
+					'            <div class="form-group text-center pay-button-wrapper">\n' +
+					'                <button id="pay-button" type="submit" class="btn btn-block" disabled="true">Add</button>\n' +
+					'            </div>\n' +
 				'            </div>\n' +
 				'        </form>\n' +
 				'    </div>\n' +
@@ -125,11 +129,6 @@ Process:
 		modalId = meerkat.modules.dialogs.show({
 			htmlContent: htmlContent,
 			title: 'Credit Card Details',
-			buttons: [{
-				label: "Close",
-				className: 'btn-default',
-				closeWindow:true
-			}],
 			onOpen: function(id) {
 				meerkat.modules.tracking.recordSupertag('trackCustomPage', 'Payment gateway popup');
 			},
@@ -396,6 +395,7 @@ Process:
 				this.showSuccessFeedback('Success!');
 				this.setPayButton(true);
 				this.toggleProcessingScreen();
+				meerkat.modules.dialogs.close(modalId);
 			},
 		};
 
