@@ -82,6 +82,11 @@ var healthFunds_AHM = {
     meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
     meerkat.modules.healthCreditCard.render();
 
+    <%-- show health payment day script--%>
+    if (meerkat.site.isCallCentreUser) {
+      meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(true);
+    }
+
     <%--selections for payment date--%>
       meerkat.modules.healthFunds.setPayments({
           'min':0,

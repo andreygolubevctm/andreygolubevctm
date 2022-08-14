@@ -87,8 +87,9 @@
             }
         }
 
-        var _html = '<option value="">Please choose...</option>';
+        var _html = '';
 
+        var firstOption = true;
         // The loop to create the payment days
         while (_count < _limit) {
             var _date = new Date( _baseDate.getTime() + (_days * 24 * 60 * 60 * 1000));
@@ -104,8 +105,10 @@
                     _count++;
                 }
             } else {
-                _html += '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'">'+
+                var selectedOption = firstOption ? ' selected ' : '';
+                _html += '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'"' + selectedOption +'>'+
                     meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
+                firstOption = false;
                 _days++;
                 _count++;
             }
@@ -124,6 +127,9 @@
         $_object.html(_html);
         $_object.parent().siblings('p').text( 'Your payment will be deducted on: ' + $_object.find('option').first().text() );
         $('.health_payment_bank_details-policyDay, .health_payment_credit-policyDay').html(_html);
+
+        meerkat.modules.healthApplicationDynamicScripting.setPaymentDayTextForDialogue($_object.find(":selected").text());
+        meerkat.modules.healthApplicationDynamicScripting.performUpdatePaymentDayDynamicDialogueBox();
     }
 
     /*

@@ -203,6 +203,11 @@
             healthFunds_HIF.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
             healthFunds_HIF.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
+            <%-- show health payment day script--%>
+            if (meerkat.site.isCallCentreUser) {
+                meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(true);
+            }
+
             healthFunds_HIF.$paymentType.on('change.HIF', function renderPaymentDaysPaymentType(){
                 healthFunds_HIF.renderPaymentDays();
             });

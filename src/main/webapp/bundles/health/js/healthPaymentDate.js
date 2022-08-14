@@ -64,7 +64,7 @@
 			startDate = new Date(); // default to use today
 		} else {
 			startDate = meerkat.modules.dateUtils.returnDate(euroDate);
-			}
+		}
 
 		if (typeof exclusion === "undefined") exclusion = 7; // default a week buffer
 		if (typeof excludeWeekend === "undefined") excludeWeekend = false; // default not to exclude weekend
@@ -93,6 +93,9 @@
             html = meerkat.modules.healthPaymentDay.paymentDays( minimumDate );
         }
 		$paymentDays.html(html);
+
+		meerkat.modules.healthApplicationDynamicScripting.setPaymentDayTextForDialogue($paymentDays.find(":selected").text());
+		meerkat.modules.healthApplicationDynamicScripting.performUpdatePaymentDayDynamicDialogueBox();
 	}
 
 	meerkat.modules.register("healthPaymentDate", {

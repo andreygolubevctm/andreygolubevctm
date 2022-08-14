@@ -84,7 +84,7 @@ var healthFunds_MYO = {
         <%--dependant definition--%>
         meerkat.modules.healthDependants.setMaxAge(25);
 
-            <%--schoolgroups and defacto --%>
+        <%--schoolgroups and defacto --%>
         meerkat.modules.healthDependants.updateConfig({ showSchoolFields:false, 'schoolMinAge':23, 'schoolMaxAge':24, showSchoolIdField:false });
 
         <%--credit card & bank account frequency & day frequency--%>
@@ -98,6 +98,11 @@ var healthFunds_MYO = {
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
         meerkat.modules.healthCreditCard.render();
+
+        <%-- hide health payment day script--%>
+        if (meerkat.site.isCallCentreUser) {
+            meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(false);
+        }
 
         <%--fund offset check--%>
         meerkat.modules.healthFundTimeOffset.onInitialise({
