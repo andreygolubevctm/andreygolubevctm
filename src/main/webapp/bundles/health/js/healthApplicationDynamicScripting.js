@@ -16,6 +16,7 @@
         $dynamicDialogueBoxesPartnerGender = null,
         $dynamicDialogueBoxPartnerDOB = null,
         $dynamicDialogueBoxDependants = null,
+        $dynamicDialogueBoxPaymentDay = null,
         $fundSpecificDynamicDialogueBoxes_MYO = null,
         $nonDynamicDialogueBoxMedicareCardSpelling = null,
         $nonDynamicDialogueBoxYourFullName = null,
@@ -336,6 +337,12 @@
                     var curDate = applicationDateString ? new Date(applicationDateString) : meerkat.site.serverDate;
                     return meerkat.modules.dateUtils.dateValueFormFormat(curDate);
                 }
+            },
+            {
+                text: '%FIRST_PAYMENT_DATE%',
+                get: function () {
+                    return _derivedData.paymentDay;
+                }
             }
         ];
 
@@ -357,6 +364,7 @@
         _setupPartnerGenderDynamicTextTemplates();
         _setupPartnerDOBDynamicTextTemplate();
         _setupDependantsDynamicTextTemplate();
+        _setupPaymentDayDynamicTextTemplate();
 
         _setupMedicareCardSpellingNonDynamicTextTemplate();
         _setupYourFullNameNonDynamicTextTemplate();
@@ -579,6 +587,13 @@
             };
             $fields.partner.dob.on('change.dynamicScriptingPartnerDob', dynamicScriptingPartnerDOBUpdated);
         }
+
+        var dynamicScriptingPaymentDayChanged = function() {
+            _derivedData.paymentDay = undefined;
+            _derivedData.paymentDay = _getPaymentDay();
+            performUpdatePaymentDayDynamicDialogueBox();
+        };
+        $fields.payment.paymentDay.on('change.dynamicScriptingPaymentDay', dynamicScriptingPaymentDayChanged);
     }
 
     function refreshPersonData(person) {
@@ -833,6 +848,20 @@
 
     }
 
+    function _setupPaymentDayDynamicTextTemplate() {
+
+        try {
+            $dynamicDialogueBoxPaymentDay = {
+                'elementRef':$('.simples-dialogue-236'),
+                'template': $('.simples-dialogue-236').html()
+            };
+        }
+        catch(err) {
+            console.error( "Required payment start date dialogue box does not exist");
+        }
+
+    }
+
     function _setupYourFullNameNonDynamicTextTemplate() {
 
         try {
@@ -1020,6 +1049,9 @@
                 expMonth: $('#health_payment_medicare_expiry_cardExpiryMonth'),
                 expYear: $('#health_payment_medicare_expiry_cardExpiryYear'),
                 position: $('#health_payment_medicare_cardPosition')
+            },
+            payment: {
+                paymentDay: $('.health_payment_day')
             }
 
         };
@@ -1077,6 +1109,7 @@
         performUpdatePartnerDataDynamicDialogueBoxes();
         performUpdatePartnerDOBDynamicDialogueBox();
         performUpdateDependantsDynamicDialogueBox();
+        performUpdatePaymentDayDynamicDialogueBox();
 
         performResetMedicareCardSpellingNonDynamicDialogueBox();
         performResetYourFullNameNonDynamicDialogueBox();
@@ -1234,6 +1267,16 @@
                     console.error("Dependant" + i + " has no dynamic template defined in $dynamicDialogueBoxDependants");
                 }
             }
+        }
+    }
+
+    function performUpdatePaymentDayDynamicDialogueBox() {
+        try {
+            var newHtml = $dynamicDialogueBoxPaymentDay.template.valueOf();
+            replacePlaceholderText($dynamicDialogueBoxPaymentDay.elementRef, newHtml, null);
+        }
+        catch(err) {
+            console.error( "Payment day dynamic text replacement did not occur due to an error");
         }
     }
 
@@ -1443,6 +1486,7 @@
                 $fields.partner.surname.off('change.dynamicScriptingPartnerSurname');
                 $fields.partner.dob.off('change.dynamicScriptingPartnerDob');
                 $fields.partner.gender.off('change.dynamicScriptingPartnerGender');
+                $fields.payment.paymentDay.off('change.dynamicScriptingPaymentDay');
             }
 
             if (navInfo.isBackward && navInfo.navigationId === 'results' && _states.fetchResults) {
@@ -1792,6 +1836,9 @@
             }
         }
 
+        var paymentDayText = _getPaymentDay();
+        data.paymentDay = paymentDayText;
+
         return data;
     }
 
@@ -1860,6 +1907,25 @@
 
     function _getPersonDOB(person) {
         return (!_.isUndefined($fields[person].dob) ? _getDobFormatted($fields[person].dob) : '');
+    }
+
+    function _getPaymentDay() {
+        var paymentDayText = '';
+        if (!_.isUndefined($fields.payment.paymentDay)) {
+            $fields.payment.paymentDay.each(function( index ) {
+                if ($(this).is(':visible')) {
+                    if ($(this).val() != '') {
+                        paymentDayText = _getOptionText($(this));
+                    }
+                    return false;
+                }
+            });
+        }
+        return paymentDayText;
+    }
+
+    function setPaymentDayTextForDialogue(paymentDayText) {
+        _derivedData.paymentDay = paymentDayText;
     }
 
     function _getOptionText($el) {
@@ -1968,9 +2034,20 @@
             + postcode;
     }
 
+    function togglePaymentDayScript(show) {
+        if (show) {
+            $('.simples-dialogue-236').show();
+        } else {
+            $('.simples-dialogue-236').hide();
+        }
+    }
+
     meerkat.modules.register('healthApplicationDynamicScripting', {
         onInitialise: onInitialise,
         onBeforeEnterApply: onBeforeEnterApply,
+        setPaymentDayTextForDialogue: setPaymentDayTextForDialogue,
+        performUpdatePaymentDayDynamicDialogueBox: performUpdatePaymentDayDynamicDialogueBox,
+        togglePaymentDayScript: togglePaymentDayScript,
         events: moduleEvents
     });
 

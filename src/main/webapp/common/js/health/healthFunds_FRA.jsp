@@ -55,6 +55,11 @@ var healthFunds_FRA = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
+        <%-- hide health payment day script--%>
+        if (meerkat.site.isCallCentreUser) {
+            meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(false);
+        }
+
         <%--fund offset check--%>
         meerkat.modules.healthFundTimeOffset.onInitialise({
             weekends: true,
