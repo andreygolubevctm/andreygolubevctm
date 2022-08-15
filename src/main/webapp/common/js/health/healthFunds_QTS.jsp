@@ -58,6 +58,11 @@ var healthFunds_QTS = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':true, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
+        <%-- show health payment day script--%>
+        if (meerkat.site.isCallCentreUser) {
+            meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(true);
+        }
+
         healthFunds_QTS.$paymentType.on('change.QTS', function renderPaymentDaysPaymentType(){
             healthFunds_QTS.renderPaymentDays();
         });

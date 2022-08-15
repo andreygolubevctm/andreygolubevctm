@@ -50,7 +50,7 @@
 
 		<%-- Note: this form row's HTML is changed by JavaScript --%>
 		<c:set var="fieldXpath" value="${xpath}/frequency" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="How often would you like to make payments" className="changes-premium" renderLabelAsSimplesDialog="true">
+		<form_v3:row fieldXpath="${fieldXpath}" className="changes-premium" renderLabelAsSimplesDialog="true" noOffsetWhenNoLabel="true">
 			<field_v2:array_select items="=Please choose..." xpath="${fieldXpath}" title="frequency of payments" required="true" delims="||" className="health-payment_details-frequency" />
 			<div class="fieldrow_legend lhcText"></div>
 		</form_v3:row>

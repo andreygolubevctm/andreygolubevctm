@@ -59,6 +59,11 @@ var healthFunds_NIB = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':true, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
+        <%-- show health payment day script--%>
+        if (meerkat.site.isCallCentreUser) {
+            meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(true);
+        }
+
         healthFunds_NIB.$paymentType.on('change.NIB', function renderPaymentDaysPaymentType(){
             healthFunds_NIB.renderPaymentDays();
         });

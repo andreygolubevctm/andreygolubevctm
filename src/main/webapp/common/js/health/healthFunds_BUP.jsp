@@ -196,6 +196,11 @@ var healthFunds_BUP = {
 
 		meerkat.modules.healthPaymentIPP.show();
 
+		<%-- hide health payment day script--%>
+		if (meerkat.site.isCallCentreUser) {
+			meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(false);
+		}
+
 		<%-- Dependant's Age and message --%>
 		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
         if (familyCoverType === 'EF' || familyCoverType === 'ESP') {

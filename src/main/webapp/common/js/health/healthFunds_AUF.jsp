@@ -36,6 +36,11 @@ var healthFunds_AUF = {
     meerkat.modules.healthPaymentStep.overrideSettings('credit', {'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });
     meerkat.modules.healthPaymentStep.overrideSettings('isAUF', true);
 
+    <%-- show health payment day script--%>
+    if (meerkat.site.isCallCentreUser) {
+      meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(true);
+    }
+
     <%--selections for payment date--%>
     meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':5, 'weekends':false });
 
