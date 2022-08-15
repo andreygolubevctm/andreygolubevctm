@@ -17,6 +17,8 @@ var healthFunds_BUP = {
     extendedFamilyMinAge: 21,
     extendedFamilyMaxAge: 25,
     healthDependantMaxAge: 25,
+	<%--schoolMinAge: 21,--%>
+	<%--schoolMaxAge: 24,--%>
 	set: function () {
 
 		healthFunds_BUP.isYourChoiceExtras = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Your Choice Extras') > -1;
@@ -212,6 +214,9 @@ var healthFunds_BUP = {
 		healthFunds_BUP.$claimsAccountOptin.find("input:checked").each(function(){
 		  $(this).prop("checked",null).trigger("change");
 		});
+
+		<%--schoolgroups and defacto--%>
+		meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, isBUP:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true, showSchoolCommencementField:true, dateStudyCommencedFieldName:'Study Start Date' });
 
 	},
 	updateMessage: function() {

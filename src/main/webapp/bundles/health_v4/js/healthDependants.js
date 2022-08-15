@@ -54,6 +54,7 @@
             schoolMinAge: 22,
             schoolMaxAge: 24,
             isAUF: false,
+            isBUP: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,
@@ -65,7 +66,8 @@
             defactoMaxAge: 24,
             showApprenticeField: false,
             extendedFamilyMinAge: 21,
-            extendedFamilyMaxAge: 25
+            extendedFamilyMaxAge: 25,
+            dateStudyCommencedFieldName: 'Date Study Commenced'
         },
         providerConfig,
         maxDependantAge = 25,
@@ -250,6 +252,7 @@
 
         // see   \health\js\healthDependants.js if extendedFamily integration is required in the future
         // If the dependant is between the school age
+        console.log('============ providerConfig', providerConfig);
         if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
             // If the config is set to true, we want to remove the class.
             // To remove a class, toggleClass needs false, so we flip the config option.
@@ -259,10 +262,13 @@
             $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
             $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
             $(selectorPrefix + '_schoolGraduationDate').toggleClass('hidden', !providerConfig.isNibOrQts && !providerConfig.isAUF);
+            // $(selectorPrefix + '_schoolDateStartGroup').toggleClass('hidden', !providerConfig.isBUP);
+            $(selectorPrefix + '_expectedSchoolCompletionDate').toggleClass('hidden', !providerConfig.isBUP);
             $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
         } else {
             // Hide them all if they aren't in the date range.
-            $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+            $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix
+                + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup, ' + selectorPrefix + '_expectedSchoolCompletionDate').addClass('hidden');
         }
     }
 
