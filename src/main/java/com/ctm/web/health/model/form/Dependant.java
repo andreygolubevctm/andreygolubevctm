@@ -23,8 +23,6 @@ public class Dependant {
 
     private String schoolID;
 
-    private String expectedSchoolCompletionDate;
-
     private String fulltime;
 
     private String relationship;
@@ -68,14 +66,6 @@ public class Dependant {
 
     public void setSchoolID(String schoolID) {
         this.schoolID = schoolID;
-    }
-
-    public String getExpectedSchoolCompletionDate() {
-        return expectedSchoolCompletionDate;
-    }
-
-    public void setExpectedSchoolCompletionDate(String expectedSchoolCompletionDate) {
-        this.expectedSchoolCompletionDate = expectedSchoolCompletionDate;
     }
 
     public String getTitle() {

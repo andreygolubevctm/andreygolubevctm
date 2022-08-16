@@ -104,7 +104,7 @@
                 <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude data-hj-suppress" defaultValue="{{= obj.school }}" disableErrorContainer="${true}" placeHolder="School"/>
                 {{ } }}
             </form_v4:row>
-            {{ if(providerConfig.showSchoolCommencementField === true && providerConfig.isAUF === true && providerConfig.isBUP === false) { }}
+            {{ if(providerConfig.showSchoolCommencementField === true && providerConfig.isAUF === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="{{= providerConfig.dateStudyCommencedFieldName}}" id="${name}_schoolDateGroup"
                          className="health_dependant_details_schoolDateGroup hidden">
@@ -129,14 +129,6 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="{{= providerConfig.dateStudyCommencedFieldName}}" id="${name}_schoolDateGroup"
                          className="health_dependant_details_schoolDateGroup hidden">
-                <field_v2:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement" required="{{= providerConfig.schoolDateRequired }}"  disableErrorContainer="${true}" />
-            </form_v4:row>
-            {{ } }}
-
-            {{ if(providerConfig.isBUP === true) { }}
-            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/expectedSchoolCompletionDate"/>
-            <form_v4:row fieldXpath="${fieldXpath}" label="Expected Study Completion Date" id="${name}_expectedSchoolCompletionDate"
-                         className="health_dependant_details_expectedSchoolCompletionDate">
                 <field_v2:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement" required="{{= providerConfig.schoolDateRequired }}"  disableErrorContainer="${true}" />
             </form_v4:row>
             {{ } }}
