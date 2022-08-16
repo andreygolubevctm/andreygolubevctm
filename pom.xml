@@ -26,7 +26,7 @@
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
         <life-common.version>1.1.0-RC1</life-common.version>
         <reward-model.version>1.9.0</reward-model.version>
-        <health-common.version>1.26.0-SNAPSHOT</health-common.version>
+<!--        <health-common.version>1.26.0-SNAPSHOT</health-common.version>-->
         <emails-utils.version>1.21.1-RC1</emails-utils.version>
 
         <!-- 3rd party -->
@@ -471,7 +471,8 @@
         <dependency>
             <groupId>com.ctm.health</groupId>
             <artifactId>health-common</artifactId>
-            <version>${health-common.version}</version>
+            <version>1.26.0-20220812.075217-2</version>
+            <classifier>SML-2474</classifier>
             <exclusions>
                 <exclusion>
                     <groupId>com.ctm.springframework.boot</groupId>
