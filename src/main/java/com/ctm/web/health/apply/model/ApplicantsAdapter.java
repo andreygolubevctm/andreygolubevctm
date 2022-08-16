@@ -223,7 +223,10 @@ public class ApplicantsAdapter {
                     .withGraduationDate(dependant.map(com.ctm.web.health.model.form.Dependant::getGraduationDate)
                             .map(LocalDateUtils::parseISOLocalDate)
                             .orElse(null))
-                    .withStudentID(dependant.map(com.ctm.web.health.model.form.Dependant::getSchoolID).orElse(null));
+                    .withStudentID(dependant.map(com.ctm.web.health.model.form.Dependant::getSchoolID).orElse(null))
+                    .withExpectedStudyCompletionDate(dependant.map(com.ctm.web.health.model.form.Dependant::getExpectedSchoolCompletionDate)
+                            .map(LocalDateUtils::parseAUSLocalDate)
+                            .orElse(null));
         } else {
             return null;
         }

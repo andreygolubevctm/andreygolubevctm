@@ -125,7 +125,7 @@
             </form_v4:row>
             {{ } }}
 
-            {{ if(providerConfig.showSchoolCommencementField === true && (providerConfig.isAUF === false || providerConfig.isBUP === true)) { }}
+            {{ if(providerConfig.showSchoolCommencementField === true && providerConfig.isAUF === false ) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="{{= providerConfig.dateStudyCommencedFieldName}}" id="${name}_schoolDateGroup"
                          className="health_dependant_details_schoolDateGroup hidden">
