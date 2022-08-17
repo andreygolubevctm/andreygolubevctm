@@ -50,10 +50,8 @@
              */
             showSchoolFields: true,
             useSchoolDropdownMenu: false,
-            isNibOrQts: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
-            isAUF: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,
@@ -65,7 +63,11 @@
             defactoMaxAge: 24,
             showApprenticeField: false,
             extendedFamilyMinAge: 21,
-            extendedFamilyMaxAge: 25
+            extendedFamilyMaxAge: 25,
+            isAUF: false,
+            isNibOrQts: false,
+            isAHM: false,
+
         },
         providerConfig,
         maxDependantAge = 25,
