@@ -54,6 +54,7 @@
             schoolMinAge: 22,
             schoolMaxAge: 24,
             isAUF: false,
+            isBUP: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,

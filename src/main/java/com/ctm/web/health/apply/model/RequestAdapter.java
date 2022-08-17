@@ -161,7 +161,7 @@ public class RequestAdapter {
     private static com.ctm.schema.health.v1_0_0.IndividualAbdSummary getIndividualAbdSummary(final Optional<IndividualAbdSummary> abdSummary) {
         return abdSummary.map(abd -> new com.ctm.schema.health.v1_0_0.IndividualAbdSummary()
                         .withCurrentAge(abd.getCurrentAge())
-                        .withAbdPolicyStartDate(abd.getAbdPolicyStartDate() == null ? null : ZonedDateTime.from(abd.getAbdPolicyStartDate()))
+                        .withPolicyStartDate(abd.getAbdPolicyStartDate() == null ? null : ZonedDateTime.from(abd.getAbdPolicyStartDate()))
                         .withAgeBasedDiscount(new com.ctm.schema.health.v1_0_0.AgeBasedDiscount()
                                 .withPercentage(abd.getAgeBasedDiscount().getPercentage())
                                 .withAssessmentDate(abd.getAgeBasedDiscount().getAssessmentDate())

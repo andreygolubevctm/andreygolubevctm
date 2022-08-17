@@ -299,6 +299,7 @@
 	alternatePricing: <health_v1:alternate_pricing_json />,
 	bsbServiceURL : "<content:get key="bsbValidationServiceUrl" />",
 	bupaBamboraMerchantId : '<c:out value="${pageSettings.getSetting('bupaBamboraMerchantId')}"/>',
+	bamboraURL : '<c:out value="${pageSettings.getSetting('bamboraURL')}"/>',
 	ccOpeningHoursText : "<content:get key="ccHoursText" />",
 	situationHealthCvr: "<c:out value="${data['health/situation/healthCvr']}"/>",
 	hasPrimaryCover: "<c:out value="${data['health/healthCover/primary/cover']}"/>",

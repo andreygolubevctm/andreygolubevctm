@@ -83,10 +83,11 @@
             </form_v2:row>
             {{ } }}
 
-            {{ if(providerConfig.showSchoolFields === true) { }}
+            {{ if(providerConfig.showSchoolFields === true) { console.log('>>>>>>>>>>>>>>>>>>>>>> v3 deps', providerConfig); }}
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
             <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
+            {{ if(providerConfig.isBUP !== true) { }}
             <form_v2:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
                          className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="290">
                 {{ if (isNibOrQts) { }}
@@ -100,9 +101,10 @@
                                         disableErrorContainer="${false}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No Educational institute selected."/>
                 {{ } }}
             </form_v2:row>
+            {{ } }}
             {{ if(providerConfig.showSchoolCommencementField === true && providerConfig.isAUF === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
-            <form_v2:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}_schoolDateGroup"
+            <form_v2:row fieldXpath="${fieldXpath}" label="{{= providerConfig.dateStudyCommencedFieldName}}" id="${name}_schoolDateGroup"
                          className="health_dependant_details_schoolDateGroup hidden">
                 <field_v2:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement" required="{{= providerConfig.schoolDateRequired }}" />
             </form_v2:row>
@@ -127,7 +129,7 @@
 
             {{ if(providerConfig.showSchoolCommencementField === true && providerConfig.isAUF === false) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
-            <form_v2:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}_schoolDateGroup"
+            <form_v2:row fieldXpath="${fieldXpath}" label="{{= providerConfig.dateStudyCommencedFieldName}}" id="${name}_schoolDateGroup"
                          className="health_dependant_details_schoolDateGroup hidden">
                 <field_v2:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement" required="{{= providerConfig.schoolDateRequired }}"  disableErrorContainer="${true}" />
             </form_v2:row>

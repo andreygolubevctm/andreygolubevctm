@@ -205,6 +205,7 @@
 	alternatePricing: <health_v1:alternate_pricing_json />,
 	bsbServiceURL : "<content:get key="bsbValidationServiceUrl" />",
 	bupaBamboraMerchantId : '<c:out value="${pageSettings.getSetting('bupaBamboraMerchantId')}"/>',
+	bamboraURL : '<c:out value="${pageSettings.getSetting('bamboraURL')}"/>',
 	ccOpeningHoursText : "<content:get key="ccHoursText" />"
 	<c:if test="${fund1800NumberActive eq 'true'}">
 	,fund1800s : {

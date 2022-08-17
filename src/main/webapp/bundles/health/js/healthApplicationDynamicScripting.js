@@ -1833,7 +1833,7 @@
             gender = _getGender($fields[person]);
 
         middleName = (!_.isUndefined($fields[person].middleName) ? $fields[person].middleName.val() : '');
-        middleInitial = (middleName.length > 0 ? middleName.charAt(0) : '');
+        middleInitial = (!!middleName && middleName.length > 0 ? middleName.charAt(0) : '');
         fullName += (!_.isUndefined($fields[person].middleName) ? $fields[person].middleName.val() + ' ' : '') +
             (!_.isUndefined($fields[person].surname) ? $fields[person].surname.val() : '');
 

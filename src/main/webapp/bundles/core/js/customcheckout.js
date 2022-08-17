@@ -534,7 +534,7 @@
                 Controller.prototype.receiveMessage = function (event) {
                     var self = this;
 
-                    if (!Events.checkOrigin(event, "https://customcheckout-uat.bambora.net.au")) {
+                    if (!Events.checkOrigin(event, meerkat.site.bamboraURL)) {
                         return false;
                     }
 
@@ -771,7 +771,7 @@
                     }
 
                     var iframe = document.createElement('iframe');
-                    iframe.src = "https://customcheckout-uat.bambora.net.au/2.0.0/iframe.html" + '?type=' + type + '&source=' + encodeURIComponent(window.location.href) + '&origin=' + encodeURIComponent(window.location.origin);
+                    iframe.src = meerkat.site.bamboraURL + "/2.0.0/iframe.html" + '?type=' + type + '&source=' + encodeURIComponent(window.location.href) + '&origin=' + encodeURIComponent(window.location.origin);
                     iframe.scrolling = 'no';
                     iframe.height = '0';
                     iframe.width = '100%';
@@ -859,7 +859,7 @@
 // iframe's onload event.
                 View.prototype.postMessage = function (msg, field) {
                     var self = this;
-                    var iFrameSrc = "https://customcheckout-uat.bambora.net.au/2.0.0/iframe.html"; // defined in webpack config
+                    var iFrameSrc = meerkat.site.bamboraURL + "/2.0.0/iframe.html"; // defined in webpack config
 
                     if (self.$iFrame[field] === null && field === Fields.CVV) {
                         return; // cvv field is optional, no need to send message
