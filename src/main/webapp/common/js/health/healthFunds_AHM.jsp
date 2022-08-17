@@ -16,10 +16,10 @@ var healthFunds_AHM = {
   $paymentStartDate: $("#health_payment_details_start"),
   $paymentTypeContainer: $('#simples-dialogue-222'),
   schoolMinAge: 21,
-  schoolMaxAge: 24,
+  schoolMaxAge: 30,
   extendedFamilyMinAge: 21,
-  extendedFamilyMaxAge: 25,
-  healthDependantMaxAge: 25,
+  extendedFamilyMaxAge: 31,
+  healthDependantMaxAge: 31,
   set: function(){
 
     <%--Dependants--%>
@@ -43,7 +43,11 @@ var healthFunds_AHM = {
     <%--change age of dependants and school--%>
     meerkat.modules.healthDependants.setMaxAge(healthFunds_AHM.healthDependantMaxAge);
     <%--schoolgroups and defacto--%>
-    meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge':healthFunds_AHM.schoolMinAge, 'schoolMaxAge': healthFunds_AHM.schoolMaxAge, showSchoolIdField:true, 'schoolIdRequired':true, showSchoolCommencementField:true, 'schoolDateRequired':true });
+    meerkat.modules.healthDependants.updateConfig({isAHM:true, showSchoolFields:true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge':healthFunds_AHM.schoolMinAge, 'schoolMaxAge': healthFunds_AHM.schoolMaxAge, showSchoolIdField:true, 'schoolIdRequired':true, showSchoolCommencementField:true, 'schoolDateRequired':true });
+    var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+    if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
+      meerkat.modules.healthDependants.setExtendedFamilyMinMaxAge(healthFunds_AHM.extendedFamilyMinAge, healthFunds_AHM.extendedFamilyMaxAge);
+    }
 
     <%--School list--%>
     var list = '<select class="form-control">';

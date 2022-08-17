@@ -51,10 +51,8 @@
              */
             showSchoolFields: true,
             useSchoolDropdownMenu: false,
-            isNibOrQts: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
-            isAUF: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,
@@ -66,7 +64,10 @@
             defactoMaxAge: 24,
             showApprenticeField: false,
             extendedFamilyMinAge: 21,
-            extendedFamilyMaxAge: 25
+            extendedFamilyMaxAge: 25,
+            isAUF: false,
+            isNibOrQts: false,
+            isAHM: false,
 
         },
         providerConfig,
@@ -587,6 +588,15 @@
         maxDependantAge = age;
     }
 
+    function setExtendedFamilyMinMaxAge(extendedFamilyMinAge, extendedFamilyMaxAge) {
+        if (typeof providerConfig !== "undefined" && providerConfig != null) {
+            providerConfig.extendedFamilyMinAge = extendedFamilyMinAge;
+            providerConfig.extendedFamilyMaxAge = extendedFamilyMaxAge;
+        } else {
+            updateConfig({extendedFamilyMinAge: extendedFamilyMinAge, extendedFamilyMaxAge: extendedFamilyMaxAge});
+        }
+    }
+
     var educationalInstitutions = {
         "ACP": "Australian College of Phys. Ed",
         "ACT": "Australian College of Theology",
@@ -690,7 +700,8 @@
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         getNumberOfDependants: getNumberOfDependants,
-        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants
+        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants,
+        setExtendedFamilyMinMaxAge: setExtendedFamilyMinMaxAge
     });
 
 })(jQuery);
