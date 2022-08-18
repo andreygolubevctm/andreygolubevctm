@@ -471,8 +471,8 @@
         <dependency>
             <groupId>com.ctm.health</groupId>
             <artifactId>health-common</artifactId>
-            <version>1.26.0-20220812.075217-2</version>
-            <classifier>SML-2474</classifier>
+            <version>1.138.0-20220818.015202-6</version>
+            <classifier>SML-2427</classifier>
             <exclusions>
                 <exclusion>
                     <groupId>com.ctm.springframework.boot</groupId>
