@@ -276,20 +276,10 @@ public class PaymentAdapter {
     protected static CreditCard getBamboraCreditCard(Optional<Credit> credit) {
         return new CreditCard()
                 .withPaymentGatewayType(PaymentGatewayType.BAMBORA)
-                .withCardType(credit.map(Credit::getType)
-                        .map(String::toUpperCase)
-                        .map(CREDIT_CARD_TYPE_MAP::get)
-                        .orElse(null))
                 .withName(credit.map(Credit::getName).orElse(null))
-                .withNumber(credit.map(Credit::getIpp)
-                        .map(Ipp::getMaskedNumber)
-                        .orElse(null))
                 .withToken(credit.map(Credit::getIpp)
                         .map(Ipp::getTokenisation)
-                        .orElse(null))
-                .withCardExpiry(new CreditCardExpiry()
-                        .withMonth(credit.map(Credit::getExpiry).map(Expiry::getCardExpiryMonth).orElse(null))
-                        .withYear(credit.map(Credit::getExpiry).map(Expiry::getCardExpiryYear).orElse(null)));
+                        .orElse(null));
     }
 
     protected static CreditCard getInlineCreditCard(Optional<Credit> credit) {
