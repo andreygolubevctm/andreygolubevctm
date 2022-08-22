@@ -19,6 +19,7 @@
 <div id="${name}" class="health_popup_payment_ipp hidden" data-provide="payment-ipp">
     <field_v1:hidden xpath="${xpath}/tokenisation" required="false" className="payment-ipp-tokenisation" />
 
+    <div>We now need to register your credit card through Bambora Custom Checkout in order to process your payment. Please be assured that your personal and financial information is treated as highly confidential and stored in accordance with data protection regulations.</div>
     <c:set var="fieldXpath" value="${xpath}/maskedNumber" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Credit Card Details">
         <field_v2:input xpath="${fieldXpath}" className="payment-ipp-maskedNumber sessioncamexclude" required="true" title="your secure credit card details" additionalAttributes=" data-rule-validateBupaCard='true'" readOnly="${false}" />

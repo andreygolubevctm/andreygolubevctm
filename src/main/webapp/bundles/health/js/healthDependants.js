@@ -693,8 +693,7 @@
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         getNumberOfDependants: getNumberOfDependants,
-        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants,
-        setExtendedFamilyMinMaxAge: setExtendedFamilyMinMaxAge
+        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants
     });
 
 })(jQuery);
