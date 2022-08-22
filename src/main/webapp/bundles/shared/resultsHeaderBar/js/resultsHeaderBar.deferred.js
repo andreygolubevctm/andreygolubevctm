@@ -231,7 +231,8 @@
         } else {
             enableAffixMode();
         }
-
+        //reset the navbar initially
+        $(settings.navbarSelector).removeClass("affix").addClass("affix-top");
         // when repositioning the results (i.e. breakpoint change), this event is triggered. Fixed headers don't reposition so we force them to
         $(Results.settings.elements.resultsContainer).off("pagination.instantScroll").on("pagination.instantScroll", refreshHeadersLayout)
             .off("pagination.scrolling.start").on("pagination.scrolling.start", onAnimationStart)
@@ -271,7 +272,8 @@
     }
 
     meerkat.modules.register("resultsHeaderBar", {
-        initResultsHeaderBar: initResultsHeaderBar
+        initResultsHeaderBar: initResultsHeaderBar,
+        removeEventListeners: removeEventListeners
     });
 
 })(jQuery);

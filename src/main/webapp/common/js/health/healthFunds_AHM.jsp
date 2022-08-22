@@ -16,36 +16,38 @@ var healthFunds_AHM = {
   $paymentStartDate: $("#health_payment_details_start"),
   $paymentTypeContainer: $('#simples-dialogue-222'),
   schoolMinAge: 21,
-  schoolMaxAge: 24,
+  schoolMaxAge: 30,
   extendedFamilyMinAge: 21,
-  extendedFamilyMaxAge: 25,
-  healthDependantMaxAge: 25,
+  extendedFamilyMaxAge: 31,
+  healthDependantMaxAge: 31,
   set: function(){
 
     <%--Dependants--%>
-    var dependantsString = 'ahm can offer adult dependant coverage at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant. ahm call this +21';
+    var dependantsString = 'AHM defines a dependant as a child of the principal member or their partner, who is not married or living in a de facto relationship.<br/><br/>' +
+            'They allow you to cover child dependants on family cover up until age of 21. Student dependants can be covered up until the age of 31 as long as they are studying full time at an Australian educational institution.<br/><br/>' +
+            'AHM also offer adult dependant coverage for those over 21 but under 31 and not studying full time, however this will come at an additional premium. ';
 
-    if(meerkat.site.content.callCentreNumber !== ''){
-      dependantsString += ' so please call '+meerkat.site.content.brandDisplayName+' on <span class=\"callCentreNumber\">'+meerkat.site.content.callCentreNumber+"</span>";
-      if(meerkat.site.liveChat.enabled) dependantsString += ' or chat to our consultants online';
-      dependantsString += ' to discuss your health cover needs.';
-    }else{
-      dependantsString += '.';
+    var dependentString2 = "For these options please call Compare The Market on 1800 777 712 to speak to an expert.";
+    if (meerkat.site.isCallCentreUser) {
+      dependentString2 = "These are offered under the Extended Family cover type, for more details check <a target='_new' href='https://ctm.livepro.com.au/goto/dependent-children-rules1'>KATS</a>.";
     }
+    dependantsString += dependentString2;
 
     <%-- Dependant's Age and message --%>
+    meerkat.modules.healthFunds._dependants(dependantsString);
     var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
     if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
-        meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant');
         meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_AHM.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_AHM.extendedFamilyMaxAge});
-    } else {
-        meerkat.modules.healthFunds._dependants(dependantsString);
     }
 
     <%--change age of dependants and school--%>
     meerkat.modules.healthDependants.setMaxAge(healthFunds_AHM.healthDependantMaxAge);
     <%--schoolgroups and defacto--%>
-    meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge':healthFunds_AHM.schoolMinAge, 'schoolMaxAge': healthFunds_AHM.schoolMaxAge, showSchoolIdField:true, 'schoolIdRequired':true, showSchoolCommencementField:true, 'schoolDateRequired':true });
+    meerkat.modules.healthDependants.updateConfig({isAHM:true, showSchoolFields:true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge':healthFunds_AHM.schoolMinAge, 'schoolMaxAge': healthFunds_AHM.schoolMaxAge, showSchoolIdField:true, 'schoolIdRequired':true, showSchoolCommencementField:true, 'schoolDateRequired':true });
+    var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+    if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
+      meerkat.modules.healthDependants.setExtendedFamilyMinMaxAge(healthFunds_AHM.extendedFamilyMinAge, healthFunds_AHM.extendedFamilyMaxAge);
+    }
 
     <%--School list--%>
     var list = '<select class="form-control">';
@@ -81,6 +83,11 @@ var healthFunds_AHM = {
     <%--credit card options--%>
     meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
     meerkat.modules.healthCreditCard.render();
+
+    <%-- show health payment day script--%>
+    if (meerkat.site.isCallCentreUser) {
+      meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(true);
+    }
 
     <%--selections for payment date--%>
       meerkat.modules.healthFunds.setPayments({

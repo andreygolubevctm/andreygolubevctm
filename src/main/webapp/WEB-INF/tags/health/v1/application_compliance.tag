@@ -13,6 +13,7 @@
 	<field_v1:hidden xpath="${xpath}/policyDate" className="health_details-policyDate" />
 </health_v1:privacy>
 
+<simples:dialogue id="236" vertical="health" mandatory="true" />
 <health_v1:payment_day_details xpath="${xpath}/bank" />
 <health_v1:payment_day_details xpath="${xpath}/credit" />
 

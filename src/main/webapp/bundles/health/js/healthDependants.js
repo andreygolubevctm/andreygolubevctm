@@ -51,11 +51,8 @@
              */
             showSchoolFields: true,
             useSchoolDropdownMenu: false,
-            isNibOrQts: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
-            isAUF: false,
-            isBUP: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,
@@ -68,6 +65,10 @@
             showApprenticeField: false,
             extendedFamilyMinAge: 21,
             extendedFamilyMaxAge: 25,
+            isAUF: false,
+            isNibOrQts: false,
+            isAHM: false,
+            isBUP: false,
             dateStudyCommencedFieldName: 'Date Study Commenced'
 
         },
@@ -692,7 +693,8 @@
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         getNumberOfDependants: getNumberOfDependants,
-        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants
+        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants,
+        setExtendedFamilyMinMaxAge: setExtendedFamilyMinMaxAge
     });
 
 })(jQuery);

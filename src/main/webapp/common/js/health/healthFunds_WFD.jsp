@@ -60,6 +60,11 @@ var healthFunds_WFD = {
             healthFunds_WFD.renderDeductionMessage();
         });
 
+        <%-- hide health payment day script--%>
+        if (meerkat.site.isCallCentreUser) {
+            meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(false);
+        }
+
         <%--fund offset check--%>
         meerkat.modules.healthFundTimeOffset.onInitialise({
             weekends: true,

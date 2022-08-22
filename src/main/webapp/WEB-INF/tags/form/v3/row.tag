@@ -15,6 +15,7 @@
 <%@ attribute name="hideHelpIconCol"	required="false" rtexprvalue="true"	 description="Set to a value to hide the help icon placeholder column" %>
 <%@ attribute name="labelAbove"			required="false" rtexprvalue="true"	 description="Have the label above the element instead of beside it" %>
 <%@ attribute name="addForAttr" 		required="false" rtexprvalue="true"	 description="Bool to add or not the for attribute" %>
+<%@ attribute name="noOffsetWhenNoLabel" 	required="false" rtexprvalue="true"	 description="Bool to add or not offset if label is empty" %>
 
 <%-- Added to deal with the new field sizes introduced in health --%>
 <%@ attribute name="smRowOverride" 		required="false" rtexprvalue="true"	 description="Override the SM value" %>
@@ -125,6 +126,9 @@
 		</c:when>
 		<c:otherwise>
 			<c:set var="offset" value="col-sm-offset-3" />
+			<c:if test="${noOffsetWhenNoLabel eq true}">
+				<c:set var="offset" value="" />
+			</c:if>
 			<c:set var="helpIconCol" value="col-xs-2" />
 			<c:set var="fieldCol" value="col-xs-${toggleHelpColMobile}" />
 		</c:otherwise>

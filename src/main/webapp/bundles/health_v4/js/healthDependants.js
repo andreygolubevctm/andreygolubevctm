@@ -50,11 +50,8 @@
              */
             showSchoolFields: true,
             useSchoolDropdownMenu: false,
-            isNibOrQts: false,
             schoolMinAge: 22,
             schoolMaxAge: 24,
-            isAUF: false,
-            isBUP: false,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: 50,
@@ -67,6 +64,10 @@
             showApprenticeField: false,
             extendedFamilyMinAge: 21,
             extendedFamilyMaxAge: 25,
+            isAUF: false,
+            isNibOrQts: false,
+            isAHM: false,
+            isBUP: false,
             dateStudyCommencedFieldName: 'Date Study Commenced'
         },
         providerConfig,
@@ -264,8 +265,7 @@
             $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
         } else {
             // Hide them all if they aren't in the date range.
-            $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix
-                + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+            $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
         }
     }
 

@@ -261,6 +261,7 @@ var Results = {
 			balanceCurrentPageRowsHeightOnly: {
 				mobile: false
 			},
+			sameHeightForAllResults: [],
 			popularProducts: {
 				enabled: false
 			}
