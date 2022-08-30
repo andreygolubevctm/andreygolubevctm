@@ -15,8 +15,8 @@ var healthFunds_BUP = {
 	$paymentStartDate: $("#health_payment_details_start"),
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
     extendedFamilyMinAge: 21,
-    extendedFamilyMaxAge: 25,
-    healthDependantMaxAge: 25,
+    extendedFamilyMaxAge: 32,
+    healthDependantMaxAge: 32,
 	set: function () {
 
 		healthFunds_BUP.isYourChoiceExtras = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Your Choice Extras') > -1;
@@ -201,16 +201,35 @@ var healthFunds_BUP = {
 			meerkat.modules.healthApplicationDynamicScripting.togglePaymentDayScript(false);
 		}
 
-		<%-- Dependant's Age and message --%>
-		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
-        if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
-            meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants aged between 21 and 25');
-            meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge});
-		} else {
-            meerkat.modules.healthFunds._dependants('Dependent child means a person who does not have a partner and is \(i\) aged under 21 or \(ii\) is receiving a full time education at a school, college or university recognised by the company and who is not aged 25 or over.');
+		<%--Dependants--%>
+		var dependantsString = 'Bupa defines a dependant as a child of the policyholder or their covered partner who is not in a bona fide domestic relationship with someone.<br/><br/>' +
+				'They allow you to cover child dependants on the family until age 21. Student dependants can be covered up until the age of 32 as long as they receive full-time education at a school, college or university.<br/><br/>' +
+				'Bupa also offers adult dependant coverage for those over 21 but under 32 and not studying full time. However, this will come at an additional premium. ';
+
+		var dependentString2 = "For these options, please call Compare The Market on 1800 777 712 to speak to an expert.";
+		if (meerkat.site.isCallCentreUser) {
+			dependentString2 = "These are provided under the Extended Family cover type; for more details, check <a target='_new' href='https://ctm.livepro.com.au/goto/dependent-children-rules1'>KATS</a>.";
 		}
+		dependantsString += dependentString2;
+
+		<%-- Dependant's Age and message --%>
+		meerkat.modules.healthFunds._dependants(dependantsString);
+		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+		if (['F', 'SPF'].includes(familyCoverType)) {
+			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
+				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showSchoolIdFields:true, showMiddleName: true});
+		}
+		if (['EF', 'ESP'].includes(familyCoverType)) {
+			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
+				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showMiddleName: true});
+		}
+		if (!['F', 'SPF', 'EF', 'ESP'].includes(familyCoverType)) {
+			meerkat.modules.healthDependants.updateConfig({showMiddleName: true});
+		}
+
+		<%--change age of dependants and school--%>
 		meerkat.modules.healthDependants.setMaxAge(healthFunds_BUP.healthDependantMaxAge);
-		meerkat.modules.healthDependants.updateConfig({showMiddleName: true});
+		<%--meerkat.modules.healthDependants.updateConfig({showMiddleName: true, isBUP: true});--%>
 
 		<%-- Unset the refund optin radio buttons --%>
 		healthFunds_BUP.$claimsAccountOptin.find("input:checked").each(function(){
