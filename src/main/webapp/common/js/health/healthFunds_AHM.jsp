@@ -37,7 +37,7 @@ var healthFunds_AHM = {
     meerkat.modules.healthFunds._dependants(dependantsString);
     var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
     if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
-        meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_AHM.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_AHM.extendedFamilyMaxAge});
+      meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_AHM.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_AHM.extendedFamilyMaxAge});
     }
 
     <%--change age of dependants and school--%>
@@ -53,7 +53,7 @@ var healthFunds_AHM = {
     var list = '<select class="form-control">';
     list += meerkat.modules.healthDependants.getEducationalInstitutionsOptions();
     list += '</select>';
-    
+
     $('.health_dependant_details_schoolGroup .row-content').each(function(i) {
       var name = $(this).find('input').attr('name');
       var id = $(this).find('input').attr('id');
@@ -70,7 +70,7 @@ var healthFunds_AHM = {
     $('#health_previousfund_primary_authority').setRequired(true, 'AHM require authorisation to contact your previous fund');
     $('#health_previousfund_partner_authority').setRequired(true, 'AHM require authorisation to contact your partner\'s previous fund');
     <%--Authority--%>
-      meerkat.modules.healthFunds._previousfund_authority(true);
+    meerkat.modules.healthFunds._previousfund_authority(true);
 
     <%--credit card & bank account frequency & day frequency--%>
     meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
@@ -90,12 +90,12 @@ var healthFunds_AHM = {
     }
 
     <%--selections for payment date--%>
-      meerkat.modules.healthFunds.setPayments({
-          'min':0,
-          'max':28,
-          'weekends':true,
-          'maxDay' : 28
-      });
+    meerkat.modules.healthFunds.setPayments({
+      'min':0,
+      'max':28,
+      'weekends':true,
+      'maxDay' : 28
+    });
 
     healthFunds_AHM.$paymentType.on('change.AHM', function populateFuturePaymentDaysPaymentType(){
       healthFunds_AHM.populateFuturePaymentDays();
@@ -117,20 +117,20 @@ var healthFunds_AHM = {
         "credit" : true,
         "bank" : false
       },
-	  "updateValidationSelectors" : meerkat.modules.healthPaymentStep.updateValidationSelectorsPaymentGateway,
-	  "resetValidationSelectors" : meerkat.modules.healthPaymentStep.resetValidationSelectorsPaymentGateway,
+      "updateValidationSelectors" : meerkat.modules.healthPaymentStep.updateValidationSelectorsPaymentGateway,
+      "resetValidationSelectors" : meerkat.modules.healthPaymentStep.resetValidationSelectorsPaymentGateway,
       "paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
-       "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
+      "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
     });
 
     <%--fund offset check--%>
     meerkat.modules.healthFundTimeOffset.onInitialise({
-        weekends: true,
-        coverStartRange: {
-            min: 0,
-            max: 28
-        },
-        renderPaymentDaysCb: healthFunds_AHM.populateFuturePaymentDays
+      weekends: true,
+      coverStartRange: {
+        min: 0,
+        max: 28
+      },
+      renderPaymentDaysCb: healthFunds_AHM.populateFuturePaymentDays
     });
   },
   populateFuturePaymentDays: function() {
@@ -144,9 +144,9 @@ var healthFunds_AHM = {
     }
   },
   unset: function(){
-      meerkat.modules.healthFunds._reset();
+    meerkat.modules.healthFunds._reset();
     <%--Dependants--%>
-      meerkat.modules.healthFunds._dependants(false);
+    meerkat.modules.healthFunds._dependants(false);
 
     <%--School list--%>
     $('.health_dependant_details_schoolGroup select').remove();
@@ -159,7 +159,7 @@ var healthFunds_AHM = {
     $('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
 
     <%--Authority off--%>
-      meerkat.modules.healthFunds._previousfund_authority(false);
+    meerkat.modules.healthFunds._previousfund_authority(false);
 
     <%--credit card options--%>
     meerkat.modules.healthCreditCard.resetConfig();

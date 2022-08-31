@@ -67,6 +67,8 @@
             isAUF: false,
             isNibOrQts: false,
             isAHM: false,
+            isBUP: false,
+            isWFD: false
 
         },
         providerConfig,
@@ -670,6 +672,15 @@
         return options;
     }
 
+    function getExtendedFamilyMinAge() {
+        return providerConfig.extendedFamilyMinAge;
+    }
+
+    function getExtendedFamilyMaxAge() {
+        return providerConfig.extendedFamilyMaxAge;
+    }
+
+
     meerkat.modules.register("healthDependants", {
         init: init,
         events: moduleEvents,
@@ -685,7 +696,9 @@
         toggleDependants: toggleDependants,
         getNumberOfDependants: getNumberOfDependants,
         updateApplicationDetails: updateApplicationDetails,
-        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants
+        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants,
+        getExtendedFamilyMinAge: getExtendedFamilyMinAge,
+        getExtendedFamilyMaxAge: getExtendedFamilyMaxAge
     });
 
 })(jQuery);
