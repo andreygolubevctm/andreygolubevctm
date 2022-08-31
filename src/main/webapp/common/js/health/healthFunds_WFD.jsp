@@ -33,7 +33,7 @@ var healthFunds_WFD = {
 
         var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
         if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
-            meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant');
+            meerkat.modules.healthFunds._dependants(dependantsString);
             meerkat.modules.healthDependants.updateConfig({isWFD:true, extendedFamilyMinAge: healthFunds_WFD.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_WFD.extendedFamilyMaxAge});
         } else {
             meerkat.modules.healthFunds._dependants(dependantsString);
