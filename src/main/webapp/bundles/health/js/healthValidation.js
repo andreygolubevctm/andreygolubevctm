@@ -159,40 +159,36 @@
     //DOB validation message
     $.validator.addMethod("limitDependentAgeToUnder25", function (value) {
         var getAge = meerkat.modules.age.returnAge(value, true);
-        debugger;
-        // if (getAge >= meerkat.modules.healthDependants.getMaxAge()) {
-            // Change the element message on the fly
         var isValid = true;
         var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
         var message = 'Your dependant cannot be added to the policy as they are aged {AGE} years or older. You can still arrange cover for this dependent by applying for a separate singles policy.';
-        switch(Results.getSelectedProduct().info.FundCode) {
-            case 'AHM':
-                if (getAge >= meerkat.modules.healthDependants.getMaxAge()) {
-                    $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
-                    isValid =  false;
-                }
-                break;
-            case 'BUP':
-                if (getAge >= meerkat.modules.healthDependants.getMaxAge()) {
-                    $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
+        if (getAge >= meerkat.modules.healthDependants.getMaxAge()) {
+            switch (Results.getSelectedProduct().info.FundCode) {
+                case 'AHM':
+                        $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
+                        isValid = false;
+                    break;
+                case 'BUP':
+                        $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
+                        isValid = false;
+                    break;
+                case 'WFD':
+                    if (getAge >= meerkat.modules.healthDependants.getExtendedFamilyMaxAge()) {
+                        //dependant age cannot be covered by any family cover type
+                        $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getExtendedFamilyMaxAge());
+                        isValid = false;
+                    } else if (['F', 'SPF'].includes(familyCoverType)) {
+                        //dependant age cannot be covered family or single parent family
+                        $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', 'between ' + meerkat.modules.healthDependants.getExtendedFamilyMinAge() +
+                            ' - ' + meerkat.modules.healthDependants.getExtendedFamilyMaxAge());
+                        isValid = false;
+                    }
+                    break;
+                default:
+                    $.validator.messages.limitDependentAgeToUnder25 = (message.replace('dependant', 'child').replace('{AGE}', meerkat.modules.healthDependants.getMaxAge())).slice(0, -1) +
+                        ' or please contact us if you require assistance.';
                     isValid = false;
-                }
-                break;
-            case 'WFD':
-                if (getAge >= meerkat.modules.healthDependants.getExtendedFamilyMaxAge() && ['F', 'SPF', 'EF', 'ESP'].includes(familyCoverType)) {
-                    $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getExtendedFamilyMaxAge());
-                    isValid = false;
-                }
-                if (getAge >= meerkat.modules.healthDependants.getExtendedFamilyMinAge() && getAge < meerkat.modules.healthDependants.getExtendedFamilyMaxAge() && ['F', 'SPF'].includes(familyCoverType)) {
-                    $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', 'between ' +  meerkat.modules.healthDependants.getExtendedFamilyMinAge() +
-                    ' - ' + meerkat.modules.healthDependants.getExtendedFamilyMaxAge());
-                    isValid = false;
-                }
-                break;
-            default:
-                $.validator.messages.limitDependentAgeToUnder25 = (message.replace('dependant', 'child').replace('{AGE}', meerkat.modules.healthDependants.getMaxAge())).slice(0, -1) +
-                    ' or please contact us if you require assistance.';
-                isValid = false;
+            }
         }
         return isValid;
     }, "Your child cannot be added to the policy as they are aged 25 years or older. You can still arrange cover for this dependant by applying for a separate singles policy or please contact us if you require assistance.");

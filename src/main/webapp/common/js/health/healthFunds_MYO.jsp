@@ -82,6 +82,7 @@ var healthFunds_MYO = {
         $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '50');
 
         <%--dependant definition--%>
+        meerkat.modules.healthFunds._dependants(false);
         meerkat.modules.healthDependants.setMaxAge(25);
 
         <%--schoolgroups and defacto --%>
