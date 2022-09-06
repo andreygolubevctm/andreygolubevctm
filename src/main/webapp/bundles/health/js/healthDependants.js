@@ -68,8 +68,9 @@
             isAUF: false,
             isNibOrQts: false,
             isAHM: false,
+            dateStudyCommencedFieldName: 'Date Study Commenced',
             isBUP: false,
-            dateStudyCommencedFieldName: 'Date Study Commenced'
+            isWFD: false
 
         },
         providerConfig,
@@ -590,6 +591,15 @@
         maxDependantAge = age;
     }
 
+    function setExtendedFamilyMinMaxAge(extendedFamilyMinAge, extendedFamilyMaxAge) {
+        if (typeof providerConfig !== "undefined" && providerConfig != null) {
+            providerConfig.extendedFamilyMinAge = extendedFamilyMinAge;
+            providerConfig.extendedFamilyMaxAge = extendedFamilyMaxAge;
+        } else {
+            updateConfig({extendedFamilyMinAge: extendedFamilyMinAge, extendedFamilyMaxAge: extendedFamilyMaxAge});
+        }
+    }
+
     var educationalInstitutions = {
         "ACP": "Australian College of Phys. Ed",
         "ACT": "Australian College of Theology",
@@ -693,7 +703,8 @@
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         getNumberOfDependants: getNumberOfDependants,
-        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants
+        updateAgeWarningForAUFDependants: updateAgeWarningForAUFDependants,
+        setExtendedFamilyMinMaxAge: setExtendedFamilyMinMaxAge
     });
 
 })(jQuery);

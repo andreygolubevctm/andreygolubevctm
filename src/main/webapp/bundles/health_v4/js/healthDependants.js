@@ -67,8 +67,10 @@
             isAUF: false,
             isNibOrQts: false,
             isAHM: false,
+            dateStudyCommencedFieldName: 'Date Study Commenced',
             isBUP: false,
-            dateStudyCommencedFieldName: 'Date Study Commenced'
+            isWFD: false
+
         },
         providerConfig,
         maxDependantAge = 25,
