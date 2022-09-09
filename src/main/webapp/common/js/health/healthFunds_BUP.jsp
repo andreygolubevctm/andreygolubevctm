@@ -237,9 +237,6 @@ var healthFunds_BUP = {
 		  $(this).prop("checked",null).trigger("change");
 		});
 
-		<%--schoolgroups and defacto--%>
-		meerkat.modules.healthDependants.updateConfig({isBUP:true, showSchoolFields:true, 'schoolMinAge':healthFunds_BUP.extendedFamilyMinAge, 'schoolMaxAge':healthFunds_BUP.extendedFamilyMaxAge, showSchoolIdField:true, showSchoolCommencementField:true, dateStudyCommencedFieldName:'Study Start Date' });
-
 	},
 	updateMessage: function() {
 		var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
