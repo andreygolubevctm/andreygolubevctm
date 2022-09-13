@@ -17,6 +17,8 @@ var healthFunds_BUP = {
     extendedFamilyMinAge: 21,
     extendedFamilyMaxAge: 32,
     healthDependantMaxAge: 32,
+	schoolMinAge: 22,
+	schoolMaxAge: 31,
 	set: function () {
 
 		healthFunds_BUP.isYourChoiceExtras = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Your Choice Extras') > -1;
@@ -218,14 +220,12 @@ var healthFunds_BUP = {
 		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
 		if (['F', 'SPF'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
-				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showSchoolIdFields:true, showMiddleName: true});
+				schoolMinAge: healthFunds_BUP.schoolMinAge, schoolMaxAge: healthFunds_BUP.schoolMaxAge, showSchoolIdFields:true, showMiddleName: true, useSchoolDropdownMenu: false,
+				isBUP:true, showSchoolFields:true, showSchoolIdField:false, showSchoolCommencementField:true, dateStudyCommencedFieldName:'Study Start Date'});
 		}
 		if (['EF', 'ESP'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
 				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showMiddleName: true});
-		}
-		if (!['F', 'SPF', 'EF', 'ESP'].includes(familyCoverType)) {
-			meerkat.modules.healthDependants.updateConfig({showMiddleName: true});
 		}
 
 		<%--change age of dependants and school--%>

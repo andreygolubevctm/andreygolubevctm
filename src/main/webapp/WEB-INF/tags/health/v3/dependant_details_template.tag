@@ -83,11 +83,10 @@
             </form_v2:row>
             {{ } }}
 
-            {{ if(providerConfig.showSchoolFields === true) { console.log('>>>>>>>>>>>>>>>>>>>>>> v3 deps', providerConfig); }}
+            {{ if(providerConfig.showSchoolFields === true) { }}
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
             <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
-            {{ if(providerConfig.isBUP !== true) { }}
             <form_v2:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
                          className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="290">
                 {{ if (isNibOrQts) { }}
@@ -97,11 +96,10 @@
                     <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/auf_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'"
                                         disableErrorContainer="${false}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No Educational institute selected."/>
                 {{ } else { }}
-                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/other_providers_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'"
+                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/other_providers_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="{{= providerConfig.isBUP === true ? 'false' : 'true'}}" additionalAttributes="data-visible='true'"
                                         disableErrorContainer="${false}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No Educational institute selected."/>
                 {{ } }}
             </form_v2:row>
-            {{ } }}
             {{ if(providerConfig.showSchoolCommencementField === true && providerConfig.isAUF === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_v2:row fieldXpath="${fieldXpath}" label="{{= providerConfig.dateStudyCommencedFieldName}}" id="${name}_schoolDateGroup"

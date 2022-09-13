@@ -80,32 +80,32 @@
             {{ if(providerConfig.showSchoolFields === true) { }}
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
-            {{ if(providerConfig.isBUP !== true) { }}
+
             <form_v4:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
                          className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="{{= isNibOrQts ? '653' : '290' }}">
                 {{ if(isNibOrQts === true) { }}
-                <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
-                <div class="select">
-                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'" />
-                </div>
+                    <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
+                    <div class="select">
+                        <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/nib_qantas_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'" />
+                    </div>
                 {{ } else if(providerConfig.isAUF === true) { }}
-                <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
-                <div class="select">
-                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/auf_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'" />
-                </div>
+                    <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
+                    <div class="select">
+                        <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/auf_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'" />
+                    </div>
                 {{ } else if(usesSchoolDropdown === true) { }}
-                <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
-                <div class="select">
-                    <span class="input-group-addon"><i class="icon-angle-down"></i></span>
-                    <select name="${storeGroupName}" id="${storeGroupName}" class="form-control data-hj-suppress" required title="dependant {{= obj.dependantId }}'s educational institute">
-                        {{= meerkat.modules.healthDependants.getEducationalInstitutionsOptions() }}
-                    </select>
-                </div>
+                    <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
+                    <div class="select">
+                        <span class="input-group-addon"><i class="icon-angle-down"></i></span>
+                        <select name="${storeGroupName}" id="${storeGroupName}" class="form-control data-hj-suppress" required title="dependant {{= obj.dependantId }}'s educational institute">
+                            {{= meerkat.modules.healthDependants.getEducationalInstitutionsOptions() }}
+                        </select>
+                    </div>
                 {{ } else { }}
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude data-hj-suppress" defaultValue="{{= obj.school }}" disableErrorContainer="${true}" placeHolder="School"/>
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="{{= providerConfig.isBUP === true ? 'false' : 'true'}}" className="sessioncamexclude data-hj-suppress" defaultValue="{{= obj.school }}" disableErrorContainer="${true}" placeHolder="School"/>
                 {{ } }}
             </form_v4:row>
-            {{ } }}
+
             {{ if(providerConfig.showSchoolCommencementField === true && providerConfig.isAUF === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="{{= providerConfig.dateStudyCommencedFieldName}}" id="${name}_schoolDateGroup"
