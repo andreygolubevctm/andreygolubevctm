@@ -173,7 +173,9 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                         .request(applyRequest)
                         .header("rootId", Long.toString(rootId))
                         .jsonHeaders()
-                        .url(properties.getServiceUrl())
+//                ToDo SML-2413 apply service is hard coded to connect Atlas apply-health service which was created for testing
+//                  SML-2413. This MUST be revert before merging into master
+                        .url("https://services.dev.comparethemarket.cloud/apply-health/")
                         .timeout(properties.getTimeout())
                         .responseType(MediaType.APPLICATION_JSON)
                         .response(ApplyResponse.class)
