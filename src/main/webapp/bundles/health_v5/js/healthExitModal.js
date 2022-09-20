@@ -222,8 +222,8 @@
         };
         // "eventAction": "{{vertical name}} - {{slide name}}" (e.g health - contact page)
 
-        if (!_.isEmpty(CtMDataLayer)) {
-            CtMDataLayer.push(bannerPopupImpression);
+        if (!_.isEmpty(dataLayer)) {
+            dataLayer.push(bannerPopupImpression);
         }
     }
 
@@ -237,8 +237,8 @@
         };
         // "eventAction": "{{vertical name}} - {{slide name}}" (e.g health - contact page)
 
-        if (!_.isEmpty(CtMDataLayer)) {
-            CtMDataLayer.push(bannerPopupSubmissions);
+        if (!_.isEmpty(dataLayer)) {
+            dataLayer.push(bannerPopupSubmissions);
         }
     }
 
