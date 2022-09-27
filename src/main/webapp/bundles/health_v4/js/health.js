@@ -229,6 +229,7 @@
                 meerkat.modules.healthRebate.onStartInit();
                 meerkat.modules.healthPrimary.onStartInit();
                 meerkat.modules.healthPartner.onStartInit();
+                meerkat.modules.contactDetails.cleanPiiData();
             },
             onBeforeEnter: function enterStartStep(event) {
                 if (event.isForward) {

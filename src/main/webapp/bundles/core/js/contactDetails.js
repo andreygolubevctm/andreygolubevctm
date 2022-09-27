@@ -522,6 +522,54 @@
 		return value;
 	}
 
+	// data is supposed to be in meerkat.modules.journeyEngine.getFormData() format
+	function setPiiData(data) {
+		var fieldsMapping = {
+			'health_application_primary_firstname': 'firstName',
+			'health_application_primary_surname': 'lastName',
+			'health_application_primary_dobInputD': 'dob_dd',
+			'health_application_primary_dobInputM': 'dob_mm',
+			'health_application_primary_dobInputY': 'dob_yyyy',
+			'health_application_primary_gender': 'gender',
+			'health_application_mobile': 'mobile_phone',
+			'health_application_other': 'landline_phone',
+			'health_application_email': 'email'
+		};
+
+		try {
+			Object.keys(fieldsMapping).forEach(function (key) {
+				var formData =  data.find(function (formField) {
+					if (formField.name === key) return formField;
+				});
+				sessionStorage.setItem(fieldsMapping[key], formData && formData.value);
+			});
+		} catch(e) {
+			console.error('Unable to set PII data', e);
+		}
+	}
+
+	function getPiiData() {
+		var fields = ['firstName', 'lastName', 'dob_dd', 'dob_mm', 'dob_yyyy',
+			'gender', 'mobile_phone', 'landline_phone', 'email'];
+		var result = {};
+		fields.forEach(function(f) {
+			result[f] = sessionStorage.getItem(f);
+		});
+		return result;
+	}
+
+	function cleanPiiData() {
+		var fields = ['firstName', 'lastName', 'dob_dd', 'dob_mm', 'dob_yyyy',
+			'gender', 'mobile_phone', 'landline_phone', 'email'];
+		try {
+			fields.forEach(function (f) {
+				sessionStorage.removeItem(f);
+			});
+		} catch (e) {
+			console.error('Cannot cleanup pii data in sessionStorage', e);
+		}
+	}
+
 	meerkat.modules.register("contactDetails", {
 		init: init,
 		events: events,
@@ -530,7 +578,10 @@
 		getFieldsFromOptInGroup: getFieldsFromOptInGroup,
 		isOptInGroupValid: isOptInGroupValid,
 		isPartOfOptInGroup: isPartOfOptInGroup,
-		getLatestValue : getLatestValue
+		getLatestValue : getLatestValue,
+		setPiiData: setPiiData,
+		getPiiData: getPiiData,
+		cleanPiiData: cleanPiiData
 	});
 
 })(jQuery);
