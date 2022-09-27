@@ -16,30 +16,9 @@
         <div class="col-xs-12">
             <h3>Why are health insurance premiums reviewed annually?</h3>
             <p>Each year, all health funds review their premiums to balance the growing costs of healthcare and to support the rising demand for health services, the increase in chronic health concerns, and the beneficial but costly advances in technology for better health outcomes.</p>
-            <p>This year some funds have chosen to delay their rate rises to later in the year, for those funds the premiums will remain the same from April 1 and you will receive confirmation from the fund closer to the time the premiums will change.</p>
-        </div>
-    </div>
-
-    <hr />
-
-    <div class="row">
-        <div class="col-xs-12">
-            <h3>What else contributes to premiums changing?</h3>
-            <h4>Australian Government Rebate</h4>
-            <p>To assist in making private health insurance more affordable, the government provides many Australians with a rebate, known as the Australian Government Rebate on Private Health Insurance (AGR).</p>
-            <h4>The rebate can be used to:</h4>
-            <ol>
-                <li>Reduce your premiums <span class="text-bold">OR</span></li>
-                <li>Claimed when you lodge your tax return with the Australian Taxation Office</li>
-            </ol>
-            <h4>Rebate adjustment factor</h4>
-            <p>Each year the Government provides health funds with a rebate adjustment factor which will be applied to each member’s premium (after any applicable discounts) and determine by their income tier and age. The adjusted rebate will automatically apply to any premium payments made on or after 1 April each year.</p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12">
-            <p>There is no change to the Australian Government Rebate in 2022.</p>
+            <p>Some funds updated their premiums on 1 April. However, this year many funds have chosen to delay their rate rises to later in the year. For those funds the premiums will remain the same for now and you will receive confirmation from the fund closer to the time the premiums will change. We’ll also show you the new pricing for a fund up to one month before it takes effect.</p>
+            <p>If you find a great deal today, you can pay up to 12 months in advance to enjoy today’s price for longer. Even if you pay in advance, you can switch at any time if you find a better deal.</p>
+            <p>You can learn more about the 2022 rate rise <a target='_new' href="https://www.comparethemarket.com.au/2022-rate-rise-guide/">here</a>.</p>
         </div>
     </div>
 
