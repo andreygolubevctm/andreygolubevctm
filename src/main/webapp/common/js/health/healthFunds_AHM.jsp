@@ -19,7 +19,7 @@ var healthFunds_AHM = {
   schoolMaxAge: 30,
   extendedFamilyMinAge: 21,
   extendedFamilyMaxAge: 31,
-  healthDependantMaxAge: 31, //will be set as AHM's maxDependantAge which is by default 25 (dependent age should be less than maxDependantAge)
+  healthDependantMaxAge: 31, <%-- will be set as AHM's maxDependantAge which is by default 25 (dependent age should be less than maxDependantAge) --%>
   set: function(){
 
     <%--Dependants--%>
