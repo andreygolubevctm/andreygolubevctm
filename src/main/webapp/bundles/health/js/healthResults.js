@@ -347,30 +347,6 @@
                 extendedFamilyResultsRulesData = {};
                 extendedFamilyResultsRules = "";
                 extendedFamilyResultsRulesAjax = null;
-
-                //Only look for Extended Family rules if (simples && (extendedFamily || ExtendedSingleParentFamily))
-                if (meerkat.site.isCallCentreUser) {
-
-                    var healthSituationHealthCvr = $('#health_situation_healthCvr').val();
-
-                    if (healthSituationHealthCvr === 'EF' || healthSituationHealthCvr ==='ESP') {
-
-                        //Get an array of distinct providers from the results returned
-                        Results.model.filteredProducts.forEach(
-                            function(item){
-                                if (providersReturned.indexOf(item.info.provider) < 0) {
-                                    providersReturned.push(item.info.provider);
-                                }
-                            }
-                        );
-                        if (providersReturned.length > -1){
-                            //get any extended family rules from the content_supplementary table for the returned providers and insert them into the dialog box
-                            setExtendedFamilyResultsRules();
-                        } else {
-                            $('.extFamilyFundSpecificRules').html('');
-                        }
-                    }
-                }
             });
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
