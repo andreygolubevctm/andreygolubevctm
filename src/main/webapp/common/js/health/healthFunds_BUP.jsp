@@ -16,7 +16,7 @@ var healthFunds_BUP = {
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
     extendedFamilyMinAge: 21,
     extendedFamilyMaxAge: 32,
-    healthDependantMaxAge: 32,
+    healthDependantMaxAge: 32,  //will be set as BUP's maxDependantAge which is by default 25 (dependent age should be less than maxDependantAge)
 	set: function () {
 
 		healthFunds_BUP.isYourChoiceExtras = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Your Choice Extras') > -1;
