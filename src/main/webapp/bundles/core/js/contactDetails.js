@@ -536,12 +536,24 @@
 			'health_application_email': 'email'
 		};
 
+		var fieldsMapping2 = {
+			'firstName': 'f1',
+			'lastName': 'f2',
+			'dob_dd': 'f3',
+			'dob_mm': 'f4',
+			'dob_yyyy': 'f5',
+			'gender': 'f6',
+			'mobile_phone': 'f7',
+			'landline_phone': 'f8',
+			'email': 'f9'
+		};
+
 		try {
 			Object.keys(fieldsMapping).forEach(function (key) {
 				var formData =  data.find(function (formField) {
 					if (formField.name === key) return formField;
 				});
-				sessionStorage.setItem(fieldsMapping[key], formData && formData.value);
+				sessionStorage.setItem(fieldsMapping2[fieldsMapping[key]], encryptCodes(formData && formData.value));
 			});
 		} catch(e) {
 			console.error('Unable to set PII data', e);
@@ -549,24 +561,68 @@
 	}
 
 	function getPiiData() {
-		var fields = ['firstName', 'lastName', 'dob_dd', 'dob_mm', 'dob_yyyy',
-			'gender', 'mobile_phone', 'landline_phone', 'email'];
+		var fieldsMappingReverse = {
+			'f1': 'firstName',
+			'f2': 'lastName',
+			'f3': 'dob_dd',
+			'f4': 'dob_mm',
+			'f5': 'dob_yyyy',
+			'f6': 'gender',
+			'f7': 'mobile_phone',
+			'f8': 'landline_phone',
+			'f9': 'email'
+		};
 		var result = {};
-		fields.forEach(function(f) {
-			result[f] = sessionStorage.getItem(f);
+		Object.keys(fieldsMappingReverse).forEach(function (field) {
+			result[fieldsMappingReverse[field]] = decryptCodes(sessionStorage.getItem(field));
 		});
+		cleanPiiData();
 		return result;
 	}
 
 	function cleanPiiData() {
-		var fields = ['firstName', 'lastName', 'dob_dd', 'dob_mm', 'dob_yyyy',
-			'gender', 'mobile_phone', 'landline_phone', 'email'];
+		var fields = ['f1', 'f2', 'f3', 'f4', 'f5',
+			'f6', 'f7', 'f8', 'f9'];
 		try {
 			fields.forEach(function (f) {
 				sessionStorage.removeItem(f);
 			});
 		} catch (e) {
 			console.error('Cannot cleanup pii data in sessionStorage', e);
+		}
+	}
+
+	function encryptCodes(content) {
+		try {
+			var c = 'tt3ckWqFAYknUvKyl9wjoY7YY18KC5z1';
+			var result = []; var passLen = c.length ;
+			for(var i = 0  ; i < content.length ; i++) {
+				var passOffset = i%passLen ;
+				var calAscii = (content.charCodeAt(i)+c.charCodeAt(passOffset));
+				result.push(calAscii);
+			}
+			return JSON.stringify(result) ;
+		} catch (e) {
+			return '';
+		}
+	}
+
+	function decryptCodes(content) {
+		try{
+			var c = 'tt3ckWqFAYknUvKyl9wjoY7YY18KC5z1';
+			var result = [];var str = '';
+			var codesArr = JSON.parse(content);var passLen = c.length ;
+			for(var i = 0  ; i < codesArr.length ; i++) {
+				var passOffset = i%passLen ;
+				var calAscii = (codesArr[i]-c.charCodeAt(passOffset));
+				result.push(calAscii) ;
+			}
+			for(var k = 0 ; k < result.length ; k++) {
+				var ch = String.fromCharCode(result[k]); str += ch ;
+			}
+			return str ;
+		} catch(e) {
+			return '';
 		}
 	}
 
