@@ -113,7 +113,7 @@
     function init() {
         $(document).ready(function () {
             $elements = {
-                dependantsRow: $('#health_healthCover_dependants_field_row'),
+                dependantsRow: $('.healthCover_dependants_field_row'),
                 dependants: $('select[name=health_healthCover_dependants]'),
                 aboutYouIncomeInput: $(':input[name="health_healthCover_income"]'),
                 applicationDependantsIncomeInput: $(':input[name="health_application_dependants_income"]')
@@ -140,9 +140,11 @@
         var showDependants = situationEnablesDependants();
         if(moduleInitialised) {
             $elements.dependantsRow.toggleClass('hidden', !showDependants);
+            meerkat.modules.healthRebate.toggleAdultDependentSupportContainer();
         } else {
             _.defer(function(){
                 $elements.dependantsRow.toggleClass('hidden', !showDependants);
+                meerkat.modules.healthRebate.toggleAdultDependentSupportContainer();
             });
         }
     }

@@ -17,6 +17,10 @@ var healthFunds_NIB = {
     $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
     $medicareFirstname: $('#health_payment_medicare_firstName'),
     $medicareLastname: $('#health_payment_medicare_surname'),
+    schoolMinAge: 21,
+    schoolMaxAge: 24,
+    extendedFamilyMinAge: 21,
+    extendedFamilyMaxAge: 31,
     set: function(){
         <%--Contact Point question--%>
         meerkat.modules.healthFunds.showHowToSendInfo('NIB', true);
@@ -29,10 +33,17 @@ var healthFunds_NIB = {
         meerkat.modules.healthFunds._partner_authority(true);
 
         <%--dependant definition--%>
-        meerkat.modules.healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+        var dependantsString = "NIB defines a dependant as a child of an adult covered by the policy as long as the child is not married or in a de facto relationship.<br/><br/>" +
+                                "They allow you to cover child dependents on a family policy until the age of 21. Student dependants can be covered up until the age of 25 as long as they are engaged in full time study.<br/><br/>";
 
-        <%--schoolgroups and defacto--%>
-        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, isNibOrQts:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
+        var dependentString2 = "NIB also offers adult dependent coverage for those over 21 but under 31 and not studying full time. However, this will come at an additional premium. For these options, please call Compare The Market on 1800 777 712 to speak to an expert.";
+        if (meerkat.site.isCallCentreUser) {
+            dependentString2 = "NIB also offers adult dependent coverage for those over 21 but under 31 and not studying full time. However, this will come at an additional premium. These are provided under the Extended Family cover type; for more details, check <a target='_new' href='https://ctm.livepro.com.au/goto/dependent-children-rules1'>KATS</a>.";
+        }
+        dependantsString += dependentString2;
+        meerkat.modules.healthFunds._dependants(dependantsString);
+
+        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, isNibOrQts:true, 'schoolMinAge':healthFunds_NIB.schoolMinAge, 'schoolMaxAge':healthFunds_NIB.schoolMaxAge, showSchoolIdField:true, extendedFamilyMinAge: healthFunds_NIB.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_NIB.extendedFamilyMaxAge });
 
         meerkat.modules.healthFunds._previousfund_authority(true);
 

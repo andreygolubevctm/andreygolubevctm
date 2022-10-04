@@ -262,7 +262,7 @@
         $elements.benefitsSwitchAlert.filter('.benefits-switch-extras-message').addClass('hidden');
         $('.journeyEngineSlide.active .journeyNavButton, .slide-control-insurance-preferences').attr('disabled', !areBenefitsSwitchOn);
 
-        // push error tracking object into CtMDatalayer
+        // push error tracking object into datalayer
         if (!areBenefitsSwitchOn) {
             errorTracking('benefits-switch-off');
         }

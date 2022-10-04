@@ -16,9 +16,7 @@ var healthFunds_BUP = {
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
     extendedFamilyMinAge: 21,
     extendedFamilyMaxAge: 32,
-    healthDependantMaxAge: 32,
-	schoolMinAge: 22,
-	schoolMaxAge: 31,
+    healthDependantMaxAge: 32,   <%--will be set as BUP's maxDependantAge which is by default 25 (dependent age should be less than maxDependantAge) --%>
 	set: function () {
 
 		healthFunds_BUP.isYourChoiceExtras = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Your Choice Extras') > -1;
@@ -220,12 +218,14 @@ var healthFunds_BUP = {
 		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
 		if (['F', 'SPF'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
-				schoolMinAge: healthFunds_BUP.schoolMinAge, schoolMaxAge: healthFunds_BUP.schoolMaxAge, showSchoolIdFields:true, showMiddleName: true, useSchoolDropdownMenu: false,
-				isBUP:true, showSchoolFields:true, showSchoolIdField:false, showSchoolCommencementField:true, dateStudyCommencedFieldName:'Study Start Date'});
+				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showSchoolIdFields:true, showMiddleName: true});
 		}
 		if (['EF', 'ESP'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
 				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showMiddleName: true});
+		}
+		if (!['F', 'SPF', 'EF', 'ESP'].includes(familyCoverType)) {
+			meerkat.modules.healthDependants.updateConfig({showMiddleName: true});
 		}
 
 		<%--change age of dependants and school--%>
@@ -297,7 +297,7 @@ var healthFunds_BUP = {
 		meerkat.modules.healthCreditCard.resetConfig();
 		meerkat.modules.healthCreditCard.render();
 
-		meerkat.modules.healthPaymentBambora.hide();
+		meerkat.modules.healthPaymentIPP.hide();
 
 		<%-- selections for payment date --%>
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
@@ -310,7 +310,7 @@ var healthFunds_BUP = {
 		$('.bup-payment-legend').remove();
 
 		<%-- Unset any ipp tokenisation --%>
-		meerkat.modules.healthPaymentBambora.reset();
+		meerkat.modules.healthPaymentIPP.reset();
 	}
 };
 </c:set>

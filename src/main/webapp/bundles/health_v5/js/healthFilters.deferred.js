@@ -566,7 +566,7 @@
             $('.filter.benefits-switched-off').attr('data-dontToggleUpdate', !areBenefitsSwitchOn);
         }
 
-        // push error tracking object into CtMDatalayer
+        // push error tracking object into datalayer
         if (!areBenefitsSwitchOn) {
             meerkat.modules.benefits.errorTracking('benefits-switch-off');
         }

@@ -198,7 +198,7 @@ Track = {
      */
     recordGoogle: function (method, value) {
         try {
-            if (typeof window.CtMDataLayer === 'undefined') {
+            if (typeof window.dataLayer === 'undefined') {
                 throw "Google Data Layer is undefined";
             }
             var data = {"event": method};
@@ -210,7 +210,7 @@ Track = {
                 }
             }
             Track.log("Google", method, value);
-            window.CtMDataLayer.push(data);
+            window.dataLayer.push(data);
 
         } catch (e) {
             Track.log("Google catch", method, value, e);

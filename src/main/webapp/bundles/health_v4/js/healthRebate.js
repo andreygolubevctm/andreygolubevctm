@@ -61,7 +61,9 @@
             rebateLabel: $('#rebateLabel'),
             rebateLabelText: $('#rebateLabel span'),
             rebateLegend: $('#health_healthCover_tier_row_legend'),
-            healthCoverDetails: $('#startForm')
+            healthCoverDetails: $('#startForm'),
+            healthCoverAdultDependents: $('input[name="health_healthCover_adultDependants"]')
+
         };
     }
 
@@ -73,6 +75,10 @@
 
         $elements.applyRebate.on('change', function() {
             toggleRebateQuestions();
+        });
+
+        $elements.healthCoverAdultDependents.on('change', function() {
+            toggleAdultDependentSupportContainer();
         });
 
         // update the lhc message. used lhcElements for now as the questions have changed dramatically
@@ -104,6 +110,15 @@
         var $checked = $elements.applyRebate.filter(":checked");
         if($checked.length && $checked.val() === "N") {
             meerkat.modules.healthRates.unsetRebate();
+        }
+    }
+
+    function toggleAdultDependentSupportContainer() {
+        var $checked = $elements.healthCoverAdultDependents.filter(":checked");
+        if($checked.length && $checked.val() === "Y") {
+            $('#adult-depedendants-support-container').removeClass('hidden');
+        } else {
+            $('#adult-depedendants-support-container').addClass('hidden');
         }
     }
 
@@ -212,7 +227,8 @@
         toggleRebateQuestions: toggleRebateQuestions,
         isRebateApplied: isRebateApplied,
         getSelectedRebateLabelText: getSelectedRebateLabelText,
-        getSelectedRebateTierLabelText: getSelectedRebateTierLabelText
+        getSelectedRebateTierLabelText: getSelectedRebateTierLabelText,
+        toggleAdultDependentSupportContainer: toggleAdultDependentSupportContainer
     });
 
 

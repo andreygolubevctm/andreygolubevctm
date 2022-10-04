@@ -10,6 +10,8 @@ public class HealthCover {
 
     private Integer income;
 
+    private String adultDependants;
+
     public Insured getPrimary() {
         return primary;
     }
@@ -40,5 +42,13 @@ public class HealthCover {
 
     public void setIncome(Integer income) {
         this.income = income;
+    }
+
+    public String getAdultDependants() {
+        return adultDependants;
+    }
+
+    public void setAdultDependants(String adultDependants) {
+        this.adultDependants = adultDependants;
     }
 }
