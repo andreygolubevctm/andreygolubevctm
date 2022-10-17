@@ -777,7 +777,7 @@
         <dependency>
             <groupId>com.ctm.schema</groupId>
             <artifactId>schema-model</artifactId>
-            <version>1.152.0-20221005.022452-1</version>
+            <version>1.152.0-20221017.042840-1</version>
             <classifier>SML-2427</classifier>
             <exclusions>
                 <exclusion>
