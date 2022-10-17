@@ -218,7 +218,8 @@ var healthFunds_BUP = {
 		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
 		if (['F', 'SPF'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
-				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showSchoolIdFields:true, showMiddleName: true});
+				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showSchoolIdFields:true, showMiddleName: true,
+				showSchoolCommencementField:true, dateStudyCommencedFieldName:'Study Start Date'});
 		}
 		if (['EF', 'ESP'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
