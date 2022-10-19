@@ -96,7 +96,7 @@
                     <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/auf_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'"
                                         disableErrorContainer="${false}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No Educational institute selected."/>
                 {{ } else { }}
-                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/other_providers_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="{{= providerConfig.isBUP === true ? 'false' : 'true'}}" additionalAttributes="data-visible='true'"
+                    <field_v2:import_select xpath="${storeGroupName}" url="/WEB-INF/option_data/other_providers_educational_institutions.html" title="dependant {{= obj.dependantId }}'s educational institute" required="true" additionalAttributes="data-visible='true'"
                                         disableErrorContainer="${false}" className="combobox" placeHolder="Start typing to search or select from list" requiredErrorMessage="No Educational institute selected."/>
                 {{ } }}
             </form_v2:row>

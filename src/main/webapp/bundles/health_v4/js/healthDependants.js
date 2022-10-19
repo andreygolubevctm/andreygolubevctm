@@ -271,6 +271,22 @@
             // Hide them all if they aren't in the date range.
             $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
         }
+
+        // This is currently used for BUPA only --- START
+        if(!!providerConfig.dateStudyCommencedShowMinAge && !!providerConfig.dateStudyCommencedShowMaxAge
+            && (age < providerConfig.dateStudyCommencedShowMinAge || age > providerConfig.dateStudyCommencedShowMaxAge)) {
+            $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', true);
+        }
+
+        if(providerConfig.showSchoolFields && !!providerConfig.schoolNameRequiredMinAge && !!providerConfig.schoolNameRequiredMaxAge
+            && (age < providerConfig.schoolNameRequiredMinAge || age > providerConfig.schoolNameRequiredMaxAge)) {
+           $(selectorPrefix + '_school').prop('required',true);
+        } else {
+           $(selectorPrefix + '_school').prop('required',false);
+           $(selectorPrefix + '_school').prop('data-disable-error-container',false);
+           $(selectorPrefix + '_school').parent().removeClass('has-error').addClass('has-success');
+        }
+        // This is currently used for BUPA only --- END
     }
 
     /**

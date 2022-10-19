@@ -17,6 +17,11 @@ var healthFunds_BUP = {
     extendedFamilyMinAge: 21,
     extendedFamilyMaxAge: 32,
     healthDependantMaxAge: 32,   <%--will be set as BUP's maxDependantAge which is by default 25 (dependent age should be less than maxDependantAge) --%>
+	dateStudyCommencedShowMinAge: 22, <%-- if age >= this vale - start show Study Start Date (or Date Study Commenced) input --%>
+	dateStudyCommencedShowMaxAge: 31, <%-- if age > this value - stop show Study Start Date (or Date Study Commenced) input --%>
+	schoolNameRequiredMinAge: 22, <%-- if age < this value - make school name field mandatory --%>
+	schoolNameRequiredMaxAge: 31, <%-- if age > this value - make school name field mandatory --%>
+
 	set: function () {
 
 		healthFunds_BUP.isYourChoiceExtras = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Your Choice Extras') > -1;
@@ -218,8 +223,11 @@ var healthFunds_BUP = {
 		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
 		if (['F', 'SPF'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
-				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showSchoolIdFields:true, showMiddleName: true,
-				showSchoolCommencementField:true, dateStudyCommencedFieldName:'Study Start Date'});
+				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showSchoolFields:true, showMiddleName: true,
+				showSchoolCommencementField:true, dateStudyCommencedFieldName:'Study Start Date',
+				dateStudyCommencedShowMinAge: healthFunds_BUP.dateStudyCommencedShowMinAge, dateStudyCommencedShowMaxAge: healthFunds_BUP.dateStudyCommencedShowMaxAge,
+				schoolNameRequiredMinAge: healthFunds_BUP.schoolNameRequiredMinAge, schoolNameRequiredMaxAge: healthFunds_BUP.schoolNameRequiredMaxAge
+			});
 		}
 		if (['EF', 'ESP'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
