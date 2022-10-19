@@ -306,7 +306,7 @@ var healthFunds_BUP = {
 		meerkat.modules.healthCreditCard.resetConfig();
 		meerkat.modules.healthCreditCard.render();
 
-		meerkat.modules.healthPaymentIPP.hide();
+		meerkat.modules.healthPaymentBambora.hide();
 
 		<%-- selections for payment date --%>
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
@@ -319,7 +319,7 @@ var healthFunds_BUP = {
 		$('.bup-payment-legend').remove();
 
 		<%-- Unset any ipp tokenisation --%>
-		meerkat.modules.healthPaymentIPP.reset();
+		meerkat.modules.healthPaymentBambora.reset();
 	}
 };
 </c:set>
