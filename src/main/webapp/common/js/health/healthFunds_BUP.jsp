@@ -17,10 +17,10 @@ var healthFunds_BUP = {
     extendedFamilyMinAge: 21,
     extendedFamilyMaxAge: 32,
     healthDependantMaxAge: 32,   <%--will be set as BUP's maxDependantAge which is by default 25 (dependent age should be less than maxDependantAge) --%>
-	dateStudyCommencedShowMinAge: 22, <%-- if age >= this vale - start show Study Start Date (or Date Study Commenced) input --%>
-	dateStudyCommencedShowMaxAge: 31, <%-- if age > this value - stop show Study Start Date (or Date Study Commenced) input --%>
-	schoolNameRequiredMinAge: 22, <%-- if age < this value - make school name field mandatory --%>
-	schoolNameRequiredMaxAge: 31, <%-- if age > this value - make school name field mandatory --%>
+	dateStudyCommencedShowMinAge: 21, <%-- if age >= this value - show Study Start Date (or Date Study Commenced) input AND --%>
+	dateStudyCommencedShowMaxAge: 31, <%-- if age <= this value - show Study Start Date (or Date Study Commenced) input --%>
+	schoolNameRequiredMinAge: 21, <%-- if age >= this value - make school name field mandatory AND --%>
+	schoolNameRequiredMaxAge: 31, <%-- if age <= this value - make school name field mandatory --%>
 
 	set: function () {
 

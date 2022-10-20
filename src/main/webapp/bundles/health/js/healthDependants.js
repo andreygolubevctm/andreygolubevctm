@@ -258,29 +258,25 @@
                 // Hide them all if they aren't in the date range.
                 $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             }
-
-            // This is currently used for BUPA only --- START
-            if(!!providerConfig.dateStudyCommencedShowMinAge && !!providerConfig.dateStudyCommencedShowMaxAge
-            && (age < providerConfig.dateStudyCommencedShowMinAge || age > providerConfig.dateStudyCommencedShowMaxAge)) {
-                $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', true);
-            }
-
-            if(providerConfig.showSchoolFields && !!providerConfig.schoolNameRequiredMinAge && !!providerConfig.schoolNameRequiredMaxAge
-                && (age < providerConfig.schoolNameRequiredMinAge || age > providerConfig.schoolNameRequiredMaxAge)) {
-                if(!$(selectorPrefix + '_school').attr('required')) {
-                    $(selectorPrefix + '_school').prop('required', true);
-                    $(selectorPrefix + '_school').parent().removeClass('has-success').addClass('has-error');
-                }
-
-            } else {
-               $(selectorPrefix + '_school').prop('required',false);
-               $(selectorPrefix + '_school').prop('data-disable-error-container',false);
-               $(selectorPrefix + '_school').parent().removeClass('has-error').addClass('has-success');
-               $(selectorPrefix + '_school').parent().parent().removeClass('has-error').addClass('has-success');
-               $(selectorPrefix + '_school-error').remove();
-            }
-            // This is currently used for BUPA only --- END
         }
+
+        // This is currently used for BUPA only as dateStudyCommencedShowMinAge, dateStudyCommencedShowMaxAge, schoolNameRequiredMinAge and schoolNameRequiredMaxAge defined only in src/main/webapp/common/js/health/healthFunds_BUP.jsp
+        // you may need to update the logic if similar behaviour is required for other providers --- START
+        if(providerConfig.showSchoolCommencementField && !!providerConfig.dateStudyCommencedShowMinAge && !!providerConfig.dateStudyCommencedShowMaxAge
+            && (age >= providerConfig.dateStudyCommencedShowMinAge && age <= providerConfig.dateStudyCommencedShowMaxAge)) {
+            $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', false);
+        } else {
+            $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', true);
+        }
+
+        if(providerConfig.showSchoolFields && !!providerConfig.schoolNameRequiredMinAge && !!providerConfig.schoolNameRequiredMaxAge
+            && (age >= providerConfig.schoolNameRequiredMinAge && age <= providerConfig.schoolNameRequiredMaxAge)) {
+           $(selectorPrefix + '_schoolGroup').toggleClass('hidden',false);
+           $(selectorPrefix + '_school').prop('required',false);
+        } else {
+           $(selectorPrefix + '_schoolGroup').toggleClass('hidden',true);
+        }
+        // This is currently used for BUPA only --- END
     }
 
     /**
