@@ -262,19 +262,21 @@
 
         // This is currently used for BUPA only as dateStudyCommencedShowMinAge, dateStudyCommencedShowMaxAge, schoolNameRequiredMinAge and schoolNameRequiredMaxAge defined only in src/main/webapp/common/js/health/healthFunds_BUP.jsp
         // you may need to update the logic if similar behaviour is required for other providers --- START
-        if(providerConfig.showSchoolCommencementField && !!providerConfig.dateStudyCommencedShowMinAge && !!providerConfig.dateStudyCommencedShowMaxAge
-            && (age >= providerConfig.dateStudyCommencedShowMinAge && age <= providerConfig.dateStudyCommencedShowMaxAge)) {
-            $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', false);
-        } else {
-            $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', true);
+        if (!!providerConfig.dateStudyCommencedShowMinAge && !!providerConfig.dateStudyCommencedShowMaxAge) {
+            if (providerConfig.showSchoolCommencementField && (age >= providerConfig.dateStudyCommencedShowMinAge && age <= providerConfig.dateStudyCommencedShowMaxAge)) {
+                $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', false);
+            } else {
+                $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', true);
+            }
         }
 
-        if(providerConfig.showSchoolFields && !!providerConfig.schoolNameRequiredMinAge && !!providerConfig.schoolNameRequiredMaxAge
-            && (age >= providerConfig.schoolNameRequiredMinAge && age <= providerConfig.schoolNameRequiredMaxAge)) {
-           $(selectorPrefix + '_schoolGroup').toggleClass('hidden',false);
-           $(selectorPrefix + '_school').prop('required',false);
-        } else {
-           $(selectorPrefix + '_schoolGroup').toggleClass('hidden',true);
+        if (!!providerConfig.schoolNameRequiredMinAge && !!providerConfig.schoolNameRequiredMaxAge) {
+            if (providerConfig.showSchoolFields && (age >= providerConfig.schoolNameRequiredMinAge && age <= providerConfig.schoolNameRequiredMaxAge)) {
+                $(selectorPrefix + '_schoolGroup').toggleClass('hidden', false);
+                $(selectorPrefix + '_school').prop('required', false);
+            } else {
+                $(selectorPrefix + '_schoolGroup').toggleClass('hidden', true);
+            }
         }
         // This is currently used for BUPA only --- END
     }
