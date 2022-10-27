@@ -14,9 +14,14 @@ var healthFunds_BUP = {
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
-    extendedFamilyMinAge: 21,
+    extendedFamilyMinAge: 0, <%-- or any number < schoolMinAge. we defenetely need to review dependants logic  --%>
     extendedFamilyMaxAge: 32,
+	schoolMinAge: 20,
+    schoolMaxAge: 31,
     healthDependantMaxAge: 32,   <%--will be set as BUP's maxDependantAge which is by default 25 (dependent age should be less than maxDependantAge) --%>
+	schoolNameRequiredMinAge: 21, <%-- if age < this value - make school name field mandatory --%>
+	schoolNameRequiredMaxAge: 31, <%-- if age > this value - make school name field mandatory --%>
+
 	set: function () {
 
 		healthFunds_BUP.isYourChoiceExtras = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Your Choice Extras') > -1;
@@ -217,7 +222,9 @@ var healthFunds_BUP = {
 		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
 		if (['F', 'SPF'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
-				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showSchoolIdFields:true, showMiddleName: true});
+				schoolMinAge: healthFunds_BUP.schoolMinAge, schoolMaxAge: healthFunds_BUP.schoolMaxAge, showSchoolFields:true, showMiddleName: true,
+				schoolNameRequiredMinAge: healthFunds_BUP.schoolNameRequiredMinAge, schoolNameRequiredMaxAge: healthFunds_BUP.schoolNameRequiredMaxAge
+			});
 		}
 		if (['EF', 'ESP'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,

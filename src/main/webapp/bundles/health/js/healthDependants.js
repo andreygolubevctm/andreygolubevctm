@@ -69,7 +69,8 @@
             isNibOrQts: false,
             isAHM: false,
             isBUP: false,
-            isWFD: false
+            isWFD: false,
+            schoolNameRequiredMinAge: null
 
         },
         providerConfig,
@@ -258,6 +259,16 @@
                 // Hide them all if they aren't in the date range.
                 $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             }
+
+            // This is currently used for BUPA only --- START
+            if (!!providerConfig.schoolNameRequiredMinAge && !!providerConfig.schoolNameRequiredMaxAge) {
+                if (providerConfig.showSchoolFields && (age >= providerConfig.schoolNameRequiredMinAge && age <= providerConfig.schoolNameRequiredMaxAge)) {
+                    $(selectorPrefix + '_schoolGroup').toggleClass('hidden', false);
+                } else {
+                    $(selectorPrefix + '_schoolGroup').toggleClass('hidden', true);
+                }
+            }
+            // This is currently used for BUPA only --- END
         }
     }
 
