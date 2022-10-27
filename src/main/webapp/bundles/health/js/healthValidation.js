@@ -179,8 +179,10 @@
                         $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getExtendedFamilyMaxAge());
                         isValid = false;
                     } else if (['F', 'SPF'].includes(familyCoverType)) {
-                        //dependant age cannot be covered family or single parent family because dependant age exceeds student max age but less than adult dependent max age
-                        $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', 'between ' + meerkat.modules.healthDependants.getExtendedFamilyMinAge() +
+                        //dependant age cannot be covered family or single parent family because dependant age exceeds student max age but less than adult dependent max age;
+                        //the message will suggest the extended family policy
+                        var message2 = 'Your dependant cannot be added to the policy as they are aged {AGE} years or older. You can still arrange cover for this dependent by applying for an extended family policy.';
+                        $.validator.messages.limitDependentAgeToUnder25 = message2.replace('{AGE}', 'between ' + meerkat.modules.healthDependants.getExtendedFamilyMinAge() +
                             ' - ' + meerkat.modules.healthDependants.getExtendedFamilyMaxAge());
                         isValid = false;
                     }
