@@ -33,6 +33,20 @@
 	</c:choose>
 </c:set>
 
+<c:set var="lbContactFirstName" >
+	<c:choose>
+		<c:when test="${not empty data.health.application.primary.firstname}">${data.health.application.primary.firstname}</c:when>
+		<c:otherwise></c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="lbContactSecondName" >
+	<c:choose>
+		<c:when test="${not empty data.health.application.primary.surname}">${data.health.application.primary.surname}</c:when>
+		<c:otherwise></c:otherwise>
+	</c:choose>
+</c:set>
+
 <c:set var="lbContactDOB" >
 	<c:choose>
 		<c:when test="${not empty data.health.application.primary.dob}">${data.health.application.primary.dob}</c:when>
@@ -87,6 +101,18 @@
 	<c:choose>
 		<c:when test="${not empty data.health.application.mobile}">${data.health.application.mobile}</c:when>
 		<c:otherwise>${data.health.application.other}</c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="lbContactMobile" >
+	<c:choose>
+		<c:when test="${not empty data.health.application.mobile}">${data.health.application.mobile}</c:when>
+	</c:choose>
+</c:set>
+
+<c:set var="lbContactLandline" >
+	<c:choose>
+		<c:when test="${not empty data.health.application.other}">${data.health.application.other}</c:when>
 	</c:choose>
 </c:set>
 
@@ -214,15 +240,19 @@
 
 						</div>
 
+						<div class="lbContactName hidden">${lbContactName}</div>
+						<div class="lbContactFirstName hidden">${lbContactFirstName}</div>
+						<div class="lbContactSecondName hidden">${lbContactSecondName}</div>
+						<div class="lbContactDOB hidden">${lbContactDOB}</div>
+						<div class="lbContactGender hidden">${lbContactGender}</div>
+						<div class="lbContactState hidden">${lbContactState}</div>
+						<div class="lbContactPostCode hidden">${lbContactPostCode}</div>
+						<div class="lbContactPhone hidden">${lbContactPhone}</div>
+						<div class="lbContactMobile hidden">${lbContactMobile}</div>
+						<div class="lbContactLandline hidden">${lbContactLandline}</div>
+						<div class="lbContactEmail hidden">${lbContactEmail}</div>
 
 						<c:if test="${(not empty callCentre and callCentre) and (hasPostCode eq 'Y' or inState eq 'Y')}">
-								<div class="lbContactName hidden">${lbContactName}</div>
-								<div class="lbContactDOB hidden">${lbContactDOB}</div>
-								<div class="lbContactGender hidden">${lbContactGender}</div>
-								<div class="lbContactState hidden">${lbContactState}</div>
-								<div class="lbContactPostCode hidden">${lbContactPostCode}</div>
-								<div class="lbContactPhone hidden">${lbContactPhone}</div>
-								<div class="lbContactEmail hidden">${lbContactEmail}</div>
 								<div class="lbHasPostCode hidden">${hasPostCode}</div>
 								<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
 

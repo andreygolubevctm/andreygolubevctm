@@ -61,8 +61,6 @@
 
     function _submitApplication() {
 
-        meerkat.modules.contactDetails.setPiiData(meerkat.modules.journeyEngine.getFormData());
-
         if (stateSubmitInProgress === true) {
             alert('Your application is still being submitted. Please wait.');
             return;
