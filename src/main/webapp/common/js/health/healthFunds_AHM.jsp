@@ -35,10 +35,6 @@ var healthFunds_AHM = {
 
     <%-- Dependant's Age and message --%>
     meerkat.modules.healthFunds._dependants(dependantsString);
-    var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
-    if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
-      meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_AHM.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_AHM.extendedFamilyMaxAge});
-    }
 
     <%--change age of dependants and school--%>
     meerkat.modules.healthDependants.setMaxAge(healthFunds_AHM.healthDependantMaxAge);

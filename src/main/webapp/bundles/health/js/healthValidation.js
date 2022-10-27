@@ -167,10 +167,8 @@
          //       Max age default is 25. For some providers, max age is overriden by their config healthDependantMaxAge.
         if (getAge >= meerkat.modules.healthDependants.getMaxAge()) {
             switch (Results.getSelectedProduct().info.FundCode) {
+                case 'AUF':
                 case 'AHM':
-                        $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
-                        isValid = false;
-                    break;
                 case 'BUP':
                         $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
                         isValid = false;

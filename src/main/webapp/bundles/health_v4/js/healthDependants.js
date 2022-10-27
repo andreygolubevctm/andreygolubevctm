@@ -503,13 +503,14 @@
      * If any of the, AUF Online Only, dependants are between the ages of 23-25, display a script
      */
     function updateAgeWarningForAUFDependants() {
-        if (providerConfig.isAUF) {
+        var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+        if (providerConfig.isAUF && (familyCoverType !== 'EF' && familyCoverType !== 'ESP')) {
             for (var dependantId = 1; dependantId <= getNumberOfDependants(); dependantId++) {
                 var selectorPrefix = '#health_application_dependants_dependant' + dependantId;
                 var dobAsString = $(selectorPrefix + '_dob').val() || '0';
                 var ageAsNumber = meerkat.modules.age.returnAge(dobAsString, true) || 0;
 
-                if (ageAsNumber >= 23 && ageAsNumber <= 25) {
+                if (ageAsNumber >= providerConfig.schoolMinAge && ageAsNumber <= providerConfig.schoolMaxAge) {
                     $('#health_auf_student_dependant').show();
                     return;
                 }
