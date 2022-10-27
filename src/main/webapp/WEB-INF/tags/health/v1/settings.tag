@@ -162,6 +162,7 @@
 		styleCodeId: "<c:out value="${pageSettings.getBrandId()}"/>",
 	</c:if>
 	gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
+	anonIdGa: "<c:out value="${data['health/anonIdGa']}"/>",
 	<core_v2:affiliateSettings />
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",

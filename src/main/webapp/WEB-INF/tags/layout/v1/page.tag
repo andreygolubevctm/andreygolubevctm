@@ -461,6 +461,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 					var options = {};
 					meerkat != null && meerkat.init(siteConfig, options);
+					!!meerkat && !!meerkat.site && meerkat.site.anonIdGa && sessionStorage.setItem('user_anonymous_id', meerkat.site.anonIdGa);
 
 				})(window.meerkat);
 			</script>
