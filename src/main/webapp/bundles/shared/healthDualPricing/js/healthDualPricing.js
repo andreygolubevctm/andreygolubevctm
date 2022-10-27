@@ -263,7 +263,7 @@
         // for some reason Results.getSelectedProduct().pricingDate gets updated
         product.pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "MMMM Do, YYYY");
         if (product.hasValidDualPricingDate) {
-            product.dualPricingDateFormatted = meerkat.modules.dateUtils.dateValueShortFormat(product.dualPricingDate);
+            product.dualPricingDateFormatted = meerkat.modules.dateUtils.dateValueShortFormat(product.dualPricingDate, true);
             product.dualPricingDateOnlyMonth = meerkat.modules.dateUtils.monthOfDateValue(product.dualPricingDate);
             product.dualPricingDateWithYear = meerkat.modules.dateUtils.dateValueMediumFormat(product.dualPricingDate);
         }

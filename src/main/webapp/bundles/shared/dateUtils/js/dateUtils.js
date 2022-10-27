@@ -153,11 +153,18 @@
     // returns: short date string in the following format:
     // MMMM D
     // e.g. April 25
-    function dateValueShortFormat( dateObj ) {
+    // or MMM D if abbreviateMonth = true
+    // e.g  Apr 25
+    function dateValueShortFormat( dateObj, abbreviateMonth ) {
         try {
-            var longFormat = dateValueLongFormat(parse(dateObj, 'YYYY-MM-DD'));
+            var longFormat = "";
+            if (abbreviateMonth) {
+                longFormat = format(parse(dateObj, 'YYYY-MM-DD'), "dddd, D MMM YYYY");
+            } else {
+                longFormat = dateValueLongFormat(parse(dateObj, 'YYYY-MM-DD'));
+            }
             var longFormatSplit = longFormat.split(",")[1];
-            return longFormatSplit.split(" ")[2] + " " + longFormatSplit.split(" ")[1];
+            return  longFormatSplit.split(" ")[2] + " " + longFormatSplit.split(" ")[1];
         } catch (e) {
             return null;
         }
