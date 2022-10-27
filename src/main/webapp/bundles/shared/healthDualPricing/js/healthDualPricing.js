@@ -121,8 +121,16 @@
             $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
         });
 
-        $(document).on('click', '.price-rise-banner-learn-more', function(e) {
-            _showBannerModal();
+        $(document).on('click', '.price-rise-tag .price-rise-banner-learn-more', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var isCoverStartDateButtonEnabled = $("#health_payment_details_startInputD").length <= 0 || $("#health_payment_details_startInputD").prop("disabled") == false;
+            // First condition below had to be added since it duplicates modal when opened at the end of journey.
+            // The other condition is to make sure that the whole has been loaded fully - cover start date already enabled.
+            // Solution below can be improved.
+            if ($(".modal-dialog.dual-pricing-modal").length <= 0 && isCoverStartDateButtonEnabled) {
+                _showBannerModal();
+            }
         });
         $(document).on('click', '.price-rise-banner-close-btn', function() {
             _trackModalClose = false;
