@@ -202,6 +202,10 @@
                         isValid = false;
                     }
                     break;
+                case 'HIF':
+                    $.validator.messages.limitDependentAgeToUnder25 = message.replace('aged {AGE}', meerkat.modules.healthDependants.getMaxAge());
+                    isValid = false;
+                    break;
                 default:
                     $.validator.messages.limitDependentAgeToUnder25 = (message.replace('dependant', 'child').replace('{AGE}', meerkat.modules.healthDependants.getMaxAge())).slice(0, -1) +
                         ' or please contact us if you require assistance.';
