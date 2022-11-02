@@ -13,3 +13,9 @@
 <c:if test="${not empty data[fieldXpath]}">
 	<field_v1:hidden xpath="${fieldXpath}" />
 </c:if>
+
+<%-- If anonIdGa already exists then render as hidden input --%>
+<c:set var="fieldXpath" value="${journeyVertical}/anonIdGa" />
+<c:if test="${not empty data[fieldXpath]}">
+	<field_v1:hidden xpath="${fieldXpath}" />
+</c:if>

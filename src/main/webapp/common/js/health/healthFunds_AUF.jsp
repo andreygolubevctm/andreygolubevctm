@@ -22,14 +22,33 @@ var healthFunds_AUF = {
   $paymentDetailsMessageText: $('#simples-dialogue-229 > div > div > label > div'),
   $fortnightlyBankMessage: $('#simples-dialogue-230'),
   $fortnightlyCreditMessage: $('#simples-dialogue-231'),
+  schoolMinAge: 23,         <%-- student dependants starts at age 23 --%>
+  schoolMaxAge: 30,         <%-- student dependants can only be up to the age of 30 --%>
+  healthDependantMaxAge: 31, <%-- dependants can only be up to the age of 30. healthDependantMaxAge value is 31 because the maximum age check is exclusive --%>
+  extendedFamilyMinAge: 23,
+  extendedFamilyMaxAge: 31,
   set: function(){
     <%--dependant definition--%>
-      meerkat.modules.healthFunds._dependants('This policy provides cover for children under the age of 23 or who are aged between 23-25 years and engaged in full time study. Student dependants do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+    var dependantsString = 'Australian Unity defines a dependant as a child of an adult covered by the policy as long as the child is not married or in a de facto relationship.<br/><br/>' +
+            'They allow you to cover child dependents on a family policy until the age of 23. Student dependants can be covered up until the age of 31 as long as they receive full-time education in secondary school or tertiary institution, trade apprenticeship and industry, employer or government training scheme, which is accredited by a State or Federal Government.<br/><br/>';
 
-      meerkat.modules.healthFunds._previousfund_authority(true);
+    var dependentString2 = "Australian Unity also offers adult dependant coverage for those over 23 but under 31 and not studying full time. However, this will come at an additional premium. For these options, please call Compare The Market on 1800 777 712 to speak to an expert.";
+    if (meerkat.site.isCallCentreUser) {
+      dependentString2 = "Australian Unity also offers adult dependant coverage for those over 23 but under 31 and not studying full time. However, this will come at an additional premium. These are provided under the Extended Family cover type; for more details, check <a target='_new' href='https://ctm.livepro.com.au/goto/dependent-children-rules1'>KATS</a>.";
+    }
+    dependantsString += dependentString2;
+    meerkat.modules.healthFunds._dependants(dependantsString);
+
+    meerkat.modules.healthFunds._previousfund_authority(true);
+
+    meerkat.modules.healthDependants.setMaxAge(healthFunds_AUF.healthDependantMaxAge);
 
     <%--school Age--%>
-    meerkat.modules.healthDependants.updateConfig({schoolMinAge: 23, isAUF: true, showSchoolFields:true, showSchoolIdField:true, showSchoolCommencementField: true});
+    meerkat.modules.healthDependants.updateConfig({schoolMinAge: healthFunds_AUF.schoolMinAge, schoolMaxAge: healthFunds_AUF.schoolMaxAge, isAUF: true, showSchoolFields:true, showSchoolIdField:true, showSchoolCommencementField: true});
+    var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+    if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
+      meerkat.modules.healthDependants.setExtendedFamilyMinMaxAge(healthFunds_AUF.extendedFamilyMinAge, healthFunds_AUF.extendedFamilyMaxAge);
+    }
 
     <%--credit card & bank account frequency & day frequency--%>
     meerkat.modules.healthPaymentStep.overrideSettings('bank', { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });

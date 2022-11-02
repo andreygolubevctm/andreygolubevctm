@@ -258,7 +258,6 @@
 					toggleRebate();
 				});
 				toggleRebate();
-				meerkat.modules.contactDetails.cleanPiiData();
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function healthV2AfterEnter() {
@@ -1326,8 +1325,6 @@
 	}
 
 	function submitApplication() {
-
-		meerkat.modules.contactDetails.setPiiData(meerkat.modules.journeyEngine.getFormData());
 
 		if (stateSubmitInProgress === true) {
 			alert('Your application is still being submitted. Please wait.');

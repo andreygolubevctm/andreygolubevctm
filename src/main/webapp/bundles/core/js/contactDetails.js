@@ -522,107 +522,30 @@
 		return value;
 	}
 
-	// data is supposed to be in meerkat.modules.journeyEngine.getFormData() format
-	function setPiiData(data) {
-		var fieldsMapping = {
-			'health_application_primary_firstname': 'firstName',
-			'health_application_primary_surname': 'lastName',
-			'health_application_primary_dobInputD': 'dob_dd',
-			'health_application_primary_dobInputM': 'dob_mm',
-			'health_application_primary_dobInputY': 'dob_yyyy',
-			'health_application_primary_gender': 'gender',
-			'health_application_mobile': 'mobile_phone',
-			'health_application_other': 'landline_phone',
-			'health_application_email': 'email'
-		};
-
-		var fieldsMapping2 = {
-			'firstName': 'f1',
-			'lastName': 'f2',
-			'dob_dd': 'f3',
-			'dob_mm': 'f4',
-			'dob_yyyy': 'f5',
-			'gender': 'f6',
-			'mobile_phone': 'f7',
-			'landline_phone': 'f8',
-			'email': 'f9'
-		};
-
-		try {
-			Object.keys(fieldsMapping).forEach(function (key) {
-				var formData =  data.find(function (formField) {
-					if (formField.name === key) return formField;
-				});
-				sessionStorage.setItem(fieldsMapping2[fieldsMapping[key]], encryptCodes(formData && formData.value));
-			});
-		} catch(e) {
-			console.error('Unable to set PII data', e);
-		}
-	}
-
 	function getPiiData() {
-		var fieldsMappingReverse = {
-			'f1': 'firstName',
-			'f2': 'lastName',
-			'f3': 'dob_dd',
-			'f4': 'dob_mm',
-			'f5': 'dob_yyyy',
-			'f6': 'gender',
-			'f7': 'mobile_phone',
-			'f8': 'landline_phone',
-			'f9': 'email'
-		};
-		var result = {};
-		Object.keys(fieldsMappingReverse).forEach(function (field) {
-			result[fieldsMappingReverse[field]] = decryptCodes(sessionStorage.getItem(field));
-		});
-		cleanPiiData();
-		return result;
-	}
+		var $content = meerkat.site.isCallCentreUser ?
+			$('.navMenu-row article#page iframe#simplesiframe').contents() :
+			$('.navMenu-row article.container #mainform #journeyEngineSlidesContainer #confirmationForm #confirmation');
+		var firstName = $content.find('.lbContactFirstName.hidden').text();
+		var secondName = $content.find('.lbContactSecondName.hidden').text();
+		var dob = $content.find('.lbContactDOB.hidden').text();
+		var gender = $content.find('.lbContactGender.hidden').text();
+		var mobile = $content.find('.lbContactMobile.hidden').text();
+		var landline = $content.find('.lbContactLandline.hidden').text();
+		var email = $content.find('.lbContactEmail.hidden').text();
 
-	function cleanPiiData() {
-		var fields = ['f1', 'f2', 'f3', 'f4', 'f5',
-			'f6', 'f7', 'f8', 'f9'];
-		try {
-			fields.forEach(function (f) {
-				sessionStorage.removeItem(f);
-			});
-		} catch (e) {
-			console.error('Cannot cleanup pii data in sessionStorage', e);
-		}
-	}
+		var dobSplit = !dob ? '' : dob.split('/');
 
-	function encryptCodes(content) {
-		try {
-			var c = 'tt3ckWqFAYknUvKyl9wjoY7YY18KC5z1';
-			var result = []; var passLen = c.length ;
-			for(var i = 0  ; i < content.length ; i++) {
-				var passOffset = i%passLen ;
-				var calAscii = (content.charCodeAt(i)+c.charCodeAt(passOffset));
-				result.push(calAscii);
-			}
-			return JSON.stringify(result) ;
-		} catch (e) {
-			return '';
-		}
-	}
-
-	function decryptCodes(content) {
-		try{
-			var c = 'tt3ckWqFAYknUvKyl9wjoY7YY18KC5z1';
-			var result = [];var str = '';
-			var codesArr = JSON.parse(content);var passLen = c.length ;
-			for(var i = 0  ; i < codesArr.length ; i++) {
-				var passOffset = i%passLen ;
-				var calAscii = (codesArr[i]-c.charCodeAt(passOffset));
-				result.push(calAscii) ;
-			}
-			for(var k = 0 ; k < result.length ; k++) {
-				var ch = String.fromCharCode(result[k]); str += ch ;
-			}
-			return str ;
-		} catch(e) {
-			return '';
+		return {
+			'firstName': firstName,
+			'lastName': secondName,
+			'dob_dd': !dobSplit ? '' : dobSplit[0],
+			'dob_mm': !dobSplit || dobSplit.length < 2 ? '' : dobSplit[1],
+			'dob_yyyy': !dobSplit || dobSplit.length < 3 ? '' : dobSplit[2],
+			'gender': gender,
+			'mobile_phone': mobile,
+			'landline_phone': landline,
+			'email': email
 		}
 	}
 
@@ -635,9 +558,7 @@
 		isOptInGroupValid: isOptInGroupValid,
 		isPartOfOptInGroup: isPartOfOptInGroup,
 		getLatestValue : getLatestValue,
-		setPiiData: setPiiData,
-		getPiiData: getPiiData,
-		cleanPiiData: cleanPiiData
+		getPiiData: getPiiData
 	});
 
 })(jQuery);

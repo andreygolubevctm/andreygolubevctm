@@ -183,7 +183,7 @@
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
 										{{ var isMobile = meerkat.modules.deviceMediaState.get() === "xs"; }}
-										{{ if(hospital && meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										{{ if(hospital) { }}
 										<div class="row benefitRow benefitRowHeader">
 											<div class="col-xs-9 col-md-10 col-sm-10 col-lg-7 newBenefitRow benefitHeaderTitle">
 												<div class="benefitRowTableCell">

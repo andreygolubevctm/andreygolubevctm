@@ -36,7 +36,7 @@
         $partnerRelRow: null,
         $partnerAuthLevelRow: null,
         schoolMinAge: 21,
-        schoolMaxAge: 24,
+        schoolMaxAge: 30,
         $paymentStartDate: $('#health_payment_details_start'),
         $paymentType : $('#health_payment_details_type input'),
         $paymentFrequency : $('#health_payment_details_frequency'),
@@ -151,9 +151,22 @@
                 healthFunds_HIF.$partnerAuthLevelRow = $('#health_application_partner_authorityLevelRow');
             }
 
-            meerkat.modules.healthFunds._dependants('This policy provides cover for children under the age of 21 or who are aged 21-24 years and engaged in full time study. Student dependants do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+            var dependantsString = 'HIF defines a dependant as a child of an adult covered by the policy as long as the child is not married or in a de facto relationship.<br/><br/>' +
+                'They allow you to cover child dependents on a family policy until the age of 21. Student dependants can be covered up until the age of 31 as long as they are enrolled and studying on a full-time basis at a HIF recognised educational or training institution.<br/><br/>';
+
+            var dependentString2 = "";
+            if (meerkat.site.isCallCentreUser) {
+                dependentString2 = "For more details, check <a target='_new' href='https://ctm.livepro.com.au/goto/dependent-children-rules1'>KATS</a>.";
+            }
+            dependantsString += dependentString2;
+
+            meerkat.modules.healthFunds._dependants(dependantsString);
 
             meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, schoolMinAge: healthFunds_HIF.schoolMinAge, schoolMaxAge: healthFunds_HIF.schoolMaxAge, showRelationship: true, showFullTimeField: true });
+            <%--maxAge drives validation for dependant DOB like age >= meerkat.modules.healthDependants.getMaxAge() then invalid with some possible additional conditions--%>
+            <%--and school age drives show/hide behaviour for school name, full-time, etc. fields like (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) { show group of fields if true in the settings }--%>
+            <%--so as we're invalidating age with >= maxAge and hiding school fields with > schoolMaxAge we need to set maxAge 1 year after schoolMaxAge--%>
+            meerkat.modules.healthDependants.setMaxAge(healthFunds_HIF.schoolMaxAge + 1);
 
             <%-- First/Surname maxlength --%>
             healthFunds_HIF.$firstnames.attr('maxlength', 16);

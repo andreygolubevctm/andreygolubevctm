@@ -70,7 +70,8 @@
             isAHM: false,
             dateStudyCommencedFieldName: 'Date Study Commenced',
             isBUP: false,
-            isWFD: false
+            isWFD: false,
+            schoolNameRequiredMinAge: null
 
         },
         providerConfig,
@@ -225,6 +226,7 @@
             /*
             * "Dependant School" fields aren't shown in "Application" based on new rule:
             *      dependant age is >= 21 & dependant age is < 25 & cover type = "EF" | cover type = "ESP"
+            *  Note: Default min and max dependent age (21 & 25) may be overridden by provider
             */
             if (age >= providerConfig.extendedFamilyMinAge && age < providerConfig.extendedFamilyMaxAge) {
                 $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
@@ -258,6 +260,16 @@
                 // Hide them all if they aren't in the date range.
                 $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGraduationDate, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             }
+
+            // This is currently used for BUPA only --- START
+            if (!!providerConfig.schoolNameRequiredMinAge && !!providerConfig.schoolNameRequiredMaxAge) {
+                if (providerConfig.showSchoolFields && (age >= providerConfig.schoolNameRequiredMinAge && age <= providerConfig.schoolNameRequiredMaxAge)) {
+                    $(selectorPrefix + '_schoolGroup').toggleClass('hidden', false);
+                } else {
+                    $(selectorPrefix + '_schoolGroup').toggleClass('hidden', true);
+                }
+            }
+            // This is currently used for BUPA only --- END
         }
 
         // This is currently used for BUPA only as dateStudyCommencedShowMinAge, dateStudyCommencedShowMaxAge, schoolNameRequiredMinAge and schoolNameRequiredMaxAge defined only in src/main/webapp/common/js/health/healthFunds_BUP.jsp
@@ -530,16 +542,17 @@
     }
 
     /**
-     * If any of the, AUF Only, dependants are between the ages of 23-25, display a Mandatory script
+     * If any of the, AUF Only, dependants are between the ages of 23-30, display a Mandatory script
      */
     function updateAgeWarningForAUFDependants() {
-        if (providerConfig.isAUF) {
+        var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+        if (providerConfig.isAUF && (familyCoverType !== 'EF' && familyCoverType !== 'ESP')) {
             for (var dependantId = 1; dependantId <= getNumberOfDependants(); dependantId++) {
                 var selectorPrefix = '#health_application_dependants_dependant' + dependantId;
                 var dobAsString = $(selectorPrefix + '_dob').val() || '0';
                 var ageAsNumber = meerkat.modules.age.returnAge(dobAsString, true) || 0;
 
-                if (ageAsNumber >= 23 && ageAsNumber <= 25) {
+                if (ageAsNumber >= providerConfig.schoolMinAge && ageAsNumber <= providerConfig.schoolMaxAge) {
                     $('.simples-dialogue-228').show();
                     return;
                 }

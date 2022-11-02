@@ -213,10 +213,8 @@
         //       Max age default is 25. For some providers, max age is overriden by their config healthDependantMaxAge.
         if (getAge >= meerkat.modules.healthDependants.getMaxAge()) {
             switch (Results.getSelectedProduct().info.FundCode) {
+                case 'AUF':
                 case 'AHM':
-                    $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
-                    isValid = false;
-                    break;
                 case 'BUP':
                     $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
                     isValid = false;
@@ -228,7 +226,9 @@
                         isValid = false;
                     } else if (['F', 'SPF'].includes(familyCoverType)) {
                         //dependant age cannot be covered family or single parent family because dependant age exceeds student max age but less than adult dependent max age
-                        $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', 'between ' + meerkat.modules.healthDependants.getExtendedFamilyMinAge() +
+                        //the message will suggest the extended family policy
+                        var messageWfd = 'Your dependant cannot be added to the policy as they are aged {AGE} years or older. You can still arrange cover for this dependent by applying for an extended family policy.';
+                        $.validator.messages.limitDependentAgeToUnder25 = messageWfd.replace('{AGE}', 'between ' + meerkat.modules.healthDependants.getExtendedFamilyMinAge() +
                             ' - ' + meerkat.modules.healthDependants.getExtendedFamilyMaxAge());
                         isValid = false;
                     }
@@ -240,8 +240,8 @@
                         isValid = false;
                     } else if (familyCoverType == 'F') {
                         // the message will suggest the extended family policy
-                        var message2 = 'Your dependant cannot be added to the policy as they are aged {AGE} years or older. You can still arrange cover for this dependent by applying for an extended family policy.';
-                        $.validator.messages.limitDependentAgeToUnder25 = message2.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
+                        var messageNib = 'Your dependant cannot be added to the policy as they are aged {AGE} years or older. You can still arrange cover for this dependent by applying for an extended family policy.';
+                        $.validator.messages.limitDependentAgeToUnder25 = messageNib.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());
                         isValid = false;
                     } else if (familyCoverType == 'SPF') {
                         $.validator.messages.limitDependentAgeToUnder25 = message.replace('{AGE}', meerkat.modules.healthDependants.getMaxAge());

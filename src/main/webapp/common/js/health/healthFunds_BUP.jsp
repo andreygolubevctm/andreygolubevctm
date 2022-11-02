@@ -14,13 +14,15 @@ var healthFunds_BUP = {
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
-    extendedFamilyMinAge: 21,
+    extendedFamilyMinAge: 0, <%-- or any number < schoolMinAge. we defenetely need to review dependants logic  --%>
     extendedFamilyMaxAge: 32,
+	schoolMinAge: 20,
+    schoolMaxAge: 31,
     healthDependantMaxAge: 32,   <%--will be set as BUP's maxDependantAge which is by default 25 (dependent age should be less than maxDependantAge) --%>
 	dateStudyCommencedShowMinAge: 21, <%-- if age >= this value - show Study Start Date (or Date Study Commenced) input AND --%>
 	dateStudyCommencedShowMaxAge: 31, <%-- if age <= this value - show Study Start Date (or Date Study Commenced) input --%>
-	schoolNameRequiredMinAge: 21, <%-- if age >= this value - make school name field mandatory AND --%>
-	schoolNameRequiredMaxAge: 31, <%-- if age <= this value - make school name field mandatory --%>
+	schoolNameRequiredMinAge: 21, <%-- if age < this value - make school name field mandatory --%>
+	schoolNameRequiredMaxAge: 31, <%-- if age > this value - make school name field mandatory --%>
 
 	set: function () {
 
@@ -223,7 +225,7 @@ var healthFunds_BUP = {
 		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
 		if (['F', 'SPF'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
-				schoolMinAge: healthFunds_BUP.extendedFamilyMinAge-1, schoolMaxAge: healthFunds_BUP.extendedFamilyMaxAge-1, showSchoolFields:true, showMiddleName: true,
+				schoolMinAge: healthFunds_BUP.schoolMinAge, schoolMaxAge: healthFunds_BUP.schoolMaxAge, showSchoolFields:true, showMiddleName: true,
 				showSchoolCommencementField:true, dateStudyCommencedFieldName:'Study Start Date',
 				dateStudyCommencedShowMinAge: healthFunds_BUP.dateStudyCommencedShowMinAge, dateStudyCommencedShowMaxAge: healthFunds_BUP.dateStudyCommencedShowMaxAge,
 				schoolNameRequiredMinAge: healthFunds_BUP.schoolNameRequiredMinAge, schoolNameRequiredMaxAge: healthFunds_BUP.schoolNameRequiredMaxAge
