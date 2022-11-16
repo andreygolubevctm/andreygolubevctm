@@ -226,7 +226,7 @@ var healthFunds_BUP = {
 		if (['F', 'SPF'].includes(familyCoverType)) {
 			meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge,
 				schoolMinAge: healthFunds_BUP.schoolMinAge, schoolMaxAge: healthFunds_BUP.schoolMaxAge, showSchoolFields:true, showMiddleName: true,
-				showSchoolCommencementField:true, dateStudyCommencedFieldName:'Study Start Date',
+				showSchoolCommencementField:false, dateStudyCommencedFieldName:'Study Start Date',
 				dateStudyCommencedShowMinAge: healthFunds_BUP.dateStudyCommencedShowMinAge, dateStudyCommencedShowMaxAge: healthFunds_BUP.dateStudyCommencedShowMaxAge,
 				schoolNameRequiredMinAge: healthFunds_BUP.schoolNameRequiredMinAge, schoolNameRequiredMaxAge: healthFunds_BUP.schoolNameRequiredMaxAge
 			});
@@ -276,7 +276,6 @@ var healthFunds_BUP = {
 
 		$('#health_payment_bank_number').attr('minlength', '6');
 		$('#health_payment_bank_number').attr('maxlength', '9');
-
 	},
 	unset: function () {
 		"use strict";
