@@ -276,6 +276,7 @@ var healthFunds_BUP = {
 
 		$('#health_payment_bank_number').attr('minlength', '6');
 		$('#health_payment_bank_number').attr('maxlength', '9');
+
 	},
 	unset: function () {
 		"use strict";
